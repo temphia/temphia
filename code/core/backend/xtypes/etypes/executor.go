@@ -1,8 +1,8 @@
-package enginex
+package etypes
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/enginex/bx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/enginex/event"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bx"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/event"
 )
 
 type BuilderFactory func(app interface{}) (ExecutorBuilder, error)

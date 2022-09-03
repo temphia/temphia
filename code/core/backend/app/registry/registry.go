@@ -4,7 +4,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/enginex"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/config"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
@@ -18,8 +18,8 @@ type (
 
 type Registry struct {
 	repoBuilders        map[string]repox.Builder
-	executors           map[string]enginex.BuilderFactory
-	execModules         map[string]enginex.ModuleBuilderFunc
+	executors           map[string]etypes.BuilderFactory
+	execModules         map[string]etypes.ModuleBuilderFunc
 	dynamicScripts      map[string]DynamicScript
 	storeBuilders       map[string]StoreBuilder
 	httpAdapterBuilders map[string]httpx.Builder
@@ -38,8 +38,8 @@ func New(fromGlobal bool) *Registry {
 		freezed:             false,
 		dynamicScripts:      make(map[string]DynamicScript),
 		repoBuilders:        make(map[string]repox.Builder),
-		executors:           make(map[string]enginex.BuilderFactory),
-		execModules:         make(map[string]enginex.ModuleBuilderFunc),
+		executors:           make(map[string]etypes.BuilderFactory),
+		execModules:         make(map[string]etypes.ModuleBuilderFunc),
 		storeBuilders:       make(map[string]StoreBuilder),
 		httpAdapterBuilders: make(map[string]httpx.Builder),
 		mlock:               &sync.Mutex{},
@@ -92,7 +92,7 @@ func (r *Registry) SetRepoBuilder(name string, builder repox.Builder) {
 	r.repoBuilders[name] = builder
 }
 
-func (r *Registry) SetExecutor(name string, builder enginex.BuilderFactory) {
+func (r *Registry) SetExecutor(name string, builder etypes.BuilderFactory) {
 	r.mlock.Lock()
 	defer r.mlock.Unlock()
 	if r.freezed {
@@ -101,7 +101,7 @@ func (r *Registry) SetExecutor(name string, builder enginex.BuilderFactory) {
 	r.executors[name] = builder
 }
 
-func (r *Registry) SetExecModule(name string, builder enginex.ModuleBuilderFunc) {
+func (r *Registry) SetExecModule(name string, builder etypes.ModuleBuilderFunc) {
 	r.mlock.Lock()
 	defer r.mlock.Unlock()
 	if r.freezed {
@@ -148,7 +148,7 @@ func (r *Registry) GetRepoBuilders() map[string]repox.Builder {
 	return r.repoBuilders
 }
 
-func (r *Registry) GetExecutors() map[string]enginex.BuilderFactory {
+func (r *Registry) GetExecutors() map[string]etypes.BuilderFactory {
 	r.mlock.Lock()
 	defer r.mlock.Unlock()
 	if !r.freezed {
@@ -157,7 +157,7 @@ func (r *Registry) GetExecutors() map[string]enginex.BuilderFactory {
 	return r.executors
 }
 
-func (r *Registry) GetExecModules() map[string]enginex.ModuleBuilderFunc {
+func (r *Registry) GetExecModules() map[string]etypes.ModuleBuilderFunc {
 	r.mlock.Lock()
 	defer r.mlock.Unlock()
 	if !r.freezed {

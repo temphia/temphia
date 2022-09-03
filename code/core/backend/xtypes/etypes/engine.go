@@ -1,4 +1,4 @@
-package enginex
+package etypes
 
 import (
 	"github.com/gin-gonic/gin"

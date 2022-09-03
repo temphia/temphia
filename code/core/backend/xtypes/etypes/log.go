@@ -1,4 +1,4 @@
-package enginex
+package etypes
 
 type DebugMessage struct {
 	EventId  string   `json:"event_id,omitempty"`

@@ -3,7 +3,7 @@ package dynhub
 import (
 	sockdhub "github.com/temphia/temphia/code/core/backend/services/sockd/hub"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/enginex"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
@@ -13,7 +13,7 @@ type DynHub struct {
 	dyndbs   map[string]store.DynDB
 	eventHub xplane.EventBus
 	sockdhub sockdhub.SockdHub
-	engine   enginex.Engine
+	engine   etypes.Engine
 	app      xtypes.App
 }
 
@@ -26,7 +26,7 @@ func New(_app xtypes.App, dyns map[string]store.DynDB) *DynHub {
 		eventHub: deps.ControlPlane().(xplane.ControlPlane).GetEventBus(),
 		sockdhub: *sockdhub.New(deps.Sockd().(sockdx.Sockd)),
 		app:      _app,
-		engine:   deps.Engine().(enginex.Engine),
+		engine:   deps.Engine().(etypes.Engine),
 	}
 }
 

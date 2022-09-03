@@ -1,8 +1,8 @@
-package enginex
+package etypes
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/enginex/event"
-	"github.com/temphia/temphia/code/core/backend/xtypes/enginex/job"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/event"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
 )
 
 type RunningExec struct {

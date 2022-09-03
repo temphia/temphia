@@ -1,4 +1,4 @@
-package enginex
+package etypes
 
 import (
 	"github.com/temphia/temphia/code/core/backend/xtypes"

@@ -1,6 +1,6 @@
 package xplane
 
-import "github.com/temphia/temphia/code/core/backend/xtypes/enginex/job"
+import "github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
 
 type ControlPlane interface {
 	Start() error

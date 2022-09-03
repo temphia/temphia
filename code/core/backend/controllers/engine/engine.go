@@ -1,14 +1,14 @@
 package engine
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/enginex"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 )
 
 type Controller struct {
-	engine enginex.Engine
+	engine etypes.Engine
 }
 
-func New(engine enginex.Engine) *Controller {
+func New(engine etypes.Engine) *Controller {
 	return &Controller{
 		engine: engine,
 	}

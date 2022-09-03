@@ -1,7 +1,7 @@
 package registry
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/enginex"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 )
@@ -23,11 +23,11 @@ func SetStoreBuilders(name string, builder StoreBuilder) {
 	G.SetStoreBuilder(name, builder)
 }
 
-func SetExecutor(name string, builder enginex.BuilderFactory) {
+func SetExecutor(name string, builder etypes.BuilderFactory) {
 	G.SetExecutor(name, builder)
 }
 
-func SetExecModule(name string, builder enginex.ModuleBuilderFunc) {
+func SetExecModule(name string, builder etypes.ModuleBuilderFunc) {
 	G.SetExecModule(name, builder)
 }
 

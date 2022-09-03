@@ -3,7 +3,7 @@ package job
 import (
 	"sync"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/enginex/event"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/event"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 )
 
