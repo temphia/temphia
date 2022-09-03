@@ -2,7 +2,7 @@ package local
 
 import (
 	"github.com/temphia/temphia/code/core/backend/app/registry"
-	"github.com/temphia/temphia/code/data"
+	"github.com/temphia/temphia/code/core/backend/data"
 )
 
 func init() {
