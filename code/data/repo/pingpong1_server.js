@@ -1,0 +1,1 @@
+console.log("pingpong1 server script")

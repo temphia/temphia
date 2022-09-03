@@ -1,0 +1,13 @@
+{
+    "name": "Ping Pong",
+    "slug": "pingpong1",
+    "type": "plug",
+    "sub_type": "",
+    "description": "This is example plug",
+    "files": [
+        "schema.json",
+        "server.js",
+        "client.css",
+        "client.js"
+    ]
+}

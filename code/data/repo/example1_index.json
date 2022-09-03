@@ -1,0 +1,10 @@
+{
+    "name": "Example Schema",
+    "slug": "example1",
+    "type": "tschema",
+    "sub_type": "group",
+    "description": "This is example datatable",
+    "files": [
+        "schema.json"
+    ]
+}
