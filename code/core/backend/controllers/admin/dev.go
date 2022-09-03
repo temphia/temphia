@@ -1,0 +1,81 @@
+package admin
+
+import (
+	"io"
+	"io/ioutil"
+
+	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/thoas/go-funk"
+)
+
+func (c *Controller) DevPushFiles(tkt *claim.PlugDevTkt, files map[string]io.Reader) error {
+
+	bprint, err := c.pacman.BprintGet(tkt.TenantId, tkt.BprintId)
+	if err != nil {
+		return err
+	}
+
+	needsBprintUpdate := false
+
+	if bprint.Files == nil {
+		bprint.Files = make(entities.JsonArray, 0)
+		needsBprintUpdate = true
+	}
+
+	for filekey, filerc := range files {
+		if !funk.ContainsString(bprint.Files, filekey) {
+			needsBprintUpdate = true
+			bprint.Files = append(bprint.Files, filekey)
+		}
+
+		out, err := ioutil.ReadAll(filerc)
+		if err != nil {
+			// fixme => wrap error
+			return nil
+		}
+
+		err = c.pacman.BprintUpdateBlob(tkt.TenantId, tkt.BprintId, filekey, out)
+		if err != nil {
+			return err
+		}
+	}
+
+	if !needsBprintUpdate {
+		return nil
+	}
+
+	return c.coredb.BprintUpdate(tkt.TenantId, tkt.BprintId, map[string]interface{}{
+		"files": bprint.Files,
+	})
+}
+
+func (c *Controller) DevModifyPlug(tkt *claim.PlugDevTkt, pid string, data map[string]interface{}) error {
+	if !only(data, "name", "executor", "live", "dev", "handlers", "extra_meta") {
+		return easyerr.Error("Not allowed field")
+	}
+
+	return c.coredb.PlugUpdate(tkt.TenantId, pid, data)
+}
+
+func (c *Controller) DevModifyAgent(tkt *claim.PlugDevTkt, pid string, aid string, data map[string]interface{}) error {
+	if !only(data, "name", "type", "executor", "iface_file", "web_files", "web_entry", "web_script", "web_style", "web_loader", "extra_meta", "env_vars") {
+		return easyerr.Error("Not allowed field")
+	}
+
+	return c.coredb.AgentUpdate(tkt.TenantId, pid, aid, data)
+}
+
+func only(data map[string]interface{}, keys ...string) bool {
+	if len(data) > len(keys) {
+		return false
+	}
+
+	for hkey, _ := range data {
+		if !funk.ContainsString(keys, hkey) {
+			return false
+		}
+	}
+	return true
+}
