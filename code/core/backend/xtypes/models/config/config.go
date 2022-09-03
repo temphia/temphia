@@ -5,3 +5,5 @@ type Simple struct {
 	MasterKey     string
 	MasterKeyType string
 }
+
+type StoreSource struct{}

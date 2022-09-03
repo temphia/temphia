@@ -11,7 +11,7 @@ type Adapter interface {
 }
 
 type BuilderOptions struct {
-	App      any // btypes.App
+	App      any // xtypes.App
 	TenantId string
 	Domain   any // *entities.TenantDomain
 }
