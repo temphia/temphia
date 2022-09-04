@@ -1,4 +1,4 @@
-package image
+package xutils
 
 import (
 	"bytes"
