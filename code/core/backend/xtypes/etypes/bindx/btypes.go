@@ -1,4 +1,4 @@
-package bx
+package bindx
 
 import (
 	"github.com/temphia/temphia/code/core/backend/xtypes"

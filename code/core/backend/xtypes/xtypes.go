@@ -15,7 +15,7 @@ type App interface {
 	GetDeps() Deps
 	GetServer() Server
 	GetGlobalVar() GlobalVar
-	Data() any
+	Data() DataBox
 }
 
 type Deps interface {

@@ -1,0 +1,9 @@
+{
+  "include": ["./lib/**/*"],
+  "exclude": ["node_modules/*"],
+  "compilerOptions": {
+    "target": "ES3",
+    "declaration": true,
+    "outDir": "build/lib"
+  },
+}

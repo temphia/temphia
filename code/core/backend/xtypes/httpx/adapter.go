@@ -1,6 +1,10 @@
 package httpx
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/core/backend/xtypes"
+	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+)
 
 type Context struct {
 	Http *gin.Context
@@ -11,9 +15,9 @@ type Adapter interface {
 }
 
 type BuilderOptions struct {
-	App      any // xtypes.App
+	App      xtypes.App
 	TenantId string
-	Domain   any // *entities.TenantDomain
+	Domain   *entities.TenantDomain
 }
 
 type Builder func(opts BuilderOptions) (Adapter, error)

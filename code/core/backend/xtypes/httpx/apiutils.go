@@ -1,9 +1,11 @@
 package httpx
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/ztrue/tracerr"
 )
 
 var (
@@ -45,4 +47,30 @@ func WriteBinary(c *gin.Context, data []byte) {
 	w.Write(data)
 	w.Header().Del("Content-Type")
 	w.Header().Add("Content-Type", "application/octet-stream")
+}
+
+func BaseURL(host, tenantId string) string {
+	return fmt.Sprintf("http://%s/z/api/%s/v1/", host, tenantId)
+}
+
+type Rutil struct{}
+
+func (r *Rutil) WriteJSON(c *gin.Context, resp interface{}, err error) {
+	if err != nil {
+		tracerr.PrintSourceColor(err)
+	}
+
+	WriteJSON(c, resp, err)
+}
+
+func (r *Rutil) WriteFinal(c *gin.Context, err error) {
+	if err != nil {
+		tracerr.PrintSourceColor(err)
+	}
+
+	WriteFinal(c, err)
+}
+
+func (r *Rutil) WriteErr(c *gin.Context, msg string) {
+	WriteErr(c, msg)
 }

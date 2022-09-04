@@ -1,14 +1,14 @@
 package etypes
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bx"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/event"
 )
 
 type BuilderFactory func(app interface{}) (ExecutorBuilder, error)
 
 type ExecutorOption struct {
-	Binder   bx.Bindings
+	Binder   bindx.Bindings
 	TenantId string
 	PlugId   string
 	AgentId  string

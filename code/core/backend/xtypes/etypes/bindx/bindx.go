@@ -1,4 +1,4 @@
-package bx
+package bindx
 
 type Value struct {
 	Value    string `json:"value,omitempty"`
