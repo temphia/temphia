@@ -1,8 +1,6 @@
 package plane
 
 import (
-	"github.com/bwmarrin/snowflake"
-
 	"github.com/temphia/temphia/code/core/backend/app/config"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
 	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
@@ -11,28 +9,23 @@ import (
 var _ xplane.ControlPlane = (*PlaneLite)(nil)
 
 type PlaneLite struct {
-	eventbus    *EventBus
-	locker      *Locker
-	router      *Router
-	idGenerator *snowflake.Node
-	nodeId      int64
+	eventbus *EventBus
+	locker   *Locker
+	router   *Router
+	nodeId   int64
+	seq      Sequencer
 }
 
 func NewLite() *PlaneLite {
 
 	nodeId := int64(1)
 
-	node, err := snowflake.NewNode(nodeId)
-	if err != nil {
-		panic(err)
-	}
-
 	return &PlaneLite{
-		eventbus:    NewEventBus(),
-		locker:      NewLocker(),
-		router:      nil,
-		idGenerator: node,
-		nodeId:      nodeId,
+		eventbus: NewEventBus(),
+		locker:   NewLocker(),
+		router:   nil,
+		nodeId:   nodeId,
+		seq:      NewSeq(nodeId),
 	}
 }
 
@@ -68,11 +61,8 @@ func (p *PlaneLite) GetSockdRouter() xplane.SockdRouter {
 // eventbus
 func (p *PlaneLite) GetEventBus() xplane.EventBus { return p.eventbus }
 
-func (p *PlaneLite) NewUId() int64 {
-	id := p.idGenerator.Generate()
-	return id.Int64()
-}
-
 func (p *PlaneLite) GetNodeId() int64 {
 	return p.nodeId
 }
+
+func (p *PlaneLite) GetSequencer() xplane.Sequencer { return &p.seq }

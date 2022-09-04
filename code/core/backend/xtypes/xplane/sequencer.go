@@ -13,5 +13,6 @@ type Sequencer interface {
 	RequestId() string
 	DisplayErrId() string
 
+	NewGlobalId() int64
 	NewNode() *snowflake.Node
 }
