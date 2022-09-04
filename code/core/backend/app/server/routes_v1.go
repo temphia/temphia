@@ -1,3 +1,5 @@
 package server
 
-func (s *Server) buildRoutes() {}
+func (s *Server) buildRoutes() {
+
+}
