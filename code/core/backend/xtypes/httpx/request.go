@@ -6,6 +6,7 @@ import (
 )
 
 type Request struct {
+	Id      int64
 	Http    *gin.Context
 	Session *claim.Session
 }

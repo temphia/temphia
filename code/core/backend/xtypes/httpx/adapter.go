@@ -7,6 +7,7 @@ import (
 )
 
 type Context struct {
+	Rid  int64
 	Http *gin.Context
 }
 
