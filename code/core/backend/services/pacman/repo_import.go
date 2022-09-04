@@ -74,7 +74,7 @@ func (p *PacMan) RepoSourceImport(tenantid string, opts *service.RepoImportOpts)
 		return "", nil
 	}
 
-	err = p.syncer.BprintUpdate(tenantid, bp.ID, map[string]interface{}{
+	err = p.syncer.BprintUpdate(tenantid, bp.ID, map[string]any{
 		"files": string(out),
 	})
 

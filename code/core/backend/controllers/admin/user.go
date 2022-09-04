@@ -28,7 +28,7 @@ func (c *Controller) AddUser(uclaim *claim.Session, user *entities.User) error {
 	})
 }
 
-func (c *Controller) UpdateUser(uclaim *claim.Session, user map[string]interface{}) error {
+func (c *Controller) UpdateUser(uclaim *claim.Session, user map[string]any) error {
 	if !uclaim.IsSuperAdmin() {
 		return easyerr.NotImpl()
 	}

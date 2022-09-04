@@ -46,7 +46,7 @@ func (b *Binder) GetFileWithMeta(file string) ([]byte, int64, error) {
 	return out, 0, err
 }
 
-func (b *Binder) GetApp() interface{} {
+func (b *Binder) GetApp() any {
 	return b.Handle.Deps.App
 }
 

@@ -5,7 +5,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 )
 
-type ModuleBuilderFunc func(app interface{}) (ModuleBuilder, error)
+type ModuleBuilderFunc func(app any) (ModuleBuilder, error)
 
 type ModuleBuilder interface {
 	Instance(ModuleOptions) (Module, error)

@@ -11,7 +11,7 @@ func (c *Controller) RepoNew(uclaim *claim.Session, data *entities.Repo) error {
 	return c.coredb.RepoNew(uclaim.TenentId, data)
 }
 
-func (c *Controller) RepoUpdate(uclaim *claim.Session, id int64, data map[string]interface{}) error {
+func (c *Controller) RepoUpdate(uclaim *claim.Session, id int64, data map[string]any) error {
 	return c.coredb.RepoUpdate(uclaim.TenentId, id, data)
 }
 

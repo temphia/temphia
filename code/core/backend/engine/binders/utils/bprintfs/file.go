@@ -67,4 +67,4 @@ func (s *File) Size() int64 {
 func (s *File) Mode() fs.FileMode  { return fs.FileMode(0666) }
 func (s *File) ModTime() time.Time { return time.Time{} }
 func (s *File) IsDir() bool        { return false }
-func (s *File) Sys() interface{}   { return nil }
+func (s *File) Sys() any           { return nil }

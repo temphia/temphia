@@ -70,7 +70,7 @@ func (c *Controller) AddTenant(data *vmodels.NewTenant) error {
 	return opsutils.AddTenant(c.app, data)
 }
 
-func (c *Controller) UpdateTenant(slug string, data map[string]interface{}) error {
+func (c *Controller) UpdateTenant(slug string, data map[string]any) error {
 	return c.coredb.UpdateTenant(slug, data)
 }
 

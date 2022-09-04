@@ -37,7 +37,7 @@ func New(sources map[string]store.CabinetSource, defprovider string) *CabinetHub
 	return ch
 }
 
-func (c *CabinetHub) Start(eventbus interface{}) error {
+func (c *CabinetHub) Start(eventbus any) error {
 	eb := eventbus.(xplane.EventBus)
 
 	eb.OnTenantChange(func(tenant, event string, data *entities.Tenant) {

@@ -10,7 +10,7 @@ func getTarget(uclaim *claim.Session) (string, string) {
 	return uclaim.Path[1], uclaim.Path[2]
 }
 
-func (d *Controller) NewRow(uclaim *claim.Session, tslug string, cells map[string]interface{}) (int64, error) {
+func (d *Controller) NewRow(uclaim *claim.Session, tslug string, cells map[string]any) (int64, error) {
 
 	source, group := getTarget(uclaim)
 
@@ -27,7 +27,7 @@ func (d *Controller) NewRow(uclaim *claim.Session, tslug string, cells map[strin
 	})
 }
 
-func (d *Controller) GetRow(uclaim *claim.Session, tslug string, id int64) (map[string]interface{}, error) {
+func (d *Controller) GetRow(uclaim *claim.Session, tslug string, id int64) (map[string]any, error) {
 	source, group := getTarget(uclaim)
 
 	dynDb := d.dynHub.GetSource(source, uclaim.TenentId)
@@ -40,7 +40,7 @@ func (d *Controller) GetRow(uclaim *claim.Session, tslug string, id int64) (map[
 	})
 }
 
-func (d *Controller) UpdateRow(uclaim *claim.Session, tslug string, id, version int64, cells map[string]interface{}) (map[string]interface{}, error) {
+func (d *Controller) UpdateRow(uclaim *claim.Session, tslug string, id, version int64, cells map[string]any) (map[string]any, error) {
 
 	source, group := getTarget(uclaim)
 
@@ -96,7 +96,7 @@ func (d *Controller) FTSQuery(uclaim *claim.Session, tslug, qstr string) (*store
 	})
 }
 
-func (d *Controller) TemplateQuery(uclaim *claim.Session, tslug string, query interface{}) (*store.QueryResult, error) {
+func (d *Controller) TemplateQuery(uclaim *claim.Session, tslug string, query any) (*store.QueryResult, error) {
 
 	// source, group := getTarget(uclaim)
 

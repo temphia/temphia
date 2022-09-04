@@ -17,14 +17,14 @@ import (
 */
 
 type DataEventReq struct {
-	Id    int64                  `json:"id,omitempty"`
-	Type  string                 `json:"type,omitempty"`
-	Group string                 `json:"group,omitempty"`
-	Table string                 `json:"table,omitempty"`
-	Data  map[string]interface{} `json:"data,omitempty"`
+	Id    int64          `json:"id,omitempty"`
+	Type  string         `json:"type,omitempty"`
+	Group string         `json:"group,omitempty"`
+	Table string         `json:"table,omitempty"`
+	Data  map[string]any `json:"data,omitempty"`
 }
 
-func (d *dynSource) OnBeforeMod(tenant, plug, agent, handler string, event DataEventReq) (map[string]interface{}, error) {
+func (d *dynSource) OnBeforeMod(tenant, plug, agent, handler string, event DataEventReq) (map[string]any, error) {
 
 	out, err := json.Marshal(&event)
 	if err != nil {

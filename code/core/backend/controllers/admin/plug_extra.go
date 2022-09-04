@@ -9,7 +9,7 @@ func (c *Controller) AgentLinkNew(uclaim *claim.Session, data *entities.AgentLin
 	return c.coredb.AgentLinkNew(uclaim.TenentId, data)
 }
 
-func (c *Controller) AgentLinkUpdate(uclaim *claim.Session, pid, aid string, id int64, data map[string]interface{}) error {
+func (c *Controller) AgentLinkUpdate(uclaim *claim.Session, pid, aid string, id int64, data map[string]any) error {
 	return c.coredb.AgentLinkUpdate(uclaim.TenentId, pid, aid, id, data)
 }
 
@@ -29,7 +29,7 @@ func (c *Controller) AgentExtensionNew(uclaim *claim.Session, data *entities.Age
 	return c.coredb.AgentExtensionNew(uclaim.TenentId, data)
 }
 
-func (c *Controller) AgentExtensionUpdate(uclaim *claim.Session, pid, aid string, id int64, data map[string]interface{}) error {
+func (c *Controller) AgentExtensionUpdate(uclaim *claim.Session, pid, aid string, id int64, data map[string]any) error {
 	return c.coredb.AgentExtensionUpdate(uclaim.TenentId, pid, aid, id, data)
 }
 
@@ -49,7 +49,7 @@ func (c *Controller) AgentResourceNew(uclaim *claim.Session, data *entities.Agen
 	return c.coredb.AgentResourceNew(uclaim.TenentId, data)
 }
 
-func (c *Controller) AgentResourceUpdate(uclaim *claim.Session, pid, aid, slug string, data map[string]interface{}) error {
+func (c *Controller) AgentResourceUpdate(uclaim *claim.Session, pid, aid, slug string, data map[string]any) error {
 	return c.coredb.AgentResourceUpdate(uclaim.TenentId, pid, aid, slug, data)
 }
 

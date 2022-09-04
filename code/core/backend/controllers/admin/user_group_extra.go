@@ -13,7 +13,7 @@ func (c *Controller) AddUserGroupAuth(uclaim *claim.Session, gslug string, data 
 	return c.coredb.AddUserGroupAuth(data)
 }
 
-func (c *Controller) UpdateUserGroupAuth(uclaim *claim.Session, gslug string, id int64, data map[string]interface{}) error {
+func (c *Controller) UpdateUserGroupAuth(uclaim *claim.Session, gslug string, id int64, data map[string]any) error {
 	return c.coredb.UpdateUserGroupAuth(uclaim.TenentId, gslug, id, data)
 }
 
@@ -37,7 +37,7 @@ func (c *Controller) AddUserGroupHook(uclaim *claim.Session, gslug string, data 
 	return c.coredb.AddUserGroupHook(data)
 }
 
-func (c *Controller) UpdateUserGroupHook(uclaim *claim.Session, gslug string, id int64, data map[string]interface{}) error {
+func (c *Controller) UpdateUserGroupHook(uclaim *claim.Session, gslug string, id int64, data map[string]any) error {
 	return c.coredb.UpdateUserGroupHook(uclaim.TenentId, gslug, id, data)
 }
 
@@ -61,7 +61,7 @@ func (c *Controller) AddUserGroupPlug(uclaim *claim.Session, gslug string, data 
 	return c.coredb.AddUserGroupPlug(data)
 }
 
-func (c *Controller) UpdateUserGroupPlug(uclaim *claim.Session, gslug string, id int64, data map[string]interface{}) error {
+func (c *Controller) UpdateUserGroupPlug(uclaim *claim.Session, gslug string, id int64, data map[string]any) error {
 	return c.coredb.UpdateUserGroupPlug(uclaim.TenentId, gslug, id, data)
 }
 
@@ -85,7 +85,7 @@ func (c *Controller) AddUserGroupData(uclaim *claim.Session, gslug string, data 
 	return c.coredb.AddUserGroupData(data)
 }
 
-func (c *Controller) UpdateUserGroupData(uclaim *claim.Session, gslug string, id int64, data map[string]interface{}) error {
+func (c *Controller) UpdateUserGroupData(uclaim *claim.Session, gslug string, id int64, data map[string]any) error {
 	return c.coredb.UpdateUserGroupData(uclaim.TenentId, gslug, id, data)
 }
 

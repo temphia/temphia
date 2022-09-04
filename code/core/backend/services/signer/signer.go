@@ -39,12 +39,12 @@ func (a *Signer) generator(salt string) *branca.Branca {
 	)
 }
 
-func (a *Signer) Sign(namespace string, payload interface{}) (string, error) {
+func (a *Signer) Sign(namespace string, payload any) (string, error) {
 	return sign(a.signer(namespace), payload)
 }
 
 // caller should verify tenant
-func (a *Signer) Parse(namespace string, token string, target interface{}) error {
+func (a *Signer) Parse(namespace string, token string, target any) error {
 	return parse(a.signer(namespace), token, target)
 }
 
@@ -66,7 +66,7 @@ func (a *Signer) ParseRaw(namespace string, token string) (string, error) {
 
 // private
 
-func parse(signer *branca.Branca, token string, dest interface{}) error {
+func parse(signer *branca.Branca, token string, dest any) error {
 	str, err := signer.DecodeToString(token)
 	if err != nil {
 		return err
@@ -75,7 +75,7 @@ func parse(signer *branca.Branca, token string, dest interface{}) error {
 	return json.Unmarshal(kosher.Byte(str), dest)
 }
 
-func sign(signer *branca.Branca, o interface{}) (string, error) {
+func sign(signer *branca.Branca, o any) (string, error) {
 	out, err := json.Marshal(o)
 	if err != nil {
 		return "", nil

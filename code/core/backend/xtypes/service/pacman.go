@@ -34,14 +34,14 @@ type PacmanBprintOps interface {
 	BprintUpdate(tenantid string, bp *entities.BPrint) error
 	BprintGet(tenantid, bid string) (*entities.BPrint, error)
 	BprintRemove(tenantid, bid string) error
-	BprintListBlobs(tenantid, bid string) (interface{}, error)
+	BprintListBlobs(tenantid, bid string) (any, error)
 
 	BprintNewBlob(tenantid, bid, file string, payload []byte) error
 	BprintUpdateBlob(tenantid, bid, file string, payload []byte) error
 
 	BprintGetBlob(tenantid, bid, file string) ([]byte, error)
 	BprintDeleteBlob(tenantid, bid, file string) error
-	Instance(tenantId string, opts *instance.RepoOptions) (interface{}, error)
+	Instance(tenantId string, opts *instance.RepoOptions) (any, error)
 
-	ParseInstanceFile(tenantId, bid, file string, target interface{}) error
+	ParseInstanceFile(tenantId, bid, file string, target any) error
 }

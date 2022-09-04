@@ -5,7 +5,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/event"
 )
 
-type BuilderFactory func(app interface{}) (ExecutorBuilder, error)
+type BuilderFactory func(app any) (ExecutorBuilder, error)
 
 type ExecutorOption struct {
 	Binder   bindx.Bindings

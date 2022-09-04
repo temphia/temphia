@@ -31,7 +31,7 @@ func SetExecModule(name string, builder etypes.ModuleBuilderFunc) {
 	G.SetExecModule(name, builder)
 }
 
-func SetDynamicScript(name string, script func(ns string, ctx interface{}) error) {
+func SetDynamicScript(name string, script func(ns string, ctx any) error) {
 	G.SetDynamicScript(name, script)
 }
 

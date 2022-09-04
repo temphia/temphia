@@ -11,7 +11,7 @@ func (c *Controller) PlugNew(uclaim *claim.Session, pg *entities.Plug) error {
 	return c.coredb.PlugNew(uclaim.TenentId, pg)
 }
 
-func (c *Controller) PlugUpdate(uclaim *claim.Session, pid string, data map[string]interface{}) error {
+func (c *Controller) PlugUpdate(uclaim *claim.Session, pid string, data map[string]any) error {
 	return c.coredb.PlugUpdate(uclaim.TenentId, pid, data)
 }
 
@@ -39,7 +39,7 @@ func (c *Controller) AgentNew(uclaim *claim.Session, data *entities.Agent) error
 	return c.coredb.AgentNew(uclaim.TenentId, data)
 }
 
-func (c *Controller) AgentUpdate(uclaim *claim.Session, pid string, aid string, data map[string]interface{}) error {
+func (c *Controller) AgentUpdate(uclaim *claim.Session, pid string, aid string, data map[string]any) error {
 	return c.coredb.AgentUpdate(uclaim.TenentId, pid, aid, data)
 }
 
@@ -63,7 +63,7 @@ func (c *Controller) ResourceNew(uclaim *claim.Session, data *entities.Resource)
 	return c.coredb.ResourceNew(uclaim.TenentId, data)
 }
 
-func (c *Controller) ResourceUpdate(uclaim *claim.Session, rid string, data map[string]interface{}) error {
+func (c *Controller) ResourceUpdate(uclaim *claim.Session, rid string, data map[string]any) error {
 	return c.coredb.ResourceUpdate(uclaim.TenentId, rid, data)
 }
 

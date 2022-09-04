@@ -18,11 +18,11 @@ func main3() {
 
 	vm := goja.New()
 
-	vm.Set("_log", func(msg interface{}) {
+	vm.Set("_log", func(msg any) {
 		pp.Println(msg)
 	})
 
-	vm.Set("_multi_return_err", func(message string) (interface{}, interface{}) {
+	vm.Set("_multi_return_err", func(message string) (any, any) {
 		/*
 			This did not work
 
@@ -34,15 +34,15 @@ func main3() {
 		return nil, "This is a error"
 	})
 
-	vm.Set("_multi_return_not_err", func(message string) (interface{}, interface{}) {
+	vm.Set("_multi_return_not_err", func(message string) (any, any) {
 		return 42, nil
 	})
 
-	vm.Set("_byte_return", func(message string) (interface{}, interface{}) {
+	vm.Set("_byte_return", func(message string) (any, any) {
 		return []byte(`AAAA`), nil
 	})
 
-	vm.Set("_byte_return2", func(message string) (interface{}, interface{}) {
+	vm.Set("_byte_return2", func(message string) (any, any) {
 		return vm.NewArrayBuffer([]byte(`AAAA`)), nil
 	})
 

@@ -9,13 +9,13 @@ import (
 )
 
 type RowMod struct {
-	Table   string      `json:"table,omitempty"`
-	Rows    []int64     `json:"rows,omitempty"`
-	ModType string      `json:"mod_type,omitempty"`
-	Data    interface{} `json:"data,omitempty"`
+	Table   string  `json:"table,omitempty"`
+	Rows    []int64 `json:"rows,omitempty"`
+	ModType string  `json:"mod_type,omitempty"`
+	Data    any     `json:"data,omitempty"`
 }
 
-func (s *SockdHub) PushNewRow(source, tenantId, groupId, table string, data map[string]interface{}) error {
+func (s *SockdHub) PushNewRow(source, tenantId, groupId, table string, data map[string]any) error {
 
 	iid, ok := data[store.KeyPrimary]
 	if !ok {
@@ -33,7 +33,7 @@ func (s *SockdHub) PushNewRow(source, tenantId, groupId, table string, data map[
 	})
 }
 
-func (s *SockdHub) PushUpdateRow(source, tenantId, groupId, table string, id int64, data map[string]interface{}) error {
+func (s *SockdHub) PushUpdateRow(source, tenantId, groupId, table string, id int64, data map[string]any) error {
 	return s.pushRowMod(source, tenantId, groupId, &RowMod{
 		Table:   table,
 		Rows:    []int64{id},

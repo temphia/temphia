@@ -162,7 +162,7 @@ func (w *wasmer2) setEventReply(args []wasmer.Value) ([]wasmer.Value, error) {
 	}
 
 	if metaLen != 0 {
-		meta := map[string]interface{}{}
+		meta := map[string]any{}
 		err := json.Unmarshal(mem[metaPtr:metaPtr+metaLen], &mem)
 		if err != nil {
 			// fixme => store/log outside

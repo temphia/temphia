@@ -5,7 +5,7 @@ import (
 	"errors"
 )
 
-func PlugKvSet(txid int32, key, value string, opts map[string]interface{}) error {
+func PlugKvSet(txid int32, key, value string, opts map[string]any) error {
 	var optsBytes = emptyJsonObj
 	if len(opts) > 0 {
 		data, err := json.Marshal(&opts)
@@ -30,7 +30,7 @@ func PlugKvSet(txid int32, key, value string, opts map[string]interface{}) error
 	return errors.New(string(resp))
 }
 
-func PlugKvUpdate(txid int32, key, value string, opts map[string]interface{}) error {
+func PlugKvUpdate(txid int32, key, value string, opts map[string]any) error {
 	var optsBytes = emptyJsonObj
 	if len(opts) > 0 {
 		data, err := json.Marshal(&opts)
@@ -55,7 +55,7 @@ func PlugKvUpdate(txid int32, key, value string, opts map[string]interface{}) er
 	return errors.New(string(resp))
 }
 
-func PlugKvGet(txid int32, key string) (map[string]interface{}, error) {
+func PlugKvGet(txid int32, key string) (map[string]any, error) {
 	keyPtr, keyLen := stringToPtr(key)
 	var respPtr, respLen int32
 
@@ -65,7 +65,7 @@ func PlugKvGet(txid int32, key string) (map[string]interface{}, error) {
 		return nil, errors.New(string(resp))
 	}
 
-	data := make(map[string]interface{})
+	data := make(map[string]any)
 	err := json.Unmarshal(resp, &data)
 	if err != nil {
 		return nil, err
@@ -105,7 +105,7 @@ func PlugKvDeleteBatch(txid int32, keys []string) error {
 
 }
 
-func PlugKvQuery(txid int32, opts map[string]interface{}) ([]map[string]interface{}, error) {
+func PlugKvQuery(txid int32, opts map[string]any) ([]map[string]any, error) {
 	out, err := json.Marshal(opts)
 	if err != nil {
 		return nil, err
@@ -122,7 +122,7 @@ func PlugKvQuery(txid int32, opts map[string]interface{}) ([]map[string]interfac
 		return nil, errors.New(string(resp))
 	}
 
-	data := make([]map[string]interface{}, 0)
+	data := make([]map[string]any, 0)
 
 	err = json.Unmarshal(resp, &data)
 	if err != nil {

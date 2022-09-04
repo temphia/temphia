@@ -30,7 +30,7 @@ func (c *Controller) GetUserGroup(uclaim *claim.Session, ugroup string) (*entiti
 	return c.coredb.GetUserGroup(uclaim.TenentId, ugroup)
 }
 
-func (c *Controller) UpdateUserGroup(uclaim *claim.Session, id string, data map[string]interface{}) error {
+func (c *Controller) UpdateUserGroup(uclaim *claim.Session, id string, data map[string]any) error {
 	if !uclaim.IsSuperAdmin() {
 		return easyerr.NotImpl()
 	}

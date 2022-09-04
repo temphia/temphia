@@ -66,13 +66,13 @@ func New(b bindx.Bindings, rt *goja.Runtime) (*Goja, error) {
 }
 
 type Response struct {
-	Payload interface{} `json:"payload,omitempty"`
+	Payload any `json:"payload,omitempty"`
 }
 
 type Request struct {
-	Id   string      `json:"id,omitempty"`
-	Name string      `json:"name,omitempty"`
-	Data interface{} `json:"data,omitempty"`
+	Id   string `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
+	Data any    `json:"data,omitempty"`
 }
 
 func (g *Goja) Process(ev *event.Request) (*event.Response, error) {

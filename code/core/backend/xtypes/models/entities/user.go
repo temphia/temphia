@@ -33,7 +33,7 @@ func (ud *UserData) Value() (driver.Value, error) {
 	return JSONDriverValue(ud)
 }
 
-func (ud *UserData) Scan(value interface{}) error {
+func (ud *UserData) Scan(value any) error {
 	return JSONDriverScan(ud, value)
 }
 

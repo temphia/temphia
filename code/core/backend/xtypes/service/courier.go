@@ -16,7 +16,7 @@ type MailSender struct {
 }
 
 type Courier interface {
-	Start(eventbus interface{}) error
+	Start(eventbus any) error
 	MailTenant(ctx context.Context, msg MailMessage) error
 	Mail(ctx context.Context, sender MailSender, msg MailMessage) error
 }

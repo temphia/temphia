@@ -8,7 +8,7 @@ type Engine interface {
 	Run() error
 	GetRuntime() Runtime
 
-	ServerLaunchExec(tenantId, plugId, agentId, mode string, arg interface{}, resp interface{}) error
+	ServerLaunchExec(tenantId, plugId, agentId, mode string, arg any, resp any) error
 	ClientLaunchExec(tenantId, plugId, agentId, mode string, ctx *gin.Context)
 
 	ExecAction(tenantId, plugId, agentId, action string, ctx *gin.Context)

@@ -51,7 +51,7 @@ func (s *Seeder) dataSeed() error {
 	return s.applySeed(data.Data)
 }
 
-func (s *Seeder) applySeed(data map[string][]map[string]interface{}) error {
+func (s *Seeder) applySeed(data map[string][]map[string]any) error {
 
 	pp.Println("applying seed")
 
@@ -137,7 +137,7 @@ func (s *Seeder) generatedSeed(no int) error {
 
 	pp.Println("Generating seed")
 
-	data := make(map[string][]map[string]interface{})
+	data := make(map[string][]map[string]any)
 
 	for _, etbl := range s.tg.ExecOrder {
 		pp.Println("generating for table", etbl)
@@ -157,12 +157,12 @@ func (s *Seeder) generatedSeed(no int) error {
 	return s.applySeed(data)
 }
 
-func (s *Seeder) generateTableSeed(no int, cols []*entities.Column, nullables map[string]bool) []map[string]interface{} {
+func (s *Seeder) generateTableSeed(no int, cols []*entities.Column, nullables map[string]bool) []map[string]any {
 
-	datas := make([]map[string]interface{}, 0, no)
+	datas := make([]map[string]any, 0, no)
 
 	for i := 0; i <= no; i = i + 1 {
-		data := make(map[string]interface{})
+		data := make(map[string]any)
 		data[store.KeyPrimary] = i + 1
 
 	columnloop:

@@ -50,7 +50,7 @@ func (c *Controller) BprintRemove(uclaim *claim.Session, bid string) error {
 	return c.pacman.BprintRemove(uclaim.TenentId, bid)
 }
 
-func (c *Controller) BprintListBlobs(uclaim *claim.Session, bid string) (interface{}, error) {
+func (c *Controller) BprintListBlobs(uclaim *claim.Session, bid string) (any, error) {
 	if !uclaim.IsSuperAdmin() {
 		return nil, easyerr.NotImpl()
 	}
@@ -95,13 +95,13 @@ func (c *Controller) BprintImport(uclaim *claim.Session, opts *service.RepoImpor
 	return c.pacman.RepoSourceImport(uclaim.TenentId, opts)
 }
 
-func (c *Controller) BprintInstall(uclaim *claim.Session, opts *vmodels.RepoInstallOpts) (interface{}, error) {
+func (c *Controller) BprintInstall(uclaim *claim.Session, opts *vmodels.RepoInstallOpts) (any, error) {
 	// opts.UserId = uclaim.UserID
 	//return c.pacman.Install(uclaim.TenentId, opts)
 	return nil, nil
 }
 
-func (c *Controller) BprintInstance(uclaim *claim.Session, opts *instance.RepoOptions) (interface{}, error) {
+func (c *Controller) BprintInstance(uclaim *claim.Session, opts *instance.RepoOptions) (any, error) {
 	opts.UserId = uclaim.UserID
 	return c.pacman.Instance(uclaim.TenentId, opts)
 }

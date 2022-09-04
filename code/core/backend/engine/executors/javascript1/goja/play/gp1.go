@@ -45,9 +45,9 @@ function f(param) {
 }
 
 // 1. if return contain error then it will translate to exception inside js vm
-// 2. but if same retuntype is interface{} but return go err (errors.New("")) then it will look like object type
-// 3. if func has multiple rerturn types (interface{}, interface{}) then it will be [return_type1, return_type2]
-// 		but if it is (interface{}, error) then it will throw error if error is not nil ortherwise single return type
+// 2. but if same retuntype is any but return go err (errors.New("")) then it will look like object type
+// 3. if func has multiple rerturn types (any, any) then it will be [return_type1, return_type2]
+// 		but if it is (any, error) then it will throw error if error is not nil ortherwise single return type
 
 func main2() {
 
@@ -64,11 +64,11 @@ func main2() {
 
 	vm := goja.New()
 
-	vm.Set("__log", func(msg interface{}) {
+	vm.Set("__log", func(msg any) {
 		pp.Println(msg)
 	})
 
-	vm.Set("__call_example", func() (interface{}, error) {
+	vm.Set("__call_example", func() (any, error) {
 		return 1, nil //  easyerr.Error("aaa")
 	})
 
@@ -94,7 +94,7 @@ func mainErrorHandeling() {
 
 	vm := goja.New()
 
-	vm.Set("__log", func(msg interface{}) {
+	vm.Set("__log", func(msg any) {
 		pp.Println(msg)
 	})
 

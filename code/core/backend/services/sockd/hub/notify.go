@@ -8,8 +8,8 @@ import (
 )
 
 type notifyMessage struct {
-	Type string      `json:"type,omitempty"`
-	Data interface{} `json:"data,omitempty"`
+	Type string `json:"type,omitempty"`
+	Data any    `json:"data,omitempty"`
 }
 
 func (s *SockdHub) NotifyUser(msg *entities.UserMessage) error {

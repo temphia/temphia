@@ -23,4 +23,4 @@ func (c *Courier) Mail(ctx context.Context, sender service.MailSender, msg servi
 	return nil
 }
 
-func (c *Courier) Start(eventbus interface{}) error { return nil }
+func (c *Courier) Start(eventbus any) error { return nil }

@@ -13,7 +13,7 @@ func (DyndbBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, error) {
 	return New(opts), nil
 }
 
-func (DyndbBuilder) Init(app interface{}) error {
+func (DyndbBuilder) Init(app any) error {
 	return nil
 }
 

@@ -13,7 +13,7 @@ import (
 
 type (
 	StoreBuilder  func(*config.StoreSource) (store.Store, error)
-	DynamicScript func(ns string, ctx interface{}) error
+	DynamicScript func(ns string, ctx any) error
 )
 
 type Registry struct {
@@ -110,7 +110,7 @@ func (r *Registry) SetExecModule(name string, builder etypes.ModuleBuilderFunc) 
 	r.execModules[name] = builder
 }
 
-func (r *Registry) SetDynamicScript(name string, script func(ns string, ctx interface{}) error) {
+func (r *Registry) SetDynamicScript(name string, script func(ns string, ctx any) error) {
 	r.mlock.Lock()
 	defer r.mlock.Unlock()
 	if r.freezed {

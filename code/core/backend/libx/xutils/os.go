@@ -16,7 +16,7 @@ func FileExists(dpath, file string) bool {
 	return !errors.Is(err, os.ErrNotExist)
 }
 
-func Die(args ...interface{}) {
+func Die(args ...any) {
 
 	pp.Println(args...)
 	os.Exit(1)

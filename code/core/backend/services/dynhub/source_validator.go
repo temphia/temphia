@@ -17,7 +17,7 @@ type Validator struct {
 	columns map[string]*entities.Column
 }
 
-func (v *Validator) ValidateRows(rows []map[string]interface{}) error {
+func (v *Validator) ValidateRows(rows []map[string]any) error {
 	for _, row := range rows {
 
 		err := v.ValidateRow(row)
@@ -29,7 +29,7 @@ func (v *Validator) ValidateRows(rows []map[string]interface{}) error {
 	return nil
 }
 
-func (v *Validator) ValidateRow(row map[string]interface{}) error {
+func (v *Validator) ValidateRow(row map[string]any) error {
 
 	for key, cell := range row {
 		if store.IsMeta(key) {

@@ -16,7 +16,7 @@ func (c *CoreHub) AddTenant(tenant *entities.Tenant) error {
 	return nil
 }
 
-func (c *CoreHub) UpdateTenant(slug string, data map[string]interface{}) error {
+func (c *CoreHub) UpdateTenant(slug string, data map[string]any) error {
 	return c.coredb.UpdateTenant(slug, data)
 }
 
@@ -38,7 +38,7 @@ func (c *CoreHub) AddDomain(domain *entities.TenantDomain) error {
 	return c.coredb.AddDomain(domain)
 }
 
-func (c *CoreHub) UpdateDomain(tenantId string, id int64, data map[string]interface{}) error {
+func (c *CoreHub) UpdateDomain(tenantId string, id int64, data map[string]any) error {
 	return c.coredb.UpdateDomain(tenantId, id, data)
 }
 
@@ -64,7 +64,7 @@ func (c *CoreHub) AddDomainWidget(widget *entities.DomainWidget) error {
 	return c.coredb.AddDomainWidget(widget)
 }
 
-func (c *CoreHub) UpdateDomainWidget(tenantId string, id int64, data map[string]interface{}) error {
+func (c *CoreHub) UpdateDomainWidget(tenantId string, id int64, data map[string]any) error {
 	return c.coredb.UpdateDomainWidget(tenantId, id, data)
 }
 

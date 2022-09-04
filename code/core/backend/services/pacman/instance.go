@@ -11,7 +11,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-func (p *PacMan) Instance(tenantId string, opts *instance.RepoOptions) (interface{}, error) {
+func (p *PacMan) Instance(tenantId string, opts *instance.RepoOptions) (any, error) {
 
 	bprint, err := p.syncer.BprintGet(tenantId, opts.BprintId)
 	if err != nil {
@@ -42,11 +42,11 @@ func (p *PacMan) Instance(tenantId string, opts *instance.RepoOptions) (interfac
 
 // private
 
-func (p *PacMan) ParseInstanceFile(tenantId, bid, file string, target interface{}) error {
+func (p *PacMan) ParseInstanceFile(tenantId, bid, file string, target any) error {
 	return p.readInstanceFile(tenantId, bid, file, target)
 }
 
-func (p *PacMan) readInstanceFile(tenantId, bprint, file string, target interface{}) error {
+func (p *PacMan) readInstanceFile(tenantId, bprint, file string, target any) error {
 
 	out, err := p.BprintGetBlob(tenantId, bprint, file)
 	if err != nil {

@@ -53,5 +53,5 @@ type PlugInstallResponse struct {
 }
 
 type DynData struct {
-	Data map[string][]map[string]interface{} `json:"data,omitempty"`
+	Data map[string][]map[string]any `json:"data,omitempty"`
 }

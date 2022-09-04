@@ -13,7 +13,7 @@ func (c *Controller) GetTenant(uclaim *claim.Session) (*entities.Tenant, error) 
 	return c.coredb.GetTenant(uclaim.TenentId)
 }
 
-func (c *Controller) UpdateTenant(uclaim *claim.Session, data map[string]interface{}) error {
+func (c *Controller) UpdateTenant(uclaim *claim.Session, data map[string]any) error {
 	if !uclaim.IsSuperAdmin() {
 		return easyerr.NotAuthorized()
 	}
@@ -30,7 +30,7 @@ func (c *Controller) AddDomain(uclaim *claim.Session, domain *entities.TenantDom
 	return c.coredb.AddDomain(domain)
 }
 
-func (c *Controller) UpdateDomain(uclaim *claim.Session, id int64, data map[string]interface{}) error {
+func (c *Controller) UpdateDomain(uclaim *claim.Session, id int64, data map[string]any) error {
 	return c.coredb.UpdateDomain(uclaim.TenentId, id, data)
 }
 
@@ -53,7 +53,7 @@ func (c *Controller) AddDomainWidget(uclaim *claim.Session, domain *entities.Dom
 	return c.coredb.AddDomainWidget(domain)
 }
 
-func (c *Controller) UpdateDomainWidget(uclaim *claim.Session, id int64, data map[string]interface{}) error {
+func (c *Controller) UpdateDomainWidget(uclaim *claim.Session, id int64, data map[string]any) error {
 	return c.coredb.UpdateDomainWidget(uclaim.TenentId, id, data)
 }
 

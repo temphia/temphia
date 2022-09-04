@@ -6,10 +6,10 @@ import (
 )
 
 type RefreshReq struct {
-	Path      []string               `json:"path,omitempty"`
-	UserToken string                 `json:"user_token,omitempty"`
-	Options   map[string]interface{} `json:"options,omitempty"`
-	OldToken  string                 `json:"old_token,omitempty"`
+	Path      []string       `json:"path,omitempty"`
+	UserToken string         `json:"user_token,omitempty"`
+	Options   map[string]any `json:"options,omitempty"`
+	OldToken  string         `json:"old_token,omitempty"`
 }
 
 type RefreshResp struct {

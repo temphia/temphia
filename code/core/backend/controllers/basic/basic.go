@@ -25,7 +25,7 @@ func New(coredb store.CoreHub, cabinet store.CabinetHub, dynHub store.DynHub, pa
 	return ctrl
 }
 
-func (c *Controller) ListRepoSources(uclaim *claim.Session) (interface{}, error) {
+func (c *Controller) ListRepoSources(uclaim *claim.Session) (any, error) {
 	return c.pacman.RepoSources(uclaim.TenentId)
 }
 

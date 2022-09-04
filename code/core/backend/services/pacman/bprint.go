@@ -49,7 +49,7 @@ func (c *PacMan) BprintRemove(tenantid, bid string) error {
 	return c.syncer.BprintDel(tenantid, bid)
 }
 
-func (c *PacMan) BprintListBlobs(tenantid, bid string) (interface{}, error) {
+func (c *PacMan) BprintListBlobs(tenantid, bid string) (any, error) {
 	bprint, err := c.syncer.BprintGet(tenantid, bid)
 	if err != nil {
 		return nil, err
@@ -76,7 +76,7 @@ func (c *PacMan) BprintNewBlob(tenantid, bid, file string, payload []byte) error
 	bprint.Files = append(bprint.Files, file)
 	bprint.ID = bid
 
-	err = c.syncer.BprintUpdate(tenantid, bid, map[string]interface{}{
+	err = c.syncer.BprintUpdate(tenantid, bid, map[string]any{
 		"files": bprint.Files,
 	})
 

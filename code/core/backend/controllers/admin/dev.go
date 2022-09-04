@@ -46,12 +46,12 @@ func (c *Controller) DevPushFiles(tkt *claim.PlugDevTkt, files map[string]io.Rea
 		return nil
 	}
 
-	return c.coredb.BprintUpdate(tkt.TenantId, tkt.BprintId, map[string]interface{}{
+	return c.coredb.BprintUpdate(tkt.TenantId, tkt.BprintId, map[string]any{
 		"files": bprint.Files,
 	})
 }
 
-func (c *Controller) DevModifyPlug(tkt *claim.PlugDevTkt, pid string, data map[string]interface{}) error {
+func (c *Controller) DevModifyPlug(tkt *claim.PlugDevTkt, pid string, data map[string]any) error {
 	if !only(data, "name", "executor", "live", "dev", "handlers", "extra_meta") {
 		return easyerr.Error("Not allowed field")
 	}
@@ -59,7 +59,7 @@ func (c *Controller) DevModifyPlug(tkt *claim.PlugDevTkt, pid string, data map[s
 	return c.coredb.PlugUpdate(tkt.TenantId, pid, data)
 }
 
-func (c *Controller) DevModifyAgent(tkt *claim.PlugDevTkt, pid string, aid string, data map[string]interface{}) error {
+func (c *Controller) DevModifyAgent(tkt *claim.PlugDevTkt, pid string, aid string, data map[string]any) error {
 	if !only(data, "name", "type", "executor", "iface_file", "web_files", "web_entry", "web_script", "web_style", "web_loader", "extra_meta", "env_vars") {
 		return easyerr.Error("Not allowed field")
 	}
@@ -67,7 +67,7 @@ func (c *Controller) DevModifyAgent(tkt *claim.PlugDevTkt, pid string, aid strin
 	return c.coredb.AgentUpdate(tkt.TenantId, pid, aid, data)
 }
 
-func only(data map[string]interface{}, keys ...string) bool {
+func only(data map[string]any, keys ...string) bool {
 	if len(data) > len(keys) {
 		return false
 	}

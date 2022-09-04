@@ -33,7 +33,7 @@ func New(app xtypes.App) instancer.Instancer {
 	}
 }
 
-func (pi *PlugInstancer) Instance(opts instancer.Options) (interface{}, error) {
+func (pi *PlugInstancer) Instance(opts instancer.Options) (any, error) {
 
 	popts := instancer.Plug{}
 	err := json.Unmarshal(opts.Data, &popts)
@@ -54,7 +54,7 @@ func (pi *PlugInstancer) Instance(opts instancer.Options) (interface{}, error) {
 	return pi.instance(opts.TenantId, opts.Bid, popts, schemaData)
 }
 
-func (pi *PlugInstancer) instance(tenantId, bid string, opts instancer.Plug, schema *bprints.PlugNew) (interface{}, error) {
+func (pi *PlugInstancer) instance(tenantId, bid string, opts instancer.Plug, schema *bprints.PlugNew) (any, error) {
 
 	plug := &entities.Plug{
 		Id:           opts.NewPlugId,

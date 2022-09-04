@@ -14,5 +14,5 @@ type Options struct {
 type InstancerBuilder func(App xtypes.App) (Instancer, error)
 
 type Instancer interface {
-	Instance(opts Options) (interface{}, error)
+	Instance(opts Options) (any, error)
 }

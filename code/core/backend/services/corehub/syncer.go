@@ -8,7 +8,7 @@ func (c *CoreHub) RepoNew(tenantId string, data *entities.Repo) error {
 	return c.coredb.RepoNew(tenantId, data)
 }
 
-func (c *CoreHub) RepoUpdate(tenantId string, id int64, data map[string]interface{}) error {
+func (c *CoreHub) RepoUpdate(tenantId string, id int64, data map[string]any) error {
 	return c.coredb.RepoUpdate(tenantId, id, data)
 }
 
@@ -30,7 +30,7 @@ func (c *CoreHub) BprintNew(tenantId string, et *entities.BPrint) error {
 	return c.coredb.BprintNew(tenantId, et)
 }
 
-func (c *CoreHub) BprintUpdate(tenantId, id string, data map[string]interface{}) error {
+func (c *CoreHub) BprintUpdate(tenantId, id string, data map[string]any) error {
 	return c.coredb.BprintUpdate(tenantId, id, data)
 }
 
@@ -52,7 +52,7 @@ func (c *CoreHub) PlugNew(tenantId string, pg *entities.Plug) error {
 	return c.coredb.PlugNew(tenantId, pg)
 }
 
-func (c *CoreHub) PlugUpdate(tenantId string, id string, data map[string]interface{}) error {
+func (c *CoreHub) PlugUpdate(tenantId string, id string, data map[string]any) error {
 	return c.coredb.PlugUpdate(tenantId, id, data)
 }
 
@@ -76,7 +76,7 @@ func (c *CoreHub) AgentNew(tenantId string, data *entities.Agent) error {
 	return c.coredb.AgentNew(tenantId, data)
 }
 
-func (c *CoreHub) AgentUpdate(tenantId, pid, id string, data map[string]interface{}) error {
+func (c *CoreHub) AgentUpdate(tenantId, pid, id string, data map[string]any) error {
 	return c.coredb.AgentUpdate(tenantId, pid, id, data)
 }
 
@@ -97,7 +97,7 @@ func (c *CoreHub) ResourceNew(tenantId string, obj *entities.Resource) error {
 	return c.coredb.ResourceNew(tenantId, obj)
 }
 
-func (c *CoreHub) ResourceUpdate(tenantId string, id string, data map[string]interface{}) error {
+func (c *CoreHub) ResourceUpdate(tenantId string, id string, data map[string]any) error {
 	return c.coredb.ResourceUpdate(tenantId, id, data)
 }
 
@@ -132,7 +132,7 @@ func (c *CoreHub) AgentLinkNew(tenantId string, data *entities.AgentLink) error 
 	return c.coredb.AgentLinkNew(tenantId, data)
 }
 
-func (c *CoreHub) AgentLinkUpdate(tenantId, pid, aid string, id int64, data map[string]interface{}) error {
+func (c *CoreHub) AgentLinkUpdate(tenantId, pid, aid string, id int64, data map[string]any) error {
 	return c.coredb.AgentLinkUpdate(tenantId, pid, aid, id, data)
 }
 
@@ -157,7 +157,7 @@ func (c *CoreHub) AgentExtensionNew(tenantId string, data *entities.AgentExtensi
 	return c.coredb.AgentExtensionNew(tenantId, data)
 }
 
-func (c *CoreHub) AgentExtensionUpdate(tenantId, pid, aid string, id int64, data map[string]interface{}) error {
+func (c *CoreHub) AgentExtensionUpdate(tenantId, pid, aid string, id int64, data map[string]any) error {
 	return c.coredb.AgentExtensionUpdate(tenantId, pid, aid, id, data)
 }
 
@@ -178,7 +178,7 @@ func (c *CoreHub) AgentResourceNew(tenantId string, data *entities.AgentResource
 	return c.coredb.AgentResourceNew(tenantId, data)
 }
 
-func (c *CoreHub) AgentResourceUpdate(tenantId, pid, aid, slug string, data map[string]interface{}) error {
+func (c *CoreHub) AgentResourceUpdate(tenantId, pid, aid, slug string, data map[string]any) error {
 	return c.coredb.AgentResourceUpdate(tenantId, pid, aid, slug, data)
 }
 

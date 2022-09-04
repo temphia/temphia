@@ -23,7 +23,7 @@ type BindCore interface {
 	LazyLog(msgs []string)
 	Sleep(int32)
 	GetFileWithMeta(file string) (data []byte, version int64, err error)
-	GetApp() interface{}
+	GetApp() any
 }
 
 type BindPlugKV interface {

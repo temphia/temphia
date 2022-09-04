@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func Pickel(value interface{}) ([]byte, error) {
+func Pickel(value any) ([]byte, error) {
 	if data, ok := value.([]byte); ok {
 		return data, nil
 	}
@@ -28,7 +28,7 @@ func Pickel(value interface{}) ([]byte, error) {
 	return b.Bytes(), nil
 }
 
-func UnPickel(byt []byte, ptr interface{}) (err error) {
+func UnPickel(byt []byte, ptr any) (err error) {
 	if data, ok := ptr.(*[]byte); ok {
 		*data = byt
 		return

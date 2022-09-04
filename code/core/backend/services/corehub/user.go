@@ -17,7 +17,7 @@ func (c *CoreHub) ListUserGroups(tenantId string) ([]*entities.UserGroup, error)
 	return c.coredb.ListUserGroups(tenantId)
 }
 
-func (c *CoreHub) UpdateUserGroup(tenantId, slug string, data map[string]interface{}) error {
+func (c *CoreHub) UpdateUserGroup(tenantId, slug string, data map[string]any) error {
 	return c.coredb.UpdateUserGroup(tenantId, slug, data)
 }
 
@@ -29,7 +29,7 @@ func (c *CoreHub) AddUser(user *entities.User, data *entities.UserData) error {
 	return c.coredb.AddUser(user, data)
 }
 
-func (c *CoreHub) UpdateUser(tenantId, user string, data map[string]interface{}) error {
+func (c *CoreHub) UpdateUser(tenantId, user string, data map[string]any) error {
 	return c.coredb.UpdateUser(tenantId, user, data)
 }
 
@@ -127,6 +127,6 @@ func (c *CoreHub) GetUserData(tenantId string, slug string) (*entities.UserData,
 	return c.coredb.GetUserData(tenantId, slug)
 }
 
-func (c *CoreHub) UpdateUserData(tenantId, slug string, data map[string]interface{}) error {
+func (c *CoreHub) UpdateUserData(tenantId, slug string, data map[string]any) error {
 	return c.coredb.UpdateUserData(tenantId, slug, data)
 }

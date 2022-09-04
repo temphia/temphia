@@ -78,7 +78,7 @@ func (e *Engine) GetRuntime() etypes.Runtime {
 	return e.runtime
 }
 
-func (e *Engine) ServerLaunchExec(tenantId, plugId, agentId, mode string, arg interface{}, resp interface{}) error {
+func (e *Engine) ServerLaunchExec(tenantId, plugId, agentId, mode string, arg any, resp any) error {
 	return e.serverLaunchExec(tenantId, plugId, agentId, mode, arg, resp)
 }
 

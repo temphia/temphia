@@ -12,7 +12,7 @@ var (
 	MessageOk = []byte(`{"message": "success"}`)
 )
 
-func WriteJSON(c *gin.Context, resp interface{}, err error) {
+func WriteJSON(c *gin.Context, resp any, err error) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -55,7 +55,7 @@ func BaseURL(host, tenantId string) string {
 
 type Rutil struct{}
 
-func (r *Rutil) WriteJSON(c *gin.Context, resp interface{}, err error) {
+func (r *Rutil) WriteJSON(c *gin.Context, resp any, err error) {
 	if err != nil {
 		tracerr.PrintSourceColor(err)
 	}

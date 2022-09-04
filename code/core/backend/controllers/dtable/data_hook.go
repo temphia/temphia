@@ -14,7 +14,7 @@ func (c *Controller) NewHook(uclaim *claim.Session, tslug string, model *entitie
 	return dynDB.NewHook(model)
 }
 
-func (c *Controller) ModifyHook(uclaim *claim.Session, tslug string, id int64, data map[string]interface{}) error {
+func (c *Controller) ModifyHook(uclaim *claim.Session, tslug string, id int64, data map[string]any) error {
 	dynDB := c.dynHub.GetSource(uclaim.Path[1], uclaim.TenentId)
 
 	return dynDB.ModifyHook(uclaim.Path[2], tslug, id, data)

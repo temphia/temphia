@@ -18,19 +18,19 @@ func (m *ModCtx) JSON() ([]byte, error) {
 }
 
 type NewRowReq struct {
-	TenantId string                 `json:"-"`
-	Group    string                 `json:"group,omitempty"`
-	Table    string                 `json:"table,omitempty"`
-	Data     map[string]interface{} `json:"data,omitempty"`
-	ModCtx   ModCtx                 `json:"mod_ctx,omitempty"`
+	TenantId string         `json:"-"`
+	Group    string         `json:"group,omitempty"`
+	Table    string         `json:"table,omitempty"`
+	Data     map[string]any `json:"data,omitempty"`
+	ModCtx   ModCtx         `json:"mod_ctx,omitempty"`
 }
 
 type NewBatchRowReq struct {
-	TenantId string                   `json:"-"`
-	Group    string                   `json:"group,omitempty"`
-	Table    string                   `json:"table,omitempty"`
-	Data     []map[string]interface{} `json:"data,omitempty"`
-	ModCtx   ModCtx                   `json:"mod_ctx,omitempty"`
+	TenantId string           `json:"-"`
+	Group    string           `json:"group,omitempty"`
+	Table    string           `json:"table,omitempty"`
+	Data     []map[string]any `json:"data,omitempty"`
+	ModCtx   ModCtx           `json:"mod_ctx,omitempty"`
 }
 
 type GetRowReq struct {
@@ -42,13 +42,13 @@ type GetRowReq struct {
 }
 
 type UpdateRowReq struct {
-	TenantId string                 `json:"-"`
-	Id       int64                  `json:"id,omitempty"`
-	Version  int64                  `json:"version,omitempty"`
-	Group    string                 `json:"group,omitempty"`
-	Table    string                 `json:"table,omitempty"`
-	Data     map[string]interface{} `json:"data,omitempty"`
-	ModCtx   ModCtx                 `json:"mod_ctx,omitempty"`
+	TenantId string         `json:"-"`
+	Id       int64          `json:"id,omitempty"`
+	Version  int64          `json:"version,omitempty"`
+	Group    string         `json:"group,omitempty"`
+	Table    string         `json:"table,omitempty"`
+	Data     map[string]any `json:"data,omitempty"`
+	ModCtx   ModCtx         `json:"mod_ctx,omitempty"`
 }
 
 type DeleteRowReq struct {
@@ -88,34 +88,34 @@ type RefLoadReq struct {
 }
 
 type RevRefLoadReq struct {
-	CurrentTable string      `json:"current_table,omitempty"`
-	TargetTable  string      `json:"target_table,omitempty"`
-	TargetColumn string      `json:"column,omitempty"`
-	CurrentItem  interface{} `json:"current_item,omitempty"`
-	CursorRowId  int64       `json:"cursor_row_id,omitempty"`
-	Count        int         `json:"count,omitempty"`
+	CurrentTable string `json:"current_table,omitempty"`
+	TargetTable  string `json:"target_table,omitempty"`
+	TargetColumn string `json:"column,omitempty"`
+	CurrentItem  any    `json:"current_item,omitempty"`
+	CursorRowId  int64  `json:"cursor_row_id,omitempty"`
+	Count        int    `json:"count,omitempty"`
 }
 
 type RefResolveReq struct {
-	Column string        `json:"column,omitempty"`
-	Type   string        `json:"type,omitempty"`
-	Target string        `json:"target,omitempty"`
-	Object string        `json:"object,omitempty"`
-	RowIds []interface{} `json:"row_ids,omitempty"`
+	Column string `json:"column,omitempty"`
+	Type   string `json:"type,omitempty"`
+	Target string `json:"target,omitempty"`
+	Object string `json:"object,omitempty"`
+	RowIds []any  `json:"row_ids,omitempty"`
 }
 
 type FilterCond struct {
-	Column string      `json:"column,omitempty"`
-	Cond   string      `json:"cond,omitempty"`
-	Value  interface{} `json:"value,omitempty"`
-	Target string      `json:"target,omitempty"`
+	Column string `json:"column,omitempty"`
+	Cond   string `json:"cond,omitempty"`
+	Value  any    `json:"value,omitempty"`
+	Target string `json:"target,omitempty"`
 }
 
 type TemplateQueryReq struct {
-	TenantId  string                            `json:"-"`
-	Group     string                            `json:"group,omitempty"`
-	Fragments map[string]map[string]interface{} `json:"fragments,omitempty"`
-	Name      string                            `json:"name,omitempty"`
+	TenantId  string                    `json:"-"`
+	Group     string                    `json:"group,omitempty"`
+	Fragments map[string]map[string]any `json:"fragments,omitempty"`
+	Name      string                    `json:"name,omitempty"`
 }
 
 type RawQueryReq struct {
@@ -128,7 +128,7 @@ type RawQueryReq struct {
 type QueryResult struct {
 	Count     int64                       `json:"count,omitempty"`
 	Page      int64                       `json:"page,omitempty"`
-	Rows      []map[string]interface{}    `json:"rows"`
+	Rows      []map[string]any            `json:"rows"`
 	Columns   map[string]*entities.Column `json:"columns,omitempty"`
 	ExtraMeta *QueryMeta                  `json:"extra_meta,omitempty"`
 }

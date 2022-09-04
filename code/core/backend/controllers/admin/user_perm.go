@@ -14,7 +14,7 @@ func (c *Controller) AddPerm(sess *claim.Session, data *entities.Permission) err
 	return nil
 }
 
-func (c *Controller) UpdatePerm(sess *claim.Session, data map[string]interface{}) error {
+func (c *Controller) UpdatePerm(sess *claim.Session, data map[string]any) error {
 	if !sess.IsSuperAdmin() {
 		return easyerr.NotAuthorized()
 	}
@@ -51,7 +51,7 @@ func (c *Controller) GetRole(sess *claim.Session, tenantId string, id int64) (*e
 	return nil, nil
 }
 
-func (c *Controller) UpdateRole(sess *claim.Session, data map[string]interface{}) error {
+func (c *Controller) UpdateRole(sess *claim.Session, data map[string]any) error {
 	if !sess.IsSuperAdmin() {
 		return easyerr.NotAuthorized()
 	}
@@ -80,7 +80,7 @@ func (c *Controller) GetUserRole(sess *claim.Session, tenantId string, id int64)
 
 	return nil, nil
 }
-func (c *Controller) UpdateUserRole(sess *claim.Session, data map[string]interface{}) error {
+func (c *Controller) UpdateUserRole(sess *claim.Session, data map[string]any) error {
 	if !sess.IsSuperAdmin() {
 		return easyerr.NotAuthorized()
 	}

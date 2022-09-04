@@ -33,7 +33,7 @@ func New(app xtypes.App) *dtabeInstancer {
 	}
 }
 
-func (di *dtabeInstancer) Instance(opts instancer.Options) (interface{}, error) {
+func (di *dtabeInstancer) Instance(opts instancer.Options) (any, error) {
 
 	schemaData := &bprints.NewTableGroup{}
 	err := di.pacman.ParseInstanceFile(opts.TenantId, opts.Bid, opts.File, schemaData)

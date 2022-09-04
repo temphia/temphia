@@ -131,7 +131,7 @@ func (d *DyndbModule) extractPath(path string) (uint32, string, int64) {
 
 }
 
-func (d *DyndbModule) response(data interface{}, err error) (xtypes.LazyData, error) {
+func (d *DyndbModule) response(data any, err error) (xtypes.LazyData, error) {
 
 	return nil, nil
 }

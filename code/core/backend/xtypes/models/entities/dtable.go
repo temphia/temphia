@@ -74,10 +74,10 @@ type Index struct {
 }
 
 type FTSIndex struct {
-	Type        string                 `json:"type,omitempty" yaml:"type,omitempty"`
-	Slug        string                 `json:"slug,omitempty" yaml:"slug,omitempty"`
-	ColumnSpans []string               `json:"spans" yaml:"spans"`
-	Options     map[string]interface{} `json:"options" yaml:"options"`
+	Type        string         `json:"type,omitempty" yaml:"type,omitempty"`
+	Slug        string         `json:"slug,omitempty" yaml:"slug,omitempty"`
+	ColumnSpans []string       `json:"spans" yaml:"spans"`
+	Options     map[string]any `json:"options" yaml:"options"`
 }
 
 type ColumnFKRef struct {

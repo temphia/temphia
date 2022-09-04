@@ -28,7 +28,7 @@ type View struct {
 	SearchTerm  string      `json:"search_term,omitempty"`
 }
 
-type FilterConds []interface{}
+type FilterConds []any
 
 func (j *FilterConds) Value() (driver.Value, error) {
 	if j == nil {
@@ -42,7 +42,7 @@ func (j *FilterConds) Value() (driver.Value, error) {
 	return string(out), nil
 }
 
-func (j *FilterConds) Scan(value interface{}) error {
+func (j *FilterConds) Scan(value any) error {
 	if value == nil {
 		return nil
 	}

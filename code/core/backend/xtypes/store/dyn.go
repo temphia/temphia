@@ -129,13 +129,13 @@ type DynSource interface {
 
 	NewView(model *entities.DataView) error
 	GetView(gslug, tslug string, id int64) (*entities.DataView, error)
-	ModifyView(gslug, tslug string, id int64, data map[string]interface{}) error
+	ModifyView(gslug, tslug string, id int64, data map[string]any) error
 	ListView(gslug, tslug string) ([]*entities.DataView, error)
 	DelView(gslug, tslug string, id int64) error
 
 	NewHook(model *entities.DataHook) error
 	GetHook(gslug, tslug string, id int64) (*entities.DataHook, error)
-	ModifyHook(gslug, tslug string, id int64, data map[string]interface{}) error
+	ModifyHook(gslug, tslug string, id int64, data map[string]any) error
 	ListHook(gslug, tslug string) ([]*entities.DataHook, error)
 	DelHook(gslug, tslug string, id int64) error
 
@@ -144,8 +144,8 @@ type DynSource interface {
 	NewActivity(group, table string, record *entities.DynActivity) error
 
 	NewRow(txid uint32, req NewRowReq) (int64, error)
-	GetRow(txid uint32, req GetRowReq) (map[string]interface{}, error)
-	UpdateRow(txid uint32, req UpdateRowReq) (map[string]interface{}, error)
+	GetRow(txid uint32, req GetRowReq) (map[string]any, error)
+	UpdateRow(txid uint32, req UpdateRowReq) (map[string]any, error)
 	DeleteRows(txid uint32, req DeleteRowReq) error
 	SimpleQuery(txid uint32, req SimpleQueryReq) (*QueryResult, error)
 	FTSQuery(txid uint32, req FTSQueryReq) (*QueryResult, error)
@@ -183,13 +183,13 @@ type DynDB interface {
 
 	NewView(model *entities.DataView) error
 	GetView(tenantId, gslug, tslug string, id int64) (*entities.DataView, error)
-	ModifyView(tenantId, gslug, tslug string, id int64, data map[string]interface{}) error
+	ModifyView(tenantId, gslug, tslug string, id int64, data map[string]any) error
 	ListView(tenantId, gslug, tslug string) ([]*entities.DataView, error)
 	DelView(tenantId, gslug, tslug string, id int64) error
 
 	NewHook(model *entities.DataHook) error
 	GetHook(tenantId, gslug, tslug string, id int64) (*entities.DataHook, error)
-	ModifyHook(tenantId, gslug, tslug string, id int64, data map[string]interface{}) error
+	ModifyHook(tenantId, gslug, tslug string, id int64, data map[string]any) error
 	ListHook(tenantId, gslug, tslug string) ([]*entities.DataHook, error)
 	DelHook(tenantId, gslug, tslug string, id int64) error
 
@@ -201,8 +201,8 @@ type DynDB interface {
 	NewRow(txid uint32, req NewRowReq) (int64, error)
 	NewBatchRows(txid uint32, req NewBatchRowReq) ([]int64, error)
 
-	GetRow(txid uint32, req GetRowReq) (map[string]interface{}, error)
-	UpdateRow(txid uint32, req UpdateRowReq) (map[string]interface{}, error)
+	GetRow(txid uint32, req GetRowReq) (map[string]any, error)
+	UpdateRow(txid uint32, req UpdateRowReq) (map[string]any, error)
 	DeleteRows(txid uint32, req DeleteRowReq) error
 
 	SimpleQuery(txid uint32, req SimpleQueryReq) (*QueryResult, error)
@@ -213,7 +213,7 @@ type DynDB interface {
 	ReverseRefLoad(txid uint32, tenantId, gslug string, req *RevRefLoadReq) (*QueryResult, error)
 
 	TemplateQuery(txid uint32, req TemplateQueryReq) (*QueryResult, error)
-	RawQuery(txid uint32, req RawQueryReq) (interface{}, error)
+	RawQuery(txid uint32, req RawQueryReq) (any, error)
 
 	GetCache() DCache
 }

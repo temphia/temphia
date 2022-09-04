@@ -26,7 +26,7 @@ func Table(sess db.Session, name string) db.Collection {
 	return sess.Collection(name)
 }
 
-func SelectScan(rows *sql.Rows) ([]map[string]interface{}, error) {
+func SelectScan(rows *sql.Rows) ([]map[string]any, error) {
 	defer rows.Close()
 
 	columns, err := rows.Columns()
@@ -35,20 +35,20 @@ func SelectScan(rows *sql.Rows) ([]map[string]interface{}, error) {
 	}
 	numColumns := len(columns)
 
-	values := make([]interface{}, numColumns)
+	values := make([]any, numColumns)
 	for i := range values {
-		values[i] = new(interface{})
+		values[i] = new(any)
 	}
 
-	var results []map[string]interface{}
+	var results []map[string]any
 	for rows.Next() {
 		if err := rows.Scan(values...); err != nil {
 			return nil, err
 		}
 
-		dest := make(map[string]interface{}, numColumns)
+		dest := make(map[string]any, numColumns)
 		for i, column := range columns {
-			dest[column] = *(values[i].(*interface{}))
+			dest[column] = *(values[i].(*any))
 		}
 		results = append(results, dest)
 	}
@@ -59,7 +59,7 @@ func SelectScan(rows *sql.Rows) ([]map[string]interface{}, error) {
 	return results, nil
 }
 
-func GetScan(rows *sql.Rows) (map[string]interface{}, error) {
+func GetScan(rows *sql.Rows) (map[string]any, error) {
 	defer rows.Close()
 
 	columns, err := rows.Columns()
@@ -73,18 +73,18 @@ func GetScan(rows *sql.Rows) (map[string]interface{}, error) {
 		return nil, sql.ErrNoRows
 	}
 
-	values := make([]interface{}, numColumns)
+	values := make([]any, numColumns)
 	for i := range values {
-		values[i] = new(interface{})
+		values[i] = new(any)
 	}
 
 	if err := rows.Scan(values...); err != nil {
 		return nil, err
 	}
 
-	result := make(map[string]interface{}, numColumns)
+	result := make(map[string]any, numColumns)
 	for i, column := range columns {
-		result[column] = *(values[i].(*interface{}))
+		result[column] = *(values[i].(*any))
 	}
 
 	if err := rows.Err(); err != nil {

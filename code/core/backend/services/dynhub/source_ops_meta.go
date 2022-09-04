@@ -159,7 +159,7 @@ func (d *dynSource) NewView(model *entities.DataView) error {
 	return ddb.NewView(model)
 }
 
-func (d *dynSource) ModifyView(gslug, tslug string, id int64, data map[string]interface{}) error {
+func (d *dynSource) ModifyView(gslug, tslug string, id int64, data map[string]any) error {
 	ddb := d.dynDB()
 	return ddb.ModifyView(d.tenantId, gslug, tslug, id, data)
 }
@@ -184,7 +184,7 @@ func (d *dynSource) NewHook(model *entities.DataHook) error {
 	return ddb.NewHook(model)
 }
 
-func (d *dynSource) ModifyHook(gslug, tslug string, id int64, data map[string]interface{}) error {
+func (d *dynSource) ModifyHook(gslug, tslug string, id int64, data map[string]any) error {
 	ddb := d.dynDB()
 	return ddb.ModifyHook(d.tenantId, gslug, tslug, id, data)
 }

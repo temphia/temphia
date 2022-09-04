@@ -36,16 +36,16 @@ type PlugDevTkt struct {
 }
 
 type DtableTkt struct {
-	Type      string                 `json:"type"`
-	Source    string                 `json:"source"`
-	Group     string                 `json:"group"`
-	Tables    []string               `json:"tables"`
-	Create    bool                   `json:"create"`
-	Update    bool                   `json:"update"`
-	Query     bool                   `json:"query"`
-	QueryType string                 `json:"query_type"`
-	QueryData map[string]interface{} `json:"query_data"`
-	Filter    [][3]string            `json:"filter"`
+	Type      string         `json:"type"`
+	Source    string         `json:"source"`
+	Group     string         `json:"group"`
+	Tables    []string       `json:"tables"`
+	Create    bool           `json:"create"`
+	Update    bool           `json:"update"`
+	Query     bool           `json:"query"`
+	QueryType string         `json:"query_type"`
+	QueryData map[string]any `json:"query_data"`
+	Filter    [][3]string    `json:"filter"`
 }
 
 type UserMgmtTkt struct {

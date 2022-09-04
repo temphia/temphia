@@ -7,7 +7,7 @@ import (
 	"github.com/k0kubun/pp"
 )
 
-func JSONDriverValue(val interface{}) (driver.Value, error) {
+func JSONDriverValue(val any) (driver.Value, error) {
 	if val == nil {
 		return "", nil
 	}
@@ -19,7 +19,7 @@ func JSONDriverValue(val interface{}) (driver.Value, error) {
 	return string(out), nil
 }
 
-func JSONDriverScan(target interface{}, value interface{}) error {
+func JSONDriverScan(target any, value any) error {
 	if value == nil {
 		return nil
 	}
@@ -46,12 +46,12 @@ func JSONDriverScan(target interface{}, value interface{}) error {
 	return nil
 }
 
-type JsonMap map[string]interface{}
+type JsonMap map[string]any
 
 func (j JsonMap) Value() (driver.Value, error) {
 	return JSONDriverValue(j)
 }
-func (j JsonMap) Scan(value interface{}) error {
+func (j JsonMap) Scan(value any) error {
 	return JSONDriverScan(&j, value)
 }
 
@@ -60,7 +60,7 @@ type JsonStrMap map[string]string
 func (j JsonStrMap) Value() (driver.Value, error) {
 	return JSONDriverValue(j)
 }
-func (j JsonStrMap) Scan(value interface{}) error {
+func (j JsonStrMap) Scan(value any) error {
 	return JSONDriverScan(&j, value)
 }
 
@@ -78,7 +78,7 @@ func (j *JsonArray) Value() (driver.Value, error) {
 	return string(out), nil
 }
 
-func (j *JsonArray) Scan(value interface{}) error {
+func (j *JsonArray) Scan(value any) error {
 	if value == nil {
 		return nil
 	}

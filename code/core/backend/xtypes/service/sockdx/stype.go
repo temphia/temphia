@@ -51,8 +51,8 @@ type SockdCore interface {
 }
 
 type PeerSync interface {
-	SyncMessage(ns, room, mtype string, payload interface{}) error
-	SyncOperation(ns, room, operation string, payload interface{}) error
+	SyncMessage(ns, room, mtype string, payload any) error
+	SyncOperation(ns, room, operation string, payload any) error
 }
 
 type SockdControl interface {

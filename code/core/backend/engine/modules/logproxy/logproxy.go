@@ -13,7 +13,7 @@ func (l *LogProxy) Instance(opts etypes.ModuleOptions) (etypes.Module, error) {
 	return nil, nil
 }
 
-func (l *LogProxy) Init(app interface{}) error {
+func (l *LogProxy) Init(app any) error {
 
 	l.app = app.(xtypes.App)
 

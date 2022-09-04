@@ -45,8 +45,8 @@ type NewColumn struct {
 }
 
 type SeedData struct {
-	Data         []map[string]interface{} `json:"data,omitempty" yaml:"data,omitempty"`
-	LinkedImages []string                 `json:"linked_images,omitempty" yaml:"linked_images,omitempty"`
+	Data         []map[string]any `json:"data,omitempty" yaml:"data,omitempty"`
+	LinkedImages []string         `json:"linked_images,omitempty" yaml:"linked_images,omitempty"`
 }
 
 func (m *NewTableGroup) To(tenantId string) *entities.TableGroup {

@@ -6,7 +6,7 @@ func (c *CoreHub) AddUserGroupAuth(data *entities.UserGroupAuth) error {
 	return c.coredb.AddUserGroupAuth(data)
 }
 
-func (c *CoreHub) UpdateUserGroupAuth(tenantId string, gslug string, id int64, data map[string]interface{}) error {
+func (c *CoreHub) UpdateUserGroupAuth(tenantId string, gslug string, id int64, data map[string]any) error {
 	return c.coredb.UpdateUserGroupAuth(tenantId, gslug, id, data)
 }
 
@@ -26,7 +26,7 @@ func (c *CoreHub) AddUserGroupHook(data *entities.UserGroupHook) error {
 	return c.coredb.AddUserGroupHook(data)
 }
 
-func (c *CoreHub) UpdateUserGroupHook(tenantId string, gslug string, id int64, data map[string]interface{}) error {
+func (c *CoreHub) UpdateUserGroupHook(tenantId string, gslug string, id int64, data map[string]any) error {
 	return c.coredb.UpdateUserGroupHook(tenantId, gslug, id, data)
 }
 
@@ -46,7 +46,7 @@ func (c *CoreHub) AddUserGroupPlug(data *entities.UserGroupPlug) error {
 	return c.coredb.AddUserGroupPlug(data)
 }
 
-func (c *CoreHub) UpdateUserGroupPlug(tenantId string, gslug string, id int64, data map[string]interface{}) error {
+func (c *CoreHub) UpdateUserGroupPlug(tenantId string, gslug string, id int64, data map[string]any) error {
 	return c.coredb.UpdateUserGroupPlug(tenantId, gslug, id, data)
 }
 
@@ -66,7 +66,7 @@ func (c *CoreHub) AddUserGroupData(data *entities.UserGroupData) error {
 	return c.coredb.AddUserGroupData(data)
 }
 
-func (c *CoreHub) UpdateUserGroupData(tenantId string, gslug string, id int64, data map[string]interface{}) error {
+func (c *CoreHub) UpdateUserGroupData(tenantId string, gslug string, id int64, data map[string]any) error {
 	return c.coredb.UpdateUserGroupData(tenantId, gslug, id, data)
 }
 

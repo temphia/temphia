@@ -26,7 +26,7 @@ func (d *dynSource) NewRow(txid uint32, req store.NewRowReq) (int64, error) {
 	return id, nil
 }
 
-func (d *dynSource) GetRow(txid uint32, req store.GetRowReq) (map[string]interface{}, error) {
+func (d *dynSource) GetRow(txid uint32, req store.GetRowReq) (map[string]any, error) {
 	ddb := d.dynDB()
 
 	if txid != 0 || req.SkipCache {
@@ -36,7 +36,7 @@ func (d *dynSource) GetRow(txid uint32, req store.GetRowReq) (map[string]interfa
 	return ddb.GetRow(txid, req)
 }
 
-func (d *dynSource) UpdateRow(txid uint32, req store.UpdateRowReq) (map[string]interface{}, error) {
+func (d *dynSource) UpdateRow(txid uint32, req store.UpdateRowReq) (map[string]any, error) {
 	ddb := d.dynDB()
 
 	data, err := ddb.UpdateRow(txid, req)
