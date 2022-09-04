@@ -27,7 +27,6 @@ type Deps interface {
 	PlugKV() any
 	Cabinet() any
 	DynHub() any
-	Fencer() any
 	Engine() any
 	Sockd() any
 	Signer() any
