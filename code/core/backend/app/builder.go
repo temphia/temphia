@@ -5,6 +5,7 @@ import (
 
 	"github.com/temphia/temphia/code/core/backend/app/config"
 	"github.com/temphia/temphia/code/core/backend/app/registry"
+	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
 )
 
@@ -20,6 +21,8 @@ func NewBuilder() *Builder {
 				globalVars: make(map[string]any),
 				gmutex:     sync.Mutex{},
 			},
+			deps:   AppDeps{},
+			meshes: make([]xtypes.Mesh, 0, 2),
 		},
 	}
 }

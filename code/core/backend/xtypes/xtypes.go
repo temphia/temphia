@@ -16,6 +16,7 @@ type App interface {
 	GetServer() Server
 	GetGlobalVar() GlobalVar
 	Data() DataBox
+	GetMeshes() []Mesh
 }
 
 type Deps interface {
@@ -42,7 +43,7 @@ type GlobalVar interface {
 }
 
 type Server interface {
-	BindRoutes()
 	Listen() error
+	Addr() string
 	Close() error
 }

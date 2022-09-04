@@ -17,24 +17,24 @@ type App struct {
 	deps             AppDeps
 	global           Global
 	data             xtypes.DataBox
+	meshes           []xtypes.Mesh
 }
 
 func (a *App) Run() error { return a.run() }
 
-func (a *App) NodeId() string     { return a.nodeId }
-func (a *App) ClusterId() string  { return a.clusterId }
-func (a *App) DevMode() bool      { return a.devmode }
-func (a *App) SingleTenant() bool { return a.singleTenantMode }
-func (a *App) TenantId() string   { return a.tenantId }
-
-func (a *App) HostAddrs(privatePriIp, privateSecIps, p2p bool) []string {
-	return a.hostAddrs(privatePriIp, privateSecIps, p2p)
-}
-
+func (a *App) NodeId() string                 { return a.nodeId }
+func (a *App) ClusterId() string              { return a.clusterId }
+func (a *App) DevMode() bool                  { return a.devmode }
+func (a *App) SingleTenant() bool             { return a.singleTenantMode }
+func (a *App) TenantId() string               { return a.tenantId }
 func (a *App) GetDeps() xtypes.Deps           { return &a.deps }
 func (a *App) GetServer() xtypes.Server       { return nil }
 func (a *App) GetGlobalVar() xtypes.GlobalVar { return &a.global }
 func (a *App) Data() xtypes.DataBox           { return a.data }
+func (a *App) GetMeshes() []xtypes.Mesh       { return a.meshes }
+func (a *App) HostAddrs(privatePriIp, privateSecIps, p2p bool) []string {
+	return a.hostAddrs(privatePriIp, privateSecIps, p2p)
+}
 
 // private
 func (a *App) hostAddrs(privatePriIp, privateSecIps, p2p bool) []string {
@@ -54,6 +54,13 @@ func (a *App) hostAddrs(privatePriIp, privateSecIps, p2p bool) []string {
 	ips := xutils.GetLocalIPs()
 	for _, ip := range ips {
 		hosts = append(hosts, xutils.BuildAddr(ip, a.port))
+	}
+
+	for _, mesh := range a.meshes {
+		addrs := mesh.GetAddress()
+		for _, ip := range addrs {
+			hosts = append(hosts, xutils.BuildAddr(ip, a.port))
+		}
 	}
 
 	return hosts
