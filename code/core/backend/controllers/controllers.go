@@ -28,7 +28,7 @@ type RootController struct {
 	cOperator *operator.Controller
 }
 
-func New(_app xtypes.App, sessman service.SessMan) *RootController {
+func New(_app xtypes.App, seq xplane.Sequencer) *RootController {
 
 	deps := _app.GetDeps()
 
@@ -41,7 +41,7 @@ func New(_app xtypes.App, sessman service.SessMan) *RootController {
 
 	return &RootController{
 		cAdmin:    admin.New(pacman, cplane, corehub, signer),
-		cAuth:     authed.New(corehub, signer, sessman),
+		cAuth:     authed.New(corehub, signer, seq),
 		cBasic:    basic.New(corehub, cab, dynhub, pacman),
 		cCabinet:  cabinet.New(cab, signer),
 		cDtable:   dtable.New(dynhub, cab, signer),

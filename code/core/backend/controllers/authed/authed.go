@@ -8,19 +8,20 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
 )
 
 type Controller struct {
 	coredb  store.CoreHub
 	signer  service.Signer
-	sessman service.SessMan
+	sessman xplane.Sequencer
 }
 
-func New(coredb store.CoreHub, signer service.Signer, sessman service.SessMan) *Controller {
+func New(coredb store.CoreHub, signer service.Signer, seq xplane.Sequencer) *Controller {
 	return &Controller{
 		coredb:  coredb,
 		signer:  signer,
-		sessman: sessman,
+		sessman: seq,
 	}
 }
 
