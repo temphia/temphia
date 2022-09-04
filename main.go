@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/temphia/temphia/code/core/backend/app"
-	"github.com/temphia/temphia/code/core/backend/app/logservice"
+	"github.com/temphia/temphia/code/core/backend/app/log"
 	"github.com/temphia/temphia/code/core/backend/app/registry"
 )
 
@@ -13,7 +13,7 @@ func main() {
 
 	builder := app.NewBuilder()
 	builder.SetConfig(nil)
-	builder.SetLogger(logservice.New(logservice.LogOptions{}))
+	builder.SetLogger(log.New(log.LogOptions{}))
 	builder.SetRegistry(registry.G)
 
 }
