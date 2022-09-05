@@ -1,6 +1,7 @@
 package apiadmin
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/controllers/admin"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 )
@@ -15,4 +16,11 @@ func New(cAdmin *admin.Controller) ApiAdmin {
 		rutil:  httpx.Rutil{},
 		cAdmin: cAdmin,
 	}
+}
+
+func (a *ApiAdmin) API(apiv1 *gin.RouterGroup) {
+	// bprint_api
+	// user_id
+	// repo_api
+
 }

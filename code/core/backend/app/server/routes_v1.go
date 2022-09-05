@@ -1,51 +1,66 @@
 package server
 
 import (
+	"net/http"
+	"strings"
+
 	"github.com/gin-gonic/gin"
+	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/core/backend/app/server/static"
 )
 
 func (s *Server) buildRoutes() {
-
+	z := s.ginEngine.Group("/z")
+	s.zRoutes(z)
+	s.ginEngine.NoRoute(s.noRoute)
 }
 
-func (s *Server) zRoutes(apiv1 *gin.RouterGroup) {
+func (s *Server) zRoutes(z *gin.RouterGroup) {
 
-	// assets_api
+	z.GET("/", s.asFile(static.Root, "html"))
+	z.GET("/start", s.asFile(static.Root, "html"))
+	z.GET("/portal", s.asFile(static.Portal, "html"))
+	z.GET("/operator", s.asFile(static.Operator, "html"))
+	z.GET("/interface/:name", s.serveInterface)
+	z.GET("/assets/static/:file", s.serveAssets())
+	z.GET("/assets/public/:file", s.publicFile())
+	s.systemAssets(z.Group("/assets/system/"))
 
-	// auth_api
-	// self_api
-	// cabinet_api
-	// engine_api
-	// dev_api
-	// admin_api
+	s.operatorAPI(z.Group("/operator/api"))
 
-	// operator_api
-
+	s.API(z.Group("/api/:tenant_id/v1/"))
 }
 
-func (s *Server) adminAPI(apiv1 *gin.RouterGroup) {
-	// admin_api
-	// bprint_api
-	// user_id
-	// repo_api
-
+func (s *Server) API(rg *gin.RouterGroup) {
+	s.admin.API(rg.Group("/admin"))
+	s.authAPI(rg.Group("/auth"))
+	s.dtableAPI(rg.Group("/dtable"))
+	s.cabinetAPI(rg.Group("/cabinet"))
+	s.devAPI(rg.Group("/dev"))
+	s.engineAPI(rg.Group("/engine"))
+	s.selfAPI(rg.Group("/self"))
 }
 
-/*
-func (s *Server) API(apiv1 *gin.RouterGroup) {
-	s.adminTenantAPI(apiv1)
-	s.authAPI(apiv1)
-	s.bprintAPI(apiv1)
-	s.resourceAPI(apiv1)
-	s.userAPI(apiv1)
-	s.userSelfAPI(apiv1)
-	s.plugAPI(apiv1)
-	s.repoAPI(apiv1)
-	s.cabinetAPI(apiv1)
-	s.dtableAPI(apiv1)
-	s.engineAPI(apiv1)
-	s.dev(apiv1)
-	s.sysAssets(apiv1)
-}
+func (s *Server) noRoute(ctx *gin.Context) {
 
-*/
+	if strings.HasPrefix(ctx.Request.URL.Path, "/z/") {
+		pparts := strings.Split(ctx.Request.URL.Path, "/")
+
+		switch pparts[2] {
+		case "portal":
+			ctx.Redirect(http.StatusFound, "/z/portal")
+			return
+		case "auth":
+			ctx.Redirect(http.StatusFound, "/z/auth")
+			return
+		case "operator":
+			ctx.Redirect(http.StatusFound, "/z/operator")
+			return
+		default:
+			pp.Println(pparts)
+			return
+		}
+	}
+
+	s.notz.Serve(ctx)
+}

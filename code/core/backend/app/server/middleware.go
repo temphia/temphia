@@ -1,8 +1,10 @@
 package server
 
 import (
+	"mime"
 	"reflect"
 	"runtime"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 
@@ -56,6 +58,20 @@ func (s *Server) X(fn func(ctx httpx.Request)) func(*gin.Context) {
 			Http:    c,
 			Session: sclaim,
 		})
+	}
+}
+
+func (s *Server) asFile(data []byte, ext string) func(ctx *gin.Context) {
+	exmime := mime.TypeByExtension(ext)
+	clen := strconv.FormatInt(int64(len(data)), 10)
+
+	// fixme => also set etag ?
+
+	return func(ctx *gin.Context) {
+		ctx.Header("Content-Type", exmime)
+		ctx.Header("Cache-Control", `public, max-age=86400`)
+		ctx.Header("Content-Length", clen)
+		ctx.Writer.Write(data)
 	}
 }
 
