@@ -28,11 +28,13 @@ type RootController struct {
 	cOperator *operator.Controller
 }
 
-func New(_app xtypes.App, seq xplane.Sequencer) *RootController {
+func New(_app xtypes.App) *RootController {
 
 	deps := _app.GetDeps()
 
 	cplane := deps.ControlPlane().(xplane.ControlPlane)
+	seq := cplane.GetSequencer()
+
 	corehub := deps.CoreHub().(store.CoreHub)
 	pacman := deps.Pacman().(service.Pacman)
 	signer := deps.Signer().(service.Signer)
