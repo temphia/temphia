@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/app/server/static"
+	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 )
 
 func (s *Server) buildRoutes() {
@@ -34,7 +34,7 @@ func (s *Server) zRoutes(z *gin.RouterGroup) {
 func (s *Server) API(rg *gin.RouterGroup) {
 	s.admin.API(rg.Group("/admin"))
 	s.authAPI(rg.Group("/auth"))
-	s.dtableAPI(rg.Group("/dtable"))
+	s.dataAPI(rg.Group("/data"))
 	s.cabinetAPI(rg.Group("/cabinet"))
 	s.devAPI(rg.Group("/dev"))
 	s.engineAPI(rg.Group("/engine"))
@@ -57,7 +57,7 @@ func (s *Server) noRoute(ctx *gin.Context) {
 			ctx.Redirect(http.StatusFound, "/z/operator")
 			return
 		default:
-			pp.Println(pparts)
+			httpx.NotFound(ctx)
 			return
 		}
 	}

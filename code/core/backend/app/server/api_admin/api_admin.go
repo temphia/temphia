@@ -20,7 +20,7 @@ func New(cAdmin *admin.Controller) ApiAdmin {
 
 func (a *ApiAdmin) API(apiv1 *gin.RouterGroup) {
 	// bprint_api
-	// user_id
+	// user_api
 	// repo_api
 
 }
