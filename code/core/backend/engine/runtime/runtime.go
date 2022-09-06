@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/rs/zerolog"
+	"github.com/thoas/go-funk"
 
 	"github.com/temphia/temphia/code/core/backend/engine/binders/standard"
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
@@ -20,10 +21,10 @@ var (
 )
 
 type runtime struct {
-	close  chan struct{}
-	jobCh  chan *job.AsyncJob
-	router etypes.Router
-
+	close         chan struct{}
+	jobCh         chan *job.AsyncJob
+	router        etypes.Router
+	nodeTags      []string
 	app           xtypes.App
 	binderFactory standard.Factory
 
@@ -49,12 +50,12 @@ func New(_app xtypes.App, logger zerolog.Logger) *runtime {
 		router:       nil,
 		app:          _app,
 		execBuilders: nil,
-
-		signer: deps.Signer().(service.Signer),
-		syncer: deps.CoreHub().(service.Syncer),
-		logger: logger,
-		ns:     make(map[string]*ns),
-		nlock:  sync.Mutex{},
+		nodeTags:     []string{},
+		signer:       deps.Signer().(service.Signer),
+		syncer:       deps.CoreHub().(service.Syncer),
+		logger:       logger,
+		ns:           make(map[string]*ns),
+		nlock:        sync.Mutex{},
 	}
 
 	return rt
@@ -70,7 +71,20 @@ func (r *runtime) Run(builders map[string]etypes.ExecutorBuilder, modules map[st
 
 func (r *runtime) Preform(j *job.Job) (*event.Response, error) {
 	ns := r.getNS(j.Namespace, true)
-	return ns.doWork(j)
+
+	if j.PendingPrePolicy {
+		err := ns.fencer.Execute(j)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if j.NodeTag == "" || funk.ContainsString(r.nodeTags, j.NodeTag) || r.router == nil {
+		// fixme => run post_policy here
+		return ns.doWork(j)
+	}
+
+	return r.router.Route(j)
 }
 
 func (r *runtime) PreformAsync(j *job.AsyncJob) {

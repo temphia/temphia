@@ -4,10 +4,12 @@ import (
 	"sync"
 
 	"github.com/temphia/temphia/code/core/backend/engine/binders/standard"
+	"github.com/temphia/temphia/code/core/backend/engine/rfencer"
 	"github.com/temphia/temphia/code/core/backend/engine/runtime/rpool"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/event"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
+	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
 type ns struct {
@@ -16,6 +18,7 @@ type ns struct {
 	running  map[string]*standard.Binder
 	rlock    sync.Mutex // only using as pointer(no copy after first use) so its fine
 	pool     rpool.Pool
+	fencer   rfencer.RFencer
 }
 
 func (r *runtime) newNs(tenantId string) *ns {
@@ -25,6 +28,7 @@ func (r *runtime) newNs(tenantId string) *ns {
 		running:  map[string]*standard.Binder{},
 		rlock:    sync.Mutex{},
 		pool:     rpool.NewPool(),
+		fencer:   rfencer.New(tenantId, r.app.GetDeps().CoreHub().(store.CoreHub)),
 	}
 
 	return n

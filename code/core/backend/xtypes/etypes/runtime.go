@@ -24,5 +24,5 @@ type Runtime interface {
 }
 
 type Router interface {
-	Route(j *job.Job) bool
+	Route(j *job.Job) (*event.Response, error)
 }

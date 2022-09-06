@@ -18,8 +18,8 @@ type RFencer struct {
 	mlock    sync.Mutex
 }
 
-func New(tenantId string, corehub store.CoreHub) *RFencer {
-	return &RFencer{
+func New(tenantId string, corehub store.CoreHub) RFencer {
+	return RFencer{
 		tenantId: tenantId,
 		corehub:  corehub,
 		programs: make(map[string]*vm.Program),
