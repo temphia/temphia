@@ -5,7 +5,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/controllers/authed"
 	"github.com/temphia/temphia/code/core/backend/controllers/basic"
 	"github.com/temphia/temphia/code/core/backend/controllers/cabinet"
-	"github.com/temphia/temphia/code/core/backend/controllers/dtable"
+	"github.com/temphia/temphia/code/core/backend/controllers/data"
 	"github.com/temphia/temphia/code/core/backend/controllers/operator"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
@@ -24,7 +24,7 @@ type RootController struct {
 	cAuth     *authed.Controller
 	cBasic    *basic.Controller
 	cCabinet  *cabinet.Controller
-	cDtable   *dtable.Controller
+	cDtable   *data.Controller
 	cOperator *operator.Controller
 }
 
@@ -46,7 +46,7 @@ func New(_app xtypes.App) *RootController {
 		cAuth:     authed.New(corehub, signer, seq),
 		cBasic:    basic.New(corehub, cab, dynhub, pacman),
 		cCabinet:  cabinet.New(cab, signer),
-		cDtable:   dtable.New(dynhub, cab, signer),
+		cDtable:   data.New(dynhub, cab, signer),
 		cOperator: operator.New(corehub, signer, _app, "", ""), // fixme =>
 	}
 }
@@ -55,5 +55,5 @@ func (c *RootController) AdminController() *admin.Controller       { return c.cA
 func (c *RootController) AuthController() *authed.Controller       { return c.cAuth }
 func (c *RootController) BasicController() *basic.Controller       { return c.cBasic }
 func (c *RootController) CabinetController() *cabinet.Controller   { return c.cCabinet }
-func (c *RootController) DtableController() *dtable.Controller     { return c.cDtable }
+func (c *RootController) DtableController() *data.Controller       { return c.cDtable }
 func (c *RootController) OperatorController() *operator.Controller { return c.cOperator }

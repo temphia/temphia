@@ -1,28 +1,10 @@
-package dtable
+package admin
 
 import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
-
-type Controller struct {
-	dynHub store.DynHub
-
-	cabHub store.CabinetHub
-	signer service.Signer
-}
-
-func New(dhub store.DynHub, cabHub store.CabinetHub, signer service.Signer) *Controller {
-	return &Controller{
-
-		dynHub: dhub,
-		cabHub: cabHub,
-		signer: signer,
-	}
-}
 
 func (c *Controller) ListSources(uclaim *claim.Session) ([]string, error) {
 	return c.dynHub.ListSources(uclaim.TenentId)
@@ -76,47 +58,6 @@ func (c *Controller) ListTables(uclaim *claim.Session) ([]*entities.Table, error
 
 	dynDB := c.dynHub.GetSource(uclaim.Path[1], uclaim.TenentId)
 	return dynDB.ListTables(uclaim.Path[2])
-}
-
-func (c *Controller) LoadGroup(uclaim *claim.Session) (*store.LoadDgroupResp, error) {
-	dynDB := c.dynHub.GetSource(uclaim.Path[1], uclaim.TenentId)
-
-	tg, err := dynDB.GetGroup(uclaim.Path[2])
-	if err != nil {
-		return nil, err
-	}
-
-	tables, err := dynDB.ListTables(uclaim.Path[2])
-
-	if err != nil {
-		return nil, err
-	}
-
-	if tg.CabinetSource == "" || tg.CabinetFolder == "" {
-		tg.CabinetSource = c.cabHub.DefaultName(uclaim.TenentId)
-		tg.CabinetFolder = "data_common"
-	}
-
-	fcalim := &claim.FolderTkt{
-		Folder: tg.CabinetFolder,
-		Source: tg.CabinetSource,
-		Expiry: 0,
-		Prefix: "",
-		//	DeviceId: uclaim.DeviceId,
-	}
-
-	cabToken, err := c.signer.SignFolderTkt(uclaim.TenentId, fcalim)
-	if err != nil {
-		return nil, err
-	}
-
-	resp := &store.LoadDgroupResp{
-		Tables:          tables,
-		CabinetTicket:   cabToken,
-		SockdRoomTicket: "",
-	}
-
-	return resp, nil
 }
 
 func (c *Controller) DeleteTable(uclaim *claim.Session, tslug string) error {

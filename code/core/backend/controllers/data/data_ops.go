@@ -1,4 +1,4 @@
-package dtable
+package data
 
 import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
@@ -6,8 +6,45 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
-func getTarget(uclaim *claim.Session) (string, string) {
-	return uclaim.Path[1], uclaim.Path[2]
+func (c *Controller) LoadGroup(uclaim *claim.Session) (*store.LoadDgroupResp, error) {
+	dynDB := c.dynHub.GetSource(uclaim.Path[1], uclaim.TenentId)
+
+	tg, err := dynDB.GetGroup(uclaim.Path[2])
+	if err != nil {
+		return nil, err
+	}
+
+	tables, err := dynDB.ListTables(uclaim.Path[2])
+
+	if err != nil {
+		return nil, err
+	}
+
+	if tg.CabinetSource == "" || tg.CabinetFolder == "" {
+		tg.CabinetSource = c.cabHub.DefaultName(uclaim.TenentId)
+		tg.CabinetFolder = "data_common"
+	}
+
+	fcalim := &claim.FolderTkt{
+		Folder: tg.CabinetFolder,
+		Source: tg.CabinetSource,
+		Expiry: 0,
+		Prefix: "",
+		//	DeviceId: uclaim.DeviceId,
+	}
+
+	cabToken, err := c.signer.SignFolderTkt(uclaim.TenentId, fcalim)
+	if err != nil {
+		return nil, err
+	}
+
+	resp := &store.LoadDgroupResp{
+		Tables:          tables,
+		CabinetTicket:   cabToken,
+		SockdRoomTicket: "",
+	}
+
+	return resp, nil
 }
 
 func (d *Controller) NewRow(uclaim *claim.Session, tslug string, cells map[string]any) (int64, error) {

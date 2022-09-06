@@ -9,7 +9,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/controllers/authed"
 	"github.com/temphia/temphia/code/core/backend/controllers/basic"
 	"github.com/temphia/temphia/code/core/backend/controllers/cabinet"
-	"github.com/temphia/temphia/code/core/backend/controllers/dtable"
+	"github.com/temphia/temphia/code/core/backend/controllers/data"
 	"github.com/temphia/temphia/code/core/backend/controllers/operator"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
@@ -39,7 +39,7 @@ type Server struct {
 	cOperator *operator.Controller
 	cAuth     *authed.Controller
 	cBasic    *basic.Controller
-	cDtable   *dtable.Controller
+	cData     *data.Controller
 	cCabinet  *cabinet.Controller
 }
 
@@ -70,7 +70,7 @@ func New(opts Options) *Server {
 		cOperator: nil,
 		cAuth:     nil,
 		cBasic:    nil,
-		cDtable:   nil,
+		cData:     nil,
 		cCabinet:  nil,
 	}
 }

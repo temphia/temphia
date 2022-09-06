@@ -22,5 +22,6 @@ func (a *ApiAdmin) API(apiv1 *gin.RouterGroup) {
 	// bprint_api
 	// user_api
 	// repo_api
+	// data_api
 
 }

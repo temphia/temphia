@@ -1,4 +1,4 @@
-package dtable
+package admin
 
 import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
@@ -15,7 +15,7 @@ func (c *Controller) NewView(uclaim *claim.Session, tslug string, model *entitie
 	return dynDB.NewView(model)
 }
 
-func (c *Controller) ModifyView(uclaim *claim.Session, tslug string, id int64, data map[string]any) error {
+func (c *Controller) ModifyView(uclaim *claim.Session, tslug string, id int64, data map[string]interface{}) error {
 	dynDB := c.dynHub.GetSource(uclaim.Path[1], uclaim.TenentId)
 
 	return dynDB.ModifyView(uclaim.Path[2], tslug, id, data)

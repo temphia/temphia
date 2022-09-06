@@ -11,6 +11,9 @@ type Controller struct {
 	cplane xplane.ControlPlane
 	coredb store.CoreHub
 	signer service.Signer
+
+	dynHub store.DynHub
+	cabHub store.CabinetHub
 }
 
 func New(pacman service.Pacman, cplane xplane.ControlPlane, coredb store.CoreHub, signer service.Signer) *Controller {
@@ -19,5 +22,7 @@ func New(pacman service.Pacman, cplane xplane.ControlPlane, coredb store.CoreHub
 		cplane: cplane,
 		coredb: coredb,
 		signer: signer,
+		dynHub: nil,
+		cabHub: nil,
 	}
 }
