@@ -30,6 +30,10 @@ func (s *Server) authAPI(rg *gin.RouterGroup) {
 
 	rg.POST("/refresh", s.AuthRefresh)
 
+	rg.GET("/auth/oauth_redirect", func(ctx *gin.Context) {
+		ctx.Writer.Write([]byte("<h1> Nice </h1>"))
+	})
+
 }
 
 func (s *Server) AuthListMethods(c *gin.Context) {

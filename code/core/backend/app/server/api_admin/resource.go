@@ -9,6 +9,12 @@ import (
 
 func (a *ApiAdmin) resourceAPI(rg *gin.RouterGroup) {
 
+	rg.GET("/", a.X(a.ResourceList))
+	rg.POST("/", a.X(a.ResourceCreate))
+	rg.GET("/:slug", a.X(a.ResourceGet))
+	rg.POST("/:slug", a.X(a.ResourceUpdate))
+	rg.DELETE("/:slug", a.X(a.ResourceRemove))
+
 }
 
 func (r *ApiAdmin) ResourceCreate(ctx httpx.Request) {

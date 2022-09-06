@@ -12,6 +12,7 @@ type Controller struct {
 	cabinet store.CabinetHub
 	dynHub  store.DynHub
 	pacman  service.Pacman
+	signer  service.Signer
 }
 
 func New(coredb store.CoreHub, cabinet store.CabinetHub, dynHub store.DynHub, pacman service.Pacman) *Controller {

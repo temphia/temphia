@@ -41,6 +41,8 @@ func (a *ApiAdmin) plugAPI(rg *gin.RouterGroup) {
 	rg.GET("/:plug_id/agent/:agent_id/resource/:id", a.X(a.AgentResourceGet))
 	rg.DELETE("/:plug_id/agent/:agent_id/resource/:id", a.X(a.AgentResourceDel))
 
+	// 		adminApi.POST("/agent_resources", r.Authed(r.ResourceAgentList))
+
 }
 
 func (r *ApiAdmin) NewPlug(ctx httpx.Request) {
