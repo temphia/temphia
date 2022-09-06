@@ -7,43 +7,26 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/instance"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/vmodels"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 )
 
 func (a *ApiAdmin) bprintAPI(rg *gin.RouterGroup) {
 
-	/*
+	rg.GET("/", a.X(a.BprintList))
+	rg.POST("/", a.X(a.BprintCreate))
+	rg.GET("/:id", a.X(a.BprintGet))
+	rg.POST("/:id", a.X(a.BprintUpdate))
+	rg.DELETE("/:id", a.X(a.BprintRemove))
+	rg.GET("/:id/file", a.X(a.BprintListFiles))
+	rg.GET("/:id/file/:file_id", a.X(a.BprintGetFile))
+	rg.POST("/:id/file/:file_id", a.X(a.BprintNewBlob))
+	rg.PATCH("/:id/file/:file_id", a.X(a.BprintUpdateBlob))
+	rg.DELETE("/:id/file/:file_id", a.X(a.BprintDelFile))
 
-		bAPI := adminApi.Group("/bprint")
-		bAPI.GET("/", r.Authed(r.BprintList))
-		bAPI.POST("/", r.Authed(r.BprintCreate))
+	rg.POST("/:id/instance", a.X(a.BprintInstance))
 
-		bAPI.GET("/:id", r.Authed(r.BprintGet))
-		bAPI.POST("/:id", r.Authed(r.BprintUpdate))
-		bAPI.DELETE("/:id", r.Authed(r.BprintRemove))
-
-		bAPI.POST("/:id/install", r.Authed(r.BprintInstall)) // fixme => remove this all the way down
-
-		bAPI.POST("/:id/instance", r.Authed(r.BprintInstance))
-
-		bAPI.GET("/:id/file", r.Authed(r.BprintListFiles))
-		bAPI.GET("/:id/file/:file_id", r.Authed(r.BprintGetFile))
-
-		bAPI.POST("/:id/file/:file_id", r.Authed(r.BprintNewBlob))
-		bAPI.PATCH("/:id/file/:file_id", r.Authed(r.BprintUpdateBlob))
-		bAPI.DELETE("/:id/file/:file_id", r.Authed(r.BprintDelFile))
-
-		adminApi.POST("/import_bprint", r.Authed(r.BprintImport))
-		adminApi.POST("/dev_plug_issue_tkt", r.Authed(r.DevIssuePlugTkt))
-
-		adminApi.GET("/check_slug/bprint/:bid", r.Authed(r.CheckBprint))
-		adminApi.GET("/check_slug/plug/:pid", r.Authed(r.CheckPlug))
-		adminApi.GET("/check_slug/data_group/:source/:gid", r.Authed(r.CheckDataGroup))
-		adminApi.GET("/check_slug/data_table/:source/:gid/:tid", r.Authed(r.CheckDataTable))
-
-
-	*/
+	// adminApi.POST("/import_bprint", r.Authed(r.BprintImport))
+	// adminApi.POST("/dev_plug_issue_tkt", r.Authed(r.DevIssuePlugTkt))
 
 }
 
@@ -85,43 +68,6 @@ func (r *ApiAdmin) BprintRemove(ctx httpx.Request) {
 	r.rutil.WriteJSON(ctx.Http, nil, err)
 }
 
-func (r *ApiAdmin) BprintInstall(ctx httpx.Request) {
-	opts := &vmodels.RepoInstallOpts{}
-	err := ctx.Http.BindJSON(opts)
-	if err != nil {
-		r.rutil.WriteErr(ctx.Http, err.Error())
-		return
-	}
-
-	resp, err := r.cAdmin.BprintInstall(ctx.Session, opts)
-	r.rutil.WriteJSON(ctx.Http, resp, err)
-}
-
-func (r *ApiAdmin) BprintInstance(ctx httpx.Request) {
-	opts := &instance.RepoOptions{}
-	err := ctx.Http.BindJSON(opts)
-	if err != nil {
-		r.rutil.WriteErr(ctx.Http, err.Error())
-		return
-	}
-
-	resp, err := r.cAdmin.BprintInstance(ctx.Session, opts)
-	r.rutil.WriteJSON(ctx.Http, resp, err)
-}
-
-func (c *ApiAdmin) BprintImport(ctx httpx.Request) {
-
-	opts := &service.RepoImportOpts{}
-	err := ctx.Http.BindJSON(opts)
-	if err != nil {
-		return
-	}
-
-	resp, err := c.cAdmin.BprintImport(ctx.Session, opts)
-
-	c.rutil.WriteJSON(ctx.Http, resp, err)
-}
-
 func (r *ApiAdmin) BprintListFiles(ctx httpx.Request) {
 	resp, err := r.cAdmin.BprintListBlobs(ctx.Session, ctx.Http.Param("id"))
 	r.rutil.WriteJSON(ctx.Http, resp, err)
@@ -161,4 +107,33 @@ func (r *ApiAdmin) BprintGetFile(ctx httpx.Request) {
 func (r *ApiAdmin) BprintDelFile(ctx httpx.Request) {
 	err := r.cAdmin.BprintDeleteBlob(ctx.Session, ctx.Http.Param("id"), ctx.Http.Param("file_id"))
 	r.rutil.WriteJSON(ctx.Http, nil, err)
+}
+
+// instance
+
+func (r *ApiAdmin) BprintInstance(ctx httpx.Request) {
+	opts := &instance.RepoOptions{}
+	err := ctx.Http.BindJSON(opts)
+	if err != nil {
+		r.rutil.WriteErr(ctx.Http, err.Error())
+		return
+	}
+
+	resp, err := r.cAdmin.BprintInstance(ctx.Session, opts)
+	r.rutil.WriteJSON(ctx.Http, resp, err)
+}
+
+// import
+
+func (c *ApiAdmin) BprintImport(ctx httpx.Request) {
+
+	opts := &service.RepoImportOpts{}
+	err := ctx.Http.BindJSON(opts)
+	if err != nil {
+		return
+	}
+
+	resp, err := c.cAdmin.BprintImport(ctx.Session, opts)
+
+	c.rutil.WriteJSON(ctx.Http, resp, err)
 }

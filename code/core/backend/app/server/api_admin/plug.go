@@ -10,6 +10,37 @@ import (
 
 func (a *ApiAdmin) plugAPI(rg *gin.RouterGroup) {
 
+	rg.GET("/", a.X(a.ListPlug))
+	rg.POST("/", a.X(a.NewPlug))
+	rg.GET("/:plug_id", a.X(a.GetPlug))
+	rg.POST("/:plug_id", a.X(a.UpdatePlug))
+	rg.DELETE("/:plug_id", a.X(a.DelPlug))
+
+	rg.GET("/:plug_id/agent/", a.X(a.ListAgent))
+	rg.POST("/:plug_id/agent/", a.X(a.NewAgent))
+	rg.GET("/:plug_id/agent/:agent_id", a.X(a.GetAgent))
+	rg.POST("/:plug_id/agent/:agent_id", a.X(a.UpdateAgent))
+	rg.DELETE("/:plug_id/agent/:agent_id", a.X(a.DelAgent))
+	rg.POST("/:plug_id/agent/:agent_id/pair_token", a.X(a.PairAgentToken))
+
+	rg.GET("/:plug_id/agent/:agent_id/link", a.X(a.AgentLinkList))
+	rg.POST("/:plug_id/agent/:agent_id/link", a.X(a.AgentLinkNew))
+	rg.POST("/:plug_id/agent/:agent_id/link/:id", a.X(a.AgentLinkUpdate))
+	rg.GET("/:plug_id/agent/:agent_id/link/:id", a.X(a.AgentLinkGet))
+	rg.DELETE("/:plug_id/agent/:agent_id/link/:id", a.X(a.AgentLinkDel))
+
+	rg.GET("/:plug_id/agent/:agent_id/extension", a.X(a.AgentExtensionList))
+	rg.POST("/:plug_id/agent/:agent_id/extension", a.X(a.AgentExtensionNew))
+	rg.POST("/:plug_id/agent/:agent_id/extension/:id", a.X(a.AgentExtensionUpdate))
+	rg.GET("/:plug_id/agent/:agent_id/extension/:id", a.X(a.AgentExtensionGet))
+	rg.DELETE("/:plug_id/agent/:agent_id/extension/:id", a.X(a.AgentExtensionDel))
+
+	rg.GET("/:plug_id/agent/:agent_id/resource", a.X(a.AgentResourceList))
+	rg.POST("/:plug_id/agent/:agent_id/resource", a.X(a.AgentResourceNew))
+	rg.POST("/:plug_id/agent/:agent_id/resource/:id", a.X(a.AgentResourceUpdate))
+	rg.GET("/:plug_id/agent/:agent_id/resource/:id", a.X(a.AgentResourceGet))
+	rg.DELETE("/:plug_id/agent/:agent_id/resource/:id", a.X(a.AgentResourceDel))
+
 }
 
 func (r *ApiAdmin) NewPlug(ctx httpx.Request) {
