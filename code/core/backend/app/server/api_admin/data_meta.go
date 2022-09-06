@@ -1,162 +1,159 @@
 package apiadmin
 
-/*
+import (
+	"strconv"
 
-
-// dyn_table_meta
-
-func (r *R) AddIndex(req request.Ctx) {
-
-}
-
-
-func (r *R) AddUniqueIndex(req request.Ctx) {
-
-}
-func (r *R) AddFTSIndex(req request.Ctx) {
-
-}
-func (r *R) AddColumnFRef(req request.Ctx) {
-
-}
-func (r *R) ListIndex(req request.Ctx) {
-
-}
-func (r *R) RemoveIndex(req request.Ctx) {
-
-}
-
+	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+)
 
 // view stuff
 
-func (r *R) NewView(req request.Ctx) {
+func (a *ApiAdmin) NewView(ctx httpx.Request) {
 	view := entities.DataView{}
-	err := req.GinCtx.BindJSON(&view)
+	err := ctx.Http.BindJSON(&view)
 	if err != nil {
-		r.rutil.WriteErr(req.GinCtx, err.Error())
+		httpx.WriteErr(ctx.Http, err.Error())
 		return
 	}
-	err = r.cDtable.NewView(req.Session, req.GinCtx.Param("table_id"), &view)
-	r.rutil.WriteFinal(req.GinCtx, err)
+	err = a.cAdmin.NewView(ctx.Session, ctx.Http.Param("table_id"), &view)
+	httpx.WriteFinal(ctx.Http, err)
 }
 
-func (r *R) ModifyView(req request.Ctx) {
+func (a *ApiAdmin) ModifyView(ctx httpx.Request) {
 	view := make(map[string]interface{})
 
-	err := req.GinCtx.BindJSON(&view)
+	err := ctx.Http.BindJSON(&view)
 	if err != nil {
-		r.rutil.WriteErr(req.GinCtx, err.Error())
+		httpx.WriteErr(ctx.Http, err.Error())
 		return
 	}
 
-	id, err := strconv.ParseInt(req.GinCtx.Param("id"), 10, 64)
+	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
 	if err != nil {
-		r.rutil.WriteErr(req.GinCtx, err.Error())
+		httpx.WriteErr(ctx.Http, err.Error())
 		return
 	}
 
-	err = r.cDtable.ModifyView(req.Session, req.GinCtx.Param("table_id"), id, view)
-	r.rutil.WriteFinal(req.GinCtx, err)
+	err = a.cAdmin.ModifyView(ctx.Session, ctx.Http.Param("table_id"), id, view)
+	httpx.WriteFinal(ctx.Http, err)
 
 }
 
-func (r *R) GetView(req request.Ctx) {
-	id, err := strconv.ParseInt(req.GinCtx.Param("id"), 10, 64)
+func (a *ApiAdmin) GetView(ctx httpx.Request) {
+	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
 	if err != nil {
-		r.rutil.WriteErr(req.GinCtx, err.Error())
+		httpx.WriteErr(ctx.Http, err.Error())
 		return
 	}
 
-	resp, err := r.cDtable.GetView(req.Session, req.GinCtx.Param("table_id"), id)
-	r.rutil.WriteJSON(req.GinCtx, resp, err)
+	resp, err := a.cAdmin.GetView(ctx.Session, ctx.Http.Param("table_id"), id)
+	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (r *R) ListView(req request.Ctx) {
-	resp, err := r.cDtable.ListView(req.Session, req.GinCtx.Param("table_id"))
+func (a *ApiAdmin) ListView(ctx httpx.Request) {
+	resp, err := a.cAdmin.ListView(ctx.Session, ctx.Http.Param("table_id"))
 	if err != nil {
-		r.rutil.WriteErr(req.GinCtx, err.Error())
+		httpx.WriteErr(ctx.Http, err.Error())
 		return
 	}
 
-	r.rutil.WriteJSON(req.GinCtx, resp, err)
+	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (r *R) DelView(req request.Ctx) {
-	id, err := strconv.ParseInt(req.GinCtx.Param("id"), 10, 64)
+func (a *ApiAdmin) DelView(ctx httpx.Request) {
+	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
 	if err != nil {
-		r.rutil.WriteErr(req.GinCtx, err.Error())
+		httpx.WriteErr(ctx.Http, err.Error())
 		return
 	}
 
-	err = r.cDtable.DelView(req.Session, req.GinCtx.Param("table_id"), id)
-	r.rutil.WriteFinal(req.GinCtx, err)
+	err = a.cAdmin.DelView(ctx.Session, ctx.Http.Param("table_id"), id)
+	httpx.WriteFinal(ctx.Http, err)
 }
 
 // hooks
 
-func (r *R) NewHook(req request.Ctx) {
+func (a *ApiAdmin) NewHook(ctx httpx.Request) {
 	hook := entities.DataHook{}
-	err := req.GinCtx.BindJSON(&hook)
+	err := ctx.Http.BindJSON(&hook)
 	if err != nil {
-		r.rutil.WriteErr(req.GinCtx, err.Error())
+		httpx.WriteErr(ctx.Http, err.Error())
 		return
 	}
-	err = r.cDtable.NewHook(req.Session, req.GinCtx.Param("table_id"), &hook)
-	r.rutil.WriteFinal(req.GinCtx, err)
+	err = a.cAdmin.NewHook(ctx.Session, ctx.Http.Param("table_id"), &hook)
+	httpx.WriteFinal(ctx.Http, err)
 }
 
-func (r *R) ModifyHook(req request.Ctx) {
+func (a *ApiAdmin) ModifyHook(ctx httpx.Request) {
 	data := make(map[string]interface{})
 
-	err := req.GinCtx.BindJSON(&data)
+	err := ctx.Http.BindJSON(&data)
 	if err != nil {
-		r.rutil.WriteErr(req.GinCtx, err.Error())
+		httpx.WriteErr(ctx.Http, err.Error())
 		return
 	}
 
-	id, err := strconv.ParseInt(req.GinCtx.Param("id"), 10, 64)
+	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
 	if err != nil {
-		r.rutil.WriteErr(req.GinCtx, err.Error())
+		httpx.WriteErr(ctx.Http, err.Error())
 		return
 	}
 
-	err = r.cDtable.ModifyHook(req.Session, req.GinCtx.Param("table_id"), id, data)
-	r.rutil.WriteFinal(req.GinCtx, err)
+	err = a.cAdmin.ModifyHook(ctx.Session, ctx.Http.Param("table_id"), id, data)
+	httpx.WriteFinal(ctx.Http, err)
 
 }
 
-func (r *R) GetHook(req request.Ctx) {
-	id, err := strconv.ParseInt(req.GinCtx.Param("id"), 10, 64)
+func (a *ApiAdmin) GetHook(ctx httpx.Request) {
+	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
 	if err != nil {
-		r.rutil.WriteErr(req.GinCtx, err.Error())
+		httpx.WriteErr(ctx.Http, err.Error())
 		return
 	}
 
-	resp, err := r.cDtable.GetHook(req.Session, req.GinCtx.Param("table_id"), id)
-	r.rutil.WriteJSON(req.GinCtx, resp, err)
+	resp, err := a.cAdmin.GetHook(ctx.Session, ctx.Http.Param("table_id"), id)
+	httpx.WriteJSON(ctx.Http, resp, err)
 
 }
 
-func (r *R) ListHook(req request.Ctx) {
-	resp, err := r.cDtable.ListHook(req.Session, req.GinCtx.Param("table_id"))
+func (a *ApiAdmin) ListHook(ctx httpx.Request) {
+	resp, err := a.cAdmin.ListHook(ctx.Session, ctx.Http.Param("table_id"))
 	if err != nil {
-		r.rutil.WriteErr(req.GinCtx, err.Error())
+		httpx.WriteErr(ctx.Http, err.Error())
 		return
 	}
 
-	r.rutil.WriteJSON(req.GinCtx, resp, err)
+	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (r *R) DelHook(req request.Ctx) {
-	id, err := strconv.ParseInt(req.GinCtx.Param("id"), 10, 64)
+func (a *ApiAdmin) DelHook(ctx httpx.Request) {
+	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
 	if err != nil {
-		r.rutil.WriteErr(req.GinCtx, err.Error())
+		httpx.WriteErr(ctx.Http, err.Error())
 		return
 	}
 
-	err = r.cDtable.DelHook(req.Session, req.GinCtx.Param("table_id"), id)
-	r.rutil.WriteFinal(req.GinCtx, err)
+	err = a.cAdmin.DelHook(ctx.Session, ctx.Http.Param("table_id"), id)
+	httpx.WriteFinal(ctx.Http, err)
 }
 
+func (a *ApiAdmin) AddIndex(ctx httpx.Request) {
 
-*/
+}
+
+func (a *ApiAdmin) AddUniqueIndex(ctx httpx.Request) {
+
+}
+func (a *ApiAdmin) AddFTSIndex(ctx httpx.Request) {
+
+}
+func (a *ApiAdmin) AddColumnFRef(ctx httpx.Request) {
+
+}
+func (a *ApiAdmin) ListIndex(ctx httpx.Request) {
+
+}
+func (a *ApiAdmin) RemoveIndex(ctx httpx.Request) {
+
+}

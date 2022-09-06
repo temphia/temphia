@@ -3,9 +3,14 @@ package apiadmin
 import (
 	"strconv"
 
+	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 )
+
+func (a *ApiAdmin) userGroupAPI(rg *gin.RouterGroup) {
+
+}
 
 func (r *ApiAdmin) AddUserGroup(ctx httpx.Request) {
 	group := &entities.UserGroup{}
