@@ -6,6 +6,11 @@ import (
 	"github.com/temphia/temphia/code/core/backend/app/server/ginlogger"
 	"github.com/temphia/temphia/code/core/backend/app/server/notz"
 	"github.com/temphia/temphia/code/core/backend/controllers"
+	"github.com/temphia/temphia/code/core/backend/controllers/authed"
+	"github.com/temphia/temphia/code/core/backend/controllers/basic"
+	"github.com/temphia/temphia/code/core/backend/controllers/cabinet"
+	"github.com/temphia/temphia/code/core/backend/controllers/dtable"
+	"github.com/temphia/temphia/code/core/backend/controllers/operator"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
@@ -28,6 +33,14 @@ type Server struct {
 	signer    service.Signer
 	notz      notz.Notz
 	data      xtypes.DataBox
+
+	// controllers
+
+	cOperator *operator.Controller
+	cAuth     *authed.Controller
+	cBasic    *basic.Controller
+	cDtable   *dtable.Controller
+	cCabinet  *cabinet.Controller
 }
 
 func New(opts Options) *Server {
@@ -51,6 +64,14 @@ func New(opts Options) *Server {
 			TenantHostBase:    opts.TenantHostBase,
 		}),
 		data: opts.App.Data(),
+
+		// controllers
+
+		cOperator: nil,
+		cAuth:     nil,
+		cBasic:    nil,
+		cDtable:   nil,
+		cCabinet:  nil,
 	}
 }
 
