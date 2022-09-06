@@ -23,6 +23,7 @@ type Job struct {
 	Plug    *entities.Plug
 	Agent   *entities.Agent
 	Invoker Invoker
+	NodeTag string
 }
 
 func (j *Job) AsEvent() *event.Request {

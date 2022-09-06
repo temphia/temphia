@@ -1,4 +1,4 @@
-package server
+package middleware
 
 import (
 	"mime"
@@ -7,16 +7,19 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-
+	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 )
 
-// X is a auth middleware
-func (s *Server) X(fn func(ctx httpx.Request)) func(*gin.Context) {
+type Middleware struct {
+	Signer service.Signer
+	Logger zerolog.Logger
+}
 
-	logger := s.log.GetServiceLogger("routes")
+func (m *Middleware) Authed(fn func(ctx httpx.Request)) func(*gin.Context) {
 
 	return func(c *gin.Context) {
 
@@ -24,9 +27,9 @@ func (s *Server) X(fn func(ctx httpx.Request)) func(*gin.Context) {
 
 		tenantId := c.Param("tenant_id")
 		sessToken := c.GetHeader("Authorization")
-		sclaim, err := s.signer.ParseSession(tenantId, sessToken)
+		sclaim, err := m.Signer.ParseSession(tenantId, sessToken)
 		if err != nil {
-			logger.Error().
+			m.Logger.Error().
 				Err(err).
 				Str("tenant_id", tenantId).
 				Msg(logid.RoutesSessionParseErr)
@@ -34,7 +37,7 @@ func (s *Server) X(fn func(ctx httpx.Request)) func(*gin.Context) {
 		}
 
 		if sclaim.Type != claim.CTypeSession {
-			logger.Warn().
+			m.Logger.Warn().
 				Str("tenant_id", tenantId).
 				Str("client_ip", c.ClientIP()).
 				Interface("data", sclaim).
@@ -45,7 +48,7 @@ func (s *Server) X(fn func(ctx httpx.Request)) func(*gin.Context) {
 
 		c.Header("X-Clacks-Overhead", "Aaron Swartz")
 
-		logger.Info().
+		m.Logger.Info().
 			Str("tenant_id", tenantId).
 			Str("user_group", sclaim.UserGroup).
 			Str("user_id", sclaim.UserID).
@@ -61,7 +64,7 @@ func (s *Server) X(fn func(ctx httpx.Request)) func(*gin.Context) {
 	}
 }
 
-func (s *Server) asFile(data []byte, ext string) func(ctx *gin.Context) {
+func (m *Middleware) AsFile(data []byte, ext string) func(ctx *gin.Context) {
 	exmime := mime.TypeByExtension(ext)
 	clen := strconv.FormatInt(int64(len(data)), 10)
 

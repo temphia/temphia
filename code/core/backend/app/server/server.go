@@ -3,7 +3,7 @@ package server
 import (
 	"github.com/gin-gonic/gin"
 	apiadmin "github.com/temphia/temphia/code/core/backend/app/server/api_admin"
-	"github.com/temphia/temphia/code/core/backend/app/server/ginlogger"
+	"github.com/temphia/temphia/code/core/backend/app/server/middleware"
 	"github.com/temphia/temphia/code/core/backend/app/server/notz"
 	"github.com/temphia/temphia/code/core/backend/controllers"
 	"github.com/temphia/temphia/code/core/backend/controllers/authed"
@@ -34,6 +34,8 @@ type Server struct {
 	notz      notz.Notz
 	data      xtypes.DataBox
 
+	middleware *middleware.Middleware
+
 	// controllers
 
 	cOperator *operator.Controller
@@ -50,10 +52,15 @@ func New(opts Options) *Server {
 	logsvc := deps.LogService().(logx.Service)
 	signer := deps.Signer().(service.Signer)
 
+	mware := &middleware.Middleware{
+		Signer: signer,
+		Logger: logsvc.GetServiceLogger("routes"),
+	}
+
 	return &Server{
 		app:       opts.App,
 		ginEngine: opts.GinEngine,
-		admin:     apiadmin.New(ctrls.AdminController()),
+		admin:     apiadmin.New(ctrls.AdminController(), mware),
 		log:       logsvc,
 		signer:    signer,
 		notz: notz.New(notz.NotzOptions{
@@ -64,6 +71,8 @@ func New(opts Options) *Server {
 			TenantHostBase:    opts.TenantHostBase,
 		}),
 		data: opts.App.Data(),
+
+		middleware: mware,
 
 		// controllers
 
@@ -83,7 +92,7 @@ func (s *Server) BuildRoutes() {
 		gin.SetMode(gin.DebugMode)
 
 		s.ginEngine.Use(
-			ginlogger.Logger(s.log.GetAppLogger(), "GIN_APP"),
+			s.middleware.Log,
 			gin.Recovery(),
 		)
 	}
