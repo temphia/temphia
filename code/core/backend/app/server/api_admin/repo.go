@@ -10,9 +10,15 @@ import (
 
 func (a *ApiAdmin) repoAPI(rg *gin.RouterGroup) {
 
+	rg.GET("/", a.X(a.RepoList))
+	rg.POST("/", a.X(a.RepoNew))
+	rg.GET("/:rid", a.X(a.RepoGet))
+	rg.POST("/:rid", a.X(a.RepoUpdate))
+	rg.DELETE("/:rid", a.X(a.RepoDelete))
+
 }
 
-func (r *ApiAdmin) TenantRepoNew(ctx httpx.Request) {
+func (r *ApiAdmin) RepoNew(ctx httpx.Request) {
 	data := &entities.Repo{}
 
 	err := ctx.Http.BindJSON(data)
@@ -25,12 +31,12 @@ func (r *ApiAdmin) TenantRepoNew(ctx httpx.Request) {
 	r.rutil.WriteFinal(ctx.Http, err)
 }
 
-func (r *ApiAdmin) TenantRepoList(ctx httpx.Request) {
+func (r *ApiAdmin) RepoList(ctx httpx.Request) {
 	res, err := r.cAdmin.RepoList(ctx.Session)
 	r.rutil.WriteJSON(ctx.Http, res, err)
 }
 
-func (r *ApiAdmin) TenantRepoGet(ctx httpx.Request) {
+func (r *ApiAdmin) RepoGet(ctx httpx.Request) {
 
 	rid, err := strconv.ParseInt(ctx.Http.Param("rid"), 10, 64)
 	if err != nil {
@@ -42,7 +48,7 @@ func (r *ApiAdmin) TenantRepoGet(ctx httpx.Request) {
 	r.rutil.WriteJSON(ctx.Http, res, err)
 }
 
-func (r *ApiAdmin) TenantRepoUpdate(ctx httpx.Request) {
+func (r *ApiAdmin) RepoUpdate(ctx httpx.Request) {
 
 	data := make(map[string]interface{})
 
@@ -63,7 +69,7 @@ func (r *ApiAdmin) TenantRepoUpdate(ctx httpx.Request) {
 
 }
 
-func (r *ApiAdmin) TenantRepoDelete(ctx httpx.Request) {
+func (r *ApiAdmin) RepoDelete(ctx httpx.Request) {
 
 	rid, err := strconv.ParseInt(ctx.Http.Param("rid"), 10, 64)
 	if err != nil {

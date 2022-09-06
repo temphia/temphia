@@ -18,7 +18,7 @@ type Controller struct {
 
 func New(pacman service.Pacman, cplane xplane.ControlPlane, coredb store.CoreHub, signer service.Signer) *Controller {
 	return &Controller{
-		pacman: pacman,
+
 		cplane: cplane,
 		coredb: coredb,
 		signer: signer,

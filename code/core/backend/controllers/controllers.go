@@ -7,6 +7,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/controllers/cabinet"
 	"github.com/temphia/temphia/code/core/backend/controllers/data"
 	"github.com/temphia/temphia/code/core/backend/controllers/operator"
+	"github.com/temphia/temphia/code/core/backend/controllers/repo"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
@@ -25,6 +26,7 @@ type RootController struct {
 	cBasic    *basic.Controller
 	cCabinet  *cabinet.Controller
 	cDtable   *data.Controller
+	cRepo     *repo.Controller
 	cOperator *operator.Controller
 }
 
@@ -47,6 +49,7 @@ func New(_app xtypes.App) *RootController {
 		cBasic:    basic.New(corehub, cab, dynhub, pacman),
 		cCabinet:  cabinet.New(cab, signer),
 		cDtable:   data.New(dynhub, cab, signer),
+		cRepo:     repo.New(pacman),
 		cOperator: operator.New(corehub, signer, _app, "", ""), // fixme =>
 	}
 }
