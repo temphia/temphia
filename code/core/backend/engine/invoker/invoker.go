@@ -10,6 +10,7 @@ import (
 
 var (
 	ErrInvokerActionNotImplemented = errors.New("INVOKER ACTION NOT IMPLEMENTED")
+	ErrInvokerActionNotAllowed     = errors.New("INVOKER ACTION NOT ALLOWED")
 )
 
 const (

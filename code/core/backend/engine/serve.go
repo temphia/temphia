@@ -5,7 +5,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/logx/logid"
 )
 
-func (e *Engine) servePlugFile(tenantId, plugId, agentId, file string) ([]byte, error) {
+func (e *Engine) serveAgentFile(tenantId, plugId, agentId, file string) ([]byte, error) {
 
 	plug, err := e.syncer.PlugGet(tenantId, plugId)
 	if err != nil {

@@ -1,5 +1,7 @@
 package claim
 
+import "github.com/temphia/temphia/code/core/backend/xtypes"
+
 type Session struct {
 	TenentId   string            `json:"-"`
 	UserID     string            `json:"user,omitempty"`
@@ -29,5 +31,9 @@ func (p *Session) SetAttr(key, value string) {
 }
 
 func (u *Session) IsSuperAdmin() bool {
-	return u.UserGroup == "super_admin"
+	return u.UserGroup == xtypes.UserGroupSuperAdmin
+}
+
+func (u *Session) IsGuest() bool {
+	return u.UserGroup == xtypes.UserGroupGuest
 }

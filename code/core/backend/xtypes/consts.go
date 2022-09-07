@@ -6,6 +6,11 @@ const (
 )
 
 const (
-	CORE_DB_VER_MIN = 0
-	CORE_DB_VER_MAX = 0
+	UserGroupSuperAdmin = "super_admin"
+	UserGroupGuest      = "guest"
+)
+
+const (
+	TEMPHIA_VER_MIN = 2
+	TEMPHIA_VER_MAX = 0
 )

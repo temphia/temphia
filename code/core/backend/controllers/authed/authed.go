@@ -5,6 +5,7 @@ import (
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
@@ -43,7 +44,7 @@ func (c *Controller) AuthListMethods(sitetoken, ugroup string) (*ListAuthRespons
 		ugroup = site.PinnedUserGroup
 	}
 
-	if ugroup == "super_admin" {
+	if ugroup == xtypes.UserGroupSuperAdmin {
 		return &ListAuthResponse{
 			PasswordAuth:   true,
 			OpenSignUp:     false,

@@ -7,7 +7,6 @@ replace github.com/coreos/bbolt => go.etcd.io/bbolt v1.3.5
 require (
 	github.com/alecthomas/repr v0.1.0
 	github.com/antonmedv/expr v1.9.0
-	github.com/benbjohnson/hashfs v0.2.1
 	github.com/brianvoe/gofakeit/v6 v6.18.0
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dop251/goja v0.0.0-20220815083517-0c74f9139fd6
@@ -17,6 +16,7 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/hako/branca v0.0.0-20200807062402-6052ac720505
 	github.com/hashicorp/golang-lru v0.5.4
+	github.com/jellydator/ttlcache/v3 v3.0.0
 	github.com/k0kubun/pp v3.0.1+incompatible
 	github.com/lib/pq v1.10.6
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
@@ -81,6 +81,7 @@ require (
 	github.com/tidwall/rtred v0.1.2 // indirect
 	github.com/tidwall/tinyqueue v0.1.1 // indirect
 	golang.org/x/net v0.0.0-20220624214902-1bab6f366d9e // indirect
+	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
 	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect

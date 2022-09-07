@@ -19,6 +19,6 @@ type Engine interface {
 
 	Execute(options Execution) ([]byte, error)
 
-	ServePlugFile(tenantId, plugId, agentId, file string) ([]byte, error)
-	ServeExecutorFile(tenantId, plugId, agentId, loader string) ([]byte, error)
+	ServeAgentFile(tenantId, plugId, agentId, file string) ([]byte, error)
+	ServeExecutorFile(tenantId, plugId, agentId, file string) ([]byte, error)
 }

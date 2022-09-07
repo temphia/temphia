@@ -11,6 +11,10 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
+var (
+	_ etypes.Engine = (*Engine)(nil)
+)
+
 type Engine struct {
 	app     xtypes.App
 	runtime etypes.Runtime
@@ -47,8 +51,8 @@ func (e *Engine) Execute(opts etypes.Execution) ([]byte, error) {
 	return e.execute(opts)
 }
 
-func (e *Engine) ServePlugFile(tenantId, plugId, agentId, file string) ([]byte, error) {
-	return e.servePlugFile(tenantId, plugId, agentId, file)
+func (e *Engine) ServeAgentFile(tenantId, plugId, agentId, file string) ([]byte, error) {
+	return e.serveAgentFile(tenantId, plugId, agentId, file)
 }
 
 func (e *Engine) ServeExecutorFile(tenantId, plugId, agentId, file string) ([]byte, error) {

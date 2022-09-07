@@ -2,6 +2,7 @@ package claim
 
 import (
 	"github.com/rs/xid"
+	"github.com/temphia/temphia/code/core/backend/xtypes"
 )
 
 type User struct {
@@ -39,5 +40,9 @@ func NewUserLogged(tenantId, userId, groupId string, scopes []string) *User {
 }
 
 func (u *User) IsSuperAdmin() bool {
-	return u.UserGroup == "super_admin"
+	return u.UserGroup == xtypes.UserGroupSuperAdmin
+}
+
+func (u *User) IsGuest() bool {
+	return u.UserGroup == xtypes.UserGroupGuest
 }

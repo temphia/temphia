@@ -26,7 +26,7 @@ func (s *Server) opsX(c *gin.Context) {
 		c.Next()
 	}
 
-	token := c.Request.Header.Get("Authorization")
+	token := c.GetHeader("Authorization")
 	opclaim, err := s.signer.ParseOperator(token)
 	if err != nil {
 		httpx.WriteErr(c, err.Error())
