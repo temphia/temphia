@@ -13,3 +13,6 @@ func New(engine etypes.Engine) *Controller {
 		engine: engine,
 	}
 }
+
+// fixme => x-content-security-policy: frame-ancestors 'self' https://mycourses.w3schools.com;
+// Referer: https://example/launcher/<ticket>

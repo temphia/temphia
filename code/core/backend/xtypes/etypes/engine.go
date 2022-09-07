@@ -1,17 +1,24 @@
 package etypes
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
 )
+
+type Execution struct {
+	TenantId string
+	PlugId   string
+	AgentId  string
+	Action   string
+	Payload  []byte
+	Invoker  job.Invoker
+}
 
 type Engine interface {
 	Run() error
 	GetRuntime() Runtime
 
-	ServerLaunchExec(tenantId, plugId, agentId, mode string, arg any, resp any) error
-	ClientLaunchExec(tenantId, plugId, agentId, mode string, ctx *gin.Context)
+	Execute(options Execution) ([]byte, error)
 
-	ExecAction(tenantId, plugId, agentId, action string, ctx *gin.Context)
-	ServePlugFile(tenantId, plugId, agentId, file string, ctx *gin.Context)
-	ServeExecutorFile(tenantId, plugId, agentId, loader string, ctx *gin.Context)
+	ServePlugFile(tenantId, plugId, agentId, file string) ([]byte, error)
+	ServeExecutorFile(tenantId, plugId, agentId, loader string) ([]byte, error)
 }
