@@ -3,14 +3,14 @@ package opsutils
 import (
 	"time"
 
+	"github.com/temphia/temphia/code/core/backend/controllers/operator/opmodels"
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/vmodels"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
-func AddTenant(app xtypes.App, data *vmodels.NewTenant) error {
+func AddTenant(app xtypes.App, data *opmodels.NewTenant) error {
 
 	if app.SingleTenant() {
 		if app.TenantId() != data.Slug {

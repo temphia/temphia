@@ -1,4 +1,4 @@
-package vmodels
+package opmodels
 
 type OperatorLoginReq struct {
 	User          string `json:"user,omitempty"`

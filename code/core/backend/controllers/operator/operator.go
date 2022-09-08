@@ -4,19 +4,19 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/rs/xid"
 
+	"github.com/temphia/temphia/code/core/backend/controllers/operator/opmodels"
 	"github.com/temphia/temphia/code/core/backend/controllers/operator/opsutils"
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/vmodels"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
 type Controller struct {
 	app        xtypes.App
-	coredb     store.CoreHub // fixme => use control plane instead of coredb sirectly
+	coredb     store.CoreHub // fixme => use control plane instead of coredb directly
 	signer     service.Signer
 	OpUser     string
 	OpPassword string
@@ -35,7 +35,7 @@ func New(cdb store.CoreHub, signer service.Signer, app xtypes.App, opName, opPas
 	}
 }
 
-func (c *Controller) Login(data *vmodels.OperatorLoginReq) (*vmodels.OperatorLoginResp, error) {
+func (c *Controller) Login(data *opmodels.OperatorLoginReq) (*opmodels.OperatorLoginResp, error) {
 	pp.Println("@@=>", c.OpUser, c.OpPassword, c.OpToken, data)
 
 	if data.MasterOpToken != "" {
@@ -60,13 +60,13 @@ func (c *Controller) Login(data *vmodels.OperatorLoginReq) (*vmodels.OperatorLog
 		return nil, err
 	}
 
-	return &vmodels.OperatorLoginResp{
+	return &opmodels.OperatorLoginResp{
 		Token: optoken,
 	}, nil
 
 }
 
-func (c *Controller) AddTenant(data *vmodels.NewTenant) error {
+func (c *Controller) AddTenant(data *opmodels.NewTenant) error {
 	return opsutils.AddTenant(c.app, data)
 }
 
