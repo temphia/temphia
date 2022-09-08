@@ -9,7 +9,6 @@ import (
 
 func (a *ApiAdmin) dataAPI(rg *gin.RouterGroup) {
 
-	rg.GET("/", a.X(a.ListDtableSources))
 	rg.GET("/:source", a.X(a.ListGroup))
 	rg.POST("/:source/", a.X(a.NewGroup))
 	rg.PATCH("/:source/:group_id", a.X(a.EditGroup))
@@ -39,11 +38,6 @@ func (a *ApiAdmin) dataAPI(rg *gin.RouterGroup) {
 	rg.GET("/:table_id/hook/:id", a.X(a.GetHook))
 	rg.DELETE("/:table_id/hook/:id", a.X(a.DelHook))
 
-}
-
-func (a *ApiAdmin) ListDtableSources(ctx httpx.Request) {
-	// sources, err := r.cBasic.ListDyndbSources(ctx.Session)
-	// r.rutil.WriteJSON(ctx.Http, sources, err)
 }
 
 // dyn_table_group
