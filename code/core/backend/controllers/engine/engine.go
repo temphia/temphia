@@ -22,7 +22,7 @@ func New(engine etypes.Engine, signer service.Signer) *Controller {
 	}
 }
 
-func (c *Controller) Execute(tenantId, plugId, agentId, action string, ctx *gin.Context) {
+func (c *Controller) Execute(tenantId, action string, ctx *gin.Context) {
 
 	payload, err := ioutil.ReadAll(ctx.Request.Body)
 	if err != nil {
@@ -36,8 +36,8 @@ func (c *Controller) Execute(tenantId, plugId, agentId, action string, ctx *gin.
 
 	out, err := c.engine.Execute(etypes.Execution{
 		TenantId: tenantId,
-		PlugId:   plugId,
-		AgentId:  agentId,
+		PlugId:   eclaim.PlugId,
+		AgentId:  eclaim.AgentId,
 		Action:   action,
 		Payload:  payload,
 		Invoker:  web.NewWeb(ctx, eclaim),

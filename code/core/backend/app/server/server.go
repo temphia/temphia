@@ -10,6 +10,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/controllers/basic"
 	"github.com/temphia/temphia/code/core/backend/controllers/cabinet"
 	"github.com/temphia/temphia/code/core/backend/controllers/data"
+	"github.com/temphia/temphia/code/core/backend/controllers/engine"
 	"github.com/temphia/temphia/code/core/backend/controllers/operator"
 	"github.com/temphia/temphia/code/core/backend/controllers/repo"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
@@ -45,6 +46,7 @@ type Server struct {
 	cData     *data.Controller
 	cCabinet  *cabinet.Controller
 	cRepo     *repo.Controller
+	cEngine   *engine.Controller
 }
 
 func New(opts Options) *Server {
@@ -84,6 +86,7 @@ func New(opts Options) *Server {
 		cData:     nil,
 		cCabinet:  nil,
 		cRepo:     nil,
+		cEngine:   nil,
 	}
 }
 
