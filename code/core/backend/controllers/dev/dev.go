@@ -1,4 +1,4 @@
-package admin
+package dev
 
 import (
 	"io"
@@ -7,8 +7,15 @@ import (
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 	"github.com/thoas/go-funk"
 )
+
+type Controller struct {
+	pacman  service.Pacman
+	corehub store.CoreHub
+}
 
 func (c *Controller) DevPushFiles(tkt *claim.PlugDevTkt, files map[string]io.Reader) error {
 
@@ -46,7 +53,7 @@ func (c *Controller) DevPushFiles(tkt *claim.PlugDevTkt, files map[string]io.Rea
 		return nil
 	}
 
-	return c.coredb.BprintUpdate(tkt.TenantId, tkt.BprintId, map[string]any{
+	return c.corehub.BprintUpdate(tkt.TenantId, tkt.BprintId, map[string]any{
 		"files": bprint.Files,
 	})
 }
@@ -56,7 +63,7 @@ func (c *Controller) DevModifyPlug(tkt *claim.PlugDevTkt, pid string, data map[s
 		return easyerr.Error("Not allowed field")
 	}
 
-	return c.coredb.PlugUpdate(tkt.TenantId, pid, data)
+	return c.corehub.PlugUpdate(tkt.TenantId, pid, data)
 }
 
 func (c *Controller) DevModifyAgent(tkt *claim.PlugDevTkt, pid string, aid string, data map[string]any) error {
@@ -64,7 +71,7 @@ func (c *Controller) DevModifyAgent(tkt *claim.PlugDevTkt, pid string, aid strin
 		return easyerr.Error("Not allowed field")
 	}
 
-	return c.coredb.AgentUpdate(tkt.TenantId, pid, aid, data)
+	return c.corehub.AgentUpdate(tkt.TenantId, pid, aid, data)
 }
 
 func only(data map[string]any, keys ...string) bool {
@@ -72,7 +79,7 @@ func only(data map[string]any, keys ...string) bool {
 		return false
 	}
 
-	for hkey, _ := range data {
+	for hkey := range data {
 		if !funk.ContainsString(keys, hkey) {
 			return false
 		}

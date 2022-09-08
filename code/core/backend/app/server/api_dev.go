@@ -1,6 +1,8 @@
 package server
 
 import (
+	"io"
+
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
@@ -12,17 +14,17 @@ var (
 
 func (s *Server) devAPI(rg *gin.RouterGroup) {
 
-	// dev.GET("/bprint/file", s.routes.DevBprintFileList)
-	// dev.POST("/bprint/file", s.routes.DevBprintFilePush)
-	// dev.GET("/bprint/file/:file", s.routes.DevBprintFileGet)
-	// dev.DELETE("/bprint/file", s.routes.DevBprintFileDel)
+	rg.GET("/bprint/file", s.DevBprintFileList)
+	rg.POST("/bprint/file", s.DevBprintFilePush)
+	rg.GET("/bprint/file/:file", s.DevBprintFileGet)
+	rg.DELETE("/bprint/file", s.DevBprintFileDel)
 
-	// dev.GET("/exec/watch/plug/:pid", s.routes.DevExecWatch)
-	// dev.POST("/exec/reset/plug/:pid", s.routes.DevExecReset)
-	// dev.POST("/exec/run/plug/:pid/agent/:aid/:action", s.routes.DevExecRun)
+	rg.GET("/exec/watch/plug/:pid", s.DevExecWatch)
+	rg.POST("/exec/reset/plug/:pid", s.DevExecReset)
+	rg.POST("/exec/run/plug/:pid/agent/:aid/:action", s.DevExecRun)
 
-	// dev.POST("/modify", s.routes.DevModifyPlug)
-	// dev.POST("/modify/agent/:aid", s.routes.DevModifyAgent)
+	rg.POST("/modify", s.DevModifyPlug)
+	rg.POST("/modify/agent/:aid", s.DevModifyAgent)
 
 }
 
@@ -30,66 +32,69 @@ func (s *Server) DevBprintFileList(ctx *gin.Context) {}
 func (s *Server) DevBprintFileDel(ctx *gin.Context)  {}
 func (s *Server) DevBprintFileGet(ctx *gin.Context)  {}
 func (s *Server) DevBprintFilePush(ctx *gin.Context) {
-	// dclaim, err := r.parseDevTkt(ctx)
-	// if err != nil {
-	// 	r.rutil.WriteErr(ctx, err.Error())
-	// 	return
-	// }
+	dclaim, err := s.parseDevTkt(ctx)
+	if err != nil {
+		httpx.WriteErr(ctx, err.Error())
+		return
+	}
 
-	// mreader, err := ctx.Request.MultipartReader()
-	// if err != nil {
-	// 	r.rutil.WriteErr(ctx, err.Error())
-	// 	return
-	// }
+	mreader, err := ctx.Request.MultipartReader()
+	if err != nil {
+		httpx.WriteErr(ctx, err.Error())
+		return
+	}
 
-	// form, err := mreader.ReadForm(DevPushMaxSize)
-	// if err != nil {
-	// 	return
-	// }
+	form, err := mreader.ReadForm(DevPushMaxSize)
+	if err != nil {
+		return
+	}
 
-	// files := make(map[string]io.Reader, len(form.File))
+	files := make(map[string]io.Reader, len(form.File))
 
-	// for _, fv := range form.File["files"] {
-	// 	file, err := fv.Open()
-	// 	if err != nil {
-	// 		return
-	// 	}
+	for _, fv := range form.File["files"] {
+		file, err := fv.Open()
+		if err != nil {
+			return
+		}
 
-	// 	files[fv.Filename] = file
-	// }
+		files[fv.Filename] = file
+	}
 
-	// err = r.cAdmin.DevPushFiles(dclaim, files)
-	// r.rutil.WriteFinal(ctx, err)
+	err = s.cDev.DevPushFiles(dclaim, files)
+	httpx.WriteFinal(ctx, err)
 }
 
 func (s *Server) DevExecWatch(ctx *gin.Context) {
 
-	// conn, err := transports.NewConnWS(ctx, r.sessman.SessionId())
-	// if err != nil {
-	// 	r.rutil.WriteErr(ctx, err.Error())
-	// 	return
-	// }
+	/*
 
-	// tkt, err := r.parseDevTkt(ctx)
-	// if err != nil {
-	// 	r.rutil.WriteErr(ctx, err.Error())
-	// 	return
-	// }
+		conn, err := transports.NewConnWS(ctx, r.sessman.SessionId())
+		if err != nil {
+			httpx.WriteErr(ctx, err.Error())
+			return
+		}
 
-	// agents := ctx.QueryArray("agents")
-	// plugId := ctx.Param("pid")
+		tkt, err := r.parseDevTkt(ctx)
+		if err != nil {
+			httpx.WriteErr(ctx, err.Error())
+			return
+		}
 
-	// err = r.sockdhub.AddDevConn(sockdhub.DevConnOptions{
-	// 	TenantId: tkt.TenantId,
-	// 	UserId:   tkt.UserId,
-	// 	PlugId:   plugId,
-	// 	AgentId:  agents[0],
-	// 	Conn:     conn,
-	// })
-	// if err != nil {
-	// 	r.rutil.WriteErr(ctx, err.Error())
-	// 	return
-	// }
+		agents := ctx.QueryArray("agents")
+		plugId := ctx.Param("pid")
+
+		err = r.sockdhub.AddDevConn(sockdhub.DevConnOptions{
+			TenantId: tkt.TenantId,
+			UserId:   tkt.UserId,
+			PlugId:   plugId,
+			AgentId:  agents[0],
+			Conn:     conn,
+		})
+		if err != nil {
+			httpx.WriteErr(ctx, err.Error())
+			return
+		}
+	*/
 
 }
 

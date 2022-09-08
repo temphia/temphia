@@ -4,8 +4,8 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/core/backend/controllers/operator/opmodels"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/vmodels"
 )
 
 func (s *Server) operatorAPI(rg *gin.RouterGroup) {
@@ -38,7 +38,7 @@ func (s *Server) opsX(c *gin.Context) {
 }
 
 func (s *Server) operatorAddTenant(c *gin.Context) {
-	data := &vmodels.NewTenant{}
+	data := &opmodels.NewTenant{}
 	err := c.BindJSON(data)
 	if err != nil {
 		httpx.WriteErr(c, err.Error())
@@ -85,7 +85,7 @@ func (s *Server) operatorStats(c *gin.Context) {
 }
 
 func (s *Server) operatorLogin(c *gin.Context) {
-	data := &vmodels.OperatorLoginReq{}
+	data := &opmodels.OperatorLoginReq{}
 
 	err := c.BindJSON(data)
 	if err != nil {
