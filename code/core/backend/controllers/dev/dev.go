@@ -17,6 +17,13 @@ type Controller struct {
 	corehub store.CoreHub
 }
 
+func New(pacman service.Pacman, corehub store.CoreHub) *Controller {
+	return &Controller{
+		pacman:  pacman,
+		corehub: corehub,
+	}
+}
+
 func (c *Controller) DevPushFiles(tkt *claim.PlugDevTkt, files map[string]io.Reader) error {
 
 	bprint, err := c.pacman.BprintGet(tkt.TenantId, tkt.BprintId)
