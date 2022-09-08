@@ -2,7 +2,6 @@ package notz
 
 import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
 func (m *Notz) get(tenantId, host string) httpx.Adapter {
@@ -14,9 +13,7 @@ func (m *Notz) get(tenantId, host string) httpx.Adapter {
 
 	m.rlock.Unlock()
 
-	corehub := m.app.GetDeps().CoreHub().(store.CoreHub)
-
-	td, err := corehub.GetDomainByName(tenantId, host)
+	td, err := m.corehub.GetDomainByName(tenantId, host)
 	if err != nil {
 		return nil
 	}

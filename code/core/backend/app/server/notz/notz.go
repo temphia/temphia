@@ -13,6 +13,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/app/server/static"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
 type NotzOptions struct {
@@ -29,6 +30,7 @@ type Notz struct {
 	resolveHostTenantFn func(host string) string
 	rootHost            string
 	tenantHostBase      string
+	corehub             store.CoreHub
 
 	rendererBuilders map[string]httpx.Builder
 	renderers        map[string]httpx.Adapter
@@ -47,6 +49,7 @@ func New(opts NotzOptions) Notz {
 		renderers:           make(map[string]httpx.Adapter),
 		rlock:               sync.Mutex{},
 		rendererBuilders:    deps.Registry().(*registry.Registry).GetAdapterBuilders(),
+		corehub:             deps.CoreHub().(store.CoreHub),
 	}
 }
 
