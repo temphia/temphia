@@ -61,6 +61,11 @@ func (c *Controller) LaunchAdmin(uclaim *claim.Session, data Admin) (string, err
 	return c.launchAdmin(uclaim, data)
 }
 
+func (c *Controller) LaunchDev(uclaim *claim.Session, data Admin) (string, error) {
+	//return c.launchAdmin(uclaim, data)
+	return "", nil
+}
+
 func (c *Controller) LaunchData(uclaim *claim.Session, data Data) (string, error) {
 	return c.launchData(uclaim, data)
 }
