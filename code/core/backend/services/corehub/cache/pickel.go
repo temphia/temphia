@@ -1,4 +1,4 @@
-package nodecache
+package cache
 
 import (
 	"bytes"
