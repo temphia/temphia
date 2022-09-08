@@ -16,3 +16,7 @@ func (s *Server) serveAssets() func(c *gin.Context) {
 func (s *Server) publicFile() func(c *gin.Context) {
 	return func(c *gin.Context) {}
 }
+
+func (s *Server) systemAssets(rg *gin.RouterGroup) {
+
+}

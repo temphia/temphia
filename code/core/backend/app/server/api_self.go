@@ -9,6 +9,9 @@ import (
 
 func (s *Server) selfAPI(rg *gin.RouterGroup) {
 
+	rg.GET("/system/cabinet", func(ctx *gin.Context) {})
+	rg.GET("/system/datatable", func(ctx *gin.Context) {})
+
 	rg.GET("/load", func(ctx *gin.Context) {})
 	rg.GET("/session", func(ctx *gin.Context) {})
 	rg.POST("/email/change", func(ctx *gin.Context) {})

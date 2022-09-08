@@ -1,36 +1,89 @@
 package server
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
+)
 
 func (s *Server) cabinetAPI(rg *gin.RouterGroup) {
 
-	/*
+	rg.GET("/", s.X(s.ListRootFolder))
+	rg.GET("/:folder", s.X(s.ListFolder))
+	rg.POST("/:folder", s.X(s.NewFolder))
+	rg.GET("/:folder/file/:fname", s.X(s.GetFile))
+	rg.POST("/:folder/file/:fname", s.X(s.UploadFile))
+	rg.DELETE("/:folder/file/:fname", s.X(s.DeleteFile))
+	rg.GET("/:folder/preview/:fname", s.X(s.GetFilePreview))
 
-		apiv1.GET("/cabinet_sources", r.Authed(r.ListCabinetSources))
-		blobapi.GET("/", r.Authed(r.ListRootFolder))
-		blobapi.GET("/:folder", r.Authed(r.ListFolder))
-		blobapi.POST("/:folder", r.Authed(r.NewFolder))
-		blobapi.GET("/:folder/file/:fname", r.Authed(r.GetFile))
-		blobapi.POST("/:folder/file/:fname", r.Authed(r.UploadFile))
-		blobapi.DELETE("/:folder/file/:fname", r.Authed(r.DeleteFile))
+}
 
-		blobapi.GET("/:folder/preview/:fname", r.Authed(r.GetFilePreview))
-		blobapi.POST("/:folder/ticket", r.Authed(r.GetFolderTicket))
+func (s *Server) ListCabinetSources(ctx httpx.Request) {
 
-					partCab := apiv1.Group("/ticket_cabinet/:ticket")
-			partCab.GET("/", r.TicketCabinetList)
-			partCab.GET("/:file", r.TicketCabinetFile)
-			partCab.GET("/preview/:file", r.TicketCabinetPreviewFile)
-			partCab.POST("/:file", r.TicketCabinetUpload)
+	sources, err := s.cBasic.ListCabinetSources(ctx.Session)
+	httpx.WriteJSON(ctx.Http, sources, err)
+}
 
+func (s *Server) NewFolder(ctx httpx.Request) {
+	httpx.WriteFinal(
+		ctx.Http,
+		s.cCabinet.AddFolder(ctx.Session, ctx.Http.Param("folder")),
+	)
+}
 
-			ftkt.GET("/", s.routes.FolderTktList)
-		ftkt.GET("/:name", s.routes.FolderTktFile)
-		ftkt.GET("/:name/preview", s.routes.FolderTktPreview)
-		ftkt.POST("/:name", s.routes.FolderTktUpload)
-		ftkt.DELETE("/:name", s.routes.FolderTktDelete)
+func (s *Server) UploadFile(ctx httpx.Request) {
+	bytes, err := httpx.ReadForm(ctx.Http)
+	if err != nil {
+		httpx.WriteErr(ctx.Http, err.Error())
+		return
+	}
 
+	err = s.cCabinet.AddBlob(ctx.Session, ctx.Http.Param("folder"), ctx.Http.Param("fname"), bytes)
+	httpx.WriteFinal(ctx.Http, err)
+}
 
-	*/
+func (s *Server) ListRootFolder(ctx httpx.Request) {
+	folders, err := s.cCabinet.ListRoot(ctx.Session)
+	httpx.WriteJSON(ctx.Http, folders, err)
+}
 
+func (s *Server) ListFolder(ctx httpx.Request) {
+	files, err := s.cCabinet.ListFolder(ctx.Session, ctx.Http.Param("folder"))
+	httpx.WriteJSON(ctx.Http, files, err)
+}
+
+func (s *Server) GetFile(ctx httpx.Request) {
+
+	bytes, err := s.cCabinet.GetBlob(ctx.Session, ctx.Http.Param("folder"), ctx.Http.Param("fname"))
+	if err != nil {
+		httpx.WriteErr(ctx.Http, err.Error())
+		return
+	}
+
+	ctx.Http.Writer.WriteHeader(http.StatusOK)
+	ctx.Http.Writer.Write(bytes)
+}
+
+func (s *Server) DeleteFile(ctx httpx.Request) {
+	err := s.cCabinet.DeleteBlob(ctx.Session, ctx.Http.Param("folder"), ctx.Http.Param("fname"))
+	httpx.WriteFinal(ctx.Http, err)
+}
+
+func (s *Server) GetFolderTicket(ctx httpx.Request) {
+
+	resp, err := s.cCabinet.NewFolderTicket(ctx.Session, ctx.Http.Param("folder"))
+
+	httpx.WriteJSON(ctx.Http, resp, err)
+}
+
+func (s *Server) GetFilePreview(ctx httpx.Request) {
+
+	// bytes, err := b.blobfs.GetBlobPreview(c.Request.Context(), cm.TenentId, c.Param("folder"), c.Param("fname"))
+	// if err != nil {
+	// 	apiutils.WriteErr(c, err.Error())
+	// 	return
+	// }
+	// c.Writer.Header().Add("Content-Type", "application/octet-stream")
+	// c.Writer.Write(bytes)
 }
