@@ -1,0 +1,2 @@
+<div>Singleton</div>
+

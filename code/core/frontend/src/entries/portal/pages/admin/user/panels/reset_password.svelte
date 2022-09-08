@@ -1,0 +1,1 @@
+<div>Reset password</div>
