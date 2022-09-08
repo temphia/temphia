@@ -6,6 +6,7 @@ replace github.com/coreos/bbolt => go.etcd.io/bbolt v1.3.5
 
 require (
 	github.com/alecthomas/repr v0.1.0
+	github.com/allegro/bigcache/v3 v3.0.2
 	github.com/antonmedv/expr v1.9.0
 	github.com/brianvoe/gofakeit/v6 v6.18.0
 	github.com/bwmarrin/snowflake v0.3.0
