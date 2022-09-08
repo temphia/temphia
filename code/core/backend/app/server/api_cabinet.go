@@ -16,13 +16,11 @@ func (s *Server) cabinetAPI(rg *gin.RouterGroup) {
 	rg.POST("/:folder/file/:fname", s.X(s.UploadFile))
 	rg.DELETE("/:folder/file/:fname", s.X(s.DeleteFile))
 	rg.GET("/:folder/preview/:fname", s.X(s.GetFilePreview))
+	rg.GET("/:folder/preview/:fname", s.X(s.GetFilePreview))
+	rg.GET("/:folder/ticket", s.X(func(ctx httpx.Request) {
 
-}
+	}))
 
-func (s *Server) ListCabinetSources(ctx httpx.Request) {
-
-	sources, err := s.cBasic.ListCabinetSources(ctx.Session)
-	httpx.WriteJSON(ctx.Http, sources, err)
 }
 
 func (s *Server) NewFolder(ctx httpx.Request) {

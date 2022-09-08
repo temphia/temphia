@@ -41,6 +41,10 @@ func (s *Server) API(rg *gin.RouterGroup) {
 	s.selfAPI(rg.Group("/self"))
 	s.repoAPI(rg.Group("/repo"))
 	s.sockdAPI(rg.Group("/sockd"))
+
+	s.cabinetTktAPI(rg.Group("/tkt/cabinet"))
+	s.dataTktAPI(rg.Group("/tkt/data"))
+
 }
 
 func (s *Server) noRoute(ctx *gin.Context) {
