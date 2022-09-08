@@ -6,7 +6,7 @@ import (
 
 	"github.com/hako/branca"
 	"github.com/rs/xid"
-	"github.com/temphia/temphia/code/core/backend/libx/kosher"
+	"github.com/temphia/temphia/code/core/backend/libx/xutils/kosher"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 

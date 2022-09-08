@@ -12,7 +12,7 @@ type Controller struct {
 	coredb store.CoreHub
 	signer service.Signer
 
-	dynHub store.DynHub
+	dynHub store.DataHub
 	cabHub store.CabinetHub
 }
 

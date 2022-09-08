@@ -49,7 +49,7 @@ func New(_app xtypes.App) *RootController {
 	pacman := deps.Pacman().(service.Pacman)
 	signer := deps.Signer().(service.Signer)
 	cab := deps.Cabinet().(store.CabinetHub)
-	dynhub := deps.DynHub().(store.DynHub)
+	dynhub := deps.DataHub().(store.DataHub)
 	egine := deps.Engine().(etypes.Engine)
 	sd := deps.Sockd().(sockdx.Sockd)
 

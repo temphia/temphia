@@ -92,7 +92,7 @@ func IsMeta(name string) bool {
 	return funk.ContainsString(MetaKeys, name)
 }
 
-type DynHub interface {
+type DataHub interface {
 	DefaultSource(tenant string) DynSource
 	GetSource(source, tenant string) DynSource
 	ListSources(tenant string) ([]string, error)

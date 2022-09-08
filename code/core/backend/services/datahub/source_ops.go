@@ -1,4 +1,4 @@
-package dynhub
+package datahub
 
 import (
 	"github.com/k0kubun/pp"

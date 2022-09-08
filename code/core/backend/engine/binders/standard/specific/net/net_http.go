@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/libx/kosher"
+	"github.com/temphia/temphia/code/core/backend/libx/xutils/kosher"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
 )
 

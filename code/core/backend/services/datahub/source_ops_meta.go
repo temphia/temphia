@@ -1,4 +1,4 @@
-package dynhub
+package datahub
 
 import (
 	"github.com/k0kubun/pp"
@@ -13,7 +13,7 @@ import (
 var _ store.DynSource = (*dynSource)(nil)
 
 type dynSource struct {
-	hub      *DynHub
+	hub      *DataHub
 	source   string
 	tenantId string
 }

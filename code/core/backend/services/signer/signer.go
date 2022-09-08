@@ -6,7 +6,7 @@ import (
 	"errors"
 
 	"github.com/hako/branca"
-	"github.com/temphia/temphia/code/core/backend/libx/kosher"
+	"github.com/temphia/temphia/code/core/backend/libx/xutils/kosher"
 
 	"golang.org/x/crypto/pbkdf2"
 )

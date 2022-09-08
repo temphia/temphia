@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/temphia/temphia/code/core/backend/libx/kosher"
+	"github.com/temphia/temphia/code/core/backend/libx/xutils/kosher"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	bolt "go.etcd.io/bbolt"
 )

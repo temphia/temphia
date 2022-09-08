@@ -1,4 +1,4 @@
-package dynhub
+package datahub
 
 import (
 	sockdhub "github.com/temphia/temphia/code/core/backend/services/sockd/hub"
@@ -9,7 +9,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
 )
 
-type DynHub struct {
+type DataHub struct {
 	dyndbs   map[string]store.DynDB
 	eventHub xplane.EventBus
 	sockdhub sockdhub.SockdHub
@@ -17,11 +17,11 @@ type DynHub struct {
 	app      xtypes.App
 }
 
-func New(_app xtypes.App, dyns map[string]store.DynDB) *DynHub {
+func New(_app xtypes.App, dyns map[string]store.DynDB) *DataHub {
 
 	deps := _app.GetDeps()
 
-	return &DynHub{
+	return &DataHub{
 		dyndbs:   dyns,
 		eventHub: deps.ControlPlane().(xplane.ControlPlane).GetEventBus(),
 		sockdhub: *sockdhub.New(deps.Sockd().(sockdx.Sockd)),
@@ -30,7 +30,7 @@ func New(_app xtypes.App, dyns map[string]store.DynDB) *DynHub {
 	}
 }
 
-func (s *DynHub) GetSource(source, tenant string) store.DynSource {
+func (s *DataHub) GetSource(source, tenant string) store.DynSource {
 	return &dynSource{
 		hub:      s,
 		source:   source,
@@ -38,7 +38,7 @@ func (s *DynHub) GetSource(source, tenant string) store.DynSource {
 	}
 }
 
-func (s *DynHub) DefaultSource(tenant string) store.DynSource {
+func (s *DataHub) DefaultSource(tenant string) store.DynSource {
 
 	chub := s.app.GetDeps().CoreHub().(store.CoreHub)
 
@@ -54,7 +54,7 @@ func (s *DynHub) DefaultSource(tenant string) store.DynSource {
 	}
 }
 
-func (s *DynHub) ListSources(tenantId string) ([]string, error) {
+func (s *DataHub) ListSources(tenantId string) ([]string, error) {
 
 	sources := make([]string, 0, len(s.dyndbs))
 	for srcName := range s.dyndbs {

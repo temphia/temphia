@@ -22,7 +22,7 @@ type PacMan struct {
 	app     xtypes.App
 	sockd   sockdx.SockdCore
 	syncer  store.SyncDB
-	dynHub  store.DynHub
+	dynHub  store.DataHub
 	cabinet store.CabinetHub
 
 	instancers      map[string]instancer.Instancer
@@ -39,7 +39,7 @@ func New(_app xtypes.App) *PacMan {
 		app:             _app,
 		sockd:           deps.Sockd().(sockdx.SockdCore),
 		syncer:          deps.CoreHub().(service.Syncer),
-		dynHub:          deps.DynHub().(store.DynHub),
+		dynHub:          deps.DataHub().(store.DataHub),
 		cabinet:         deps.Cabinet().(store.CabinetHub),
 		instancers:      nil,
 		repoBuilders:    nil,

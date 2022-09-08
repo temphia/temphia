@@ -1,30 +1,23 @@
-package cabinethub
+package cabhub
 
-import (
-	"fmt"
-	"strings"
+// const previewPrefix = "__preview__"
 
-	"github.com/thoas/go-funk"
-)
+// var (
+// 	imageFileExt = []string{"jpeg", "png", "gif", "jpg"}
+// )
 
-const previewPrefix = "__preview__"
+// func previewName(filename string) string {
+// 	return fmt.Sprintf("%s%s", previewPrefix, filename)
+// }
 
-var (
-	imageFileExt = []string{"jpeg", "png", "gif", "jpg"}
-)
+// func canPreview(file string) bool {
 
-func previewName(filename string) string {
-	return fmt.Sprintf("%s%s", previewPrefix, filename)
-}
-
-func canPreview(file string) bool {
-
-	fileSegs := strings.Split(file, ".")
-	if len(fileSegs) < 2 {
-		return false
-	}
-	return funk.ContainsString(imageFileExt, fileSegs[1])
-}
+// 	fileSegs := strings.Split(file, ".")
+// 	if len(fileSegs) < 2 {
+// 		return false
+// 	}
+// 	return funk.ContainsString(imageFileExt, fileSegs[1])
+// }
 
 // func (b *blobAdapter) GeneratePreview(ctx context.Context, tenant, folder string, file string, contents []byte) error {
 // 	pbytes, err := image.GeneratePreview(contents, file)

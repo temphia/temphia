@@ -1,4 +1,4 @@
-package cabinethub
+package cabhub
 
 import (
 	"github.com/k0kubun/pp"
@@ -8,7 +8,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
 )
 
-type CabinetHub struct {
+type CabHub struct {
 	defaultProvider store.CabinetSource
 	sources         map[string]store.CabinetSource
 	defName         string
@@ -16,20 +16,8 @@ type CabinetHub struct {
 
 var defaultFolders = []string{"bprints", "data_common", "public", "ns_assets"}
 
-/*
-
-	ns_assets/icon_user_john11.png
-	ns_assets/icon_plug_xyz.png
-	ns_assets/icon_plug_agent_xyz_mno.png
-	ns_assets/icon_ugroup_super_admin.png
-	ns_assets/icon_tenant.png
-	ns_assets/authed_background.png
-
-
-*/
-
-func New(sources map[string]store.CabinetSource, defprovider string) *CabinetHub {
-	ch := &CabinetHub{
+func New(sources map[string]store.CabinetSource, defprovider string) *CabHub {
+	ch := &CabHub{
 		sources:         sources,
 		defaultProvider: sources[defprovider],
 		defName:         defprovider,
@@ -37,7 +25,7 @@ func New(sources map[string]store.CabinetSource, defprovider string) *CabinetHub
 	return ch
 }
 
-func (c *CabinetHub) Start(eventbus any) error {
+func (c *CabHub) Start(eventbus any) error {
 	eb := eventbus.(xplane.EventBus)
 
 	eb.OnTenantChange(func(tenant, event string, data *entities.Tenant) {
@@ -54,7 +42,7 @@ func (c *CabinetHub) Start(eventbus any) error {
 	return nil
 }
 
-func (c *CabinetHub) Default(tenant string) store.CabinetSourced {
+func (c *CabHub) Default(tenant string) store.CabinetSourced {
 	return &cabinetSourced{
 		source:   "default",
 		tenantId: tenant,
@@ -62,7 +50,7 @@ func (c *CabinetHub) Default(tenant string) store.CabinetSourced {
 	}
 }
 
-func (c *CabinetHub) ListSources(tenant string) ([]string, error) {
+func (c *CabHub) ListSources(tenant string) ([]string, error) {
 	sources := make([]string, 0, len(c.sources))
 	for k := range c.sources {
 		sources = append(sources, k)
@@ -70,7 +58,7 @@ func (c *CabinetHub) ListSources(tenant string) ([]string, error) {
 	return sources, nil
 }
 
-func (c *CabinetHub) GetSource(source, tenant string) store.CabinetSourced {
+func (c *CabHub) GetSource(source, tenant string) store.CabinetSourced {
 
 	pp.Println(source, tenant)
 
@@ -86,4 +74,4 @@ func (c *CabinetHub) GetSource(source, tenant string) store.CabinetSourced {
 	}
 }
 
-func (c *CabinetHub) DefaultName(tenant string) string { return c.defName }
+func (c *CabHub) DefaultName(tenant string) string { return c.defName }

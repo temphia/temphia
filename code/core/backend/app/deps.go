@@ -23,7 +23,7 @@ type AppDeps struct {
 	courier      service.Courier
 	cabinetHub   store.CabinetHub
 	pacman       service.Pacman
-	dynHub       store.DynHub
+	dataHub      store.DataHub
 	nodeCache    service.NodeCache
 	croot        *controllers.RootController
 }
@@ -35,7 +35,7 @@ func (d *AppDeps) LogService() any     { return d.logService }
 func (d *AppDeps) CoreHub() any        { return d.coreHub }
 func (d *AppDeps) PlugKV() any         { return d.plugKV }
 func (d *AppDeps) Cabinet() any        { return d.cabinetHub }
-func (d *AppDeps) DynHub() any         { return d.dynHub }
+func (d *AppDeps) DataHub() any        { return d.dataHub }
 func (d *AppDeps) Engine() any         { return d.engine }
 func (d *AppDeps) Sockd() any          { return d.sockd }
 func (d *AppDeps) Signer() any         { return d.signer }

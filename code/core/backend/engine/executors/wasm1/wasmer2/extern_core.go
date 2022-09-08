@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/core/backend/libx/kosher"
+	"github.com/temphia/temphia/code/core/backend/libx/xutils/kosher"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/event"
 	"github.com/wasmerio/wasmer-go/wasmer"
 )

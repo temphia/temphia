@@ -1,4 +1,4 @@
-package cabinethub
+package cabhub
 
 import (
 	"context"

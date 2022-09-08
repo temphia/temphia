@@ -10,12 +10,12 @@ import (
 type Controller struct {
 	coredb  store.CoreHub
 	cabinet store.CabinetHub
-	dynHub  store.DynHub
+	dynHub  store.DataHub
 	pacman  service.Pacman
 	signer  service.Signer
 }
 
-func New(coredb store.CoreHub, cabinet store.CabinetHub, dynHub store.DynHub, pacman service.Pacman) *Controller {
+func New(coredb store.CoreHub, cabinet store.CabinetHub, dynHub store.DataHub, pacman service.Pacman) *Controller {
 	ctrl := &Controller{
 		coredb:  coredb,
 		cabinet: cabinet,

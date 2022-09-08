@@ -1,4 +1,4 @@
-package dynhub
+package datahub
 
 type RowMod struct {
 	Table   string  `json:"table,omitempty"`

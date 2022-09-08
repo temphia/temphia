@@ -7,12 +7,12 @@ import (
 )
 
 type Controller struct {
-	dynHub store.DynHub
+	dynHub store.DataHub
 	cabHub store.CabinetHub
 	signer service.Signer
 }
 
-func New(dhub store.DynHub, cabHub store.CabinetHub, signer service.Signer) *Controller {
+func New(dhub store.DataHub, cabHub store.CabinetHub, signer service.Signer) *Controller {
 	return &Controller{
 
 		dynHub: dhub,

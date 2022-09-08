@@ -27,7 +27,7 @@ type Deps interface {
 	CoreHub() any
 	PlugKV() any
 	Cabinet() any
-	DynHub() any
+	DataHub() any
 	Engine() any
 	Sockd() any
 	Signer() any

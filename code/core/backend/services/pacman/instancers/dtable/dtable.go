@@ -17,7 +17,7 @@ type dtabeInstancer struct {
 	pacman  service.Pacman
 	cabhub  store.CabinetHub
 	coreHub store.CoreHub
-	dynhub  store.DynHub
+	dynhub  store.DataHub
 }
 
 func New(app xtypes.App) *dtabeInstancer {
@@ -29,7 +29,7 @@ func New(app xtypes.App) *dtabeInstancer {
 		pacman:  deps.Pacman().(service.Pacman),
 		cabhub:  deps.Cabinet().(store.CabinetHub),
 		coreHub: deps.CoreHub().(store.CoreHub),
-		dynhub:  deps.DynHub().(store.DynHub),
+		dynhub:  deps.DataHub().(store.DataHub),
 	}
 }
 

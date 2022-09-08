@@ -20,7 +20,7 @@ func (DyndbBuilder) Init(app any) error {
 func New(opts etypes.ModuleOptions) *DyndbModule {
 	deps := opts.Binder.GetApp().(xtypes.App).GetDeps()
 
-	dynhub := deps.DynHub().(store.DynHub).GetSource("default", opts.Resource.TenantId) // fixme => get source from resource
+	dynhub := deps.DataHub().(store.DataHub).GetSource("default", opts.Resource.TenantId) // fixme => get source from resource
 
 	return &DyndbModule{
 		binder: opts.Binder,

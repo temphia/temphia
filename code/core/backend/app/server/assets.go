@@ -20,3 +20,15 @@ func (s *Server) publicFile() func(c *gin.Context) {
 func (s *Server) systemAssets(rg *gin.RouterGroup) {
 
 }
+
+/*
+
+	ns_assets/icon_user_john11.png
+	ns_assets/icon_plug_xyz.png
+	ns_assets/icon_plug_agent_xyz_mno.png
+	ns_assets/icon_ugroup_super_admin.png
+	ns_assets/icon_tenant.png
+	ns_assets/authed_background.png
+
+
+*/
