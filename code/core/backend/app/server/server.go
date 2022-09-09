@@ -1,6 +1,8 @@
 package server
 
 import (
+	"net"
+
 	"github.com/gin-gonic/gin"
 	apiadmin "github.com/temphia/temphia/code/core/backend/app/server/api_admin"
 	"github.com/temphia/temphia/code/core/backend/app/server/middleware"
@@ -26,6 +28,9 @@ type Options struct {
 	ResolveHostTenant func(host string) string
 	RootHost          string
 	TenantHostBase    string
+	Port              string
+	OperatorUser      string
+	OperatorPassword  string
 }
 
 type Server struct {
@@ -36,6 +41,7 @@ type Server struct {
 	signer    service.Signer
 	notz      notz.Notz
 	data      xtypes.DataBox
+	port      string
 
 	middleware *middleware.Middleware
 
@@ -54,7 +60,11 @@ type Server struct {
 func New(opts Options) *Server {
 	deps := opts.App.GetDeps()
 
-	ctrls := controllers.New(opts.App)
+	ctrls := controllers.New(controllers.Options{
+		App:              opts.App,
+		OperatorUser:     opts.OperatorUser,
+		OperatorPassword: opts.OperatorPassword,
+	})
 	logsvc := deps.LogService().(logx.Service)
 	signer := deps.Signer().(service.Signer)
 
@@ -69,6 +79,7 @@ func New(opts Options) *Server {
 		admin:     apiadmin.New(ctrls.AdminController(), mware),
 		log:       logsvc,
 		signer:    signer,
+		port:      opts.Port,
 		notz: notz.New(notz.NotzOptions{
 			App:               opts.App,
 			StaticHosts:       opts.StaticHosts,
@@ -91,6 +102,15 @@ func New(opts Options) *Server {
 		cEngine:   nil,
 		cDev:      nil,
 	}
+}
+
+func (s *Server) ListenHTTP() error {
+	listener, err := net.Listen("tcp", s.port)
+	if err != nil {
+		panic(err)
+	}
+
+	return s.ginEngine.RunListener(listener)
 }
 
 func (s *Server) BuildRoutes() {

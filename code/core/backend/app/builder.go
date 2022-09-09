@@ -7,11 +7,17 @@ import (
 	"github.com/temphia/temphia/code/core/backend/app/registry"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
+	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
 )
 
 type Builder struct {
 	app    *App
 	config *config.Config
+	stores map[string]store.Store
+
+	cdb store.CoreDB
+	pkv store.PlugStateKV
 }
 
 func NewBuilder() *Builder {
@@ -43,8 +49,6 @@ func (b *Builder) SetLogger(log logx.Service) {
 	b.app.deps.logService = log
 }
 
-// private
-
-func (b *Builder) initApp() {
-
+func (b *Builder) Xplane(xp xplane.ControlPlane) {
+	b.app.deps.controlPlane = xp
 }

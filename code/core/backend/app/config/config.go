@@ -6,6 +6,9 @@ type Config struct {
 	OperatorName     string                  `json:"op_name,omitempty"`
 	OperatorPassword string                  `json:"op_password,omitempty"`
 	Stores           map[string]*StoreSource `json:"stores,omitempty"`
+	Coredb           string                  `json:"coredb,omitempty"`
+	DefaultCabinet   string                  `json:"default_cabinet,omitempty"`
+	DefaultDyndb     string                  `json:"default_dyndb,omitempty"`
 	NodeOptions      *NodeOptions            `json:"node,omitempty"`
 	ExecutorOptions  map[string]any          `json:"executors,omitempty"`
 	ModulesOptions   map[string]any          `json:"modules,omitempty"`

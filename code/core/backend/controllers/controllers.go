@@ -38,9 +38,15 @@ type RootController struct {
 	cOperator *operator.Controller
 }
 
-func New(_app xtypes.App) *RootController {
+type Options struct {
+	App              xtypes.App
+	OperatorUser     string
+	OperatorPassword string
+}
 
-	deps := _app.GetDeps()
+func New(opts Options) *RootController {
+
+	deps := opts.App.GetDeps()
 
 	cplane := deps.ControlPlane().(xplane.ControlPlane)
 	seq := cplane.GetSequencer()
@@ -54,16 +60,21 @@ func New(_app xtypes.App) *RootController {
 	sd := deps.Sockd().(sockdx.Sockd)
 
 	return &RootController{
-		cAdmin:    admin.New(pacman, cplane, corehub, signer),
-		cAuth:     authed.New(corehub, signer, seq),
-		cBasic:    basic.New(corehub, cab, dynhub, pacman),
-		cCabinet:  cabinet.New(cab, signer),
-		cDtable:   data.New(dynhub, cab, signer),
-		cRepo:     repo.New(pacman),
-		cOperator: operator.New(corehub, signer, _app, "", ""), // fixme =>
-		cDev:      dev.New(pacman, corehub),
-		cEngine:   engine.New(egine, signer),
-		cSockd:    sockd.New(sd),
+		cAdmin:   admin.New(pacman, cplane, corehub, signer),
+		cAuth:    authed.New(corehub, signer, seq),
+		cBasic:   basic.New(corehub, cab, dynhub, pacman),
+		cCabinet: cabinet.New(cab, signer),
+		cDtable:  data.New(dynhub, cab, signer),
+		cRepo:    repo.New(pacman),
+		cOperator: operator.New(
+			corehub,
+			signer,
+			opts.App,
+			opts.OperatorUser,
+			opts.OperatorPassword),
+		cDev:    dev.New(pacman, corehub),
+		cEngine: engine.New(egine, signer),
+		cSockd:  sockd.New(sd),
 	}
 }
 
