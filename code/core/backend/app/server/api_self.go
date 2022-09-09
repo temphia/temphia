@@ -11,8 +11,9 @@ import (
 
 func (s *Server) selfAPI(rg *gin.RouterGroup) {
 
-	rg.GET("/source/cabinet", s.X(s.cabinetSources))
-	rg.GET("/source/datatable", s.X(s.dtableSources))
+	rg.GET("/system/cabinet", s.X(s.cabinetSources))
+	rg.GET("/system/datatable", s.X(s.dtableSources))
+	rg.GET("/system/adapter", s.X(s.ListRenderers))
 
 	rg.GET("/load", s.X(s.selfGetInfo))
 	rg.GET("/session", s.X(s.selfListSession))
@@ -109,4 +110,9 @@ func (s *Server) IssuePlugTkt(ctx httpx.Request) {
 
 	tkt, err := s.cBasic.DevIssueTkt(ctx.Session, ctx.Http.Request.Host, rdata)
 	httpx.WriteJSON(ctx.Http, tkt, err)
+}
+
+func (s *Server) ListRenderers(ctx httpx.Request) {
+	resp := s.notz.ListRenderers()
+	httpx.WriteJSON(ctx.Http, resp, nil)
 }

@@ -7,17 +7,22 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 )
 
+type Options struct {
+	Admin      *admin.Controller
+	MiddleWare *middleware.Middleware
+}
+
 type ApiAdmin struct {
 	rutil      httpx.Rutil
 	cAdmin     *admin.Controller
 	middleware *middleware.Middleware
 }
 
-func New(cAdmin *admin.Controller, m *middleware.Middleware) ApiAdmin {
+func New(opts Options) ApiAdmin {
 	return ApiAdmin{
 		rutil:      httpx.Rutil{},
-		cAdmin:     cAdmin,
-		middleware: m,
+		cAdmin:     opts.Admin,
+		middleware: opts.MiddleWare,
 	}
 }
 

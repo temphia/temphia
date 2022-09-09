@@ -10,6 +10,21 @@ import (
 
 func (a *ApiAdmin) tenantAPI(rg *gin.RouterGroup) {
 
+	rg.POST("/", a.X(a.UpdateTenant))
+	rg.GET("/", a.X(a.GetTenant))
+
+	rg.GET("/domain", a.X(a.ListTenantDomain))
+	rg.POST("/domain", a.X(a.AddTenantDomain))
+	rg.GET("/domain/:id", a.X(a.GetTenantDomain))
+	rg.POST("/domain/:id", a.X(a.UpdateTenantDomain))
+	rg.DELETE("/domain/:id", a.X(a.RemoveTenantDomain))
+
+	rg.GET("/domain/:id/widget", a.X(a.ListDomainWidget))
+	rg.POST("/domain/:id/widget", a.X(a.AddDomainWidget))
+	rg.GET("/domain/:id/widget/:wid", a.X(a.GetDomainWidget))
+	rg.POST("/domain/:id/widget/:wid", a.X(a.UpdateDomainWidget))
+	rg.DELETE("/domain/:id/widget/:wid", a.X(a.RemoveDomainWidget))
+
 }
 
 func (r *ApiAdmin) UpdateTenant(ctx httpx.Request) {

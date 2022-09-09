@@ -76,10 +76,13 @@ func New(opts Options) *Server {
 	return &Server{
 		app:       opts.App,
 		ginEngine: opts.GinEngine,
-		admin:     apiadmin.New(ctrls.AdminController(), mware),
-		log:       logsvc,
-		signer:    signer,
-		port:      opts.Port,
+		admin: apiadmin.New(apiadmin.Options{
+			Admin:      ctrls.AdminController(),
+			MiddleWare: mware,
+		}),
+		log:    logsvc,
+		signer: signer,
+		port:   opts.Port,
 		notz: notz.New(notz.NotzOptions{
 			App:               opts.App,
 			StaticHosts:       opts.StaticHosts,
