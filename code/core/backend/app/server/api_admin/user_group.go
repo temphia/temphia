@@ -10,6 +10,36 @@ import (
 
 func (a *ApiAdmin) userGroupAPI(rg *gin.RouterGroup) {
 
+	rg.GET("/", a.X(a.ListUserGroup))
+	rg.POST("/", a.X(a.AddUserGroup))
+	rg.GET("/:ugroup", a.X(a.GetUserGroup))
+	rg.POST("/:ugroup", a.X(a.UpdateUserGroup))
+	rg.DELETE("/:ugroup", a.X(a.RemoveUserGroup))
+
+	rg.GET("/", a.X(a.ListUserGroupData))
+	rg.POST("/", a.X(a.AddUserGroupData))
+	rg.GET("/:id", a.X(a.GetUserGroupData))
+	rg.POST("/:id", a.X(a.UpdateUserGroupData))
+	rg.DELETE("/:id", a.X(a.RemoveUserGroupData))
+
+	rg.GET("/plug/:ugroup", a.X(a.ListUserGroupPlug))
+	rg.POST("/plug/:ugroup", a.X(a.AddUserGroupPlug))
+	rg.GET("/plug/:ugroup/:id", a.X(a.GetUserGroupPlug))
+	rg.POST("/plug/:ugroup/:id", a.X(a.UpdateUserGroupPlug))
+	rg.DELETE("/plug/:ugroup/:id", a.X(a.RemoveUserGroupPlug))
+
+	rg.GET("/auth/:ugroup", a.X(a.ListUserGroupAuth))
+	rg.POST("/auth/:ugroup", a.X(a.AddUserGroupAuth))
+	rg.GET("/auth/:ugroup/:id", a.X(a.GetUserGroupAuth))
+	rg.POST("/auth/:ugroup/:id", a.X(a.UpdateUserGroupAuth))
+	rg.DELETE("/auth/:ugroup/:id", a.X(a.RemoveUserGroupAuth))
+
+	rg.GET("/hook/:ugroup", a.X(a.ListUserGroupHook))
+	rg.POST("/hook/:ugroup", a.X(a.AddUserGroupHook))
+	rg.GET("/hook/:ugroup/:id", a.X(a.GetUserGroupHook))
+	rg.POST("/hook/:ugroup/:id", a.X(a.UpdateUserGroupHook))
+	rg.DELETE("/hook/:ugroup/:id", a.X(a.RemoveUserGroupHook))
+
 }
 
 func (r *ApiAdmin) AddUserGroup(ctx httpx.Request) {
@@ -27,7 +57,7 @@ func (r *ApiAdmin) AddUserGroup(ctx httpx.Request) {
 }
 
 func (r *ApiAdmin) GetUserGroup(ctx httpx.Request) {
-	resp, err := r.cAdmin.GetUserGroup(ctx.Session, ctx.Http.Param("user_group"))
+	resp, err := r.cAdmin.GetUserGroup(ctx.Session, ctx.Http.Param("ugroup"))
 	r.rutil.WriteJSON(ctx.Http, resp, err)
 }
 
@@ -44,12 +74,12 @@ func (r *ApiAdmin) UpdateUserGroup(ctx httpx.Request) {
 		return
 	}
 
-	err = r.cAdmin.UpdateUserGroup(ctx.Session, ctx.Http.Param("user_group"), data)
+	err = r.cAdmin.UpdateUserGroup(ctx.Session, ctx.Http.Param("ugroup"), data)
 	r.rutil.WriteJSON(ctx.Http, nil, err)
 }
 
 func (r *ApiAdmin) RemoveUserGroup(ctx httpx.Request) {
-	r.rutil.WriteJSON(ctx.Http, nil, r.cAdmin.RemoveUserGroup(ctx.Session, ctx.Http.Param("user_group")))
+	r.rutil.WriteJSON(ctx.Http, nil, r.cAdmin.RemoveUserGroup(ctx.Session, ctx.Http.Param("ugroup")))
 }
 
 // auth user group meta

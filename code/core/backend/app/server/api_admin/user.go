@@ -8,6 +8,29 @@ import (
 
 func (a *ApiAdmin) userAPI(rg *gin.RouterGroup) {
 
+	rg.GET("/", a.X(a.ListUsers))
+	rg.POST("/", a.X(a.AddUser))
+	rg.GET("/:user_id", a.X(a.GetUserByID))
+	rg.POST("/:user_id", a.X(a.UpdateUser))
+	rg.DELETE("/:user_id", a.X(a.RemoveUser))
+
+	rg.GET("/perm", a.X(a.ListAllPerm))
+	rg.POST("/perm", a.X(a.AddPerm))
+	rg.GET("/perm/:perm", a.X(a.GetPerm))
+	rg.POST("/perm/:perm", a.X(a.UpdatePerm))
+	rg.DELETE("/perm/:perm", a.X(a.RemovePerm))
+
+	rg.GET("/role", a.X(a.ListAllRole))
+	rg.POST("/role", a.X(a.AddRole))
+	rg.GET("/role/:role", a.X(a.GetRole))
+	rg.POST("/role/:role", a.X(a.UpdateRole))
+	rg.DELETE("/role/:role", a.X(a.RemoveRole))
+
+	rg.GET("/user_role", a.X(a.ListAllUserRole))
+	rg.POST("/user_role", a.X(a.AddUserRole))
+	rg.DELETE("/user_role", a.X(a.RemoveUserRole))
+
+	// rg.GET("/user_perm", r.Authed(r.ListUserPerm)) // user query
 }
 
 func (r *ApiAdmin) AddUser(ctx httpx.Request) {

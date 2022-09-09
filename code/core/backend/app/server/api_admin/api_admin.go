@@ -24,8 +24,10 @@ func New(cAdmin *admin.Controller, m *middleware.Middleware) ApiAdmin {
 func (a *ApiAdmin) API(rg *gin.RouterGroup) {
 	a.bprintAPI(rg.Group("/bprint"))
 	a.dataAPI(rg.Group("/data"))
+
 	a.userAPI(rg.Group("/user"))
-	a.userGroupAPI(rg.Group("/user_group"))
+	a.userGroupAPI(rg.Group("/ugroup"))
+
 	a.repoAPI(rg.Group("/repo"))
 	a.plugAPI(rg.Group("/plug"))
 	a.resourceAPI(rg.Group("/resource"))
