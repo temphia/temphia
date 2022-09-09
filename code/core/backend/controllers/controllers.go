@@ -84,3 +84,8 @@ func (c *RootController) BasicController() *basic.Controller       { return c.cB
 func (c *RootController) CabinetController() *cabinet.Controller   { return c.cCabinet }
 func (c *RootController) DtableController() *data.Controller       { return c.cDtable }
 func (c *RootController) OperatorController() *operator.Controller { return c.cOperator }
+
+func (c *RootController) SockdController() *sockd.Controller   { return c.cSockd }
+func (c *RootController) RepoController() *repo.Controller     { return c.cRepo }
+func (c *RootController) EngineController() *engine.Controller { return c.cEngine }
+func (c *RootController) DevController() *dev.Controller       { return c.cDev }
