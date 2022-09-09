@@ -3,6 +3,7 @@ package app
 import (
 	"sync"
 
+	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/app/config"
 	"github.com/temphia/temphia/code/core/backend/app/registry"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
@@ -12,9 +13,10 @@ import (
 )
 
 type Builder struct {
-	app    *App
-	config *config.Config
-	stores map[string]store.Store
+	app       *App
+	config    *config.Config
+	stores    map[string]store.Store
+	ginEngine *gin.Engine
 
 	cdb store.CoreDB
 	pkv store.PlugStateKV
@@ -51,4 +53,16 @@ func (b *Builder) SetLogger(log logx.Service) {
 
 func (b *Builder) Xplane(xp xplane.ControlPlane) {
 	b.app.deps.controlPlane = xp
+}
+
+func (b *Builder) Build() error {
+	return b.build()
+}
+
+func (b *Builder) BuildServer() error {
+	return b.buildServer()
+}
+
+func (b *Builder) GetApp() xtypes.App {
+	return b.app
 }

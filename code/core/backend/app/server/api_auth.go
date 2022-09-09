@@ -10,25 +10,25 @@ import (
 
 func (s *Server) authAPI(rg *gin.RouterGroup) {
 
-	rg.GET("/", s.AuthListMethods)
+	rg.GET("/", s.authListMethods)
 
-	rg.POST("/login/next", s.AuthLoginNext)
-	rg.POST("/login/submit", s.AuthLoginSubmit)
+	rg.POST("/login/next", s.authLoginNext)
+	rg.POST("/login/submit", s.authLoginSubmit)
 
-	rg.POST("/alt/:id/generate", s.AuthGenerate)
-	rg.POST("/alt/:id/next/:stage", s.AuthNext)
-	rg.POST("/alt/:id/submit", s.AuthSubmit)
+	rg.POST("/alt/:id/generate", s.authGenerate)
+	rg.POST("/alt/:id/next/:stage", s.authNext)
+	rg.POST("/alt/:id/submit", s.authSubmit)
 
-	rg.POST("/signup/next", s.AuthSignupSubmit)
-	rg.POST("/signup/submit", s.AuthSignupSubmit)
+	rg.POST("/signup/next", s.authSignupSubmit)
+	rg.POST("/signup/submit", s.authSignupSubmit)
 
-	rg.POST("/finish", s.AuthedFinish)
+	rg.POST("/finish", s.authedFinish)
 
-	rg.POST("/reset", s.AuthReset)
-	rg.POST("/reset/submit", s.AuthResetSubmit)
-	rg.POST("/reset/finish", s.AuthResetFinish)
+	rg.POST("/reset", s.authReset)
+	rg.POST("/reset/submit", s.authResetSubmit)
+	rg.POST("/reset/finish", s.authResetFinish)
 
-	rg.POST("/refresh", s.AuthRefresh)
+	rg.POST("/refresh", s.authRefresh)
 
 	rg.GET("/auth/oauth_redirect", func(ctx *gin.Context) {
 		ctx.Writer.Write([]byte("<h1> Nice </h1>"))
@@ -36,7 +36,7 @@ func (s *Server) authAPI(rg *gin.RouterGroup) {
 
 }
 
-func (s *Server) AuthListMethods(c *gin.Context) {
+func (s *Server) authListMethods(c *gin.Context) {
 	resp, err := s.cAuth.AuthListMethods(
 		c.GetHeader("Authorization"),
 		c.Query("ugroup"),
@@ -45,7 +45,7 @@ func (s *Server) AuthListMethods(c *gin.Context) {
 	httpx.WriteJSON(c, resp, err)
 }
 
-func (s *Server) AuthLoginNext(c *gin.Context) {
+func (s *Server) authLoginNext(c *gin.Context) {
 	opts := authed.LoginNextRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
@@ -58,7 +58,7 @@ func (s *Server) AuthLoginNext(c *gin.Context) {
 
 }
 
-func (s *Server) AuthLoginSubmit(c *gin.Context) {
+func (s *Server) authLoginSubmit(c *gin.Context) {
 	opts := authed.LoginSubmitRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
@@ -70,7 +70,7 @@ func (s *Server) AuthLoginSubmit(c *gin.Context) {
 	httpx.WriteJSON(c, resp, err)
 }
 
-func (s *Server) AuthedFinish(c *gin.Context) {
+func (s *Server) authedFinish(c *gin.Context) {
 	opts := authed.AuthFinishRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
@@ -83,7 +83,7 @@ func (s *Server) AuthedFinish(c *gin.Context) {
 
 }
 
-func (s *Server) AuthGenerate(c *gin.Context) {
+func (s *Server) authGenerate(c *gin.Context) {
 	opts := authed.AuthGenerateRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
@@ -104,7 +104,7 @@ func (s *Server) AuthGenerate(c *gin.Context) {
 
 }
 
-func (s *Server) AuthNext(c *gin.Context) {
+func (s *Server) authNext(c *gin.Context) {
 	stage := c.Param("stage")
 	switch stage {
 	case "first":
@@ -141,7 +141,7 @@ func (s *Server) AuthNext(c *gin.Context) {
 	}
 }
 
-func (s *Server) AuthSubmit(c *gin.Context) {
+func (s *Server) authSubmit(c *gin.Context) {
 	opts := authed.AuthSubmitRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
@@ -153,23 +153,23 @@ func (s *Server) AuthSubmit(c *gin.Context) {
 	httpx.WriteJSON(c, resp, err)
 }
 
-func (s *Server) AuthSignupSubmit(c *gin.Context) {
+func (s *Server) authSignupSubmit(c *gin.Context) {
 
 }
 
-func (s *Server) AuthSignupFinish(c *gin.Context) {
+func (s *Server) authSignupFinish(c *gin.Context) {
 
 }
 
-func (s *Server) AuthReset(c *gin.Context) {
+func (s *Server) authReset(c *gin.Context) {
 
 }
 
-func (s *Server) AuthResetSubmit(c *gin.Context) {
+func (s *Server) authResetSubmit(c *gin.Context) {
 
 }
 
-func (s *Server) AuthResetFinish(c *gin.Context) {
+func (s *Server) authResetFinish(c *gin.Context) {
 	opts := authed.AuthFinishRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
@@ -181,7 +181,7 @@ func (s *Server) AuthResetFinish(c *gin.Context) {
 	httpx.WriteJSON(c, resp, err)
 }
 
-func (s *Server) AuthRefresh(c *gin.Context) {
+func (s *Server) authRefresh(c *gin.Context) {
 	opts := authed.RefreshReq{}
 	err := c.BindJSON(&opts)
 	if err != nil {

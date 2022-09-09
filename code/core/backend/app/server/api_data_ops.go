@@ -10,26 +10,26 @@ import (
 
 func (s *Server) dataAPI(rg *gin.RouterGroup) {
 
-	rg.GET("/load", s.X(s.LoadGroup))
+	rg.GET("/load", s.X(s.loadGroup))
 
-	rg.POST("/:table_id/row", s.X(s.NewRow))
-	rg.GET("/:table_id/row/:id", s.X(s.GetRow))
-	rg.POST("/:table_id/row/:id", s.X(s.UpdateRow))
-	rg.DELETE("/:table_id/row/:id", s.X(s.DeleteRow))
-	rg.POST("/:table_id/simple_query", s.X(s.SimpleQuery))
+	rg.POST("/:table_id/row", s.X(s.newRow))
+	rg.GET("/:table_id/row/:id", s.X(s.getRow))
+	rg.POST("/:table_id/row/:id", s.X(s.updateRow))
+	rg.DELETE("/:table_id/row/:id", s.X(s.deleteRow))
+	rg.POST("/:table_id/simple_query", s.X(s.simpleQuery))
 	rg.POST("/:table_id/fts_query", s.X(s.FTSQuery)) // fixme => remove this and consolidate this to simple_query ?
-	rg.POST("/:table_id/ref_load", s.X(s.RefLoad))
-	rg.POST("/:table_id/ref_resolve", s.X(s.RefResolve))
-	rg.POST("/:table_id/rev_ref_load", s.X(s.ReverseRefLoad))
-	rg.GET("/:table_id/activity/:row_id", s.X(s.ListActivity))
-	rg.POST("/:table_id/activity/:row_id", s.X(s.CommentRow))
+	rg.POST("/:table_id/ref_load", s.X(s.refLoad))
+	rg.POST("/:table_id/ref_resolve", s.X(s.refResolve))
+	rg.POST("/:table_id/rev_ref_load", s.X(s.reverseRefLoad))
+	rg.GET("/:table_id/activity/:row_id", s.X(s.listActivity))
+	rg.POST("/:table_id/activity/:row_id", s.X(s.commentRow))
 }
 
 type newRowReq struct {
 	Cells map[string]interface{} `json:"cells,omitempty"`
 }
 
-func (s *Server) LoadGroup(ctx httpx.Request) {
+func (s *Server) loadGroup(ctx httpx.Request) {
 	gr, err := s.cData.LoadGroup(ctx.Session)
 	if err != nil {
 		httpx.WriteErr(ctx.Http, err.Error())
@@ -39,7 +39,7 @@ func (s *Server) LoadGroup(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, gr, err)
 }
 
-func (s *Server) NewRow(ctx httpx.Request) {
+func (s *Server) newRow(ctx httpx.Request) {
 
 	data := &newRowReq{}
 	err := ctx.Http.BindJSON(data)
@@ -52,7 +52,7 @@ func (s *Server) NewRow(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, id, err)
 }
 
-func (s *Server) GetRow(ctx httpx.Request) {
+func (s *Server) getRow(ctx httpx.Request) {
 	id, err := strconv.ParseInt(ctx.MustParam("id"), 10, 64)
 	if err != nil {
 
@@ -68,7 +68,7 @@ type updateRowReq struct {
 	Cells   map[string]interface{} `json:"cells,omitempty"`
 }
 
-func (s *Server) UpdateRow(ctx httpx.Request) {
+func (s *Server) updateRow(ctx httpx.Request) {
 	id, err := strconv.ParseInt(ctx.MustParam("id"), 10, 64)
 	if err != nil {
 		httpx.WriteErr(ctx.Http, err.Error())
@@ -86,7 +86,7 @@ func (s *Server) UpdateRow(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, cells, err)
 }
 
-func (s *Server) DeleteRow(ctx httpx.Request) {
+func (s *Server) deleteRow(ctx httpx.Request) {
 	id, err := strconv.ParseInt(ctx.MustParam("id"), 10, 64)
 	if err != nil {
 		httpx.WriteErr(ctx.Http, err.Error())
@@ -96,7 +96,7 @@ func (s *Server) DeleteRow(ctx httpx.Request) {
 	httpx.WriteFinal(ctx.Http, err)
 }
 
-func (s *Server) SimpleQuery(ctx httpx.Request) {
+func (s *Server) simpleQuery(ctx httpx.Request) {
 	query := store.SimpleQueryReq{}
 	err := ctx.Http.BindJSON(&query)
 	if err != nil {
@@ -120,7 +120,7 @@ func (s *Server) FTSQuery(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) RefLoad(ctx httpx.Request) {
+func (s *Server) refLoad(ctx httpx.Request) {
 	query := &store.RefLoadReq{}
 	err := ctx.Http.BindJSON(&query)
 	if err != nil {
@@ -132,7 +132,7 @@ func (s *Server) RefLoad(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) RefResolve(ctx httpx.Request) {
+func (s *Server) refResolve(ctx httpx.Request) {
 	query := &store.RefResolveReq{}
 	err := ctx.Http.BindJSON(&query)
 	if err != nil {
@@ -144,7 +144,7 @@ func (s *Server) RefResolve(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) ReverseRefLoad(ctx httpx.Request) {
+func (s *Server) reverseRefLoad(ctx httpx.Request) {
 	query := &store.RevRefLoadReq{}
 
 	err := ctx.Http.BindJSON(query)
@@ -157,7 +157,7 @@ func (s *Server) ReverseRefLoad(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) ListActivity(ctx httpx.Request) {
+func (s *Server) listActivity(ctx httpx.Request) {
 	rid, err := strconv.ParseInt(ctx.MustParam("row_id"), 10, 64)
 	if err != nil {
 		httpx.WriteErr(ctx.Http, err.Error())
@@ -172,7 +172,7 @@ type commentRowReq struct {
 	Message string `json:"message,omitempty"`
 }
 
-func (s *Server) CommentRow(ctx httpx.Request) {
+func (s *Server) commentRow(ctx httpx.Request) {
 	rid, err := strconv.ParseInt(ctx.MustParam("row_id"), 10, 64)
 	if err != nil {
 		httpx.WriteErr(ctx.Http, err.Error())

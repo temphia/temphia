@@ -70,7 +70,7 @@ func (b *Builder) preCheck() error {
 	return nil
 }
 
-func (b *Builder) Build() error {
+func (b *Builder) build() error {
 
 	err := b.preCheck()
 	if err != nil {

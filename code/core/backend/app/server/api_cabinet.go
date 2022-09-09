@@ -9,28 +9,26 @@ import (
 
 func (s *Server) cabinetAPI(rg *gin.RouterGroup) {
 
-	rg.GET("/", s.X(s.ListRootFolder))
-	rg.GET("/:folder", s.X(s.ListFolder))
-	rg.POST("/:folder", s.X(s.NewFolder))
-	rg.GET("/:folder/file/:fname", s.X(s.GetFile))
-	rg.POST("/:folder/file/:fname", s.X(s.UploadFile))
-	rg.DELETE("/:folder/file/:fname", s.X(s.DeleteFile))
-	rg.GET("/:folder/preview/:fname", s.X(s.GetFilePreview))
-	rg.GET("/:folder/preview/:fname", s.X(s.GetFilePreview))
-	rg.GET("/:folder/ticket", s.X(func(ctx httpx.Request) {
-
-	}))
+	rg.GET("/", s.X(s.listRootFolder))
+	rg.GET("/:folder", s.X(s.listFolder))
+	rg.POST("/:folder", s.X(s.newFolder))
+	rg.GET("/:folder/file/:fname", s.X(s.getFile))
+	rg.POST("/:folder/file/:fname", s.X(s.uploadFile))
+	rg.DELETE("/:folder/file/:fname", s.X(s.deleteFile))
+	rg.GET("/:folder/preview/:fname", s.X(s.getFilePreview))
+	rg.GET("/:folder/preview/:fname", s.X(s.getFilePreview))
+	rg.GET("/:folder/ticket", s.X(s.getFolderTicket))
 
 }
 
-func (s *Server) NewFolder(ctx httpx.Request) {
+func (s *Server) newFolder(ctx httpx.Request) {
 	httpx.WriteFinal(
 		ctx.Http,
 		s.cCabinet.AddFolder(ctx.Session, ctx.Http.Param("folder")),
 	)
 }
 
-func (s *Server) UploadFile(ctx httpx.Request) {
+func (s *Server) uploadFile(ctx httpx.Request) {
 	bytes, err := httpx.ReadForm(ctx.Http)
 	if err != nil {
 		httpx.WriteErr(ctx.Http, err.Error())
@@ -41,17 +39,17 @@ func (s *Server) UploadFile(ctx httpx.Request) {
 	httpx.WriteFinal(ctx.Http, err)
 }
 
-func (s *Server) ListRootFolder(ctx httpx.Request) {
+func (s *Server) listRootFolder(ctx httpx.Request) {
 	folders, err := s.cCabinet.ListRoot(ctx.Session)
 	httpx.WriteJSON(ctx.Http, folders, err)
 }
 
-func (s *Server) ListFolder(ctx httpx.Request) {
+func (s *Server) listFolder(ctx httpx.Request) {
 	files, err := s.cCabinet.ListFolder(ctx.Session, ctx.Http.Param("folder"))
 	httpx.WriteJSON(ctx.Http, files, err)
 }
 
-func (s *Server) GetFile(ctx httpx.Request) {
+func (s *Server) getFile(ctx httpx.Request) {
 
 	bytes, err := s.cCabinet.GetBlob(ctx.Session, ctx.Http.Param("folder"), ctx.Http.Param("fname"))
 	if err != nil {
@@ -63,19 +61,19 @@ func (s *Server) GetFile(ctx httpx.Request) {
 	ctx.Http.Writer.Write(bytes)
 }
 
-func (s *Server) DeleteFile(ctx httpx.Request) {
+func (s *Server) deleteFile(ctx httpx.Request) {
 	err := s.cCabinet.DeleteBlob(ctx.Session, ctx.Http.Param("folder"), ctx.Http.Param("fname"))
 	httpx.WriteFinal(ctx.Http, err)
 }
 
-func (s *Server) GetFolderTicket(ctx httpx.Request) {
+func (s *Server) getFolderTicket(ctx httpx.Request) {
 
 	resp, err := s.cCabinet.NewFolderTicket(ctx.Session, ctx.Http.Param("folder"))
 
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) GetFilePreview(ctx httpx.Request) {
+func (s *Server) getFilePreview(ctx httpx.Request) {
 
 	// bytes, err := b.blobfs.GetBlobPreview(c.Request.Context(), cm.TenentId, c.Param("folder"), c.Param("fname"))
 	// if err != nil {

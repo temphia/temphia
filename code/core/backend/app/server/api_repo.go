@@ -8,19 +8,19 @@ import (
 )
 
 func (s *Server) repoAPI(rg *gin.RouterGroup) {
-	rg.GET("/", s.X(s.RepoSources))
-	rg.GET("/:repo", s.X(s.RepoList))
-	rg.GET("/:repo/:group_id/:slug", s.X(s.RepoGet))
-	rg.GET("/:repo/:group_id/:slug/:file", s.X(s.RepoGetFile))
+	rg.GET("/", s.X(s.repoSources))
+	rg.GET("/:repo", s.X(s.repoList))
+	rg.GET("/:repo/:group_id/:slug", s.X(s.repoGet))
+	rg.GET("/:repo/:group_id/:slug/:file", s.X(s.repoGetFile))
 
 }
 
-func (s *Server) RepoSources(ctx httpx.Request) {
+func (s *Server) repoSources(ctx httpx.Request) {
 	// fixme
 
 }
 
-func (s *Server) RepoList(ctx httpx.Request) {
+func (s *Server) repoList(ctx httpx.Request) {
 
 	sid, err := strconv.ParseInt(ctx.MustParam("repo"), 10, 64)
 	if err != nil {
@@ -33,7 +33,7 @@ func (s *Server) RepoList(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) RepoGet(ctx httpx.Request) {
+func (s *Server) repoGet(ctx httpx.Request) {
 
 	sid, err := strconv.ParseInt(ctx.Http.Param("repo"), 10, 64)
 	if err != nil {
@@ -49,7 +49,7 @@ func (s *Server) RepoGet(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) RepoGetFile(ctx httpx.Request) {
+func (s *Server) repoGetFile(ctx httpx.Request) {
 
 	sid, err := strconv.ParseInt(ctx.MustParam("repo"), 10, 64)
 	if err != nil {
