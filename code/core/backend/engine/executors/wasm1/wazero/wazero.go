@@ -10,12 +10,19 @@ import (
 )
 
 type Executor struct {
-	builder  *Builder
-	bindings bindx.Bindings
+	builder *Builder
 
 	compiled wazero.CompiledModule
 	instance api.Module
 	context  context.Context
+
+	bindings   bindx.Bindings
+	bindPluKV  bindx.PlugKV
+	bindSockd  bindx.Sockd
+	bindUser   bindx.User
+	bindCab    bindx.Cabinet
+	bindSelf   bindx.Self
+	bindNcache bindx.NodeCache
 }
 
 func (e *Executor) Process(req *event.Request) (*event.Response, error) {
@@ -45,39 +52,4 @@ func (e *Executor) execute(name string, data []byte) error {
 	}
 
 	return nil
-}
-
-func (e *Executor) write(data []byte) (uint32, bool) {
-	offset := e.allocateBytes(uint64(len(data)))
-	mem := e.getMem()
-
-	return offset, mem.Write(context.TODO(), offset, data)
-}
-
-func (e *Executor) write2(data []byte, roffset, rlen uint32) bool {
-	offset := e.allocateBytes(uint64(len(data)))
-	mem := e.getMem()
-
-	ok := mem.Write(context.TODO(), offset, data)
-	if !ok {
-		return false
-	}
-
-	mem.WriteUint32Le(context.TODO(), roffset, offset)
-	mem.WriteUint32Le(context.TODO(), rlen, uint32(len(data)))
-
-	return true
-}
-
-func (e *Executor) allocateBytes(size uint64) uint32 {
-	fun := e.instance.ExportedFunction("allocate_bytes")
-	offset, err := fun.Call(context.TODO(), size)
-	if err != nil {
-		panic("allocate_bytes not exported")
-	}
-	return uint32(offset[0])
-}
-
-func (e *Executor) getMem() api.Memory {
-	return e.instance.Memory()
 }

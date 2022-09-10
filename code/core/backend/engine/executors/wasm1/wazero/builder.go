@@ -50,5 +50,13 @@ func (b *Builder) Instance(opts etypes.ExecutorOption) (etypes.Executor, error) 
 		compiled: cmodule,
 		instance: module,
 		bindings: opts.Binder,
+		context:  context.TODO(),
+
+		bindPluKV:  opts.Binder.PlugKVBindingsGet(),
+		bindSockd:  opts.Binder.SockdBindingsGet(),
+		bindUser:   opts.Binder.UserBindingsGet(),
+		bindCab:    opts.Binder.CabinetBindingsGet(),
+		bindSelf:   opts.Binder.SelfBindingsGet(),
+		bindNcache: opts.Binder.NodeCacheGet(),
 	}, nil
 }
