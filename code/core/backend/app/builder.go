@@ -8,18 +8,13 @@ import (
 	"github.com/temphia/temphia/code/core/backend/app/registry"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
 )
 
 type Builder struct {
 	app       *App
 	config    *config.Config
-	stores    map[string]store.Store
 	ginEngine *gin.Engine
-
-	cdb store.CoreDB
-	pkv store.PlugStateKV
 }
 
 func NewBuilder() *Builder {

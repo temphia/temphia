@@ -12,22 +12,28 @@ import (
 type DataHub struct {
 	dyndbs   map[string]store.DynDB
 	eventHub xplane.EventBus
-	sockdhub sockdhub.SockdHub
+	sockdhub *sockdhub.SockdHub
 	engine   etypes.Engine
-	app      xtypes.App
+	corehub  store.CoreHub
 }
 
-func New(_app xtypes.App, dyns map[string]store.DynDB) *DataHub {
-
-	deps := _app.GetDeps()
+func New(dyns map[string]store.DynDB) *DataHub {
 
 	return &DataHub{
 		dyndbs:   dyns,
-		eventHub: deps.ControlPlane().(xplane.ControlPlane).GetEventBus(),
-		sockdhub: *sockdhub.New(deps.Sockd().(sockdx.Sockd)),
-		app:      _app,
-		engine:   deps.Engine().(etypes.Engine),
+		eventHub: nil,
+		sockdhub: nil,
+		engine:   nil,
 	}
+}
+
+func (s *DataHub) Inject(_app xtypes.App) {
+	deps := _app.GetDeps()
+
+	deps.ControlPlane().(xplane.ControlPlane).GetEventBus()
+	s.sockdhub = sockdhub.New(deps.Sockd().(sockdx.Sockd))
+	s.corehub = deps.CoreHub().(store.CoreHub)
+
 }
 
 func (s *DataHub) GetSource(source, tenant string) store.DynSource {
@@ -40,9 +46,7 @@ func (s *DataHub) GetSource(source, tenant string) store.DynSource {
 
 func (s *DataHub) DefaultSource(tenant string) store.DynSource {
 
-	chub := s.app.GetDeps().CoreHub().(store.CoreHub)
-
-	tdata, err := chub.GetTenant(tenant)
+	tdata, err := s.corehub.GetTenant(tenant)
 	if err != nil {
 		panic(err)
 	}

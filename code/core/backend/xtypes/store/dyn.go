@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/rs/xid"
+	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 
@@ -96,6 +97,7 @@ type DataHub interface {
 	DefaultSource(tenant string) DynSource
 	GetSource(source, tenant string) DynSource
 	ListSources(tenant string) ([]string, error)
+	Inject(app xtypes.App)
 }
 
 type DynSource interface {

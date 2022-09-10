@@ -1,13 +1,14 @@
 package store
 
-import "github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+import (
+	"github.com/temphia/temphia/code/core/backend/xtypes"
+	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+)
 
 type CoreHub interface {
-	UserOps
-	TenantOps
-	SyncDB
-	UserMessageOps
-	UserGroupExtra
+	CoreDB
+
+	Inject(app xtypes.App)
 }
 
 type SyncDB interface {
@@ -18,10 +19,13 @@ type SyncDB interface {
 }
 
 type CoreDB interface {
-	CoreHub
-
-	Migrate() error
-	GetInnerDriver() any
+	UserOps
+	TenantOps
+	SyncDB
+	UserMessageOps
+	UserGroupExtra
+	// GetInnerDriver() any
+	// Migrate() error
 }
 
 type TenantOps interface {
