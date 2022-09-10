@@ -97,11 +97,10 @@ func (nc *NodeCache) PutCAS(tenantId, space, key string, value []byte, version, 
 func (nc *NodeCache) Get(tenantId, space, key string) (data []byte, version int64, expire int64, err error) {
 
 	var needsDel bool
+	mkey := spaceKeyMeta(tenantId, key)
+	kkey := spaceKey(tenantId, key)
 
 	err = nc.db.View(func(tx *bolt.Tx) error {
-
-		mkey := spaceKeyMeta(tenantId, key)
-		kkey := spaceKey(tenantId, key)
 
 		buk := tx.Bucket([]byte(space))
 		data = buk.Get(kkey)
@@ -133,10 +132,10 @@ func (nc *NodeCache) Get(tenantId, space, key string) (data []byte, version int6
 }
 
 func (nc *NodeCache) Expire(tenantId, space, key string) error {
+	mkey := spaceKeyMeta(tenantId, key)
+	kkey := spaceKey(tenantId, key)
 
 	return nc.db.Update(func(tx *bolt.Tx) error {
-		mkey := spaceKeyMeta(tenantId, key)
-		kkey := spaceKey(tenantId, key)
 
 		buk := tx.Bucket([]byte(space))
 		err1 := buk.Delete(kkey)
