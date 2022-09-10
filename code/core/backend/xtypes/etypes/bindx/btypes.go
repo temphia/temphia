@@ -8,17 +8,17 @@ import (
 )
 
 type Bindings interface {
-	BindCore
+	Core
 
-	PlugKVBindingsGet() BindPlugKV
-	SockdBindingsGet() BindSockd
-	UserBindingsGet() BindUser
-	CabinetBindingsGet() BindCabinet
-	SelfBindingsGet() BindSelf
-	NodeCacheGet() BindNodeCache
+	PlugKVBindingsGet() PlugKV
+	SockdBindingsGet() Sockd
+	UserBindingsGet() User
+	CabinetBindingsGet() Cabinet
+	SelfBindingsGet() Self
+	NodeCacheGet() NodeCache
 }
 
-type BindCore interface {
+type Core interface {
 	Log(msg string)
 	LazyLog(msgs []string)
 	Sleep(int32)
@@ -26,7 +26,7 @@ type BindCore interface {
 	GetApp() any
 }
 
-type BindPlugKV interface {
+type PlugKV interface {
 	Set(txid uint32, key, value string, opts *store.SetOptions) error
 	Update(txid uint32, key, value string, opts *store.UpdateOptions) error
 	Get(txid uint32, key string) (*entities.PlugKV, error)
@@ -39,7 +39,7 @@ type BindPlugKV interface {
 	Commit(txid uint32) error
 }
 
-type BindCabinet interface {
+type Cabinet interface {
 	AddFile(bucket string, file string, contents []byte) error
 	ListFolder(bucket string) ([]string, error)
 	GetFile(bucket string, file string) ([]byte, error)
@@ -47,7 +47,7 @@ type BindCabinet interface {
 	GenerateTicket(bucket string, ticket *CabTicket) (string, error)
 }
 
-type BindSockd interface {
+type Sockd interface {
 	SendDirect(room string, connId int64, payload []byte) error
 	SendDirectBatch(room string, conns []int64, payload []byte) error
 	SendBroadcast(room string, ignores []int64, payload []byte) error
@@ -55,7 +55,7 @@ type BindSockd interface {
 	RoomUpdateTags(room string, opts sockdx.UpdateTagOptions) error
 }
 
-type BindUser interface {
+type User interface {
 	ListUsers(group string) ([]string, error)
 	MessageUser(group, user, message string, encrypted bool) error
 	GetUser(group, user string) (*entities.UserInfo, error)
@@ -64,7 +64,7 @@ type BindUser interface {
 	CurrentUser() (*entities.UserInfo, error)
 }
 
-type BindNet interface {
+type Net interface {
 	HttpRaw(*HttpRequest) *HttpResponse
 	HttpRawBatch([]*HttpRequest) []*HttpResponse
 
@@ -76,14 +76,14 @@ type BindNet interface {
 	HttpJsonPost(url string, headers map[string]string, data []byte) ([]byte, error)
 }
 
-type BindNodeCache interface {
+type NodeCache interface {
 	Put(key string, value []byte, expire int64) error
 	PutCAS(key string, value []byte, version, expire int64) error
 	Get(key string) (data []byte, version int64, expire int64, err error)
 	Expire(key string) error
 }
 
-type BindSelf interface {
+type Self interface {
 	SelfGetFile(file string) ([]byte, error)
 	SelfAddFile(file string, data []byte) error
 	SelfUpdateFile(file string, data []byte) error

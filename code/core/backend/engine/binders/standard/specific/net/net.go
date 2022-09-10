@@ -15,7 +15,7 @@ var (
 	StaticJsonHeader = map[string]string{ContentType: ApplicationJson}
 )
 
-var _ bindx.BindNet = (*Binding)(nil)
+var _ bindx.Net = (*Binding)(nil)
 
 type Binding struct {
 	hclient http.Client
