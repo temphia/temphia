@@ -69,7 +69,7 @@ func CabinetDelFile(folder, file string) error {
 	return errors.New(string(getBytes(respPtr)))
 }
 
-func CabinetGenerateTkt(folder string, opts map[string]any) ([]byte, error) {
+func CabinetGenerateTkt(folder string, opts map[string]any) (string, error) {
 	folderPtr, folderLen := stringToPtr(folder)
 	optPtr, optLen := JsonPtr(opts)
 
@@ -78,10 +78,10 @@ func CabinetGenerateTkt(folder string, opts map[string]any) ([]byte, error) {
 	ok := _cabinet_generate_tkt(folderPtr, folderLen, int32(uintptr(optPtr)), optLen, intAddr(&respPtr), intAddr(&respLen))
 	resp := getBytes(respPtr)
 	if ok {
-		return resp, nil
+		return string(resp), nil
 	}
 
-	return nil, errors.New(string(resp))
+	return "", errors.New(string(resp))
 }
 
 // private

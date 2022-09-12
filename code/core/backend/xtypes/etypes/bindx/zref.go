@@ -20,3 +20,7 @@ type BindLocker interface {
 	ResourceLockRenew(resource string, key string) error
 	ResourceUnLock(resource string, key string) error
 }
+
+type Sockd2 interface {
+	KickFromRoom(connId int64, room string) error
+}
