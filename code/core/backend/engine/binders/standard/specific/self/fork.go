@@ -2,7 +2,7 @@ package self
 
 import (
 	"github.com/rs/xid"
-	"github.com/temphia/temphia/code/core/backend/engine/invoker/forked"
+	"github.com/temphia/temphia/code/core/backend/engine/invokers/forked"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
 )
 

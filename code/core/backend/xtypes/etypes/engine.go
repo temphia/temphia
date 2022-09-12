@@ -1,8 +1,6 @@
 package etypes
 
-import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
-)
+import "github.com/temphia/temphia/code/core/backend/xtypes/etypes/invoker"
 
 type Execution struct {
 	TenantId string
@@ -10,7 +8,7 @@ type Execution struct {
 	AgentId  string
 	Action   string
 	Payload  []byte
-	Invoker  job.Invoker
+	Invoker  invoker.Invoker
 }
 
 type Engine interface {

@@ -1,4 +1,4 @@
-package invoker
+package invokers
 
 import (
 	"errors"

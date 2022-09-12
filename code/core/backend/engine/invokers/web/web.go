@@ -4,13 +4,13 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/core/backend/engine/invoker"
+	"github.com/temphia/temphia/code/core/backend/engine/invokers"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/invoker"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 )
 
-var _ job.Invoker = (*WebRequest)(nil)
+var _ invoker.Invoker = (*WebRequest)(nil)
 
 type WebRequest struct {
 	rctx  *gin.Context
@@ -32,18 +32,18 @@ func (r *WebRequest) Handle(method string, data xtypes.LazyData) (xtypes.LazyDat
 		return r.dataHandle(method, data)
 	}
 
-	return nil, invoker.ErrInvokerActionNotImplemented
+	return nil, invokers.ErrInvokerActionNotImplemented
 }
 
 func (r *WebRequest) Name() string {
 	return r.claim.ExecType
 }
 
-func (r *WebRequest) CurrentUser() *job.InvokeUser {
+func (r *WebRequest) User() *invoker.User {
 
-	return &job.InvokeUser{
-		UserId:    r.claim.UserId,
-		UserGroup: r.claim.UserGroup,
+	return &invoker.User{
+		Id:        r.claim.UserId,
+		Group:     r.claim.UserGroup,
 		SessionId: r.claim.SessionId,
 	}
 

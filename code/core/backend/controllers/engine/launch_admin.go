@@ -1,7 +1,7 @@
 package engine
 
 import (
-	"github.com/temphia/temphia/code/core/backend/engine/invoker"
+	"github.com/temphia/temphia/code/core/backend/engine/invokers"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 )
 
@@ -22,7 +22,7 @@ func (c *Controller) launchAdmin(uclaim *claim.Session, data Admin) (string, err
 		ExecId:     0,
 		PlugId:     data.PlugId,
 		AgentId:    data.AgentId,
-		ExecType:   invoker.TypeWebAdmin,
+		ExecType:   invokers.TypeWebAdmin,
 		Attributes: make(map[string]string),
 	})
 

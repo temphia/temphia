@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/temphia/temphia/code/core/backend/engine/binders/standard/handle"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/invoker"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
@@ -16,7 +16,7 @@ var (
 type Binding struct {
 	chub       store.CoreHub
 	handle     *handle.Handle
-	iuserCache *job.InvokeUser
+	iuserCache *invoker.User
 }
 
 func New(handle *handle.Handle) Binding {
@@ -92,7 +92,7 @@ func (ub *Binding) MessageCurrentUser(title, message string, callback bool) erro
 		Read:         false,
 		Type:         "message",
 		Contents:     message,
-		UserId:       ub.iuserCache.UserId,
+		UserId:       ub.iuserCache.Id,
 		FromUser:     "",
 		FromPlug:     ub.handle.PlugId,
 		FromAgent:    ub.handle.AgentId,
@@ -112,7 +112,7 @@ func (ub *Binding) CurrentUser() (*entities.UserInfo, error) {
 		return nil, ErrEmptyCurrentUser
 	}
 
-	ruser, err := ub.chub.GetUserByID(ub.handle.Namespace, ub.iuserCache.UserId)
+	ruser, err := ub.chub.GetUserByID(ub.handle.Namespace, ub.iuserCache.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -135,6 +135,5 @@ func (ub *Binding) loadInvokeUser() {
 	}
 
 	invoker := ub.handle.Job.Invoker
-	invoker.CurrentUser()
-	ub.iuserCache = invoker.CurrentUser()
+	ub.iuserCache = invoker.User()
 }

@@ -1,16 +1,20 @@
-package job
+package invoker
 
 import "github.com/temphia/temphia/code/core/backend/xtypes"
 
-type InvokeUser struct {
-	UserId    string
-	UserGroup string
+type User struct {
+	Id        string
+	Group     string
 	SessionId int64
 	DeviceId  string
 }
 
 type Invoker interface {
+	User() *User
 	Name() string
-	CurrentUser() *InvokeUser
+	Module
+}
+
+type Module interface {
 	Handle(method string, data xtypes.LazyData) (xtypes.LazyData, error)
 }

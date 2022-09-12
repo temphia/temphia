@@ -4,7 +4,7 @@ import (
 	"io/ioutil"
 
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/core/backend/engine/invoker/web"
+	"github.com/temphia/temphia/code/core/backend/engine/invokers/web"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"

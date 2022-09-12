@@ -1,9 +1,9 @@
 package forked
 
 import (
-	"github.com/temphia/temphia/code/core/backend/engine/invoker"
+	"github.com/temphia/temphia/code/core/backend/engine/invokers"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/invoker"
 )
 
 type Forked struct {
@@ -17,13 +17,13 @@ func New(from string) *Forked {
 }
 
 func (f *Forked) Handle(method string, data xtypes.LazyData) (xtypes.LazyData, error) {
-	return nil, invoker.ErrInvokerActionNotImplemented
+	return nil, invokers.ErrInvokerActionNotImplemented
 }
 
 func (f *Forked) Name() string {
-	return invoker.TypeForked
+	return invokers.TypeForked
 }
 
-func (f *Forked) CurrentUser() *job.InvokeUser {
+func (f *Forked) User() *invoker.User {
 	return nil
 }
