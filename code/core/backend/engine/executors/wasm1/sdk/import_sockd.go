@@ -31,30 +31,30 @@ func BannConn(connId string) error {
 
 // private
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export sockd_send_direct
 func _sockd_send_direct(roomPtr, roomLen, connIdsPtr, connIdsLen, payloadPtr, payloadLen, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export sockd_send_broadcast
 func _sockd_send_broadcast(roomPtr, roomLen, payloadPtr, payloadLen, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export sockd_send_tagged
 func _sockd_send_tagged(roomPtr, roomLen, tagsPtr, tagsLen, payloadPtr, payloadLen, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export sockd_add_to_room
 func _sockd_add_to_room(roomPtr, roomLen, cidPtr, cidLen, tagsPtr, tagsLen, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export sockd_kick_from_room
 func _sockd_kick_from_room(roomPtr, roomLen, cidPtr, cidLen, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export sockd_kick_from_room
 func _sockd_list_room_conns(roomPtr, roomLen, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export sockd_kick_from_room
 func _sockd_ban_conn(cidPtr, cidLen, respPtr, respLen int32) bool

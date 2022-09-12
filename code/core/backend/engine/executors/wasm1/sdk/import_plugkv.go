@@ -150,38 +150,38 @@ func PlugKvTxnCommit(txid int32) error {
 
 // private
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export plugkv_set
 func _plugkv_set(txid, keyPtr, keyLen, valuePtr, valueLen, optsPtr, optsLen, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export plugkv_update
 func _plugkv_update(txid, keyPtr, keyLen, valuePtr, valueLen, optsPtr, optsLen, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export plugkv_get
 func _plugkv_get(txid, keyPtr, keyLen, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export plugkv_del
 func _plugkv_delete(txid, keyPtr, keyLen, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export plugkv_del_batch
 func _plugkv_delete_batch(txid, keyPtr, keyLen, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export plugkv_query
 func _plugkv_query(txid, optsPtr, optsLen, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export plugkv_txn_new
 func _plugkv_txn_new(txidPtr, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export plugkv_txn_rollback
 func _plugkv_txn_rollback(txid, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export plugkv_txn_commit
 func _plugkv_txn_commit(txid, respPtr, respLen int32) bool

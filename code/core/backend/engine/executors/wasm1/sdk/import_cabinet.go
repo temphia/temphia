@@ -86,22 +86,22 @@ func CabinetGenerateTkt(folder string, opts map[string]any) ([]byte, error) {
 
 // private
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export cabinet_add_file
 func _cabinet_add_file(fPtr, fLen, filePtr, fileLen, conPtr, conLen, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export cabinet_list_folder
 func _cabinet_list_folder(fPtr, fLen, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export cabinet_get_file
 func _cabinet_get_file(fPtr, fLen, filePtr, fileLen, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export cabinet_del_file
 func _cabinet_del_file(fPtr, fLen, filePtr, fileLen, respPtr, respLen int32) bool
 
-//go:wasm-module temphia
+//go:wasm-module temphia1
 //export cabinet_generate_tkt
 func _cabinet_generate_tkt(fPtr, fLen, optPtr, optLen, respPtr, respLen int32) bool
