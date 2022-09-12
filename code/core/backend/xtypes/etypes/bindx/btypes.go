@@ -44,6 +44,7 @@ type Cabinet interface {
 	ListFolder(bucket string) ([]string, error)
 	GetFile(bucket string, file string) ([]byte, error)
 	DeleteFile(bucket string, file string) error
+
 	GenerateTicket(bucket string, ticket *CabTicket) (string, error)
 }
 
@@ -98,20 +99,4 @@ type Self interface {
 	SelfModuleExec(name, method, path string, data xtypes.LazyData) (xtypes.LazyData, error)
 
 	SelfForkExec(method string, data []byte) error
-}
-
-// future
-
-type BindLocker interface {
-	// fixme => nested key lock
-
-	SelfLockWait(key string) error
-	SelfLock(key string, expiry int) error
-	SelfLockRenew(key string, expiry int) error
-	SelfUnLock(key string) error
-
-	ResourceLockWait(resource string, key string) error
-	ResourceLock(resource string, key string) error
-	ResourceLockRenew(resource string, key string) error
-	ResourceUnLock(resource string, key string) error
 }
