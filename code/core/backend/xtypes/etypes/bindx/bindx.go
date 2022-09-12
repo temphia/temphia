@@ -1,42 +1,102 @@
 package bindx
 
-type Value struct {
-	Value    string `json:"value,omitempty"`
-	Audience string `json:"audience,omitempty"`
-	Version  int64  `json:"version,omitempty"`
-	TTL      int64  `json:"ttl,omitempty"`
+import (
+	"github.com/temphia/temphia/code/core/backend/xtypes"
+	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
+	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+)
+
+type Bindings interface {
+	Core
+
+	PlugKVBindingsGet() PlugKV
+	SockdBindingsGet() Sockd
+	UserBindingsGet() User
+	CabinetBindingsGet() Cabinet
+	SelfBindingsGet() Self
+	NodeCacheGet() NodeCache
 }
 
-type Resource struct {
-	Name    string            `json:"name,omitempty"`
-	Type    string            `json:"type,omitempty"`
-	Payload string            `json:"payload,omitempty"`
-	Meta    map[string]string `json:"meta,omitempty"`
+type Core interface {
+	Log(msg string)
+	LazyLog(msgs []string)
+	Sleep(int32)
+	GetFileWithMeta(file string) (data []byte, version int64, err error)
+	GetApp() any
 }
 
-type Link struct {
-	Name    string `json:"name,omitempty"`
-	Type    string `json:"type,omitempty"`
-	PlugId  string `json:"plug_id,omitempty"`
-	AgentId string `json:"agent_id,omitempty"`
+type PlugKV interface {
+	Set(txid uint32, key, value string, opts *store.SetOptions) error
+	Update(txid uint32, key, value string, opts *store.UpdateOptions) error
+	Get(txid uint32, key string) (*entities.PlugKV, error)
+	Del(txid uint32, key string) error
+	DelBatch(txid uint32, keys []string) error
+	Query(txid uint32, query *store.PkvQuery) ([]*entities.PlugKV, error)
+
+	NewTxn() (uint32, error)
+	RollBack(txid uint32) error
+	Commit(txid uint32) error
 }
 
-type CabTicket struct {
-	Prefix      string   `json:"prefix,omitempty"`
-	PinnedFiles []string `json:"pinned_files,omitempty"`
-	Operations  []string `json:"ops,omitempty"`
+type Cabinet interface {
+	AddFile(bucket string, file string, contents []byte) error
+	ListFolder(bucket string) ([]string, error)
+	GetFile(bucket string, file string) ([]byte, error)
+	DeleteFile(bucket string, file string) error
+
+	GenerateTicket(bucket string, ticket *CabTicket) (string, error)
 }
 
-type HttpRequest struct {
-	Method  string            `json:"method,omitempty"`
-	Path    string            `json:"path,omitempty"`
-	Headers map[string]string `json:"headers,omitempty"`
-	Body    []byte            `json:"body,omitempty"`
+type Sockd interface {
+	SendDirect(room string, connId int64, payload []byte) error
+	SendDirectBatch(room string, conns []int64, payload []byte) error
+	SendBroadcast(room string, ignores []int64, payload []byte) error
+	SendTagged(room string, tags []string, ignores []int64, payload []byte) error
+	RoomUpdateTags(room string, opts sockdx.UpdateTagOptions) error
 }
 
-type HttpResponse struct {
-	SatusCode int                 `json:"status_code,omitempty"`
-	Headers   map[string][]string `json:"headers,omitempty"`
-	Json      bool                `json:"json,omitempty"`
-	Body      []byte              `json:"body,omitempty"`
+type User interface {
+	ListUsers(group string) ([]string, error)
+	MessageUser(group, user, message string, encrypted bool) error
+	GetUser(group, user string) (*entities.UserInfo, error)
+
+	MessageCurrentUser(title, message string, encrypted bool) error
+	CurrentUser() (*entities.UserInfo, error)
+}
+
+type Net interface {
+	HttpRaw(*HttpRequest) *HttpResponse
+	HttpRawBatch([]*HttpRequest) []*HttpResponse
+
+	HttpQuickGet(url string, headers map[string]string) ([]byte, error)
+	HttpQuickPost(url string, headers map[string]string, data []byte) ([]byte, error)
+	HttpFormPost(url string, headers map[string]string, data []byte) ([]byte, error)
+
+	HttpJsonGet(url string, headers map[string]string) ([]byte, error)
+	HttpJsonPost(url string, headers map[string]string, data []byte) ([]byte, error)
+}
+
+type NodeCache interface {
+	Put(key string, value []byte, expire int64) error
+	PutCAS(key string, value []byte, version, expire int64) error
+	Get(key string) (data []byte, version int64, expire int64, err error)
+	Expire(key string) error
+}
+
+type Self interface {
+	SelfGetFile(file string) ([]byte, error)
+	SelfAddFile(file string, data []byte) error
+	SelfUpdateFile(file string, data []byte) error
+
+	SelfListResources() ([]*Resource, error)
+	SelfGetResource(name string) (*Resource, error)
+
+	SelfInLinks() ([]Link, error)
+	SelfOutLinks() ([]Link, error)
+
+	SelfLinkExec(name, method string, data xtypes.LazyData, async, detached bool) (xtypes.LazyData, error)
+	SelfModuleExec(name, method, path string, data xtypes.LazyData) (xtypes.LazyData, error)
+
+	SelfForkExec(method string, data []byte) error
 }

@@ -48,7 +48,6 @@ func CabinetGetFile(folder, file string) ([]byte, error) {
 	var respPtr, respLen int32
 
 	ok := _cabinet_get_file(folderPtr, folderLen, filePtr, fileLen, intAddr(&respPtr), intAddr(&respLen))
-
 	resp := getBytes(respPtr)
 	if ok {
 		return resp, nil
@@ -63,13 +62,11 @@ func CabinetDelFile(folder, file string) error {
 	var respPtr, respLen int32
 
 	ok := _cabinet_del_file(folderPtr, folderLen, filePtr, fileLen, intAddr(&respPtr), intAddr(&respLen))
-
-	resp := getBytes(respPtr)
 	if ok {
 		return nil
 	}
 
-	return errors.New(string(resp))
+	return errors.New(string(getBytes(respPtr)))
 }
 
 // private
