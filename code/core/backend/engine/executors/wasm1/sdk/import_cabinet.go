@@ -69,6 +69,21 @@ func CabinetDelFile(folder, file string) error {
 	return errors.New(string(getBytes(respPtr)))
 }
 
+func CabinetGenerateTkt(folder string, opts map[string]any) ([]byte, error) {
+	folderPtr, folderLen := stringToPtr(folder)
+	optPtr, optLen := JsonPtr(opts)
+
+	var respPtr, respLen int32
+
+	ok := _cabinet_generate_tkt(folderPtr, folderLen, int32(uintptr(optPtr)), optLen, intAddr(&respPtr), intAddr(&respLen))
+	resp := getBytes(respPtr)
+	if ok {
+		return resp, nil
+	}
+
+	return nil, errors.New(string(resp))
+}
+
 // private
 
 //go:wasm-module temphia
@@ -86,3 +101,7 @@ func _cabinet_get_file(fPtr, fLen, filePtr, fileLen, respPtr, respLen int32) boo
 //go:wasm-module temphia
 //export cabinet_del_file
 func _cabinet_del_file(fPtr, fLen, filePtr, fileLen, respPtr, respLen int32) bool
+
+//go:wasm-module temphia
+//export cabinet_generate_tkt
+func _cabinet_generate_tkt(fPtr, fLen, optPtr, optLen, respPtr, respLen int32) bool

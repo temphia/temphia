@@ -6,22 +6,14 @@ import (
 )
 
 func PlugKvSet(txid int32, key, value string, opts map[string]any) error {
-	var optsBytes = emptyJsonObj
-	if len(opts) > 0 {
-		data, err := json.Marshal(&opts)
-		if err != nil {
-			return err
-		}
-		optsBytes = data
-	}
 
 	keyPtr, keyLen := stringToPtr(key)
 	valuePtr, valueLen := stringToPtr(value)
-	optPtr, optLen := bytesToPtr(optsBytes)
+	optPtr, optLen := JsonPtr(opts)
 
 	var respPtr, respLen int32
 
-	ok := _plugkv_set(txid, keyPtr, keyLen, valuePtr, valueLen, optPtr, optLen, intAddr(&respPtr), intAddr(&respLen))
+	ok := _plugkv_set(txid, keyPtr, keyLen, valuePtr, valueLen, int32(uintptr(optPtr)), optLen, intAddr(&respPtr), intAddr(&respLen))
 	if ok {
 		return nil
 	}
@@ -31,22 +23,14 @@ func PlugKvSet(txid int32, key, value string, opts map[string]any) error {
 }
 
 func PlugKvUpdate(txid int32, key, value string, opts map[string]any) error {
-	var optsBytes = emptyJsonObj
-	if len(opts) > 0 {
-		data, err := json.Marshal(&opts)
-		if err != nil {
-			return err
-		}
-		optsBytes = data
-	}
 
 	keyPtr, keyLen := stringToPtr(key)
 	valuePtr, valueLen := stringToPtr(value)
-	optPtr, optLen := bytesToPtr(optsBytes)
+	optPtr, optLen := JsonPtr(opts)
 
 	var respPtr, respLen int32
 
-	ok := _plugkv_update(txid, keyPtr, keyLen, valuePtr, valueLen, optPtr, optLen, intAddr(&respPtr), intAddr(&respLen))
+	ok := _plugkv_update(txid, keyPtr, keyLen, valuePtr, valueLen, int32(uintptr(optPtr)), optLen, intAddr(&respPtr), intAddr(&respLen))
 	if ok {
 		return nil
 	}
@@ -105,16 +89,12 @@ func PlugKvDeleteBatch(txid int32, keys []string) error {
 
 }
 
-func PlugKvQuery(txid int32, opts map[string]any) ([]map[string]any, error) {
-	out, err := json.Marshal(opts)
-	if err != nil {
-		return nil, err
-	}
+func PlugKvQuery(txid int32, opt map[string]any) ([]map[string]any, error) {
 
-	optsPtr, optsLen := bytesToPtr(out)
+	optPtr, optLen := JsonPtr(opt)
 	var respPtr, respLen int32
 
-	ok := _plugkv_query(txid, optsPtr, optsLen, intAddr(&respPtr), intAddr(&respLen))
+	ok := _plugkv_query(txid, int32(uintptr(optPtr)), optLen, intAddr(&respPtr), intAddr(&respLen))
 
 	resp := getBytes(respPtr)
 
@@ -124,7 +104,7 @@ func PlugKvQuery(txid int32, opts map[string]any) ([]map[string]any, error) {
 
 	data := make([]map[string]any, 0)
 
-	err = json.Unmarshal(resp, &data)
+	err := json.Unmarshal(resp, &data)
 	if err != nil {
 		return nil, err
 	}

@@ -1,10 +1,11 @@
 package tasmsdk
 
-import "unsafe"
+import (
+	"encoding/json"
+	"unsafe"
+)
 
 var ROOT = map[uintptr][]byte{}
-var emptyJsonObj = []byte(`{}`)
-var emptyJsonArr = []byte(`[]`)
 
 func allocBytes(size int32) int32 {
 	data := make([]byte, size)
@@ -35,4 +36,17 @@ func bytesToPtr(buf []byte) (int32, int32) {
 
 func intAddr(i *int32) int32 {
 	return int32(uintptr(unsafe.Pointer(i)))
+}
+
+func JsonPtr(obj any) (unsafe.Pointer, int32) {
+	if obj == nil {
+		return unsafe.Pointer(nil), 0
+	}
+
+	out, err := json.Marshal(obj)
+	if err != nil {
+		panic(err)
+	}
+
+	return unsafe.Pointer(&out[0]), int32(len(out))
 }
