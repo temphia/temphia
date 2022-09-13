@@ -2,7 +2,6 @@ package tasmsdk
 
 import (
 	"encoding/json"
-	"errors"
 
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
@@ -13,12 +12,10 @@ func ListUsers(group string) ([]string, error) {
 	var respPtr, respLen int32
 
 	ok := _list_user(gptr, glen, intAddr(&respPtr), intAddr(&respLen))
-	out := getBytes(respPtr)
 
 	if ok {
 		resp := make([]string, 0)
-
-		err := json.Unmarshal(out, &resp)
+		err := json.Unmarshal(getBytes(respPtr), &resp)
 		if err != nil {
 			return nil, err
 		}
@@ -26,7 +23,7 @@ func ListUsers(group string) ([]string, error) {
 		return resp, nil
 	}
 
-	return nil, errors.New(string(out))
+	return nil, getErr(respPtr)
 }
 
 func MessageUser(group, user string, opts *bindx.UserMessage) error {
@@ -41,7 +38,7 @@ func MessageUser(group, user string, opts *bindx.UserMessage) error {
 		return nil
 	}
 
-	return errors.New(string(getBytes(respPtr)))
+	return getErr(respPtr)
 }
 
 func GetUser(group, user string) (*entities.UserInfo, error) {
@@ -50,13 +47,12 @@ func GetUser(group, user string) (*entities.UserInfo, error) {
 	var respPtr, respLen int32
 
 	ok := _get_user(gptr, glen, uptr, ulen, intAddr(&respPtr), intAddr(&respLen))
-	out := getBytes(respPtr)
 	if !ok {
-		return nil, errors.New(string(out))
+		return nil, getErr(respPtr)
 	}
 
 	usr := &entities.UserInfo{}
-	err := json.Unmarshal(out, usr)
+	err := json.Unmarshal(getBytes(respPtr), usr)
 	if err != nil {
 		return nil, err
 	}
@@ -74,10 +70,23 @@ func MessageCurrentUser(opts *bindx.UserMessage) error {
 		return nil
 	}
 
-	return errors.New(string(getBytes(respPtr)))
+	return getErr(respPtr)
 }
 
-func CurrentUser() (*entities.UserInfo, error)
+func CurrentUser() (*entities.UserInfo, error) {
+	var respPtr, respLen int32
+
+	if ok := _current_user(intAddr(&respPtr), intAddr(&respLen)); ok {
+		resp := &entities.UserInfo{}
+		err := getJSON(respPtr, resp)
+		if err != nil {
+			return nil, err
+		}
+		return resp, nil
+	}
+
+	return nil, getErr(respPtr)
+}
 
 // private
 
@@ -96,3 +105,7 @@ func _get_user(gPtr, gLen, uPtr, uLen, respPtr, respLen int32) bool
 //go:wasm-module temphia1
 //export message_user
 func _message_current_user(optPtr, optLen, respPtr, respLen int32) bool
+
+//go:wasm-module temphia1
+//export current_user
+func _current_user(respPtr, respLen int32) bool

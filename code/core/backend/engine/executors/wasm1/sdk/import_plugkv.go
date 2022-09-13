@@ -18,8 +18,7 @@ func PlugKvSet(txid int32, key, value string, opts map[string]any) error {
 		return nil
 	}
 
-	resp := getBytes(respPtr)
-	return errors.New(string(resp))
+	return getErr(respPtr)
 }
 
 func PlugKvUpdate(txid int32, key, value string, opts map[string]any) error {
@@ -35,8 +34,7 @@ func PlugKvUpdate(txid int32, key, value string, opts map[string]any) error {
 		return nil
 	}
 
-	resp := getBytes(respPtr)
-	return errors.New(string(resp))
+	return getErr(respPtr)
 }
 
 func PlugKvGet(txid int32, key string) (map[string]any, error) {
@@ -67,7 +65,7 @@ func PlugKvDelete(txid int32, key string) error {
 		return nil
 	}
 
-	return errors.New(string(getBytes(respPtr)))
+	return getErr(respPtr)
 }
 
 func PlugKvDeleteBatch(txid int32, keys []string) error {
@@ -85,7 +83,7 @@ func PlugKvDeleteBatch(txid int32, keys []string) error {
 		return nil
 	}
 
-	return errors.New(string(getBytes(respPtr)))
+	return getErr(respPtr)
 
 }
 

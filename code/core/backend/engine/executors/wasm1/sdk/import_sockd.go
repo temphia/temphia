@@ -2,7 +2,6 @@ package tasmsdk
 
 import (
 	"bytes"
-	"errors"
 	"unsafe"
 )
 
@@ -18,7 +17,7 @@ func SendDirect(room string, connId int64, payload []byte) error {
 		return nil
 	}
 
-	return errors.New(string(getBytes(respPtr)))
+	return getErr(respPtr)
 }
 
 func SendDirectBatch(room string, connId []int64, payload []byte) error {
@@ -35,7 +34,7 @@ func SendDirectBatch(room string, connId []int64, payload []byte) error {
 		return nil
 	}
 
-	return errors.New(string(getBytes(respPtr)))
+	return getErr(respPtr)
 
 }
 
@@ -51,7 +50,7 @@ func SendBroadcast(room string, payload []byte) error {
 		return nil
 	}
 
-	return errors.New(string(getBytes(respPtr)))
+	return getErr(respPtr)
 
 }
 
@@ -87,7 +86,7 @@ func SendTagged(room string, tags []string, payload []byte) error {
 		return nil
 	}
 
-	return errors.New(string(getBytes(respPtr)))
+	return getErr(respPtr)
 
 }
 
@@ -101,7 +100,7 @@ func RoomUpdateTags(connId int64, room string, opts map[string]any) error {
 		return nil
 	}
 
-	return errors.New(string(getBytes(respPtr)))
+	return getErr(respPtr)
 }
 
 // private

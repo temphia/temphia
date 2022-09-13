@@ -19,7 +19,7 @@ func CabinetAddFile(folder, file string, data []byte) error {
 		return nil
 	}
 
-	return errors.New(string(getBytes(respPtr)))
+	return getErr(respPtr)
 }
 
 func CabinetListFolder(folder string) ([]string, error) {
@@ -66,7 +66,7 @@ func CabinetDelFile(folder, file string) error {
 		return nil
 	}
 
-	return errors.New(string(getBytes(respPtr)))
+	return getErr(respPtr)
 }
 
 func CabinetGenerateTkt(folder string, opts map[string]any) (string, error) {

@@ -2,6 +2,7 @@ package tasmsdk
 
 import (
 	"encoding/json"
+	"errors"
 	"unsafe"
 )
 
@@ -23,6 +24,10 @@ func getBytes(ptr int32) []byte {
 	resp := ROOT[key]
 	delete(ROOT, key)
 	return resp
+}
+
+func getErr(ptr int32) error {
+	return errors.New(string(getBytes(ptr)))
 }
 
 func stringToPtr(s string) (int32, int32) {
@@ -49,4 +54,8 @@ func JsonPtr(obj any) (unsafe.Pointer, int32) {
 	}
 
 	return unsafe.Pointer(&out[0]), int32(len(out))
+}
+
+func getJSON(ptr int32, target any) error {
+	return json.Unmarshal(getBytes(ptr), target)
 }
