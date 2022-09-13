@@ -4,7 +4,7 @@ import "context"
 
 func log(ctx context.Context, offset, len int32) {
 	e := getCtx(ctx)
-	out, ok := e.getMem().Read(ctx, uint32(offset), uint32(len))
+	out, ok := e.mem.Read(ctx, uint32(offset), uint32(len))
 	if !ok {
 		panic(ErrOutofIndex)
 	}
@@ -19,7 +19,7 @@ func sleep(ctx context.Context, msec int32) {
 
 func getFileWithMeta(ctx context.Context, filePtr, fileLen, respPtr, respLen, mod int32) int32 {
 	e := getCtx(ctx)
-	out, ok := e.getMem().Read(ctx, uint32(filePtr), uint32(fileLen))
+	out, ok := e.mem.Read(ctx, uint32(filePtr), uint32(fileLen))
 	if ok {
 		panic(ErrOutofIndex)
 	}

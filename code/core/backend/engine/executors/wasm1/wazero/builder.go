@@ -51,6 +51,7 @@ func (b *Builder) Instance(opts etypes.ExecutorOption) (etypes.Executor, error) 
 		instance: module,
 		bindings: opts.Binder,
 		context:  context.TODO(),
+		mem:      nil,
 
 		bindPluKV:  opts.Binder.PlugKVBindingsGet(),
 		bindSockd:  opts.Binder.SockdBindingsGet(),

@@ -121,7 +121,7 @@ func PlugKVNewTxn(ctx context.Context, txidPtr, respPtr, respLen int32) int32 {
 		return 0
 	}
 
-	ok := e.getMem().WriteUint32Le(e.context, uint32(txidPtr), txid)
+	ok := e.mem.WriteUint32Le(e.context, uint32(txidPtr), txid)
 	if !ok {
 		panic(ErrOutofIndex)
 	}

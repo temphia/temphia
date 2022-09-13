@@ -15,6 +15,7 @@ type Executor struct {
 	compiled wazero.CompiledModule
 	instance api.Module
 	context  context.Context
+	mem      api.Memory
 
 	bindings   bindx.Bindings
 	bindPluKV  bindx.PlugKV
@@ -27,6 +28,8 @@ type Executor struct {
 
 func (e *Executor) Process(req *event.Request) (*event.Response, error) {
 	e.context = context.WithValue(context.Background(), ExecutorCtx, e)
+
+	e.mem = e.instance.Memory()
 
 	err := e.execute(req.Name, req.Data)
 	if err != nil {
