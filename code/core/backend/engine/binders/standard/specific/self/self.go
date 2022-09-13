@@ -40,6 +40,26 @@ func (b *Binding) SelfUpdateFile(file string, data []byte) error {
 	return b.selfUpdateFile(file, data)
 }
 
+func (b *Binding) SelfAddDataFile(file string, data []byte) error {
+	return b.selfAddDataFile(file, data)
+}
+
+func (b *Binding) SelfUpdateDataFile(file string, data []byte) error {
+	return b.selfUpdateDataFile(file, data)
+}
+
+func (b *Binding) SelfGetDataFile(file string) ([]byte, error) {
+	return b.selfGetDataFile(file)
+}
+
+func (b *Binding) SelfListDataFile() (map[string]string, error) {
+	return b.selfListDataFile()
+}
+
+func (b *Binding) SelfDeleteDataFile(file string) error {
+	return b.selfDeleteDataFile(file)
+}
+
 func (b *Binding) SelfModuleExec(name, method, path string, data xtypes.LazyData) (xtypes.LazyData, error) {
 	return b.selfModuleExec(name, method, path, data)
 }

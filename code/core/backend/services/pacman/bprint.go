@@ -49,13 +49,19 @@ func (c *PacMan) BprintRemove(tenantid, bid string) error {
 	return c.syncer.BprintDel(tenantid, bid)
 }
 
-func (c *PacMan) BprintListBlobs(tenantid, bid string) (any, error) {
+func (c *PacMan) BprintListBlobs(tenantid, bid string) (map[string]string, error) {
 	bprint, err := c.syncer.BprintGet(tenantid, bid)
 	if err != nil {
 		return nil, err
 	}
 
-	return bprint.Files, nil
+	resp := make(map[string]string)
+	for _, v := range bprint.Files {
+		// fixme => <file_name><mod_data>
+		resp[v] = ""
+	}
+
+	return resp, nil
 }
 
 func (c *PacMan) BprintNewBlob(tenantid, bid, file string, payload []byte) error {

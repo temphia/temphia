@@ -89,6 +89,12 @@ type Self interface {
 	SelfAddFile(file string, data []byte) error
 	SelfUpdateFile(file string, data []byte) error
 
+	SelfAddDataFile(file string, data []byte) error
+	SelfUpdateDataFile(file string, data []byte) error
+	SelfGetDataFile(file string) ([]byte, error)
+	SelfListDataFile() (map[string]string, error)
+	SelfDeleteDataFile(file string) error
+
 	SelfListResources() ([]*Resource, error)
 	SelfGetResource(name string) (*Resource, error)
 

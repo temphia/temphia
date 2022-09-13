@@ -34,7 +34,7 @@ type PacmanBprintOps interface {
 	BprintUpdate(tenantid string, bp *entities.BPrint) error
 	BprintGet(tenantid, bid string) (*entities.BPrint, error)
 	BprintRemove(tenantid, bid string) error
-	BprintListBlobs(tenantid, bid string) (any, error)
+	BprintListBlobs(tenantid, bid string) (map[string]string, error)
 
 	BprintNewBlob(tenantid, bid, file string, payload []byte) error
 	BprintUpdateBlob(tenantid, bid, file string, payload []byte) error
