@@ -11,25 +11,35 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
+type FactoryOptions struct {
+	App          xtypes.App
+	Logger       zerolog.Logger
+	Modules      map[string]etypes.ModuleBuilder
+	ExecBuilders map[string]etypes.ExecutorBuilder
+	Runtime      etypes.Runtime
+}
+
 type Factory struct {
 	deps deps.Deps
 }
 
-func NewFactory(app xtypes.App, logger zerolog.Logger, modules map[string]etypes.ModuleBuilder) Factory {
+func NewFactory(opts FactoryOptions) Factory {
 
-	appdeps := app.GetDeps()
+	appdeps := opts.App.GetDeps()
 
 	return Factory{
 		deps: deps.Deps{
-			App:            app,
+			App:            opts.App,
 			Sockd:          appdeps.Sockd().(sockdx.SockdCore),
 			Pacman:         appdeps.Pacman().(service.Pacman),
 			Corehub:        appdeps.CoreHub().(store.CoreHub),
 			CabinetHub:     appdeps.Cabinet().(store.CabinetHub),
 			NodeCache:      appdeps.NodeCache().(service.NodeCache),
 			PlugKV:         appdeps.PlugKV().(store.PlugStateKV),
-			LoggerBase:     logger,
-			ModuleBuilders: modules,
+			Runtime:        opts.Runtime,
+			ExecBuilders:   opts.ExecBuilders,
+			LoggerBase:     opts.Logger,
+			ModuleBuilders: opts.Modules,
 		},
 	}
 }

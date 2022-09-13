@@ -63,7 +63,13 @@ func New(_app xtypes.App, logger zerolog.Logger) *runtime {
 
 func (r *runtime) Run(builders map[string]etypes.ExecutorBuilder, modules map[string]etypes.ModuleBuilder) error {
 	r.execBuilders = builders
-	r.binderFactory = standard.NewFactory(r.app, r.logger, nil)
+	r.binderFactory = standard.NewFactory(standard.FactoryOptions{
+		App:          r.app,
+		Logger:       r.logger,
+		Modules:      modules,
+		ExecBuilders: r.execBuilders,
+		Runtime:      r,
+	})
 
 	go r.controlLoop()
 	return nil

@@ -20,4 +20,5 @@ type Deps struct {
 	PlugKV         store.PlugStateKV
 	Runtime        etypes.Runtime
 	ModuleBuilders map[string]etypes.ModuleBuilder
+	ExecBuilders   map[string]etypes.ExecutorBuilder
 }
