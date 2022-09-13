@@ -40,3 +40,10 @@ type HttpResponse struct {
 	Json      bool                `json:"json,omitempty"`
 	Body      []byte              `json:"body,omitempty"`
 }
+
+type UserMessage struct {
+	Title            string `json:"title,omitempty"`
+	Contents         string `json:"contents,omitempty"`
+	Encrypted        bool   `json:"encrypted,omitempty"`
+	UsingCurrentUser bool   `json:"using_current_user,omitempty"`
+}

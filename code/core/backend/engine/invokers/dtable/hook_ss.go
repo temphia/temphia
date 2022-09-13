@@ -1,7 +1,7 @@
 package dtable
 
 import (
-	"github.com/temphia/temphia/code/core/backend/engine/invoker"
+	"github.com/temphia/temphia/code/core/backend/engine/invokers"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
@@ -30,5 +30,5 @@ func (r *ServerSideHook) Handle(method string, data xtypes.LazyData) (xtypes.Laz
 }
 
 func (r *ServerSideHook) Name() string {
-	return invoker.TypeDtableServerHook
+	return invokers.TypeDtableServerHook
 }

@@ -57,11 +57,11 @@ type Sockd interface {
 }
 
 type User interface {
-	ListUsers(group string) ([]string, error)
-	MessageUser(group, user, message string, encrypted bool) error
+	ListUser(group string) ([]string, error)
+	MessageUser(group, user string, opts *UserMessage) error
 	GetUser(group, user string) (*entities.UserInfo, error)
 
-	MessageCurrentUser(title, message string, encrypted bool) error
+	MessageCurrentUser(opts *UserMessage) error
 	CurrentUser() (*entities.UserInfo, error)
 }
 

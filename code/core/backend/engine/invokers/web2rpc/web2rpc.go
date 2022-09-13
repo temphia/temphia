@@ -2,10 +2,10 @@ package web2rpc
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/core/backend/engine/invoker"
+	"github.com/temphia/temphia/code/core/backend/engine/invokers"
 	"github.com/temphia/temphia/code/core/backend/libx/lazydata"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/invoker"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 )
 
@@ -53,17 +53,17 @@ func (r *Web2Rpc) Handle(method string, data xtypes.LazyData) (xtypes.LazyData, 
 	case "get_client_ip":
 		return lazydata.NewAnyData(r.rctx.ClientIP()), nil
 	default:
-		return nil, invoker.ErrInvokerActionNotImplemented
+		return nil, invokers.ErrInvokerActionNotImplemented
 	}
 
 }
 
 func (r *Web2Rpc) Name() string {
-	return invoker.TypeWeb2RPC
+	return invokers.TypeWeb2RPC
 }
 
-func (r *Web2Rpc) CurrentUser() *job.InvokeUser {
-	sclaim, err := invoker.ParseClaim(
+func (r *Web2Rpc) CurrentUser() *invoker.User {
+	sclaim, err := invokers.ParseClaim(
 		r.signer,
 		r.rctx,
 	)
@@ -71,9 +71,9 @@ func (r *Web2Rpc) CurrentUser() *job.InvokeUser {
 		return nil
 	}
 
-	return &job.InvokeUser{
-		UserId:    sclaim.UserID,
-		UserGroup: sclaim.UserGroup,
+	return &invoker.User{
+		Id:        sclaim.UserID,
+		Group:     sclaim.UserGroup,
 		SessionId: sclaim.SessionID,
 	}
 

@@ -1,9 +1,9 @@
 package domain
 
 import (
-	"github.com/temphia/temphia/code/core/backend/engine/invoker"
+	"github.com/temphia/temphia/code/core/backend/engine/invokers"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/invoker"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 )
 
@@ -22,13 +22,13 @@ func NewEditor(opts EditorOptions) *Editor {
 }
 
 func (e *Editor) Handle(method string, data xtypes.LazyData) (xtypes.LazyData, error) {
-	return nil, invoker.ErrInvokerActionNotImplemented
+	return nil, invokers.ErrInvokerActionNotImplemented
 }
 
 func (e *Editor) Name() string {
-	return invoker.TypeDomainEditor
+	return invokers.TypeDomainEditor
 }
 
-func (e *Editor) CurrentUser() *job.InvokeUser {
+func (e *Editor) CurrentUser() *invoker.User {
 	return nil
 }

@@ -2,8 +2,11 @@ package user
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/temphia/temphia/code/core/backend/engine/binders/standard/handle"
+	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/invoker"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
@@ -26,7 +29,7 @@ func New(handle *handle.Handle) Binding {
 	}
 }
 
-func (ub *Binding) ListUsers(group string) ([]string, error) {
+func (ub *Binding) ListUser(group string) ([]string, error) {
 	users, err := ub.chub.ListUsersByGroup(ub.handle.Namespace, group)
 	if err != nil {
 		return nil, err
@@ -41,14 +44,18 @@ func (ub *Binding) ListUsers(group string) ([]string, error) {
 	return ustrs, nil
 }
 
-func (ub *Binding) MessageUser(group, user, message string, encrypted bool) error {
+func (ub *Binding) MessageUser(group, user string, opts *bindx.UserMessage) error {
+
+	if opts.UsingCurrentUser {
+		return easyerr.NotImpl()
+	}
 
 	_, err := ub.chub.AddUserMessage(&entities.UserMessage{
 		Id:           0,
-		Title:        "plug message",
+		Title:        fmt.Sprintf("Plug message: %s", opts.Title),
 		Read:         false,
 		Type:         "message",
-		Contents:     message,
+		Contents:     opts.Contents,
 		UserId:       user,
 		FromUser:     "",
 		FromPlug:     ub.handle.PlugId,
@@ -81,17 +88,17 @@ func (ub *Binding) GetUser(group, name string) (*entities.UserInfo, error) {
 	return usr, nil
 }
 
-func (ub *Binding) MessageCurrentUser(title, message string, callback bool) error {
+func (ub *Binding) MessageCurrentUser(opts *bindx.UserMessage) error {
 	ub.loadInvokeUser()
 	if ub.iuserCache == nil {
 		return ErrEmptyCurrentUser
 	}
 
 	_, err := ub.chub.AddUserMessage(&entities.UserMessage{
-		Title:        title,
+		Title:        opts.Title,
 		Read:         false,
 		Type:         "message",
-		Contents:     message,
+		Contents:     opts.Contents,
 		UserId:       ub.iuserCache.Id,
 		FromUser:     "",
 		FromPlug:     ub.handle.PlugId,

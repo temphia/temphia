@@ -2,11 +2,6 @@ package bindx
 
 // this is just for reference
 
-type PlugKvNext interface {
-	QuickGet(txid uint32, key string) (string, error)
-	QuickSet(txid uint32, key, valye string) error
-}
-
 type BindLocker interface {
 	// fixme => nested key lock
 
@@ -22,5 +17,20 @@ type BindLocker interface {
 }
 
 type Sockd2 interface {
+}
+
+type Next interface {
+
+	// plugkv
+
+	QuickGet(txid uint32, key string) (string, error)
+	QuickSet(txid uint32, key, valye string) error
+
+	// user
+
+	ListUserPrefix(group string, prefix string) ([]string, error)
+
+	// sockd
+
 	KickFromRoom(connId int64, room string) error
 }
