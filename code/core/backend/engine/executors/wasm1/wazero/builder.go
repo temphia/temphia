@@ -3,6 +3,7 @@ package wazero
 import (
 	"context"
 
+	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/tetratelabs/wazero"
 	"github.com/tetratelabs/wazero/api"
@@ -45,13 +46,20 @@ func (b *Builder) Instance(opts etypes.ExecutorOption) (etypes.Executor, error) 
 		return nil, err
 	}
 
+	allocator := module.ExportedFunction("allocate_bytes")
+	if err != nil {
+		return nil, easyerr.Error("allocate_bytes not exported")
+	}
+
 	return &Executor{
-		builder:  b,
-		compiled: cmodule,
-		instance: module,
-		bindings: opts.Binder,
-		context:  context.TODO(),
-		mem:      nil,
+		builder:   b,
+		compiled:  cmodule,
+		instance:  module,
+		bindings:  opts.Binder,
+		allocator: allocator,
+
+		context: nil,
+		mem:     nil,
 
 		bindPluKV:  opts.Binder.PlugKVBindingsGet(),
 		bindSockd:  opts.Binder.SockdBindingsGet(),

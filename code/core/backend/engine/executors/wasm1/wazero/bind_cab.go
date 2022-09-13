@@ -22,7 +22,7 @@ func CabinetAddFile(ctx context.Context, bukPtr, bukLen, filePtr, fileLen, dataP
 	)
 
 	if err != nil {
-		e.write2(kosher.Byte(err.Error()), uint32(respPtr), uint32(respLen))
+		e.writeError(uint32(respPtr), uint32(respLen), err)
 		return 0
 	}
 
@@ -44,11 +44,11 @@ func GetFile(ctx context.Context, bukPtr, bukLen, filePtr, fileLen, respPtr, res
 		e.getString(uint32(filePtr), uint32(fileLen)),
 	)
 	if err != nil {
-		e.write2(kosher.Byte(err.Error()), uint32(respPtr), uint32(respLen))
+		e.writeWithOffsetPtr(kosher.Byte(err.Error()), uint32(respPtr), uint32(respLen))
 		return 0
 	}
 
-	e.write2(out, uint32(respPtr), uint32(respLen))
+	e.writeWithOffsetPtr(out, uint32(respPtr), uint32(respLen))
 	return 1
 }
 
@@ -60,7 +60,7 @@ func DelFile(ctx context.Context, bukPtr, bukLen, filePtr, fileLen, respPtr, res
 		e.getString(uint32(filePtr), uint32(fileLen)),
 	)
 	if err != nil {
-		e.write2(kosher.Byte(err.Error()), uint32(respPtr), uint32(respLen))
+		e.writeWithOffsetPtr(kosher.Byte(err.Error()), uint32(respPtr), uint32(respLen))
 		return 0
 	}
 

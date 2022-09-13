@@ -1,6 +1,21 @@
 package wazero
 
-import "context"
+import (
+	"context"
+
+	"github.com/tetratelabs/wazero"
+	"github.com/tetratelabs/wazero/api"
+)
+
+func BuildTemphiaModule(runtime wazero.Runtime) (api.Module, error) {
+	return runtime.NewModuleBuilder("temphia").
+		ExportFunction("log", log).
+		ExportFunction("sleep", sleep).
+		ExportFunction("get_file_with_meta", getFileWithMeta).
+		Instantiate(context.TODO(), runtime)
+}
+
+// core binds
 
 func log(ctx context.Context, offset, len int32) {
 	e := getCtx(ctx)
@@ -26,11 +41,11 @@ func getFileWithMeta(ctx context.Context, filePtr, fileLen, respPtr, respLen, mo
 
 	fout, _, err := e.bindings.GetFileWithMeta(string(out))
 	if err != nil {
-		e.write([]byte(err.Error()))
+		e.writeError(uint32(respPtr), uint32(respLen), err)
 		return 0
 	}
 
-	ok = e.write2(fout, uint32(respPtr), uint32(respPtr))
+	ok = e.writeWithOffsetPtr(fout, uint32(respPtr), uint32(respPtr))
 	if !ok {
 		panic(ErrOutofMemory)
 	}

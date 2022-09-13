@@ -4,10 +4,6 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
 )
 
-func SelfGetFile(file string) ([]byte, error) {
-	return nil, nil
-}
-
 func SelfAddFile(file string, data []byte) error {
 	var respPtr, respLen int32
 	fptr, flen := stringToPtr(file)

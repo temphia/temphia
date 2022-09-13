@@ -85,7 +85,6 @@ type NodeCache interface {
 }
 
 type Self interface {
-	SelfGetFile(file string) ([]byte, error)
 	SelfAddFile(file string, data []byte) error
 	SelfUpdateFile(file string, data []byte) error
 

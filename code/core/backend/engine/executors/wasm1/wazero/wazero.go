@@ -10,13 +10,16 @@ import (
 )
 
 type Executor struct {
-	builder *Builder
+	builder   *Builder
+	compiled  wazero.CompiledModule
+	instance  api.Module
+	allocator api.Function
 
-	compiled wazero.CompiledModule
-	instance api.Module
-	context  context.Context
-	mem      api.Memory
+	// cached/ cleared between each Process
+	context context.Context
+	mem     api.Memory
 
+	// bindings cache
 	bindings   bindx.Bindings
 	bindPluKV  bindx.PlugKV
 	bindSockd  bindx.Sockd
@@ -28,7 +31,6 @@ type Executor struct {
 
 func (e *Executor) Process(req *event.Request) (*event.Response, error) {
 	e.context = context.WithValue(context.Background(), ExecutorCtx, e)
-
 	e.mem = e.instance.Memory()
 
 	err := e.execute(req.Name, req.Data)
@@ -43,16 +45,16 @@ func (e *Executor) Process(req *event.Request) (*event.Response, error) {
 
 func (e *Executor) execute(name string, data []byte) error {
 
-	offset, ok := e.write(data)
-	if !ok {
-		return ErrOutofMemory
-	}
+	// offset, ok := e.write(data)
+	// if !ok {
+	// 	return ErrOutofMemory
+	// }
 
-	actionFunc := e.instance.ExportedFunction(name)
-	_, err := actionFunc.Call(e.context, uint64(offset), uint64(len(data)))
-	if err != nil {
-		return err
-	}
+	// actionFunc := e.instance.ExportedFunction(name)
+	// _, err := actionFunc.Call(e.context, uint64(offset), uint64(len(data)))
+	// if err != nil {
+	// 	return err
+	// }
 
 	return nil
 }

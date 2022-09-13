@@ -22,12 +22,18 @@ func SendDirect(ctx context.Context, cid, roomPtr, roomLen, dataPtr, dataLen, re
 	)
 
 	if err != nil {
-		e.write2(kosher.Byte(err.Error()), uint32(respPtr), uint32(respLen))
+		e.writeWithOffsetPtr(kosher.Byte(err.Error()), uint32(respPtr), uint32(respLen))
 		return 0
 	}
 
 	return 1
 }
+
+// SendDirect(room string, connId int64, payload []byte) error
+// SendDirectBatch(room string, conns []int64, payload []byte) error
+// SendBroadcast(room string, ignores []int64, payload []byte) error
+// SendTagged(room string, tags []string, ignores []int64, payload []byte) error
+// RoomUpdateTags(room string, opts sockdx.UpdateTagOptions) error
 
 func SendDirectBatch(ctx context.Context, cid, roomPtr, roomLen, dataPtr, dataLen, respPtr, respLen int32) int32 {
 
