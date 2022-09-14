@@ -1,4 +1,4 @@
-package nodecache
+package ncache
 
 import (
 	"fmt"

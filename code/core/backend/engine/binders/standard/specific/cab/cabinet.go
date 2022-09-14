@@ -1,4 +1,4 @@
-package cabinet
+package cab
 
 import (
 	"context"
@@ -14,10 +14,9 @@ type Binding struct {
 }
 
 func New(handle *handle.Handle) Binding {
-	cabhub := handle.Deps.App.GetDeps().Cabinet().(store.CabinetHub)
 
 	return Binding{
-		chub:     cabhub,
+		chub:     handle.Deps.CabinetHub,
 		tenantId: handle.Namespace,
 	}
 }

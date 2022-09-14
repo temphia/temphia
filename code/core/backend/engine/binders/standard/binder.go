@@ -5,9 +5,9 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/core/backend/engine/binders/standard/handle"
-	"github.com/temphia/temphia/code/core/backend/engine/binders/standard/specific/cabinet"
+	"github.com/temphia/temphia/code/core/backend/engine/binders/standard/specific/cab"
+	"github.com/temphia/temphia/code/core/backend/engine/binders/standard/specific/ncache"
 	"github.com/temphia/temphia/code/core/backend/engine/binders/standard/specific/net"
-	"github.com/temphia/temphia/code/core/backend/engine/binders/standard/specific/nodecache"
 	"github.com/temphia/temphia/code/core/backend/engine/binders/standard/specific/plugkv"
 	"github.com/temphia/temphia/code/core/backend/engine/binders/standard/specific/self"
 	"github.com/temphia/temphia/code/core/backend/engine/binders/standard/specific/sockd"
@@ -34,9 +34,9 @@ type Binder struct {
 	// specific bind impl
 	plugKV  plugkv.Binding
 	sockd   sockd.Binding
-	cabinet cabinet.Binding
+	cabinet cab.Binding
 	net     net.Binding
-	ncache  nodecache.Binding
+	ncache  ncache.Binding
 	user    user.Binding
 	self    self.Binding
 }
@@ -52,9 +52,9 @@ func (b *Binder) AttachJob(j *job.Job) {
 	// build specific binds
 	b.plugKV = plugkv.New(b.Handle)
 	b.sockd = sockd.New(b.Handle)
-	b.cabinet = cabinet.New(b.Handle)
+	b.cabinet = cab.New(b.Handle)
 	b.net = net.New()
-	b.ncache = nodecache.New(b.Handle)
+	b.ncache = ncache.New(b.Handle)
 	b.user = user.New(b.Handle)
 	b.self = self.New(b.Handle)
 }
