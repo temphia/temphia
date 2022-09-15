@@ -48,7 +48,7 @@ func (a *ApiAdmin) NewGroup(ctx httpx.Request) {
 	err := ctx.Http.BindJSON(tg)
 
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 

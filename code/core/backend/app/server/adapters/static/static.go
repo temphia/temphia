@@ -31,7 +31,7 @@ func (s *static) Render(ctx *gin.Context) {
 func (s *static) Handle(ctx httpx.Context) {
 	out, err := s.source.GetBlob(ctx.Http.Request.Context(), s.folder, ctx.Http.Request.URL.Path)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 

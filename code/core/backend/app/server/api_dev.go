@@ -34,13 +34,13 @@ func (s *Server) DevBprintFileGet(ctx *gin.Context)  {}
 func (s *Server) DevBprintFilePush(ctx *gin.Context) {
 	dclaim, err := s.parseDevTkt(ctx)
 	if err != nil {
-		httpx.WriteErr(ctx, err.Error())
+		httpx.WriteErr(ctx, err)
 		return
 	}
 
 	mreader, err := ctx.Request.MultipartReader()
 	if err != nil {
-		httpx.WriteErr(ctx, err.Error())
+		httpx.WriteErr(ctx, err)
 		return
 	}
 
@@ -70,13 +70,13 @@ func (s *Server) DevExecWatch(ctx *gin.Context) {
 
 		conn, err := transports.NewConnWS(ctx, r.sessman.SessionId())
 		if err != nil {
-			httpx.WriteErr(ctx, err.Error())
+			httpx.WriteErr(ctx.Http, err)
 			return
 		}
 
 		tkt, err := r.parseDevTkt(ctx)
 		if err != nil {
-			httpx.WriteErr(ctx, err.Error())
+			httpx.WriteErr(ctx.Http, err)
 			return
 		}
 
@@ -91,7 +91,7 @@ func (s *Server) DevExecWatch(ctx *gin.Context) {
 			Conn:     conn,
 		})
 		if err != nil {
-			httpx.WriteErr(ctx, err.Error())
+			httpx.WriteErr(ctx.Http, err)
 			return
 		}
 	*/
@@ -143,7 +143,7 @@ func (s *Server) serveInterface(ctx *gin.Context) {
 
 	out, err := s.app.Data().GetIfaceFile(ctx.Param("name"))
 	if err != nil {
-		httpx.WriteErr(ctx, err.Error())
+		httpx.WriteErr(ctx, err)
 		return
 	}
 	ctx.Writer.Write(out)

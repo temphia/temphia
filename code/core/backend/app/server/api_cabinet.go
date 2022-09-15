@@ -31,7 +31,7 @@ func (s *Server) newFolder(ctx httpx.Request) {
 func (s *Server) uploadFile(ctx httpx.Request) {
 	bytes, err := httpx.ReadForm(ctx.Http)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -53,7 +53,7 @@ func (s *Server) getFile(ctx httpx.Request) {
 
 	bytes, err := s.cCabinet.GetBlob(ctx.Session, ctx.Http.Param("folder"), ctx.Http.Param("fname"))
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 

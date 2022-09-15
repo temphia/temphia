@@ -32,7 +32,7 @@ type newRowReq struct {
 func (s *Server) loadGroup(ctx httpx.Request) {
 	gr, err := s.cData.LoadGroup(ctx.Session)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -44,7 +44,7 @@ func (s *Server) newRow(ctx httpx.Request) {
 	data := &newRowReq{}
 	err := ctx.Http.BindJSON(data)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -56,7 +56,7 @@ func (s *Server) getRow(ctx httpx.Request) {
 	id, err := strconv.ParseInt(ctx.MustParam("id"), 10, 64)
 	if err != nil {
 
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 	cells, err := s.cData.GetRow(ctx.Session, ctx.MustParam("table_id"), id)
@@ -71,14 +71,14 @@ type updateRowReq struct {
 func (s *Server) updateRow(ctx httpx.Request) {
 	id, err := strconv.ParseInt(ctx.MustParam("id"), 10, 64)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
 	data := &updateRowReq{}
 	err = ctx.Http.BindJSON(data)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -89,7 +89,7 @@ func (s *Server) updateRow(ctx httpx.Request) {
 func (s *Server) deleteRow(ctx httpx.Request) {
 	id, err := strconv.ParseInt(ctx.MustParam("id"), 10, 64)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 	err = s.cData.DeleteRow(ctx.Session, ctx.MustParam("table_id"), id)
@@ -100,7 +100,7 @@ func (s *Server) simpleQuery(ctx httpx.Request) {
 	query := store.SimpleQueryReq{}
 	err := ctx.Http.BindJSON(&query)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -112,7 +112,7 @@ func (s *Server) FTSQuery(ctx httpx.Request) {
 	query := store.FTSQueryReq{}
 	err := ctx.Http.BindJSON(&query)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -124,7 +124,7 @@ func (s *Server) refLoad(ctx httpx.Request) {
 	query := &store.RefLoadReq{}
 	err := ctx.Http.BindJSON(&query)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -136,7 +136,7 @@ func (s *Server) refResolve(ctx httpx.Request) {
 	query := &store.RefResolveReq{}
 	err := ctx.Http.BindJSON(&query)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -149,7 +149,7 @@ func (s *Server) reverseRefLoad(ctx httpx.Request) {
 
 	err := ctx.Http.BindJSON(query)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -160,7 +160,7 @@ func (s *Server) reverseRefLoad(ctx httpx.Request) {
 func (s *Server) listActivity(ctx httpx.Request) {
 	rid, err := strconv.ParseInt(ctx.MustParam("row_id"), 10, 64)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -175,7 +175,7 @@ type commentRowReq struct {
 func (s *Server) commentRow(ctx httpx.Request) {
 	rid, err := strconv.ParseInt(ctx.MustParam("row_id"), 10, 64)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -183,7 +183,7 @@ func (s *Server) commentRow(ctx httpx.Request) {
 
 	err = ctx.Http.BindJSON(&reqdata)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 

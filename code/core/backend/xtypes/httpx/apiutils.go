@@ -27,13 +27,17 @@ func WriteJSON(c *gin.Context, resp any, err error) {
 
 func WriteFinal(c *gin.Context, err error) {
 	if err != nil {
-		WriteErr(c, err.Error())
+		WriteErr(c, err)
 		return
 	}
 	WriteOk(c)
 }
 
-func WriteErr(c *gin.Context, msg string) {
+func WriteErr(c *gin.Context, err error) {
+	c.JSON(http.StatusBadRequest, gin.H{"message": (err.Error())})
+}
+
+func WriteErrString(c *gin.Context, msg string) {
 	c.JSON(http.StatusBadRequest, gin.H{"message": msg})
 }
 
@@ -72,5 +76,5 @@ func (r *Rutil) WriteFinal(c *gin.Context, err error) {
 }
 
 func (r *Rutil) WriteErr(c *gin.Context, msg string) {
-	WriteErr(c, msg)
+	WriteErrString(c, msg)
 }

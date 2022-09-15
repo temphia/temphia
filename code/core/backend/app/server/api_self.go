@@ -42,7 +42,7 @@ func (s *Server) selfMessageUser(ctx httpx.Request) {
 
 	out, err := ioutil.ReadAll(ctx.Http.Request.Body)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -64,7 +64,7 @@ func (s *Server) selfModifyMessages(ctx httpx.Request) {
 	opts := &entities.ModifyMessages{}
 	err := ctx.Http.BindJSON(opts)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -76,7 +76,7 @@ func (s *Server) selfListMessages(ctx httpx.Request) {
 	opts := &entities.UserMessageReq{}
 	err := ctx.Http.BindJSON(opts)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -98,7 +98,7 @@ func (s *Server) IssuePlugTkt(ctx httpx.Request) {
 	rdata := basic.DevIssueReq{}
 	err := ctx.Http.BindJSON(&rdata)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 

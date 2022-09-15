@@ -21,13 +21,13 @@ func (s *Server) folderTktList(ctx *gin.Context) {
 
 	ct, err := s.signer.ParseFolderTkt(tenantId, ticket)
 	if err != nil {
-		httpx.WriteErr(ctx, err.Error())
+		httpx.WriteErr(ctx, err)
 		return
 	}
 
 	resp, err := s.cCabinet.TicketList(tenantId, ct)
 	if err != nil {
-		httpx.WriteErr(ctx, err.Error())
+		httpx.WriteErr(ctx, err)
 		return
 	}
 
@@ -41,13 +41,13 @@ func (s *Server) folderTktFile(ctx *gin.Context) {
 
 	ct, err := s.signer.ParseFolderTkt(tenantId, ticket)
 	if err != nil {
-		httpx.WriteErr(ctx, err.Error())
+		httpx.WriteErr(ctx, err)
 		return
 	}
 
 	out, err := s.cCabinet.TicketFile(tenantId, file, ct)
 	if err != nil {
-		httpx.WriteErr(ctx, err.Error())
+		httpx.WriteErr(ctx, err)
 		return
 	}
 
@@ -61,13 +61,13 @@ func (s *Server) folderTktPreview(ctx *gin.Context) {
 
 	ct, err := s.signer.ParseFolderTkt(tenantId, ticket)
 	if err != nil {
-		httpx.WriteErr(ctx, err.Error())
+		httpx.WriteErr(ctx, err)
 		return
 	}
 
 	out, err := s.cCabinet.TicketFile(tenantId, file, ct)
 	if err != nil {
-		httpx.WriteErr(ctx, err.Error())
+		httpx.WriteErr(ctx, err)
 		return
 	}
 
@@ -81,13 +81,13 @@ func (s *Server) folderTktUpload(ctx *gin.Context) {
 
 	ct, err := s.signer.ParseFolderTkt(tenantId, ticket)
 	if err != nil {
-		httpx.WriteErr(ctx, err.Error())
+		httpx.WriteErr(ctx, err)
 		return
 	}
 
 	out, err := httpx.ReadForm(ctx)
 	if err != nil {
-		httpx.WriteErr(ctx, err.Error())
+		httpx.WriteErr(ctx, err)
 		return
 	}
 

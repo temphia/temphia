@@ -49,7 +49,7 @@ func (s *Server) authLoginNext(c *gin.Context) {
 	opts := authed.LoginNextRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
-		httpx.WriteErr(c, err.Error())
+		httpx.WriteErr(c, err)
 		return
 	}
 
@@ -62,7 +62,7 @@ func (s *Server) authLoginSubmit(c *gin.Context) {
 	opts := authed.LoginSubmitRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
-		httpx.WriteErr(c, err.Error())
+		httpx.WriteErr(c, err)
 		return
 	}
 
@@ -74,7 +74,7 @@ func (s *Server) authedFinish(c *gin.Context) {
 	opts := authed.AuthFinishRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
-		httpx.WriteErr(c, err.Error())
+		httpx.WriteErr(c, err)
 		return
 	}
 
@@ -87,13 +87,13 @@ func (s *Server) authGenerate(c *gin.Context) {
 	opts := authed.AuthGenerateRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
-		httpx.WriteErr(c, err.Error())
+		httpx.WriteErr(c, err)
 		return
 	}
 
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
-		httpx.WriteErr(c, err.Error())
+		httpx.WriteErr(c, err)
 		return
 	}
 
@@ -111,13 +111,13 @@ func (s *Server) authNext(c *gin.Context) {
 		opts := authed.AuthNextFirstRequest{}
 		err := c.BindJSON(&opts)
 		if err != nil {
-			httpx.WriteErr(c, err.Error())
+			httpx.WriteErr(c, err)
 			return
 		}
 
 		id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 		if err != nil {
-			httpx.WriteErr(c, err.Error())
+			httpx.WriteErr(c, err)
 			return
 		}
 
@@ -129,7 +129,7 @@ func (s *Server) authNext(c *gin.Context) {
 		opts := authed.AuthNextSecondRequest{}
 		err := c.BindJSON(&opts)
 		if err != nil {
-			httpx.WriteErr(c, err.Error())
+			httpx.WriteErr(c, err)
 			return
 		}
 
@@ -145,7 +145,7 @@ func (s *Server) authSubmit(c *gin.Context) {
 	opts := authed.AuthSubmitRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
-		httpx.WriteErr(c, err.Error())
+		httpx.WriteErr(c, err)
 		return
 	}
 
@@ -173,7 +173,7 @@ func (s *Server) authResetFinish(c *gin.Context) {
 	opts := authed.AuthFinishRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
-		httpx.WriteErr(c, err.Error())
+		httpx.WriteErr(c, err)
 		return
 	}
 
@@ -185,13 +185,13 @@ func (s *Server) authRefresh(c *gin.Context) {
 	opts := authed.RefreshReq{}
 	err := c.BindJSON(&opts)
 	if err != nil {
-		httpx.WriteErr(c, err.Error())
+		httpx.WriteErr(c, err)
 		return
 	}
 
 	uclaim, err := s.signer.ParseUser(c.Param("tenant_id"), opts.UserToken)
 	if err != nil {
-		httpx.WriteErr(c, err.Error())
+		httpx.WriteErr(c, err)
 		return
 	}
 	resp := s.cAuth.RefreshService(uclaim, opts)

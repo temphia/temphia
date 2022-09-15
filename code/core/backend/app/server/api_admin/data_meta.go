@@ -13,7 +13,7 @@ func (a *ApiAdmin) NewView(ctx httpx.Request) {
 	view := entities.DataView{}
 	err := ctx.Http.BindJSON(&view)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 	err = a.cAdmin.NewView(ctx.Session, ctx.Http.Param("table_id"), &view)
@@ -25,13 +25,13 @@ func (a *ApiAdmin) ModifyView(ctx httpx.Request) {
 
 	err := ctx.Http.BindJSON(&view)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
 	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -43,7 +43,7 @@ func (a *ApiAdmin) ModifyView(ctx httpx.Request) {
 func (a *ApiAdmin) GetView(ctx httpx.Request) {
 	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -54,7 +54,7 @@ func (a *ApiAdmin) GetView(ctx httpx.Request) {
 func (a *ApiAdmin) ListView(ctx httpx.Request) {
 	resp, err := a.cAdmin.ListView(ctx.Session, ctx.Http.Param("table_id"))
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -64,7 +64,7 @@ func (a *ApiAdmin) ListView(ctx httpx.Request) {
 func (a *ApiAdmin) DelView(ctx httpx.Request) {
 	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -78,7 +78,7 @@ func (a *ApiAdmin) NewHook(ctx httpx.Request) {
 	hook := entities.DataHook{}
 	err := ctx.Http.BindJSON(&hook)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 	err = a.cAdmin.NewHook(ctx.Session, ctx.Http.Param("table_id"), &hook)
@@ -90,13 +90,13 @@ func (a *ApiAdmin) ModifyHook(ctx httpx.Request) {
 
 	err := ctx.Http.BindJSON(&data)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
 	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -108,7 +108,7 @@ func (a *ApiAdmin) ModifyHook(ctx httpx.Request) {
 func (a *ApiAdmin) GetHook(ctx httpx.Request) {
 	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -120,7 +120,7 @@ func (a *ApiAdmin) GetHook(ctx httpx.Request) {
 func (a *ApiAdmin) ListHook(ctx httpx.Request) {
 	resp, err := a.cAdmin.ListHook(ctx.Session, ctx.Http.Param("table_id"))
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
@@ -130,7 +130,7 @@ func (a *ApiAdmin) ListHook(ctx httpx.Request) {
 func (a *ApiAdmin) DelHook(ctx httpx.Request) {
 	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err.Error())
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 

@@ -29,7 +29,7 @@ func (s *Server) opsX(c *gin.Context) {
 	token := c.GetHeader("Authorization")
 	opclaim, err := s.signer.ParseOperator(token)
 	if err != nil {
-		httpx.WriteErr(c, err.Error())
+		httpx.WriteErr(c, err)
 		return
 	}
 
@@ -41,7 +41,7 @@ func (s *Server) operatorAddTenant(c *gin.Context) {
 	data := &opmodels.NewTenant{}
 	err := c.BindJSON(data)
 	if err != nil {
-		httpx.WriteErr(c, err.Error())
+		httpx.WriteErr(c, err)
 		return
 	}
 
@@ -53,7 +53,7 @@ func (s *Server) operatorUpdateTenant(c *gin.Context) {
 	data := make(map[string]interface{})
 	err := c.BindJSON(&data)
 	if err != nil {
-		httpx.WriteErr(c, err.Error())
+		httpx.WriteErr(c, err)
 		return
 	}
 
@@ -73,7 +73,7 @@ func (s *Server) operatorDeleteTenant(c *gin.Context) {
 	slug := c.Param("slug")
 
 	if slug == "" {
-		httpx.WriteErr(c, "empty tenant slug")
+		httpx.WriteErrString(c, "empty tenant slug")
 		return
 	}
 
@@ -89,7 +89,7 @@ func (s *Server) operatorLogin(c *gin.Context) {
 
 	err := c.BindJSON(data)
 	if err != nil {
-		httpx.WriteErr(c, err.Error())
+		httpx.WriteErr(c, err)
 		return
 	}
 
