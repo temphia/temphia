@@ -6,10 +6,10 @@ import (
 	"github.com/temphia/temphia/code/core/backend/libx/xutils/kosher"
 )
 
-func SendDirect(ctx context.Context, cid, roomPtr, roomLen, dataPtr, dataLen, respPtr, respLen int32) int32 {
+func SendDirect(ctx context.Context, cid, roomPtr, roomLen, dataPtr, dataLen, respOffset, respLen int32) int32 {
 
 	e := getCtx(ctx)
-	e.getBytes((respPtr), (respLen))
+	e.getBytes((respOffset), (respLen))
 
 	contents, ok := e.instance.Memory().Read(e.context, uint32(dataPtr), uint32(dataLen))
 	if !ok {
@@ -23,17 +23,17 @@ func SendDirect(ctx context.Context, cid, roomPtr, roomLen, dataPtr, dataLen, re
 	)
 
 	if err != nil {
-		e.writeBytesNPtr(kosher.Byte(err.Error()), (respPtr), (respLen))
+		e.writeBytesNPtr(kosher.Byte(err.Error()), (respOffset), (respLen))
 		return 0
 	}
 
 	return 1
 }
 
-func SendDirectBatch(ctx context.Context, roomPtr, roomLen, connIdsPtr, connIdsLen, payloadPtr, payloadLen, respPtr, respLen int32) int32 {
+func SendDirectBatch(ctx context.Context, roomPtr, roomLen, connIdsPtr, connIdsLen, payloadPtr, payloadLen, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
 
-	room := e.getString(respPtr, respLen)
+	room := e.getString(respOffset, respLen)
 	data := e.getBytes(payloadPtr, payloadLen)
 	conns := make([]int64, connIdsLen)
 
@@ -48,17 +48,17 @@ func SendDirectBatch(ctx context.Context, roomPtr, roomLen, connIdsPtr, connIdsL
 
 	err := e.bindSockd.SendDirectBatch(room, conns, data)
 	if err != nil {
-		e.writeError(respPtr, respLen, err)
+		e.writeError(respOffset, respLen, err)
 		return 0
 	}
 
 	return 1
 }
 
-func SockdSendBroadcast(ctx context.Context, roomPtr, roomLen, igPtr, igLen, payloadPtr, payloadLen, respPtr, respLen int32) int32 {
+func SockdSendBroadcast(ctx context.Context, roomPtr, roomLen, igPtr, igLen, payloadPtr, payloadLen, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
 
-	room := e.getString(respPtr, respLen)
+	room := e.getString(respOffset, respLen)
 	data := e.getBytes(payloadPtr, payloadLen)
 
 	igconns := make([]int64, igLen)
@@ -77,11 +77,11 @@ func SockdSendBroadcast(ctx context.Context, roomPtr, roomLen, igPtr, igLen, pay
 	return 1
 }
 
-func SockdSendTagged(ctx context.Context, roomPtr, roomLen, tagsPtr, tagsLen, payloadPtr, payloadLen, respPtr, respLen int32) int32 {
+func SockdSendTagged(ctx context.Context, roomPtr, roomLen, tagsPtr, tagsLen, payloadPtr, payloadLen, respOffset, respLen int32) int32 {
 	return 1
 }
 
-func SockdRoomUpdateTags(connId int64, roomPtr, roomLen, optsPtr, optsLen, respPtr, respLen int32) int32 {
+func SockdRoomUpdateTags(connId int64, roomPtr, roomLen, optsPtr, optsLen, respOffset, respLen int32) int32 {
 
 	return 1
 

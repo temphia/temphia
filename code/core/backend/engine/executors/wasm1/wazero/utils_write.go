@@ -6,29 +6,29 @@ import (
 	"github.com/temphia/temphia/code/core/backend/libx/xutils/kosher"
 )
 
-func (e *Executor) writeFinal(respPtr, respLen int32, err error) int32 {
+func (e *Executor) writeFinal(respOffset, respLen int32, err error) int32 {
 	if err != nil {
-		e.writeError(respPtr, respLen, err)
+		e.writeError(respOffset, respLen, err)
 		return 0
 	}
 
 	return 1
 }
 
-func (e *Executor) writeJSONFinal(respPtr, respLen int32, resp any, err error) int32 {
+func (e *Executor) writeJSONFinal(respOffset, respLen int32, resp any, err error) int32 {
 	if err != nil {
-		e.writeError(respPtr, respLen, err)
+		e.writeError(respOffset, respLen, err)
 		return 0
 	}
 
-	return e.writeJSON(respPtr, respLen, resp)
+	return e.writeJSON(respOffset, respLen, resp)
 }
 
-func (e *Executor) writeJSON(respPtr, respLen int32, resp any) int32 {
+func (e *Executor) writeJSON(respOffset, respLen int32, resp any) int32 {
 
 	out, err := json.Marshal(resp)
 	if err != nil {
-		e.writeError(respPtr, respLen, err)
+		e.writeError(respOffset, respLen, err)
 		return 0
 	}
 
@@ -38,13 +38,13 @@ func (e *Executor) writeJSON(respPtr, respLen int32, resp any) int32 {
 		panic(ErrOutofIndex)
 	}
 
-	e.mem.WriteUint32Le(e.context, uint32(respPtr), offset)
+	e.mem.WriteUint32Le(e.context, uint32(respOffset), offset)
 	e.mem.WriteUint32Le(e.context, uint32(respLen), uint32(len(out)))
 
 	return 1
 }
 
-func (e *Executor) writeError(respPtr, respLen int32, err error) {
+func (e *Executor) writeError(respOffset, respLen int32, err error) {
 
 	errstr := kosher.Byte(err.Error())
 	offset := e.guestAllocateBytes(uint64(len(errstr)))
@@ -53,7 +53,7 @@ func (e *Executor) writeError(respPtr, respLen int32, err error) {
 		panic(ErrOutofIndex)
 	}
 
-	e.mem.WriteUint32Le(e.context, uint32(respPtr), offset)
+	e.mem.WriteUint32Le(e.context, uint32(respOffset), offset)
 	e.mem.WriteUint32Le(e.context, uint32(respLen), uint32(len(errstr)))
 
 }

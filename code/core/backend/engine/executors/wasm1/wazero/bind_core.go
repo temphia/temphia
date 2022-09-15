@@ -32,18 +32,18 @@ func sleep(ctx context.Context, msec int32) {
 	e.bindings.Sleep(msec)
 }
 
-func getSelfFile(ctx context.Context, filePtr, fileLen, respPtr, respLen, modPtr int32) int32 {
+func getSelfFile(ctx context.Context, filePtr, fileLen, respOffset, respLen, modPtr int32) int32 {
 	e := getCtx(ctx)
 
 	fout, mod, err := e.bindings.GetFileWithMeta(
 		e.getString((filePtr), (fileLen)),
 	)
 	if err != nil {
-		e.writeError((respPtr), (respLen), err)
+		e.writeError(respOffset, respLen, err)
 		return 0
 	}
 
-	e.writeBytesNPtr(fout, (respPtr), (respPtr))
+	e.writeBytesNPtr(fout, respOffset, respOffset)
 	e.mem.WriteUint32Le(e.context, uint32(modPtr), uint32(mod))
 
 	return 1

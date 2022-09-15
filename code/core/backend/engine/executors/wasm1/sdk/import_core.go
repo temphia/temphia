@@ -32,13 +32,13 @@ func sleep(msec uint32) {
 func _get_self_file(file_ptr, file_size, resp_ptr, resp_len, modPtr int32) bool
 
 func getSelfFile(file string) ([]byte, int64, error) {
-	var respPtr, respLen int32 // we are not respLen but other impl might
+	var respOffset, respLen int32 // we are not respLen but other impl might
 	var mod int64
 	fptr, flen := stringToPtr(file)
 
-	ok := _get_self_file(fptr, flen, intAddr(&respPtr), intAddr(&respLen), int32(uintptr(unsafe.Pointer(&mod))))
+	ok := _get_self_file(fptr, flen, intAddr(&respOffset), intAddr(&respLen), int32(uintptr(unsafe.Pointer(&mod))))
 
-	resp := getBytes(respPtr)
+	resp := getBytes(respOffset)
 
 	if !ok {
 		return nil, 0, errors.New(string(resp))

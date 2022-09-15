@@ -7,7 +7,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
-func PlugKVSet(ctx context.Context, txid, keyPtr, keyLen, valPtr, valLen, optPtr, optLen, respPtr, respLen int32) int32 {
+func PlugKVSet(ctx context.Context, txid, keyPtr, keyLen, valPtr, valLen, optPtr, optLen, respOffset, respLen int32) int32 {
 
 	e := getCtx(ctx)
 
@@ -16,7 +16,7 @@ func PlugKVSet(ctx context.Context, txid, keyPtr, keyLen, valPtr, valLen, optPtr
 		opts = &store.SetOptions{}
 		err := e.getJSON((optPtr), (optLen), opts)
 		if err != nil {
-			e.writeError((respPtr), (respLen), err)
+			e.writeError((respOffset), (respLen), err)
 			return 0
 		}
 	}
@@ -29,7 +29,7 @@ func PlugKVSet(ctx context.Context, txid, keyPtr, keyLen, valPtr, valLen, optPtr
 	)
 
 	if err != nil {
-		e.writeError((respPtr), (respLen), err)
+		e.writeError((respOffset), (respLen), err)
 		return 0
 	}
 
@@ -37,13 +37,13 @@ func PlugKVSet(ctx context.Context, txid, keyPtr, keyLen, valPtr, valLen, optPtr
 
 }
 
-func PlugKVGet(ctx context.Context, txid, keyPtr, keyLen, respPtr, respLen int32) int32 {
+func PlugKVGet(ctx context.Context, txid, keyPtr, keyLen, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
 	resp, err := e.bindPluKV.Get(uint32(txid), e.getString((keyPtr), (keyLen)))
-	return e.writeJSONFinal((respPtr), (respLen), resp, err)
+	return e.writeJSONFinal((respOffset), (respLen), resp, err)
 }
 
-func PlugKVUpdate(ctx context.Context, txid, keyPtr, keyLen, valPtr, valLen, optPtr, optLen, respPtr, respLen int32) int32 {
+func PlugKVUpdate(ctx context.Context, txid, keyPtr, keyLen, valPtr, valLen, optPtr, optLen, respOffset, respLen int32) int32 {
 
 	e := getCtx(ctx)
 
@@ -52,7 +52,7 @@ func PlugKVUpdate(ctx context.Context, txid, keyPtr, keyLen, valPtr, valLen, opt
 		opts = &store.UpdateOptions{}
 		err := e.getJSON((optPtr), (optLen), opts)
 		if err != nil {
-			e.writeError((respPtr), (respLen), err)
+			e.writeError((respOffset), (respLen), err)
 			return 0
 		}
 	}
@@ -65,7 +65,7 @@ func PlugKVUpdate(ctx context.Context, txid, keyPtr, keyLen, valPtr, valLen, opt
 	)
 
 	if err != nil {
-		e.writeError((respPtr), (respLen), err)
+		e.writeError((respOffset), (respLen), err)
 		return 0
 	}
 
@@ -73,51 +73,51 @@ func PlugKVUpdate(ctx context.Context, txid, keyPtr, keyLen, valPtr, valLen, opt
 
 }
 
-func PlugKVDel(ctx context.Context, txid, keyPtr, keyLen, respPtr, respLen int32) int32 {
+func PlugKVDel(ctx context.Context, txid, keyPtr, keyLen, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
 	err := e.bindPluKV.Del(uint32(txid), e.getString((keyPtr), (keyLen)))
 	if err != nil {
-		e.writeError((respPtr), (respLen), err)
+		e.writeError((respOffset), (respLen), err)
 		return 0
 	}
 
 	return 1
 }
 
-func PlugKVDelBatch(ctx context.Context, txid, keyPtr, keyLen, respPtr, respLen int32) int32 {
+func PlugKVDelBatch(ctx context.Context, txid, keyPtr, keyLen, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
 
 	err := e.bindPluKV.DelBatch(uint32(txid), strings.Split(e.getString((keyPtr), (keyLen)), ","))
 	if err != nil {
-		e.writeError((respPtr), (respLen), err)
+		e.writeError((respOffset), (respLen), err)
 		return 0
 	}
 
 	return 1
 }
 
-func PlugKVQuery(ctx context.Context, txid, optPtr, optLen, respPtr, respLen int32) int32 {
+func PlugKVQuery(ctx context.Context, txid, optPtr, optLen, respOffset, respLen int32) int32 {
 
 	e := getCtx(ctx)
 
 	opts := &store.PkvQuery{}
 	err := e.getJSON((optPtr), (optLen), opts)
 	if err != nil {
-		e.writeError((respPtr), (respLen), err)
+		e.writeError((respOffset), (respLen), err)
 		return 0
 	}
 
 	resp, err := e.bindPluKV.Query(uint32(txid), opts)
-	return e.writeJSONFinal((respPtr), (respLen), resp, err)
+	return e.writeJSONFinal((respOffset), (respLen), resp, err)
 }
 
-func PlugKVNewTxn(ctx context.Context, txidPtr, respPtr, respLen int32) int32 {
+func PlugKVNewTxn(ctx context.Context, txidPtr, respOffset, respLen int32) int32 {
 
 	e := getCtx(ctx)
 
 	txid, err := e.bindPluKV.NewTxn()
 	if err != nil {
-		e.writeError((respPtr), (respLen), err)
+		e.writeError((respOffset), (respLen), err)
 		return 0
 	}
 
@@ -129,26 +129,26 @@ func PlugKVNewTxn(ctx context.Context, txidPtr, respPtr, respLen int32) int32 {
 	return 1
 }
 
-func PlugKVRollBack(ctx context.Context, txid, respPtr, respLen int32) int32 {
+func PlugKVRollBack(ctx context.Context, txid, respOffset, respLen int32) int32 {
 
 	e := getCtx(ctx)
 
 	err := e.bindPluKV.RollBack(uint32(txid))
 	if err != nil {
-		e.writeError((respPtr), (respLen), err)
+		e.writeError((respOffset), (respLen), err)
 		return 0
 	}
 
 	return 1
 }
 
-func PlugKVCommit(ctx context.Context, txid, respPtr, respLen int32) int32 {
+func PlugKVCommit(ctx context.Context, txid, respOffset, respLen int32) int32 {
 
 	e := getCtx(ctx)
 
 	err := e.bindPluKV.Commit(uint32(txid))
 	if err != nil {
-		e.writeError((respPtr), (respLen), err)
+		e.writeError((respOffset), (respLen), err)
 		return 0
 	}
 
