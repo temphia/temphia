@@ -23,18 +23,18 @@ func getCtx(ctx context.Context) *Executor {
 
 // utils
 
-func (e *Executor) writeWithOffsetPtr(data []byte, roffset, rlen uint32) bool {
+func (e *Executor) writeWithOffsetPtr(data []byte, roffset, rlen uint32) {
 	offset := e.guestAllocateBytes(uint64(len(data)))
 
 	ok := e.mem.Write(e.context, offset, data)
 	if !ok {
-		return false
+		panic(ErrOutofIndex)
+
 	}
 
 	e.mem.WriteUint32Le(e.context, roffset, offset)
 	e.mem.WriteUint32Le(e.context, rlen, uint32(len(data)))
 
-	return true
 }
 
 func (e *Executor) getString(offset, count uint32) string {
