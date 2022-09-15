@@ -20,14 +20,14 @@ func SendDirect(room string, connId int64, payload []byte) error {
 	return getErr(respPtr)
 }
 
-func SendDirectBatch(room string, connId []int64, payload []byte) error {
+func SendDirectBatch(room string, connIds []int64, payload []byte) error {
 
 	roomPtr, roomLen := stringToPtr(room)
 	payloadPtr, payloadLen := bytesToPtr(payload)
 	var respPtr, respLen int32
 
-	connIdsPtr := int32(uintptr(unsafe.Pointer(&connId[0])))
-	connIdsLen := int32(len(connId))
+	connIdsPtr := int32(uintptr(unsafe.Pointer(&connIds[0])))
+	connIdsLen := int32(len(connIds))
 
 	ok := _sockd_send_direct_batch(roomPtr, roomLen, connIdsPtr, connIdsLen, payloadPtr, payloadLen, intAddr(&respPtr), intAddr(&respLen))
 	if ok {
@@ -38,14 +38,17 @@ func SendDirectBatch(room string, connId []int64, payload []byte) error {
 
 }
 
-func SendBroadcast(room string, payload []byte) error {
+func SendBroadcast(room string, payload []byte, ignores ...int64) error {
 
 	roomPtr, roomLen := stringToPtr(room)
 	payloadPtr, payloadLen := bytesToPtr(payload)
 
 	var respPtr, respLen int32
 
-	ok := _sockd_send_broadcast(roomPtr, roomLen, payloadPtr, payloadLen, intAddr(&respPtr), intAddr(&respLen))
+	igPtr := int32(uintptr(unsafe.Pointer(&ignores[0])))
+	igLen := int32(len(ignores))
+
+	ok := _sockd_send_broadcast(roomPtr, roomLen, igPtr, igLen, payloadPtr, payloadLen, intAddr(&respPtr), intAddr(&respLen))
 	if ok {
 		return nil
 	}
@@ -115,7 +118,7 @@ func _sockd_send_direct_batch(roomPtr, roomLen, connIdsPtr, connIdsLen, payloadP
 
 //go:wasm-module temphia1
 //export sockd_send_broadcast
-func _sockd_send_broadcast(roomPtr, roomLen, payloadPtr, payloadLen, respPtr, respLen int32) bool
+func _sockd_send_broadcast(roomPtr, roomLen, igPtr, igLen, payloadPtr, payloadLen, respPtr, respLen int32) bool
 
 //go:wasm-module temphia1
 //export sockd_send_tagged

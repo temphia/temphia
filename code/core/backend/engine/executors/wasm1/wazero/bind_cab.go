@@ -6,7 +6,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/libx/xutils/kosher"
 )
 
-func CabinetAddFile(ctx context.Context, bukPtr, bukLen, filePtr, fileLen, dataPtr, dataLen, respPtr, respLen int32) int32 {
+func cabAddFile(ctx context.Context, bukPtr, bukLen, filePtr, fileLen, dataPtr, dataLen, respPtr, respLen int32) int32 {
 
 	e := getCtx(ctx)
 
@@ -16,51 +16,51 @@ func CabinetAddFile(ctx context.Context, bukPtr, bukLen, filePtr, fileLen, dataP
 	}
 
 	err := e.bindCab.AddFile(
-		e.getString(uint32(bukPtr), uint32(bukLen)),
-		e.getString(uint32(filePtr), uint32(fileLen)),
+		e.getString((bukPtr), (bukLen)),
+		e.getString((filePtr), (fileLen)),
 		contents,
 	)
 
 	if err != nil {
-		e.writeError(uint32(respPtr), uint32(respLen), err)
+		e.writeError((respPtr), (respLen), err)
 		return 0
 	}
 
 	return 1
 }
 
-func ListFolder(ctx context.Context, bukPtr, bukLen, respPtr, respLen int32) int32 {
+func cabListFolder(ctx context.Context, bukPtr, bukLen, respPtr, respLen int32) int32 {
 	e := getCtx(ctx)
 
-	resp, err := e.bindCab.ListFolder(e.getString(uint32(bukPtr), uint32(bukLen)))
-	return e.writeJSON(uint32(respPtr), uint32(respLen), resp, err)
+	resp, err := e.bindCab.ListFolder(e.getString((bukPtr), (bukLen)))
+	return e.writeJSONFinal((respPtr), (respLen), resp, err)
 }
 
-func GetFile(ctx context.Context, bukPtr, bukLen, filePtr, fileLen, respPtr, respLen int32) int32 {
+func cabGetFile(ctx context.Context, bukPtr, bukLen, filePtr, fileLen, respPtr, respLen int32) int32 {
 	e := getCtx(ctx)
 
 	out, err := e.bindCab.GetFile(
-		e.getString(uint32(bukPtr), uint32(bukLen)),
-		e.getString(uint32(filePtr), uint32(fileLen)),
+		e.getString((bukPtr), (bukLen)),
+		e.getString((filePtr), (fileLen)),
 	)
 	if err != nil {
-		e.writeWithOffsetPtr(kosher.Byte(err.Error()), uint32(respPtr), uint32(respLen))
+		e.writeBytesNPtr(kosher.Byte(err.Error()), (respPtr), (respLen))
 		return 0
 	}
 
-	e.writeWithOffsetPtr(out, uint32(respPtr), uint32(respLen))
+	e.writeBytesNPtr(out, (respPtr), (respLen))
 	return 1
 }
 
-func DelFile(ctx context.Context, bukPtr, bukLen, filePtr, fileLen, respPtr, respLen int32) int32 {
+func cabDelFile(ctx context.Context, bukPtr, bukLen, filePtr, fileLen, respPtr, respLen int32) int32 {
 	e := getCtx(ctx)
 
 	err := e.bindCab.DeleteFile(
-		e.getString(uint32(bukPtr), uint32(bukLen)),
-		e.getString(uint32(filePtr), uint32(fileLen)),
+		e.getString((bukPtr), (bukLen)),
+		e.getString((filePtr), (fileLen)),
 	)
 	if err != nil {
-		e.writeWithOffsetPtr(kosher.Byte(err.Error()), uint32(respPtr), uint32(respLen))
+		e.writeBytesNPtr(kosher.Byte(err.Error()), (respPtr), (respLen))
 		return 0
 	}
 

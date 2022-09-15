@@ -9,6 +9,7 @@ import (
 func SendDirect(ctx context.Context, cid, roomPtr, roomLen, dataPtr, dataLen, respPtr, respLen int32) int32 {
 
 	e := getCtx(ctx)
+	e.getBytes((respPtr), (respLen))
 
 	contents, ok := e.instance.Memory().Read(e.context, uint32(dataPtr), uint32(dataLen))
 	if !ok {
@@ -16,26 +17,71 @@ func SendDirect(ctx context.Context, cid, roomPtr, roomLen, dataPtr, dataLen, re
 	}
 
 	err := e.bindSockd.SendDirect(
-		e.getString(uint32(roomPtr), uint32(roomLen)),
+		e.getString((roomPtr), (roomLen)),
 		int64(cid),
 		contents,
 	)
 
 	if err != nil {
-		e.writeWithOffsetPtr(kosher.Byte(err.Error()), uint32(respPtr), uint32(respLen))
+		e.writeBytesNPtr(kosher.Byte(err.Error()), (respPtr), (respLen))
 		return 0
 	}
 
 	return 1
 }
 
-// SendDirect(room string, connId int64, payload []byte) error
-// SendDirectBatch(room string, conns []int64, payload []byte) error
-// SendBroadcast(room string, ignores []int64, payload []byte) error
-// SendTagged(room string, tags []string, ignores []int64, payload []byte) error
-// RoomUpdateTags(room string, opts sockdx.UpdateTagOptions) error
+func SendDirectBatch(ctx context.Context, roomPtr, roomLen, connIdsPtr, connIdsLen, payloadPtr, payloadLen, respPtr, respLen int32) int32 {
+	e := getCtx(ctx)
 
-func SendDirectBatch(ctx context.Context, cid, roomPtr, roomLen, dataPtr, dataLen, respPtr, respLen int32) int32 {
+	room := e.getString(respPtr, respLen)
+	data := e.getBytes(payloadPtr, payloadLen)
+	conns := make([]int64, connIdsLen)
+
+	for idx := range conns {
+		cid, ok := e.mem.ReadUint64Le(e.context, (uint32(connIdsPtr) + uint32(8*idx)))
+		if !ok {
+			panic(ErrOutofIndex)
+		}
+
+		conns[idx] = int64(cid)
+	}
+
+	err := e.bindSockd.SendDirectBatch(room, conns, data)
+	if err != nil {
+		e.writeError(respPtr, respLen, err)
+		return 0
+	}
+
+	return 1
+}
+
+func SockdSendBroadcast(ctx context.Context, roomPtr, roomLen, igPtr, igLen, payloadPtr, payloadLen, respPtr, respLen int32) int32 {
+	e := getCtx(ctx)
+
+	room := e.getString(respPtr, respLen)
+	data := e.getBytes(payloadPtr, payloadLen)
+
+	igconns := make([]int64, igLen)
+
+	for idx := range igconns {
+		cid, ok := e.mem.ReadUint64Le(e.context, (uint32(igPtr) + uint32(8*idx)))
+		if !ok {
+			panic(ErrOutofIndex)
+		}
+
+		igconns[idx] = int64(cid)
+	}
+
+	e.bindSockd.SendBroadcast(room, igconns, data)
+
+	return 1
+}
+
+func SockdSendTagged(ctx context.Context, roomPtr, roomLen, tagsPtr, tagsLen, payloadPtr, payloadLen, respPtr, respLen int32) int32 {
+	return 1
+}
+
+func SockdRoomUpdateTags(connId int64, roomPtr, roomLen, optsPtr, optsLen, respPtr, respLen int32) int32 {
 
 	return 1
 

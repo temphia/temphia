@@ -36,14 +36,14 @@ func getSelfFile(ctx context.Context, filePtr, fileLen, respPtr, respLen, modPtr
 	e := getCtx(ctx)
 
 	fout, mod, err := e.bindings.GetFileWithMeta(
-		e.getString(uint32(filePtr), uint32(fileLen)),
+		e.getString((filePtr), (fileLen)),
 	)
 	if err != nil {
-		e.writeError(uint32(respPtr), uint32(respLen), err)
+		e.writeError((respPtr), (respLen), err)
 		return 0
 	}
 
-	e.writeWithOffsetPtr(fout, uint32(respPtr), uint32(respPtr))
+	e.writeBytesNPtr(fout, (respPtr), (respPtr))
 	e.mem.WriteUint32Le(e.context, uint32(modPtr), uint32(mod))
 
 	return 1
