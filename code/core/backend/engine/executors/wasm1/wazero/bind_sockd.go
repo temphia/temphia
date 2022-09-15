@@ -2,8 +2,9 @@ package wazero
 
 import (
 	"context"
+	"strings"
 
-	"github.com/temphia/temphia/code/core/backend/libx/xutils/kosher"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
 )
 
 func SendDirect(ctx context.Context, cid, roomPtr, roomLen, dataPtr, dataLen, respOffset, respLen int32) int32 {
@@ -22,12 +23,7 @@ func SendDirect(ctx context.Context, cid, roomPtr, roomLen, dataPtr, dataLen, re
 		contents,
 	)
 
-	if err != nil {
-		e.writeBytesNPtr(kosher.Byte(err.Error()), (respOffset), (respLen))
-		return 0
-	}
-
-	return 1
+	return e.writeFinal(respOffset, respLen, err)
 }
 
 func SendDirectBatch(ctx context.Context, roomPtr, roomLen, connIdsPtr, connIdsLen, payloadPtr, payloadLen, respOffset, respLen int32) int32 {
@@ -47,12 +43,7 @@ func SendDirectBatch(ctx context.Context, roomPtr, roomLen, connIdsPtr, connIdsL
 	}
 
 	err := e.bindSockd.SendDirectBatch(room, conns, data)
-	if err != nil {
-		e.writeError(respOffset, respLen, err)
-		return 0
-	}
-
-	return 1
+	return e.writeFinal(respOffset, respLen, err)
 }
 
 func SockdSendBroadcast(ctx context.Context, roomPtr, roomLen, igPtr, igLen, payloadPtr, payloadLen, respOffset, respLen int32) int32 {
@@ -72,17 +63,44 @@ func SockdSendBroadcast(ctx context.Context, roomPtr, roomLen, igPtr, igLen, pay
 		igconns[idx] = int64(cid)
 	}
 
-	e.bindSockd.SendBroadcast(room, igconns, data)
-
-	return 1
+	err := e.bindSockd.SendBroadcast(room, igconns, data)
+	return e.writeFinal(respOffset, respLen, err)
 }
 
-func SockdSendTagged(ctx context.Context, roomPtr, roomLen, tagsPtr, tagsLen, payloadPtr, payloadLen, respOffset, respLen int32) int32 {
-	return 1
+func SockdSendTagged(ctx context.Context, roomPtr, roomLen, tagsPtr, tagsLen, igPtr, igLen, payloadPtr, payloadLen, respOffset, respLen int32) int32 {
+
+	e := getCtx(ctx)
+
+	room := e.getString(respOffset, respLen)
+	data := e.getBytes(payloadPtr, payloadLen)
+	tags := e.getString(respOffset, respLen)
+
+	igconns := make([]int64, igLen)
+
+	for idx := range igconns {
+		cid, ok := e.mem.ReadUint64Le(e.context, (uint32(igPtr) + uint32(8*idx)))
+		if !ok {
+			panic(ErrOutofIndex)
+		}
+
+		igconns[idx] = int64(cid)
+	}
+
+	err := e.bindSockd.SendTagged(room, strings.Split(tags, ","), igconns, data)
+
+	return e.writeFinal(respOffset, respLen, err)
 }
 
-func SockdRoomUpdateTags(connId int64, roomPtr, roomLen, optsPtr, optsLen, respOffset, respLen int32) int32 {
+func SockdRoomUpdateTags(ctx context.Context, connId int64, roomPtr, roomLen, optsPtr, optsLen, respOffset, respLen int32) int32 {
+	e := getCtx(ctx)
+	room := e.getString(respOffset, respLen)
 
-	return 1
+	opts := sockdx.UpdateTagOptions{}
 
+	err := e.getJSON(optsPtr, optsLen, &opts)
+	if err != nil {
+		e.writeError(respOffset, respLen, err)
+		return 0
+	}
+	return e.writeFinal(respOffset, respLen, e.bindSockd.RoomUpdateTags(room, opts))
 }

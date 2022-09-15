@@ -8,11 +8,10 @@ func cabAddFile(ctx context.Context, bukPtr, bukLen, filePtr, fileLen, dataPtr, 
 
 	e := getCtx(ctx)
 
-	contents := e.getBytes(dataPtr, dataLen)
 	err := e.bindCab.AddFile(
 		e.getString(bukPtr, bukLen),
 		e.getString(filePtr, fileLen),
-		contents,
+		e.getBytes(dataPtr, dataLen),
 	)
 
 	return e.writeFinal(respOffset, respLen, err)

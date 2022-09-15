@@ -57,7 +57,7 @@ func SendBroadcast(room string, payload []byte, ignores ...int64) error {
 
 }
 
-func SendTagged(room string, tags []string, payload []byte) error {
+func SendTagged(room string, tags []string, payload []byte, ignores ...int64) error {
 
 	roomPtr, roomLen := stringToPtr(room)
 	payloadPtr, payloadLen := bytesToPtr(payload)
@@ -75,11 +75,16 @@ func SendTagged(room string, tags []string, payload []byte) error {
 	tb := tagBuf.Bytes()
 	tPtr, tLen := bytesToPtr(tb)
 
+	igPtr := int32(uintptr(unsafe.Pointer(&ignores[0])))
+	igLen := int32(len(ignores))
+
 	ok := _sockd_send_tagged(
 		roomPtr,
 		roomLen,
 		tPtr,
 		tLen,
+		igPtr,
+		igLen,
 		payloadPtr,
 		payloadLen,
 		intAddr(&respOffset),
@@ -122,7 +127,7 @@ func _sockd_send_broadcast(roomPtr, roomLen, igPtr, igLen, payloadPtr, payloadLe
 
 //go:wasm-module temphia1
 //export sockd_send_tagged
-func _sockd_send_tagged(roomPtr, roomLen, tagsPtr, tagsLen, payloadPtr, payloadLen, respOffset, respLen int32) bool
+func _sockd_send_tagged(roomPtr, roomLen, tagsPtr, tagsLen, igPtr, igLen, payloadPtr, payloadLen, respOffset, respLen int32) bool
 
 //go:wasm-module temphia1
 //export sockd_room_update_tags
