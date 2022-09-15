@@ -31,7 +31,7 @@ func (b *Binding) selfGetDataFile(file string) ([]byte, error) {
 	return b.pacman.BprintGetBlob(b.handle.Namespace, b.handle.BprintId, dataFile(file))
 }
 
-func (b *Binding) selfListDataFile() (map[string]string, error) {
+func (b *Binding) selfListDataFiles() (map[string]string, error) {
 
 	files, err := b.pacman.BprintListBlobs(b.handle.Namespace, b.handle.BprintId)
 	if err != nil {

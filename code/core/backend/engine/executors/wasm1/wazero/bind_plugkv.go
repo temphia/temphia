@@ -28,12 +28,7 @@ func PlugKVSet(ctx context.Context, txid, keyPtr, keyLen, valPtr, valLen, optPtr
 		opts,
 	)
 
-	if err != nil {
-		e.writeError((respOffset), (respLen), err)
-		return 0
-	}
-
-	return 1
+	return e.writeFinal(respOffset, respLen, err)
 
 }
 
@@ -64,12 +59,7 @@ func PlugKVUpdate(ctx context.Context, txid, keyPtr, keyLen, valPtr, valLen, opt
 		opts,
 	)
 
-	if err != nil {
-		e.writeError((respOffset), (respLen), err)
-		return 0
-	}
-
-	return 1
+	return e.writeFinal(respOffset, respLen, err)
 
 }
 
@@ -88,12 +78,7 @@ func PlugKVDelBatch(ctx context.Context, txid, keyPtr, keyLen, respOffset, respL
 	e := getCtx(ctx)
 
 	err := e.bindPluKV.DelBatch(uint32(txid), strings.Split(e.getString((keyPtr), (keyLen)), ","))
-	if err != nil {
-		e.writeError((respOffset), (respLen), err)
-		return 0
-	}
-
-	return 1
+	return e.writeFinal(respOffset, respLen, err)
 }
 
 func PlugKVQuery(ctx context.Context, txid, optPtr, optLen, respOffset, respLen int32) int32 {
@@ -134,23 +119,11 @@ func PlugKVRollBack(ctx context.Context, txid, respOffset, respLen int32) int32 
 	e := getCtx(ctx)
 
 	err := e.bindPluKV.RollBack(uint32(txid))
-	if err != nil {
-		e.writeError((respOffset), (respLen), err)
-		return 0
-	}
-
-	return 1
+	return e.writeFinal(respOffset, respLen, err)
 }
 
 func PlugKVCommit(ctx context.Context, txid, respOffset, respLen int32) int32 {
-
 	e := getCtx(ctx)
-
 	err := e.bindPluKV.Commit(uint32(txid))
-	if err != nil {
-		e.writeError((respOffset), (respLen), err)
-		return 0
-	}
-
-	return 1
+	return e.writeFinal(respOffset, respLen, err)
 }

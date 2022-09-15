@@ -52,8 +52,8 @@ func (b *Binding) SelfGetDataFile(file string) ([]byte, error) {
 	return b.selfGetDataFile(file)
 }
 
-func (b *Binding) SelfListDataFile() (map[string]string, error) {
-	return b.selfListDataFile()
+func (b *Binding) SelfListDataFiles() (map[string]string, error) {
+	return b.selfListDataFiles()
 }
 
 func (b *Binding) SelfDeleteDataFile(file string) error {

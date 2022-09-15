@@ -33,7 +33,7 @@ func NCGet(key string) (data []byte, version int64, expire int64, err error) {
 	var respOffset, respLen int32
 	kPtr, kLen := stringToPtr(key)
 
-	if _nc_get(kPtr, kLen, intAddr(&respOffset), intAddr(&respLen), int32(uintptr(unsafe.Pointer(&expire)))) {
+	if _nc_get(kPtr, kLen, intAddr(&respOffset), intAddr(&respLen), int32(uintptr(unsafe.Pointer(&expire))), int32(uintptr(unsafe.Pointer(&version)))) {
 		data = getBytes(respOffset)
 		return
 	}
@@ -63,7 +63,7 @@ func _nc_put_cas(kPtr, kLen, vPtr, vLen, respOffset, respLen int32, version, exp
 
 //go:wasm-module temphia1
 //export nc_get
-func _nc_get(kPtr, kLen, respOffset, respLen, rexpire int32) bool
+func _nc_get(kPtr, kLen, respOffset, respLen, rexpire, rversion int32) bool
 
 //go:wasm-module temphia1
 //export nc_expire

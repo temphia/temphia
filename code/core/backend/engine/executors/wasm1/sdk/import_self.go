@@ -65,7 +65,7 @@ func SelfGetDataFile(file string) ([]byte, error) {
 	return nil, getErr(respOffset)
 }
 
-func SelfListDataFile() (map[string]string, error) {
+func SelfListDataFiles() (map[string]string, error) {
 	var respOffset, respLen int32
 
 	if _self_list_data_file(intAddr(&respOffset), intAddr(&respLen)) {
@@ -218,9 +218,11 @@ func SelfModuleExec(name, method, path string, data []byte) ([]byte, error) {
 
 	nptr, nlen := stringToPtr(name)
 	mptr, mlen := stringToPtr(method)
+	pptr, plen := stringToPtr(path)
+
 	dptr, dlen := bytesToPtr(data)
 
-	if _self_module_exec(nptr, nlen, mptr, mlen, dptr, dlen, intAddr(&respOffset), intAddr(&respLen)) {
+	if _self_module_exec(nptr, nlen, mptr, mlen, pptr, plen, dptr, dlen, intAddr(&respOffset), intAddr(&respLen)) {
 		return getBytes(respOffset), nil
 	}
 
@@ -230,8 +232,9 @@ func SelfModuleExec(name, method, path string, data []byte) ([]byte, error) {
 func SelfForkExec(method string, data []byte) error {
 	var respOffset, respLen int32
 	mptr, mlen := stringToPtr(method)
+	dptr, dlen := bytesToPtr(data)
 
-	if _self_fork_exec(mptr, mlen, intAddr(&respOffset), intAddr(&respLen)) {
+	if _self_fork_exec(mptr, mlen, dptr, dlen, intAddr(&respOffset), intAddr(&respLen)) {
 		return nil
 	}
 
@@ -260,8 +263,8 @@ func _self_link_exec(nPtr, nLen, mPtr, mLen, dPtr, dLen, async, detached, respOf
 
 //go:wasm-module temphia1
 //export self_module_exec
-func _self_module_exec(nPtr, nLen, mPtr, mLen, dPtr, dLen, respOffset, respLen int32) bool
+func _self_module_exec(nPtr, nLen, mPtr, mLen, pPtr, pLen, dPtr, dLen, respOffset, respLen int32) bool
 
 //go:wasm-module temphia1
 //export self_fork_exec
-func _self_fork_exec(mPtr, mLen, respOffset, respLen int32) bool
+func _self_fork_exec(mPtr, mLen, dPtr, dLen, respOffset, respLen int32) bool
