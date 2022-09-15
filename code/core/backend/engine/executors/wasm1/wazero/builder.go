@@ -67,5 +67,6 @@ func (b *Builder) Instance(opts etypes.ExecutorOption) (etypes.Executor, error) 
 		bindCab:    opts.Binder.CabinetBindingsGet(),
 		bindSelf:   opts.Binder.SelfBindingsGet(),
 		bindNcache: opts.Binder.NodeCacheGet(),
+		bindNet:    opts.Binder.NetGet(),
 	}, nil
 }

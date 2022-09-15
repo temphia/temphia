@@ -27,6 +27,7 @@ type Executor struct {
 	bindCab    bindx.Cabinet
 	bindSelf   bindx.Self
 	bindNcache bindx.NodeCache
+	bindNet    bindx.Net
 }
 
 func (e *Executor) Process(req *event.Request) (*event.Response, error) {

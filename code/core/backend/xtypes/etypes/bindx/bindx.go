@@ -16,6 +16,7 @@ type Bindings interface {
 	CabinetBindingsGet() Cabinet
 	SelfBindingsGet() Self
 	NodeCacheGet() NodeCache
+	NetGet() Net
 }
 
 type Core interface {

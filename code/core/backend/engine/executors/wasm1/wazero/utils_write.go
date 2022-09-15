@@ -24,6 +24,15 @@ func (e *Executor) writeJSONFinal(respOffset, respLen int32, resp any, err error
 	return e.writeJSON(respOffset, respLen, resp)
 }
 
+func (e *Executor) writeBytesFinal(respOffset, respLen int32, resp []byte, err error) int32 {
+	if err != nil {
+		e.writeError(respOffset, respLen, err)
+		return 0
+	}
+	e.writeBytesNPtr(resp, respOffset, respLen)
+	return 1
+}
+
 func (e *Executor) writeJSON(respOffset, respLen int32, resp any) int32 {
 
 	out, err := json.Marshal(resp)

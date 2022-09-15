@@ -37,7 +37,6 @@ type HttpRequest struct {
 type HttpResponse struct {
 	SatusCode int                 `json:"status_code,omitempty"`
 	Headers   map[string][]string `json:"headers,omitempty"`
-	Json      bool                `json:"json,omitempty"`
 	Body      []byte              `json:"body,omitempty"`
 }
 

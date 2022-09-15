@@ -27,7 +27,6 @@ func HttpRaw(req *bindx.HttpRequest) (*bindx.HttpResponse, error) {
 		resp := &bindx.HttpResponse{
 			SatusCode: int(rStatus),
 			Headers:   map[string][]string{},
-			Json:      risJson == 0,
 			Body:      getBytes(rbodyLen),
 		}
 

@@ -20,5 +20,6 @@ func (m *mb) UserBindingsGet() bindx.User                        { return nil }
 func (m *mb) CabinetBindingsGet() bindx.Cabinet                  { return nil }
 func (m *mb) SelfBindingsGet() bindx.Self                        { return nil }
 func (m *mb) NodeCacheGet() bindx.NodeCache                      { return nil }
+func (m *mb) NetGet() bindx.Net                                  { return nil }
 
 // bindx
