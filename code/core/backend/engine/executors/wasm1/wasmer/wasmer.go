@@ -7,8 +7,10 @@ import (
 )
 
 type Executor struct {
-	builder *Builder
-	module  *wasmer.Module
+	builder  *Builder
+	module   *wasmer.Module
+	instance *wasmer.Instance
+	extenFns map[string]wasmer.IntoExtern
 
 	// bindings cache
 	bindings   bindx.Bindings
