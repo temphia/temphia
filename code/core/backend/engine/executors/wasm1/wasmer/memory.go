@@ -1,8 +1,10 @@
 package wasmer
 
 import (
+	"encoding/binary"
 	"encoding/json"
 
+	"github.com/temphia/temphia/code/core/backend/libx/xutils/kosher"
 	"github.com/wasmerio/wasmer-go/wasmer"
 )
 
@@ -34,6 +36,9 @@ func (m Memory) allocate(size int32) int32 {
 		panic(err)
 	}
 
+	// fixme => do we need to reimport memory []byte (inner)
+	// cz mem could have expanded
+
 	return out.(int32)
 }
 
@@ -61,4 +66,77 @@ func (m Memory) getJSON(offset wasmer.Value, len wasmer.Value, target any) error
 
 // write
 
-// func (m Memory)
+func (m Memory) rwrite(respPtr wasmer.Value, respLen wasmer.Value, err error) ([]wasmer.Value, error) {
+	if err != nil {
+		m.writeError(respPtr, respLen, err)
+		return ErrAtom, nil
+	}
+
+	return OkAtom, nil
+}
+
+func (m Memory) rwriteErr(respPtr wasmer.Value, respLen wasmer.Value, err error) ([]wasmer.Value, error) {
+	m.writeError(respPtr, respLen, err)
+	return ErrAtom, nil
+}
+
+func (m Memory) rwriteBytes1(respPtr wasmer.Value, respLen wasmer.Value, data []byte, err error) ([]wasmer.Value, error) {
+	if err != nil {
+		m.writeError(respPtr, respLen, err)
+		return ErrAtom, nil
+	}
+
+	return m.rwriteBytes2(respPtr, respLen, data)
+}
+
+func (m Memory) rwriteBytes2(respPtr wasmer.Value, respLen wasmer.Value, data []byte) ([]wasmer.Value, error) {
+	m.writeBytes(data, respPtr, respLen)
+	return OkAtom, nil
+}
+
+func (m Memory) rwriteJson(respPtr wasmer.Value, respLen wasmer.Value, resp any, err error) ([]wasmer.Value, error) {
+	if err != nil {
+		m.writeError(respPtr, respLen, err)
+		return ErrAtom, nil
+	}
+
+	m.writeJson(respPtr, respLen, resp)
+	return OkAtom, nil
+
+}
+
+func (m Memory) writeJson(respPtr wasmer.Value, respLen wasmer.Value, resp any) error {
+	out, err := json.Marshal(resp)
+	if err != nil {
+		return err
+	}
+
+	m.writeBytes(out, respPtr, respLen)
+	return nil
+}
+
+func (m Memory) writeError(respPtr wasmer.Value, respLen wasmer.Value, err error) {
+	m.writeBytes(kosher.Byte(err.Error()), respPtr, respLen)
+}
+
+func (m Memory) writeBytes(data []byte, respPtr wasmer.Value, respLen wasmer.Value) {
+
+	size := int32(len(data))
+	ptr := m.allocate(size)
+
+	chunk := m.inner[ptr : ptr+size]
+	copy(chunk, data)
+
+	m.writeUint32(respPtr.I32(), ptr)
+	m.writeUint32(respLen.I32(), size)
+}
+
+func (m Memory) writeUint32(offset int32, value int32) {
+	b := m.inner[offset : offset+4]
+	binary.LittleEndian.PutUint32(b, uint32(value))
+}
+
+func (m Memory) writeUint64(offset int32, value int64) {
+	b := m.inner[offset : offset+8]
+	binary.LittleEndian.PutUint32(b, uint32(value))
+}
