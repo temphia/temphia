@@ -25,12 +25,11 @@ type AppDeps struct {
 	cabinetHub store.CabinetHub
 	plugKV     store.PlugStateKV
 	dataHub    store.DataHub
+	repoHub    repox.Hub
 
 	courier   service.Courier
-	repoHub   repox.Hub
 	nodeCache service.NodeCache
-
-	croot *controllers.RootController
+	croot     *controllers.RootController
 }
 
 func (d *AppDeps) Registry() any       { return d.registry }

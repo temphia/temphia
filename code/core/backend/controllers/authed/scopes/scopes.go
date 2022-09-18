@@ -4,12 +4,12 @@ const (
 	Cabinet = "cabinet"
 	Data    = "data"
 	Engine  = "engine"
-	Store   = "store"
+	Repo    = "repo"
 )
 
 const (
 	AdminUser   = "admin.user"
-	AdminPacman = "admin.pacman"
+	AdminRepo   = "admin.repo"
 	AdminTenant = "admin.tenant"
 	AdminEngine = "admin.engine"
 	AdminDev    = "admin.dev"

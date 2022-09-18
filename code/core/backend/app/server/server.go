@@ -26,11 +26,10 @@ type Options struct {
 	GinEngine         *gin.Engine
 	StaticHosts       map[string]string
 	ResolveHostTenant func(host string) string
+	RootController    *controllers.RootController
 	RootHost          string
 	TenantHostBase    string
 	Port              string
-	OperatorUser      string
-	OperatorPassword  string
 }
 
 type Server struct {
@@ -60,11 +59,6 @@ type Server struct {
 func New(opts Options) *Server {
 	deps := opts.App.GetDeps()
 
-	ctrls := controllers.New(controllers.Options{
-		App:              opts.App,
-		OperatorUser:     opts.OperatorUser,
-		OperatorPassword: opts.OperatorPassword,
-	})
 	logsvc := deps.LogService().(logx.Service)
 	signer := deps.Signer().(service.Signer)
 
@@ -74,10 +68,9 @@ func New(opts Options) *Server {
 	}
 
 	return &Server{
-		app:       opts.App,
 		ginEngine: opts.GinEngine,
 		admin: apiadmin.New(apiadmin.Options{
-			Admin:      ctrls.AdminController(),
+			Admin:      opts.RootController.AdminController(),
 			MiddleWare: mware,
 		}),
 		log:    logsvc,
