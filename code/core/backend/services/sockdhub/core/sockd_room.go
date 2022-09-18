@@ -1,4 +1,4 @@
-package sockd
+package core
 
 import (
 	"sync"

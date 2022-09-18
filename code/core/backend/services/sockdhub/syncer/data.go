@@ -1,12 +1,23 @@
-package sockdhub
+package syncer
 
 import (
 	"encoding/json"
 	"fmt"
 
 	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
+
+type DataSyncer struct {
+	sockd sockdx.SockdCore
+}
+
+func NewData(sockd sockdx.SockdCore) *DataSyncer {
+	return &DataSyncer{
+		sockd: sockd,
+	}
+}
 
 type RowMod struct {
 	Table   string  `json:"table,omitempty"`
@@ -15,7 +26,7 @@ type RowMod struct {
 	Data    any     `json:"data,omitempty"`
 }
 
-func (s *SockdHub) PushNewRow(source, tenantId, groupId, table string, data map[string]any) error {
+func (s *DataSyncer) PushNewRow(source, tenantId, groupId, table string, data map[string]any) error {
 
 	iid, ok := data[store.KeyPrimary]
 	if !ok {
@@ -33,7 +44,7 @@ func (s *SockdHub) PushNewRow(source, tenantId, groupId, table string, data map[
 	})
 }
 
-func (s *SockdHub) PushUpdateRow(source, tenantId, groupId, table string, id int64, data map[string]any) error {
+func (s *DataSyncer) PushUpdateRow(source, tenantId, groupId, table string, id int64, data map[string]any) error {
 	return s.pushRowMod(source, tenantId, groupId, &RowMod{
 		Table:   table,
 		Rows:    []int64{id},
@@ -42,7 +53,7 @@ func (s *SockdHub) PushUpdateRow(source, tenantId, groupId, table string, id int
 	})
 }
 
-func (s *SockdHub) PushDeleteRow(source, tenantId, groupId, table string, id int64) error {
+func (s *DataSyncer) PushDeleteRow(source, tenantId, groupId, table string, id int64) error {
 	return s.pushRowMod(source, tenantId, groupId, &RowMod{
 		Table:   table,
 		Rows:    []int64{id},
@@ -51,7 +62,7 @@ func (s *SockdHub) PushDeleteRow(source, tenantId, groupId, table string, id int
 	})
 }
 
-func (s *SockdHub) pushRowMod(source, tenantId, groupId string, data *RowMod) error {
+func (s *DataSyncer) pushRowMod(source, tenantId, groupId string, data *RowMod) error {
 	out, err := json.Marshal(data)
 	if err != nil {
 		return err
@@ -59,7 +70,7 @@ func (s *SockdHub) pushRowMod(source, tenantId, groupId string, data *RowMod) er
 
 	return s.sockd.SendTagged(
 		tenantId,
-		ROOM_SYSTABLE,
+		sockdx.ROOM_SYSTABLE,
 		[]string{fmt.Sprintf("dgroup.%s.%s", source, groupId)},
 		[]int64{},
 		out,

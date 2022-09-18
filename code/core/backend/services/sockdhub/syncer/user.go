@@ -1,18 +1,29 @@
-package sockdhub
+package syncer
 
 import (
 	"encoding/json"
 	"fmt"
 
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
 )
+
+type UserSyncer struct {
+	sockd sockdx.SockdCore
+}
+
+func NewUser(sockd sockdx.SockdCore) *UserSyncer {
+	return &UserSyncer{
+		sockd: sockd,
+	}
+}
 
 type notifyMessage struct {
 	Type string `json:"type,omitempty"`
 	Data any    `json:"data,omitempty"`
 }
 
-func (s *SockdHub) NotifyUser(msg *entities.UserMessage) error {
+func (s *UserSyncer) NotifyUser(msg *entities.UserMessage) error {
 	nmsg := notifyMessage{
 		Type: "new",
 		Data: msg,
@@ -21,21 +32,21 @@ func (s *SockdHub) NotifyUser(msg *entities.UserMessage) error {
 	return s.notify(msg.TenantId, msg.UserId, nmsg)
 }
 
-func (s *SockdHub) NotifyMessageRead(tenantId, user string, msgIds []int) error {
+func (s *UserSyncer) NotifyMessageRead(tenantId, user string, msgIds []int) error {
 	return s.notify(tenantId, user, notifyMessage{
 		Type: "read",
 		Data: msgIds,
 	})
 }
 
-func (s *SockdHub) NotifyMessageDelete(tenantId, user string, msgIds []int) error {
+func (s *UserSyncer) NotifyMessageDelete(tenantId, user string, msgIds []int) error {
 	return s.notify(tenantId, user, notifyMessage{
 		Type: "delete",
 		Data: msgIds,
 	})
 }
 
-func (s *SockdHub) notify(tenantId, user string, nmsg notifyMessage) error {
+func (s *UserSyncer) notify(tenantId, user string, nmsg notifyMessage) error {
 	out, err := json.Marshal(&nmsg)
 	if err != nil {
 		return err
@@ -43,7 +54,7 @@ func (s *SockdHub) notify(tenantId, user string, nmsg notifyMessage) error {
 
 	return s.sockd.SendTagged(
 		tenantId,
-		ROOM_SYS_USERS,
+		sockdx.ROOM_SYS_USERS,
 		[]string{fmt.Sprint("sys.user_", user)},
 		[]int64{},
 		out,

@@ -93,7 +93,7 @@ func (c *CoreHub) AddUserMessage(msg *entities.UserMessage) (int64, error) {
 	}
 	msg.Id = int(id)
 
-	err = c.sockdhub.NotifyUser(msg)
+	err = c.notifier.NotifyUser(msg)
 	if err != nil {
 		// fixme => log this
 		pp.Println("sending notification err", err)

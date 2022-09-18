@@ -13,7 +13,7 @@ import (
 
 func (p *PacMan) Instance(tenantId string, opts *instance.RepoOptions) (any, error) {
 
-	bprint, err := p.syncer.BprintGet(tenantId, opts.BprintId)
+	bprint, err := p.corehub.BprintGet(tenantId, opts.BprintId)
 	if err != nil {
 		return nil, err
 	}

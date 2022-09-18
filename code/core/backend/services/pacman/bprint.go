@@ -12,7 +12,7 @@ import (
 )
 
 func (c *PacMan) BprintList(tenantid, group string) ([]*entities.BPrint, error) {
-	return c.syncer.BprintList(tenantid, group)
+	return c.corehub.BprintList(tenantid, group)
 }
 
 func (c *PacMan) BprintCreate(tenantid string, bp *entities.BPrint) (string, error) {
@@ -20,7 +20,7 @@ func (c *PacMan) BprintCreate(tenantid string, bp *entities.BPrint) (string, err
 		bp.ID = xid.New().String()
 	}
 
-	return bp.ID, c.syncer.BprintNew(tenantid, bp)
+	return bp.ID, c.corehub.BprintNew(tenantid, bp)
 }
 
 func (c *PacMan) BprintUpdate(tenantid string, bp *entities.BPrint) error {
@@ -34,23 +34,23 @@ func (c *PacMan) BprintUpdate(tenantid string, bp *entities.BPrint) error {
 }
 
 func (c *PacMan) BprintGet(tenantid, bid string) (*entities.BPrint, error) {
-	return c.syncer.BprintGet(tenantid, bid)
+	return c.corehub.BprintGet(tenantid, bid)
 
 }
 
 func (c *PacMan) BprintRemove(tenantid, bid string) error {
-	bprint, err := c.syncer.BprintGet(tenantid, bid)
+	bprint, err := c.corehub.BprintGet(tenantid, bid)
 	if err != nil {
 		return err
 	}
 	for _, file := range bprint.Files {
 		_ = c.blobStore(tenantid).DeleteBlob(context.TODO(), xtypes.BprintBlobFolder, ffile(bid, file))
 	}
-	return c.syncer.BprintDel(tenantid, bid)
+	return c.corehub.BprintDel(tenantid, bid)
 }
 
 func (c *PacMan) BprintListBlobs(tenantid, bid string) (map[string]string, error) {
-	bprint, err := c.syncer.BprintGet(tenantid, bid)
+	bprint, err := c.corehub.BprintGet(tenantid, bid)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +82,7 @@ func (c *PacMan) BprintNewBlob(tenantid, bid, file string, payload []byte) error
 	bprint.Files = append(bprint.Files, file)
 	bprint.ID = bid
 
-	err = c.syncer.BprintUpdate(tenantid, bid, map[string]any{
+	err = c.corehub.BprintUpdate(tenantid, bid, map[string]any{
 		"files": bprint.Files,
 	})
 

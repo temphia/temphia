@@ -1,4 +1,4 @@
-package sockd
+package core
 
 import (
 	"sync"
@@ -9,7 +9,7 @@ import (
 
 var _ sockdx.SockdCore = (*Sockd)(nil)
 
-type SockdOptions struct {
+type Options struct {
 	ServerIdent string
 	Syncer      sockdx.PeerSync
 	SysHelper   sockdx.SystemHelper
@@ -28,7 +28,7 @@ type Sockd struct {
 	logger zerolog.Logger
 }
 
-func New(opts SockdOptions) *Sockd {
+func New(opts sockdx.Options) *Sockd {
 	s := &Sockd{
 		rooms:       make(map[string]*room),
 		tenantRooms: make(map[string][]string),

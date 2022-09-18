@@ -3,6 +3,7 @@ package sockdx
 import (
 	"errors"
 
+	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 )
 
@@ -25,6 +26,13 @@ type ConnOptions struct {
 	Conn      Conn
 	Expiry    int
 	Tags      []string
+}
+
+type Options struct {
+	ServerIdent string
+	Syncer      PeerSync
+	SysHelper   SystemHelper
+	Logger      zerolog.Logger
 }
 
 type UpdateTagOptions struct {

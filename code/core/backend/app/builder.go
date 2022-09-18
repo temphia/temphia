@@ -50,6 +50,10 @@ func (b *Builder) Xplane(xp xplane.ControlPlane) {
 	b.app.deps.controlPlane = xp
 }
 
+func (b *Builder) SetEngine(e *gin.Engine) {
+	b.ginEngine = e
+}
+
 func (b *Builder) Build() error {
 	return b.build()
 }

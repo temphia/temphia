@@ -1,7 +1,6 @@
 package datahub
 
 import (
-	sockdhub "github.com/temphia/temphia/code/core/backend/services/sockd/hub"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
@@ -12,7 +11,7 @@ import (
 type DataHub struct {
 	dyndbs   map[string]store.DynDB
 	eventHub xplane.EventBus
-	sockdhub *sockdhub.SockdHub
+	sockdhub sockdx.DataSyncer
 	engine   etypes.Engine
 	corehub  store.CoreHub
 }
@@ -31,7 +30,9 @@ func (s *DataHub) Inject(_app xtypes.App) {
 	deps := _app.GetDeps()
 
 	deps.ControlPlane().(xplane.ControlPlane).GetEventBus()
-	s.sockdhub = sockdhub.New(deps.Sockd().(sockdx.Sockd))
+	sockdhub := deps.SockdHub().(sockdx.Hub)
+
+	s.sockdhub = sockdhub.GetDataSyncer()
 	s.corehub = deps.CoreHub().(store.CoreHub)
 
 }

@@ -15,17 +15,21 @@ type AppDeps struct {
 	registry     *registry.Registry
 	logService   logx.Service
 	controlPlane xplane.ControlPlane
-	engine       etypes.Engine
-	sockd        sockdx.SockdCore
-	coreHub      store.CoreHub
-	plugKV       store.PlugStateKV
-	signer       service.Signer
-	courier      service.Courier
-	cabinetHub   store.CabinetHub
-	pacman       service.Pacman
-	dataHub      store.DataHub
-	nodeCache    service.NodeCache
-	croot        *controllers.RootController
+
+	signer   service.Signer
+	engine   etypes.Engine
+	sockdhub sockdx.Hub
+
+	coreHub    store.CoreHub
+	cabinetHub store.CabinetHub
+	plugKV     store.PlugStateKV
+	dataHub    store.DataHub
+
+	courier   service.Courier
+	pacman    service.Pacman
+	nodeCache service.NodeCache
+
+	croot *controllers.RootController
 }
 
 func (d *AppDeps) Registry() any       { return d.registry }
@@ -37,7 +41,7 @@ func (d *AppDeps) PlugKV() any         { return d.plugKV }
 func (d *AppDeps) Cabinet() any        { return d.cabinetHub }
 func (d *AppDeps) DataHub() any        { return d.dataHub }
 func (d *AppDeps) Engine() any         { return d.engine }
-func (d *AppDeps) Sockd() any          { return d.sockd }
+func (d *AppDeps) SockdHub() any       { return d.sockdhub }
 func (d *AppDeps) Signer() any         { return d.signer }
 func (d *AppDeps) Pacman() any         { return d.pacman }
 func (d *AppDeps) Courier() any        { return d.courier }

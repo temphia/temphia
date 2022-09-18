@@ -30,7 +30,7 @@ func NewFactory(opts FactoryOptions) Factory {
 	return Factory{
 		deps: deps.Deps{
 			App:            opts.App,
-			Sockd:          appdeps.Sockd().(sockdx.SockdCore),
+			Sockd:          appdeps.SockdHub().(sockdx.Hub).GetSockd(),
 			Pacman:         appdeps.Pacman().(service.Pacman),
 			Corehub:        appdeps.CoreHub().(store.CoreHub),
 			CabinetHub:     appdeps.Cabinet().(store.CabinetHub),

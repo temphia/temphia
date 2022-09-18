@@ -14,7 +14,6 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
 )
@@ -57,7 +56,6 @@ func New(opts Options) *RootController {
 	cab := deps.Cabinet().(store.CabinetHub)
 	dynhub := deps.DataHub().(store.DataHub)
 	egine := deps.Engine().(etypes.Engine)
-	sd := deps.Sockd().(sockdx.Sockd)
 
 	return &RootController{
 		cAdmin:   admin.New(pacman, cplane, corehub, signer),
@@ -74,7 +72,7 @@ func New(opts Options) *RootController {
 			opts.OperatorPassword),
 		cDev:    dev.New(pacman, corehub),
 		cEngine: engine.New(egine, signer),
-		cSockd:  sockd.New(sd),
+		//		cSockd:  sockd.New(deps.SockdHub().(sockdx.Hub).GetSockd()),
 	}
 }
 

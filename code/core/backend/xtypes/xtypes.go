@@ -29,7 +29,7 @@ type Deps interface {
 	Cabinet() any
 	DataHub() any
 	Engine() any
-	Sockd() any
+	SockdHub() any
 	Signer() any
 	Pacman() any
 	Courier() any

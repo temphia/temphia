@@ -9,7 +9,6 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints/instancer"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
 
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
@@ -20,8 +19,7 @@ var (
 
 type PacMan struct {
 	app     xtypes.App
-	sockd   sockdx.SockdCore
-	syncer  store.SyncDB
+	corehub store.CoreHub
 	dynHub  store.DataHub
 	cabinet store.CabinetHub
 
@@ -37,8 +35,7 @@ func New(_app xtypes.App) *PacMan {
 
 	return &PacMan{
 		app:             _app,
-		sockd:           deps.Sockd().(sockdx.SockdCore),
-		syncer:          deps.CoreHub().(service.Syncer),
+		corehub:         deps.CoreHub().(store.CoreHub),
 		dynHub:          deps.DataHub().(store.DataHub),
 		cabinet:         deps.Cabinet().(store.CabinetHub),
 		instancers:      nil,

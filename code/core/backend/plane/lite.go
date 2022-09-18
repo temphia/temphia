@@ -3,10 +3,15 @@ package plane
 import (
 	"github.com/temphia/temphia/code/core/backend/app/config"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
+	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
 )
 
 var _ xplane.ControlPlane = (*PlaneLite)(nil)
+
+type LiteOptions struct {
+	CoreHub store.CoreHub
+}
 
 type PlaneLite struct {
 	eventbus *EventBus
@@ -16,7 +21,7 @@ type PlaneLite struct {
 	seq      Sequencer
 }
 
-func NewLite() *PlaneLite {
+func NewLite(opts LiteOptions) *PlaneLite {
 
 	nodeId := int64(1)
 

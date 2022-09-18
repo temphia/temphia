@@ -1,4 +1,4 @@
-package sockd
+package core
 
 import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
