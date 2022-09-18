@@ -3,42 +3,12 @@ package app
 import (
 	"github.com/temphia/temphia/code/core/backend/engine"
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/services/courier"
+	"github.com/temphia/temphia/code/core/backend/services/courierhub/courier"
 	"github.com/temphia/temphia/code/core/backend/services/repohub"
 	"github.com/temphia/temphia/code/core/backend/services/sockdhub"
 	"github.com/temphia/temphia/code/core/backend/shared/signer"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
 )
-
-/*
-
-
-	init, building order
-
-	registry
-	logger
-	config
-	xplane
-
-	signer
-	sockd
-
-	stores
-	-	coredb/hub
-	-	dyndb/datahub
-	-	engine
-
-
-	services
-		- pacman
-		- nodecache
-		- courier
-
-	controller
-	server
-
-
-*/
 
 func (b *Builder) preCheck() error {
 	deps := &b.app.deps
