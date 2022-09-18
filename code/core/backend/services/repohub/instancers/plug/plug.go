@@ -11,7 +11,6 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints/instancer"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/instance"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 	"github.com/ztrue/tracerr"
@@ -30,7 +29,7 @@ func New(app xtypes.App) instancer.Instancer {
 	return &PlugInstancer{
 		app:    app,
 		pacman: deps.RepoHub().(repox.Hub),
-		syncer: deps.CoreHub().(service.Syncer),
+		syncer: deps.CoreHub().(store.CoreHub),
 	}
 }
 

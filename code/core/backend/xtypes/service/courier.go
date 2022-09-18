@@ -15,6 +15,10 @@ type MailSender struct {
 	Password string
 }
 
+type CourierHub interface {
+	GetCourier() Courier
+}
+
 type Courier interface {
 	Start(eventbus any) error
 	MailTenant(ctx context.Context, msg MailMessage) error

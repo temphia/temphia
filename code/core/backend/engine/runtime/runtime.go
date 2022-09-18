@@ -52,7 +52,7 @@ func New(_app xtypes.App, logger zerolog.Logger) *runtime {
 		execBuilders: nil,
 		nodeTags:     []string{},
 		signer:       deps.Signer().(service.Signer),
-		syncer:       deps.CoreHub().(service.Syncer),
+		syncer:       deps.CoreHub().(store.SyncDB),
 		logger:       logger,
 		ns:           make(map[string]*ns),
 		nlock:        sync.Mutex{},
