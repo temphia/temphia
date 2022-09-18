@@ -14,6 +14,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
 )
@@ -51,7 +52,7 @@ func New(opts Options) *RootController {
 	seq := cplane.GetSequencer()
 
 	corehub := deps.CoreHub().(store.CoreHub)
-	pacman := deps.Pacman().(service.Pacman)
+	pacman := deps.RepoHub().(repox.Hub)
 	signer := deps.Signer().(service.Signer)
 	cab := deps.Cabinet().(store.CabinetHub)
 	dynhub := deps.DataHub().(store.DataHub)

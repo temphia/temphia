@@ -9,7 +9,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/vmodels"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 
 	"github.com/goccy/go-yaml"
@@ -19,7 +19,7 @@ type Seeder struct {
 	userId           string
 	tg               *bprints.NewTableGroup
 	model            *entities.BPrint
-	pacman           service.Pacman
+	pacman           repox.Hub
 	source           store.DynSource
 	tenant           string
 	group            string

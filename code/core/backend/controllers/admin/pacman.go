@@ -6,7 +6,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/instance"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/vmodels"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 )
 
 func (c *Controller) BprintList(uclaim *claim.Session, group string) ([]*entities.BPrint, error) {
@@ -91,7 +91,7 @@ func (c *Controller) BprintDeleteBlob(uclaim *claim.Session, bid, file string) e
 
 // repo
 
-func (c *Controller) BprintImport(uclaim *claim.Session, opts *service.RepoImportOpts) (string, error) {
+func (c *Controller) BprintImport(uclaim *claim.Session, opts *repox.RepoImportOpts) (string, error) {
 	return c.pacman.RepoSourceImport(uclaim.TenentId, opts)
 }
 

@@ -5,13 +5,13 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
 type Binding struct {
 	handle  *handle.Handle
-	pacman  service.Pacman
+	pacman  repox.Hub
 	cabhub  store.CabinetHub
 	db      store.CoreHub
 	runtime etypes.Runtime

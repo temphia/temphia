@@ -4,6 +4,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
@@ -11,11 +12,11 @@ type Controller struct {
 	coredb  store.CoreHub
 	cabinet store.CabinetHub
 	dynHub  store.DataHub
-	pacman  service.Pacman
+	pacman  repox.Hub
 	signer  service.Signer
 }
 
-func New(coredb store.CoreHub, cabinet store.CabinetHub, dynHub store.DataHub, pacman service.Pacman) *Controller {
+func New(coredb store.CoreHub, cabinet store.CabinetHub, dynHub store.DataHub, pacman repox.Hub) *Controller {
 	ctrl := &Controller{
 		coredb:  coredb,
 		cabinet: cabinet,

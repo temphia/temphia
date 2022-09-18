@@ -1,20 +1,19 @@
-package pacman
+package repohub
 
 import (
 	"sync"
 
 	"github.com/temphia/temphia/code/core/backend/app/registry"
-	"github.com/temphia/temphia/code/core/backend/services/pacman/instancers"
+	"github.com/temphia/temphia/code/core/backend/services/repohub/instancers"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints/instancer"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
 var (
-	_ service.Pacman = (*PacMan)(nil)
+	_ repox.Hub = (*PacMan)(nil)
 )
 
 type PacMan struct {

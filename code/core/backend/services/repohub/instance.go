@@ -1,4 +1,4 @@
-package pacman
+package repohub
 
 import (
 	"encoding/json"

@@ -25,7 +25,9 @@ func main() {
 		panic(err)
 	}
 
-	lite := plane.NewLite()
+	lite := plane.NewLite(plane.LiteOptions{
+		CoreHub: sbuilder.CoreHub(),
+	})
 
 	builder := app.NewBuilder()
 	builder.SetConfig(nil)

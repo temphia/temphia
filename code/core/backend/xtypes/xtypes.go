@@ -30,10 +30,11 @@ type Deps interface {
 	DataHub() any
 	Engine() any
 	SockdHub() any
-	Signer() any
-	Pacman() any
+	RepoHub() any
+
 	Courier() any
 	NodeCache() any
+	Signer() any
 }
 
 type GlobalVar interface {

@@ -7,7 +7,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/instance"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 )
 
 func (a *ApiAdmin) bprintAPI(rg *gin.RouterGroup) {
@@ -127,7 +127,7 @@ func (r *ApiAdmin) BprintInstance(ctx httpx.Request) {
 
 func (c *ApiAdmin) BprintImport(ctx httpx.Request) {
 
-	opts := &service.RepoImportOpts{}
+	opts := &repox.RepoImportOpts{}
 	err := ctx.Http.BindJSON(opts)
 	if err != nil {
 		return

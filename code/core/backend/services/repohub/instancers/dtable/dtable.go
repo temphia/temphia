@@ -8,13 +8,13 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints/instancer"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/instance"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
 type dtabeInstancer struct {
 	app     xtypes.App
-	pacman  service.Pacman
+	pacman  repox.Hub
 	cabhub  store.CabinetHub
 	coreHub store.CoreHub
 	dynhub  store.DataHub
@@ -26,7 +26,7 @@ func New(app xtypes.App) *dtabeInstancer {
 
 	return &dtabeInstancer{
 		app:     app,
-		pacman:  deps.Pacman().(service.Pacman),
+		pacman:  deps.RepoHub().(repox.Hub),
 		cabhub:  deps.Cabinet().(store.CabinetHub),
 		coreHub: deps.CoreHub().(store.CoreHub),
 		dynhub:  deps.DataHub().(store.DataHub),

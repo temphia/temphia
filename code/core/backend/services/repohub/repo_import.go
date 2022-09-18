@@ -1,4 +1,4 @@
-package pacman
+package repohub
 
 import (
 	"context"
@@ -8,12 +8,12 @@ import (
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 
 	"github.com/thoas/go-funk"
 )
 
-func (p *PacMan) RepoSourceImport(tenantid string, opts *service.RepoImportOpts) (string, error) {
+func (p *PacMan) RepoSourceImport(tenantid string, opts *repox.RepoImportOpts) (string, error) {
 
 	repo := p.getRepoSource(tenantid, opts.Source)
 	if repo == nil {

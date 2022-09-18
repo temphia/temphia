@@ -6,6 +6,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
@@ -26,7 +27,7 @@ type AppDeps struct {
 	dataHub    store.DataHub
 
 	courier   service.Courier
-	pacman    service.Pacman
+	repoHub   repox.Hub
 	nodeCache service.NodeCache
 
 	croot *controllers.RootController
@@ -43,6 +44,6 @@ func (d *AppDeps) DataHub() any        { return d.dataHub }
 func (d *AppDeps) Engine() any         { return d.engine }
 func (d *AppDeps) SockdHub() any       { return d.sockdhub }
 func (d *AppDeps) Signer() any         { return d.signer }
-func (d *AppDeps) Pacman() any         { return d.pacman }
+func (d *AppDeps) RepoHub() any        { return d.repoHub }
 func (d *AppDeps) Courier() any        { return d.courier }
 func (d *AppDeps) NodeCache() any      { return d.nodeCache }

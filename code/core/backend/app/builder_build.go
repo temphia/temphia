@@ -4,9 +4,10 @@ import (
 	"github.com/temphia/temphia/code/core/backend/engine"
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/services/courier"
-	"github.com/temphia/temphia/code/core/backend/services/pacman"
-	"github.com/temphia/temphia/code/core/backend/services/signer"
-	"github.com/temphia/temphia/code/core/backend/services/sockd"
+	"github.com/temphia/temphia/code/core/backend/services/repohub"
+	"github.com/temphia/temphia/code/core/backend/services/sockdhub"
+	"github.com/temphia/temphia/code/core/backend/shared/signer"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
 )
 
 /*
@@ -50,12 +51,12 @@ func (b *Builder) preCheck() error {
 		return easyerr.Error("Empty LogService")
 	}
 
-	if b.config == nil {
-		return easyerr.Error("Empty Config")
+	if deps.controlPlane == nil {
+		return easyerr.Error("Empty control plane")
 	}
 
-	if deps.registry == nil {
-		return easyerr.Error("Empty Registry")
+	if b.config == nil {
+		return easyerr.Error("Empty Config")
 	}
 
 	return nil
@@ -71,30 +72,18 @@ func (b *Builder) build() error {
 	deps := &b.app.deps
 
 	deps.signer = signer.New([]byte(b.config.MasterKey), "temphia")
-
-	err = b.buildServices()
-	if err != nil {
-		return err
-	}
-
-	return nil
-
-}
-
-func (b *Builder) buildServices() error {
-	deps := &b.app.deps
-
 	deps.engine = engine.New(b.app, *deps.logService.GetEngineLogger())
 
-	deps.sockd = sockd.New(sockd.SockdOptions{
+	deps.sockdhub = sockdhub.New(sockdx.Options{
 		ServerIdent: b.app.clusterId,
 		Logger:      deps.logService.GetServiceLogger("sockd"),
 		Syncer:      nil,
 		SysHelper:   nil,
 	})
 
-	deps.pacman = pacman.New(b.app)
+	deps.repoHub = repohub.New(b.app)
 	deps.courier = courier.New()
 
 	return nil
+
 }

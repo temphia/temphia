@@ -1,4 +1,4 @@
-package pacman
+package repohub
 
 import (
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"

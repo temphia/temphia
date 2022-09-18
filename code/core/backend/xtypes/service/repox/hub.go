@@ -1,15 +1,15 @@
-package service
+package repox
 
 import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/instance"
 )
 
-type Pacman interface {
+type Hub interface {
 	Start() error
 
-	PacmanRepo
-	PacmanBprintOps
+	RepoCore
+	RepoBprintOps
 }
 
 type RepoImportOpts struct {
@@ -20,7 +20,7 @@ type RepoImportOpts struct {
 	NewId     string   `json:"new_id,omitempty"`
 }
 
-type PacmanRepo interface {
+type RepoCore interface {
 	RepoSources(tenantid string) (map[int64]string, error)
 	RepoSourceList(tenantid, group string, source int64, tags ...string) ([]entities.BPrint, error)
 	RepoSourceGet(tenantid, group, slug string, source int64) (*entities.BPrint, error)
@@ -28,7 +28,7 @@ type PacmanRepo interface {
 	RepoSourceImport(tenantid string, data *RepoImportOpts) (string, error)
 }
 
-type PacmanBprintOps interface {
+type RepoBprintOps interface {
 	BprintList(tenantid, group string) ([]*entities.BPrint, error)
 	BprintCreate(tenantid string, bp *entities.BPrint) (string, error)
 	BprintUpdate(tenantid string, bp *entities.BPrint) error

@@ -3,14 +3,14 @@ package repo
 import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 )
 
 type Controller struct {
-	pacman service.Pacman
+	pacman repox.Hub
 }
 
-func New(pacman service.Pacman) *Controller {
+func New(pacman repox.Hub) *Controller {
 	return &Controller{
 		pacman: pacman,
 	}
@@ -28,6 +28,6 @@ func (c *Controller) RepoSourceGetBlob(uclaim *claim.Session, group, slug string
 	return c.pacman.RepoSourceGetBlob(uclaim.TenentId, group, slug, source, file)
 }
 
-func (c *Controller) RepoSourceImport(uclaim *claim.Session, data *service.RepoImportOpts) (string, error) {
+func (c *Controller) RepoSourceImport(uclaim *claim.Session, data *repox.RepoImportOpts) (string, error) {
 	return c.pacman.RepoSourceImport(uclaim.TenentId, data)
 }

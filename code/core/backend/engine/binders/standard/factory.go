@@ -7,6 +7,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
@@ -31,7 +32,7 @@ func NewFactory(opts FactoryOptions) Factory {
 		deps: deps.Deps{
 			App:            opts.App,
 			Sockd:          appdeps.SockdHub().(sockdx.Hub).GetSockd(),
-			Pacman:         appdeps.Pacman().(service.Pacman),
+			Pacman:         appdeps.RepoHub().(repox.Hub),
 			Corehub:        appdeps.CoreHub().(store.CoreHub),
 			CabinetHub:     appdeps.Cabinet().(store.CabinetHub),
 			NodeCache:      appdeps.NodeCache().(service.NodeCache),

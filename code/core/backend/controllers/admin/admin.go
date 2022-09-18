@@ -2,12 +2,13 @@ package admin
 
 import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
 )
 
 type Controller struct {
-	pacman service.Pacman
+	pacman repox.Hub
 	cplane xplane.ControlPlane
 	coredb store.CoreHub
 	signer service.Signer
@@ -16,7 +17,7 @@ type Controller struct {
 	cabHub store.CabinetHub
 }
 
-func New(pacman service.Pacman, cplane xplane.ControlPlane, coredb store.CoreHub, signer service.Signer) *Controller {
+func New(pacman repox.Hub, cplane xplane.ControlPlane, coredb store.CoreHub, signer service.Signer) *Controller {
 	return &Controller{
 
 		cplane: cplane,
