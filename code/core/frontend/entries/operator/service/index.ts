@@ -1,5 +1,5 @@
 import { navigate } from "svelte-routing";
-import { OperatorAPI } from "./api";
+import { OperatorAPI } from "../api";
 
 export const goto = (path) => () => navigate(path, { replace: true });
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { updateTenant } from "../../operator";
+  import { updateTenant } from "../../service";
   export let id;
 
   let name = "";

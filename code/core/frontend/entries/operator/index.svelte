@@ -10,7 +10,7 @@
   import Tenant from "./pages/tenant/tenant.svelte";
   import NewTenant from "./pages/tenant/tenant_new.svelte";
 
-  import { goto, loadOperatorData } from "./operator";
+  import { goto, loadOperatorData } from "./service";
   import Querytool from "./pages/query/querytool.svelte";
   import Logs from "./pages/logs/logs.svelte";
 

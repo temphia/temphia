@@ -1,2 +1,2 @@
-import { SiteManager } from "../../core/site";
+import { SiteManager } from "../../../lib/utils/site";
 window["site_manager"] = new SiteManager();

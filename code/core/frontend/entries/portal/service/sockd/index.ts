@@ -1,6 +1,6 @@
-import type { SelfAPI } from "../../core/api";
-import type { Sockd, SockdMessage } from "../../core/sockd";
-import { SockdRoom } from "../../core/sockd";
+import type { SelfAPI } from "../../../../lib/api";
+import type { Sockd, SockdMessage } from "../../../../lib/sockd";
+import { SockdRoom } from "../../../../lib/sockd";
 
 const SOCKD_NOTIFICATION_ROOM = "sys.users";
 const SOCKD_DTABLE_ROOM = "sys.dtable";

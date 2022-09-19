@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createTenant } from "../../operator";
+  import { createTenant } from "../../service";
 
   let name = "";
   let slug = "";

@@ -1,4 +1,4 @@
-import { saveOperatorData } from "../operator/operator";
+import { saveOperatorData } from "../operator/service";
 
 export const OpLogin = (baseURL: string, user: string, password: string) => {
   return fetch(`${baseURL}/z/operator/login`, {

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { FloatingAdd } from "../../../_shared";
-  import { deleteTenant, goto, goto_tenant, listTenant } from "../../operator";
+  import { deleteTenant, goto, goto_tenant, listTenant } from "../../service";
 
   let tenants = [];
   const load = () => {

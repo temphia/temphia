@@ -1,6 +1,6 @@
-import { AuthAPI } from "../../core/api";
-import { EngineService } from "../../service/engine";
-import { apiURL, SiteData, SiteManager } from "../../core/site";
+import { AuthAPI } from "../../../lib/api";
+import { EngineService } from "../../../lib/engine/service";
+import { apiURL, SiteData, SiteManager } from "../../../lib/utils/site";
 import { AuthNav } from "./auth_nav";
 
 export class AuthApp {
