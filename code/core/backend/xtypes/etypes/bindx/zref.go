@@ -1,5 +1,9 @@
 package bindx
 
+import (
+	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+)
+
 // this is just for reference
 
 type BindLocker interface {
@@ -23,8 +27,11 @@ type Next interface {
 
 	// plugkv
 
-	QuickGet(txid uint32, key string) (string, error)
-	QuickSet(txid uint32, key, valye string) error
+	SetBatch(txid uint32) error
+	SetBatchLazy([]BatchRecord) error
+	LazyBatchFlush() error
+
+	QuickQuery(txid uint32, query *store.PkvQuery) ([]string, error)
 
 	// user
 
@@ -33,4 +40,24 @@ type Next interface {
 	// sockd
 
 	KickFromRoom(connId int64, room string) error
+}
+
+type LazyMetrics struct {
+	Key      string
+	Interval int64
+	Value    int64
+}
+
+type BatchRecord struct {
+	Key   string `json:"key,omitempty"`
+	Value string `json:"value,omitempty"`
+	Tag1  string `json:"tag1,omitempty"`
+	Tag2  string `json:"tag2,omitempty"`
+	Tag3  string `json:"tag3,omitempty"`
+	TTL   int    `json:"ttl,omitempty"`
+}
+
+type P interface {
+	AddLazyMetric()
+	GetLazyMetric()
 }
