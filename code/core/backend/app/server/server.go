@@ -16,6 +16,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/controllers/engine"
 	"github.com/temphia/temphia/code/core/backend/controllers/operator"
 	"github.com/temphia/temphia/code/core/backend/controllers/repo"
+	"github.com/temphia/temphia/code/core/backend/controllers/user"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
@@ -49,6 +50,7 @@ type Server struct {
 	cOperator *operator.Controller
 	cAuth     *authed.Controller
 	cBasic    *basic.Controller
+	cUser     *user.Controller
 	cData     *data.Controller
 	cCabinet  *cabinet.Controller
 	cRepo     *repo.Controller
@@ -67,10 +69,12 @@ func New(opts Options) *Server {
 		Logger: logsvc.GetServiceLogger("routes"),
 	}
 
+	root := opts.RootController
+
 	return &Server{
 		ginEngine: opts.GinEngine,
 		admin: apiadmin.New(apiadmin.Options{
-			Admin:      opts.RootController.AdminController(),
+			Admin:      root.AdminController(),
 			MiddleWare: mware,
 		}),
 		log:    logsvc,
@@ -89,14 +93,16 @@ func New(opts Options) *Server {
 
 		// controllers
 
-		cOperator: nil,
-		cAuth:     nil,
-		cBasic:    nil,
-		cData:     nil,
-		cCabinet:  nil,
-		cRepo:     nil,
-		cEngine:   nil,
-		cDev:      nil,
+		cOperator: root.OperatorController(),
+		cAuth:     root.AuthController(),
+		cBasic:    root.BasicController(),
+		cData:     root.DtableController(),
+		cCabinet:  root.CabinetController(),
+		cRepo:     root.RepoController(),
+		cEngine:   root.EngineController(),
+		cDev:      root.DevController(),
+		cUser:     root.UserController(),
+		app:       opts.App,
 	}
 }
 

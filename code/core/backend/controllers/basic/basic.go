@@ -43,44 +43,6 @@ func (c *Controller) JoinNotification() error {
 	return nil
 }
 
-func (c *Controller) MessageUser(uclaim *claim.Session, userId, message string) (int64, error) {
-
-	return c.coredb.AddUserMessage(&entities.UserMessage{
-		Id:           0,
-		Title:        "message",
-		Read:         false,
-		Type:         "user_message",
-		Contents:     message,
-		UserId:       userId,
-		FromUser:     uclaim.UserID,
-		FromPlug:     "",
-		FromAgent:    "",
-		PlugCallback: "",
-		WarnLevel:    1,
-		Encrypted:    false,
-		CreatedAt:    nil,
-		TenantId:     uclaim.TenentId,
-	})
-}
-
-func (c *Controller) GetUserInfo(uclaim *claim.Session, userId string) (*entities.UserInfo, error) {
-	usr, err := c.coredb.GetUserByID(uclaim.TenentId, userId)
-	if err != nil {
-		return nil, err
-	}
-
-	fuser := &entities.UserInfo{
-		UserId:    uclaim.UserID,
-		FullName:  usr.FullName,
-		Bio:       "",
-		PublicKey: "",
-		Email:     "",
-		GroupId:   "",
-	}
-
-	return fuser, nil
-}
-
 func (c *Controller) GetSelfInfo(uclaim *claim.Session) (*entities.UserInfo, error) {
 	usr, err := c.coredb.GetUserByID(uclaim.TenentId, uclaim.UserID)
 	if err != nil {

@@ -11,6 +11,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/controllers/operator"
 	"github.com/temphia/temphia/code/core/backend/controllers/repo"
 	"github.com/temphia/temphia/code/core/backend/controllers/sockd"
+	"github.com/temphia/temphia/code/core/backend/controllers/user"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
@@ -36,6 +37,7 @@ type RootController struct {
 	cRepo     *repo.Controller
 	cSockd    *sockd.Controller
 	cOperator *operator.Controller
+	cUser     *user.Controller
 }
 
 type Options struct {
@@ -73,6 +75,7 @@ func New(opts Options) *RootController {
 			opts.OperatorPassword),
 		cDev:    dev.New(pacman, corehub),
 		cEngine: engine.New(egine, signer),
+		cUser:   user.New(corehub),
 		//		cSockd:  sockd.New(deps.SockdHub().(sockdx.Hub).GetSockd()),
 	}
 }
@@ -88,3 +91,4 @@ func (c *RootController) SockdController() *sockd.Controller   { return c.cSockd
 func (c *RootController) RepoController() *repo.Controller     { return c.cRepo }
 func (c *RootController) EngineController() *engine.Controller { return c.cEngine }
 func (c *RootController) DevController() *dev.Controller       { return c.cDev }
+func (c *RootController) UserController() *user.Controller     { return c.cUser }

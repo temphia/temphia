@@ -1,8 +1,6 @@
 package server
 
 import (
-	"io/ioutil"
-
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/controllers/basic"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
@@ -22,9 +20,6 @@ func (s *Server) selfAPI(rg *gin.RouterGroup) {
 	rg.POST("/message", s.X(s.selfModifyMessages))
 	rg.POST("/issue", s.X(s.IssuePlugTkt))
 
-	rg.GET("/user/:id", s.X(s.selfGetUserInfo))
-	rg.POST("/user/:id/message", s.X(s.selfMessageUser))
-
 }
 
 func (s *Server) cabinetSources(ctx httpx.Request) {
@@ -36,23 +31,6 @@ func (s *Server) cabinetSources(ctx httpx.Request) {
 func (s *Server) dtableSources(ctx httpx.Request) {
 	sources, err := s.cBasic.ListDyndbSources(ctx.Session)
 	httpx.WriteJSON(ctx.Http, sources, err)
-}
-
-func (s *Server) selfMessageUser(ctx httpx.Request) {
-
-	out, err := ioutil.ReadAll(ctx.Http.Request.Body)
-	if err != nil {
-		httpx.WriteErr(ctx.Http, err)
-		return
-	}
-
-	_, err = s.cBasic.MessageUser(ctx.Session, ctx.MustParam("id"), string(out))
-	httpx.WriteFinal(ctx.Http, err)
-}
-
-func (s *Server) selfGetUserInfo(ctx httpx.Request) {
-	resp, err := s.cBasic.GetUserInfo(ctx.Session, ctx.MustParam("user"))
-	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
 func (s *Server) selfGetInfo(ctx httpx.Request) {

@@ -5,6 +5,7 @@ const (
 	Data    = "data"
 	Engine  = "engine"
 	Repo    = "repo"
+	User    = "user" // basic user listing and stuff (@mention user lookup)
 )
 
 const (
