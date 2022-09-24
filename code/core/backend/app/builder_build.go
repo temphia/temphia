@@ -5,8 +5,8 @@ import (
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/services/courierhub/courier"
 	"github.com/temphia/temphia/code/core/backend/services/repohub"
+	"github.com/temphia/temphia/code/core/backend/services/shared/signer"
 	"github.com/temphia/temphia/code/core/backend/services/sockdhub"
-	"github.com/temphia/temphia/code/core/backend/shared/signer"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
 )
 
