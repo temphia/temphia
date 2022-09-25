@@ -1,6 +1,6 @@
 package main
 
-import "github.com/temphia/temphia/code/cmd/dev"
+import "github.com/temphia/temphia/cmd/dev"
 
 func main() {
 	dev.RunDev()

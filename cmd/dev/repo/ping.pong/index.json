@@ -1,0 +1,15 @@
+{
+  "name": "Ping Pong",
+  "slug": "ping.pong",
+  "type": "bundle",
+  "description": "This is a ping pong example",
+  "files": [
+    "maindb1.data_group.json",
+    "ping_pong_client.css",
+    "ping_pong_client.js",
+    "ping_pong.interface.json",
+    "ping_pong.plug_schema.json",
+    "ping_pong_server.js",
+    "schema.json"
+  ]
+}

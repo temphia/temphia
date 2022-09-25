@@ -1,0 +1,13 @@
+{
+    "name": "Simple Wizard Example",
+    "slug": "wizard.example1",
+    "type": "plug",
+    "sub_type": "",
+    "description": "This uses specilied executor",
+    "files": [
+        "schema.json",
+        "wizard.yaml",
+        "client.js",
+        "client.css"
+    ]
+}

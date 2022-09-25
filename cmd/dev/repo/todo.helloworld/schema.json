@@ -1,0 +1,24 @@
+{
+    "slug": "todo.helloworld",
+    "name": "Todo Hello World",
+    "resource_hints": {},
+    "agent_hints": {
+        "default": {
+            "executor": "goja",
+            "name": "default",
+            "type": "web",
+            "invoke_policy": "",
+            "resources": {
+                "extslot": ""
+            },
+            "web_files": {
+                "client.js": "client.js",
+                "client.css": "client.css"
+            },
+            "web_entry": "todo.helloworld.main",
+            "web_script": "client.js",
+            "web_style": "client.css",
+            "web_loader": "std.loader"
+        }
+    }
+}

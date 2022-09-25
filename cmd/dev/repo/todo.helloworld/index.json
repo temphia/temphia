@@ -1,0 +1,13 @@
+{
+    "name": "Todo hello world",
+    "slug": "todo.helloworld",
+    "type": "plug",
+    "sub_type": "",
+    "description": "This is todo hello world example",
+    "files": [
+        "schema.json",
+        "client.js",
+        "server.js",
+        "client.css"
+    ]
+}

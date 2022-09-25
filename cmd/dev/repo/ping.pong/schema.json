@@ -1,0 +1,10 @@
+{
+    "ping": {
+        "type": "plug",
+        "file": "ping_pong.plug_schema.json"
+    },
+    "maindb1": {
+        "type": "data_group",
+        "file": "maindb1.data_group.json"
+    }
+}

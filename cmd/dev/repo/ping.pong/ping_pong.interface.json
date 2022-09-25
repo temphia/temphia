@@ -1,0 +1,65 @@
+{
+  "openrpc": "1.0.0-rc1",
+  "info": {
+    "version": "1.0.0",
+    "title": "ping_pong",
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "methods": [
+    {
+      "name": "ping",
+      "summary": "Just say hello",
+      "params": [
+        {
+          "name": "name",
+          "description": "your name",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "message",
+        "description": "response message",
+        "schema": {
+          "type": "string"
+        }
+      },
+
+      "examples": [
+        {
+          "name": "pingExample",
+          "description": "Example of ping",
+          "params": [
+            {
+              "name": "name",
+              "value": "john"
+            }
+          ],
+          "result": {
+            "name": "responseExample",
+            "value": "hello john, how are you?"
+          }
+        }
+      ],
+      "errors": [
+        {
+          "code": 100,
+          "message": "empty name"
+        }
+      ]
+    }
+  ],
+  "components": {
+    "contentDescriptors": {},
+    "schemas": {}
+  }
+}

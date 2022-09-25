@@ -1,4 +1,4 @@
-package distro
+package common
 
 import (
 	"github.com/temphia/temphia/code/core/backend/app/registry"

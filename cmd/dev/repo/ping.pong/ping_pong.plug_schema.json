@@ -1,0 +1,23 @@
+{
+    "slug": "ping.pong",
+    "name": "Ping Pong",
+    "resource_hints": {},
+    "agent_hints": {
+        "default": {
+            "name": "default",
+            "type": "web",
+            "executor": "goja",
+            "resources": {
+                "extslot": ""
+            },
+            "web_files": {
+                "client.js": "ping_pong_client.js",
+                "client.css": "ping_pong_client.css"
+            },
+            "web_entry": "ping.pong.main",
+            "web_script": "ping_pong_client.js",
+            "web_style": "ping_pong_client.css",
+            "web_loader": "std.loader"
+        }
+    }
+}

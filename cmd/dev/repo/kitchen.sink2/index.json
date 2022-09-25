@@ -1,0 +1,10 @@
+{
+    "name": "Kitchen Sink Schema 2",
+    "slug": "kitchen.sink2",
+    "type": "tschema",
+    "sub_type": "group",
+    "description": "Kitchen Sink of all db columns types for testing.",
+    "files": [
+        "schema.json"
+    ]
+}

@@ -1,0 +1,247 @@
+name: This is Example Dashboard
+sources:
+  static1:
+    type: static
+    static_data:
+      key_name: Channels
+      value_name: Users
+      items:
+        [
+          ["Referral", 4, 025],
+          ["Direct", 3, 105],
+          ["Social", 1251],
+          ["Other", 734],
+          ["Email", 456],
+        ]
+  static2:
+    type: static
+    static_data:
+      value1: 45
+      value2: 11.3%
+      increase: true
+  static3:
+    type: static
+    static_data:
+      value1: 2,340
+      value2: 13.6%
+      increase: true
+  static4:
+    type: static
+    static_data:
+      value1: 8
+      value2: 4%
+      increase: false
+  static5:
+    type: static
+    static_data:
+      value1: 123
+      value2: 2%
+      increase: true
+  static6:
+    type: static
+    static_data:
+      [
+        {
+          "name": "test1",
+          "post_type": "mno",
+          "info": "this is info2",
+          "image": "",
+        },
+        {
+          "name": "test2",
+          "post_type": "pqr",
+          "info": "this is info1",
+          "image": "",
+        },
+        {
+          "name": "test2",
+          "post_type": "pqr",
+          "info": "this is info1",
+          "image": "",
+        },
+        {
+          "name": "test2",
+          "post_type": "pqr",
+          "info": "this is info1",
+          "image": "",
+        },
+        {
+          "name": "test2",
+          "post_type": "pqr",
+          "info": "this is info1",
+          "image": "",
+        },
+        {
+          "name": "test2",
+          "post_type": "pqr",
+          "info": "this is info1",
+          "image": "",
+        },
+        {
+          "name": "test2",
+          "post_type": "pqr",
+          "info": "this is info1",
+          "image": "",
+        },
+        {
+          "name": "test2",
+          "post_type": "pqr",
+          "info": "this is info1",
+          "image": "",
+        },
+        {
+          "name": "test2",
+          "post_type": "pqr",
+          "info": "this is info1",
+          "image": "",
+        },
+        {
+          "name": "test2",
+          "post_type": "pqr",
+          "info": "this is info1",
+          "image": "",
+        },
+        {
+          "name": "test2",
+          "post_type": "pqr",
+          "info": "this is info1",
+          "image": "",
+        },
+        {
+          "name": "test2",
+          "post_type": "pqr",
+          "info": "this is info1",
+          "image": "",
+        },
+        {
+          "name": "test2",
+          "post_type": "pqr",
+          "info": "this is info1",
+          "image": "",
+        },
+        {
+          "name": "test2",
+          "post_type": "pqr",
+          "info": "this is info1",
+          "image": "",
+        },
+      ]
+  static8:
+    type: static
+    static_data:
+      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
+      datasets:
+        [
+          {
+            label: "# of Votes",
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor:
+              [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(153, 102, 255, 0.2)",
+                "rgba(255, 159, 64, 0.2)",
+              ],
+            borderColor:
+              [
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)",
+                "rgba(255, 159, 64, 1)",
+              ],
+            borderWidth: 1,
+          },
+        ]
+  dynamic1:
+    type: signal
+    publish: true
+
+sections:
+  - name: "second"
+    layout: flex-auto
+    panels:
+      - name: New Users Per Week
+        width: 6
+        interval: 12hr
+        type: metric_card
+        source: static2
+      - name: New Visitors Per Week
+        width: 6
+        interval: 12hr
+        type: metric_card
+        source: static3
+      - name: New Products Per Week
+        width: 6
+        interval: 12hr
+        type: metric_card
+        source: static4
+      - name: New Orders Per Week
+        width: 6
+        interval: 12hr
+        type: metric_card
+        source: static5
+  - name: "first"
+    layout: flex-auto
+    panels:
+      - name: Customer Acquisition Channels
+        width: 6
+        interval: 12hr
+        type: per_table
+        source: static1
+      - name: Autotable Examples
+        width: 10
+        interval: 12hr
+        type: auto_table
+        source: static6
+        options:
+          column_names:
+            - name
+            - post_type
+            - info
+            - image
+          image_column: image
+          color_columns:
+            - post_type
+  - name: "third"
+    layout: flex-auto
+    panels:
+      - name: Chartjs 1
+        width: 6
+        interval: 12hr
+        type: chart_graph
+        source: static8
+        options:
+          type: bar
+          chart_options:
+            scales: { y: { beginAtZero: true } }
+      - name: Chartjs 2
+        width: 6
+        interval: 12hr
+        type: chart_graph
+        source: static8
+        options:
+          type: line
+          chart_options:
+            scales: { y: { beginAtZero: true } }
+      - name: Chartjs 3
+        width: 6
+        interval: 12hr
+        type: chart_graph
+        source: static8
+        options:
+          type: pie
+          chart_options:
+            scales: { y: { beginAtZero: true } }
+      - name: Chartjs 3
+        width: 6
+        interval: 12hr
+        type: chart_graph
+        source: static8
+        options:
+          type: scatter
+          chart_options:
+            scales: { y: { beginAtZero: true } }

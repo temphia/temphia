@@ -8,7 +8,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/app/registry"
 	"github.com/temphia/temphia/code/core/backend/plane"
 	"github.com/temphia/temphia/code/core/backend/stores"
-	_ "github.com/temphia/temphia/code/distro"
+	_ "github.com/temphia/temphia/code/distro/common"
 )
 
 func RunDev() {

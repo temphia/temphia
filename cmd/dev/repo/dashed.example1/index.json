@@ -1,0 +1,13 @@
+{
+    "name": "Simple Dash Example",
+    "slug": "dashed.example1",
+    "type": "plug",
+    "sub_type": "",
+    "description": "This uses specilied executor",
+    "files": [
+        "schema.json",
+        "dash.yaml",
+        "client.js",
+        "client.css"
+    ]
+}

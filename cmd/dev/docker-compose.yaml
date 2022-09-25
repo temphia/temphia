@@ -1,0 +1,24 @@
+#temphia
+#docker rm -f $(docker ps -a -q)
+version: "3"
+services:
+  db:
+    container_name: temphia_pg_unsafe
+    command: -c log_statement=all -c log_destination=stderr
+    environment:
+      POSTGRES_DB: temphia
+      POSTGRES_PASSWORD: temphia123
+      POSTGRES_USER: temphia
+      PGPORT: 5432
+    image: postgis/postgis
+    ports:
+      - 7032:5432
+
+  pgadmin4:
+    container_name: pgadmin_c
+    environment:
+      PGADMIN_DEFAULT_EMAIL: abc@xyz.com
+      PGADMIN_DEFAULT_PASSWORD: 123myjam
+    ports:
+      - 7033:80
+    image: dpage/pgadmin4

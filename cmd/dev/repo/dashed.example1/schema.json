@@ -1,0 +1,25 @@
+{
+    "slug": "simple.wizard",
+    "name": "Simple Wizard Example",
+    "executor": "simple.dash",
+    "invoke_policy": "",
+    "resource_hints": {},
+    "agent_hints": {
+        "default": {
+            "name": "default",
+            "type": "web",
+
+            "resources": {
+                "extslot": ""
+            },
+            "web_files": {
+                "client.js": "client.js",
+                "client.css": "client.css"
+            },
+            "web_entry": "",
+            "web_script": "client.js",
+            "web_style": "client.css",
+            "web_loader": "simpledash.main"
+        }
+    }
+}
