@@ -134,9 +134,9 @@ type QueryResult struct {
 }
 
 type QueryMeta struct {
-	ReverseRefs []*entities.Column   `json:"reverse_refs,omitempty"`
-	Hooks       []*entities.DataHook `json:"hooks,omitempty"`
-	Views       []*entities.DataView `json:"views,omitempty"`
+	ReverseRefs []*entities.Column     `json:"reverse_refs,omitempty"`
+	Hooks       []*entities.TenantHook `json:"hooks,omitempty"`
+	Views       []*entities.DataView   `json:"views,omitempty"`
 }
 
 type LoadDgroupResp struct {

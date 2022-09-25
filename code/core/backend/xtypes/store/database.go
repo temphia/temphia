@@ -35,6 +35,12 @@ type TenantOps interface {
 	RemoveTenant(slug string) error
 	ListTenant() ([]*entities.Tenant, error)
 
+	AddTenantHook(data *entities.TenantHook) error
+	UpdateTenantHook(tenantId string, target string, id int64, data map[string]any) error
+	ListTenantHook(tenantId string, target string) ([]*entities.TenantHook, error)
+	GetTenantHook(tenantId string, target string, id int64) (*entities.TenantHook, error)
+	RemoveTenantHook(tenantId, target string, id int64) error
+
 	AddDomain(domain *entities.TenantDomain) error
 	UpdateDomain(tenantId string, id int64, data map[string]any) error
 	GetDomain(tenantId string, id int64) (*entities.TenantDomain, error)
@@ -97,12 +103,6 @@ type UserGroupExtra interface {
 	ListUserGroupAuth(tenantId string, gslug string) ([]*entities.UserGroupAuth, error)
 	GetUserGroupAuth(tenantId string, gslug string, id int64) (*entities.UserGroupAuth, error)
 	RemoveUserGroupAuth(tenantId, gslug string, id int64) error
-
-	AddUserGroupHook(data *entities.UserGroupHook) error
-	UpdateUserGroupHook(tenantId string, gslug string, id int64, data map[string]any) error
-	ListUserGroupHook(tenantId string, gslug string) ([]*entities.UserGroupHook, error)
-	GetUserGroupHook(tenantId string, gslug string, id int64) (*entities.UserGroupHook, error)
-	RemoveUserGroupHook(tenantId, gslug string, id int64) error
 
 	AddUserGroupPlug(data *entities.UserGroupPlug) error
 	UpdateUserGroupPlug(tenantId string, gslug string, id int64, data map[string]any) error

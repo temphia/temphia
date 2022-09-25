@@ -135,12 +135,6 @@ type DynSource interface {
 	ListView(gslug, tslug string) ([]*entities.DataView, error)
 	DelView(gslug, tslug string, id int64) error
 
-	NewHook(model *entities.DataHook) error
-	GetHook(gslug, tslug string, id int64) (*entities.DataHook, error)
-	ModifyHook(gslug, tslug string, id int64, data map[string]any) error
-	ListHook(gslug, tslug string) ([]*entities.DataHook, error)
-	DelHook(gslug, tslug string, id int64) error
-
 	QueryActivity(group, table string, query *entities.ActivityQuery) ([]*entities.DynActivity, error)
 	ListActivity(group, table string, rowId int) ([]*entities.DynActivity, error)
 	NewActivity(group, table string, record *entities.DynActivity) error
@@ -188,12 +182,6 @@ type DynDB interface {
 	ModifyView(tenantId, gslug, tslug string, id int64, data map[string]any) error
 	ListView(tenantId, gslug, tslug string) ([]*entities.DataView, error)
 	DelView(tenantId, gslug, tslug string, id int64) error
-
-	NewHook(model *entities.DataHook) error
-	GetHook(tenantId, gslug, tslug string, id int64) (*entities.DataHook, error)
-	ModifyHook(tenantId, gslug, tslug string, id int64, data map[string]any) error
-	ListHook(tenantId, gslug, tslug string) ([]*entities.DataHook, error)
-	DelHook(tenantId, gslug, tslug string, id int64) error
 
 	QueryActivity(tenantId, group, table string, query *entities.ActivityQuery) ([]*entities.DynActivity, error)
 	ListActivity(tenantId, group, table string, rowId int) ([]*entities.DynActivity, error)

@@ -9,7 +9,7 @@ import (
 
 type ServerSideHook struct {
 	dhub store.DynSource
-	hook *entities.DataHook
+	hook *entities.TenantHook
 	// userclaim       *claim.Session
 	// allowHqlQuery   bool
 	// allowRawQuery   bool
@@ -17,7 +17,7 @@ type ServerSideHook struct {
 
 }
 
-func NewServerSideHook(dhub store.DynSource, hook *entities.DataHook) *ServerSideHook {
+func NewServerSideHook(dhub store.DynSource, hook *entities.TenantHook) *ServerSideHook {
 	return &ServerSideHook{
 		dhub: dhub,
 		hook: hook,

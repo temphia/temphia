@@ -54,56 +54,6 @@ func (d *DB) RemoveUserGroupAuth(tenantId, gslug string, id int64) error {
 	}).Delete()
 }
 
-// hook
-
-func (d *DB) AddUserGroupHook(data *entities.UserGroupHook) error {
-	_, err := d.userGroupHook().Insert(data)
-	return err
-}
-
-func (d *DB) UpdateUserGroupHook(tenantId string, gslug string, id int64, data map[string]interface{}) error {
-	return d.userGroupHook().Find(db.Cond{
-		"tenant_id":  tenantId,
-		"user_group": gslug,
-		"id":         id,
-	}).Update(data)
-}
-
-func (d *DB) ListUserGroupHook(tenantId string, gslug string) ([]*entities.UserGroupHook, error) {
-	data := make([]*entities.UserGroupHook, 0)
-	err := d.userGroupHook().Find(db.Cond{
-		"tenant_id":  tenantId,
-		"user_group": gslug,
-	}).All(&data)
-	if err != nil {
-		return nil, err
-	}
-
-	return data, nil
-}
-
-func (d *DB) GetUserGroupHook(tenantId string, gslug string, id int64) (*entities.UserGroupHook, error) {
-	data := &entities.UserGroupHook{}
-
-	err := d.userGroupHook().Find(db.Cond{
-		"tenant_id":  tenantId,
-		"user_group": gslug,
-		"id":         id,
-	}).One(data)
-	if err != nil {
-		return nil, err
-	}
-	return data, nil
-}
-
-func (d *DB) RemoveUserGroupHook(tenantId, gslug string, id int64) error {
-	return d.userGroupHook().Find(db.Cond{
-		"tenant_id":  tenantId,
-		"user_group": gslug,
-		"id":         id,
-	}).Delete()
-}
-
 // plug
 
 func (d *DB) AddUserGroupPlug(data *entities.UserGroupPlug) error {

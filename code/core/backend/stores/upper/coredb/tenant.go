@@ -39,6 +39,46 @@ func (d *DB) ListTenant() ([]*entities.Tenant, error) {
 	return tens, nil
 }
 
+// hooks
+
+func (d *DB) AddTenantHook(data *entities.TenantHook) error {
+	_, err := d.tenantHookTable().Insert(data)
+	return err
+}
+
+func (d *DB) UpdateTenantHook(tenantId string, target string, id int64, data map[string]any) error {
+	return d.tenantHookTable().Find(db.Cond{"id": id, "tenant_id": tenantId}).Update(data)
+}
+
+func (d *DB) GetTenantHook(tenantId string, target string, id int64) (*entities.TenantHook, error) {
+	w := &entities.TenantHook{}
+	err := d.tenantHookTable().Find(db.Cond{"id": id, "tenant_id": tenantId}).One(w)
+	if err != nil {
+		return nil, err
+	}
+	return w, nil
+}
+
+func (d *DB) RemoveTenantHook(tenantId, target string, id int64) error {
+	return d.tenantHookTable().Find(db.Cond{"id": id, "tenant_id": tenantId}).Delete()
+}
+
+func (d *DB) ListTenantHook(tenantId string, target string) ([]*entities.TenantHook, error) {
+	ws := make([]*entities.TenantHook, 0)
+
+	cond := db.Cond{"tenant_id": tenantId}
+	if target != "" {
+		cond["target"] = target
+	}
+
+	err := d.tenantHookTable().Find().All(&ws)
+	if err != nil {
+		return nil, err
+	}
+
+	return ws, nil
+}
+
 // domain
 
 func (d *DB) AddDomain(domain *entities.TenantDomain) error {
@@ -123,6 +163,10 @@ func (d *DB) ListDomainWidget(tenantId string, did int64) ([]*entities.DomainWid
 
 func (d *DB) tenantTable() db.Collection {
 	return d.table("tenants")
+}
+
+func (d *DB) tenantHookTable() db.Collection {
+	return d.table("tenant_hooks")
 }
 
 func (d *DB) tenantDomainTable() db.Collection {

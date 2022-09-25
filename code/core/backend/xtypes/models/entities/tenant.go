@@ -16,6 +16,19 @@ type Tenant struct {
 	ExtraMeta      JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
 }
 
+type TenantHook struct {
+	Id         int64      `json:"id,omitempty" db:"id,omitempty"`
+	EventType  string     `json:"event_type,omitempty" db:"event_type,omitempty"`
+	Target     string     `json:"target,omitempty" db:"target,omitempty"` // ugroup/mno dtable/default/tableg1/table, doamin/12
+	ClientSide bool       `json:"client_side,omitempty" db:"client_side,omitempty"`
+	PlugId     string     `json:"plug_id,omitempty" db:"plug_id,omitempty"`
+	AgentId    string     `json:"agent_id,omitempty" db:"agent_id,omitempty"`
+	Handler    string     `json:"handler,omitempty" db:"handler,omitempty"`
+	ExecMeta   JsonStrMap `json:"exec_meta,omitempty" db:"exec_meta,omitempty"`
+	ExtraMeta  JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
+	TenantId   string     `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`
+}
+
 type TenantDomain struct {
 	Id                  int64      `json:"id,omitempty" db:"id,omitempty"`
 	Name                string     `json:"name,omitempty" db:"name,omitempty"`

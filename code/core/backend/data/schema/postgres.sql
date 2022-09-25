@@ -206,21 +206,19 @@ create table user_group_auths(
     foreign KEY(user_group, tenant_id) references user_groups(slug, tenant_id)
 );
 
-create table user_group_hooks(
+create table tenant_hooks(
     id serial primary key,
-    type text not null,
-    target text not null,
-    data text not null,
+    event_type text not null,
+    target_type text not null,
+    target text not null, 
     client_side boolean not null default FALSE,
     plug_id text not null,
     agent_id text not null,
     handler text not null default '',
-
-    user_group text not null,
-    tenant_id text not null,
-    extra_meta json default '{}',
-    foreign KEY(user_group, tenant_id) references user_groups(slug, tenant_id)
-);
+    extra_meta json not null default '{}',
+    exec_meta json not null default '{}',
+    tenant_id text not null
+)
 
 create table user_group_plugs(
     id serial primary key,
@@ -348,23 +346,6 @@ create table data_views (
     group_id TEXT not null,
     tenant_id TEXT not null,
     extra_meta json not null default '{}',
-    foreign KEY(group_id, tenant_id) references data_table_groups (slug, tenant_id),
-    foreign KEY(table_id, group_id, tenant_id) references data_tables (slug, group_id, tenant_id)
-);
-create table data_hooks (
-    id serial primary key,
-    name text not null default '',
-    type text not null,
-    sub_type text not null default '',
-    icon text not null default '',
-    plug_id text not null default '',
-    agent_id text not null default '',
-    handler text not null default '',
-    payload text not null default '',
-    extra_meta json not null default '{}',
-    table_id TEXT not null,
-    group_id TEXT not null,
-    tenant_id TEXT not null,
     foreign KEY(group_id, tenant_id) references data_table_groups (slug, tenant_id),
     foreign KEY(table_id, group_id, tenant_id) references data_tables (slug, group_id, tenant_id)
 );

@@ -179,31 +179,6 @@ func (d *dynSource) GetView(gslug, tslug string, id int64) (*entities.DataView, 
 	return ddb.GetView(d.tenantId, gslug, tslug, id)
 }
 
-func (d *dynSource) NewHook(model *entities.DataHook) error {
-	ddb := d.dynDB()
-	return ddb.NewHook(model)
-}
-
-func (d *dynSource) ModifyHook(gslug, tslug string, id int64, data map[string]any) error {
-	ddb := d.dynDB()
-	return ddb.ModifyHook(d.tenantId, gslug, tslug, id, data)
-}
-
-func (d *dynSource) ListHook(gslug, tslug string) ([]*entities.DataHook, error) {
-	ddb := d.dynDB()
-	return ddb.ListHook(d.tenantId, gslug, tslug)
-}
-
-func (d *dynSource) DelHook(gslug, tslug string, id int64) error {
-	ddb := d.dynDB()
-	return ddb.DelHook(d.tenantId, gslug, tslug, id)
-}
-
-func (d *dynSource) GetHook(gslug, tslug string, id int64) (*entities.DataHook, error) {
-	ddb := d.dynDB()
-	return ddb.GetHook(d.tenantId, gslug, tslug, id)
-}
-
 func (d *dynSource) QueryActivity(group, table string, query *entities.ActivityQuery) ([]*entities.DynActivity, error) {
 	ddb := d.dynDB()
 	return ddb.QueryActivity(d.tenantId, group, table, query)

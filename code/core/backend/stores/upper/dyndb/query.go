@@ -76,10 +76,10 @@ func (d *DynDB) simpleQuery(txid uint32, req store.SimpleQueryReq) (*store.Query
 
 		// fixme => remove server_side hooks ?
 
-		hooks, err := d.ListHook(req.TenantId, req.Group, req.Table)
-		if err != nil {
-			return nil, err
-		}
+		// hooks, err := d.ListHook(req.TenantId, req.Group, req.Table)
+		// if err != nil {
+		// 	return nil, err
+		// }
 
 		views, err := d.ListView(req.TenantId, req.Group, req.Table)
 		if err != nil {
@@ -88,7 +88,7 @@ func (d *DynDB) simpleQuery(txid uint32, req store.SimpleQueryReq) (*store.Query
 
 		resp.ExtraMeta = &store.QueryMeta{
 			ReverseRefs: revRefs,
-			Hooks:       hooks,
+			Hooks:       nil,
 			Views:       views,
 		}
 	}
