@@ -1,15 +1,16 @@
 package dev
 
-import "github.com/temphia/temphia/code/core/backend/app/config"
+import (
+	"github.com/temphia/temphia/code/core/backend/app/config/simple"
+)
 
-var conf = config.Simple{
+var conf = simple.Config{
 	AppName:          "Dev Test",
 	MasterKey:        "test123",
 	ServerPort:       ":4000",
 	OperatorName:     "ops",
 	OperatorPassword: "ops123",
-	Database: &config.StoreSource{
-		Name:     "default_db",
+	Database: simple.DatabaseOptions{
 		Provider: "postgres",
 		Vendor:   "postgres",
 		HostPath: "localhost",
@@ -17,7 +18,6 @@ var conf = config.Simple{
 		User:     "temphia",
 		Password: "temphia123",
 		Port:     "7032",
-		Features: []string{"core_db", "state_db", "dyn_db"},
 		Options:  map[string]interface{}{},
 	},
 

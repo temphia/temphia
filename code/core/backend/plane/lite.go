@@ -9,10 +9,6 @@ import (
 
 var _ xplane.ControlPlane = (*PlaneLite)(nil)
 
-type LiteOptions struct {
-	CoreHub store.CoreHub
-}
-
 type PlaneLite struct {
 	eventbus *EventBus
 	locker   *Locker
@@ -21,7 +17,7 @@ type PlaneLite struct {
 	seq      Sequencer
 }
 
-func NewLite(opts LiteOptions) *PlaneLite {
+func NewLite(CoreHub store.CoreHub) *PlaneLite {
 
 	nodeId := int64(1)
 

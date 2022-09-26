@@ -73,10 +73,6 @@ func (b *Builder) Build() error {
 		return easyerr.Error(fmt.Sprintf("default cabinet not found %s", b.config.DefaultCabinet))
 	}
 
-	if _, ok := b.stores[b.config.Coredb]; !ok {
-		return easyerr.Error(fmt.Sprintf("default coredb not found %s", b.config.Coredb))
-	}
-
 	if sp, ok := b.stores[b.config.Coredb]; !ok || !sp.Supports(store.TypeCoreDB) {
 		return easyerr.Error(fmt.Sprintf("default coredb not loaded %s", b.config.Coredb))
 	} else {
@@ -123,7 +119,6 @@ func (b *Builder) CoreHub() store.CoreHub {
 }
 
 func (b *Builder) DataHub() store.DataHub {
-
 	return b.dataHub
 }
 

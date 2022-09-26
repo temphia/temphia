@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/app/config"
 	"github.com/temphia/temphia/code/core/backend/app/registry"
+	"github.com/temphia/temphia/code/core/backend/stores"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
@@ -15,6 +16,7 @@ type Builder struct {
 	app       *App
 	config    *config.Config
 	ginEngine *gin.Engine
+	sbuilder  *stores.Builder
 }
 
 func NewBuilder() *Builder {
@@ -46,7 +48,7 @@ func (b *Builder) SetLogger(log logx.Service) {
 	b.app.deps.logService = log
 }
 
-func (b *Builder) Xplane(xp xplane.ControlPlane) {
+func (b *Builder) SetXplane(xp xplane.ControlPlane) {
 	b.app.deps.controlPlane = xp
 }
 
@@ -54,11 +56,16 @@ func (b *Builder) SetEngine(e *gin.Engine) {
 	b.ginEngine = e
 }
 
-func (b *Builder) Build() error {
-	return b.build()
+func (b *Builder) SetStoreBuilder(sbuilder *stores.Builder) {
+	b.sbuilder = sbuilder
 }
 
-func (b *Builder) BuildServer() error {
+func (b *Builder) Build() error {
+	err := b.buildServices()
+	if err != nil {
+		return err
+	}
+
 	return b.buildServer()
 }
 
