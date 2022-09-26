@@ -1,8 +1,0 @@
-package datahub
-
-type RowMod struct {
-	Table   string  `json:"table,omitempty"`
-	Rows    []int64 `json:"rows,omitempty"`
-	ModType string  `json:"mod_type,omitempty"`
-	Data    any     `json:"data,omitempty"`
-}
