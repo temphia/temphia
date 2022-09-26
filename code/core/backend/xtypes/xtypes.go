@@ -45,6 +45,5 @@ type GlobalVar interface {
 
 type Server interface {
 	Listen() error
-	Addr() string
 	Close() error
 }

@@ -45,6 +45,8 @@ type Server struct {
 
 	middleware *middleware.Middleware
 
+	listener net.Listener
+
 	// controllers
 
 	cOperator *operator.Controller
@@ -106,13 +108,18 @@ func New(opts Options) *Server {
 	}
 }
 
-func (s *Server) ListenHTTP() error {
+func (s *Server) Listen() error {
 	listener, err := net.Listen("tcp", s.port)
 	if err != nil {
 		panic(err)
 	}
+	s.listener = listener
 
 	return s.ginEngine.RunListener(listener)
+}
+
+func (s *Server) Close() error {
+	return s.listener.Close()
 }
 
 func (s *Server) BuildRoutes() {

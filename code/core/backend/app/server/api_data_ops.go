@@ -10,19 +10,19 @@ import (
 
 func (s *Server) dataAPI(rg *gin.RouterGroup) {
 
-	rg.GET("/load", s.X(s.loadGroup))
+	rg.GET("/", s.X(s.loadGroup))
 
-	rg.POST("/:table_id/row", s.X(s.newRow))
-	rg.GET("/:table_id/row/:id", s.X(s.getRow))
-	rg.POST("/:table_id/row/:id", s.X(s.updateRow))
-	rg.DELETE("/:table_id/row/:id", s.X(s.deleteRow))
-	rg.POST("/:table_id/simple_query", s.X(s.simpleQuery))
-	rg.POST("/:table_id/fts_query", s.X(s.FTSQuery)) // fixme => remove this and consolidate this to simple_query ?
-	rg.POST("/:table_id/ref_load", s.X(s.refLoad))
-	rg.POST("/:table_id/ref_resolve", s.X(s.refResolve))
-	rg.POST("/:table_id/rev_ref_load", s.X(s.reverseRefLoad))
-	rg.GET("/:table_id/activity/:row_id", s.X(s.listActivity))
-	rg.POST("/:table_id/activity/:row_id", s.X(s.commentRow))
+	rg.POST("/:tid/row", s.X(s.newRow))
+	rg.GET("/:tid/row/:id", s.X(s.getRow))
+	rg.POST("/:tid/row/:id", s.X(s.updateRow))
+	rg.DELETE("/:tid/row/:id", s.X(s.deleteRow))
+	rg.POST("/:tid/simple_query", s.X(s.simpleQuery))
+	rg.POST("/:tid/fts_query", s.X(s.FTSQuery)) // fixme => remove this and consolidate this to simple_query ?
+	rg.POST("/:tid/ref_load", s.X(s.refLoad))
+	rg.POST("/:tid/ref_resolve", s.X(s.refResolve))
+	rg.POST("/:tid/rev_ref_load", s.X(s.reverseRefLoad))
+	rg.GET("/:tid/activity/:row_id", s.X(s.listActivity))
+	rg.POST("/:tid/activity/:row_id", s.X(s.commentRow))
 }
 
 type newRowReq struct {
@@ -48,7 +48,7 @@ func (s *Server) newRow(ctx httpx.Request) {
 		return
 	}
 
-	id, err := s.cData.NewRow(ctx.Session, ctx.MustParam("table_id"), data.Cells)
+	id, err := s.cData.NewRow(ctx.Session, ctx.MustParam("tid"), data.Cells)
 	httpx.WriteJSON(ctx.Http, id, err)
 }
 
@@ -59,7 +59,7 @@ func (s *Server) getRow(ctx httpx.Request) {
 		httpx.WriteErr(ctx.Http, err)
 		return
 	}
-	cells, err := s.cData.GetRow(ctx.Session, ctx.MustParam("table_id"), id)
+	cells, err := s.cData.GetRow(ctx.Session, ctx.MustParam("tid"), id)
 	httpx.WriteJSON(ctx.Http, cells, err)
 }
 
@@ -82,7 +82,7 @@ func (s *Server) updateRow(ctx httpx.Request) {
 		return
 	}
 
-	cells, err := s.cData.UpdateRow(ctx.Session, ctx.MustParam("table_id"), id, data.Version, data.Cells)
+	cells, err := s.cData.UpdateRow(ctx.Session, ctx.MustParam("tid"), id, data.Version, data.Cells)
 	httpx.WriteJSON(ctx.Http, cells, err)
 }
 
@@ -92,7 +92,7 @@ func (s *Server) deleteRow(ctx httpx.Request) {
 		httpx.WriteErr(ctx.Http, err)
 		return
 	}
-	err = s.cData.DeleteRow(ctx.Session, ctx.MustParam("table_id"), id)
+	err = s.cData.DeleteRow(ctx.Session, ctx.MustParam("tid"), id)
 	httpx.WriteFinal(ctx.Http, err)
 }
 
@@ -104,7 +104,7 @@ func (s *Server) simpleQuery(ctx httpx.Request) {
 		return
 	}
 
-	resp, err := s.cData.SimpleQuery(ctx.Session, ctx.MustParam("table_id"), query)
+	resp, err := s.cData.SimpleQuery(ctx.Session, ctx.MustParam("tid"), query)
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
@@ -116,7 +116,7 @@ func (s *Server) FTSQuery(ctx httpx.Request) {
 		return
 	}
 
-	resp, err := s.cData.FTSQuery(ctx.Session, ctx.MustParam("table_id"), query.SearchTerm)
+	resp, err := s.cData.FTSQuery(ctx.Session, ctx.MustParam("tid"), query.SearchTerm)
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
@@ -164,7 +164,7 @@ func (s *Server) listActivity(ctx httpx.Request) {
 		return
 	}
 
-	resp, err := s.cData.ListActivity(ctx.Session, ctx.MustParam("table_id"), int(rid))
+	resp, err := s.cData.ListActivity(ctx.Session, ctx.MustParam("tid"), int(rid))
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
@@ -187,6 +187,6 @@ func (s *Server) commentRow(ctx httpx.Request) {
 		return
 	}
 
-	err = s.cData.CommentRow(ctx.Session, ctx.MustParam("table_id"), reqdata.Message, int(rid))
+	err = s.cData.CommentRow(ctx.Session, ctx.MustParam("tid"), reqdata.Message, int(rid))
 	httpx.WriteFinal(ctx.Http, err)
 }

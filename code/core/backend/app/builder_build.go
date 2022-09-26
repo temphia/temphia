@@ -1,13 +1,13 @@
 package app
 
 import (
-	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/app/server"
 	"github.com/temphia/temphia/code/core/backend/controllers"
 	"github.com/temphia/temphia/code/core/backend/engine"
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/services/courierhub/courier"
 	"github.com/temphia/temphia/code/core/backend/services/repohub"
+	"github.com/temphia/temphia/code/core/backend/services/shared/nodecache"
 	"github.com/temphia/temphia/code/core/backend/services/shared/signer"
 	"github.com/temphia/temphia/code/core/backend/services/sockdhub"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
@@ -43,22 +43,23 @@ func (b *Builder) buildServer() error {
 
 	b.app.deps.croot = controllers.New(controllers.Options{
 		App:              b.app,
-		OperatorUser:     "",
-		OperatorPassword: "",
+		OperatorUser:     b.config.OperatorName,
+		OperatorPassword: b.config.OperatorPassword,
 	})
 
-	svr := server.New(server.Options{
+	svc := server.New(server.Options{
 		App:               b.app,
 		GinEngine:         b.ginEngine,
 		StaticHosts:       make(map[string]string),
 		ResolveHostTenant: nil,
-		RootHost:          "",
+		RootHost:          "", // fixme => from config
 		TenantHostBase:    "",
-		Port:              "",
+		Port:              ":4000",
 		RootController:    b.app.deps.croot,
 	})
+	svc.BuildRoutes()
 
-	pp.Println(svr)
+	b.app.deps.server = svc
 
 	return nil
 }
@@ -86,8 +87,10 @@ func (b *Builder) buildServices() error {
 		SysHelper:   nil,
 	})
 
+	deps.nodeCache = nodecache.New("/tmp/mem1")
 	deps.repoHub = repohub.New(b.app)
 	deps.courier = courier.New()
+	deps.plugKV = b.sbuilder.PlugKV()
 
 	return nil
 

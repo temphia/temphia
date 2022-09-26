@@ -11,26 +11,26 @@ func (a *ApiAdmin) dataAPI(rg *gin.RouterGroup) {
 
 	rg.GET("/:source", a.X(a.ListGroup))
 	rg.POST("/:source/", a.X(a.NewGroup))
-	rg.PATCH("/:source/:group_id", a.X(a.EditGroup))
-	rg.GET("/:source/:group_id", a.X(a.GetGroup))
-	rg.DELETE("/:source/:group_id", a.X(a.DeleteGroup))
+	rg.PATCH("/:source/group/:gid", a.X(a.EditGroup))
+	rg.GET("/:source/group/:gid", a.X(a.GetGroup))
+	rg.DELETE("/:source/group/:gid", a.X(a.DeleteGroup))
 
-	rg.GET("/", a.X(a.ListTables))
-	rg.POST("/", a.X(a.AddTable))
-	rg.GET("/:table_id", a.X(a.GetTable))
-	rg.PATCH("/:table_id", a.X(a.EditTable))
-	rg.DELETE("/:table_id", a.X(a.DeleteTable))
-	rg.GET("/:table_id/column", a.X(a.ListColumns))
-	rg.POST("/:table_id/column", a.X(a.AddColumn)) // fixme
-	rg.PATCH("/:table_id/column/:column_id", a.X(a.EditColumn))
-	rg.GET("/:table_id/column/:column_id", a.X(a.GetColumn))
-	rg.DELETE("/:table_id/column/:column_id", a.X(a.DeleteColumn))
+	rg.GET("/:source/group/:gid/table", a.X(a.ListTables))
+	rg.POST("/:source/group/:gid/table", a.X(a.AddTable))
+	rg.GET("/:source/group/:gid/table/:tid", a.X(a.GetTable))
+	rg.PATCH("/:source/group/:gid/table/:tid", a.X(a.EditTable))
+	rg.DELETE("/:source/group/:gid/table/:tid", a.X(a.DeleteTable))
+	rg.GET("/:source/group/:gid/table/:tid/column", a.X(a.ListColumns))
+	rg.POST("/:source/group/:gid/table/:tid/column", a.X(a.AddColumn)) // fixme
+	rg.PATCH("/:source/group/:gid/table/:tid/column/:cid", a.X(a.EditColumn))
+	rg.GET("/:source/group/:gid/table/:tid/column/:cid", a.X(a.GetColumn))
+	rg.DELETE("/:source/group/:gid/table/:tid/column/:cid", a.X(a.DeleteColumn))
 
-	rg.GET("/:table_id/view", a.X(a.ListView))
-	rg.POST("/:table_id/view", a.X(a.NewView))
-	rg.POST("/:table_id/view/:id", a.X(a.ModifyView))
-	rg.GET("/:table_id/view/:id", a.X(a.GetView))
-	rg.DELETE("/:table_id/view/:id", a.X(a.DelView))
+	rg.GET("/:source/group/:gid/table/:tid/view", a.X(a.ListView))
+	rg.POST("/:source/group/:gid/table/:tid/view", a.X(a.NewView))
+	rg.POST("/:source/group/:gid/table/:tid/view/:id", a.X(a.ModifyView))
+	rg.GET("/:source/group/:gid/table/:tid/view/:id", a.X(a.GetView))
+	rg.DELETE("/:source/group/:gid/table/:tid/view/:id", a.X(a.DelView))
 
 }
 
@@ -101,13 +101,13 @@ func (a *ApiAdmin) EditTable(ctx httpx.Request) {
 		a.rutil.WriteErr(ctx.Http, err.Error())
 		return
 	}
-	err = a.cAdmin.EditTable(ctx.Session, ctx.Http.Param("table_id"), tp)
+	err = a.cAdmin.EditTable(ctx.Session, ctx.Http.Param("tid"), tp)
 	a.rutil.WriteFinal(ctx.Http, err)
 
 }
 
 func (a *ApiAdmin) GetTable(ctx httpx.Request) {
-	tbl, err := a.cAdmin.GetTable(ctx.Session, ctx.Http.Param("table_id"))
+	tbl, err := a.cAdmin.GetTable(ctx.Session, ctx.Http.Param("tid"))
 	a.rutil.WriteJSON(ctx.Http, tbl, err)
 }
 
@@ -117,7 +117,7 @@ func (a *ApiAdmin) ListTables(ctx httpx.Request) {
 
 }
 func (a *ApiAdmin) DeleteTable(ctx httpx.Request) {
-	err := a.cAdmin.DeleteTable(ctx.Session, ctx.Http.Param("table_id"))
+	err := a.cAdmin.DeleteTable(ctx.Session, ctx.Http.Param("tid"))
 	a.rutil.WriteFinal(ctx.Http, err)
 
 }
@@ -132,7 +132,7 @@ func (a *ApiAdmin) AddColumn(ctx httpx.Request) {
 		return
 	}
 
-	err = a.cAdmin.AddColumn(ctx.Session, ctx.Http.Param("table_id"), nc)
+	err = a.cAdmin.AddColumn(ctx.Session, ctx.Http.Param("tid"), nc)
 	a.rutil.WriteFinal(ctx.Http, err)
 
 }
@@ -143,24 +143,24 @@ func (a *ApiAdmin) EditColumn(ctx httpx.Request) {
 		a.rutil.WriteErr(ctx.Http, err.Error())
 		return
 	}
-	err = a.cAdmin.EditColumn(ctx.Session, ctx.Http.Param("table_id"), ctx.Http.Param("column_id"), cp)
+	err = a.cAdmin.EditColumn(ctx.Session, ctx.Http.Param("tid"), ctx.Http.Param("cid"), cp)
 	a.rutil.WriteFinal(ctx.Http, err)
 
 }
 
 func (a *ApiAdmin) GetColumn(ctx httpx.Request) {
-	resp, err := a.cAdmin.GetColumn(ctx.Session, ctx.Http.Param("table_id"), ctx.Http.Param("column_id"))
+	resp, err := a.cAdmin.GetColumn(ctx.Session, ctx.Http.Param("tid"), ctx.Http.Param("cid"))
 	a.rutil.WriteJSON(ctx.Http, resp, err)
 }
 
 func (a *ApiAdmin) ListColumns(ctx httpx.Request) {
-	cols, err := a.cAdmin.ListColumns(ctx.Session, ctx.Http.Param("table_id"))
+	cols, err := a.cAdmin.ListColumns(ctx.Session, ctx.Http.Param("tid"))
 	a.rutil.WriteJSON(ctx.Http, cols, err)
 
 }
 func (a *ApiAdmin) DeleteColumn(ctx httpx.Request) {
 
-	err := a.cAdmin.DeleteColumn(ctx.Session, ctx.Http.Param("table_id"), ctx.Http.Param("column_id"))
+	err := a.cAdmin.DeleteColumn(ctx.Session, ctx.Http.Param("tid"), ctx.Http.Param("cid"))
 	a.rutil.WriteFinal(ctx.Http, err)
 
 }

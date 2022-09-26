@@ -122,6 +122,10 @@ func (b *Builder) DataHub() store.DataHub {
 	return b.dataHub
 }
 
+func (b *Builder) PlugKV() store.PlugStateKV {
+	return b.pkv
+}
+
 func (b *Builder) Inject(app xtypes.App) {
 	b.coreHub.Inject(app)
 	b.dataHub.Inject(app)

@@ -16,23 +16,23 @@ func (a *ApiAdmin) userGroupAPI(rg *gin.RouterGroup) {
 	rg.POST("/:ugroup", a.X(a.UpdateUserGroup))
 	rg.DELETE("/:ugroup", a.X(a.RemoveUserGroup))
 
-	rg.GET("/", a.X(a.ListUserGroupData))
-	rg.POST("/", a.X(a.AddUserGroupData))
-	rg.GET("/:id", a.X(a.GetUserGroupData))
-	rg.POST("/:id", a.X(a.UpdateUserGroupData))
-	rg.DELETE("/:id", a.X(a.RemoveUserGroupData))
+	rg.GET("/:ugroup/data", a.X(a.ListUserGroupData))
+	rg.POST("/:ugroup/data", a.X(a.AddUserGroupData))
+	rg.GET("/:ugroup/data/:id", a.X(a.GetUserGroupData))
+	rg.POST("/:ugroup/data/:id", a.X(a.UpdateUserGroupData))
+	rg.DELETE("/:ugroup/data/:id", a.X(a.RemoveUserGroupData))
 
-	rg.GET("/plug/:ugroup", a.X(a.ListUserGroupPlug))
-	rg.POST("/plug/:ugroup", a.X(a.AddUserGroupPlug))
-	rg.GET("/plug/:ugroup/:id", a.X(a.GetUserGroupPlug))
-	rg.POST("/plug/:ugroup/:id", a.X(a.UpdateUserGroupPlug))
-	rg.DELETE("/plug/:ugroup/:id", a.X(a.RemoveUserGroupPlug))
+	rg.GET("/:ugroup/plug", a.X(a.ListUserGroupPlug))
+	rg.POST("/:ugroup/plug", a.X(a.AddUserGroupPlug))
+	rg.GET("/:ugroup/plug/:id", a.X(a.GetUserGroupPlug))
+	rg.POST("/:ugroup/plug/:id", a.X(a.UpdateUserGroupPlug))
+	rg.DELETE("/:ugroup/plug/:id", a.X(a.RemoveUserGroupPlug))
 
-	rg.GET("/auth/:ugroup", a.X(a.ListUserGroupAuth))
-	rg.POST("/auth/:ugroup", a.X(a.AddUserGroupAuth))
-	rg.GET("/auth/:ugroup/:id", a.X(a.GetUserGroupAuth))
-	rg.POST("/auth/:ugroup/:id", a.X(a.UpdateUserGroupAuth))
-	rg.DELETE("/auth/:ugroup/:id", a.X(a.RemoveUserGroupAuth))
+	rg.GET("/:ugroup/auth", a.X(a.ListUserGroupAuth))
+	rg.POST("/:ugroup/auth", a.X(a.AddUserGroupAuth))
+	rg.GET("/:ugroup/auth/:id", a.X(a.GetUserGroupAuth))
+	rg.POST("/:ugroup/auth/:id", a.X(a.UpdateUserGroupAuth))
+	rg.DELETE("/:ugroup/auth/:id", a.X(a.RemoveUserGroupAuth))
 
 }
 

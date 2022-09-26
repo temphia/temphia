@@ -66,4 +66,12 @@ func (a *App) hostAddrs(privatePriIp, privateSecIps, p2p bool) []string {
 	return hosts
 }
 
-func (a *App) run() error { return nil }
+func (a *App) run() error {
+
+	err := a.deps.engine.Run()
+	if err != nil {
+		return err
+	}
+
+	return a.deps.server.Listen()
+}

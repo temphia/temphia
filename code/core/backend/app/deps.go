@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/temphia/temphia/code/core/backend/app/registry"
 	"github.com/temphia/temphia/code/core/backend/controllers"
+	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
@@ -16,6 +17,7 @@ type AppDeps struct {
 	registry     *registry.Registry
 	logService   logx.Service
 	controlPlane xplane.ControlPlane
+	server       xtypes.Server
 
 	signer   service.Signer
 	engine   etypes.Engine
