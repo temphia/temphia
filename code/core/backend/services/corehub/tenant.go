@@ -34,21 +34,24 @@ func (c *CoreHub) ListTenant() ([]*entities.Tenant, error) {
 
 // hook
 
-func (c *CoreHub) AddTenantHook(data *entities.TenantHook) error { return c.coredb.AddTenantHook(data) }
-func (c *CoreHub) UpdateTenantHook(tenantId string, target string, id int64, data map[string]any) error {
-	return c.coredb.UpdateTenantHook(tenantId, target, id, data)
+func (c *CoreHub) AddTenantHook(data *entities.TenantHook) error {
+	return c.coredb.AddTenantHook(data)
 }
 
-func (c *CoreHub) ListTenantHook(tenantId string, target string) ([]*entities.TenantHook, error) {
-	return c.coredb.ListTenantHook(tenantId, target)
+func (c *CoreHub) UpdateTenantHook(tenantId, target_type string, id int64, data map[string]any) error {
+	return c.coredb.UpdateTenantHook(tenantId, target_type, id, data)
 }
 
-func (c *CoreHub) GetTenantHook(tenantId string, target string, id int64) (*entities.TenantHook, error) {
-	return c.coredb.GetTenantHook(tenantId, target, id)
+func (c *CoreHub) ListTenantHook(tenantId, target_type string) ([]*entities.TenantHook, error) {
+	return c.coredb.ListTenantHook(tenantId, target_type)
 }
 
-func (c *CoreHub) RemoveTenantHook(tenantId, target string, id int64) error {
-	return c.coredb.RemoveTenantHook(tenantId, target, id)
+func (c *CoreHub) GetTenantHook(tenantId, target_type string, id int64) (*entities.TenantHook, error) {
+	return c.coredb.GetTenantHook(tenantId, target_type, id)
+}
+
+func (c *CoreHub) RemoveTenantHook(tenantId, target_type string, id int64) error {
+	return c.coredb.RemoveTenantHook(tenantId, target_type, id)
 }
 
 // domain

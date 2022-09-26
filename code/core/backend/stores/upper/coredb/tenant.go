@@ -46,29 +46,39 @@ func (d *DB) AddTenantHook(data *entities.TenantHook) error {
 	return err
 }
 
-func (d *DB) UpdateTenantHook(tenantId string, target string, id int64, data map[string]any) error {
-	return d.tenantHookTable().Find(db.Cond{"id": id, "tenant_id": tenantId}).Update(data)
+func (d *DB) UpdateTenantHook(tenantId, target_type string, id int64, data map[string]any) error {
+	return d.tenantHookTable().Find(db.Cond{
+		"id": id, "tenant_id": tenantId,
+		"target_type": target_type}).Update(data)
 }
 
-func (d *DB) GetTenantHook(tenantId string, target string, id int64) (*entities.TenantHook, error) {
+func (d *DB) GetTenantHook(tenantId, target_type string, id int64) (*entities.TenantHook, error) {
 	w := &entities.TenantHook{}
-	err := d.tenantHookTable().Find(db.Cond{"id": id, "tenant_id": tenantId}).One(w)
+	err := d.tenantHookTable().Find(db.Cond{
+		"id": id, "tenant_id": tenantId,
+		"target_type": target_type,
+	}).One(w)
+
 	if err != nil {
 		return nil, err
 	}
 	return w, nil
 }
 
-func (d *DB) RemoveTenantHook(tenantId, target string, id int64) error {
-	return d.tenantHookTable().Find(db.Cond{"id": id, "tenant_id": tenantId}).Delete()
+func (d *DB) RemoveTenantHook(tenantId, target_type string, id int64) error {
+	return d.tenantHookTable().Find(db.Cond{
+		"id":          id,
+		"tenant_id":   tenantId,
+		"target_type": target_type,
+	}).Delete()
 }
 
-func (d *DB) ListTenantHook(tenantId string, target string) ([]*entities.TenantHook, error) {
+func (d *DB) ListTenantHook(tenantId string, target_type string) ([]*entities.TenantHook, error) {
 	ws := make([]*entities.TenantHook, 0)
 
 	cond := db.Cond{"tenant_id": tenantId}
-	if target != "" {
-		cond["target"] = target
+	if target_type != "" {
+		cond["target_type"] = target_type
 	}
 
 	err := d.tenantHookTable().Find().All(&ws)

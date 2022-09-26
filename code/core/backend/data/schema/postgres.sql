@@ -1,5 +1,22 @@
 create EXTENSION if not exists hstore;
 
+create table system_events(
+    id serial primary key,
+    type text not null,
+    data text not null,
+    extra_meta json not null default '{}',
+    tenant_id text not null default ''
+);
+
+create table system_kv(
+    id serial primary key,
+    key text not null,
+    type text not null default '',
+    value text not null default '',
+    tenant_id text not null default '',
+    unique(key, type, tenant_id),
+);
+
 create table tenants(
     slug text not null,
     name text not null default '',
@@ -19,21 +36,21 @@ create table tenants(
     extra_meta json not null default '{}'
 );
 
--- create table system_events(
---     id serial primary key,
---     event_type text not null,
---     event_data text not null,
---     extra_meta json not null default '{}',
---     tenant_id text not null default ''
--- );
+create table tenant_hooks(
+    id serial primary key,
+    event_type text not null, 
+    target_type text not null, 
+    target text not null,
+    client_side boolean not null default FALSE,
+    plug_id text not null,
+    agent_id text not null,
+    handler text not null default '',
+    extra_meta json not null default '{}',
+    exec_meta json not null default '{}',
+    tenant_id text not null, 
+    unique(tenant_id, target_type, target, event_type)
+)
 
--- create table system_kv(
---     id serial primary key,
---     key text not null,
---     value text not null default '',
---     tenant_id text not null default '',
---     unique(name, tenant_id),
--- );
 
 create table tenant_domains(
     id serial primary key,
@@ -206,20 +223,6 @@ create table user_group_auths(
     foreign KEY(user_group, tenant_id) references user_groups(slug, tenant_id)
 );
 
-create table tenant_hooks(
-    id serial primary key,
-    event_type text not null,
-    target_type text not null,
-    target text not null, 
-    client_side boolean not null default FALSE,
-    plug_id text not null,
-    agent_id text not null,
-    handler text not null default '',
-    extra_meta json not null default '{}',
-    exec_meta json not null default '{}',
-    tenant_id text not null
-)
-
 create table user_group_plugs(
     id serial primary key,
     name text not null,
@@ -258,28 +261,8 @@ create table saved_tokens(
 );
 
 
--- create shared_data_group(
---     id text not null,
---     shared_by_user text not null,
---     pinned_group text not null,
---     data_source text not null,
---     data_group text not null,
---     group_read_only boolean not null default TRUE,
---     write_tables text not null,
---     read_tables text not null,
---     partial_column_tables text not null,
---     tenant_id text not null,
---     expires_on timestamptz not null,
---     extra_meta json default '{}',
---     primary KEY(id, tenant_id)
--- );
-
-
 
 --- DYNDB
-
-
-
 
 create table data_table_groups (
     slug TEXT not null,

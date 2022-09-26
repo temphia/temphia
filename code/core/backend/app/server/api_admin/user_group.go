@@ -34,12 +34,6 @@ func (a *ApiAdmin) userGroupAPI(rg *gin.RouterGroup) {
 	rg.POST("/auth/:ugroup/:id", a.X(a.UpdateUserGroupAuth))
 	rg.DELETE("/auth/:ugroup/:id", a.X(a.RemoveUserGroupAuth))
 
-	rg.GET("/hook/:ugroup", a.X(a.ListUserGroupHook))
-	rg.POST("/hook/:ugroup", a.X(a.AddUserGroupHook))
-	rg.GET("/hook/:ugroup/:id", a.X(a.GetUserGroupHook))
-	rg.POST("/hook/:ugroup/:id", a.X(a.UpdateUserGroupHook))
-	rg.DELETE("/hook/:ugroup/:id", a.X(a.RemoveUserGroupHook))
-
 }
 
 func (r *ApiAdmin) AddUserGroup(ctx httpx.Request) {
@@ -145,70 +139,6 @@ func (r *ApiAdmin) RemoveUserGroupAuth(ctx httpx.Request) {
 
 	err = r.cAdmin.RemoveUserGroupAuth(ctx.Session, ctx.Http.Param("ugroup"), id)
 	r.rutil.WriteJSON(ctx.Http, nil, err)
-}
-
-// hook
-
-func (r *ApiAdmin) AddUserGroupHook(ctx httpx.Request) {
-	data := &entities.UserGroupHook{}
-	err := ctx.Http.BindJSON(data)
-	if err != nil {
-		r.rutil.WriteErr(ctx.Http, err.Error())
-		return
-	}
-
-	r.rutil.WriteJSON(
-		ctx.Http,
-		nil,
-		r.cAdmin.AddUserGroupHook(ctx.Session, ctx.Http.Param("ugroup"), data),
-	)
-}
-
-func (r *ApiAdmin) UpdateUserGroupHook(ctx httpx.Request) {
-	data := make(map[string]interface{})
-	err := ctx.Http.BindJSON(&data)
-	if err != nil {
-		r.rutil.WriteErr(ctx.Http, err.Error())
-		return
-	}
-
-	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
-	if err != nil {
-		r.rutil.WriteErr(ctx.Http, err.Error())
-		return
-	}
-
-	r.rutil.WriteJSON(
-		ctx.Http,
-		nil,
-		r.cAdmin.UpdateUserGroupHook(ctx.Session, ctx.Http.Param("ugroup"), id, data),
-	)
-}
-
-func (r *ApiAdmin) ListUserGroupHook(ctx httpx.Request) {
-	resp, err := r.cAdmin.ListUserGroupHook(ctx.Session, ctx.Http.Param("ugroup"))
-	r.rutil.WriteJSON(ctx.Http, resp, err)
-}
-
-func (r *ApiAdmin) GetUserGroupHook(ctx httpx.Request) {
-	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
-	if err != nil {
-		r.rutil.WriteErr(ctx.Http, err.Error())
-		return
-	}
-
-	resp, err := r.cAdmin.GetUserGroupHook(ctx.Session, ctx.Http.Param("ugroup"), id)
-	r.rutil.WriteJSON(ctx.Http, resp, err)
-}
-
-func (r *ApiAdmin) RemoveUserGroupHook(ctx httpx.Request) {
-	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
-	if err != nil {
-		r.rutil.WriteErr(ctx.Http, err.Error())
-		return
-	}
-
-	r.cAdmin.RemoveUserGroupHook(ctx.Session, ctx.Http.Param("ugroup"), id)
 }
 
 // plug

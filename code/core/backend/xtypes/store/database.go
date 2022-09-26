@@ -19,13 +19,27 @@ type SyncDB interface {
 }
 
 type CoreDB interface {
-	UserOps
+	SystemOps
 	TenantOps
+	UserOps
 	SyncDB
+
 	UserMessageOps
 	UserGroupExtra
 	// GetInnerDriver() any
 	// Migrate() error
+}
+
+type SystemOps interface {
+	AddSystemEvent(data *entities.SystemEvent) error
+	RemoveSystemEvent(id int64) error
+	ListSystemEvent(tenantId, etype string, last int64) ([]*entities.SystemEvent, error)
+
+	AddSystemKV(tenantId, data *entities.SystemKV) error
+	UpdateSystemKV(tenantId, key, ktype string, data map[string]any) error
+	GetSystemKV(tenantId, key, ktype string) (*entities.SystemKV, error)
+	RemoveSystemKV(tenantId, key, ktype string) error
+	ListSystemKV(tenantId, etype string) ([]*entities.SystemKV, error)
 }
 
 type TenantOps interface {
@@ -36,10 +50,10 @@ type TenantOps interface {
 	ListTenant() ([]*entities.Tenant, error)
 
 	AddTenantHook(data *entities.TenantHook) error
-	UpdateTenantHook(tenantId string, target string, id int64, data map[string]any) error
-	ListTenantHook(tenantId string, target string) ([]*entities.TenantHook, error)
-	GetTenantHook(tenantId string, target string, id int64) (*entities.TenantHook, error)
-	RemoveTenantHook(tenantId, target string, id int64) error
+	UpdateTenantHook(tenantId, targetType string, id int64, data map[string]any) error
+	ListTenantHook(tenantId, targetType string) ([]*entities.TenantHook, error)
+	GetTenantHook(tenantId, targetType string, id int64) (*entities.TenantHook, error)
+	RemoveTenantHook(tenantId, targetType string, id int64) error
 
 	AddDomain(domain *entities.TenantDomain) error
 	UpdateDomain(tenantId string, id int64, data map[string]any) error

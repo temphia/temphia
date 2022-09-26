@@ -32,12 +32,6 @@ func (a *ApiAdmin) dataAPI(rg *gin.RouterGroup) {
 	rg.GET("/:table_id/view/:id", a.X(a.GetView))
 	rg.DELETE("/:table_id/view/:id", a.X(a.DelView))
 
-	rg.GET("/:table_id/hook", a.X(a.ListHook))
-	rg.POST("/:table_id/hook", a.X(a.NewHook))
-	rg.POST("/:table_id/hook/:id", a.X(a.ModifyHook))
-	rg.GET("/:table_id/hook/:id", a.X(a.GetHook))
-	rg.DELETE("/:table_id/hook/:id", a.X(a.DelHook))
-
 }
 
 // dyn_table_group
