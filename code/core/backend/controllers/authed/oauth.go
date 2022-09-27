@@ -31,13 +31,13 @@ func (oe *OauthExchanger) Exchange() (*EData, error) {
 	}
 
 	conf := oauth2.Config{
-		ClientID:     oe.auth.ClientId,
-		ClientSecret: oe.auth.ClientSecret,
+		ClientID:     oe.auth.ClientId(),
+		ClientSecret: oe.auth.ClientSecret(),
 		RedirectURL:  `http://localhost:4000/z/auth/oauth_redirect`,
 		Scopes:       strings.Split(oe.auth.Scopes, ","),
 		Endpoint: oauth2.Endpoint{
-			AuthURL:   oe.auth.AuthURL,
-			TokenURL:  oe.auth.TokenURL,
+			AuthURL:   oe.auth.AuthURL(),
+			TokenURL:  oe.auth.TokenURL(),
 			AuthStyle: oauth2.AuthStyleInParams,
 		},
 	}

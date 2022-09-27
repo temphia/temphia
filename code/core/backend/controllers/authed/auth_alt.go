@@ -39,9 +39,9 @@ func (c *Controller) authGenerate(opts AuthGenerateRequest) (*AuthGenerateRespon
 
 		return &AuthGenerateResponse{
 			StateToken: otok,
-			AuthURL:    auth.AuthURL,
+			AuthURL:    auth.AuthURL(),
 			Scopes:     strings.Split(auth.Scopes, ","),
-			ClientId:   auth.ClientId,
+			ClientId:   auth.ClientId(),
 		}, nil
 
 	default:

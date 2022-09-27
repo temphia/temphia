@@ -16,6 +16,14 @@ func FileExists(dpath, file string) bool {
 	return !errors.Is(err, os.ErrNotExist)
 }
 
+func CreateIfNotExits(fpath string) error {
+	if _, err := os.Stat(fpath); errors.Is(err, os.ErrNotExist) {
+		return os.Mkdir(fpath, os.ModePerm)
+	}
+
+	return nil
+}
+
 func Die(args ...any) {
 
 	pp.Println(args...)
