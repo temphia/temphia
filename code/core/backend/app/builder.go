@@ -60,6 +60,10 @@ func (b *Builder) SetStoreBuilder(sbuilder *stores.Builder) {
 	b.sbuilder = sbuilder
 }
 
+func (b *Builder) SetDataBox(box xtypes.DataBox) {
+	b.app.data = box
+}
+
 func (b *Builder) Build() error {
 	err := b.buildServices()
 	if err != nil {

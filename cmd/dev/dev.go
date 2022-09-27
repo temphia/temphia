@@ -8,6 +8,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/app/config"
 	"github.com/temphia/temphia/code/core/backend/app/log"
 	"github.com/temphia/temphia/code/core/backend/app/registry"
+	"github.com/temphia/temphia/code/core/backend/data"
 	"github.com/temphia/temphia/code/core/backend/plane"
 	"github.com/temphia/temphia/code/core/backend/stores"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
@@ -39,10 +40,10 @@ func NewApp(conf *config.Config) xtypes.App {
 	builder := app.NewBuilder()
 	builder.SetConfig(conf)
 	builder.SetLogger(log.Default(lite))
-
 	builder.SetRegistry(reg)
 	builder.SetXplane(lite)
 	builder.SetStoreBuilder(sbuilder)
+	builder.SetDataBox(data.DefaultNew())
 
 	err = builder.Build()
 	if err != nil {
