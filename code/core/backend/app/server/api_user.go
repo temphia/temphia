@@ -1,7 +1,7 @@
 package server
 
 import (
-	"io/ioutil"
+	"io"
 
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
@@ -15,7 +15,7 @@ func (s *Server) userAPI(rg *gin.RouterGroup) {
 
 func (s *Server) userMessage(ctx httpx.Request) {
 
-	out, err := ioutil.ReadAll(ctx.Http.Request.Body)
+	out, err := io.ReadAll(ctx.Http.Request.Body)
 	if err != nil {
 		httpx.WriteErr(ctx.Http, err)
 		return

@@ -28,7 +28,7 @@ func (s *Server) zRoutes(z *gin.RouterGroup) {
 
 	s.operatorAPI(z.Group("/operator/api"))
 
-	s.API(z.Group("/api/:tenant_id/v1/"))
+	s.API(z.Group("/api/:tenant_id/v2/"))
 }
 
 func (s *Server) API(rg *gin.RouterGroup) {

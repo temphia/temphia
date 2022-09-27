@@ -1,4 +1,3 @@
-//import AuthPageApp from "./authed/index.svelte"
 import AuthPageApp from "./auth/index.svelte"
 
 
