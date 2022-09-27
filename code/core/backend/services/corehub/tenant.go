@@ -79,25 +79,3 @@ func (c *CoreHub) RemoveDomain(tenantId string, id int64) error {
 func (c *CoreHub) ListDomain(tenantId string) ([]*entities.TenantDomain, error) {
 	return c.coredb.ListDomain(tenantId)
 }
-
-// widget
-
-func (c *CoreHub) AddDomainWidget(widget *entities.DomainWidget) error {
-	return c.coredb.AddDomainWidget(widget)
-}
-
-func (c *CoreHub) UpdateDomainWidget(tenantId string, id int64, data map[string]any) error {
-	return c.coredb.UpdateDomainWidget(tenantId, id, data)
-}
-
-func (c *CoreHub) GetDomainWidget(tenantId string, id int64) (*entities.DomainWidget, error) {
-	return c.coredb.GetDomainWidget(tenantId, id)
-}
-
-func (c *CoreHub) RemoveDomainWidget(tenantId string, id int64) error {
-	return c.coredb.RemoveDomainWidget(tenantId, id)
-}
-
-func (c *CoreHub) ListDomainWidget(tenantId string, did int64) ([]*entities.DomainWidget, error) {
-	return c.coredb.ListDomainWidget(tenantId, did)
-}

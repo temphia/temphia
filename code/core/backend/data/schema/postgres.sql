@@ -57,17 +57,18 @@ create table tenant_domains(
     name text not null default '',
     about text not null default '',
     default_ugroup text not null default '',
+    
+    adapter_type text not null default '',
+    adapter_plug_id text not null default '',
+    adapter_agent_id text not null default '',
+    adapter_opts json not null default '{}',
+    adapter_policy text not null default '',
 
-    template_bprint text not null default '',
-    child_template_bprint text not null default '',
+    adapter_cab_source text not null default '',
+    adapter_cab_folder text not null default '',
+    adapter_template_bprints text not null default '',
 
-    renderer_type text not null default '',
-    renderer_plug_id text not null default '',
-    renderer_agent_id text not null default '',
-    renderer_opts json not null default '{}',
-    serve_source text not null default '',
-    serve_folder text not null default '',
-
+    editor_plug_id text not null default '',
     editor_agent_id text not null default '',
 
     tenant_id text not null,
@@ -75,18 +76,6 @@ create table tenant_domains(
     unique(name, tenant_id)
 );
 
-create table domain_widgets(
-    id serial primary key,
-    name text not null default '',
-    type text not null default '',
-    plug text not null default '',
-    agent text not null default '',
-    tenant_id text not null,
-    exec_meta json not null default '{}',
-    extra_meta json not null default '{}',
-    domain_id integer not null,
-    foreign KEY(domain_id) references tenant_domains(id)
-);
 
 create table tenant_repos(
     id serial primary key,

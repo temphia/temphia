@@ -62,12 +62,6 @@ type TenantOps interface {
 
 	RemoveDomain(tenantId string, id int64) error
 	ListDomain(tenantId string) ([]*entities.TenantDomain, error)
-
-	AddDomainWidget(domain *entities.DomainWidget) error
-	UpdateDomainWidget(tenantId string, id int64, data map[string]any) error
-	GetDomainWidget(tenantId string, id int64) (*entities.DomainWidget, error)
-	RemoveDomainWidget(tenantId string, id int64) error
-	ListDomainWidget(tenantId string, did int64) ([]*entities.DomainWidget, error)
 }
 
 type UserOps interface {

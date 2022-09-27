@@ -13,14 +13,14 @@ type static struct {
 }
 
 func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
-	src := opts.App.GetDeps().Cabinet().(store.CabinetHub).GetSource(opts.Domain.ServeSource, opts.TenantId)
+	src := opts.App.GetDeps().Cabinet().(store.CabinetHub).GetSource(opts.Domain.AdapterCabSource, opts.TenantId)
 	if src == nil {
 		return nil, easyerr.Error("serve source not found ")
 	}
 
 	return &static{
 		source: src,
-		folder: opts.Domain.ServeFolder,
+		folder: opts.Domain.AdapterCabFolder,
 	}, nil
 }
 

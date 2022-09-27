@@ -30,31 +30,20 @@ type TenantHook struct {
 }
 
 type TenantDomain struct {
-	Id                  int64      `json:"id,omitempty" db:"id,omitempty"`
-	Name                string     `json:"name,omitempty" db:"name,omitempty"`
-	About               string     `json:"about,omitempty" db:"about,omitempty"`
-	DefaultUgroup       string     `json:"default_ugroup,omitempty" db:"default_ugroup,omitempty"`
-	TemplateBprint      string     `json:"template_bprint,omitempty" db:"template_bprint,omitempty"`
-	ChildTemplateBprint string     `json:"child_template_bprint,omitempty" db:"child_template_bprint,omitempty"`
-	AdapterType         string     `json:"renderer_type,omitempty" db:"renderer_type,omitempty"` // dynamic, plug_app, landing_page, static, alias, launcher
-	AdapterPlugId       string     `json:"renderer_plug_id,omitempty" db:"renderer_plug_id,omitempty"`
-	AdapterAgentId      string     `json:"renderer_agent_id,omitempty" db:"renderer_agent_id,omitempty"`
-	AdapterOptions      JsonStrMap `json:"renderer_opts,omitempty" db:"renderer_opts,omitempty"`
-	EditorAgentId       string     `json:"editor_agent_id,omitempty" db:"editor_agent_id,omitempty"`
-	ServeSource         string     `json:"serve_source,omitempty" db:"serve_source,omitempty"`
-	ServeFolder         string     `json:"serve_folder,omitempty" db:"serve_folder,omitempty"`
-	TenantId            string     `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`
-	ExtraMeta           JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
-}
-
-type DomainWidget struct {
-	Id        int64      `json:"id,omitempty" db:"id,omitempty"`
-	Name      string     `json:"name,omitempty" db:"name,omitempty"`
-	Type      string     `json:"type,omitempty" db:"type,omitempty"`
-	Plug      string     `json:"plug,omitempty" db:"plug,omitempty"`
-	Agent     string     `json:"agent,omitempty" db:"agent,omitempty"`
-	ExecMeta  JsonMap    `json:"exec_meta,omitempty" db:"exec_meta,omitempty"`
-	ExtraMeta JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
-	TenantId  string     `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`
-	DomainId  int64      `json:"domain_id,omitempty" db:"domain_id,omitempty"`
+	Id                     int64      `json:"id,omitempty" db:"id,omitempty"`
+	Name                   string     `json:"name,omitempty" db:"name,omitempty"`
+	About                  string     `json:"about,omitempty" db:"about,omitempty"`
+	DefaultUgroup          string     `json:"default_ugroup,omitempty" db:"default_ugroup,omitempty"`
+	AdapterType            string     `json:"adapter_type,omitempty" db:"adapter_type,omitempty"` // dynamic, plug_app, landing_page, static, alias, launcher
+	AdapterPlugId          string     `json:"adapter_plug_id,omitempty" db:"adapter_plug_id,omitempty"`
+	AdapterAgentId         string     `json:"adapter_agent_id,omitempty" db:"adapter_agent_id,omitempty"`
+	AdapterOptions         JsonStrMap `json:"adapter_opts,omitempty" db:"adapter_opts,omitempty"`
+	AdapterPolicy          JsonStrMap `json:"adapter_policy,omitempty" db:"adapter_policy,omitempty"`
+	EditorPlugId           string     `json:"editor_plug_id,omitempty" db:"editor_plug_id,omitempty"`
+	EditorAgentId          string     `json:"editor_agent_id,omitempty" db:"editor_agent_id,omitempty"`
+	AdapterCabSource       string     `json:"adapter_cab_source,omitempty" db:"adapter_cab_source,omitempty"`
+	AdapterCabFolder       string     `json:"adapter_cab_folder,omitempty" db:"adapter_cab_folder,omitempty"`
+	AdapterTemplateBprints string     `json:"adapter_template_bprints,omitempty" db:"adapter_template_bprints,omitempty"`
+	TenantId               string     `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`
+	ExtraMeta              JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
 }
