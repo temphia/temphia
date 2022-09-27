@@ -76,3 +76,12 @@ func (b *Builder) Build() error {
 func (b *Builder) GetApp() xtypes.App {
 	return b.app
 }
+
+func (b *Builder) SetMode(dev bool) {
+	b.app.devmode = dev
+}
+
+func (b *Builder) SetSingleTenant(tenantId string) {
+	b.app.singleTenantMode = true
+	b.app.tenantId = tenantId
+}
