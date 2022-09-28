@@ -4,6 +4,10 @@ export class ApiBase {
   http: Http;
   token: string;
 
+  /* 
+    http://localhost:4000/z/api/:tenant_id/v2/ 
+  */
+ 
   constructor(baseUrl: string) {
     this.http = new Http(baseUrl, {
       "Content-Type": "application/json",
