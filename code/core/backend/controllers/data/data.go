@@ -21,6 +21,6 @@ func New(dhub store.DataHub, cabHub store.CabinetHub, signer service.Signer) *Co
 	}
 }
 
-func getTarget(uclaim *claim.Session) (string, string) {
-	return uclaim.Path[1], uclaim.Path[2]
+func getTarget(uclaim *claim.DataTkt) (string, string) {
+	return uclaim.DataSource, uclaim.DataGroup
 }

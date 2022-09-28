@@ -44,7 +44,6 @@ func (s *Server) API(rg *gin.RouterGroup) {
 	s.userAPI(rg.Group("/user"))
 
 	s.cabinetTktAPI(rg.Group("/tkt/cabinet"))
-	s.dataTktAPI(rg.Group("/tkt/data"))
 
 }
 

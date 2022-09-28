@@ -229,12 +229,12 @@ func (cs *ClaimSigner) ParseSockdTkt(tenantId, payload string) (*claim.SockdTkt,
 	return data, nil
 }
 
-func (cs *ClaimSigner) SignDtableTkt(tenantId string, data *claim.DtableTkt) (string, error) {
+func (cs *ClaimSigner) SignDtableTkt(tenantId string, data *claim.DataTkt) (string, error) {
 	return cs.signer.Sign(tenantId, data)
 }
 
-func (cs *ClaimSigner) ParseDtableTkt(tenantId, payload string) (*claim.DtableTkt, error) {
-	data := &claim.DtableTkt{}
+func (cs *ClaimSigner) ParseDtableTkt(tenantId, payload string) (*claim.DataTkt, error) {
+	data := &claim.DataTkt{}
 	err := cs.signer.Parse(tenantId, payload, data)
 	if err != nil {
 		return nil, err

@@ -55,8 +55,8 @@ type ClaimSigner interface {
 	SignSockdTkt(tenantId string, data *claim.SockdTkt) (string, error)
 	ParseSockdTkt(tenantId, payload string) (*claim.SockdTkt, error)
 
-	SignDtableTkt(tenantId string, data *claim.DtableTkt) (string, error)
-	ParseDtableTkt(tenantId, payload string) (*claim.DtableTkt, error)
+	SignDtableTkt(tenantId string, data *claim.DataTkt) (string, error)
+	ParseDtableTkt(tenantId, payload string) (*claim.DataTkt, error)
 
 	SignUserMgmtTkt(tenantId string, data *claim.UserMgmtTkt) (string, error)
 	ParseUserMgmtTkt(tenantId, payload string) (*claim.UserMgmtTkt, error)

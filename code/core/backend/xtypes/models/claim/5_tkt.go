@@ -35,19 +35,6 @@ type PlugDevTkt struct {
 	AllPlugs  bool     `json:"all_plugs"`
 }
 
-type DtableTkt struct {
-	Type      string         `json:"type"`
-	Source    string         `json:"source"`
-	Group     string         `json:"group"`
-	Tables    []string       `json:"tables"`
-	Create    bool           `json:"create"`
-	Update    bool           `json:"update"`
-	Query     bool           `json:"query"`
-	QueryType string         `json:"query_type"`
-	QueryData map[string]any `json:"query_data"`
-	Filter    [][3]string    `json:"filter"`
-}
-
 type UserMgmtTkt struct {
 	Type        string   `json:"type"`
 	Group       string   `json:"group"`
@@ -62,4 +49,17 @@ type AdviseryTkt struct {
 	XID    string `json:"xid"`
 	Expiry int64  `json:"expiry"`
 	Data   []byte `json:"data"`
+}
+
+type DataTkt struct {
+	TenentId   string   `json:"-"`
+	Type       string   `json:"type,omitempty"`
+	UserID     string   `json:"user,omitempty"`
+	UserGroup  string   `json:"ugroup,omitempty"`
+	SessionID  int64    `json:"session_id,omitempty"`
+	DeviceId   string   `json:"device_id,omitempty"`
+	DataSource string   `json:"source,omitempty"`
+	DataGroup  string   `json:"group,omitempty"`
+	DataTables []string `json:"tables,omitempty"`
+	IsExec     bool     `json:"is_exec,omitempty"`
 }
