@@ -18,7 +18,9 @@ func (s *Server) selfAPI(rg *gin.RouterGroup) {
 	rg.POST("/email/change", s.X(s.selfChangeEmail))
 	rg.GET("/message", s.X(s.selfListMessages))
 	rg.POST("/message", s.X(s.selfModifyMessages))
-	rg.POST("/issue", s.X(s.IssuePlugTkt))
+
+	rg.POST("/issue/plug", s.X(s.issuePlugTkt))
+	rg.POST("/issue/folder", s.X(s.issueFolderTkt))
 
 }
 
@@ -72,7 +74,7 @@ func (s *Server) selfChangeEmail(ctx httpx.Request) {
 
 }
 
-func (s *Server) IssuePlugTkt(ctx httpx.Request) {
+func (s *Server) issuePlugTkt(ctx httpx.Request) {
 	rdata := basic.DevIssueReq{}
 	err := ctx.Http.BindJSON(&rdata)
 	if err != nil {
@@ -93,4 +95,14 @@ func (s *Server) IssuePlugTkt(ctx httpx.Request) {
 func (s *Server) ListRenderers(ctx httpx.Request) {
 	resp := s.notz.ListRenderers()
 	httpx.WriteJSON(ctx.Http, resp, nil)
+}
+
+func (s *Server) issueFolderTkt(ctx httpx.Request) {
+
+	resp, err := s.cCabinet.NewFolderTicket(
+		ctx.Session,
+		ctx.Http.Param("folder"),
+	)
+
+	httpx.WriteJSON(ctx.Http, resp, err)
 }

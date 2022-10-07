@@ -5,7 +5,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 )
 
-func (s *Server) cabinetTktAPI(rg *gin.RouterGroup) {
+func (s *Server) folderTktAPI(rg *gin.RouterGroup) {
 
 	rg.GET("/:ticket/", s.folderTktList)
 	rg.GET("/:ticket/:name", s.folderTktFile)

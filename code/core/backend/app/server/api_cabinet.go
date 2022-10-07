@@ -16,8 +16,6 @@ func (s *Server) cabinetAPI(rg *gin.RouterGroup) {
 	rg.POST("/:folder/file/:fname", s.X(s.uploadFile))
 	rg.DELETE("/:folder/file/:fname", s.X(s.deleteFile))
 	rg.GET("/:folder/preview/:fname", s.X(s.getFilePreview))
-	rg.GET("/:folder/ticket", s.X(s.getFolderTicket))
-
 }
 
 func (s *Server) newFolder(ctx httpx.Request) {
@@ -63,13 +61,6 @@ func (s *Server) getFile(ctx httpx.Request) {
 func (s *Server) deleteFile(ctx httpx.Request) {
 	err := s.cCabinet.DeleteBlob(ctx.Session, ctx.Http.Param("folder"), ctx.Http.Param("fname"))
 	httpx.WriteFinal(ctx.Http, err)
-}
-
-func (s *Server) getFolderTicket(ctx httpx.Request) {
-
-	resp, err := s.cCabinet.NewFolderTicket(ctx.Session, ctx.Http.Param("folder"))
-
-	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
 func (s *Server) getFilePreview(ctx httpx.Request) {

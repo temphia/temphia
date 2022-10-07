@@ -36,14 +36,14 @@ func (s *Server) API(rg *gin.RouterGroup) {
 	s.authAPI(rg.Group("/auth"))
 	s.dataAPI(rg.Group("/data"))
 	s.cabinetAPI(rg.Group("/cabinet"))
+	s.folderTktAPI(rg.Group("/folder"))
+
 	s.devAPI(rg.Group("/dev"))
 	s.engineAPI(rg.Group("/engine"))
 	s.selfAPI(rg.Group("/self"))
 	s.repoAPI(rg.Group("/repo"))
 	s.sockdAPI(rg.Group("/sockd"))
 	s.userAPI(rg.Group("/user"))
-
-	s.cabinetTktAPI(rg.Group("/tkt/cabinet"))
 
 }
 
