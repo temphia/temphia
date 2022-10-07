@@ -1,5 +1,11 @@
-export {}
+export class SockdAPI {
+  constructor(baseUrl: string) {}
 
+  userSocket() {}
+  dataSocket() {}
+  roomSocket() {}
+  devSocket() {}
+}
 
 /*
 

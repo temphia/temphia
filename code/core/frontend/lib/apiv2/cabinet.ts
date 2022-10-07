@@ -1,5 +1,11 @@
-export {}
+import type { ApiBase } from "./base";
 
+export class CabinetAPI {
+  base: ApiBase;
+  constructor(base: ApiBase) {
+    this.base = base;
+  }
+}
 
 /*
 

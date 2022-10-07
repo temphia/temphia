@@ -1,5 +1,25 @@
-export {}
+import type { ApiBase } from "../base";
 
+export class CheckAPI {
+  base: ApiBase;
+  constructor(base: ApiBase) {
+    this.base = base;
+  }
+
+  bprint(bid: string) {
+    this.base.get(`check/bprint/${bid}`);
+  }
+
+  plug(pid: string) {
+    this.base.get(`check/bprint/${pid}`);
+  }
+
+  dataGroup(gid: string) {
+    this.base.get(`check/bprint/${gid}`);
+  }
+
+  dataTable() {}
+}
 
 /*
 

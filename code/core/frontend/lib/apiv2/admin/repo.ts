@@ -1,4 +1,17 @@
-export {}
+import type { ApiBase } from "../base";
+
+export class RepoAPI {
+  base: ApiBase;
+  constructor(base: ApiBase) {
+    this.base = base;
+  }
+
+  list() {}
+  new() {}
+  get() {}
+  update() {}
+  delete() {}
+}
 
 /*
 

@@ -1,5 +1,11 @@
-export {}
+import type { ApiBase } from "./base";
 
+export class DataAPI {
+  base: ApiBase;
+  constructor(base: ApiBase) {
+    this.base = base;
+  }
+}
 
 /*
 
@@ -17,3 +23,4 @@ export {}
 [GIN-debug] POST   /z/api/:tenant_id/v2/data/:tid/activity/:row_id --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
 
 */
+

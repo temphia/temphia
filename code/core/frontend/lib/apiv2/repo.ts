@@ -1,11 +1,24 @@
-export {}
+import type { ApiBase } from "./base";
 
+export class RepoAPI {
+  base: ApiBase;
+  constructor(base: ApiBase) {
+    this.base = base;
+  }
 
-/*
+  list() {
+    return this.base.get("/repo/");
+  }
 
-[GIN-debug] GET    /z/api/:tenant_id/v2/repo/ --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/repo/:repo --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/repo/:repo/:group_id/:slug --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/repo/:repo/:group_id/:slug/:file --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
+  load(id: string) {
+    return this.base.get(`/repo/${id}`);
+  }
 
-*/
+  getBprint(id: string, group: string, slug: string) {
+    return this.base.get(`/repo/${id}/${group}/${slug}`);
+  }
+
+  getBprintFile(id: string, group: string, slug: string, file: string) {
+    return this.base.get(`/repo/${id}/${group}/${slug}/${file}`);
+  }
+}

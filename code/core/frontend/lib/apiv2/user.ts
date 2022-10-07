@@ -1,11 +1,20 @@
-export {}
+import type { ApiBase } from "./base";
 
+export class UserAPI {
+  base: ApiBase;
+  constructor(base: ApiBase) {
+    this.base = base;
+  }
 
-/*
+  list() {
+    return this.base.get("/user/");
+  }
 
-[GIN-debug] GET    /z/api/:tenant_id/v2/user/ --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/user/:id --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] POST   /z/api/:tenant_id/v2/user/:id --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
+  get(id: string) {
+    return this.base.get(`/user/${id}`);
+  }
 
-
-*/
+  post(id: string, data: any) {
+    return this.base.post(`/user/${id}`, data);
+  }
+}

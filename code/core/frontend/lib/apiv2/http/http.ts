@@ -25,6 +25,14 @@ export class Http {
     });
   }
 
+  async postForm(path: string, data: any) {
+    return fetch(`${this.baseURL}/${path}`, {
+      method: "POST",
+      headers: this.headers,
+      body: data,
+    });
+  }
+
   async patch(path: string, data: any) {
     return fetch(`${this.baseURL}/${path}`, {
       method: "PATCH",
