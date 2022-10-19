@@ -1,1 +1,0 @@
-<div>R DGROUP</div>

@@ -5,6 +5,19 @@ export class UserAPI {
   constructor(base: ApiBase) {
     this.base = base;
   }
+
+  list() {}
+  new(data: any) {}
+  get(uid: string) {}
+  update(uid: string,data: any) {}
+  delete(uid: string) {}
+
+
+  listPerm() {}
+  newPerm(data: any) {}
+  getPerm(pid: string) {}
+  updatePerm(pid: string, data: any) {}
+  deletePerm(pid: string) {}
 }
 
 /*

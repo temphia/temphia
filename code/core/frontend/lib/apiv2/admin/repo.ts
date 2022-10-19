@@ -6,20 +6,21 @@ export class RepoAPI {
     this.base = base;
   }
 
-  list() {}
-  new() {}
-  get() {}
-  update() {}
-  delete() {}
+  list() {
+    return this.base.get("/admin/repo/");
+  }
+  new(data: any) {
+    return this.base.post("/admin/repo/", data);
+  }
+
+  get(rid: string) {
+    return this.base.get(`/admin/repo/${rid}`);
+  }
+
+  update(rid: string, data: any) {
+    return this.base.post(`/admin/repo/${rid}`, data);
+  }
+  delete(rid: string) {
+    return this.base.get(`/admin/repo/${rid}`);
+  }
 }
-
-/*
-
-[GIN-debug] GET    /z/api/:tenant_id/v2/admin/repo/ --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] POST   /z/api/:tenant_id/v2/admin/repo/ --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/admin/repo/:rid --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] POST   /z/api/:tenant_id/v2/admin/repo/:rid --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] DELETE /z/api/:tenant_id/v2/admin/repo/:rid --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-
-
-*/

@@ -1,18 +1,33 @@
+import { apiURL } from "../../utils/site";
 import { Http } from "../http";
 
 export class ApiBase {
   http: Http;
-  token: string;
+  base_url: string;
+  tenant_id: string;
+  user_token: string;
 
-  /* 
-    http://localhost:4000/z/api/:tenant_id/v2/ 
-  */
- 
-  constructor(baseUrl: string) {
-    this.http = new Http(baseUrl, {
+  constructor(base_url: string, tenant_id: string, token: string) {
+    this.base_url = base_url;
+    this.tenant_id = tenant_id;
+    this.user_token = token;
+
+    this.http = new Http(base_url, {
       "Content-Type": "application/json",
-      Authorization: this.token,
+      Authorization: token,
     });
+  }
+
+  async init() {
+    const resp = await fetch(`${apiURL(this.tenant_id)}/auth/refresh`, {
+      method: "POST",
+      body: JSON.stringify({
+        path: ["basic"],
+        user_token: this.user_token,
+      }),
+    });
+    
+    const rdata = await resp.json();
   }
 
   async get(path: string) {

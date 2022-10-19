@@ -11,7 +11,7 @@ const production = !!process.env.PRODUCTION;
 const entryFile = process.env.ENTRY_FILE;
 
 const _config = (entryFile, prod) => ({
-  input: `src/entries/${entryFile}.ts`,
+  input: `entries/${entryFile}/index.ts`,
   output: {
     sourcemap: true,
     format: "iife",
@@ -49,8 +49,8 @@ const _config = (entryFile, prod) => ({
     commonjs(),
     json(),
     typescript({
-      sourceMap: !prod,
-      inlineSources: !prod,
+      sourceMap: true,
+      inlineSources: true,
     }),
   ],
 });

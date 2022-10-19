@@ -12,7 +12,7 @@ export interface SiteData {
   site_token: string;
 }
 
-export class SiteManager {
+export class SiteUtils {
   _site_token: string;
 
   constructor(site_token?: string) {
@@ -56,7 +56,9 @@ export class SiteManager {
   }
 }
 
+//http://localhost:4000/z/api/:tenant_id/v2
 export const apiURL = (tenant_id: string) =>
-  `${window.location.origin}/z/api/${tenant_id}/v1`;
+  `${window.location.origin}/z/api/${tenant_id}/v2`;
 
+//http://localhost:4000
 export const baseURL = () => window.location.origin;

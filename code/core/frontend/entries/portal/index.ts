@@ -1,8 +1,8 @@
-import AdminConsoleApp from "./portal/index.svelte"
+import PortalApp from "./index.svelte";
 
-const __svelte_app__ = new AdminConsoleApp({
-    target: document.body,
-    props: {}
-})
+const __svelte_app__ = new PortalApp({
+  target: document.body,
+  props: {},
+});
 
 export default __svelte_app__;

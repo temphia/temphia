@@ -7,6 +7,7 @@
     "/dist"
   ],
   "scripts": {
+    "build:play": "ENTRY_FILE=playground rollup -c",
     "build:portal": "ENTRY_FILE=portal rollup -c",
     "build:auth": "ENTRY_FILE=page_auth rollup -c",
     "build:operator": "ENTRY_FILE=operator rollup -c",
@@ -15,7 +16,8 @@
     "build_ui_sdk_package": "tsc -p tsconfig.package.json ",
     "dev": "rollup -c -w",
     "start": "sirv public",
-    "validate": "svelte-check"
+    "validate": "svelte-check",
+    "start:play": "cd public && python3 -m http.server"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.9",

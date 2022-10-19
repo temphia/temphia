@@ -1,5 +1,9 @@
+import { Websocket } from "../vendor/ws";
+
 export class SockdAPI {
-  constructor(baseUrl: string) {}
+  constructor(baseUrl: string) {
+    
+  }
 
   userSocket() {}
   dataSocket() {}

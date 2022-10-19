@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { FloatingAdd } from "../../../_shared";
+  import { FloatingAdd } from "../../../xcompo";
   import { deleteTenant, goto, goto_tenant, listTenant } from "../../service";
 
   let tenants = [];

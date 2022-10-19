@@ -1,31 +1,68 @@
-import type { ApiBase } from "./base";
+import { Http } from "./http";
 
 export class CabinetAPI {
-  base: ApiBase;
-  constructor(base: ApiBase) {
-    this.base = base;
+  http: Http;
+  constructor(baseUrl: string, token: string) {
+    this.http = new Http(baseUrl, {
+      Authorization: token,
+    });
+  }
+
+  listRoot() {
+    return this.http.get("/cabinet/");
+  }
+
+  listFolder(folder: string) {
+    return this.http.get(`/cabinet/${folder}`);
+  }
+
+  newFolder(folder: string, data: any) {
+    return this.http.post(`/cabinet/${folder}`, data);
+  }
+
+  getFile(folder: string, fname: string) {
+    return this.http.get(`/cabinet/${folder}/file/${fname}`);
+  }
+
+  uploadFile(folder: string, fname: string, data: any) {
+    return this.http.postForm(`/cabinet/${folder}/file/${fname}`, true, data);
+  }
+
+  deleteFile(folder: string, fname: string) {
+    return this.http.delete(`/cabinet/${folder}/file/${fname}`);
+  }
+
+  getFilePreview(folder: string, fname: string) {
+    return this.http.get(`/cabinet/${folder}/preview/${fname}`);
   }
 }
 
-/*
+export class FolderTktAPI {
+  http: Http;
+  ticket: string;
+  constructor(baseUrl: string, token: string) {
+    this.http = new Http(baseUrl, {});
+  }
 
-[GIN-debug] GET    /z/api/:tenant_id/v2/cabinet/ --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/cabinet/:folder --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] POST   /z/api/:tenant_id/v2/cabinet/:folder --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/cabinet/:folder/file/:fname --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] POST   /z/api/:tenant_id/v2/cabinet/:folder/file/:fname --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] DELETE /z/api/:tenant_id/v2/cabinet/:folder/file/:fname --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/cabinet/:folder/preview/:fname --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/cabinet/:folder/ticket --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
+  //  /folder/:ticket/
 
+  list() {
+    return this.http.get(`/folder/${this.ticket}`);
+  }
 
+  getFile(file: string) {
+    return this.http.get(`/folder/${this.ticket}/${file}`);
+  }
 
-[GIN-debug] GET    /z/api/:tenant_id/v2/tkt/cabinet/:ticket/ --> github.com/temphia/temphia/code/core/backend/app/server.(*Server).folderTktList-fm (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/tkt/cabinet/:ticket/:name --> github.com/temphia/temphia/code/core/backend/app/server.(*Server).folderTktFile-fm (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/tkt/cabinet/:ticket/:name/preview --> github.com/temphia/temphia/code/core/backend/app/server.(*Server).folderTktPreview-fm (3 handlers)
-[GIN-debug] POST   /z/api/:tenant_id/v2/tkt/cabinet/:ticket/:name --> github.com/temphia/temphia/code/core/backend/app/server.(*Server).folderTktUpload-fm (3 handlers)
-[GIN-debug] DELETE /z/api/:tenant_id/v2/tkt/cabinet/:ticket/:name --> github.com/temphia/temphia/code/core/backend/app/server.(*Server).folderTktDelete-fm (3 handlers)
+  getFilePreview(file: string) {
+    return this.http.get(`/folder/${this.ticket}/${file}/preview`);
+  }
 
+  uploadFile(file: string, data: any) {
+    return this.http.post(`/folder/${this.ticket}/${file}`, data);
+  }
 
-
-*/
+  deleteFile(file: string) {
+    return this.http.delete(`/folder/${this.ticket}/${file}`);
+  }
+}

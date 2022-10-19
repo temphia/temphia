@@ -5,15 +5,22 @@ export class ResourceAPI {
   constructor(base: ApiBase) {
     this.base = base;
   }
+
+  list() {
+    return this.base.get("/admin/resource/");
+  }
+  new(data: any) {
+    return this.base.post("/admin/resource/", data);
+  }
+
+  get(rid: string) {
+    return this.base.get(`/admin/resource/${rid}`);
+  }
+
+  update(rid: string, data: any) {
+    return this.base.post(`/admin/resource/${rid}`, data);
+  }
+  delete(rid: string) {
+    return this.base.get(`/admin/resource/${rid}`);
+  }
 }
-/*
-
-
-[GIN-debug] GET    /z/api/:tenant_id/v2/admin/resource/ --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] POST   /z/api/:tenant_id/v2/admin/resource/ --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/admin/resource/:slug --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] POST   /z/api/:tenant_id/v2/admin/resource/:slug --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] DELETE /z/api/:tenant_id/v2/admin/resource/:slug --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-
-
-*/

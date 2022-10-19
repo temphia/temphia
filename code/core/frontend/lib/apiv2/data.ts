@@ -5,22 +5,44 @@ export class DataAPI {
   constructor(base: ApiBase) {
     this.base = base;
   }
+
+  newRow(tid: string) {
+    return this.base.get(`/data/${tid}/row`);
+  }
+
+  getRow(tid: string, rid: string) {
+    return this.base.get(`/data/${tid}/row/${rid}`);
+  }
+
+  updateRow(tid: string, rid: string, data: any) {
+    return this.base.post(`/data/${tid}/row/${rid}`, data);
+  }
+
+  deleteRow(tid: string, rid: string) {
+    return this.base.delete(`/data/${tid}/row/${rid}`);
+  }
+
+  simpleQuery(tid: string, query: any) {
+    return this.base.post(`/data/${tid}/simple_query`, query);
+  }
+
+  refLoad(tid: string, data: any) {
+    return this.base.post(`/data/${tid}/ref_load`, data);
+  }
+
+  refResolve(tid: string, data: any) {
+    return this.base.post(`/data/${tid}/ref_resolve`, data);
+  }
+
+  reverseRefLoad(tid: string, data: any) {
+    return this.base.post(`/data/${tid}/rev_ref_load`, data);
+  }
+  listActivity(tid: string, rid: string) {
+    return this.base.get(`/data/${tid}/activity${rid}`);
+  }
+
+  commentRow(tid: string, rid: string, data: any) {
+    return this.base.post(`/data/${tid}/activity${rid}`, data);
+  }
 }
-
-/*
-
-[GIN-debug] GET    /z/api/:tenant_id/v2/data/ --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] POST   /z/api/:tenant_id/v2/data/:tid/row --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/data/:tid/row/:id --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] POST   /z/api/:tenant_id/v2/data/:tid/row/:id --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] DELETE /z/api/:tenant_id/v2/data/:tid/row/:id --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] POST   /z/api/:tenant_id/v2/data/:tid/simple_query --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] POST   /z/api/:tenant_id/v2/data/:tid/fts_query --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] POST   /z/api/:tenant_id/v2/data/:tid/ref_load --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] POST   /z/api/:tenant_id/v2/data/:tid/ref_resolve --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] POST   /z/api/:tenant_id/v2/data/:tid/rev_ref_load --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/data/:tid/activity/:row_id --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-[GIN-debug] POST   /z/api/:tenant_id/v2/data/:tid/activity/:row_id --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
-
-*/
 

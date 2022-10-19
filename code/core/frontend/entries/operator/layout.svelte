@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Tailwind from "../_shared/common/_tailwind.svelte";
+    import Tailwind from "../shared/_compo1/common/_tailwind.svelte";
     import { goto } from "./service";
 
   

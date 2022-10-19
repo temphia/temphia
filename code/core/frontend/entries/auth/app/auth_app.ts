@@ -1,13 +1,13 @@
-import { AuthAPI } from "../../../lib/api";
+import { AuthAPI } from "../../../lib/apiv2/auth";
 import { EngineService } from "../../../lib/engine/service";
-import { apiURL, SiteData, SiteManager } from "../../../lib/utils/site";
+import { apiURL, SiteData, SiteUtils } from "../../../lib/utils/site";
 import { AuthNav } from "./auth_nav";
 
 export class AuthApp {
   auth_api: AuthAPI;
   nav: AuthNav;
   engine_service: EngineService;
-  site_manager: SiteManager;
+  site_manager: SiteUtils;
   active_auth_id: number;
 
 
@@ -18,7 +18,7 @@ export class AuthApp {
 
   constructor() {
     const site_data: SiteData = window["__temphia_site_data__"];
-    this.site_manager = new SiteManager(site_data.site_token);
+    this.site_manager = new SiteUtils(site_data.site_token);
     this.auth_api = new AuthAPI(
       apiURL(site_data.tenant_id),
       site_data.site_token
