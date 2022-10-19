@@ -1,5 +1,6 @@
+// lauch
 import LauncherStart from "./launcher/start.svelte";
-import Play from "./play/play.svelte";
+import LauncherPlayer from "./launcher/player.svelte";
 
 // data
 import DataLoader from "./data/loader.svelte";
@@ -15,10 +16,12 @@ import RepoLoader from "./repo/loader.svelte";
 import Repo from "./repo/repo.svelte";
 
 import admin_pages from "./admin";
+import Play from "./play/play.svelte";
 
 export default {
   "/": LauncherStart,
-  "/play": Play,
+  "/launch/:app": LauncherPlayer,
+
   "/data": {
     "/": DataLoader,
     "/:source": DataGroups,
@@ -37,4 +40,5 @@ export default {
     "/:source": Repo,
   },
   admin: admin_pages,
+  "/play": Play,
 };
