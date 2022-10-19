@@ -33,6 +33,7 @@ type TenantDomain struct {
 	Id                     int64      `json:"id,omitempty" db:"id,omitempty"`
 	Name                   string     `json:"name,omitempty" db:"name,omitempty"`
 	About                  string     `json:"about,omitempty" db:"about,omitempty"`
+	CORSPolicy             string     `json:"cors_policy,omitempty" db:"cors_policy,omitempty"`
 	DefaultUgroup          string     `json:"default_ugroup,omitempty" db:"default_ugroup,omitempty"`
 	AdapterType            string     `json:"adapter_type,omitempty" db:"adapter_type,omitempty"` // dynamic, plug_app, landing_page, static, alias, launcher
 	AdapterPlugId          string     `json:"adapter_plug_id,omitempty" db:"adapter_plug_id,omitempty"`

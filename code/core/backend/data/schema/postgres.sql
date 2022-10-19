@@ -57,6 +57,8 @@ create table tenant_domains(
     name text not null default '',
     about text not null default '',
     default_ugroup text not null default '',
+
+    cors_policy text not null default '',
     
     adapter_type text not null default '',
     adapter_plug_id text not null default '',
