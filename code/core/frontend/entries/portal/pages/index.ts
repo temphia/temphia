@@ -1,4 +1,4 @@
-import StartPage from "./start/start.svelte";
+import LauncherStart from "./launcher/start.svelte";
 import Play from "./play/play.svelte";
 
 // data
@@ -17,7 +17,7 @@ import Repo from "./repo/repo.svelte";
 import admin_pages from "./admin";
 
 export default {
-  "/": StartPage,
+  "/": LauncherStart,
   "/play": Play,
   "/data": {
     "/": DataLoader,
