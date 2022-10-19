@@ -37,7 +37,6 @@ export class App {
     return this.api_manager;
   }
 
-  
 
 
 }

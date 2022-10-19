@@ -20,7 +20,7 @@
   import { AuthApp } from "../../lib/app/auth/auth";
   import { setContext } from "svelte";
   import Playground from "./common/playground.svelte";
-  import Tailwind from "../common/_tailwind.svelte";
+  import Tailwind from "../xcompo/common/_tailwind.svelte";
 
   const app = new AuthApp();
 

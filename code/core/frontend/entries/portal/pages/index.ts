@@ -39,6 +39,6 @@ export default {
     "/": RepoLoader,
     "/:source": Repo,
   },
-  admin: admin_pages,
+  "/admin": admin_pages,
   "/play": Play,
 };

@@ -1,2 +1,3 @@
-<div>Admin</div>
+<div>Admin Layout</div>
 
+<slot />
