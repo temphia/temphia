@@ -10,6 +10,7 @@ export class Http {
 
   constructor(baseURL: string, headers: any) {
     this.baseURL = baseURL;
+    this.headers = headers
   }
 
   replace_headers(headers: any) {
@@ -17,7 +18,7 @@ export class Http {
   }
 
   async get(path: string): Promise<HttpResponse> {
-    const resp = await fetch(`${this.baseURL}/${path}`, {
+    const resp = await fetch(`${this.baseURL}${path}`, {
       method: "GET",
       headers: this.headers,
     });
@@ -38,7 +39,7 @@ export class Http {
   }
 
   async post(path: string, data: any): Promise<HttpResponse> {
-    const resp = await fetch(`${this.baseURL}/${path}`, {
+    const resp = await fetch(`${this.baseURL}${path}`, {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify(data),
@@ -60,7 +61,7 @@ export class Http {
   }
 
   async postForm(path: string, auth: boolean, data: any) {
-    return await fetch(`${this.baseURL}/${path}`, {
+    return await fetch(`${this.baseURL}${path}`, {
       method: "POST",
       headers: auth ? { Authorization: this.headers["Authorization"] } : {},
       body: data,
@@ -68,7 +69,7 @@ export class Http {
   }
 
   async patch(path: string, data: any): Promise<HttpResponse> {
-    const resp = await fetch(`${this.baseURL}/${path}`, {
+    const resp = await fetch(`${this.baseURL}${path}`, {
       method: "PATCH",
       headers: this.headers,
       body: JSON.stringify(data),
@@ -90,7 +91,7 @@ export class Http {
   }
 
   async delete(path: string, data?: any): Promise<HttpResponse> {
-    const resp = await fetch(`${this.baseURL}/${path}`, {
+    const resp = await fetch(`${this.baseURL}${path}`, {
       method: "DELETE",
       headers: this.headers,
       body: data ? JSON.stringify(data) : data,

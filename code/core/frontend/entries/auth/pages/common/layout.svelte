@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import type { AuthApp } from "../../../lib/app/auth/auth";
+  import { authURL } from "../../../../lib/utils/site";
+  import type { AuthApp } from "../../app";
 
   const app: AuthApp = getContext("_auth_app_");
 </script>
@@ -200,7 +201,20 @@
                 class="p-0.5 rounded bg-slate-200 text-slate-700"
                 >{app.user_group}</span
               >
-              <button class="text-blue-500">Change</button>
+              <button
+                class="text-blue-500"
+                on:click={() => {
+                  window.location.href = authURL({
+                    tenant_id: app.tenant_id,
+                    user_group: prompt(
+                      "Enter new user group you belong to.",
+                      app.user_group
+                    ),
+                  });
+
+                  app.tenant_id;
+                }}>Change</button
+              >
             </p>
           </div>
         {/if}

@@ -25,8 +25,6 @@ export class AuthApp {
     this.engine_service = new EngineService({});
     this.active_auth_id = 0;
 
-    let queryParams = new URLSearchParams(window.location.search);
-
     this.user_group = site_data.user_group;
     this.user_group_fixed = false;
     this.tenant_id = site_data.tenant_id;

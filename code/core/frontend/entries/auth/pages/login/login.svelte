@@ -1,9 +1,9 @@
 <script lang="ts">
   import Inner from "./_inner.svelte";
   import AuthLayout from "../common/layout.svelte";
-  
-  import type { AuthApp } from "../../../lib/app/auth/auth";
+
   import { getContext } from "svelte";
+  import type { AuthApp } from "../../app";
 
   const app: AuthApp = getContext("_auth_app_");
 
