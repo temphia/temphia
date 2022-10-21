@@ -1,4 +1,4 @@
-import RootPageApp from "./root/index.svelte"
+import RootPageApp from "./index.svelte"
 
 const __svelte_app__ = new RootPageApp({
     target: document.body,

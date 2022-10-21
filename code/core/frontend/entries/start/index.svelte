@@ -1,7 +1,7 @@
 <script lang="ts">
   import Tailwind from "../xcompo/common/_tailwind.svelte";
 
-  import { doLogin, gotoLoginPage } from "./root";
+  import { doLogin, gotoLoginPage } from "./start_utils";
 
   const LOGIN = "login";
   const TICKET = "ticket";

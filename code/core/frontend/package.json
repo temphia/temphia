@@ -9,10 +9,10 @@
   "scripts": {
     "build:play": "ENTRY_FILE=playground rollup -c",
     "build:portal": "ENTRY_FILE=portal rollup -c",
-    "build:auth": "ENTRY_FILE=page_auth rollup -c",
+    "build:auth": "ENTRY_FILE=auth rollup -c",
     "build:operator": "ENTRY_FILE=operator rollup -c",
-    "build:root": "ENTRY_FILE=page_root rollup -c",
-    "build:all": "npm run build:operator && npm run build:portal && npm run build:auth && npm run build:root",
+    "build:start": "ENTRY_FILE=start rollup -c",
+    "build:all": "npm run build:operator && npm run build:portal && npm run build:auth && npm run build:start",
     "build_ui_sdk_package": "tsc -p tsconfig.package.json ",
     "dev": "rollup -c -w",
     "start": "sirv public",
