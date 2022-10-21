@@ -21,6 +21,7 @@ func (s *Server) zRoutes(z *gin.RouterGroup) {
 	z.GET("/start", s.asFile(static.Root, "html"))
 	z.GET("/portal", s.asFile(static.Portal, "html"))
 	z.GET("/operator", s.asFile(static.Operator, "html"))
+	z.GET("/auth", s.AuthIndex)
 	z.GET("/interface/:name", s.serveInterface)
 	z.GET("/assets/static/:file", s.serveStaticAssets())
 	z.GET("/assets/public/:file", s.servePublicAssets())

@@ -7,8 +7,9 @@ import (
 )
 
 func (s *Server) serveStaticAssets() func(c *gin.Context) {
+	fs := http.FS(s.app.Data().AssetAdapter())
 	return func(c *gin.Context) {
-		fs := http.FS(s.app.Data().AssetAdapter())
+
 		c.FileFromFS(c.Param("file"), fs)
 	}
 }
