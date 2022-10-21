@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { AuthApp } from "../../../lib/app/auth/auth";
+  import type { AuthService } from "../../../lib/app/auth/auth";
   import AltMethod from "./_methods/alt_method.svelte";
   import Password from "./_methods/password.svelte";
   import Icons from "./icons";
 
-  export let app: AuthApp;
+  export let app: AuthService;
   export let alt_methods = [];
   export let password = false;
   export let opensignup = false;

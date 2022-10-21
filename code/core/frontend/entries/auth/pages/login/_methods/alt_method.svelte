@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { AuthApp } from "../../../../lib/app/auth/auth";
+  import type { AuthService } from "../../../../lib/app/auth/auth";
   import Oauth from "./_oauth.svelte";
 
-  export let app: AuthApp;
+  export let app: AuthService;
 
   export let method;
   export let data;

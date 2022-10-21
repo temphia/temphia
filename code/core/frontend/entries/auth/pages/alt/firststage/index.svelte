@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { AuthApp } from "../../../app";
+  import type { AuthService } from "../../../services";
 
   import { getContext } from "svelte";
   import NewUserInfo from "../../common/new_user_info.svelte";
   import Layout from "../../common/layout.svelte";
-  const app: AuthApp = getContext("_auth_app_");
+  const app: AuthService = getContext("_auth_app_");
 
   const opts: {
     message: string;

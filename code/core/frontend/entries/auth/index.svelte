@@ -3,10 +3,9 @@
   import { setContext } from "svelte";
   import auth_routes from "./routes";
   import Tailwind from "../xcompo/common/_tailwind.svelte";
+  import { AuthService } from "./services";
 
-  import { AuthApp } from "./app";
-
-  const app = new AuthApp();
+  const app = new AuthService();
 
   setContext("_auth_app_", app);
 

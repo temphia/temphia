@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { apiURL, portalURL } from "../../../../lib/utils/site";
-  import type { AuthApp } from "../../app";
+  import type { AuthService } from "../../services";
 
   export let tenant_name;
   export let tenant_id;
@@ -29,7 +29,7 @@
     show_timeout = false;
   };
 
-  const app: AuthApp = getContext("_auth_app_");
+  const app: AuthService = getContext("_auth_app_");
 </script>
 
 <div class="my-5 mx-auto border" style="max-width: 500px;">

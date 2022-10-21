@@ -1,9 +1,9 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { authURL } from "../../../../lib/utils/site";
-  import type { AuthApp } from "../../app";
+  import type { AuthService } from "../../services";
 
-  const app: AuthApp = getContext("_auth_app_");
+  const app: AuthService = getContext("_auth_app_");
 </script>
 
 <div

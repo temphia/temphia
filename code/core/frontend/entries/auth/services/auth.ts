@@ -1,9 +1,9 @@
 import { AuthAPI } from "../../../lib/apiv2/auth";
 import { EngineService } from "../../../lib/engine/service";
 import { apiURL, SiteData, SiteUtils } from "../../../lib/utils/site";
-import { AuthNav } from "./auth_nav";
+import { AuthNav } from "./nav";
 
-export class AuthApp {
+export class AuthService {
   auth_api: AuthAPI;
   nav: AuthNav;
   engine_service: EngineService;

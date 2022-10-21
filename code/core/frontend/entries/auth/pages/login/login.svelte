@@ -3,9 +3,9 @@
   import AuthLayout from "../common/layout.svelte";
 
   import { getContext } from "svelte";
-  import type { AuthApp } from "../../app";
+  import type { AuthService } from "../../services";
 
-  const app: AuthApp = getContext("_auth_app_");
+  const app: AuthService = getContext("_auth_app_");
 
   let loaded = false;
 

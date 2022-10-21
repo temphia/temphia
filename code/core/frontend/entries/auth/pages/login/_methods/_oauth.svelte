@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { AuthApp } from "../../../../lib/app/auth/auth";
+  import type { AuthService } from "../../../../lib/app/auth/auth";
 
-  export let app: AuthApp;
+  export let app: AuthService;
   export let method: object;
   export let data: object;
 

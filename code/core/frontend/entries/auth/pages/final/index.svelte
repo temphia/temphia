@@ -1,10 +1,10 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { apiURL } from "../../../../lib/utils/site";
-  import type { AuthApp } from "../../app";
+  import type { AuthService } from "../../services";
   import UserCard from "../common/user_card.svelte";
 
-  const app: AuthApp = getContext("_auth_app_");
+  const app: AuthService = getContext("_auth_app_");
 
   let userdata;
   let loading = true;

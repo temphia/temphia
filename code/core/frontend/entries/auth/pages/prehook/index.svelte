@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { AuthApp } from "../../../lib/app/auth/auth";
+  import type { AuthService } from "../../../lib/app/auth/auth";
   import { getContext } from "svelte";
 
-  const app: AuthApp = getContext("_auth_app_");
+  const app: AuthService = getContext("_auth_app_");
 
   const opts: {
     preauthed_token: string;
