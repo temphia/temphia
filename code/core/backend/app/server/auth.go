@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/vmodels"
@@ -30,6 +31,7 @@ func (s *Server) AuthIndex(ctx *gin.Context) {
 		SiteToken: stoken,
 		ApiURL:    fmt.Sprintf("http://%s/z/api/%s/v2", ctx.Request.Host, tenantId),
 		TenantId:  tenantId,
+		UserGroup: s.extractUserGroup(tenantId, ctx),
 	}
 
 	tdata, err := json.Marshal(data)
@@ -76,6 +78,14 @@ func (s *Server) extractTenant(ctx *gin.Context) string {
 	}
 	cookie, _ := ctx.Cookie("tenant_id")
 	return cookie
+}
+
+func (s *Server) extractUserGroup(tenantId string, ctx *gin.Context) string {
+	if ctx.Query("ugroup") != "" {
+		return ctx.Query("ugroup")
+	}
+
+	return xtypes.UserGroupSuperAdmin
 }
 
 func (s *Server) siteToken(tenantId string, ctx *gin.Context) (string, error) {

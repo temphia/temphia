@@ -1,3 +1,4 @@
+import { authURL } from "../../lib/utils/site";
 import { saveOperatorData } from "../operator/service";
 
 export const OpLogin = (baseURL: string, user: string, password: string) => {
@@ -24,5 +25,5 @@ export const doLogin = async (op_username: string, op_password: string) => {
 };
 
 export const gotoLoginPage = (tenant: string, group: string) => {
-  window.location.href = `${window.location.origin}/z/auth?tenant_id=${tenant}&ugroup=${group}`;
+  window.location.href = authURL({ tenant_id: tenant, user_group: group });
 };

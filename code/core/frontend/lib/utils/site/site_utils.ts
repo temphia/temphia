@@ -10,6 +10,7 @@ export interface AuthedData {
 export interface SiteData {
   tenant_id: string;
   site_token: string;
+  user_group?: string
 }
 
 export class SiteUtils {

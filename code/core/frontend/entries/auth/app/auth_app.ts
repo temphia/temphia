@@ -10,10 +10,9 @@ export class AuthApp {
   site_manager: SiteUtils;
   active_auth_id: number;
 
-
   _site_token: string;
   user_group: string;
-  user_group_fixed: boolean
+  user_group_fixed: boolean;
   tenant_id: string;
 
   constructor() {
@@ -25,11 +24,11 @@ export class AuthApp {
     );
     this.engine_service = new EngineService({});
     this.active_auth_id = 0;
-    
+
     let queryParams = new URLSearchParams(window.location.search);
 
-    this.user_group = queryParams.get("ugroup");
-    this.user_group_fixed = false
+    this.user_group = site_data.user_group;
+    this.user_group_fixed = false;
     this.tenant_id = site_data.tenant_id;
     this.nav = new AuthNav();
 

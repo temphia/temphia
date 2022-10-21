@@ -5,4 +5,5 @@ type SiteData struct {
 	PlugURL   string `json:"plug_url,omitempty"`
 	ApiURL    string `json:"api_url,omitempty"`
 	TenantId  string `json:"tenant_id,omitempty"`
+	UserGroup string `json:"user_group,omitempty"`
 }
