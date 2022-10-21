@@ -48,13 +48,18 @@ type UserUpdate struct {
 }
 
 type UserInfo struct {
-	UserId     string `json:"user_id,omitempty"`
-	FullName   string `json:"full_name,omitempty"`
-	Bio        string `json:"bio,omitempty" db:"bio"`
-	PublicKey  string `json:"pub_key,omitempty"`
-	Email      string `json:"email,omitempty"`
-	GroupName  string `json:"group_name,omitempty"`
-	GroupId    string `json:"group,omitempty"`
-	TenantName string `json:"tenant_name,omitempty"`
-	TenantId   string `json:"tenant_id,omitempty"`
+	UserId    string `json:"user_id,omitempty"`
+	FullName  string `json:"full_name,omitempty"`
+	Bio       string `json:"bio,omitempty" db:"bio"`
+	PublicKey string `json:"pub_key,omitempty"`
+	Email     string `json:"email,omitempty"`
+	GroupName string `json:"group_name,omitempty"`
+	GroupId   string `json:"group,omitempty"`
+}
+
+type SelfLoad struct {
+	TenantName string   `json:"tenant_name,omitempty"`
+	TenantId   string   `json:"tenant_id,omitempty"`
+	UserInfo   UserInfo `json:"user_info,omitempty"`
+	Scopes     []string `json:"scopes,omitempty"`
 }

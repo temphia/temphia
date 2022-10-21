@@ -6,6 +6,13 @@ const (
 	Engine  = "engine"
 	Repo    = "repo"
 	User    = "user" // basic user listing and stuff (@mention user lookup)
+	Admin   = "admin"
+)
+
+var (
+	SuperScopes = []string{
+		Cabinet, Data, Engine, Repo, User, AdminUser, AdminRepo, AdminTenant, AdminEngine, AdminDev, AdminLog, AdminData,
+	}
 )
 
 const (

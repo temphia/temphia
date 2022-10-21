@@ -1,8 +1,10 @@
 package basic
 
 import (
+	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/core/backend/xtypes/scopes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
@@ -43,7 +45,7 @@ func (c *Controller) JoinNotification() error {
 	return nil
 }
 
-func (c *Controller) GetSelfInfo(uclaim *claim.Session) (*entities.UserInfo, error) {
+func (c *Controller) GetSelfInfo(uclaim *claim.Session) (*entities.SelfLoad, error) {
 	usr, err := c.coredb.GetUserByID(uclaim.TenentId, uclaim.UserID)
 	if err != nil {
 		return nil, err
@@ -59,19 +61,25 @@ func (c *Controller) GetSelfInfo(uclaim *claim.Session) (*entities.UserInfo, err
 		return nil, err
 	}
 
-	fuser := &entities.UserInfo{
-		UserId:     uclaim.UserID,
-		FullName:   usr.FullName,
-		PublicKey:  usr.PublicKey,
-		Bio:        usr.Bio,
-		Email:      usr.Email,
-		GroupId:    uclaim.UserGroup,
-		GroupName:  ugroup.Name,
-		TenantName: tenant.Name,
-		TenantId:   uclaim.TenentId,
+	var scs []string
+	if uclaim.UserGroup == xtypes.UserGroupSuperAdmin {
+		scs = scopes.SuperScopes
 	}
 
-	return fuser, nil
+	return &entities.SelfLoad{
+		UserInfo: entities.UserInfo{
+			UserId:    uclaim.UserID,
+			FullName:  usr.FullName,
+			PublicKey: usr.PublicKey,
+			Bio:       usr.Bio,
+			Email:     usr.Email,
+			GroupId:   uclaim.UserGroup,
+			GroupName: ugroup.Name},
+		TenantName: tenant.Name,
+		TenantId:   uclaim.TenentId,
+		Scopes:     scs,
+	}, nil
+
 }
 
 func (c *Controller) GetChangeEmail(uclaim *claim.Session) error {
