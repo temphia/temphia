@@ -1,8 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import type { AuthApp } from "../../../lib/app/auth/auth";
-
-  import { apiURL } from "../../../lib/core/site";
+  import { apiURL, portalURL } from "../../../../lib/utils/site";
+  import type { AuthApp } from "../../app";
 
   export let tenant_name;
   export let tenant_id;

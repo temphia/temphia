@@ -1,9 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import type { AuthApp } from "../../../lib/app/auth/auth";
-
-  import { SelfAPI } from "../../../lib/core/api";
-  import { apiURL } from "../../../lib/core/site";
+  import { apiURL } from "../../../../lib/utils/site";
+  import type { AuthApp } from "../../app";
   import UserCard from "../common/user_card.svelte";
 
   const app: AuthApp = getContext("_auth_app_");
@@ -14,17 +12,10 @@
   app.clear_preauthed_data();
 
   (async () => {
-    const data = app.site_manager.getAuthedData();
-    const selfapi = new SelfAPI(apiURL(data.tenant_id), data.user_token);
-
-    await selfapi.init();
-
-    const resp = await selfapi.get_self_info();
-    if (resp.status !== 200) {
-      return;
-    }
-    userdata = resp.data;
-    loading = false;
+    console.log("FIXME")
+    // const data = app.site_manager.getAuthedData();
+    // userdata = resp.data;
+    // loading = false;
   })();
 </script>
 

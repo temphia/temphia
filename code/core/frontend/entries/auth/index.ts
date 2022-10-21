@@ -1,4 +1,4 @@
-import AuthPageApp from "./auth/index.svelte"
+import AuthPageApp from "./index.svelte"
 
 
 const __svelte_app__ = new AuthPageApp({

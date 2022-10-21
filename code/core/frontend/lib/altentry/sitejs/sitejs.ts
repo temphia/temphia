@@ -1,2 +1,2 @@
-import { SiteManager } from "../../../lib/utils/site";
-window["site_manager"] = new SiteManager();
+import { SiteUtils } from "../../../lib/utils/site";
+window["site_utils"] = new SiteUtils();

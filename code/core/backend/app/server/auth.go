@@ -54,8 +54,8 @@ func (s *Server) AuthIndex(ctx *gin.Context) {
 	buf.Write(tdata)
 	buf.Write([]byte(`</script>
 		<link rel="icon" type="image/png" href="/favicon.png" />
-		<link rel="stylesheet"  type="text/css" href="/z/assets/page_auth.css" />
-		<script defer src="/z/assets/page_auth.js"></script>
+		<link rel="stylesheet"  type="text/css" href="/z/assets/static/auth.css" />
+		<script defer src="/z/assets/static/auth.js"></script>
 		</head>
 		<body></body>
 		</html>`))
