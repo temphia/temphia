@@ -17,7 +17,7 @@ func (da *App) IsDbSchemaApplied() (bool, error) {
 	}
 
 	_, err = da.CoreHub.ListTenant()
-	return err != nil, nil
+	return err == nil, nil
 }
 
 func (da *App) IsTenantSeeded(tenantId string) (bool, error) {
@@ -25,10 +25,10 @@ func (da *App) IsTenantSeeded(tenantId string) (bool, error) {
 
 	if err != nil {
 		if !errors.Is(err, db.ErrNoMoreRows) {
-			return false, nil
+			return false, err
 		}
 
-		return false, err
+		return false, nil
 	}
 
 	return true, nil

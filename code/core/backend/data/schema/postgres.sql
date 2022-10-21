@@ -14,7 +14,7 @@ create table system_kv(
     type text not null default '',
     value text not null default '',
     tenant_id text not null default '',
-    unique(key, type, tenant_id),
+    unique(key, type, tenant_id)
 );
 
 create table tenants(
@@ -49,7 +49,7 @@ create table tenant_hooks(
     exec_meta json not null default '{}',
     tenant_id text not null, 
     unique(tenant_id, target_type, target, event_type)
-)
+);
 
 
 create table tenant_domains(
@@ -199,7 +199,7 @@ create table user_group_auths(
     id serial primary key,
     name text not null default '',
     type text not null,
-    provider text not null'',
+    provider text not null default '',
     provider_opts json default '{}',
     scopes text not null default '',
     policy text not null default '',

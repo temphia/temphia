@@ -11,8 +11,12 @@ func (c *CoreHub) AddTenant(tenant *entities.Tenant) error {
 		return err
 	}
 
-	eb := c.cplane.GetEventBus()
-	eb.EmitTenantEvent(tenant.Slug, xplane.EventCreateTenant, tenant)
+	if c.cplane != nil {
+		// fixme => remove this
+		eb := c.cplane.GetEventBus()
+		eb.EmitTenantEvent(tenant.Slug, xplane.EventCreateTenant, tenant)
+	}
+
 	return nil
 }
 
