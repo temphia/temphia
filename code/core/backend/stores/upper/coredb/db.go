@@ -89,3 +89,7 @@ func only(data map[string]interface{}, keys ...string) bool {
 	}
 	return true
 }
+
+func (d *DB) Ping() error {
+	return d.session.Ping()
+}

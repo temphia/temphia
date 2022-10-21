@@ -31,3 +31,7 @@ func (c *CoreHub) Inject(app xtypes.App) {
 	c.notifier = deps.SockdHub().(sockdx.Hub).GetUserSyncer()
 	c.cplane = deps.ControlPlane().(xplane.ControlPlane)
 }
+
+func (c *CoreHub) Ping() error {
+	return c.coredb.Ping()
+}

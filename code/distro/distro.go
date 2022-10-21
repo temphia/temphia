@@ -9,9 +9,15 @@ import (
 	"github.com/temphia/temphia/code/core/backend/plane"
 	"github.com/temphia/temphia/code/core/backend/stores"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
+	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
-func NewApp(conf *config.Config, dev, singleTenantMode bool) xtypes.App {
+type App struct {
+	App     xtypes.App
+	CoreHub store.CoreHub
+}
+
+func New(conf *config.Config, dev, singleTenantMode bool) App {
 
 	reg := registry.New(true)
 	sbuilder := stores.NewBuilder(stores.Options{
@@ -43,5 +49,15 @@ func NewApp(conf *config.Config, dev, singleTenantMode bool) xtypes.App {
 		panic(err)
 	}
 
-	return builder.GetApp()
+	app := builder.GetApp()
+
+	return App{
+		App:     app,
+		CoreHub: app.GetDeps().CoreHub().(store.CoreHub),
+	}
+
+}
+
+func (da *App) Run() error {
+	return da.App.Run()
 }

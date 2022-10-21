@@ -19,6 +19,8 @@ type SyncDB interface {
 }
 
 type CoreDB interface {
+	Ping() error
+
 	SystemOps
 	TenantOps
 	UserOps
