@@ -1,5 +1,5 @@
 <script>
-  export let app;
+  import Layout from "./player/layout.svelte";
 </script>
 
-<div>Player {app}</div>
+<Layout />

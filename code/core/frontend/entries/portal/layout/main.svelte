@@ -245,10 +245,7 @@
     </div>
   {/if}
 
-  <div
-    class="h-screen overflow-auto tx-main"
-    style="width:95%;width: calc(100vw - 3rem);"
-  >
+  <div class="h-screen overflow-auto tx-main">
     <slot />
   </div>
 </div>
