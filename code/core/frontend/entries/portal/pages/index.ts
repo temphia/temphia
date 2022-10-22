@@ -17,6 +17,7 @@ import Repo from "./repo/repo.svelte";
 
 import admin_pages from "./admin";
 import Play from "./play/play.svelte";
+import NotFound from "./notfound.svelte";
 
 export default {
   "/": LauncherStart,
@@ -41,4 +42,5 @@ export default {
   },
   "/admin": admin_pages,
   "/play": Play,
+  "*": NotFound,
 };

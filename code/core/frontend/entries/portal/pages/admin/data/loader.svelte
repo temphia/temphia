@@ -1,1 +1,1 @@
-<div>Loader</div>
+<div>Admin Data Loader</div>

@@ -21,6 +21,34 @@ import AdminDataView from "./data/view/view.svelte";
 import AdminDataViews from "./data/view/views.svelte";
 import Admin from "./admin.svelte";
 
+// resource
+import AdminResources from "./resource/resources.svelte";
+import AdminResource from "./resource/resource.svelte";
+
+// user
+import AdminUsers from "./user/users.svelte";
+import AdminUser from "./user/user.svelte";
+
+// ugroup
+import AdminUgroups from "./ugroup/ugroups.svelte";
+import AdminUgroup from "./ugroup/ugroup.svelte";
+
+// lens
+import AdminLens from "./lens/lens.svelte";
+import AdminLensApp from "./lens/app.svelte";
+import AdminLensEngine from "./lens/engine.svelte";
+import AdminLensSite from "./lens/site.svelte";
+
+// tenant
+import AdminTenant from "./tenant/tenant.svelte";
+import AdminTenantEdit from "./tenant/tenant_edit.svelte";
+import AdminTenantDomains from "./tenant/domain/domains.svelte";
+import AdminTenantDomain from "./tenant/domain/domain.svelte";
+
+// plug
+import AdminPlugs from "./plug/plugs.svelte";
+import AdminPlug from "./plug/plug.svelte";
+
 export default {
   $$component: Admin,
   "/bprint": {
@@ -29,12 +57,12 @@ export default {
     "/:bid/editor": AdminBprintEditor,
     "/:bid/instancer": AdminBprintInstancer,
   },
-  repo: {
+  "/repo": {
     "/": AdminRepos,
     "/:rid": AdminRepo,
   },
 
-  data: {
+  "/data": {
     "/": AdminDataLoader,
     "/group": AdminDataGroups,
     "/group/:group": AdminDataGroup,
@@ -48,9 +76,35 @@ export default {
     "/view/:group/:table/:id": AdminDataView,
   },
 
-  resource: {},
-  user: {},
-  ugroup: {},
-  lens: {},
-  tenant: {},
+  "/resource": {
+    "/": AdminResources,
+    "/:rid": AdminResource,
+  },
+
+  "/plug": {
+    "/": AdminPlugs,
+    "/:pid": AdminPlug,
+  },
+
+  "/user": {
+    "/": AdminUsers,
+    "/:userid": AdminUser,
+  },
+
+  "/ugroup": {
+    "/": AdminUgroups,
+    "/:ugroup": AdminUgroup,
+  },
+  "/lens": {
+    $$component: AdminLens,
+    "/app": AdminLensApp,
+    "/engine": AdminLensEngine,
+    "/site": AdminLensSite,
+  },
+  "/tenant": {
+    "/": AdminTenant,
+    "/edit": AdminTenantEdit,
+    "/domain": AdminTenantDomains,
+    "/domain/:did": AdminTenantDomain,
+  }
 };
