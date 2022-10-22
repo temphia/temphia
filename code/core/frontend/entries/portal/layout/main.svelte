@@ -19,7 +19,7 @@
   const route_links: [any, string, string][] = [
     [HomeIcon, "start", "#/"],
     [GroupIcon, "data tables", "#/data/"],
-    [AdminIcon, "admin", "#/admin/"],
+    [AdminIcon, "admin", "#/admin"],
     [FolderIcon, "cabinet", "#/cabinet/"],
     [StoreIcon, "store", "#/repo/"],
   ];
