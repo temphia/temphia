@@ -13,16 +13,15 @@
   } from "../../xcompo/svg";
 
   import Logo from "../../xcompo/svg/logo.svelte";
-  
+
   export let pending_notification = false;
 
   const route_links: [any, string, string][] = [
-    [HomeIcon, "start", "/z/portal"],
-    [GroupIcon, "data tables", "/z/portal/dtable_load"],
-    [PlugIcon, "plug apps", "/z/portal/apps_launcher"],
-    [AdminIcon, "admin", "/z/portal/admin/plugs"],
-    [FolderIcon, "cabinet", "/z/portal/cabinet_load"],
-    [StoreIcon, "store", "/z/portal/store"],
+    [HomeIcon, "start", "#/"],
+    [GroupIcon, "data tables", "#/data/"],
+    [AdminIcon, "admin", "#/admin/"],
+    [FolderIcon, "cabinet", "#/cabinet/"],
+    [StoreIcon, "store", "#/repo/"],
   ];
 
   const dispatch = createEventDispatcher();
@@ -49,7 +48,7 @@
         <li class="text-white hover:bg-gray-100">
           <SvelteTooltip tip={link[1]} right color="#7c3aed">
             <a
-              href=""
+              href={link[2]}
               class="h-12 px-4 flex justify-center items-center w-full text-gray-700 focus:text-orange-500"
             >
               <svelte:component this={link[0]} />
@@ -205,7 +204,7 @@
             {#each route_links as link}
               <li class="border rounded">
                 <a
-                  href="#"
+                  href={link[2]}
                   on:click={() => {
                     __open_menu = false;
                   }}

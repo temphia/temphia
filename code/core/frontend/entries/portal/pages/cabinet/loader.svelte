@@ -1,1 +1,1 @@
-<div>Loader</div>
+<div>Cabinet Loader</div>
