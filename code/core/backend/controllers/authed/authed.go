@@ -94,14 +94,14 @@ func (c *Controller) AuthFinish(opts AuthFinishRequest) (*AuthFinishResponse, er
 		return nil, err
 	}
 
-	utok, err := c.signer.SignUser(sclaim.TenentId,
-		claim.NewUserLogged(
-			sclaim.TenentId,
-			paclaim.UserID,
-			paclaim.UserGroup,
-			strings.Split(ugroup.Scopes, ","), // fixme scope.Derive(sclaim.Scopes, strings.Split(ugroup.Scopes, ",")),
-		),
+	uclaim := claim.NewUserLogged(
+		sclaim.TenentId,
+		paclaim.UserID,
+		paclaim.UserGroup,
+		strings.Split(ugroup.Scopes, ","), // fixme scope.Derive(sclaim.Scopes, strings.Split(ugroup.Scopes, ",")),
 	)
+
+	utok, err := c.signer.SignUser(sclaim.TenentId, uclaim)
 	if err != nil {
 		return nil, err
 	}

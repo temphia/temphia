@@ -16,7 +16,12 @@ func (a *ApiAdmin) NewView(ctx httpx.Request) {
 		httpx.WriteErr(ctx.Http, err)
 		return
 	}
-	err = a.cAdmin.NewView(ctx.Session, ctx.Http.Param("tid"), &view)
+	err = a.cAdmin.NewView(
+		ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+		ctx.MustParam("tid"),
+		&view)
 	httpx.WriteFinal(ctx.Http, err)
 }
 
@@ -35,7 +40,12 @@ func (a *ApiAdmin) ModifyView(ctx httpx.Request) {
 		return
 	}
 
-	err = a.cAdmin.ModifyView(ctx.Session, ctx.Http.Param("tid"), id, view)
+	err = a.cAdmin.ModifyView(
+		ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+		ctx.MustParam("tid"),
+		id, view)
 	httpx.WriteFinal(ctx.Http, err)
 
 }
@@ -47,12 +57,21 @@ func (a *ApiAdmin) GetView(ctx httpx.Request) {
 		return
 	}
 
-	resp, err := a.cAdmin.GetView(ctx.Session, ctx.Http.Param("tid"), id)
+	resp, err := a.cAdmin.GetView(
+		ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+		ctx.MustParam("tid"),
+		id)
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
 func (a *ApiAdmin) ListView(ctx httpx.Request) {
-	resp, err := a.cAdmin.ListView(ctx.Session, ctx.Http.Param("tid"))
+	resp, err := a.cAdmin.ListView(ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+		ctx.MustParam("tid"),
+	)
 	if err != nil {
 		httpx.WriteErr(ctx.Http, err)
 		return
@@ -68,7 +87,11 @@ func (a *ApiAdmin) DelView(ctx httpx.Request) {
 		return
 	}
 
-	err = a.cAdmin.DelView(ctx.Session, ctx.Http.Param("tid"), id)
+	err = a.cAdmin.DelView(ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+		ctx.MustParam("tid"),
+		id)
 	httpx.WriteFinal(ctx.Http, err)
 }
 

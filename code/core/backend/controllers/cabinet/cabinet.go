@@ -3,7 +3,6 @@ package cabinet
 import (
 	"context"
 
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
@@ -21,21 +20,13 @@ func New(cabinet store.CabinetHub, signer service.Signer) *Controller {
 	}
 }
 
-func (c *Controller) ListRoot(uclaim *claim.Session) ([]string, error) {
-	if uclaim.Path[0] != "cabinet" {
-		return nil, easyerr.NotAuthorized()
-	}
-
-	sourced := c.hub.GetSource(uclaim.Path[1], uclaim.TenentId)
+func (c *Controller) ListRoot(uclaim *claim.Cabinet) ([]string, error) {
+	sourced := c.hub.GetSource(uclaim.Source, uclaim.TenentId)
 	return sourced.ListRoot(context.TODO())
 }
 
-func (c *Controller) AddFolder(uclaim *claim.Session, folder string) error {
-	err := c.canAction(uclaim, "add_folder", folder)
-	if err != nil {
-		return err
-	}
-	sourced := c.hub.GetSource(uclaim.Path[1], uclaim.TenentId)
+func (c *Controller) AddFolder(uclaim *claim.Cabinet, folder string) error {
+	sourced := c.hub.GetSource(uclaim.TenentId, uclaim.TenentId)
 	return sourced.AddFolder(context.TODO(), folder)
 }
 
@@ -44,7 +35,7 @@ func (c *Controller) AddBlob(uclaim *claim.Session, folder, file string, content
 	if err != nil {
 		return err
 	}
-	sourced := c.hub.GetSource(uclaim.Path[1], uclaim.TenentId)
+	sourced := c.hub.GetSource("uclaim.Path[1]", uclaim.TenentId)
 
 	return sourced.AddBlob(context.TODO(), folder, file, contents)
 }
@@ -55,7 +46,7 @@ func (c *Controller) ListFolder(uclaim *claim.Session, folder string) ([]*store.
 		return nil, err
 	}
 
-	sourced := c.hub.GetSource(uclaim.Path[1], uclaim.TenentId)
+	sourced := c.hub.GetSource("uclaim.Path[1]", uclaim.TenentId)
 
 	return sourced.ListFolder(context.TODO(), folder)
 }
@@ -65,7 +56,7 @@ func (c *Controller) GetBlob(uclaim *claim.Session, folder, file string) ([]byte
 	if err != nil {
 		return nil, err
 	}
-	sourced := c.hub.GetSource(uclaim.Path[1], uclaim.TenentId)
+	sourced := c.hub.GetSource("uclaim.Path[1]", uclaim.TenentId)
 
 	return sourced.GetBlob(context.TODO(), folder, file)
 }
@@ -75,26 +66,26 @@ func (c *Controller) DeleteBlob(uclaim *claim.Session, folder, file string) erro
 	if err != nil {
 		return err
 	}
-	sourced := c.hub.GetSource(uclaim.Path[1], uclaim.TenentId)
+	sourced := c.hub.GetSource("uclaim.Path[1]", uclaim.TenentId)
 
 	return sourced.DeleteBlob(context.TODO(), folder, file)
 }
 
 func (c *Controller) NewFolderTicket(uclaim *claim.Session, folder string) (string, error) {
 
-	claim := &claim.FolderTkt{
+	claim := &claim.Cabinet{
 		Folder: folder,
-		Source: uclaim.Path[1],
+		Source: "uclaim.Path[1]",
 		Expiry: 0,
-		Prefix: "",
+
 		//		DeviceId: uclaim.DeviceId,
 	}
 
-	return c.signer.SignFolderTkt(uclaim.TenentId, claim)
+	return c.signer.SignCabinet(uclaim.TenentId, claim)
 }
 
 // Ticket cabinet
-func (c *Controller) TicketFile(tenantId, file string, ticket *claim.FolderTkt) ([]byte, error) {
+func (c *Controller) TicketFile(tenantId, file string, ticket *claim.Cabinet) ([]byte, error) {
 	// if !ticket.AllowGet {
 	// 	return nil, easyerr.NotAuthorized()
 	// }
@@ -111,7 +102,7 @@ func (c *Controller) TicketFile(tenantId, file string, ticket *claim.FolderTkt) 
 	return sourced.GetBlob(context.TODO(), ticket.Folder, file)
 }
 
-func (c *Controller) TicketPreview(tenantId, file string, ticket *claim.FolderTkt) ([]byte, error) {
+func (c *Controller) TicketPreview(tenantId, file string, ticket *claim.Cabinet) ([]byte, error) {
 	// if !ticket.AllowGet {
 	// 	return nil, easyerr.NotAuthorized()
 	// }
@@ -120,7 +111,7 @@ func (c *Controller) TicketPreview(tenantId, file string, ticket *claim.FolderTk
 	return sourced.GetBlob(context.TODO(), ticket.Folder, file)
 }
 
-func (c *Controller) TicketList(tenantId string, ticket *claim.FolderTkt) ([]*store.BlobInfo, error) {
+func (c *Controller) TicketList(tenantId string, ticket *claim.Cabinet) ([]*store.BlobInfo, error) {
 	// pp.Println(ticket)
 	// if !ticket.AllowList {
 	// 	return nil, easyerr.NotAuthorized()
@@ -130,7 +121,7 @@ func (c *Controller) TicketList(tenantId string, ticket *claim.FolderTkt) ([]*st
 	return sourced.ListFolder(context.TODO(), ticket.Folder)
 }
 
-func (c *Controller) TicketUpload(tenantId, file string, data []byte, ticket *claim.FolderTkt) error {
+func (c *Controller) TicketUpload(tenantId, file string, data []byte, ticket *claim.Cabinet) error {
 	// fixme =>  send back upload proof token
 	sourced := c.hub.GetSource(ticket.Source, tenantId)
 	return sourced.AddBlob(context.TODO(), ticket.Folder, file, data)

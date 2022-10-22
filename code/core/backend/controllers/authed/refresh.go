@@ -6,7 +6,6 @@ import (
 )
 
 type RefreshReq struct {
-	Path      []string       `json:"path,omitempty"`
 	UserToken string         `json:"user_token,omitempty"`
 	Options   map[string]any `json:"options,omitempty"`
 	OldToken  string         `json:"old_token,omitempty"`
@@ -24,26 +23,10 @@ func (c *Controller) RefreshService(uclaim *claim.User, opts RefreshReq) *Refres
 }
 
 func (c *Controller) refreshService(uclaim *claim.User, opts RefreshReq) *RefreshResp {
-
-	if uclaim.IsSuperAdmin() {
-		return c.superClaim(uclaim, opts)
-	}
-
-	switch opts.Path[0] {
-	case "dgroup":
-		return c.dgroupClaim(uclaim, opts)
-	case "cabinet":
-		return c.CabinetClaim(uclaim, opts)
-	case "exector":
-		return c.execClaim(uclaim, opts)
-	case "admin":
-		return c.adminClaim(uclaim, opts)
-	default:
-		panic("not supported")
-	}
+	return c.sessionClaim(uclaim, opts)
 }
 
-func (c *Controller) superClaim(uclaim *claim.User, opts RefreshReq) *RefreshResp {
+func (c *Controller) sessionClaim(uclaim *claim.User, opts RefreshReq) *RefreshResp {
 	deviceId := xid.New().String()
 	serviceId := c.sessman.SessionId()
 	if opts.OldToken != "" {
@@ -62,7 +45,6 @@ func (c *Controller) superClaim(uclaim *claim.User, opts RefreshReq) *RefreshRes
 		Attributes: nil,
 		SessionID:  serviceId,
 		DeviceId:   deviceId,
-		Path:       opts.Path,
 	}
 
 	token, err := c.signer.SignSession(uclaim.TenentId, sclaim)
@@ -82,41 +64,4 @@ func (c *Controller) superClaim(uclaim *claim.User, opts RefreshReq) *RefreshRes
 		StatusOk: true,
 	}
 
-}
-
-func (c *Controller) dgroupClaim(uclaim *claim.User, opts RefreshReq) *RefreshResp {
-	return &RefreshResp{
-		Token:    "",
-		Expiry:   "",
-		Message:  "",
-		StatusOk: false,
-	}
-}
-
-func (c *Controller) CabinetClaim(uclaim *claim.User, opts RefreshReq) *RefreshResp {
-	return &RefreshResp{
-		Token:    "",
-		Expiry:   "",
-		Message:  "",
-		StatusOk: false,
-	}
-}
-
-func (c *Controller) execClaim(uclaim *claim.User, opts RefreshReq) *RefreshResp {
-	return &RefreshResp{
-		Token:    "",
-		Expiry:   "",
-		Message:  "",
-		StatusOk: false,
-	}
-}
-
-func (c *Controller) adminClaim(uclaim *claim.User, opts RefreshReq) *RefreshResp {
-
-	return &RefreshResp{
-		Token:    "",
-		Expiry:   "",
-		Message:  "",
-		StatusOk: false,
-	}
 }

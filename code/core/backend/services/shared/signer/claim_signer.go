@@ -186,14 +186,12 @@ func (cs *ClaimSigner) ParseAutheNext(tenantId, payload string) (*claim.AuthNext
 	return data, nil
 }
 
-// ticket related
-
-func (cs *ClaimSigner) SignFolderTkt(tenantId string, data *claim.FolderTkt) (string, error) {
+func (cs *ClaimSigner) SignData(tenantId string, data *claim.Data) (string, error) {
 	return cs.signer.Sign(tenantId, data)
 }
 
-func (cs *ClaimSigner) ParseFolderTkt(tenantId, payload string) (*claim.FolderTkt, error) {
-	data := &claim.FolderTkt{}
+func (cs *ClaimSigner) ParseData(tenantId, payload string) (*claim.Data, error) {
+	data := &claim.Data{}
 
 	err := cs.signer.Parse(tenantId, payload, data)
 	if err != nil {
@@ -202,6 +200,22 @@ func (cs *ClaimSigner) ParseFolderTkt(tenantId, payload string) (*claim.FolderTk
 
 	return data, nil
 }
+
+func (cs *ClaimSigner) SignCabinet(tenantId string, data *claim.Cabinet) (string, error) {
+	return cs.signer.Sign(tenantId, data)
+}
+func (cs *ClaimSigner) ParseCabinet(tenantId, payload string) (*claim.Cabinet, error) {
+	data := &claim.Cabinet{}
+
+	err := cs.signer.Parse(tenantId, payload, data)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}
+
+// ticket related
 
 func (cs *ClaimSigner) SignAdviseryTkt(tenantId string, data *claim.AdviseryTkt) (string, error) {
 	return cs.signer.Sign(tenantId, data)
@@ -222,19 +236,6 @@ func (cs *ClaimSigner) SignSockdTkt(tenantId string, data *claim.SockdTkt) (stri
 
 func (cs *ClaimSigner) ParseSockdTkt(tenantId, payload string) (*claim.SockdTkt, error) {
 	data := &claim.SockdTkt{}
-	err := cs.signer.Parse(tenantId, payload, data)
-	if err != nil {
-		return nil, err
-	}
-	return data, nil
-}
-
-func (cs *ClaimSigner) SignDtableTkt(tenantId string, data *claim.DataTkt) (string, error) {
-	return cs.signer.Sign(tenantId, data)
-}
-
-func (cs *ClaimSigner) ParseDtableTkt(tenantId, payload string) (*claim.DataTkt, error) {
-	data := &claim.DataTkt{}
 	err := cs.signer.Parse(tenantId, payload, data)
 	if err != nil {
 		return nil, err

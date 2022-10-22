@@ -3,16 +3,21 @@
   import Portal from "./portal.svelte";
   import build from "./services/builder";
 
-  let loading = false;
+  let loading = true;
 
-  // const app = build();
-  // app.init().then(() => {
-  //   loading = false;
-  // });
+  const app = build();
+  app.init().then(() => {
+    loading = false;
+  });
+
+
+  console.log("@EEEEEE", app)
+
+
 </script>
 
 {#if !loading}
-  <Portal />
+  <Portal {app} />
 {/if}
 
 <Tailwind />

@@ -1,6 +1,7 @@
 package basic
 
 import (
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
@@ -48,16 +49,20 @@ func (c *Controller) JoinNotification() error {
 func (c *Controller) GetSelfInfo(uclaim *claim.Session) (*entities.SelfLoad, error) {
 	usr, err := c.coredb.GetUserByID(uclaim.TenentId, uclaim.UserID)
 	if err != nil {
+		pp.Println("uclaim", uclaim)
+		pp.Println("@USER BY ID", err)
 		return nil, err
 	}
 
 	tenant, err := c.coredb.GetTenant(uclaim.TenentId)
 	if err != nil {
+		pp.Println("@TENANT", err)
 		return nil, err
 	}
 
 	ugroup, err := c.coredb.GetUserGroup(uclaim.TenentId, uclaim.UserGroup)
 	if err != nil {
+		pp.Println("@USER_GROUP ID", err)
 		return nil, err
 	}
 

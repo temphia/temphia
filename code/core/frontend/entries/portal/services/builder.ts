@@ -6,6 +6,7 @@ const build = () => {
 
   if (!site.isLogged()) {
     // redirrect here
+    console.error("Not logged")
     return null;
   }
 

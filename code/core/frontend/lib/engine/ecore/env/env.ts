@@ -1,7 +1,7 @@
 import { Sockd } from "../../../sockd/sockd";
 import type { ActionResponse, Environment, Pipe } from "../ecore";
 import { actionFetch } from "./fetch";
-import { FolderTktAPI } from "../../../api/tktapi";
+import { FolderTktAPI } from "../../../apiv2";
 
 
 export interface EnvOptions {
@@ -120,7 +120,10 @@ export class Env implements Environment {
   };
 
   GetRoomTktAPI = async (room: string, ticket?: string): Promise<any> => {
-    const sroom  = new Sockd(`${this._sockd_url}?ticket=${ticket}`);
+    const sroom  = new Sockd( {
+      OnHandler: null,
+      URL: `${this._sockd_url}?ticket=${ticket}`,
+    });
     return sroom
   };
 

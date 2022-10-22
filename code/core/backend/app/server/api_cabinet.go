@@ -21,7 +21,7 @@ func (s *Server) cabinetAPI(rg *gin.RouterGroup) {
 func (s *Server) newFolder(ctx httpx.Request) {
 	httpx.WriteFinal(
 		ctx.Http,
-		s.cCabinet.AddFolder(ctx.Session, ctx.Http.Param("folder")),
+		s.cCabinet.AddFolder(nil, ctx.Http.Param("folder")),
 	)
 }
 
@@ -37,7 +37,7 @@ func (s *Server) uploadFile(ctx httpx.Request) {
 }
 
 func (s *Server) listRootFolder(ctx httpx.Request) {
-	folders, err := s.cCabinet.ListRoot(ctx.Session)
+	folders, err := s.cCabinet.ListRoot(nil)
 	httpx.WriteJSON(ctx.Http, folders, err)
 }
 

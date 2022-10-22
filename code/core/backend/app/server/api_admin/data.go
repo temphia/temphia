@@ -90,7 +90,10 @@ func (a *ApiAdmin) AddTable(ctx httpx.Request) {
 		a.rutil.WriteErr(ctx.Http, err.Error())
 		return
 	}
-	err = a.cAdmin.AddTable(ctx.Session, t)
+	err = a.cAdmin.AddTable(ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+		t)
 	a.rutil.WriteFinal(ctx.Http, err)
 
 }
@@ -101,23 +104,40 @@ func (a *ApiAdmin) EditTable(ctx httpx.Request) {
 		a.rutil.WriteErr(ctx.Http, err.Error())
 		return
 	}
-	err = a.cAdmin.EditTable(ctx.Session, ctx.Http.Param("tid"), tp)
+	err = a.cAdmin.EditTable(ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+		ctx.MustParam("tid"), tp)
 	a.rutil.WriteFinal(ctx.Http, err)
 
 }
 
 func (a *ApiAdmin) GetTable(ctx httpx.Request) {
-	tbl, err := a.cAdmin.GetTable(ctx.Session, ctx.Http.Param("tid"))
+	tbl, err := a.cAdmin.GetTable(
+		ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+		ctx.MustParam("tid"),
+	)
 	a.rutil.WriteJSON(ctx.Http, tbl, err)
 }
 
 func (a *ApiAdmin) ListTables(ctx httpx.Request) {
-	tbls, err := a.cAdmin.ListTables(ctx.Session)
+	tbls, err := a.cAdmin.ListTables(
+		ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+	)
 	a.rutil.WriteJSON(ctx.Http, tbls, err)
 
 }
 func (a *ApiAdmin) DeleteTable(ctx httpx.Request) {
-	err := a.cAdmin.DeleteTable(ctx.Session, ctx.Http.Param("tid"))
+	err := a.cAdmin.DeleteTable(ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+		ctx.MustParam("tid"),
+	)
+
 	a.rutil.WriteFinal(ctx.Http, err)
 
 }
@@ -132,7 +152,11 @@ func (a *ApiAdmin) AddColumn(ctx httpx.Request) {
 		return
 	}
 
-	err = a.cAdmin.AddColumn(ctx.Session, ctx.Http.Param("tid"), nc)
+	err = a.cAdmin.AddColumn(ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+		ctx.MustParam("tid"),
+		nc)
 	a.rutil.WriteFinal(ctx.Http, err)
 
 }
@@ -143,24 +167,45 @@ func (a *ApiAdmin) EditColumn(ctx httpx.Request) {
 		a.rutil.WriteErr(ctx.Http, err.Error())
 		return
 	}
-	err = a.cAdmin.EditColumn(ctx.Session, ctx.Http.Param("tid"), ctx.Http.Param("cid"), cp)
+	err = a.cAdmin.EditColumn(ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+		ctx.MustParam("tid"),
+		ctx.MustParam("cid"),
+		cp)
 	a.rutil.WriteFinal(ctx.Http, err)
 
 }
 
 func (a *ApiAdmin) GetColumn(ctx httpx.Request) {
-	resp, err := a.cAdmin.GetColumn(ctx.Session, ctx.Http.Param("tid"), ctx.Http.Param("cid"))
+	resp, err := a.cAdmin.GetColumn(ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+		ctx.MustParam("tid"),
+		ctx.MustParam("cid"),
+	)
 	a.rutil.WriteJSON(ctx.Http, resp, err)
 }
 
 func (a *ApiAdmin) ListColumns(ctx httpx.Request) {
-	cols, err := a.cAdmin.ListColumns(ctx.Session, ctx.Http.Param("tid"))
+	cols, err := a.cAdmin.ListColumns(
+		ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+		ctx.MustParam("tid"),
+	)
 	a.rutil.WriteJSON(ctx.Http, cols, err)
 
 }
 func (a *ApiAdmin) DeleteColumn(ctx httpx.Request) {
 
-	err := a.cAdmin.DeleteColumn(ctx.Session, ctx.Http.Param("tid"), ctx.Http.Param("cid"))
+	err := a.cAdmin.DeleteColumn(ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+		ctx.MustParam("tid"),
+		ctx.MustParam("cid"),
+	)
+
 	a.rutil.WriteFinal(ctx.Http, err)
 
 }

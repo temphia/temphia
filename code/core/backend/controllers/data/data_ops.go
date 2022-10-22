@@ -6,7 +6,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
-func (c *Controller) LoadGroup(uclaim *claim.DataTkt) (*store.LoadDgroupResp, error) {
+func (c *Controller) LoadGroup(uclaim *claim.Data) (*store.LoadDgroupResp, error) {
 	dynDB := c.dynHub.GetSource(uclaim.DataSource, uclaim.TenentId)
 
 	tg, err := dynDB.GetGroup(uclaim.DataGroup)
@@ -25,15 +25,14 @@ func (c *Controller) LoadGroup(uclaim *claim.DataTkt) (*store.LoadDgroupResp, er
 		tg.CabinetFolder = "data_common"
 	}
 
-	fcalim := &claim.FolderTkt{
+	fcalim := &claim.Cabinet{
 		Folder: tg.CabinetFolder,
 		Source: tg.CabinetSource,
 		Expiry: 0,
-		Prefix: "",
 		//	DeviceId: uclaim.DeviceId,
 	}
 
-	cabToken, err := c.signer.SignFolderTkt(uclaim.TenentId, fcalim)
+	cabToken, err := c.signer.SignCabinet(uclaim.TenentId, fcalim)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +46,7 @@ func (c *Controller) LoadGroup(uclaim *claim.DataTkt) (*store.LoadDgroupResp, er
 	return resp, nil
 }
 
-func (d *Controller) NewRow(uclaim *claim.DataTkt, tslug string, cells map[string]any) (int64, error) {
+func (d *Controller) NewRow(uclaim *claim.Data, tslug string, cells map[string]any) (int64, error) {
 
 	source, group := getTarget(uclaim)
 
@@ -64,7 +63,7 @@ func (d *Controller) NewRow(uclaim *claim.DataTkt, tslug string, cells map[strin
 	})
 }
 
-func (d *Controller) GetRow(uclaim *claim.DataTkt, tslug string, id int64) (map[string]any, error) {
+func (d *Controller) GetRow(uclaim *claim.Data, tslug string, id int64) (map[string]any, error) {
 	source, group := getTarget(uclaim)
 
 	dynDb := d.dynHub.GetSource(source, uclaim.TenentId)
@@ -77,7 +76,7 @@ func (d *Controller) GetRow(uclaim *claim.DataTkt, tslug string, id int64) (map[
 	})
 }
 
-func (d *Controller) UpdateRow(uclaim *claim.DataTkt, tslug string, id, version int64, cells map[string]any) (map[string]any, error) {
+func (d *Controller) UpdateRow(uclaim *claim.Data, tslug string, id, version int64, cells map[string]any) (map[string]any, error) {
 
 	source, group := getTarget(uclaim)
 
@@ -95,7 +94,7 @@ func (d *Controller) UpdateRow(uclaim *claim.DataTkt, tslug string, id, version 
 	})
 }
 
-func (d *Controller) DeleteRow(uclaim *claim.DataTkt, tslug string, id int64) error {
+func (d *Controller) DeleteRow(uclaim *claim.Data, tslug string, id int64) error {
 	source, group := getTarget(uclaim)
 
 	dynDb := d.dynHub.GetSource(source, uclaim.TenentId)
@@ -107,7 +106,7 @@ func (d *Controller) DeleteRow(uclaim *claim.DataTkt, tslug string, id int64) er
 	})
 }
 
-func (d *Controller) SimpleQuery(uclaim *claim.DataTkt, tslug string, query store.SimpleQueryReq) (*store.QueryResult, error) {
+func (d *Controller) SimpleQuery(uclaim *claim.Data, tslug string, query store.SimpleQueryReq) (*store.QueryResult, error) {
 	source, group := getTarget(uclaim)
 
 	dynDb := d.dynHub.GetSource(source, uclaim.TenentId)
@@ -119,7 +118,7 @@ func (d *Controller) SimpleQuery(uclaim *claim.DataTkt, tslug string, query stor
 	return dynDb.SimpleQuery(0, query)
 }
 
-func (d *Controller) FTSQuery(uclaim *claim.DataTkt, tslug, qstr string) (*store.QueryResult, error) {
+func (d *Controller) FTSQuery(uclaim *claim.Data, tslug, qstr string) (*store.QueryResult, error) {
 
 	source, group := getTarget(uclaim)
 
@@ -133,7 +132,7 @@ func (d *Controller) FTSQuery(uclaim *claim.DataTkt, tslug, qstr string) (*store
 	})
 }
 
-func (d *Controller) TemplateQuery(uclaim *claim.DataTkt, tslug string, query any) (*store.QueryResult, error) {
+func (d *Controller) TemplateQuery(uclaim *claim.Data, tslug string, query any) (*store.QueryResult, error) {
 
 	// source, group := getTarget(uclaim)
 
@@ -149,31 +148,31 @@ func (d *Controller) TemplateQuery(uclaim *claim.DataTkt, tslug string, query an
 	return nil, nil
 }
 
-func (d *Controller) RefResolve(uclaim *claim.DataTkt, req *store.RefResolveReq) (*store.QueryResult, error) {
+func (d *Controller) RefResolve(uclaim *claim.Data, req *store.RefResolveReq) (*store.QueryResult, error) {
 	source, group := getTarget(uclaim)
 	dynDb := d.dynHub.GetSource(source, uclaim.TenentId)
 	return dynDb.RefResolve(0, group, req)
 }
 
-func (d *Controller) ReverseRefLoad(uclaim *claim.DataTkt, req *store.RevRefLoadReq) (*store.QueryResult, error) {
+func (d *Controller) ReverseRefLoad(uclaim *claim.Data, req *store.RevRefLoadReq) (*store.QueryResult, error) {
 	source, group := getTarget(uclaim)
 	dynDb := d.dynHub.GetSource(source, uclaim.TenentId)
 	return dynDb.ReverseRefLoad(0, group, req)
 }
 
-func (d *Controller) RefLoad(uclaim *claim.DataTkt, req *store.RefLoadReq) (*store.QueryResult, error) {
+func (d *Controller) RefLoad(uclaim *claim.Data, req *store.RefLoadReq) (*store.QueryResult, error) {
 	source, group := getTarget(uclaim)
 	dynDb := d.dynHub.GetSource(source, uclaim.TenentId)
 	return dynDb.RefLoad(0, group, req)
 }
 
-func (d *Controller) ListActivity(uclaim *claim.DataTkt, table string, rowId int) ([]*entities.DynActivity, error) {
+func (d *Controller) ListActivity(uclaim *claim.Data, table string, rowId int) ([]*entities.DynActivity, error) {
 	source, group := getTarget(uclaim)
 	dynDb := d.dynHub.GetSource(source, uclaim.TenentId)
 	return dynDb.ListActivity(group, table, rowId)
 }
 
-func (d *Controller) CommentRow(uclaim *claim.DataTkt, table, msg string, rowId int) error {
+func (d *Controller) CommentRow(uclaim *claim.Data, table, msg string, rowId int) error {
 
 	source, group := getTarget(uclaim)
 	dynDb := d.dynHub.GetSource(source, uclaim.TenentId)

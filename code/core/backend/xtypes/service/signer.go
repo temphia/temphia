@@ -40,8 +40,11 @@ type ClaimSigner interface {
 
 	// ticket claims
 
-	SignFolderTkt(tenantId string, data *claim.FolderTkt) (string, error)
-	ParseFolderTkt(tenantId, payload string) (*claim.FolderTkt, error)
+	SignData(tenantId string, data *claim.Data) (string, error)
+	ParseData(tenantId, payload string) (*claim.Data, error)
+
+	SignCabinet(tenantId string, data *claim.Cabinet) (string, error)
+	ParseCabinet(tenantId, payload string) (*claim.Cabinet, error)
 
 	SignRoomTagTkt(tenantId string, data *claim.RoomTagTkt) (string, error)
 	ParseRoomTagTkt(tenantId, payload string) (*claim.RoomTagTkt, error)
@@ -54,9 +57,6 @@ type ClaimSigner interface {
 
 	SignSockdTkt(tenantId string, data *claim.SockdTkt) (string, error)
 	ParseSockdTkt(tenantId, payload string) (*claim.SockdTkt, error)
-
-	SignDtableTkt(tenantId string, data *claim.DataTkt) (string, error)
-	ParseDtableTkt(tenantId, payload string) (*claim.DataTkt, error)
 
 	SignUserMgmtTkt(tenantId string, data *claim.UserMgmtTkt) (string, error)
 	ParseUserMgmtTkt(tenantId, payload string) (*claim.UserMgmtTkt, error)

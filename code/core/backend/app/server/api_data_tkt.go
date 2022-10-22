@@ -30,7 +30,7 @@ type newRowReq struct {
 	Cells map[string]interface{} `json:"cells,omitempty"`
 }
 
-func (s *Server) loadGroup(uclaim *claim.DataTkt, ctx *gin.Context) {
+func (s *Server) loadGroup(uclaim *claim.Data, ctx *gin.Context) {
 	gr, err := s.cData.LoadGroup(uclaim)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
@@ -40,7 +40,7 @@ func (s *Server) loadGroup(uclaim *claim.DataTkt, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, gr, err)
 }
 
-func (s *Server) newRow(uclaim *claim.DataTkt, ctx *gin.Context) {
+func (s *Server) newRow(uclaim *claim.Data, ctx *gin.Context) {
 
 	data := &newRowReq{}
 	err := ctx.BindJSON(data)
@@ -53,7 +53,7 @@ func (s *Server) newRow(uclaim *claim.DataTkt, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, id, err)
 }
 
-func (s *Server) getRow(uclaim *claim.DataTkt, ctx *gin.Context) {
+func (s *Server) getRow(uclaim *claim.Data, ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
 
@@ -69,7 +69,7 @@ type updateRowReq struct {
 	Cells   map[string]interface{} `json:"cells,omitempty"`
 }
 
-func (s *Server) updateRow(uclaim *claim.DataTkt, ctx *gin.Context) {
+func (s *Server) updateRow(uclaim *claim.Data, ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
@@ -87,7 +87,7 @@ func (s *Server) updateRow(uclaim *claim.DataTkt, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, cells, err)
 }
 
-func (s *Server) deleteRow(uclaim *claim.DataTkt, ctx *gin.Context) {
+func (s *Server) deleteRow(uclaim *claim.Data, ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
@@ -97,7 +97,7 @@ func (s *Server) deleteRow(uclaim *claim.DataTkt, ctx *gin.Context) {
 	httpx.WriteFinal(ctx, err)
 }
 
-func (s *Server) simpleQuery(uclaim *claim.DataTkt, ctx *gin.Context) {
+func (s *Server) simpleQuery(uclaim *claim.Data, ctx *gin.Context) {
 	query := store.SimpleQueryReq{}
 	err := ctx.BindJSON(&query)
 	if err != nil {
@@ -109,7 +109,7 @@ func (s *Server) simpleQuery(uclaim *claim.DataTkt, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, resp, err)
 }
 
-func (s *Server) FTSQuery(uclaim *claim.DataTkt, ctx *gin.Context) {
+func (s *Server) FTSQuery(uclaim *claim.Data, ctx *gin.Context) {
 	query := store.FTSQueryReq{}
 	err := ctx.BindJSON(&query)
 	if err != nil {
@@ -121,7 +121,7 @@ func (s *Server) FTSQuery(uclaim *claim.DataTkt, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, resp, err)
 }
 
-func (s *Server) refLoad(uclaim *claim.DataTkt, ctx *gin.Context) {
+func (s *Server) refLoad(uclaim *claim.Data, ctx *gin.Context) {
 	query := &store.RefLoadReq{}
 	err := ctx.BindJSON(&query)
 	if err != nil {
@@ -133,7 +133,7 @@ func (s *Server) refLoad(uclaim *claim.DataTkt, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, resp, err)
 }
 
-func (s *Server) refResolve(uclaim *claim.DataTkt, ctx *gin.Context) {
+func (s *Server) refResolve(uclaim *claim.Data, ctx *gin.Context) {
 	query := &store.RefResolveReq{}
 	err := ctx.BindJSON(&query)
 	if err != nil {
@@ -145,7 +145,7 @@ func (s *Server) refResolve(uclaim *claim.DataTkt, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, resp, err)
 }
 
-func (s *Server) reverseRefLoad(uclaim *claim.DataTkt, ctx *gin.Context) {
+func (s *Server) reverseRefLoad(uclaim *claim.Data, ctx *gin.Context) {
 	query := &store.RevRefLoadReq{}
 
 	err := ctx.BindJSON(query)
@@ -158,7 +158,7 @@ func (s *Server) reverseRefLoad(uclaim *claim.DataTkt, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, resp, err)
 }
 
-func (s *Server) listActivity(uclaim *claim.DataTkt, ctx *gin.Context) {
+func (s *Server) listActivity(uclaim *claim.Data, ctx *gin.Context) {
 	rid, err := strconv.ParseInt(ctx.Param("row_id"), 10, 64)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
@@ -173,7 +173,7 @@ type commentRowReq struct {
 	Message string `json:"message,omitempty"`
 }
 
-func (s *Server) commentRow(uclaim *claim.DataTkt, ctx *gin.Context) {
+func (s *Server) commentRow(uclaim *claim.Data, ctx *gin.Context) {
 	rid, err := strconv.ParseInt(ctx.Param("row_id"), 10, 64)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
@@ -192,7 +192,7 @@ func (s *Server) commentRow(uclaim *claim.DataTkt, ctx *gin.Context) {
 	httpx.WriteFinal(ctx, err)
 }
 
-func (s *Server) DataX(fn func(uclaim *claim.DataTkt, ctx *gin.Context)) func(*gin.Context) {
+func (s *Server) DataX(fn func(uclaim *claim.Data, ctx *gin.Context)) func(*gin.Context) {
 
 	return nil
 }

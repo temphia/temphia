@@ -23,9 +23,6 @@ func (c *Controller) canAction(uclaim *claim.Session, target, action string) err
 }
 
 func (c *Controller) scopeCheck(uclaim *claim.Session, target, action string) error {
-	if !(uclaim.Path[0] == "cabinet") {
-		return easyerr.NotAuthorized()
-	}
 
 	return easyerr.NotAuthorized()
 }
