@@ -50,4 +50,4 @@
   datas={repos}
 />
 
-<FloatingAdd onClick={() => {}} />
+<FloatingAdd onClick={app.nav.admin_repo_new} />

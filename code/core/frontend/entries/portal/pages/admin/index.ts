@@ -24,7 +24,8 @@ import Admin from "./admin.svelte";
 
 // resource
 import AdminResources from "./resource/resources.svelte";
-import AdminResource from "./resource/resource.svelte";
+import AdminResourceEdit from "./resource/resource_edit.svelte";
+import AdminResourceNew from "./resource/resource_new.svelte";
 
 // user
 import AdminUsers from "./user/users.svelte";
@@ -60,7 +61,7 @@ export default {
   },
   "/repo": {
     "/": AdminRepos,
-    "/:rid": AdminRepoEdit,
+    "/:rid/edit": AdminRepoEdit,
     "/new": AdminRepoNew,
   },
 
@@ -80,7 +81,8 @@ export default {
 
   "/resource": {
     "/": AdminResources,
-    "/:rid": AdminResource,
+    "/:rid/edit": AdminResourceEdit,
+    "/new": AdminResourceNew,
   },
 
   "/plug": {
