@@ -11,7 +11,7 @@
 
 {#if show}
   <div
-    class="w-full h-full bg-gray-800 bg-opacity-90 top-0 overflow-y-auto overflow-x-hidden fixed sticky-0 z-50 left-14"
+    class="w-full h-full bg-gray-800 bg-opacity-90 top-0 overflow-y-auto overflow-x-hidden fixed sticky-0 z-50 left-0"
   >
     <div
       class="w-full absolute h-full overflow-x-hidden transform translate-x-0 transition ease-in-out duration-700 "
@@ -20,7 +20,7 @@
         on:ndelete
         on:nread
         on:refresh
-        on:toggle_npanel
+        on:toggle_npanel={toggle}
         {loading}
         {messages}
       />

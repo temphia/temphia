@@ -9,7 +9,10 @@
 
   routes.set(page_routes);
 
-  let app: App;
+  export let app: App;
+
+  const notifier = app.notifier;
+  const nstate = app.notifier.state;
 
   // binds
   let big_modal_close;
@@ -40,8 +43,18 @@
   bind:close_small={small_modal_close}
 />
 
-<NotificationModal bind:toggle={notification_toggle} />
+<NotificationModal
+  bind:toggle={notification_toggle}
+  on:ndelete={(ev) => notifier.delete_message(ev.detail)}
+  on:nread={(ev) => notifier.read_message(ev.detail)}
+  on:refresh={() => {}}
+  loading={$nstate.loading}
+  messages={$nstate.messages}
+/>
 
-<MainLayout pending_notification={true} on:notification_toggle>
+<MainLayout
+  pending_notification={true}
+  on:notification_toggle={notification_toggle}
+>
   <Router />
 </MainLayout>
