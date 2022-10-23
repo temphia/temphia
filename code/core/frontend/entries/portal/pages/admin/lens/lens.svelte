@@ -20,6 +20,13 @@
             placeholder="Search .."
             required
           />
+
+          <div class="flex text-sm p-1 gap-1">
+            <Icon name="calendar" class="h-5 w-5" />
+             Now
+            <span class="text-zinc-800 underline">To</span> 2022/04/05 [6:33]
+          </div>
+
         </div>
       </div>
 
@@ -49,13 +56,7 @@
 
     <div class="flex flex-col" style="min-height: 60vh;">
       <div class="grow">.</div>
-      <div class="flex-none h-8 w-full bg-slate-50 rounded flex">
-        <div class="flex text-sm p-1">
-          <Icon name="calendar" class="h-5 w-5" />
-          <span class="text-zinc-800">From</span> 2022/04/04 [6:33]
-          <span class="text-zinc-800">To</span> 2022/04/05 [6:33]
-        </div>
-      </div>
+      <div class="flex-none h-8 w-full bg-slate-50 rounded flex" />
     </div>
   </div>
 </div>
