@@ -1,5 +1,7 @@
 import { SelfAPI } from "../../../lib/apiv2";
+import { AdminRepoAPI } from "../../../lib/apiv2/admin";
 import { ApiBase } from "../../../lib/apiv2/base";
+import type { SelfLoad } from "./response";
 
 export class ApiManager {
   base_url: string;
@@ -51,7 +53,11 @@ export class ApiManager {
 
     this.session_token = rdata["token"];
 
-    this.base = new ApiBase(this.api_base_url, this.tenant_id, this.session_token);
+    this.base = new ApiBase(
+      this.api_base_url,
+      this.tenant_id,
+      this.session_token
+    );
     await this.base.init();
 
     this.self_api = new SelfAPI(this.base);
@@ -70,12 +76,8 @@ export class ApiManager {
   get_self_api() {
     this.self_api;
   }
-}
 
-interface SelfLoad {
-  tenant_name: string;
-  tenant_id: string;
-  user_info: object;
-  scopes: string[];
-  plug_apps: object[];
+  get_repo_api = () => {
+    return new AdminRepoAPI(this.base);
+  };
 }

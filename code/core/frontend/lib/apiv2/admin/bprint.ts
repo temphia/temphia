@@ -1,6 +1,6 @@
 import type { ApiBase } from "../base";
 
-export class BprintAPI {
+export class AdminBprintAPI {
   base: ApiBase;
   constructor(base: ApiBase) {
     this.base = base;

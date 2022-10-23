@@ -66,7 +66,7 @@
       id: "lens",
       name: "lens",
       icon: SearchIcon,
-      path: "#/admin/lens/",
+      path: "#/admin/lens/app",
     },
   ];
 

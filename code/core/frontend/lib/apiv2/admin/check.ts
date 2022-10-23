@@ -1,6 +1,6 @@
 import type { ApiBase } from "../base";
 
-export class CheckAPI {
+export class AdminCheckAPI {
   base: ApiBase;
   constructor(base: ApiBase) {
     this.base = base;

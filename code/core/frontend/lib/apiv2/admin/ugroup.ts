@@ -1,6 +1,6 @@
 import type { ApiBase } from "../base";
 
-export class UserGroupAPI {
+export class AdminUserGroupAPI {
   base: ApiBase;
   constructor(base: ApiBase) {
     this.base = base;
