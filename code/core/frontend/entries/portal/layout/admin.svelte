@@ -44,7 +44,7 @@
       path: "#/admin/ugroup/",
     },
     {
-      id: "ns",
+      id: "tenant",
       name: "Organization",
       icon: OrgIcon,
       path: "#/admin/tenant/",
