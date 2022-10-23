@@ -4,8 +4,9 @@ import AdminBprintEditor from "./bprint/editor/editor.svelte";
 import AdminBprintInstancer from "./bprint/instancer/instancer.svelte";
 
 // repo
-import AdminRepo from "./repo/repo.svelte";
 import AdminRepos from "./repo/repos.svelte";
+import AdminRepoEdit from "./repo/repo_edit.svelte";
+import AdminRepoNew from "./repo/repo_new.svelte";
 
 // data
 import AdminDataLoader from "./data/loader.svelte";
@@ -59,8 +60,8 @@ export default {
   },
   "/repo": {
     "/": AdminRepos,
-    "/:rid": AdminRepo,
-    "/new": AdminRepo,
+    "/:rid": AdminRepoEdit,
+    "/new": AdminRepoNew,
   },
 
   "/data": {
@@ -107,5 +108,5 @@ export default {
     "/edit": AdminTenantEdit,
     "/domain": AdminTenantDomains,
     "/domain/:did": AdminTenantDomain,
-  }
+  },
 };
