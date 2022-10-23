@@ -61,7 +61,7 @@
     <div class="mt-auto flex items-center w-full">
       <div class="flex flex-col items-center w-full">
         <div
-          on:click={() => dispatch("ntoggle")}
+          on:click={() => dispatch("notification_toggle")}
           class="
                 h-16 cursor-pointer mx-auto w-full 
                 flex justify-center items-center
@@ -143,7 +143,7 @@
     <!-- Responsive navbar -->
     <div
       class="flex mr-6 items-center cursor-pointer"
-      on:click={() => dispatch("ntoggle")}
+      on:click={() => dispatch("notification_toggle")}
     >
       <NotificationIcon />
 

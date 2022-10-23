@@ -1,8 +1,12 @@
 <script lang="ts">
   import Inner from "./notification.svelte";
-  export let show = false;
+
+  let show = false;
+
   export let loading = true;
   export let messages = [];
+
+  export const toggle = () => (show = !show);
 </script>
 
 {#if show}

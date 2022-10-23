@@ -16,7 +16,6 @@ export class ApiManager {
   user_plugs: object[];
 
   base: ApiBase;
-  setting_base: ApiBase;
 
   self_api: SelfAPI;
 
@@ -77,7 +76,7 @@ export class ApiManager {
     this.self_api;
   }
 
-  get_repo_api = () => {
+  get_admin_repo_api = () => {
     return new AdminRepoAPI(this.base);
   };
 }

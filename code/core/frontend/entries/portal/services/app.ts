@@ -10,6 +10,17 @@ export interface AppOptions {
   site_utils: SiteUtils;
 }
 
+export interface AppUtils {
+  toast_success(msg: string): void;
+  toast_error(msg: string): void;
+  big_modal_open(compo: any, options: object): void
+  big_modal_close(): void
+  small_modal_open(compo: any, options: object): void
+  small_modal_close(): void
+  notification_toggle(): void
+}
+
+
 export class App {
   options: AppOptions;
 
@@ -18,6 +29,7 @@ export class App {
 
   api_manager: ApiManager;
   notifier: Notifier;
+  utils: AppUtils;
 
   constructor(opts: AppOptions) {
     this.options = opts;
@@ -33,10 +45,7 @@ export class App {
     await this.api_manager.init();
   }
 
-  get_apm() {
-    return this.api_manager;
+  inject(utils: AppUtils) {
+    this.utils = utils;
   }
-
-
-
 }

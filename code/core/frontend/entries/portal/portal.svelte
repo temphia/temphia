@@ -2,17 +2,46 @@
   import { routes, Router, params } from "svelte-hash-router";
   import page_routes from "./pages";
   import MainLayout from "./layout/main.svelte";
-  import BigModal from "./layout/big_modal.svelte";
+  import Modal from "./layout/modal.svelte";
   import NotificationModal from "./notification/modal.svelte";
   import type { App } from "./services";
+  import { onMount, setContext } from "svelte";
+
   routes.set(page_routes);
+
   let app: App;
-  
+
+  // binds
+  let big_modal_close;
+  let big_modal_open;
+  let small_modal_close;
+  let small_modal_open;
+  let notification_toggle;
+
+  onMount(() =>
+    app.inject({
+      big_modal_close,
+      big_modal_open,
+      small_modal_close,
+      small_modal_open,
+      notification_toggle,
+      toast_error: null,
+      toast_success: null,
+    })
+  );
+
+  setContext("__app__", app);
 </script>
 
-<BigModal />
-<NotificationModal />
+<Modal
+  bind:close_big={big_modal_close}
+  bind:show_big={big_modal_open}
+  bind:show_small={small_modal_open}
+  bind:close_small={small_modal_close}
+/>
 
-<MainLayout pending_notification={true} on:ntoggle={(ev) => console.log(ev)}>
+<NotificationModal bind:toggle={notification_toggle} />
+
+<MainLayout pending_notification={true} on:notification_toggle>
   <Router />
 </MainLayout>
