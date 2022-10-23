@@ -4,12 +4,12 @@
   import MainLayout from "./layout/main.svelte";
   import Modal from "./layout/modal.svelte";
   import NotificationModal from "./notification/modal.svelte";
-  import type { App } from "./services";
+  import type { PortalService } from "./services";
   import { onMount, setContext } from "svelte";
 
   routes.set(page_routes);
 
-  export let app: App;
+  export let app: PortalService;
 
   const notifier = app.notifier;
   const nstate = app.notifier.state;

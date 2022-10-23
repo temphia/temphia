@@ -60,6 +60,7 @@ export default {
   "/repo": {
     "/": AdminRepos,
     "/:rid": AdminRepo,
+    "/new": AdminRepo,
   },
 
   "/data": {

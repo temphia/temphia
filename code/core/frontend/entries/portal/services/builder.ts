@@ -1,5 +1,5 @@
 import { SiteUtils, baseURL } from "../../../lib/utils/site";
-import { App } from "./app";
+import { PortalService } from "./portal";
 
 const build = () => {
   const site = new SiteUtils();
@@ -12,7 +12,7 @@ const build = () => {
 
   const adata = site.getAuthedData();
 
-  return new App({
+  return new PortalService({
     base_url: baseURL(),
     tenant_id: adata.tenant_id,
     user_token: adata.user_token,

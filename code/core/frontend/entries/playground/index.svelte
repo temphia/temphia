@@ -1,5 +1,6 @@
 <script>
-  import Portal from "../portal/index.svelte";
+  import Tailwind from "../xcompo/common/_tailwind.svelte";
 </script>
+<h1>Play</h1>
 
-<Portal />
+<Tailwind />

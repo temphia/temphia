@@ -10,7 +10,7 @@ export interface AppOptions {
   site_utils: SiteUtils;
 }
 
-export interface AppUtils {
+export interface Utils {
   toast_success(msg: string): void;
   toast_error(msg: string): void;
   big_modal_open(compo: any, options: object): void;
@@ -20,7 +20,7 @@ export interface AppUtils {
   notification_toggle(): void;
 }
 
-export class App {
+export class PortalService {
   options: AppOptions;
 
   nav: Navigator;
@@ -28,7 +28,7 @@ export class App {
 
   api_manager: ApiManager;
   notifier: Notifier;
-  utils: AppUtils;
+  utils: Utils;
 
   constructor(opts: AppOptions) {
     this.options = opts;
@@ -47,7 +47,7 @@ export class App {
     await this.notifier.init()
   }
 
-  inject(utils: AppUtils) {
+  inject(utils: Utils) {
     this.utils = utils;
   }
 }
