@@ -45,7 +45,8 @@ import AdminLensSite from "./lens/site.svelte";
 import AdminTenant from "./tenant/tenant.svelte";
 import AdminTenantEdit from "./tenant/tenant_edit.svelte";
 import AdminTenantDomains from "./tenant/domain/domains.svelte";
-import AdminTenantDomain from "./tenant/domain/domain.svelte";
+import AdminTenantDomainEdit from "./tenant/domain/domain_edit.svelte";
+import AdminTenantDomainAdd from "./tenant/domain/domain_add.svelte";
 
 // plug
 import AdminPlugs from "./plug/plugs.svelte";
@@ -109,6 +110,7 @@ export default {
     "/": AdminTenant,
     "/edit": AdminTenantEdit,
     "/domain": AdminTenantDomains,
-    "/domain/:did": AdminTenantDomain,
+    "/domain/:did/edit": AdminTenantDomainEdit,
+    "/domain/new": AdminTenantDomainAdd,
   },
 };
