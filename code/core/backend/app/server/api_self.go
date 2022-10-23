@@ -1,6 +1,8 @@
 package server
 
 import (
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/controllers/basic"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
@@ -53,11 +55,20 @@ func (s *Server) selfModifyMessages(ctx httpx.Request) {
 }
 
 func (s *Server) selfListMessages(ctx httpx.Request) {
-	opts := &entities.UserMessageReq{}
-	err := ctx.Http.BindJSON(opts)
+	cursor, err := strconv.ParseInt(ctx.Http.Query("cursor"), 10, 64)
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err)
-		return
+		cursor = 0
+	}
+
+	count, err := strconv.ParseInt(ctx.Http.Query("count"), 10, 64)
+	if err != nil {
+		count = 0
+	}
+
+	opts := &entities.UserMessageReq{
+		Cursor: cursor,
+		Count:  count,
+		UserId: ctx.Session.UserID,
 	}
 
 	resp, err := s.cBasic.ListMessages(ctx.Session, opts)

@@ -97,7 +97,6 @@ func (c *Controller) GetChangeAuth(uclaim *claim.Session) error {
 }
 
 func (c *Controller) ListMessages(uclaim *claim.Session, opts *entities.UserMessageReq) ([]*entities.UserMessage, error) {
-	opts.UserId = uclaim.UserID
 	return c.coredb.ListUserMessages(uclaim.TenentId, opts)
 }
 
