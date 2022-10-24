@@ -30,7 +30,7 @@ func New(coredb store.CoreHub, cabinet store.CabinetHub, dynHub store.DataHub, p
 	return ctrl
 }
 
-func (c *Controller) ListRepoSources(uclaim *claim.Session) (any, error) {
+func (c *Controller) ListRepoSources(uclaim *claim.Session) (map[int64]string, error) {
 	return c.pacman.RepoSources(uclaim.TenentId)
 }
 

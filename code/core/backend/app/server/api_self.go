@@ -14,6 +14,7 @@ func (s *Server) selfAPI(rg *gin.RouterGroup) {
 	rg.GET("/system/cabinet", s.X(s.cabinetSources))
 	rg.GET("/system/datatable", s.X(s.dtableSources))
 	rg.GET("/system/adapter", s.X(s.ListRenderers))
+	rg.GET("/system/repo", s.X(s.ListRepoSources))
 
 	rg.GET("/load", s.X(s.selfGetInfo))
 	rg.GET("/session", s.X(s.selfListSession))
@@ -106,6 +107,11 @@ func (s *Server) issuePlugTkt(ctx httpx.Request) {
 func (s *Server) ListRenderers(ctx httpx.Request) {
 	resp := s.notz.ListRenderers()
 	httpx.WriteJSON(ctx.Http, resp, nil)
+}
+
+func (s *Server) ListRepoSources(ctx httpx.Request) {
+	resp, err := s.cBasic.ListRepoSources(ctx.Session)
+	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
 func (s *Server) issueFolderTkt(ctx httpx.Request) {

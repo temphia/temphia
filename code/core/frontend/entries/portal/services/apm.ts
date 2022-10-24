@@ -1,4 +1,4 @@
-import { SelfAPI } from "../../../lib/apiv2";
+import { RepoAPI, SelfAPI } from "../../../lib/apiv2";
 import { AdminRepoAPI } from "../../../lib/apiv2/admin";
 import { ApiBase } from "../../../lib/apiv2/base";
 import type { SelfLoad } from "./response";
@@ -13,6 +13,7 @@ export class ApiManager {
 
   cabinet_sources: string[];
   data_sources: string[];
+  repo_sources: { [_: number]: string };
   user_plugs: object[];
 
   base: ApiBase;
@@ -79,4 +80,18 @@ export class ApiManager {
   get_admin_repo_api = () => {
     return new AdminRepoAPI(this.base);
   };
+
+  get_repo_api = () => {
+    return new RepoAPI(this.base);
+  };
+
+  async get_repo_sources() {
+    if (this.repo_sources) {
+      return this.repo_sources;
+    }
+
+    const resp = await this.self_api.list_repo_sources();
+    this.repo_sources = resp.data;
+    return this.repo_sources;
+  }
 }

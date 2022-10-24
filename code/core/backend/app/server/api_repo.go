@@ -8,15 +8,9 @@ import (
 )
 
 func (s *Server) repoAPI(rg *gin.RouterGroup) {
-	rg.GET("/", s.X(s.repoSources))
 	rg.GET("/:repo", s.X(s.repoList))
 	rg.GET("/:repo/:group_id/:slug", s.X(s.repoGet))
 	rg.GET("/:repo/:group_id/:slug/:file", s.X(s.repoGetFile))
-
-}
-
-func (s *Server) repoSources(ctx httpx.Request) {
-	// fixme
 
 }
 

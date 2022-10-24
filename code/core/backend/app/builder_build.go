@@ -92,6 +92,5 @@ func (b *Builder) buildServices() error {
 	deps.courier = courier.New()
 	deps.plugKV = b.sbuilder.PlugKV()
 
-	return nil
-
+	return deps.repoHub.Start()
 }

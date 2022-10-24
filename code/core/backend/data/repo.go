@@ -9,15 +9,15 @@ import (
 
 type EmbedRepo struct {
 	assetStore *AssetStore
-	TenantId   string
-	BaseURL    string
+	//	TenantId   string
+	//	BaseURL string
 }
 
 func NewEmbed(opts *repox.BuilderOptions) (repox.Repository, error) {
 	return &EmbedRepo{
 		assetStore: defaultAssetStore,
-		TenantId:   opts.TenantId,
-		BaseURL:    opts.BaseURL,
+		//	TenantId:   opts.TenantId,
+		//		BaseURL: opts.BaseURL,
 	}, nil
 }
 

@@ -18,6 +18,10 @@ export class SelfAPI {
     return this.base.get("/self/system/adapter");
   }
 
+  list_repo_sources() {
+    return this.base.get("/self/system/repo");
+  }
+
   load() {
     return this.base.get("/self/load");
   }
