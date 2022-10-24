@@ -50,7 +50,8 @@ import AdminTenantDomainAdd from "./tenant/domain/domain_add.svelte";
 
 // plug
 import AdminPlugs from "./plug/plugs.svelte";
-import AdminPlug from "./plug/plug.svelte";
+import AdminPlugAdd from "./plug/plug_add.svelte";
+import AdminPlugEdit from "./plug/plug_edit.svelte";
 
 export default {
   $$component: Admin,
@@ -88,7 +89,8 @@ export default {
 
   "/plug": {
     "/": AdminPlugs,
-    "/:pid": AdminPlug,
+    "/:pid/edit": AdminPlugEdit,
+    "/new": AdminPlugAdd,
   },
 
   "/user": {

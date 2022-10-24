@@ -2,11 +2,12 @@
   import { getContext } from "svelte";
   import { KvEditor } from "../../../../xcompo/common";
   import type { PortalService } from "../../../services";
+  import { params } from "svelte-hash-router";
 
   const app = getContext("__app__") as PortalService;
   const rapi = app.api_manager.get_admin_repo_api();
 
-  export let rid;
+  export let rid = $params.rid;
 
   let data = {};
   let message = "";

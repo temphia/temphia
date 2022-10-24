@@ -30,7 +30,7 @@
   actions={[
     {
       Name: "Edit",
-      Action: null,
+      Action: (id) => app.nav.admin_repo_edit(id),
     },
     {
       Name: "Delete",

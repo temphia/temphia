@@ -14,6 +14,9 @@
   const notifier = app.notifier;
   const nstate = app.notifier.state;
 
+
+  $: console.log("@PARAMS |>", $params)
+
   // binds
   let big_modal_close;
   let big_modal_open;
