@@ -36,48 +36,51 @@ create table tenants(
     extra_meta json not null default '{}'
 );
 
-create table tenant_hooks(
-    id serial primary key,
-    event_type text not null, 
-    target_type text not null, 
-    target text not null,
-    client_side boolean not null default FALSE,
-    plug_id text not null,
-    agent_id text not null,
-    handler text not null default '',
-    extra_meta json not null default '{}',
-    exec_meta json not null default '{}',
-    tenant_id text not null, 
-    unique(tenant_id, target_type, target, event_type)
-);
-
 
 create table tenant_domains(
     id serial primary key,
     name text not null default '',
     about text not null default '',
     default_ugroup text not null default '',
-
     cors_policy text not null default '',
-    
-    adapter_type text not null default '',
-    adapter_plug_id text not null default '',
-    adapter_agent_id text not null default '',
-    adapter_opts json not null default '{}',
     adapter_policy text not null default '',
-
+    adapter_type text not null default '',
+    adapter_opts json not null default '{}',
     adapter_cab_source text not null default '',
     adapter_cab_folder text not null default '',
     adapter_template_bprints text not null default '',
-
-    editor_plug_id text not null default '',
-    editor_agent_id text not null default '',
-
     tenant_id text not null,
     extra_meta json not null default '{}',
     unique(name, tenant_id)
 );
 
+
+create table target_apps(
+    id serial primary key,
+    name text not null default '', 
+    target_type text not null,
+    target text not null, 
+    icon text not null default '',
+    policy text not null default '',
+    plug_id text not null,
+    agent_id text not null,
+    extra_meta json not null default '{}',
+    exec_meta json not null default '{}',
+    tenant_id text not null
+);
+
+create table target_hooks(
+    id serial primary key,
+    name text not null default '', 
+    target_type text not null,
+    target text not null,
+    policy text not null default '',
+    plug_id text not null default '',
+    agent_id text not null default '',
+    extra_meta json not null default '{}',
+    exec_meta json not null default '{}',
+    tenant_id text not null
+);
 
 create table tenant_repos(
     id serial primary key,
@@ -202,19 +205,6 @@ create table user_group_auths(
     provider text not null default '',
     provider_opts json default '{}',
     scopes text not null default '',
-    policy text not null default '',
-    user_group text not null,
-    tenant_id text not null,
-    extra_meta json default '{}',
-    foreign KEY(user_group, tenant_id) references user_groups(slug, tenant_id)
-);
-
-create table user_group_plugs(
-    id serial primary key,
-    name text not null,
-    plug_id text not null,
-    agent_id text not null,
-    icon text not null default '',
     policy text not null default '',
     user_group text not null,
     tenant_id text not null,

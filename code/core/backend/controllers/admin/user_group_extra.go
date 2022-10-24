@@ -29,30 +29,6 @@ func (c *Controller) RemoveUserGroupAuth(uclaim *claim.Session, gslug string, id
 	return c.coredb.RemoveUserGroupAuth(uclaim.TenentId, gslug, id)
 }
 
-// plug
-
-func (c *Controller) AddUserGroupPlug(uclaim *claim.Session, gslug string, data *entities.UserGroupPlug) error {
-	data.TenantId = uclaim.TenentId
-	data.UserGroup = gslug
-	return c.coredb.AddUserGroupPlug(data)
-}
-
-func (c *Controller) UpdateUserGroupPlug(uclaim *claim.Session, gslug string, id int64, data map[string]any) error {
-	return c.coredb.UpdateUserGroupPlug(uclaim.TenentId, gslug, id, data)
-}
-
-func (c *Controller) ListUserGroupPlug(uclaim *claim.Session, gslug string) ([]*entities.UserGroupPlug, error) {
-	return c.coredb.ListUserGroupPlug(uclaim.TenentId, gslug)
-}
-
-func (c *Controller) GetUserGroupPlug(uclaim *claim.Session, gslug string, id int64) (*entities.UserGroupPlug, error) {
-	return c.coredb.GetUserGroupPlug(uclaim.TenentId, gslug, id)
-}
-
-func (c *Controller) RemoveUserGroupPlug(uclaim *claim.Session, gslug string, id int64) error {
-	return c.coredb.RemoveUserGroupPlug(uclaim.TenentId, gslug, id)
-}
-
 // data
 
 func (c *Controller) AddUserGroupData(uclaim *claim.Session, gslug string, data *entities.UserGroupData) error {

@@ -54,56 +54,6 @@ func (d *DB) RemoveUserGroupAuth(tenantId, gslug string, id int64) error {
 	}).Delete()
 }
 
-// plug
-
-func (d *DB) AddUserGroupPlug(data *entities.UserGroupPlug) error {
-	_, err := d.userGroupPlug().Insert(data)
-	return err
-}
-
-func (d *DB) UpdateUserGroupPlug(tenantId string, gslug string, id int64, data map[string]interface{}) error {
-	return d.userGroupPlug().Find(db.Cond{
-		"tenant_id":  tenantId,
-		"user_group": gslug,
-		"id":         id,
-	}).Update(data)
-}
-
-func (d *DB) ListUserGroupPlug(tenantId string, gslug string) ([]*entities.UserGroupPlug, error) {
-	data := make([]*entities.UserGroupPlug, 0)
-	err := d.userGroupPlug().Find(db.Cond{
-		"tenant_id":  tenantId,
-		"user_group": gslug,
-	}).All(&data)
-	if err != nil {
-		return nil, err
-	}
-
-	return data, nil
-}
-
-func (d *DB) GetUserGroupPlug(tenantId string, gslug string, id int64) (*entities.UserGroupPlug, error) {
-	data := &entities.UserGroupPlug{}
-
-	err := d.userGroupPlug().Find(db.Cond{
-		"tenant_id":  tenantId,
-		"user_group": gslug,
-		"id":         id,
-	}).One(data)
-	if err != nil {
-		return nil, err
-	}
-	return data, nil
-}
-
-func (d *DB) RemoveUserGroupPlug(tenantId, gslug string, id int64) error {
-	return d.userGroupPlug().Find(db.Cond{
-		"tenant_id":  tenantId,
-		"user_group": gslug,
-		"id":         id,
-	}).Delete()
-}
-
 // data
 
 func (d *DB) AddUserGroupData(data *entities.UserGroupData) error {

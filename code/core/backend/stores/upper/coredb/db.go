@@ -49,14 +49,6 @@ func (d *DB) userGroupAuth() db.Collection {
 	return d.table("user_group_auths")
 }
 
-func (d *DB) userGroupHook() db.Collection {
-	return d.table("user_group_hooks")
-}
-
-func (d *DB) userGroupPlug() db.Collection {
-	return d.table("user_group_plugs")
-}
-
 func (d *DB) userGroupData() db.Collection {
 	return d.table("user_group_datas")
 }

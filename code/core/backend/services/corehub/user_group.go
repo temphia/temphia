@@ -22,26 +22,6 @@ func (c *CoreHub) RemoveUserGroupAuth(tenantId, gslug string, id int64) error {
 	return c.coredb.RemoveUserGroupAuth(tenantId, gslug, id)
 }
 
-func (c *CoreHub) AddUserGroupPlug(data *entities.UserGroupPlug) error {
-	return c.coredb.AddUserGroupPlug(data)
-}
-
-func (c *CoreHub) UpdateUserGroupPlug(tenantId string, gslug string, id int64, data map[string]any) error {
-	return c.coredb.UpdateUserGroupPlug(tenantId, gslug, id, data)
-}
-
-func (c *CoreHub) ListUserGroupPlug(tenantId string, gslug string) ([]*entities.UserGroupPlug, error) {
-	return c.coredb.ListUserGroupPlug(tenantId, gslug)
-}
-
-func (c *CoreHub) GetUserGroupPlug(tenantId string, gslug string, id int64) (*entities.UserGroupPlug, error) {
-	return c.coredb.GetUserGroupPlug(tenantId, gslug, id)
-}
-
-func (c *CoreHub) RemoveUserGroupPlug(tenantId, gslug string, id int64) error {
-	return c.coredb.RemoveUserGroupPlug(tenantId, gslug, id)
-}
-
 func (c *CoreHub) AddUserGroupData(data *entities.UserGroupData) error {
 	return c.coredb.AddUserGroupData(data)
 }

@@ -38,6 +38,7 @@ func (a *ApiAdmin) API(rg *gin.RouterGroup) {
 	a.resourceAPI(rg.Group("/resource"))
 	a.tenantAPI(rg.Group("/tenant"))
 	a.checkAPI(rg.Group("/check"))
+	a.TargetAPI(rg.Group("/target"))
 
 }
 

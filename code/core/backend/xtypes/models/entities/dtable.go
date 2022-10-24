@@ -56,7 +56,7 @@ type DTableCache struct {
 	GroupSlug string
 	Model     *Table
 	Columns   map[string]*Column
-	Hooks     []*TenantHook
+	Hooks     []*TargetHook
 	Views     []*DataView
 }
 

@@ -21,7 +21,7 @@ type dynamic struct {
 func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 	engine := opts.App.GetDeps().Engine().(etypes.Engine)
 
-	program, err := expr.Compile(opts.Domain.AdapterOptions["evaluator_script"])
+	program, err := expr.Compile(opts.Domain.AdapterPolicy)
 	if err != nil {
 		return nil, err
 	}

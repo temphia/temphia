@@ -42,18 +42,6 @@ func (u *UserGroupAuth) ClientSecret() string {
 	return u.ProviderOptions["client_secret"]
 }
 
-type UserGroupPlug struct {
-	Id        int64      `json:"id,omitempty" db:"id,omitempty"`
-	Name      string     `json:"name,omitempty" db:"name,omitempty"`
-	PlugId    string     `json:"plug_id,omitempty" db:"plug_id,omitempty"`
-	AgentId   string     `json:"agent_id,omitempty" db:"agent_id,omitempty"`
-	Icon      string     `json:"icon,omitempty" db:"icon,omitempty"`
-	Policy    string     `json:"policy,omitempty" db:"policy,omitempty"`
-	UserGroup string     `json:"user_group,omitempty" db:"user_group,omitempty"`
-	TenantId  string     `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`
-	ExtraMeta JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
-}
-
 type UserGroupData struct {
 	Id         int64      `json:"id,omitempty" db:"id,omitempty"`
 	DataSource string     `json:"data_source,omitempty" db:"data_source,omitempty"`

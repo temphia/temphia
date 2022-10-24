@@ -39,56 +39,6 @@ func (d *DB) ListTenant() ([]*entities.Tenant, error) {
 	return tens, nil
 }
 
-// hooks
-
-func (d *DB) AddTenantHook(data *entities.TenantHook) error {
-	_, err := d.tenantHookTable().Insert(data)
-	return err
-}
-
-func (d *DB) UpdateTenantHook(tenantId, target_type string, id int64, data map[string]any) error {
-	return d.tenantHookTable().Find(db.Cond{
-		"id": id, "tenant_id": tenantId,
-		"target_type": target_type}).Update(data)
-}
-
-func (d *DB) GetTenantHook(tenantId, target_type string, id int64) (*entities.TenantHook, error) {
-	w := &entities.TenantHook{}
-	err := d.tenantHookTable().Find(db.Cond{
-		"id": id, "tenant_id": tenantId,
-		"target_type": target_type,
-	}).One(w)
-
-	if err != nil {
-		return nil, err
-	}
-	return w, nil
-}
-
-func (d *DB) RemoveTenantHook(tenantId, target_type string, id int64) error {
-	return d.tenantHookTable().Find(db.Cond{
-		"id":          id,
-		"tenant_id":   tenantId,
-		"target_type": target_type,
-	}).Delete()
-}
-
-func (d *DB) ListTenantHook(tenantId string, target_type string) ([]*entities.TenantHook, error) {
-	ws := make([]*entities.TenantHook, 0)
-
-	cond := db.Cond{"tenant_id": tenantId}
-	if target_type != "" {
-		cond["target_type"] = target_type
-	}
-
-	err := d.tenantHookTable().Find().All(&ws)
-	if err != nil {
-		return nil, err
-	}
-
-	return ws, nil
-}
-
 // domain
 
 func (d *DB) AddDomain(domain *entities.TenantDomain) error {
@@ -139,10 +89,6 @@ func (d *DB) ListDomain(tenantId string) ([]*entities.TenantDomain, error) {
 
 func (d *DB) tenantTable() db.Collection {
 	return d.table("tenants")
-}
-
-func (d *DB) tenantHookTable() db.Collection {
-	return d.table("tenant_hooks")
 }
 
 func (d *DB) tenantDomainTable() db.Collection {

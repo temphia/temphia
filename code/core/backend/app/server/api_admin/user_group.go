@@ -22,12 +22,6 @@ func (a *ApiAdmin) userGroupAPI(rg *gin.RouterGroup) {
 	rg.POST("/:ugroup/data/:id", a.X(a.UpdateUserGroupData))
 	rg.DELETE("/:ugroup/data/:id", a.X(a.RemoveUserGroupData))
 
-	rg.GET("/:ugroup/plug", a.X(a.ListUserGroupPlug))
-	rg.POST("/:ugroup/plug", a.X(a.AddUserGroupPlug))
-	rg.GET("/:ugroup/plug/:id", a.X(a.GetUserGroupPlug))
-	rg.POST("/:ugroup/plug/:id", a.X(a.UpdateUserGroupPlug))
-	rg.DELETE("/:ugroup/plug/:id", a.X(a.RemoveUserGroupPlug))
-
 	rg.GET("/:ugroup/auth", a.X(a.ListUserGroupAuth))
 	rg.POST("/:ugroup/auth", a.X(a.AddUserGroupAuth))
 	rg.GET("/:ugroup/auth/:id", a.X(a.GetUserGroupAuth))
@@ -139,67 +133,6 @@ func (r *ApiAdmin) RemoveUserGroupAuth(ctx httpx.Request) {
 
 	err = r.cAdmin.RemoveUserGroupAuth(ctx.Session, ctx.Http.Param("ugroup"), id)
 	r.rutil.WriteJSON(ctx.Http, nil, err)
-}
-
-// plug
-
-func (r *ApiAdmin) AddUserGroupPlug(ctx httpx.Request) {
-	data := &entities.UserGroupPlug{}
-	err := ctx.Http.BindJSON(data)
-	if err != nil {
-		r.rutil.WriteErr(ctx.Http, err.Error())
-		return
-	}
-
-	r.rutil.WriteJSON(
-		ctx.Http,
-		nil,
-		r.cAdmin.AddUserGroupPlug(ctx.Session, ctx.Http.Param("ugroup"), data),
-	)
-}
-
-func (r *ApiAdmin) UpdateUserGroupPlug(ctx httpx.Request) {
-	data := make(map[string]interface{})
-	err := ctx.Http.BindJSON(&data)
-	if err != nil {
-		r.rutil.WriteErr(ctx.Http, err.Error())
-		return
-	}
-
-	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
-	if err != nil {
-		r.rutil.WriteErr(ctx.Http, err.Error())
-		return
-	}
-
-	err = r.cAdmin.UpdateUserGroupPlug(ctx.Session, ctx.Http.Param("ugroup"), id, data)
-	r.rutil.WriteJSON(ctx.Http, nil, err)
-}
-
-func (r *ApiAdmin) ListUserGroupPlug(ctx httpx.Request) {
-	resp, err := r.cAdmin.ListUserGroupPlug(ctx.Session, ctx.Http.Param("ugroup"))
-	r.rutil.WriteJSON(ctx.Http, resp, err)
-}
-
-func (r *ApiAdmin) GetUserGroupPlug(ctx httpx.Request) {
-	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
-	if err != nil {
-		r.rutil.WriteErr(ctx.Http, err.Error())
-		return
-	}
-
-	resp, err := r.cAdmin.GetUserGroupPlug(ctx.Session, ctx.Http.Param("ugroup"), id)
-	r.rutil.WriteJSON(ctx.Http, resp, err)
-}
-
-func (r *ApiAdmin) RemoveUserGroupPlug(ctx httpx.Request) {
-	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
-	if err != nil {
-		r.rutil.WriteErr(ctx.Http, err.Error())
-		return
-	}
-
-	r.cAdmin.RemoveUserGroupPlug(ctx.Session, ctx.Http.Param("ugroup"), id)
 }
 
 // data

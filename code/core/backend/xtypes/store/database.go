@@ -23,6 +23,7 @@ type CoreDB interface {
 
 	SystemOps
 	TenantOps
+	TargetOps
 	UserOps
 	SyncDB
 
@@ -51,12 +52,6 @@ type TenantOps interface {
 	RemoveTenant(slug string) error
 	ListTenant() ([]*entities.Tenant, error)
 
-	AddTenantHook(data *entities.TenantHook) error
-	UpdateTenantHook(tenantId, targetType string, id int64, data map[string]any) error
-	ListTenantHook(tenantId, targetType string) ([]*entities.TenantHook, error)
-	GetTenantHook(tenantId, targetType string, id int64) (*entities.TenantHook, error)
-	RemoveTenantHook(tenantId, targetType string, id int64) error
-
 	AddDomain(domain *entities.TenantDomain) error
 	UpdateDomain(tenantId string, id int64, data map[string]any) error
 	GetDomain(tenantId string, id int64) (*entities.TenantDomain, error)
@@ -64,6 +59,22 @@ type TenantOps interface {
 
 	RemoveDomain(tenantId string, id int64) error
 	ListDomain(tenantId string) ([]*entities.TenantDomain, error)
+}
+
+type TargetOps interface {
+	AddTargetHook(data *entities.TargetHook) error
+	UpdateTargetHook(tenantId, targetType string, id int64, data map[string]any) error
+	ListTargetHook(tenantId string) ([]*entities.TargetHook, error)
+	ListTargetHookByType(tenantId, targetType string) ([]*entities.TargetHook, error)
+	GetTargetHook(tenantId, targetType string, id int64) (*entities.TargetHook, error)
+	RemoveTargetHook(tenantId, targetType string, id int64) error
+
+	AddTargetApp(data *entities.TargetApp) error
+	UpdateTargetApp(tenantId, targetType string, id int64, data map[string]any) error
+	ListTargetApp(tenantId string) ([]*entities.TargetApp, error)
+	ListTargetAppByType(tenantId, targetType string) ([]*entities.TargetApp, error)
+	GetTargetApp(tenantId, targetType string, id int64) (*entities.TargetApp, error)
+	RemoveTargetApp(tenantId, targetType string, id int64) error
 }
 
 type UserOps interface {
@@ -113,12 +124,6 @@ type UserGroupExtra interface {
 	ListUserGroupAuth(tenantId string, gslug string) ([]*entities.UserGroupAuth, error)
 	GetUserGroupAuth(tenantId string, gslug string, id int64) (*entities.UserGroupAuth, error)
 	RemoveUserGroupAuth(tenantId, gslug string, id int64) error
-
-	AddUserGroupPlug(data *entities.UserGroupPlug) error
-	UpdateUserGroupPlug(tenantId string, gslug string, id int64, data map[string]any) error
-	ListUserGroupPlug(tenantId string, gslug string) ([]*entities.UserGroupPlug, error)
-	GetUserGroupPlug(tenantId string, gslug string, id int64) (*entities.UserGroupPlug, error)
-	RemoveUserGroupPlug(tenantId, gslug string, id int64) error
 
 	AddUserGroupData(data *entities.UserGroupData) error
 	UpdateUserGroupData(tenantId string, gslug string, id int64, data map[string]any) error
