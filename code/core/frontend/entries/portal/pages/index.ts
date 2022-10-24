@@ -1,6 +1,5 @@
 // lauch
-import LauncherStart from "./launcher/start.svelte";
-import LauncherPlayer from "./launcher/player.svelte";
+import Start from "./start/start.svelte";
 
 // data
 import DataLoader from "./data/loader.svelte";
@@ -20,8 +19,7 @@ import Play from "./play/play.svelte";
 import NotFound from "./notfound.svelte";
 
 export default {
-  "/": LauncherStart,
-  "/launch/:app": LauncherPlayer,
+  "/": Start,
 
   "/data": {
     "/": DataLoader,

@@ -1,3 +1,4 @@
+import { writable, Writable } from "svelte/store";
 import type { SiteUtils } from "../../../lib/utils/site";
 import { ApiManager } from "./apm";
 import { Navigator } from "./nav";
@@ -22,29 +23,29 @@ export interface Utils {
 
 export class PortalService {
   options: AppOptions;
-
   nav: Navigator;
-  toaster: any;
-
   api_manager: ApiManager;
+
   notifier: Notifier;
   utils: Utils;
+  launcher_active: Writable<boolean>;
 
   constructor(opts: AppOptions) {
     this.options = opts;
     this.nav = new Navigator();
+    this.api_manager = new ApiManager(
+      opts.base_url,
+      opts.tenant_id,
+      opts.user_token
+    );
+    this.launcher_active = writable(false);
   }
 
   async init() {
-    this.api_manager = new ApiManager(
-      this.options.base_url,
-      this.options.tenant_id,
-      this.options.user_token
-    );
     await this.api_manager.init();
 
     this.notifier = new Notifier(this.api_manager.self_api);
-    await this.notifier.init()
+    await this.notifier.init();
   }
 
   inject(utils: Utils) {
