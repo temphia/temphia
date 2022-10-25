@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { params } from "svelte-hash-router";
   import { getContext } from "svelte";
   import type { PortalService } from "../../services";
   import Skeleton from "./listings/_skeleton.svelte";

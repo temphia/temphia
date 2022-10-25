@@ -9,27 +9,36 @@
   const rapi = app.api_manager.get_repo_api();
 
   let sources;
+  let current_source = $params.source;
   let loading = true;
   let items = [];
 
   (async () => {
     sources = await app.api_manager.get_repo_sources();
-    const resp = await rapi.load($params.source);
+    const resp = await rapi.load(current_source);
     if (!resp.ok) {
       return;
     }
     items = resp.data;
     loading = false;
   })();
+
+  const changeSource = (next) => {
+    app.nav.repo_source(next);
+  };
+
+  const itemSelect = (item) => {
+    console.log("@ITEM", item);
+  };
 </script>
 
 {#if loading}
   <Skeleton />
 {:else}
   <Listings
-    onChangeSource={null}
-    onItemSelect={null}
-    currentSource={null}
+    onChangeSource={changeSource}
+    onItemSelect={itemSelect}
+    currentSource={current_source}
     {items}
     {sources}
   />

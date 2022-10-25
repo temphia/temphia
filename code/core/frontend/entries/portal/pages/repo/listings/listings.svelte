@@ -1,8 +1,8 @@
 <script lang="ts">
   import Icon from "./icon.svelte";
 
-  export let items = [];
-  export let sources = [];
+  export let items: any[] = [];
+  export let sources: { [_: number]: string };
   export let currentSource = "";
   export let onChangeSource;
   export let onItemSelect;
@@ -53,7 +53,7 @@
       >
         <option>Source</option>
         {#each Object.entries(sources) as [skey, sval]}
-          <option value={sval}>{`${skey} [${sval}]`}</option>
+          <option value={skey}>{`${skey} [${sval}]`}</option>
         {/each}
       </select>
     </div>
@@ -85,9 +85,7 @@
             {/each}
           </div>
 
-          <p
-            class="font-medium text-gray-700 mb-4 truncate overflow-clip "
-          >
+          <p class="font-medium text-gray-700 mb-4 truncate overflow-clip ">
             {item.description}
           </p>
         </div>
