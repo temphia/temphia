@@ -1,6 +1,6 @@
 <script lang="ts">
   import Tailwind from "../xcompo/common/_tailwind.svelte";
-  import Portal from "./portal.svelte";
+  import Portal from "./_portal.svelte";
   import build from "./services/builder";
 
   let loading = true;
