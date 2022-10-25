@@ -18,7 +18,7 @@ import Repo from "./repo/repo.svelte";
 import SelfProfile from "./profile/self.svelte";
 import UserProfile from "./profile/user.svelte";
 
-import admin_pages from "./admin";
+import admin_pages from "./admin/admin_routes";
 import Play from "./play/play.svelte";
 import NotFound from "./notfound.svelte";
 

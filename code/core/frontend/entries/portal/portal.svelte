@@ -1,6 +1,6 @@
 <script lang="ts">
   import { routes, Router, params } from "svelte-hash-router";
-  import page_routes from "./pages";
+  import page_routes from "./pages/page_routes";
   import MainLayout from "./layout/main.svelte";
   import Modal from "./layout/modal.svelte";
   import NotificationModal from "./notification/modal.svelte";
