@@ -22,22 +22,20 @@
     items = resp.data;
     loading = false;
   })();
-
-  const changeSource = (next) => {
-    app.nav.repo_source(next);
-  };
-
-  const itemSelect = (item) => {
-    console.log("@ITEM", item);
-  };
 </script>
 
 {#if loading}
   <Skeleton />
 {:else}
   <Listings
-    onChangeSource={changeSource}
-    onItemSelect={itemSelect}
+    onChangeSource={(next) => app.nav.repo_source(next)}
+    onItemSelect={(item) => {
+      app.nav.repo_item(
+        current_source,
+        item["group"] || item["type"],
+        item["slug"]
+      );
+    }}
     currentSource={current_source}
     {items}
     {sources}

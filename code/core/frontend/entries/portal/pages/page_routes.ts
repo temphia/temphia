@@ -13,6 +13,7 @@ import CabFolder from "./cabinet/folder.svelte";
 //repo
 import RepoLoader from "./repo/loader.svelte";
 import Repo from "./repo/repo.svelte";
+import RepoItem from "./repo/repo_item.svelte";
 
 // profile
 import SelfProfile from "./profile/self.svelte";
@@ -41,6 +42,7 @@ export default {
   "/repo": {
     "/": RepoLoader,
     "/:source": Repo,
+    "/:source/:group/:file": RepoItem,
   },
   "/admin": admin_pages,
   "/play": Play,
@@ -48,8 +50,6 @@ export default {
     "/self": SelfProfile,
     "/user/:id": UserProfile,
   },
-  
+
   "*": NotFound,
-
-
 };
