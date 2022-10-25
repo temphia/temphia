@@ -90,7 +90,7 @@ export class Navigator {
   admin_data_tables(group: string) {
     location.hash = `#/admin/data/table/${group}`;
   }
- 
+
   admin_data_table(group: string, table: string) {
     location.hash = `#/admin/data/table/${group}/${table}`;
   }
@@ -131,6 +131,30 @@ export class Navigator {
     location.hash = `#/admin/resource/new`;
   }
 
+  // apps
+
+  admin_target_apps() {
+    location.hash = `#/admin/target/app/`;
+  }
+  admin_target_app_edit(id: number) {
+    location.hash = `#/admin/target/app/${id}/edit`;
+  }
+
+  admin_target_app_new() {
+    location.hash = `#/admin/target/app/new`;
+  }
+
+  // hooks
+
+  admin_target_hooks() {
+    location.hash = `#/admin/target/hook/`;
+  }
+  admin_target_hook_edit(id: number) {
+    location.hash = `#/admin/target/hook/${id}/edit`;
+  }
+  admin_target_hook_new() {
+    location.hash = `#/admin/target/hook/new`;
+  }
 
   /*
   

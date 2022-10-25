@@ -53,6 +53,14 @@ import AdminPlugs from "./plug/plugs.svelte";
 import AdminPlugAdd from "./plug/plug_add.svelte";
 import AdminPlugEdit from "./plug/plug_edit.svelte";
 
+import AdminTargetApps from "./target/apps.svelte";
+import AdminTargetAppNew from "./target/app_new.svelte";
+import AdminTargetAppEdit from "./target/app_edit.svelte";
+
+import AdminTargetHooks from "./target/hooks.svelte";
+import AdminTargetHookNew from "./target/hook_new.svelte";
+import AdminTargetHookEdit from "./target/hook_edit.svelte";
+
 export default {
   $$component: Admin,
   "/bprint": {
@@ -108,6 +116,20 @@ export default {
     "/engine": AdminLensEngine,
     "/site": AdminLensSite,
   },
+
+  "/target": {
+    "/app": {
+      "/": AdminTargetApps,
+      "/new": AdminTargetAppNew,
+      "/:id/edit": AdminTargetAppEdit,
+    },
+    "/hook": {
+      "/": AdminTargetHooks,
+      "/new": AdminTargetHookNew,
+      "/:id/edit": AdminTargetHookEdit,
+    },
+  },
+
   "/tenant": {
     "/": AdminTenant,
     "/edit": AdminTenantEdit,
