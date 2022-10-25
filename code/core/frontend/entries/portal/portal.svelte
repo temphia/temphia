@@ -58,6 +58,7 @@
   launcher_store={app.launcher_active}
   pending_notification={true}
   on:notification_toggle={notification_toggle}
+  on:self_profile={app.nav.self_profile}
 >
   <Router />
 </MainLayout>

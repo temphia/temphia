@@ -41,6 +41,13 @@ export class Navigator {
     location.hash = `#/repo/${source}`;
   }
 
+  self_profile() {
+    location.hash = `#/profile/self`;
+  }
+  user_profile(user: string) {
+    location.hash = `#/profile/user/${user}`;
+  }
+
   play() {
     location.hash = `#/play`;
   }

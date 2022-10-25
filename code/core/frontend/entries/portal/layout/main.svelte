@@ -86,6 +86,7 @@
         </div>
 
         <div
+          on:click={() => dispatch("self_profile")}
           class="h-12 cursor-pointer mx-auto flex justify-center items-center
               w-full focus:text-orange-500 hover:bg-red-200 focus:outline-none"
         >
@@ -161,7 +162,10 @@
       {/if}
     </div>
 
-    <div class="flex mr-6 items-center cursor-pointer">
+    <div
+      class="flex mr-6 items-center cursor-pointer"
+      on:click={() => dispatch("self_profile")}
+    >
       <UserIcon />
     </div>
   </nav>

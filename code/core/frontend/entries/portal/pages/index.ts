@@ -14,6 +14,10 @@ import CabFolder from "./cabinet/folder.svelte";
 import RepoLoader from "./repo/loader.svelte";
 import Repo from "./repo/repo.svelte";
 
+// profile
+import SelfProfile from "./profile/self.svelte";
+import UserProfile from "./profile/user.svelte";
+
 import admin_pages from "./admin";
 import Play from "./play/play.svelte";
 import NotFound from "./notfound.svelte";
@@ -40,5 +44,12 @@ export default {
   },
   "/admin": admin_pages,
   "/play": Play,
+  "/profile": {
+    "/self": SelfProfile,
+    "/user/:id": UserProfile,
+  },
+  
   "*": NotFound,
+
+
 };
