@@ -46,23 +46,6 @@ export class AdminUserGroupAPI {
     return this.base.delete(`/admin/ugroup/${ugroup}/data/${id}`);
   }
 
-  // plug
-
-  listPlug(ugroup: string) {
-    return this.base.get(`/admin/ugroup/${ugroup}/plug`);
-  }
-  newPlug(ugroup: string, data: any) {
-    return this.base.post(`/admin/ugroup/${ugroup}/plug`, data);
-  }
-  getPlug(ugroup: string, id: string) {
-    return this.base.get(`/admin/ugroup/${ugroup}/plug/${id}`);
-  }
-  updatePlug(ugroup: string, id: string,data: any) {
-    return this.base.post(`/admin/ugroup/${ugroup}/plug/${id}`, data);
-  }
-  deletePlug(ugroup: string, id: string) {
-    return this.base.delete(`/admin/ugroup/${ugroup}/plug/${id}`);
-  }
 
   // auth
   listAuth(ugroup: string) {
