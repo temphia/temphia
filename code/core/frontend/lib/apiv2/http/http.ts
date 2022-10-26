@@ -10,7 +10,7 @@ export class Http {
 
   constructor(baseURL: string, headers: any) {
     this.baseURL = baseURL;
-    this.headers = headers
+    this.headers = headers;
   }
 
   replace_headers(headers: any) {
@@ -39,8 +39,24 @@ export class Http {
   }
 
   async post(path: string, data: any): Promise<HttpResponse> {
+    return this.jsonMethod(path, "POST", data);
+  }
+
+  async patch(path: string, data: any): Promise<HttpResponse> {
+    return this.jsonMethod(path, "PATCH", data);
+  }
+
+  async put(path: string, data: any): Promise<HttpResponse> {
+    return this.jsonMethod(path, "PUT", data);
+  }
+
+  async jsonMethod(
+    path: string,
+    method: string,
+    data: any
+  ): Promise<HttpResponse> {
     const resp = await fetch(`${this.baseURL}${path}`, {
-      method: "POST",
+      method: method,
       headers: this.headers,
       body: JSON.stringify(data),
     });
@@ -65,28 +81,6 @@ export class Http {
       method: "POST",
       headers: auth ? { Authorization: this.headers["Authorization"] } : {},
       body: data,
-    });
-  }
-
-  async patch(path: string, data: any): Promise<HttpResponse> {
-    const resp = await fetch(`${this.baseURL}${path}`, {
-      method: "PATCH",
-      headers: this.headers,
-      body: JSON.stringify(data),
-    });
-
-    if (resp.ok) {
-      return Promise.resolve({
-        ok: true,
-        data: await resp.json(),
-        status: resp.status,
-      });
-    }
-
-    return Promise.resolve({
-      ok: false,
-      data: await resp.text(),
-      status: resp.status,
     });
   }
 

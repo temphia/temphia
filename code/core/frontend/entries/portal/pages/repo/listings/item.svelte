@@ -1,7 +1,7 @@
 <script>
   import Icon from "./icon.svelte";
   import SvelteMarkdown from "svelte-markdown";
-  import { PrimaryButton } from "../../entries/common";
+  import {PrimaryButton} from "../../../../xcompo/common";
 
   export let data = {
     id: "",

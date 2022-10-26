@@ -123,10 +123,12 @@
     height: 95vh;
     margin: auto;
     overflow: auto;
-    width: 512px;
+    max-width: 512px;
     background-color: #fff;
     border-radius: 6px;
     display: block;
     padding: 0.5em;
+    max-height: 500px;
+    margin-top: 10px;
   }
 </style>

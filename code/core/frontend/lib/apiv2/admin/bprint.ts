@@ -14,6 +14,10 @@ export class AdminBprintAPI {
     return this.base.post("/admin/bprint/", data);
   }
 
+  import(data: any) {
+    return this.base.put("/admin/bprint/", data);
+  }
+
   get(bid: string) {
     return this.base.get(`/admin/bprint/${bid}`);
   }
@@ -34,13 +38,15 @@ export class AdminBprintAPI {
     return this.base.get(`/admin/bprint/${bid}/file/${file}`);
   }
 
+  // fixme => make this formdata
   add_file(bid: string, file: string, data: any) {
-    // fixme => make this formdata
+    
     return this.base.post(`/admin/bprint/${bid}/file/${file}`, data);
   }
 
+  // fixme => make this formdata
   update_file(bid: string, file: string, data: any) {
-    // fixme => make this formdata
+    
     return this.base.post(`/admin/bprint/${bid}/file/${file}`, data);
   }
 

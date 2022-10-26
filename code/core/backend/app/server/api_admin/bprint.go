@@ -14,6 +14,8 @@ func (a *ApiAdmin) bprintAPI(rg *gin.RouterGroup) {
 
 	rg.GET("/", a.X(a.BprintList))
 	rg.POST("/", a.X(a.BprintCreate))
+	rg.PUT("/", a.X(a.BprintImport))
+
 	rg.GET("/:id", a.X(a.BprintGet))
 	rg.POST("/:id", a.X(a.BprintUpdate))
 	rg.DELETE("/:id", a.X(a.BprintRemove))
@@ -25,7 +27,6 @@ func (a *ApiAdmin) bprintAPI(rg *gin.RouterGroup) {
 
 	rg.POST("/:id/instance", a.X(a.BprintInstance))
 
-	// adminApi.POST("/import_bprint", r.Authed(r.BprintImport))
 	// adminApi.POST("/dev_plug_issue_tkt", r.Authed(r.DevIssuePlugTkt))
 
 }

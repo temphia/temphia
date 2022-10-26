@@ -38,6 +38,10 @@ export class ApiBase {
     return this.http.post(path, data);
   }
 
+  async put(path: string, data: any) {
+    return this.http.put(path, data);
+  }
+
   async patch(path: string, data: any) {
     return this.http.patch(path, data);
   }

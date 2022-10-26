@@ -42,7 +42,7 @@ export default {
   "/repo": {
     "/": RepoLoader,
     "/:source": Repo,
-    "/:source/:group/:file": RepoItem,
+    "/:source/:group/:islug": RepoItem,
   },
   "/admin": admin_pages,
   "/play": Play,
