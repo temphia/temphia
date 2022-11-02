@@ -7,12 +7,15 @@
     PortalService,
     BetterTextInput,
     PrimaryButton,
+    WizardLayout,
   } from "../../../core";
 
-  import WizardLayout from "../../core/wizard_layout.svelte";
   import type { PlugRawSchema } from "../instance";
-  import ResourcesPicker from "../../plug/agent/_resources_picker.svelte";
-  import NewResource from "../../resource/_new_resource.svelte";
+
+  // import ResourcesPicker from "../../plug/agent/_resources_picker.svelte";
+  // import NewResource from "../../resource/_new_resource.svelte";
+  
+  
   import { InstanceHelper } from "../instance";
   import { generateId } from "../../../../../../../lib/utils";
 
@@ -38,16 +41,16 @@
   });
 
   const pick_resource = () => {
-    app.utils.small_modal_open(ResourcesPicker, {
-      onSelect: (opts) => console.log(opts),
-      app,
-    });
+    // app.utils.small_modal_open(ResourcesPicker, {
+    //   onSelect: (opts) => console.log(opts),
+    //   app,
+    // });
   };
   const new_resource = () => {
-    app.utils.small_modal_open(NewResource, {
-      saveFn: (opts) => console.log(opts),
-      app,
-    });
+    // app.utils.small_modal_open(NewResource, {
+    //   saveFn: (opts) => console.log(opts),
+    //   app,
+    // });
   };
 </script>
 

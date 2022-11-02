@@ -4,7 +4,6 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/core/backend/controllers/basic"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 )
@@ -22,7 +21,6 @@ func (s *Server) selfAPI(rg *gin.RouterGroup) {
 	rg.GET("/message", s.X(s.selfListMessages))
 	rg.POST("/message", s.X(s.selfModifyMessages))
 
-	rg.POST("/issue/plug", s.X(s.issuePlugTkt))
 	rg.POST("/issue/folder", s.X(s.issueFolderTkt))
 
 }
@@ -84,24 +82,6 @@ func (s *Server) selfListSession(ctx httpx.Request) {
 
 func (s *Server) selfChangeEmail(ctx httpx.Request) {
 
-}
-
-func (s *Server) issuePlugTkt(ctx httpx.Request) {
-	rdata := basic.DevIssueReq{}
-	err := ctx.Http.BindJSON(&rdata)
-	if err != nil {
-		httpx.WriteErr(ctx.Http, err)
-		return
-	}
-
-	if rdata.Encoded {
-		tkt, err := s.cBasic.DevIssueTktEncoded(ctx.Session, ctx.Http.Request.Host, rdata)
-		httpx.WriteJSON(ctx.Http, tkt, err)
-		return
-	}
-
-	tkt, err := s.cBasic.DevIssueTkt(ctx.Session, ctx.Http.Request.Host, rdata)
-	httpx.WriteJSON(ctx.Http, tkt, err)
 }
 
 func (s *Server) ListRenderers(ctx httpx.Request) {

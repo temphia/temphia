@@ -4,6 +4,7 @@ import (
 	"io"
 
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/core/backend/controllers/admin"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/instance"
@@ -26,9 +27,8 @@ func (a *ApiAdmin) bprintAPI(rg *gin.RouterGroup) {
 	rg.DELETE("/:id/file/:file_id", a.X(a.BprintDelFile))
 
 	rg.POST("/:id/instance", a.X(a.BprintInstance))
-
-	// adminApi.POST("/dev_plug_issue_tkt", r.Authed(r.DevIssuePlugTkt))
-
+	rg.POST("/:id/issue", a.X(a.DevIssueTkt))
+	rg.POST("/:id/issue/encoded", a.X(a.DevIssueTktEncoded))
 }
 
 func (r *ApiAdmin) BprintList(ctx httpx.Request) {
@@ -99,6 +99,7 @@ func (r *ApiAdmin) BprintUpdateBlob(ctx httpx.Request) {
 func (r *ApiAdmin) BprintGetFile(ctx httpx.Request) {
 	out, err := r.cAdmin.BprintGetBlob(ctx.Session, ctx.Http.Param("id"), ctx.Http.Param("file_id"))
 	if err != nil {
+		r.rutil.WriteErr(ctx.Http, err.Error())
 		return
 	}
 
@@ -126,7 +127,7 @@ func (r *ApiAdmin) BprintInstance(ctx httpx.Request) {
 
 // import
 
-func (c *ApiAdmin) BprintImport(ctx httpx.Request) {
+func (r *ApiAdmin) BprintImport(ctx httpx.Request) {
 
 	opts := &repox.RepoImportOpts{}
 	err := ctx.Http.BindJSON(opts)
@@ -134,7 +135,37 @@ func (c *ApiAdmin) BprintImport(ctx httpx.Request) {
 		return
 	}
 
-	resp, err := c.cAdmin.BprintImport(ctx.Session, opts)
+	resp, err := r.cAdmin.BprintImport(ctx.Session, opts)
 
-	c.rutil.WriteJSON(ctx.Http, resp, err)
+	r.rutil.WriteJSON(ctx.Http, resp, err)
+}
+
+// issue
+
+func (r *ApiAdmin) DevIssueTkt(ctx httpx.Request) {
+	rdata := admin.DevIssueReq{}
+
+	err := ctx.Http.BindJSON(&rdata)
+	if err != nil {
+		r.rutil.WriteErr(ctx.Http, err.Error())
+		return
+	}
+
+	tkt, err := r.cAdmin.DevIssueTktEncoded(ctx.Session, ctx.Http.Request.Host, rdata)
+
+	r.rutil.WriteJSON(ctx.Http, tkt, err)
+}
+
+func (r *ApiAdmin) DevIssueTktEncoded(ctx httpx.Request) {
+	rdata := admin.DevIssueReq{}
+
+	err := ctx.Http.BindJSON(&rdata)
+	if err != nil {
+		r.rutil.WriteErr(ctx.Http, err.Error())
+		return
+	}
+
+	tkt, err := r.cAdmin.DevIssueTktEncoded(ctx.Session, ctx.Http.Request.Host, rdata)
+
+	r.rutil.WriteJSON(ctx.Http, tkt, err)
 }

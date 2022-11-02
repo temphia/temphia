@@ -1,4 +1,4 @@
-package basic
+package admin
 
 import (
 	"fmt"
@@ -11,7 +11,6 @@ type DevIssueReq struct {
 	AllPlugs bool     `json:"all_plugs,omitempty"`
 	PlugIds  []string `json:"plug_ids,omitempty"`
 	BprintId string   `json:"bprint_id,omitempty"`
-	Encoded  bool     `json:"encoded,omitempty"`
 }
 
 func (c *Controller) DevIssueTktEncoded(uclaim *claim.Session, host string, req DevIssueReq) (string, error) {
