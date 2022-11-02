@@ -27,7 +27,7 @@ export class AdminBprintAPI {
   }
 
   delete(bid: string) {
-    return this.base.get(`/admin/bprint/${bid}`);
+    return this.base.delete(`/admin/bprint/${bid}`);
   }
 
   list_file(bid: string) {
@@ -57,4 +57,13 @@ export class AdminBprintAPI {
   instance(bid: string, data: any) {
     return this.base.post(`/admin/bprint/${bid}/instance`, data);
   }
+
+  issue(bid: string, data: any) {
+    return this.base.post(`/admin/bprint/${bid}/issue`, data);
+  }
+
+  issue_encoded(bid: string, data: any) {
+    return this.base.post(`/admin/bprint/${bid}/issue/encoded`, data);
+  }
+
 }

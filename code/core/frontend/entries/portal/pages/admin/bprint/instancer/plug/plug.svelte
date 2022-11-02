@@ -1,12 +1,12 @@
 <script lang="ts">
   import { getContext } from "svelte";
-
+  import { params } from "svelte-hash-router";
   import Plug from "./_plug.svelte";
   import type { PlugRawSchema } from "../instance";
   import type { PortalService } from "../../../core";
 
-  export let bid: string;
-  export let file: string;
+  export let bid: string = $params.bid;
+  export let file: string = $params.file;
 
   const app: PortalService = getContext("__app__");
 

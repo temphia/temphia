@@ -8,9 +8,13 @@
   export let app: PortalService;
 
   const importBprint = async (_data: any) => {
-    console.log("@import", _data);
-    //   const bapi = await app.get_apm().get_bprint_api();
-    //   return bapi.bprint_import(_data);
+    const bapi = app.api_manager.get_admin_bprint_api();
+    const resp = await bapi.import(_data);
+    if (!resp.ok) {
+      console.log("@@ERR", resp);
+    }
+
+    app.utils.small_modal_close();
   };
 </script>
 

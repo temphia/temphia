@@ -1,1 +1,112 @@
-<div>Plugs</div>
+<script lang="ts">
+  import { getContext } from "svelte";
+  import {
+    AutoTable,
+    LoadingSpinner,
+    FloatingAdd,
+    PortalService,
+  } from "../core";
+
+  let datas = [];
+  let loading = true;
+  const app = getContext("__app__") as PortalService;
+
+  const load = async () => {
+    const api = app.api_manager.get_admin_plug_api();
+    const resp = await api.list_plug();
+    if (!resp.ok) {
+      return;
+    }
+
+    datas = resp.data;
+    loading = false;
+  };
+
+  load();
+
+  // actions
+
+  const action_execute = (id: string) => {
+    //           app.navigator.iframe_plug_launch(pid, "default");
+  };
+  const action_list_agents = (id: string) => {
+    //           app.navigator.goto_admin_agents_page(id);
+  };
+  const action_edit = (id: string) => {
+    //           app.navigator.goto_admin_plug_page(id);
+  };
+  const action_list_resources = (id: string) => {
+    //           app.navigator.goto_admin_plug_resources(id);
+  };
+  const action_show_flowmap = (id: string) => {
+    //         app.big_modal_open(Flowmap, { pid: id });
+  };
+  const action_delete = (id: string) => {
+    // const papi = await app.get_apm().get_plug_api();
+    //   await papi.del_plug(pid);
+    //   load();
+  };
+
+  const action_new = () => {};
+</script>
+
+{#if loading}
+  <LoadingSpinner />
+{:else}
+  <AutoTable
+    action_key="id"
+    actions={[
+      {
+        Name: "Execute",
+        Class: "bg-blue-400",
+        Action: action_execute,
+        icon: "lightning-bolt",
+      },
+      {
+        Name: "Agents",
+        Class: "bg-green-400",
+        Action: action_list_agents,
+        icon: "users",
+      },
+      {
+        Name: "Edit",
+        Action: action_edit,
+        drop: true,
+        icon: "pencil-alt",
+      },
+
+      {
+        Name: "Resources",
+        Action: action_list_resources,
+        drop: true,
+        icon: "paper-clip",
+      },
+
+      {
+        Name: "Flow Map",
+        Action: action_show_flowmap,
+        drop: true,
+        icon: "map",
+      },
+
+      {
+        Name: "Delete",
+        Class: "bg-red-400",
+        Action: action_delete,
+        icon: "trash",
+        drop: true,
+      },
+    ]}
+    key_names={[
+      ["id", "ID"],
+      ["name", "Name"],
+      ["owner", "Owner"],
+      ["bprint_id", "Bprint Id"],
+    ]}
+    color={["executor"]}
+    {datas}
+    show_drop={true}
+  />
+{/if}
+
+<FloatingAdd onClick={action_new} />

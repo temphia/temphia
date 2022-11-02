@@ -30,8 +30,16 @@
 
   // actions
 
-  const action_instance = (id: string) => {
-    const bprint = datas.filter((v) => v.id === id)[0];
+  const action_instance = async (id: string) => {
+    const api = app.api_manager.get_admin_bprint_api();
+    const resp = await api.get(id);
+    if (!resp.ok) {
+      console.log("@@");
+      return;
+    }
+
+    const bprint = resp.data;
+
     const file = bprint["files"].filter(
       (v) => v !== "schema.json" || v !== "schema.yaml"
     )[0];
@@ -44,7 +52,6 @@
     app.utils.small_modal_open(Issuer, { app, bid: id });
 
   const action_file_edit = (id: string) => {};
-  
 
   const action_delete = async (id: string) => {
     const api = app.api_manager.get_admin_bprint_api();
