@@ -1,170 +1,182 @@
 export class Navigator {
-  constructor() {}
+  options: any;
+  constructor() {
+    this.options = null;
+  }
+
+  set(new_url: string, opts?: any) {
+    this.options = opts;
+    location.hash = new_url;
+  }
 
   start() {
-    location.hash = "#/";
+    this.set("#/");
   }
 
   launch_app(name: string) {
-    location.hash = `#/launch/${name}`;
+    this.set(`#/launch/${name}`);
   }
 
   data_loader() {
-    location.hash = `#/data/`;
+    this.set(`#/data/`);
   }
 
   data_groups(source: string) {
-    location.hash = `#/data/${source}`;
+    this.set(`#/data/${source}`);
   }
 
   data_table(source: string, dgroup: string) {
-    location.hash = `#/data/${source}/${dgroup}`;
+    this.set(`#/data/${source}/${dgroup}`);
   }
 
   cab_loader(source: string) {
-    location.hash = `#/cabinet/${source}`;
+    this.set(`#/cabinet/${source}`);
   }
 
   cab_folder(source: string, folder: string) {
-    location.hash = `#/data/${source}/${folder}`;
+    this.set(`#/data/${source}/${folder}`);
   }
 
   cab_file(source: string, folder: string, file: string) {
-    location.hash = `#/data/${source}/${folder}/${file}`;
+    this.set(`#/data/${source}/${folder}/${file}`);
   }
 
   repo_loader() {
-    location.hash = `#/repo/`;
+    this.set(`#/repo/`);
   }
 
   repo_source(source: string) {
-    location.hash = `#/repo/${source}`;
+    this.set(`#/repo/${source}`);
   }
 
   repo_item(source: string, group: string, item: string) {
-    location.hash = `#/repo/${source}/${group}/${item}`;
+    this.set(`#/repo/${source}/${group}/${item}`);
   }
 
   self_profile() {
-    location.hash = `#/profile/self`;
+    this.set(`#/profile/self`);
   }
   user_profile(user: string) {
-    location.hash = `#/profile/user/${user}`;
+    this.set(`#/profile/user/${user}`);
   }
 
   play() {
-    location.hash = `#/play`;
+    this.set(`#/play`);
   }
 
   // ADMIN
 
   admin_bprints() {
-    location.hash = `#/admin/bprint/`;
+    this.set(`#/admin/bprint/`);
   }
 
   admin_bprint(bid: string) {
-    location.hash = `#/admin/bprint/${bid}`;
+    this.set(`#/admin/bprint/${bid}`);
   }
 
   admin_bprint_editor(bid: string) {
-    location.hash = `#/admin/bprint/${bid}/editor`;
+    this.set(`#/admin/bprint/${bid}/editor`);
   }
 
-  admin_bprint_instancer(bid: string) {
-    location.hash = `#/admin/bprint/${bid}/instancer`;
+  admin_bprint_data_instancer(bid: string, file: string, opts?: any) {
+    this.set(`#/admin/bprint/${bid}/instance/data/${file}`, opts);
+  }
+
+  admin_bprint_plug_instancer(bid: string, file: string, opts?: any) {
+    this.set(`#/admin/bprint/${bid}/instance/plug/${file}`, opts);
   }
 
   admin_repos() {
-    location.hash = `#/admin/repo/`;
+    this.set(`#/admin/repo/`);
   }
 
   admin_repo_edit(rid: string) {
-    location.hash = `#/admin/repo/${rid}/edit`;
+    this.set(`#/admin/repo/${rid}/edit`);
   }
 
   admin_repo_new() {
-    location.hash = `#/admin/repo/new`;
+    this.set(`#/admin/repo/new`);
   }
 
   admin_data_loader() {
-    location.hash = `#/admin/data/`;
+    this.set(`#/admin/data/`);
   }
 
   admin_data_groups() {
-    location.hash = `#/admin/data/group`;
+    this.set(`#/admin/data/group`);
   }
 
   admin_data_group(group: string) {
-    location.hash = `#/admin/data/group/${group}`;
+    this.set(`#/admin/data/group/${group}`);
   }
 
   admin_data_tables(group: string) {
-    location.hash = `#/admin/data/table/${group}`;
+    this.set(`#/admin/data/table/${group}`);
   }
 
   admin_data_table(group: string, table: string) {
-    location.hash = `#/admin/data/table/${group}/${table}`;
+    this.set(`#/admin/data/table/${group}/${table}`);
   }
 
   admin_data_columns(group: string, table: string) {
-    location.hash = `#/admin/data/column/${group}/${table}`;
+    this.set(`#/admin/data/column/${group}/${table}`);
   }
 
   admin_data_column(group: string, table: string, column: string) {
-    location.hash = `#/admin/data/column/${group}/${table}/${column}`;
+    this.set(`#/admin/data/column/${group}/${table}/${column}`);
   }
 
   admin_data_hooks(group: string, table: string) {
-    location.hash = `#/admin/data/hook/${group}/${table}`;
+    this.set(`#/admin/data/hook/${group}/${table}`);
   }
 
   admin_data_hook(group: string, table: string, id: string) {
-    location.hash = `#/admin/data/hook/${group}/${table}/${id}`;
+    this.set(`#/admin/data/hook/${group}/${table}/${id}`);
   }
 
   admin_data_views(group: string, table: string) {
-    location.hash = `#/admin/data/view/${group}/${table}`;
+    this.set(`#/admin/data/view/${group}/${table}`);
   }
 
   admin_data_view(group: string, table: string, id: string) {
-    location.hash = `#/admin/data/view/${group}/${table}/${id}`;
+    this.set(`#/admin/data/view/${group}/${table}/${id}`);
   }
 
   admin_resources() {
-    location.hash = `#/admin/resource/`;
+    this.set(`#/admin/resource/`);
   }
 
   admin_resource_edit(rid: string) {
-    location.hash = `#/admin/resource/${rid}/edit`;
+    this.set(`#/admin/resource/${rid}/edit`);
   }
 
   admin_resource_new() {
-    location.hash = `#/admin/resource/new`;
+    this.set(`#/admin/resource/new`);
   }
 
   // apps
 
   admin_target_apps() {
-    location.hash = `#/admin/target/app/`;
+    this.set(`#/admin/target/app/`);
   }
   admin_target_app_edit(id: number) {
-    location.hash = `#/admin/target/app/${id}/edit`;
+    this.set(`#/admin/target/app/${id}/edit`);
   }
 
   admin_target_app_new() {
-    location.hash = `#/admin/target/app/new`;
+    this.set(`#/admin/target/app/new`);
   }
 
   // hooks
 
   admin_target_hooks() {
-    location.hash = `#/admin/target/hook/`;
+    this.set(`#/admin/target/hook/`);
   }
   admin_target_hook_edit(id: number) {
-    location.hash = `#/admin/target/hook/${id}/edit`;
+    this.set(`#/admin/target/hook/${id}/edit`);
   }
   admin_target_hook_new() {
-    location.hash = `#/admin/target/hook/new`;
+    this.set(`#/admin/target/hook/new`);
   }
 
   /*

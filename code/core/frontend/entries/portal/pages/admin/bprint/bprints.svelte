@@ -1,12 +1,15 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import Issuer from "./issuer/issuer.svelte";
+  import InstanceBundlePicker from "./instancer/bundle_picker.svelte";
+
   import {
     AutoTable,
     LoadingSpinner,
     FloatingAdd,
     PortalService,
   } from "../core";
+  import { instance_helper } from "./instancer";
 
   let datas = [];
   let loading = true;
@@ -23,19 +26,29 @@
     loading = false;
   };
 
-  load()
+  load();
 
   // actions
-  
-  const action_instance = (id: string) => {};
-  const action_edit = (id: string) => {};
-  const action_issue = (id: string) => {
-    app.utils.small_modal_open(Issuer, { app, bid: id });
+
+  const action_instance = (id: string) => {
+    const bprint = datas.filter((v) => v.id === id)[0];
+    const file = bprint["files"].filter(
+      (v) => v !== "schema.json" || v !== "schema.yaml"
+    )[0];
+
+    instance_helper(app, bprint["type"], bprint, file, InstanceBundlePicker);
   };
+
+  const action_edit = (id: string) => app.nav.admin_bprint(id);
+  const action_issue = (id: string) =>
+    app.utils.small_modal_open(Issuer, { app, bid: id });
+
   const action_file_edit = (id: string) => {};
+  
+
   const action_delete = async (id: string) => {
     const api = app.api_manager.get_admin_bprint_api();
-    const resp = await api.delete(id);
+    await api.delete(id);
     load();
   };
   const action_new = async () => {};
@@ -89,7 +102,7 @@
       ["type", "Type"],
       ["sub_type", "Sub Type"],
     ]}
-    datas={[]}
+    {datas}
   />
 {/if}
 

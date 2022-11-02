@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { AutoTable, FloatingAdd } from "../../../../xcompo";
-
+  import { AutoTable, FloatingAdd, PortalService } from "../core";
   import { getContext } from "svelte";
-  import type { PortalService } from "../../../services";
+
   const app = getContext("__app__") as PortalService;
 
   const rapi = app.api_manager.get_admin_repo_api();
