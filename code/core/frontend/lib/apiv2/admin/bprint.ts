@@ -22,7 +22,7 @@ export class AdminBprintAPI {
     return this.base.get(`/admin/bprint/${bid}`);
   }
 
-  post(bid: string, data: any) {
+  update(bid: string, data: any) {
     return this.base.post(`/admin/bprint/${bid}`, data);
   }
 
