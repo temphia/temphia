@@ -70,14 +70,10 @@
     },
   ];
 
-  export let loading = false;
-
   $: _current_page = location.hash.split("/")[2];
   window.addEventListener("hashchange", () => {
-    _current_page = location.hash.split("/")[2]
-  })
-
-
+    _current_page = location.hash.split("/")[2];
+  });
 </script>
 
 <div class="w-full h-full bg-indigo-100 overflow-auto">
@@ -101,57 +97,8 @@
   </div>
 
   <div class="w-full mt-14">
-    {#if loading}
-      <div class="p-10 flex justify-center">
-        <div class="lds-ring">
-          <div />
-          <div />
-          <div />
-          <div />
-        </div>
-      </div>
-    {:else}
-      <slot>
-        <p>Empty slot</p>
-      </slot>
-    {/if}
+    <slot>
+      <p>Empty slot</p>
+    </slot>
   </div>
 </div>
-
-<style>
-  .lds-ring {
-    display: inline-block;
-    position: relative;
-    width: 2.5rem;
-    height: 2.5rem;
-  }
-  .lds-ring div {
-    box-sizing: border-box;
-    display: block;
-    position: absolute;
-    width: 2.5rem;
-    height: 2.5rem;
-    margin: 0.25rem;
-    border: 0.25rem solid #726e6e;
-    border-radius: 50%;
-    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    border-color: #5f5c5c transparent transparent transparent;
-  }
-  .lds-ring div:nth-child(1) {
-    animation-delay: -0.45s;
-  }
-  .lds-ring div:nth-child(2) {
-    animation-delay: -0.3s;
-  }
-  .lds-ring div:nth-child(3) {
-    animation-delay: -0.15s;
-  }
-  @keyframes lds-ring {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-</style>

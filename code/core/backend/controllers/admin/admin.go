@@ -23,6 +23,7 @@ func New(pacman repox.Hub, cplane xplane.ControlPlane, coredb store.CoreHub, sig
 		cplane: cplane,
 		coredb: coredb,
 		signer: signer,
+		pacman: pacman,
 		dynHub: nil,
 		cabHub: nil,
 	}

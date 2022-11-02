@@ -8,11 +8,14 @@ import CEditor from "./ceditor/ceditor.svelte";
 import FullEditor from "./ceditor/fulleditor.svelte";
 import Uploader from "./uploader/uploader.svelte"
 
+import LoadingSpinner from "./common/loading_spinner.svelte";
+
 export {
   AutoTable,
   CEditor,
   FullEditor,
   Uploader,
+  LoadingSpinner,
   
   LinkButton,
   FloatingAdd,
