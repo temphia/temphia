@@ -1,5 +1,16 @@
 import { RepoAPI, SelfAPI } from "../../../lib/apiv2";
-import { AdminRepoAPI } from "../../../lib/apiv2/admin";
+import {
+  AdminBprintAPI,
+  AdminCheckAPI,
+  AdminDataAPI,
+  AdminPlugAPI,
+  AdminRepoAPI,
+  AdminResourceAPI,
+  AdminTenantAPI,
+  AdminUserAPI,
+  AdminUserGroupAPI,
+} from "../../../lib/apiv2/admin";
+import { AdminTargetAPI } from "../../../lib/apiv2/admin/target";
 import { ApiBase } from "../../../lib/apiv2/base";
 import type { SelfLoad } from "./response";
 
@@ -73,18 +84,6 @@ export class ApiManager {
     console.log("@data", data);
   }
 
-  get_self_api() {
-    this.self_api;
-  }
-
-  get_admin_repo_api = () => {
-    return new AdminRepoAPI(this.base);
-  };
-
-  get_repo_api = () => {
-    return new RepoAPI(this.base);
-  };
-
   async get_repo_sources() {
     if (this.repo_sources) {
       return this.repo_sources;
@@ -94,4 +93,56 @@ export class ApiManager {
     this.repo_sources = resp.data;
     return this.repo_sources;
   }
+
+  // api
+
+  get_self_api() {
+    this.self_api;
+  }
+
+  get_repo_api = () => {
+    return new RepoAPI(this.base);
+  };
+
+  // admin api
+
+  get_admin_bprint_api = () => {
+    return new AdminBprintAPI(this.base);
+  };
+
+  get_admin_plug_api = () => {
+    return new AdminPlugAPI(this.base);
+  };
+
+  get_admin_repo_api = () => {
+    return new AdminRepoAPI(this.base);
+  };
+
+  get_admin_data_api = () => {
+    return new AdminDataAPI(this.base);
+  };
+
+  get_admin_resource_api = () => {
+    return new AdminResourceAPI(this.base);
+  };
+
+  get_admin_target_api = () => {
+    return new AdminTargetAPI(this.base);
+  };
+
+  get_admin_tenant_api = () => {
+    return new AdminTenantAPI(this.base);
+  };
+
+  get_admin_ugroup_api = () => {
+    return new AdminUserGroupAPI(this.base);
+  };
+
+  get_admin_user_api = () => {
+    return new AdminUserAPI(this.base);
+  };
+
+  get_admin_check_api = () => {
+    return new AdminCheckAPI(this.base);
+  };
 }

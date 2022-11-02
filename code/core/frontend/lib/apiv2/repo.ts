@@ -1,5 +1,7 @@
 import type { ApiBase } from "./base";
 
+// fixme => change this to StoreAPI
+
 export class RepoAPI {
   base: ApiBase;
   constructor(base: ApiBase) {
