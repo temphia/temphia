@@ -88,6 +88,34 @@ export class Navigator {
     this.set(`#/admin/bprint/${bid}/instance/plug/${file}`, opts);
   }
 
+  // plugs
+
+  admin_plugs() {
+    this.set(`#/admin/plug/`);
+  }
+
+  admin_plug_new() {
+    this.set(`#/admin/plug/new`);
+  }
+
+  admin_plug_edit(bid: string) {
+    this.set(`#/admin/plug/edit/${bid}`);
+  }
+
+  // agents
+  
+  admin_agents(pid: string) {
+    this.set(`#/admin/plug/${pid}/agent/`);
+  }
+
+  admin_agent_new(pid: string) {
+    this.set(`#/admin/plug/${pid}/agent/new`);
+  }
+
+  admin_agent_edit(pid: string, aid: string) {
+    this.set(`#/admin/plug/${pid}/agent/${aid}/edit`);
+  }
+
   admin_repos() {
     this.set(`#/admin/repo/`);
   }
@@ -180,37 +208,4 @@ export class Navigator {
   admin_target_hook_new() {
     this.set(`#/admin/target/hook/new`);
   }
-
-  /*
-  
-
-  "/plug": {
-    "/": AdminPlugs,
-    "/:pid": AdminPlug,
-
-  },
-
-  "/user": {
-    "/": AdminUsers,
-    "/:userid": AdminUser,
-  },
-
-  "/ugroup": {
-    "/": AdminUgroups,
-    "/:ugroup": AdminUgroup,
-  },
-  "/lens": {
-    $$component: AdminLens,
-    "/app": AdminLensApp,
-    "/engine": AdminLensEngine,
-    "/site": AdminLensSite,
-  },
-  "/tenant": {
-    "/": AdminTenant,
-    "/edit": AdminTenantEdit,
-    "/domain": AdminTenantDomains,
-    "/domain/:did": AdminTenantDomain,
-  },
-  
-  */
 }

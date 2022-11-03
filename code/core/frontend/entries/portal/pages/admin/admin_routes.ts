@@ -4,6 +4,16 @@ import AdminBprintEditor from "./bprint/editor/editor.svelte";
 import AdminBprintDataInstancer from "./bprint/instancer/data/data.svelte";
 import AdminBprintPlugInstancer from "./bprint/instancer/plug/plug.svelte";
 
+
+// plug
+import AdminPlugs from "./plug/plugs.svelte";
+import AdminPlugNew from "./plug/plug_new.svelte";
+import AdminPlugEdit from "./plug/plug_edit.svelte";
+import AdminAgents from "./plug/agent/agents.svelte"
+import AdminAgentNew from "./plug/agent/agent_new.svelte"
+import AdminAgentEdit from "./plug/agent/agent_edit.svelte"
+
+
 // repo
 import AdminRepos from "./repo/repos.svelte";
 import AdminRepoEdit from "./repo/repo_edit.svelte";
@@ -49,10 +59,6 @@ import AdminTenantDomains from "./tenant/domain/domains.svelte";
 import AdminTenantDomainEdit from "./tenant/domain/domain_edit.svelte";
 import AdminTenantDomainAdd from "./tenant/domain/domain_add.svelte";
 
-// plug
-import AdminPlugs from "./plug/plugs.svelte";
-import AdminPlugAdd from "./plug/plug_add.svelte";
-import AdminPlugEdit from "./plug/plug_edit.svelte";
 
 import AdminTargetApps from "./target/apps.svelte";
 import AdminTargetAppNew from "./target/app_new.svelte";
@@ -71,11 +77,31 @@ export default {
     "/:bid/instance/data/*": AdminBprintDataInstancer,
     "/:bid/instance/plug/*": AdminBprintPlugInstancer,
   },
+
+  "/plug": {
+    "/": AdminPlugs,
+    "/:pid/edit": AdminPlugEdit,
+    "/new": AdminPlugNew,
+    "/:pid/agent": {
+      "/": AdminAgents,
+      "/:aid/edit": AdminAgentEdit,
+      "/new": AdminAgentNew,
+    }
+  },
+
   "/repo": {
     "/": AdminRepos,
     "/:rid/edit": AdminRepoEdit,
     "/new": AdminRepoNew,
   },
+
+  "/resource": {
+    "/": AdminResources,
+    "/:rid/edit": AdminResourceEdit,
+    "/new": AdminResourceNew,
+  },
+
+
 
   "/data": {
     "/": AdminDataLoader,
@@ -89,18 +115,6 @@ export default {
     "/hook/:group/:table/:id": AdminDataHook,
     "/view/:group/:table": AdminDataViews,
     "/view/:group/:table/:id": AdminDataView,
-  },
-
-  "/resource": {
-    "/": AdminResources,
-    "/:rid/edit": AdminResourceEdit,
-    "/new": AdminResourceNew,
-  },
-
-  "/plug": {
-    "/": AdminPlugs,
-    "/:pid/edit": AdminPlugEdit,
-    "/new": AdminPlugAdd,
   },
 
   "/user": {
