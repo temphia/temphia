@@ -11,6 +11,10 @@
   const app = getContext("__app__") as PortalService;
 
   const editor = new Editor(bid, app.api_manager.get_admin_bprint_api());
+
+  editor.load().then(() => {
+    loading = false;
+  });
 </script>
 
 {#if loading}
