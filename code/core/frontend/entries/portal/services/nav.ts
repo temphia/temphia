@@ -140,6 +140,22 @@ export class Navigator {
     this.set(`#/admin/plug/${pid}/agent/${aid}/ext/${eid}/edit`);
   }
 
+  // dev
+  
+  admin_plug_dev_flowmap(pid: string) {
+    this.set(`#/admin/plug/${pid}/dev/flowmap`);
+  }
+  admin_plug_dev_execute(pid: string,aid: string) {
+    this.set(`#/admin/plug/${pid}/dev/execute/${aid}`);
+  }
+  admin_plug_dev_shell(pid: string,aid: string) {
+    this.set(`#/admin/plug/${pid}/dev/shell/${aid}`);
+  }
+  admin_plug_dev_docs(pid: string,aid: string) {
+    this.set(`#/admin/plug/${pid}/dev/docs/${aid}`);
+  }
+
+
   // repo
 
   admin_repos() {

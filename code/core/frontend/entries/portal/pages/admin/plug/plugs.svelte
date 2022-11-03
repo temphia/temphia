@@ -26,9 +26,8 @@
 
   // actions
 
-  const action_execute = (id: string) => {
-    //           app.navigator.iframe_plug_launch(pid, "default");
-  };
+  const action_execute = (id: string) =>
+    app.nav.admin_plug_dev_execute(id, "default");
 
   const action_list_agents = (id: string) => app.nav.admin_agents(id);
   const action_edit = (id: string) => app.nav.admin_plug_edit(id);
@@ -37,13 +36,12 @@
     //           app.navigator.goto_admin_plug_resources(id);
   };
 
-  const action_show_flowmap = (id: string) => {
-    //         app.big_modal_open(Flowmap, { pid: id });
-  };
-  const action_delete = (id: string) => {
-    // const papi = await app.get_apm().get_plug_api();
-    //   await papi.del_plug(pid);
-    //   load();
+  const action_show_flowmap = (id: string) =>
+    app.nav.admin_plug_dev_flowmap(id);
+  const action_delete = async (id: string) => {
+    const papi = app.api_manager.get_admin_plug_api();
+    await papi.delete_plug(id);
+    load();
   };
 
   const action_new = () => {};
