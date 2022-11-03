@@ -72,11 +72,11 @@ import AdminTenantDomainAdd from "./tenant/domain/domain_add.svelte";
 
 import AdminTargetApps from "./target/apps.svelte";
 import AdminTargetAppNew from "./target/app_new.svelte";
-import AdminTargetAppEdit from "./target/app_edit.svelte";
+import AdminTargetAppEdit from "./target/app/app_edit.svelte";
 
 import AdminTargetHooks from "./target/hooks.svelte";
 import AdminTargetHookNew from "./target/hook_new.svelte";
-import AdminTargetHookEdit from "./target/hook_edit.svelte";
+import AdminTargetHookEdit from "./target/hook/hook_edit.svelte";
 
 export default {
   $$component: Admin,
