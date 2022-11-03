@@ -4,15 +4,18 @@ import AdminBprintEditor from "./bprint/editor/editor.svelte";
 import AdminBprintDataInstancer from "./bprint/instancer/data/data.svelte";
 import AdminBprintPlugInstancer from "./bprint/instancer/plug/plug.svelte";
 
-
 // plug
 import AdminPlugs from "./plug/plugs.svelte";
 import AdminPlugNew from "./plug/plug_new.svelte";
 import AdminPlugEdit from "./plug/plug_edit.svelte";
-import AdminAgents from "./plug/agent/agents.svelte"
-import AdminAgentNew from "./plug/agent/agent_new.svelte"
-import AdminAgentEdit from "./plug/agent/agent_edit.svelte"
+import AdminAgents from "./plug/agent/agents.svelte";
+import AdminAgentNew from "./plug/agent/agent_new.svelte";
+import AdminAgentEdit from "./plug/agent/agent_edit.svelte";
 
+import AdminPlugDevDocs from "./plug/dev/docs/docs.svelte";
+import AdminPlugDevExec from "./plug/dev/execute/execute.svelte";
+import AdminPlugDevShell from "./plug/dev/shell/shell.svelte";
+import AdminPlugDevFlowmap from "./plug/dev/flowmap/flowmap.svelte";
 
 // repo
 import AdminRepos from "./repo/repos.svelte";
@@ -59,7 +62,6 @@ import AdminTenantDomains from "./tenant/domain/domains.svelte";
 import AdminTenantDomainEdit from "./tenant/domain/domain_edit.svelte";
 import AdminTenantDomainAdd from "./tenant/domain/domain_add.svelte";
 
-
 import AdminTargetApps from "./target/apps.svelte";
 import AdminTargetAppNew from "./target/app_new.svelte";
 import AdminTargetAppEdit from "./target/app_edit.svelte";
@@ -81,12 +83,19 @@ export default {
   "/plug": {
     "/": AdminPlugs,
     "/:pid/edit": AdminPlugEdit,
+    "/:pid/dev": {
+      "/flowmap": AdminPlugDevFlowmap,
+      "/execute/:aid": AdminPlugDevExec,
+      "/shell/:aid": AdminPlugDevShell,
+      "/docs/:aid": AdminPlugDevDocs,
+    },
+
     "/new": AdminPlugNew,
     "/:pid/agent": {
       "/": AdminAgents,
       "/:aid/edit": AdminAgentEdit,
       "/new": AdminAgentNew,
-    }
+    },
   },
 
   "/repo": {
@@ -100,8 +109,6 @@ export default {
     "/:rid/edit": AdminResourceEdit,
     "/new": AdminResourceNew,
   },
-
-
 
   "/data": {
     "/": AdminDataLoader,

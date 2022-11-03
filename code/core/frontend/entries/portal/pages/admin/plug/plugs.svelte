@@ -29,15 +29,14 @@
   const action_execute = (id: string) => {
     //           app.navigator.iframe_plug_launch(pid, "default");
   };
-  const action_list_agents = (id: string) => {
-    //           app.navigator.goto_admin_agents_page(id);
-  };
-  const action_edit = (id: string) => {
-    //           app.navigator.goto_admin_plug_page(id);
-  };
+
+  const action_list_agents = (id: string) => app.nav.admin_agents(id);
+  const action_edit = (id: string) => app.nav.admin_plug_edit(id);
+
   const action_list_resources = (id: string) => {
     //           app.navigator.goto_admin_plug_resources(id);
   };
+
   const action_show_flowmap = (id: string) => {
     //         app.big_modal_open(Flowmap, { pid: id });
   };
