@@ -6,7 +6,7 @@
   import type { PortalService } from "../../../core";
 
   export let bid: string = $params.bid;
-  export let file: string = $params.file;
+  export let file: string = $params._;
 
   const app: PortalService = getContext("__app__");
 

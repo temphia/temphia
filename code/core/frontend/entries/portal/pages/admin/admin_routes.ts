@@ -68,8 +68,8 @@ export default {
     "/": AdminBprints,
     "/:bid": AdminBprint,
     "/:bid/editor": AdminBprintEditor,
-    "/:bid/instance/data/:file": AdminBprintDataInstancer,
-    "/:bid/instance/plug/:file": AdminBprintPlugInstancer,
+    "/:bid/instance/data/*": AdminBprintDataInstancer,
+    "/:bid/instance/plug/*": AdminBprintPlugInstancer,
   },
   "/repo": {
     "/": AdminRepos,

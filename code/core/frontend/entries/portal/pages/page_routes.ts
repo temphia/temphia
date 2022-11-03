@@ -25,7 +25,7 @@ import NotFound from "./notfound.svelte";
 
 export default {
   "/": Start,
-
+  "/admin": admin_pages,
   "/data": {
     "/": DataLoader,
     "/:source": DataGroups,
@@ -44,7 +44,7 @@ export default {
     "/:source": Repo,
     "/:source/:group/:islug": RepoItem,
   },
-  "/admin": admin_pages,
+
   "/play": Play,
   "/profile": {
     "/self": SelfProfile,
