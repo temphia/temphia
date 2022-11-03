@@ -120,15 +120,15 @@
   }
   modal-small-section {
     position: relative;
-    height: 95vh;
+    min-height: 10rem;
     margin: auto;
     overflow: auto;
-    max-width: 512px;
+    max-width: 40rem;
     background-color: #fff;
     border-radius: 6px;
     display: block;
     padding: 0.5em;
-    max-height: 500px;
-    margin-top: 10px;
+    max-height: 50rem;
+    margin-top: 1rem;
   }
 </style>
