@@ -116,6 +116,32 @@ export class Navigator {
     this.set(`#/admin/plug/${pid}/agent/${aid}/edit`);
   }
 
+  admin_agent_links(pid: string, aid: string) {
+    this.set(`#/admin/plug/${pid}/agent/${aid}/link/`);
+  }
+
+  admin_agent_link_new(pid: string, aid: string) {
+    this.set(`#/admin/plug/${pid}/agent/${aid}/link/new`);
+  }
+
+  admin_agent_link_edit(pid: string, aid: string, lid: string) {
+    this.set(`#/admin/plug/${pid}/agent/${aid}/link/${lid}/edit`);
+  }
+
+  admin_agent_ext(pid: string, aid: string) {
+    this.set(`#/admin/plug/${pid}/agent/${aid}/ext/`);
+  }
+
+  admin_agent_ext_new(pid: string, aid: string) {
+    this.set(`#/admin/plug/${pid}/agent/${aid}/ext/new`);
+  }
+
+  admin_agent_ext_edit(pid: string, aid: string, eid: string) {
+    this.set(`#/admin/plug/${pid}/agent/${aid}/ext/${eid}/edit`);
+  }
+
+  // repo
+
   admin_repos() {
     this.set(`#/admin/repo/`);
   }

@@ -17,6 +17,14 @@ import AdminPlugDevExec from "./plug/dev/execute/execute.svelte";
 import AdminPlugDevShell from "./plug/dev/shell/shell.svelte";
 import AdminPlugDevFlowmap from "./plug/dev/flowmap/flowmap.svelte";
 
+import AdminAgentLinks from "./plug/agent/link/links.svelte";
+import AdminAgentLinkNew from "./plug/agent/link/link_new.svelte";
+import AdminAgentLinkEdit from "./plug/agent/link/link_edit.svelte";
+
+import AdminAgentExtensions from "./plug/agent/extension/extensions.svelte";
+import AdminAgentExtensionNew from "./plug/agent/extension/extension_new.svelte";
+import AdminAgentExtensionEdit from "./plug/agent/extension/extension_edit.svelte";
+
 // repo
 import AdminRepos from "./repo/repos.svelte";
 import AdminRepoEdit from "./repo/repo_edit.svelte";
@@ -95,6 +103,16 @@ export default {
       "/": AdminAgents,
       "/:aid/edit": AdminAgentEdit,
       "/new": AdminAgentNew,
+      "/:aid/link": {
+        "/": AdminAgentLinks,
+        "/new": AdminAgentLinkNew,
+        "/:eid/edit": AdminAgentLinkEdit,
+      },
+      "/:aid/ext": {
+        "/": AdminAgentExtensions,
+        "/new": AdminAgentExtensionNew,
+        "/:eid/edit": AdminAgentExtensionEdit,
+      },
     },
   },
 
