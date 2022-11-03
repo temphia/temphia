@@ -12,7 +12,7 @@ import {
 } from "../../../lib/apiv2/admin";
 import { AdminTargetAPI } from "../../../lib/apiv2/admin/target";
 import { ApiBase } from "../../../lib/apiv2/base";
-import type { SelfLoad } from "./response";
+import type { SelfLoad } from "./stypes";
 
 export class ApiManager {
   base_url: string;
