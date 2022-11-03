@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { PortalService } from "../../core";
-  import { instance_helper } from "./index";
+  import { instance_helper } from "./instance";
 
   export let bid: string;
   export let app: PortalService;

@@ -9,7 +9,7 @@
     FloatingAdd,
     PortalService,
   } from "../core";
-  import { instance_helper } from "./instancer";
+  import { instance_helper } from "./instancer/instance";
 
   let datas = [];
   let loading = true;
