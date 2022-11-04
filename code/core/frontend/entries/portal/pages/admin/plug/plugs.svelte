@@ -44,7 +44,7 @@
     load();
   };
 
-  const action_new = () => {};
+  const action_new = () => app.nav.admin_plug_new();
 </script>
 
 {#if loading}
@@ -100,7 +100,7 @@
       ["owner", "Owner"],
       ["bprint_id", "Bprint Id"],
     ]}
-    color={["executor"]}
+    color={[]}
     {datas}
     show_drop={true}
   />
