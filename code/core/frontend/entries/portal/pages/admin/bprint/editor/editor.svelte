@@ -161,9 +161,9 @@
             </div>
           </li>
           <li>
-            <a
+            <button
               on:click={change_view(MODE_COMMON)}
-              href="#"
+
               class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 {_mode ===
               MODE_COMMON
                 ? 'border-indigo-600'
@@ -185,11 +185,10 @@
                 >
               </span>
               <span class="ml-2 text-sm tracking-wide truncate">Common</span>
-            </a>
+            </button>
           </li>
           <li>
-            <a
-              href="#"
+            <button
               on:click={change_view(MODE_RAW)}
               class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 {_mode ===
               MODE_RAW
@@ -213,11 +212,10 @@
                 </svg>
               </span>
               <span class="ml-2 text-sm tracking-wide truncate">Raw</span>
-            </a>
+            </button>
           </li>
           <li>
-            <a
-              href="#"
+            <button
               on:click={change_view(MODE_SCHEMA)}
               class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 {_mode ===
               MODE_SCHEMA
@@ -243,7 +241,7 @@
               <span class="ml-2 text-sm tracking-wide truncate"
                 >Inline Schema</span
               >
-            </a>
+            </button>
           </li>
           <li class="px-5">
             <div class="flex flex-row items-center h-8">
@@ -255,8 +253,7 @@
 
           {#each $files as file}
             <li>
-              <a
-                href="#"
+              <button
                 on:click={change_view_to_file(file)}
                 class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 {_mode ===
                   MODE_FILE && _current_file === file
@@ -286,7 +283,7 @@
                     >Modified</span
                   >
                 {/if}
-              </a>
+              </button>
             </li>
           {/each}
         </ul>
