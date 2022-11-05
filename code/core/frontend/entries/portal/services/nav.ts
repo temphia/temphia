@@ -116,6 +116,8 @@ export class Navigator {
     this.set(`#/admin/plug/${pid}/agent/${aid}/edit`);
   };
 
+  // agent link
+
   admin_agent_links = (pid: string, aid: string) => {
     this.set(`#/admin/plug/${pid}/agent/${aid}/link/`);
   };
@@ -127,6 +129,8 @@ export class Navigator {
   admin_agent_link_edit = (pid: string, aid: string, lid: string) => {
     this.set(`#/admin/plug/${pid}/agent/${aid}/link/${lid}/edit`);
   };
+
+  // agent ext
 
   admin_agent_ext = (pid: string, aid: string) => {
     this.set(`#/admin/plug/${pid}/agent/${aid}/ext/`);
@@ -169,6 +173,8 @@ export class Navigator {
     this.set(`#/admin/repo/new`);
   };
 
+  // data
+
   admin_data_loader = () => {
     this.set(`#/admin/data/`);
   };
@@ -197,6 +203,8 @@ export class Navigator {
     this.set(`#/admin/data/column/${group}/${table}/${column}`);
   };
 
+  // hooks
+
   admin_data_hooks = (group: string, table: string) => {
     this.set(`#/admin/data/hook/${group}/${table}`);
   };
@@ -205,6 +213,8 @@ export class Navigator {
     this.set(`#/admin/data/hook/${group}/${table}/${id}`);
   };
 
+  // views
+
   admin_data_views = (group: string, table: string) => {
     this.set(`#/admin/data/view/${group}/${table}`);
   };
@@ -212,6 +222,8 @@ export class Navigator {
   admin_data_view = (group: string, table: string, id: string) => {
     this.set(`#/admin/data/view/${group}/${table}/${id}`);
   };
+
+  // resources
 
   admin_resources = () => {
     this.set(`#/admin/resource/`);
@@ -223,6 +235,30 @@ export class Navigator {
 
   admin_resource_new = () => {
     this.set(`#/admin/resource/new`);
+  };
+
+
+  admin_resource_datagroup_new = () => {
+    this.set(`#/admin/resource/rtype/data_group/new`);
+  };
+  admin_resource_datagroup_edit = (rid: string) => {
+    this.set(`#/admin/resource/rtype/data_group/${rid}/edit`);
+  };
+
+  admin_resource_room_new = () => {
+    this.set(`#/admin/resource/rtype/room/new`);
+  };
+
+  admin_resource_room_edit = (rid: string) => {
+    this.set(`#/admin/resource/rtype/room/${rid}/edit`);
+  };
+
+  admin_resource_folder_new = () => {
+    this.set(`#/admin/resource/rtype/folder/new`);
+  };
+  
+  admin_resource_folder_edit = (rid: string) => {
+    this.set(`#/admin/resource/rtype/folder/${rid}/edit`);
   };
 
   // apps

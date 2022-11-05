@@ -49,6 +49,13 @@ import AdminResources from "./resource/resources.svelte";
 import AdminResourceEdit from "./resource/resource_edit.svelte";
 import AdminResourceNew from "./resource/resource_new.svelte";
 
+import AdminResourceDatagroupNew from "./resource/datagroup/datagroup_new.svelte";
+import AdminResourceDatagroupEdit from "./resource/datagroup/datagroup_edit.svelte";
+import AdminResourceFolderNew from "./resource/folder/folder_new.svelte";
+import AdminResourceFolderEdit from "./resource/folder/folder_edit.svelte";
+import AdminResourceRoomNew from "./resource/room/room_new.svelte";
+import AdminResourceRoomEdit from "./resource/room/room_edit.svelte";
+
 // user
 import AdminUsers from "./user/users.svelte";
 import AdminUser from "./user/user.svelte";
@@ -126,6 +133,13 @@ export default {
     "/": AdminResources,
     "/:rid/edit": AdminResourceEdit,
     "/new": AdminResourceNew,
+    
+    "/rtype/data_group/new": AdminResourceDatagroupNew,
+    "/rtype/data_group/:rid/edit": AdminResourceDatagroupEdit,
+    "/rtype/room/new": AdminResourceFolderNew,
+    "/rtype/room/:rid/edit": AdminResourceFolderEdit,
+    "/rtype/folder/new": AdminResourceRoomNew,
+    "/rtype/folder/:rid/edit": AdminResourceRoomEdit,
   },
 
   "/data": {
