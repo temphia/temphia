@@ -87,9 +87,9 @@
                   {#each drop_actions as action}
                     <button
                       on:click={() => {
-                        action.Action(data[action_key]);
+                        action.Action(data[action_key], data);
                       }}
-                      class="flex justify-between rounded-sm block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white"
+                      class="flex justify-between rounded-sm px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white"
                     >
                       {#if action["icon"]}
                         <Icon name={action["icon"]} class="h-5 w-5" />

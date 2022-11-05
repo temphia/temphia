@@ -184,12 +184,12 @@ export default {
     "/app": {
       "/": AdminTargetApps,
       "/new": AdminTargetAppNew,
-      "/:id/edit": AdminTargetAppEdit,
+      "/:ttype/:id/edit": AdminTargetAppEdit,
     },
     "/hook": {
       "/": AdminTargetHooks,
       "/new": AdminTargetHookNew,
-      "/:id/edit": AdminTargetHookEdit,
+      "/:ttype/:id/edit": AdminTargetHookEdit,
     },
   },
 
