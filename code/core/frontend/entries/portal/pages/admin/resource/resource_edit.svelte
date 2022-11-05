@@ -51,15 +51,20 @@
           ftype: "TEXT",
           key_name: "name",
         },
+        // {
+        //   name: "Sub Type",
+        //   ftype: "TEXT",
+        //   key_name: "sub_type",
+        // },
+        // {
+        //   name: "Payload",
+        //   ftype: "LONG_TEXT",
+        //   key_name: "payload",
+        // },
         {
           name: "Type",
           ftype: "TEXT",
           key_name: "type",
-        },
-        {
-          name: "Sub Type",
-          ftype: "TEXT",
-          key_name: "sub_type",
         },
 
         {
@@ -67,13 +72,6 @@
           ftype: "TEXT",
           key_name: "target",
         },
-
-        {
-          name: "Payload",
-          ftype: "LONG_TEXT",
-          key_name: "payload",
-        },
-
         {
           name: "Policy",
           ftype: "TEXT_POLICY",

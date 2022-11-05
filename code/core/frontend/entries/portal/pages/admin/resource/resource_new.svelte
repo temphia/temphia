@@ -26,32 +26,36 @@
         ftype: "TEXT_SLUG",
         key_name: "id",
       },
+
       {
         name: "Name",
         ftype: "TEXT",
         key_name: "name",
       },
+
+      // {
+      //   name: "Payload",
+      //   ftype: "LONG_TEXT",
+      //   key_name: "payload",
+      // },
+
+      // {
+      //   name: "Sub Type",
+      //   ftype: "TEXT",
+      //   key_name: "sub_type",
+      // },
+
       {
         name: "Type",
         ftype: "TEXT",
         key_name: "type",
       },
-      {
-        name: "Sub Type",
-        ftype: "TEXT",
-        key_name: "sub_type",
-      },
+      
 
       {
         name: "Target",
         ftype: "TEXT",
         key_name: "target",
-      },
-
-      {
-        name: "Payload",
-        ftype: "LONG_TEXT",
-        key_name: "payload",
       },
 
       {
