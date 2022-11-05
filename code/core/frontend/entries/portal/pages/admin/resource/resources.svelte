@@ -36,7 +36,7 @@
     load();
   };
   
-  const action_new = () => app.nav.admin_plug_new();
+  const action_new = () => app.nav.admin_resource_new();
 </script>
 
 {#if loading}
