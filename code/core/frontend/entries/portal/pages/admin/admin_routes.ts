@@ -62,7 +62,9 @@ import AdminUser from "./user/user.svelte";
 
 // ugroup
 import AdminUgroups from "./ugroup/ugroups.svelte";
-import AdminUgroup from "./ugroup/ugroup.svelte";
+import AdminUgroupNew from "./ugroup/ugroup_new.svelte";
+import AdminUgroupEdit from "./ugroup/ugroup_edit.svelte";
+
 
 // lens
 import AdminLens from "./lens/lens.svelte";
@@ -156,15 +158,21 @@ export default {
     "/view/:group/:table/:id": AdminDataView,
   },
 
+  "/ugroup": {
+    "/": AdminUgroups,
+    "/new": AdminUgroupNew,
+    "/:ugroup/edit": AdminUgroupEdit,
+    "/:ugroup/user": {
+      "/": null,
+      "/:userid": null
+    },
+  },
+
   "/user": {
     "/": AdminUsers,
     "/:userid": AdminUser,
   },
 
-  "/ugroup": {
-    "/": AdminUgroups,
-    "/:ugroup": AdminUgroup,
-  },
   "/lens": {
     $$component: AdminLens,
     "/app": AdminLensApp,
