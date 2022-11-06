@@ -61,7 +61,7 @@ func New(opts Options) *RootController {
 	egine := deps.Engine().(etypes.Engine)
 
 	return &RootController{
-		cAdmin:   admin.New(pacman, cplane, corehub, signer),
+		cAdmin:   admin.New(pacman, cplane, corehub, signer, dynhub, cab),
 		cAuth:    authed.New(corehub, signer, seq),
 		cBasic:   basic.New(corehub, cab, dynhub, pacman),
 		cCabinet: cabinet.New(cab, signer),

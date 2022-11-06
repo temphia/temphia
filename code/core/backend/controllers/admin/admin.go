@@ -17,14 +17,14 @@ type Controller struct {
 	cabHub store.CabinetHub
 }
 
-func New(pacman repox.Hub, cplane xplane.ControlPlane, coredb store.CoreHub, signer service.Signer) *Controller {
+func New(pacman repox.Hub, cplane xplane.ControlPlane, coredb store.CoreHub, signer service.Signer, dynHub store.DataHub, cabHub store.CabinetHub) *Controller {
 	return &Controller{
 
 		cplane: cplane,
 		coredb: coredb,
 		signer: signer,
 		pacman: pacman,
-		dynHub: nil,
-		cabHub: nil,
+		dynHub: dynHub,
+		cabHub: cabHub,
 	}
 }
