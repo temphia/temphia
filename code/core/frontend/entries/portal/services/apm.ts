@@ -142,10 +142,6 @@ export class SourceCache {
   api_manager: ApiManager;
 
   constructor(apm: ApiManager) {
-    this.cabinet_sources = [];
-    this.data_sources = [];
-    this.repo_sources = [];
-    this.user_plugs = [];
     this.api_manager = apm;
   }
 
