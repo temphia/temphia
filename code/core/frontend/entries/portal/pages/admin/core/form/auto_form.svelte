@@ -12,8 +12,7 @@
   export let message = "";
   export let onSave: (data: any) => Promise<void>;
 
-
-  let mod_data = {}
+  let mod_data = {};
 
   $: console.log(
     `FORM_DEBUG => ${schema.name}`,
@@ -79,9 +78,8 @@
             id="field-{idx}"
             type="text"
             list="field-{idx}-datalist"
-            value={get(field.key_name) || field.slug_gen
-              ? field.slug_gen()
-              : generateId()}
+            value={get(field.key_name) ||
+              (field["slug_gen"] ? field.slug_gen() : generateId())}
             on:change={set(field.key_name)}
             disabled={field.disabled}
             class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200"
