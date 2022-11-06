@@ -10,13 +10,14 @@
   let current_active_key = "";
   let new_key = "";
   let new_value = "";
+  let run = false;
 
   const value_set = (key, newvalue) => {
     modified = true;
+    run = false;
     _data = { ..._data, [key]: newvalue };
   };
 
-  let run = false;
   
   $: if (modified && onChange && !run) {
     onChange(data);
@@ -72,6 +73,7 @@
                   delete _data[key];
                   _data = { ..._data };
                   modified = true;
+                  run = false;
                 }}
               >
                 delete
@@ -104,6 +106,7 @@
                 }
 
                 modified = true;
+                run = false;
                 _data = { ..._data, [new_key]: new_value };
                 new_key = "";
                 new_value = "";

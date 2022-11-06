@@ -12,36 +12,37 @@
   export let message = "";
   export let onSave: (data: any) => Promise<void>;
 
-  const original_data = { ...data }; // for debug;
+
+  let mod_data = {}
 
   $: console.log(
     `FORM_DEBUG => ${schema.name}`,
     "DATA",
-    data,
+    mod_data,
     "ORIGINAL_DATA",
-    original_data,
+    data,
     "SCHEMA",
     schema
   );
 
   const get = (name) => data[name] || "";
   const set = (name) => (ev) => {
-    data = { ...data, [name]: ev.target.value };
+    mod_data = { ...mod_data, [name]: ev.target.value };
     modified = true;
   };
 
   const setNumber = (name) => (ev) => {
-    data = { ...data, [name]: Number(ev.target.value) };
+    mod_data = { ...mod_data, [name]: Number(ev.target.value) };
     modified = true;
   };
 
   const setBool = (name) => (ev) => {
-    data = { ...data, [name]: ev.target.checked };
+    mod_data = { ...mod_data, [name]: ev.target.checked };
     modified = true;
   };
 
   const setMeta = (name) => (_new_meta) => {
-    data = { ...data, [name]: _new_meta };
+    mod_data = { ...mod_data, [name]: _new_meta };
     modified = true;
   };
 </script>
@@ -125,7 +126,7 @@
 
     {#if modified}
       <div class="flex justify-end py-3">
-        <Action name="Save" onClick={() => onSave(data)} />
+        <Action name="Save" onClick={() => onSave(mod_data)} />
       </div>
     {/if}
   </div>
