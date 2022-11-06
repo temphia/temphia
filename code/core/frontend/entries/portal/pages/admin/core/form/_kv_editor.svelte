@@ -16,7 +16,12 @@
     _data = { ..._data, [key]: newvalue };
   };
 
-  $: if (modified && onChange) onChange(data);
+  let run = false;
+  
+  $: if (modified && onChange && !run) {
+    onChange(data);
+    run = true;
+  }
 </script>
 
 <div class="border p-2 shadow rounded">
