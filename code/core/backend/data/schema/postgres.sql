@@ -163,6 +163,9 @@ create table user_messages(
     from_agent text not null default '',
     plug_callback text not null default '',
     warn_level integer not null default 0,
+
+    -- tags text not null default '',
+
     encrypted boolean not null default false,
     created_at timestamptz not null default now(),
     tenant_id text null,
