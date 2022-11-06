@@ -22,9 +22,6 @@ create table tenants(
     name text not null default '',
     org_bio text not null default '',
     
-    root_plug_id text not null default '',
-    root_agent_id text not null default '',
-    root_handler text not null default '',
     default_ugroup text not null default '',
     default_domain text not null default '',
 

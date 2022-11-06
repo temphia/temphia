@@ -35,7 +35,7 @@
       {#if loaded}
         <div class="absolute right-0 p-2">
           <button
-            on:click={() => {}}
+            on:click={() => app.nav.admin_tenant_edit()}
             class="p-1 bg-blue-400 text-white text-sm font-semibold flex rounded hover:scale-110"
           >
             <svg
@@ -87,7 +87,9 @@
 
         <div class="flex-col flex py-3 relative border rounded p-2">
           <div class="absolute right-1">
-            <ActionAddButton onClick={() => {}} />
+            <ActionAddButton
+              onClick={() => app.nav.admin_tenant_domain_new()}
+            />
           </div>
 
           <label class="pb-2 text-gray-700 font-semibold">Domains</label>

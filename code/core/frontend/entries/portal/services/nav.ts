@@ -301,9 +301,29 @@ export class Navigator {
   admin_ugroup_users(ugroup: string) {
     this.set(`#/admin/ugroup/${ugroup}/user/`);
   }
+
   admin_ugroup_user_edit(ugroup: string, user_id: string) {
     this.set(`#/admin/ugroup/${ugroup}/user/${user_id}/edit`);
   }
 
 
+  admin_tenant() {
+    this.set(`#/admin/tenant/`);
+  }
+
+  admin_tenant_edit() {
+    this.set(`#/admin/tenant/edit`);
+  }
+
+  admin_tenant_domains() {
+    this.set(`#/admin/tenant/domain`);
+  }
+
+  admin_tenant_domain_edit(did: string) {
+    this.set(`#/admin/tenant/domain/${did}/edit`);
+  }
+  
+  admin_tenant_domain_new() {
+    this.set(`#/admin/tenant/domain/new`);
+  }
 }
