@@ -19,6 +19,13 @@
 
   export let items = [
     {
+      id: "repo",
+      name: "Repos",
+      icon: StoreIcon,
+      path: "#/admin/repo/",
+    },
+
+    {
       id: "bprint",
       name: "Bluprints",
       icon: BluprintIcon,
@@ -36,6 +43,18 @@
       icon: ResourceIcon,
       path: "#/admin/resource/",
     },
+    {
+      id: "target",
+      name: "Target Apps and Hooks",
+      icon: CodeIcon,
+      path: "#/admin/target/app/",
+    },
+    {
+      id: "lens",
+      name: "lens",
+      icon: SearchIcon,
+      path: "#/admin/lens/app",
+    },
 
     {
       id: "ugroup",
@@ -51,30 +70,10 @@
     },
 
     {
-      id: "target",
-      name: "Target Apps and Hooks",
-      icon: CodeIcon,
-      path: "#/admin/target/app/",
-    },
-
-    {
       id: "data",
       name: "Data Tables",
       icon: GroupIcon,
       path: "#/admin/data/",
-    },
-    {
-      id: "repo",
-      name: "Repos",
-      icon: StoreIcon,
-      path: "#/admin/repo/",
-    },
-
-    {
-      id: "lens",
-      name: "lens",
-      icon: SearchIcon,
-      path: "#/admin/lens/app",
     },
   ];
 
