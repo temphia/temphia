@@ -1,9 +1,10 @@
 <script lang="ts">
   import { getContext } from "svelte";
-
   import { AutoTable, ActionAddButton, PortalService } from "../core";
 
   const app: PortalService = getContext("__app__");
+  const tapi = app.api_manager.get_admin_tenant_api();
+
 
   let domains = [];
 
@@ -11,10 +12,11 @@
   let loaded = false;
 
   const load = async () => {
-    const tapi = app.api_manager.get_admin_tenant_api();
 
     const resp1 = tapi.get();
     const resp2 = tapi.get_domains();
+
+
 
     const [r1, r2] = await Promise.all([resp1, resp2]);
 
@@ -99,14 +101,17 @@
             actions={[
               {
                 Name: "Edit",
-                Action: () => {},
+                Action: (id) => app.nav.admin_tenant_domain_edit(id),
                 icon: "pencil",
               },
               {
                 Name: "Delete",
                 Class: "bg-red-400",
                 icon: "trash",
-                Action: async () => {},
+                Action: async (id) => {
+                  await tapi.delete_domain(id)
+                  load()
+                },
               },
             ]}
             key_names={[
