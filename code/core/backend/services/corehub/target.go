@@ -49,3 +49,7 @@ func (c *CoreHub) GetTargetApp(tenantId, targetType string, id int64) (*entities
 func (c *CoreHub) RemoveTargetApp(tenantId, targetType string, id int64) error {
 	return c.coredb.RemoveTargetApp(tenantId, targetType, id)
 }
+
+func (c *CoreHub) ListTargetAppByUgroup(tenantId, ugroup string) ([]*entities.TargetApp, error) {
+	return c.coredb.ListTargetAppByUgroup(tenantId, ugroup)
+}

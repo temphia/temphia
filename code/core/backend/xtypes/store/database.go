@@ -75,6 +75,8 @@ type TargetOps interface {
 	ListTargetAppByType(tenantId, targetType string) ([]*entities.TargetApp, error)
 	GetTargetApp(tenantId, targetType string, id int64) (*entities.TargetApp, error)
 	RemoveTargetApp(tenantId, targetType string, id int64) error
+
+	ListTargetAppByUgroup(tenantId, ugroup string) ([]*entities.TargetApp, error)
 }
 
 type UserOps interface {

@@ -122,3 +122,20 @@ func (d *DB) targetHookTable() db.Collection {
 func (d *DB) targetAppTable() db.Collection {
 	return d.table("target_apps")
 }
+
+func (d *DB) ListTargetAppByUgroup(tenantId, ugroup string) ([]*entities.TargetApp, error) {
+	ws := make([]*entities.TargetApp, 0)
+
+	err := d.targetAppTable().Find(
+		db.Cond{
+			"tenant_id":   tenantId,
+			"target_type": "user_group",
+			"target":      ugroup,
+		},
+	).All(&ws)
+	if err != nil {
+		return nil, err
+	}
+
+	return ws, nil
+}
