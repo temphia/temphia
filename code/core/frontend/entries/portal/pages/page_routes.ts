@@ -23,6 +23,8 @@ import admin_pages from "./admin/admin_routes";
 import Play from "./play/play.svelte";
 import NotFound from "./notfound.svelte";
 
+import LaunchInstance from "../launcher/instancer.svelte";
+
 export default {
   "/": Start,
   "/admin": admin_pages,
@@ -50,6 +52,8 @@ export default {
     "/self": SelfProfile,
     "/user/:id": UserProfile,
   },
+
+  "/launch/:instance": LaunchInstance,
 
   "*": NotFound,
 };

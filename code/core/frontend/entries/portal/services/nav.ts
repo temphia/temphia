@@ -199,7 +199,12 @@ export class Navigator {
     this.set(`#/admin/data/${source}/column/${group}/${table}`);
   };
 
-  admin_data_column = (source: string, group: string, table: string, column: string) => {
+  admin_data_column = (
+    source: string,
+    group: string,
+    table: string,
+    column: string
+  ) => {
     this.set(`#/admin/data/${source}/column/${group}/${table}/${column}`);
   };
 
@@ -209,7 +214,12 @@ export class Navigator {
     this.set(`#/admin/data/${source}/hook/${group}/${table}`);
   };
 
-  admin_data_hook = (source: string, group: string, table: string, id: string) => {
+  admin_data_hook = (
+    source: string,
+    group: string,
+    table: string,
+    id: string
+  ) => {
     this.set(`#/admin/data/${source}/hook/${group}/${table}/${id}`);
   };
 
@@ -219,12 +229,14 @@ export class Navigator {
     this.set(`#/admin/data/${source}/view/${group}/${table}`);
   };
 
-  admin_data_view = (source: string, group: string, table: string, id: string) => {
+  admin_data_view = (
+    source: string,
+    group: string,
+    table: string,
+    id: string
+  ) => {
     this.set(`#/admin/data/${source}/view/${group}/${table}/${id}`);
   };
-
-
-
 
   // resources
 
@@ -239,7 +251,6 @@ export class Navigator {
   admin_resource_new = () => {
     this.set(`#/admin/resource/new`);
   };
-
 
   admin_resource_datagroup_new = () => {
     this.set(`#/admin/resource/rtype/data_group/new`);
@@ -259,7 +270,7 @@ export class Navigator {
   admin_resource_folder_new = () => {
     this.set(`#/admin/resource/rtype/folder/new`);
   };
-  
+
   admin_resource_folder_edit = (rid: string) => {
     this.set(`#/admin/resource/rtype/folder/${rid}/edit`);
   };
@@ -309,7 +320,6 @@ export class Navigator {
     this.set(`#/admin/ugroup/${ugroup}/user/${user_id}/edit`);
   }
 
-
   admin_tenant() {
     this.set(`#/admin/tenant/`);
   }
@@ -321,8 +331,12 @@ export class Navigator {
   admin_tenant_domain_edit(did: string) {
     this.set(`#/admin/tenant/domain/${did}/edit`);
   }
-  
+
   admin_tenant_domain_new() {
     this.set(`#/admin/tenant/domain/new`);
+  }
+
+  launch_instance(instance: string) {
+    this.set(`#/launch/${instance}`);
   }
 }
