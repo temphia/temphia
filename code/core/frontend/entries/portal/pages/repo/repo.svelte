@@ -14,7 +14,7 @@
   let items = [];
 
   (async () => {
-    sources = await app.api_manager.get_repo_sources();
+    sources = await app.api_manager.cache.get_repo_sources();
     const resp = await rapi.load(current_source);
     if (!resp.ok) {
       return;
