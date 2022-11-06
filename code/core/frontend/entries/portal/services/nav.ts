@@ -315,10 +315,6 @@ export class Navigator {
     this.set(`#/admin/tenant/edit`);
   }
 
-  admin_tenant_domains() {
-    this.set(`#/admin/tenant/domain`);
-  }
-
   admin_tenant_domain_edit(did: string) {
     this.set(`#/admin/tenant/domain/${did}/edit`);
   }

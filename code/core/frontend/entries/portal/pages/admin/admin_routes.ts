@@ -197,7 +197,6 @@ export default {
   "/tenant": {
     "/": AdminTenant,
     "/edit": AdminTenantEdit,
-    "/domain": AdminTenantDomains,
     "/domain/:did/edit": AdminTenantDomainEdit,
     "/domain/new": AdminTenantDomainAdd,
   },
