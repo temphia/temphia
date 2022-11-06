@@ -179,49 +179,52 @@ export class Navigator {
     this.set(`#/admin/data/`);
   };
 
-  admin_data_groups = () => {
-    this.set(`#/admin/data/group`);
+  admin_data_groups = (source: string) => {
+    this.set(`#/admin/data/${source}/group`);
   };
 
-  admin_data_group = (group: string) => {
-    this.set(`#/admin/data/group/${group}`);
+  admin_data_group = (source: string, group: string) => {
+    this.set(`#/admin/data/${source}/group/${group}`);
   };
 
-  admin_data_tables = (group: string) => {
-    this.set(`#/admin/data/table/${group}`);
+  admin_data_tables = (source: string, group: string) => {
+    this.set(`#/admin/data/${source}/table/${group}`);
   };
 
-  admin_data_table = (group: string, table: string) => {
-    this.set(`#/admin/data/table/${group}/${table}`);
+  admin_data_table = (source: string, group: string, table: string) => {
+    this.set(`#/admin/data/${source}/table/${group}/${table}`);
   };
 
-  admin_data_columns = (group: string, table: string) => {
-    this.set(`#/admin/data/column/${group}/${table}`);
+  admin_data_columns = (source: string, group: string, table: string) => {
+    this.set(`#/admin/data/${source}/column/${group}/${table}`);
   };
 
-  admin_data_column = (group: string, table: string, column: string) => {
-    this.set(`#/admin/data/column/${group}/${table}/${column}`);
+  admin_data_column = (source: string, group: string, table: string, column: string) => {
+    this.set(`#/admin/data/${source}/column/${group}/${table}/${column}`);
   };
 
   // hooks
 
-  admin_data_hooks = (group: string, table: string) => {
-    this.set(`#/admin/data/hook/${group}/${table}`);
+  admin_data_hooks = (source: string, group: string, table: string) => {
+    this.set(`#/admin/data/${source}/hook/${group}/${table}`);
   };
 
-  admin_data_hook = (group: string, table: string, id: string) => {
-    this.set(`#/admin/data/hook/${group}/${table}/${id}`);
+  admin_data_hook = (source: string, group: string, table: string, id: string) => {
+    this.set(`#/admin/data/${source}/hook/${group}/${table}/${id}`);
   };
 
   // views
 
-  admin_data_views = (group: string, table: string) => {
-    this.set(`#/admin/data/view/${group}/${table}`);
+  admin_data_views = (source: string, group: string, table: string) => {
+    this.set(`#/admin/data/${source}/view/${group}/${table}`);
   };
 
-  admin_data_view = (group: string, table: string, id: string) => {
-    this.set(`#/admin/data/view/${group}/${table}/${id}`);
+  admin_data_view = (source: string, group: string, table: string, id: string) => {
+    this.set(`#/admin/data/${source}/view/${group}/${table}/${id}`);
   };
+
+
+
 
   // resources
 

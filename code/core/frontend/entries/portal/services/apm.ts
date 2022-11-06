@@ -1,4 +1,7 @@
 import { RepoAPI, SelfAPI } from "../../../lib/apiv2";
+import { AdminTargetAPI } from "../../../lib/apiv2/admin/target";
+import { ApiBase } from "../../../lib/apiv2/base";
+import type { SelfLoad } from "./stypes";
 import {
   AdminBprintAPI,
   AdminCheckAPI,
@@ -10,9 +13,6 @@ import {
   AdminUserAPI,
   AdminUserGroupAPI,
 } from "../../../lib/apiv2/admin";
-import { AdminTargetAPI } from "../../../lib/apiv2/admin/target";
-import { ApiBase } from "../../../lib/apiv2/base";
-import type { SelfLoad } from "./stypes";
 
 export class ApiManager {
   base_url: string;
@@ -22,23 +22,17 @@ export class ApiManager {
   user_token: string;
   session_token: string;
 
-  cabinet_sources: string[];
-  data_sources: string[];
-  repo_sources: { [_: number]: string };
-  user_plugs: object[];
-
   base: ApiBase;
-
   self_api: SelfAPI;
+  cache: SourceCache;
 
   constructor(base_url: string, tenant_id: string, user_token: string) {
     this.base_url = base_url;
     this.api_base_url = `${base_url}/z/api/${tenant_id}/v2`;
     this.tenant_id = tenant_id;
     this.user_token = user_token;
-    this.cabinet_sources = [];
-    this.data_sources = [];
-    this.user_plugs = [];
+
+    this.cache = new SourceCache(this);
   }
 
   async init() {
@@ -81,17 +75,9 @@ export class ApiManager {
 
     const data = resp.data as SelfLoad;
 
+    this.cache.user_plugs = data["plug_apps"] || []
+
     console.log("@data", data);
-  }
-
-  async get_repo_sources() {
-    if (this.repo_sources) {
-      return this.repo_sources;
-    }
-
-    const resp = await this.self_api.list_repo_sources();
-    this.repo_sources = resp.data;
-    return this.repo_sources;
   }
 
   // api
@@ -145,4 +131,68 @@ export class ApiManager {
   get_admin_check_api = () => {
     return new AdminCheckAPI(this.base);
   };
+}
+
+export class SourceCache {
+  cabinet_sources: string[];
+  data_sources: string[];
+  repo_sources: { [_: number]: string };
+  user_plugs: object[];
+
+  api_manager: ApiManager;
+
+  constructor(apm: ApiManager) {
+    this.cabinet_sources = [];
+    this.data_sources = [];
+    this.repo_sources = [];
+    this.user_plugs = [];
+    this.api_manager = apm;
+  }
+
+  async get_repo_sources() {
+    if (this.repo_sources) {
+      return this.repo_sources;
+    }
+    const resp = await this.api_manager.self_api.list_repo_sources();
+    if (!resp.ok) {
+      return [];
+    }
+
+    this.repo_sources = resp.data;
+    return this.repo_sources;
+  }
+
+  async get_cab_sources() {
+    if (this.cabinet_sources) {
+      return this.cabinet_sources;
+    }
+
+    const resp = await this.api_manager.self_api.list_cabinet_sources();
+    if (!resp.ok) {
+      return [];
+    }
+    this.cabinet_sources = resp.data;
+    return this.cabinet_sources;
+  }
+
+  async get_data_sources() {
+    if (this.data_sources) {
+      return this.data_sources;
+    }
+
+    const resp = await this.api_manager.self_api.list_data_sources();
+    if (!resp.ok) {
+      return [];
+    }
+    this.data_sources = resp.data;
+    return this.data_sources;
+  }
+
+  get_user_plugs() {
+    if (this.user_plugs) {
+      return this.user_plugs;
+    }
+
+    return [];
+  }
 }

@@ -146,16 +146,16 @@ export default {
 
   "/data": {
     "/": AdminDataLoader,
-    "/group": AdminDataGroups,
-    "/group/:group": AdminDataGroup,
-    "/table/:group": AdminDataTables,
-    "/table/:group/:table": AdminDataTable,
-    "/column/:group/:table": AdminDataColumns,
-    "/column/:group/:table/:column": AdminDataColumn,
-    "/hook/:group/:table": AdminDataHooks,
-    "/hook/:group/:table/:id": AdminDataHook,
-    "/view/:group/:table": AdminDataViews,
-    "/view/:group/:table/:id": AdminDataView,
+    "/:source/group": AdminDataGroups,
+    "/:source/group/:group": AdminDataGroup,
+    "/:source/table/:group": AdminDataTables,
+    "/:source/table/:group/:table": AdminDataTable,
+    "/:source/column/:group/:table": AdminDataColumns,
+    "/:source/column/:group/:table/:column": AdminDataColumn,
+    "/:source/hook/:group/:table": AdminDataHooks,
+    "/:source/hook/:group/:table/:id": AdminDataHook,
+    "/:source/view/:group/:table": AdminDataViews,
+    "/:source/view/:group/:table/:id": AdminDataView,
   },
 
   "/ugroup": {
