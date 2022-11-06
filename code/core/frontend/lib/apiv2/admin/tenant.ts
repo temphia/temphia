@@ -14,11 +14,16 @@ export class AdminTenantAPI {
     return this.base.get("/admin/tenant/");
   }
 
-  get_domain() {
+  get_domains() {
     return this.base.get("/admin/tenant/domain");
   }
+
   new_domain(data: any) {
     return this.base.post(`/admin/tenant/domain`, data);
+  }
+
+  get_domain(did: string) {
+    return this.base.get(`/admin/tenant/domain/${did}`);
   }
 
   edit_domain(did: string, data: any) {
