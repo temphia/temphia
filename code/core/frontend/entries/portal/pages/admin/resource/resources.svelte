@@ -30,7 +30,7 @@
   const action_edit = (id: string) => app.nav.admin_resource_edit(id);
   const action_delete = async (id: string) => {
     const resp = await api.delete(id);
-    if (resp.ok) {
+    if (!resp.ok) {
       return;
     }
     load();

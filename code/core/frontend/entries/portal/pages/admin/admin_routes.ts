@@ -76,7 +76,6 @@ import AdminLensSite from "./lens/site.svelte";
 // tenant
 import AdminTenant from "./tenant/tenant.svelte";
 import AdminTenantEdit from "./tenant/tenant_edit.svelte";
-import AdminTenantDomains from "./tenant/domain/domains.svelte";
 import AdminTenantDomainEdit from "./tenant/domain/domain_edit.svelte";
 import AdminTenantDomainAdd from "./tenant/domain/domain_add.svelte";
 

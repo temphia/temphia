@@ -31,9 +31,6 @@
   const action_edit = (id: string) => {};
   const action_delete = async (id: string) => {
     const resp = await api.delete(id);
-    if (resp.ok) {
-      return;
-    }
     load();
   };
 

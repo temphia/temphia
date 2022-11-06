@@ -14,7 +14,7 @@
 
   const load = async () => {
     const resp = await api.get(rid);
-    if (resp.ok) {
+    if (!resp.ok) {
       return;
     }
 

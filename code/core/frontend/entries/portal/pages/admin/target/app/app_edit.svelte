@@ -15,7 +15,7 @@
 
   const load = async () => {
     const resp = await api.getApp(ttype, Number(id));
-    if (resp.ok) {
+    if (!resp.ok) {
       return;
     }
 

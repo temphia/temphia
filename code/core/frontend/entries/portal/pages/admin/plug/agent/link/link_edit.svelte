@@ -16,7 +16,7 @@
 
   const load = async () => {
     const resp = await api.get_agent_link(pid, aid, lid);
-    if (resp.ok) {
+    if (!resp.ok) {
       return;
     }
 

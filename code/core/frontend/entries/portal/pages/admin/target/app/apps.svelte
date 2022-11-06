@@ -30,9 +30,6 @@
   const action_edit = (id: string) => app.nav.admin_target_app_edit(Number(id));
   const action_delete = async (id: string, data: object) => {
     const resp = await api.deleteApp(data["target_type"], Number(id));
-    if (resp.ok) {
-      return;
-    }
     load();
   };
 

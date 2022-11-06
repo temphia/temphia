@@ -16,7 +16,7 @@
 
   const load = async () => {
     const resp = await api.get_agent_ext(pid, aid, eid);
-    if (resp.ok) {
+    if (!resp.ok) {
       return;
     }
 
