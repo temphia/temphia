@@ -25,7 +25,7 @@
   load();
 
   const save = async (_data) => {
-    const resp = await api.new(_data);
+    const resp = await api.update(rid, _data);
     if (!resp.ok) {
       message = resp.data;
       return;
@@ -65,6 +65,7 @@
           name: "Type",
           ftype: "TEXT",
           key_name: "type",
+          options: ["datagroup", "folder", "room"],
         },
 
         {

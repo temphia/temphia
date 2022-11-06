@@ -30,6 +30,12 @@
         name: "Target Type",
         ftype: "TEXT",
         key_name: "target_type",
+        options: [
+          "user_app",
+          "auth_app",
+          "domain_widget_app",
+          "domain_editor_app",
+        ],
       },
       {
         name: "Target",

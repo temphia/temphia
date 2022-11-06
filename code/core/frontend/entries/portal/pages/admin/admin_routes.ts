@@ -64,7 +64,8 @@ import AdminUser from "./user/user.svelte";
 import AdminUgroups from "./ugroup/ugroups.svelte";
 import AdminUgroupNew from "./ugroup/ugroup_new.svelte";
 import AdminUgroupEdit from "./ugroup/ugroup_edit.svelte";
-
+import AdminUgroupUsers from "./ugroup/user/users.svelte";
+import AdminUgroupUser from "./ugroup/user/user.svelte";
 
 // lens
 import AdminLens from "./lens/lens.svelte";
@@ -135,7 +136,7 @@ export default {
     "/": AdminResources,
     "/:rid/edit": AdminResourceEdit,
     "/new": AdminResourceNew,
-    
+
     "/rtype/data_group/new": AdminResourceDatagroupNew,
     "/rtype/data_group/:rid/edit": AdminResourceDatagroupEdit,
     "/rtype/room/new": AdminResourceFolderNew,
@@ -163,8 +164,8 @@ export default {
     "/new": AdminUgroupNew,
     "/:ugroup/edit": AdminUgroupEdit,
     "/:ugroup/user": {
-      "/": null,
-      "/:userid": null
+      "/": AdminUgroupUsers,
+      "/:userid/edit": AdminUgroupUser,
     },
   },
 

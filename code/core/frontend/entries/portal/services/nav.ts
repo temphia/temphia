@@ -288,6 +288,22 @@ export class Navigator {
 
   // user
 
+  admin_ugroups() {
+    this.set(`#/admin/ugroup/`);
+  }
+  admin_ugroup_new() {
+    this.set(`#/admin/ugroup/new`);
+  }
+  admin_ugroup_edit(ugroup: string) {
+    this.set(`#/admin/ugroup/${ugroup}/edit`);
+  }
+
+  admin_ugroup_users(ugroup: string) {
+    this.set(`#/admin/ugroup/${ugroup}/user/`);
+  }
+  admin_ugroup_user_edit(ugroup: string, user_id: string) {
+    this.set(`#/admin/ugroup/${ugroup}/user/${user_id}/edit`);
+  }
 
 
 }
