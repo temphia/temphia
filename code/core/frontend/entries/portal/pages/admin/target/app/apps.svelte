@@ -6,6 +6,7 @@
     FloatingAdd,
     PortalService,
   } from "../../core";
+  import TopActions from "../../core/top_actions.svelte";
 
   const app = getContext("__app__") as PortalService;
 
@@ -35,6 +36,13 @@
 
   const action_new = () => app.nav.admin_target_app_new();
 </script>
+
+<TopActions
+  actions={{
+    "Hooks": () => app.nav.admin_target_hooks(),
+  }}
+/>
+
 
 {#if loading}
   <LoadingSpinner />

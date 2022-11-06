@@ -49,6 +49,14 @@
       icon: OrgIcon,
       path: "#/admin/tenant/",
     },
+
+    {
+      id: "target",
+      name: "Target Apps and Hooks",
+      icon: CodeIcon,
+      path: "#/admin/target/app/",
+    },
+
     {
       id: "data",
       name: "Data Tables",
