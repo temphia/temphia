@@ -1,6 +1,7 @@
 import { writable, Writable } from "svelte/store";
 import type { SiteUtils } from "../../../lib/utils/site";
 import { ApiManager } from "./apm";
+import { Launcher } from "./launcher";
 import { Navigator } from "./nav";
 import { Notifier } from "./notifier";
 
@@ -28,7 +29,8 @@ export class PortalService {
 
   notifier: Notifier;
   utils: Utils;
-  launcher_active: Writable<boolean>;
+
+  launcher: Launcher;
 
   constructor(opts: AppOptions) {
     this.options = opts;
@@ -38,7 +40,7 @@ export class PortalService {
       opts.tenant_id,
       opts.user_token
     );
-    this.launcher_active = writable(false);
+    this.launcher = new Launcher();
   }
 
   async init() {

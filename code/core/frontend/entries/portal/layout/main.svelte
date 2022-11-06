@@ -1,7 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
   import SvelteTooltip from "svelte-tooltip";
-  import type { Writable } from "svelte/store";
   import {
     AdminIcon,
     FolderIcon,
@@ -15,9 +14,10 @@
 
   import Logo from "../../xcompo/svg/logo.svelte";
   import LaunchPlane from "../launcher/launch_plane.svelte";
+  import type { Launcher } from "../services/launcher";
 
   export let pending_notification = false;
-  export let launcher_store: Writable<boolean>;
+  export let launcher: Launcher;
 
   const route_links: [any, string, string][] = [
     [HomeIcon, "start", "#/"],
@@ -254,7 +254,7 @@
   {/if}
 
   <div class="h-screen overflow-auto tx-main">
-    <LaunchPlane store={launcher_store} />
+    <LaunchPlane {launcher} />
 
     {#if !__laucher_active}
       <slot />

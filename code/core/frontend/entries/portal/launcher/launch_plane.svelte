@@ -1,17 +1,26 @@
 <script lang="ts">
-  import type { Writable } from "svelte/store";
+  import type { Launcher } from "../services/launcher";
 
-  export let store: Writable<boolean>;
+  export let launcher: Launcher;
 
-  $: console.log("#STORE", $store);
-
-  // let display_state: Writable<"HIDDEN" | "FLOATING" | "NOT_FLOATING"> =
-  //   writable("HIDDEN");
+  const display_state = launcher.display_state;
 </script>
 
-<div style="display: {$store ? 'block' : 'none'};">Launch Plane</div>
+<div
+  class={$display_state === "HIDDEN"
+    ? "hidden"
+    : $display_state === "FLOATING"
+    ? "floating"
+    : "not-floating"}
+>
+  <iframe
+    title="test"
+    class="border border-red-600 w-full h-full"
+    src="http://www.example.com/"
+  />
+</div>
 
-<!-- <style>
+<style>
   .hidden {
     display: none;
     width: 0px;
@@ -23,6 +32,7 @@
     position: fixed;
     width: 90vw;
     height: 90vh;
+    z-index: 1000;
   }
 
   .not-floating {
@@ -30,4 +40,4 @@
     width: 90vw;
     height: 90vh;
   }
-</style> -->
+</style>
