@@ -51,6 +51,8 @@ func New(conf *config.Config, dev, singleTenantMode bool) App {
 
 	app := builder.GetApp()
 
+	sbuilder.Inject(app)
+
 	return App{
 		App:     app,
 		CoreHub: app.GetDeps().CoreHub().(store.CoreHub),

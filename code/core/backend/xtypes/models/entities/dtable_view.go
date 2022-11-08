@@ -9,7 +9,7 @@ type DataView struct {
 	Id          int64       `json:"id,omitempty" db:"id,omitempty"`
 	Name        string      `json:"name,omitempty" db:"name,omitempty"`
 	Count       int64       `json:"count,omitempty" db:"count"`
-	FilterConds FilterConds `json:"filter_conds,omitempty" db:"filter_conds"` // fixme => ?
+	FilterConds FilterConds `json:"filter_conds,omitempty" db:"filter_conds,omitempty"`
 	Selects     []string    `json:"selects,omitempty" db:"selects"`
 	MainColumn  string      `json:"main_column,omitempty" db:"main_column"`
 	SearchTerm  string      `json:"search_term,omitempty" db:"search_term"`

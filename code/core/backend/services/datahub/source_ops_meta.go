@@ -19,9 +19,7 @@ type dynSource struct {
 }
 
 func (d *dynSource) dynDB() store.DynDB {
-
-	pp.Println(d.source, d.tenantId)
-
+	pp.Println("OPERATING ON source/tenant |> ", d.source, d.tenantId)
 	return d.hub.dyndbs[d.source]
 }
 

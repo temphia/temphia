@@ -23,6 +23,7 @@ func New(dyns map[string]store.DynDB) *DataHub {
 		eventHub: nil,
 		sockdhub: nil,
 		engine:   nil,
+		corehub:  nil,
 	}
 }
 
@@ -47,14 +48,21 @@ func (s *DataHub) GetSource(source, tenant string) store.DynSource {
 
 func (s *DataHub) DefaultSource(tenant string) store.DynSource {
 
+	// fixme => cache this
+
 	tdata, err := s.corehub.GetTenant(tenant)
 	if err != nil {
 		panic(err)
 	}
 
+	source := "default"
+	if tdata.DefaultDSource != "" {
+		source = tdata.DefaultDSource
+	}
+
 	return &dynSource{
 		hub:      s,
-		source:   tdata.DefaultDSource,
+		source:   source,
 		tenantId: tenant,
 	}
 }
