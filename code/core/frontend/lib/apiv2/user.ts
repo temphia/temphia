@@ -14,7 +14,7 @@ export class UserAPI {
     return this.base.get(`/user/${id}`);
   }
 
-  post(id: string, data: any) {
-    return this.base.post(`/user/${id}`, data);
+  message(id: string, data: any) {
+    return this.base.post(`/user/${id}/message`, data);
   }
 }

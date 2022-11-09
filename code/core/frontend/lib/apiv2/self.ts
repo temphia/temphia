@@ -26,6 +26,14 @@ export class SelfAPI {
     return this.base.get("/self/load");
   }
 
+  self() {
+    return this.base.get("/self/self");
+  }
+
+  self_update(data: any) {
+    return this.base.post("/self/self", data);
+  }
+
   sessions() {
     return this.base.get("/self/session");
   }
@@ -42,4 +50,3 @@ export class SelfAPI {
     return this.base.post("/self/message", data);
   }
 }
-

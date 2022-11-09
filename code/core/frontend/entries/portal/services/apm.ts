@@ -1,4 +1,4 @@
-import { RepoAPI, SelfAPI } from "../../../lib/apiv2";
+import { RepoAPI, SelfAPI, UserAPI } from "../../../lib/apiv2";
 import { AdminTargetAPI } from "../../../lib/apiv2/admin/target";
 import { ApiBase } from "../../../lib/apiv2/base";
 import type { SelfLoad } from "./stypes";
@@ -83,7 +83,7 @@ export class ApiManager {
   // api
 
   get_self_api() {
-    this.self_api;
+    return this.self_api;
   }
 
   get_repo_api = () => {
@@ -130,6 +130,12 @@ export class ApiManager {
 
   get_admin_check_api = () => {
     return new AdminCheckAPI(this.base);
+  };
+
+  // other api
+
+  get_user_api = () => {
+    return new UserAPI(this.base);
   };
 }
 

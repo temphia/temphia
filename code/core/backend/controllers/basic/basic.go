@@ -46,6 +46,15 @@ func (c *Controller) JoinNotification() error {
 	return nil
 }
 
+func (c *Controller) Self(uclaim *claim.Session) (*entities.User, error) {
+	return c.coredb.GetUserByID(uclaim.TenentId, uclaim.UserID)
+}
+
+func (c *Controller) SelfUpdate(uclaim *claim.Session) error {
+	// fixme =>
+	return nil
+}
+
 func (c *Controller) GetSelfInfo(uclaim *claim.Session) (*entities.SelfLoad, error) {
 	usr, err := c.coredb.GetUserByID(uclaim.TenentId, uclaim.UserID)
 	if err != nil {

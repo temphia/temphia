@@ -20,6 +20,8 @@ func (s *Server) selfAPI(rg *gin.RouterGroup) {
 	rg.POST("/email/change", s.X(s.selfChangeEmail))
 	rg.GET("/message", s.X(s.selfListMessages))
 	rg.POST("/message", s.X(s.selfModifyMessages))
+	rg.GET("/self", s.X(s.self))
+	rg.POST("/self", s.X(s.selfUpdate))
 
 	rg.POST("/issue/folder", s.X(s.issueFolderTkt))
 
@@ -34,6 +36,16 @@ func (s *Server) cabinetSources(ctx httpx.Request) {
 func (s *Server) dtableSources(ctx httpx.Request) {
 	sources, err := s.cBasic.ListDyndbSources(ctx.Session)
 	httpx.WriteJSON(ctx.Http, sources, err)
+}
+
+func (s *Server) self(ctx httpx.Request) {
+	resp, err := s.cBasic.Self(ctx.Session)
+	httpx.WriteJSON(ctx.Http, resp, err)
+}
+
+func (s *Server) selfUpdate(ctx httpx.Request) {
+	err := s.cBasic.SelfUpdate(ctx.Session)
+	httpx.WriteJSON(ctx.Http, nil, err)
 }
 
 func (s *Server) selfGetInfo(ctx httpx.Request) {

@@ -10,7 +10,7 @@ import (
 func (s *Server) userAPI(rg *gin.RouterGroup) {
 	rg.GET("/", s.X(s.userList))
 	rg.GET("/:id", s.X(s.userGet))
-	rg.POST("/:id", s.X(s.userMessage))
+	rg.POST("/:id/message", s.X(s.userMessage))
 }
 
 func (s *Server) userMessage(ctx httpx.Request) {
@@ -28,7 +28,7 @@ func (s *Server) userMessage(ctx httpx.Request) {
 func (s *Server) userGet(ctx httpx.Request) {
 	resp, err := s.cUser.Get(
 		ctx.Session,
-		ctx.MustParam("user"),
+		ctx.MustParam("id"),
 	)
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
