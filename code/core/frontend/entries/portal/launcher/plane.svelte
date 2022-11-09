@@ -51,11 +51,15 @@
     </div>
   </div>
 
-  <iframe
+  <div class="border border-red-600 w-full" style="height: calc(100vh - 2.75rem);">
+    <iframe
     title="test"
-    class="border border-red-600 w-full h-full"
+    class="w-full h-full"
     src="http://www.example.com/"
   />
+  </div>
+
+
 </div>
 
 <style>
