@@ -57,17 +57,17 @@ func (a *ApiAdmin) EditGroup(ctx httpx.Request) {
 		a.rutil.WriteErr(ctx.Http, err.Error())
 		return
 	}
-	err = a.cAdmin.EditGroup(ctx.Session, ctx.Http.Param("source"), ctx.Http.Param("group_id"), tg)
+	err = a.cAdmin.EditGroup(ctx.Session, ctx.MustParam("source"), ctx.MustParam("gid"), tg)
 	a.rutil.WriteFinal(ctx.Http, err)
 }
 
 func (a *ApiAdmin) GetGroup(ctx httpx.Request) {
-	resp, err := a.cAdmin.GetGroup(ctx.Session, ctx.Http.Param("source"), ctx.Http.Param("group_id"))
+	resp, err := a.cAdmin.GetGroup(ctx.Session, ctx.MustParam("source"), ctx.MustParam("gid"))
 	a.rutil.WriteJSON(ctx.Http, resp, err)
 }
 
 func (a *ApiAdmin) ListGroup(ctx httpx.Request) {
-	gr, err := a.cAdmin.ListGroup(ctx.Session, ctx.Http.Param("source"))
+	gr, err := a.cAdmin.ListGroup(ctx.Session, ctx.MustParam("source"))
 	if err != nil {
 		a.rutil.WriteErr(ctx.Http, err.Error())
 		return
@@ -76,7 +76,7 @@ func (a *ApiAdmin) ListGroup(ctx httpx.Request) {
 }
 
 func (a *ApiAdmin) DeleteGroup(ctx httpx.Request) {
-	err := a.cAdmin.DeleteGroup(ctx.Session, ctx.Http.Param("source"), ctx.Http.Param("group_id"))
+	err := a.cAdmin.DeleteGroup(ctx.Session, ctx.MustParam("source"), ctx.MustParam("gid"))
 	a.rutil.WriteFinal(ctx.Http, err)
 
 }
