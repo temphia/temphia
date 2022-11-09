@@ -40,6 +40,8 @@ import AdminDataColumns from "./data/column/columns.svelte";
 import AdminDataColumn from "./data/column/column.svelte";
 import AdminDataHook from "./data/hook/hook.svelte";
 import AdminDataHooks from "./data/hook/hooks.svelte";
+import AdminDataApp from "./data/app/app.svelte";
+import AdminDataApps from "./data/app/apps.svelte";
 import AdminDataView from "./data/view/view.svelte";
 import AdminDataViews from "./data/view/views.svelte";
 import Admin from "./admin.svelte";
@@ -154,6 +156,8 @@ export default {
     "/:source/column/:group/:table/:column": AdminDataColumn,
     "/:source/hook/:group/:table": AdminDataHooks,
     "/:source/hook/:group/:table/:id": AdminDataHook,
+    "/:source/app/:group/:table": AdminDataApps,
+    "/:source/app/:group/:table/:id": AdminDataApp,
     "/:source/view/:group/:table": AdminDataViews,
     "/:source/view/:group/:table/:id": AdminDataView,
   },

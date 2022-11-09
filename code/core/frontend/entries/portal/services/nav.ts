@@ -19,6 +19,8 @@ export class Navigator {
     this.set(`#/launch/${name}`);
   };
 
+  // data
+
   data_loader = () => {
     this.set(`#/data/`);
   };
@@ -27,9 +29,15 @@ export class Navigator {
     this.set(`#/data/${source}`);
   };
 
-  data_table(source: string, dgroup: string) {
+  data_group(source: string, dgroup: string) {
     this.set(`#/data/${source}/${dgroup}`);
   }
+
+  data_table(source: string, dgroup: string, table: string) {
+    this.set(`#/data/${source}/${dgroup}/${table}`);
+  }
+
+  // cab
 
   cab_loader = (source: string) => {
     this.set(`#/cabinet/${source}`);
@@ -223,6 +231,18 @@ export class Navigator {
     this.set(`#/admin/data/${source}/hook/${group}/${table}/${id}`);
   };
 
+  admin_data_apps = (source: string, group: string, table: string) => {
+    this.set(`#/admin/data/${source}/app/${group}/${table}`);
+  };
+
+  admin_data_app = (
+    source: string,
+    group: string,
+    table: string,
+    id: string
+  ) => {
+    this.set(`#/admin/data/${source}/app/${group}/${table}/${id}`);
+  };
   // views
 
   admin_data_views = (source: string, group: string, table: string) => {
