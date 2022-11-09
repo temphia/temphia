@@ -34,7 +34,7 @@
     load();
   };
 
-  const action_new = () => app.nav.admin_ugroup_new()
+  const action_new = () => app.nav.admin_ugroup_new();
 </script>
 
 <TopActions
@@ -49,6 +49,13 @@
   <AutoTable
     action_key="id"
     actions={[
+      {
+        Name: "Explore",
+        Class: "bg-green-400",
+        Action: () => {},
+        icon: "book-open",
+      },
+
       {
         Name: "Edit",
         Action: action_edit,

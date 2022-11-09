@@ -18,6 +18,10 @@ export class AdminDataAPI {
     return this.base.get(`/admin/data/${source}/${gid}`);
   }
 
+  edit_group(source: string, gid: string, data: any) {
+    return this.base.post(`/admin/data/${source}/${gid}`, data);
+  }
+
   delete_group(source: string, gid: string) {
     return this.base.delete(`/admin/data/${source}/${gid}`);
   }
