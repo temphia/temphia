@@ -30,7 +30,8 @@
 
   // actions
 
-  const action_edit = (id: string) => {};
+  const action_edit = (id: string) => app.nav.admin_data_group(source, id);
+  const action_explore = (id: string) => app.nav.admin_data_tables(source, id);
   const action_delete = async (id: string) => {};
   const action_new = () => {};
 </script>
@@ -39,12 +40,18 @@
   <LoadingSpinner />
 {:else}
   <AutoTable
-    action_key="id"
+    action_key="slug"
     actions={[
       {
         Name: "Edit",
         Action: action_edit,
         icon: "pencil-alt",
+      },
+      {
+        Class: "bg-green-400",
+        Name: "explore",
+        icon: "book-open",
+        Action: action_explore,
       },
       {
         Name: "Delete",

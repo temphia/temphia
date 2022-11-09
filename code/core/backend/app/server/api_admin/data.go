@@ -9,8 +9,8 @@ import (
 
 func (a *ApiAdmin) dataAPI(rg *gin.RouterGroup) {
 
-	rg.GET("/:source", a.X(a.ListGroup))
-	rg.POST("/:source/", a.X(a.NewGroup))
+	rg.GET("/:source/group", a.X(a.ListGroup))
+	rg.POST("/:source/group", a.X(a.NewGroup))
 	rg.PATCH("/:source/group/:gid", a.X(a.EditGroup))
 	rg.GET("/:source/group/:gid", a.X(a.GetGroup))
 	rg.DELETE("/:source/group/:gid", a.X(a.DeleteGroup))
