@@ -7,7 +7,7 @@
   let sources;
 
   (async () => {
-    sources = await app.api_manager.cache.get_repo_sources();
+    sources = await app.api_manager.self_data.get_repo_sources();
     app.nav.repo_source(Object.entries(sources)[0][0]);
   })();
 </script>

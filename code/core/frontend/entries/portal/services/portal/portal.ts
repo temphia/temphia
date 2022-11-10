@@ -1,7 +1,7 @@
 import { writable, Writable } from "svelte/store";
-import type { SiteUtils } from "../../../lib/utils/site";
+import type { SiteUtils } from "../../../../lib/utils/site";
 import { ApiManager } from "./apm";
-import { Launcher } from "./launcher";
+import { Launcher } from "../engine/launcher";
 import { Navigator } from "./nav";
 import { Notifier } from "./notifier";
 

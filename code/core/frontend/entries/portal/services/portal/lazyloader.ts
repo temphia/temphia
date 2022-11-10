@@ -1,4 +1,4 @@
-import { Sockd } from "../../../lib/sockd";
+import { Sockd } from "../../../../lib/sockd";
 
 export const sockd_load = async (url: string, handler: any): Promise<Sockd> => {
   const sockd = new Sockd({

@@ -1,5 +1,5 @@
 import { writable, Writable } from "svelte/store";
-import type { SelfAPI } from "../../../lib/apiv2";
+import type { SelfAPI } from "../../../../lib/apiv2";
 
 export interface State {
   messages: object[];

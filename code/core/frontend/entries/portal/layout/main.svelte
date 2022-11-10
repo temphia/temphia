@@ -14,7 +14,7 @@
 
   import Logo from "../../xcompo/svg/logo.svelte";
   import LaunchPlane from "../launcher/plane.svelte";
-  import type { Launcher } from "../services/launcher";
+  import type { Launcher } from "../services/engine/launcher";
 
   export let pending_notification = false;
   export let launcher: Launcher;

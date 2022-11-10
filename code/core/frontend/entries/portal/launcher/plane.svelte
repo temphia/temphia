@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Launcher } from "../services/launcher";
+  import type { Launcher } from "../services/engine/launcher";
 
   export let launcher: Launcher;
 

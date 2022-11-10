@@ -1,4 +1,4 @@
-import { SiteUtils, baseURL } from "../../../lib/utils/site";
+import { SiteUtils, baseURL } from "../../../../lib/utils/site";
 import { PortalService } from "./portal";
 
 const build = () => {

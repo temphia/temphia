@@ -1,7 +1,8 @@
-import { DataAPI, RepoAPI, SelfAPI, UserAPI } from "../../../lib/apiv2";
-import { AdminTargetAPI } from "../../../lib/apiv2/admin/target";
-import { ApiBase } from "../../../lib/apiv2/base";
+import { DataAPI, RepoAPI, SelfAPI, UserAPI } from "../../../../lib/apiv2";
+import { AdminTargetAPI } from "../../../../lib/apiv2/admin/target";
+import { ApiBase } from "../../../../lib/apiv2/base";
 import type { SelfLoad } from "./stypes";
+
 import {
   AdminBprintAPI,
   AdminCheckAPI,
@@ -12,7 +13,7 @@ import {
   AdminTenantAPI,
   AdminUserAPI,
   AdminUserGroupAPI,
-} from "../../../lib/apiv2/admin";
+} from "../../../../lib/apiv2/admin";
 
 export class ApiManager {
   base_url: string;
@@ -24,15 +25,13 @@ export class ApiManager {
 
   base: ApiBase;
   self_api: SelfAPI;
-  cache: SourceCache;
+  self_data: SelfData;
 
   constructor(base_url: string, tenant_id: string, user_token: string) {
     this.base_url = base_url;
     this.api_base_url = `${base_url}/z/api/${tenant_id}/v2`;
     this.tenant_id = tenant_id;
     this.user_token = user_token;
-
-    this.cache = new SourceCache(this);
   }
 
   async init() {
@@ -72,12 +71,7 @@ export class ApiManager {
       console.log("@ERR", resp);
       return;
     }
-
-    const data = resp.data as SelfLoad;
-
-    this.cache.user_plugs = data["plug_apps"] || [];
-
-    console.log("@data", data);
+    this.self_data = new SelfData(this, resp.data as SelfLoad);
   }
 
   // api
@@ -149,7 +143,7 @@ export class ApiManager {
   };
 }
 
-export class SourceCache {
+export class SelfData {
   cabinet_sources: string[];
   data_sources: string[];
   repo_sources: { [_: number]: string };
@@ -157,8 +151,9 @@ export class SourceCache {
 
   api_manager: ApiManager;
 
-  constructor(apm: ApiManager) {
+  constructor(apm: ApiManager, data: SelfLoad) {
     this.api_manager = apm;
+    this.user_plugs = data["plug_apps"] || [];
   }
 
   async get_repo_sources() {
