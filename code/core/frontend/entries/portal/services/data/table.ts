@@ -26,7 +26,7 @@ export class TableService {
   }
 
   apply_remote_changes = () => {};
-  poll = () => {};
+  poll = async () => {};
 }
 
 export class TableState {
