@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
@@ -198,6 +199,8 @@ func (s *Server) DataX(fn func(uclaim *claim.Data, ctx *gin.Context)) func(*gin.
 		if err != nil {
 			return
 		}
+
+		pp.Println(uclaim)
 
 		fn(uclaim, ctx)
 	}

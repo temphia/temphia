@@ -1,6 +1,7 @@
 package data
 
 import (
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
@@ -39,6 +40,8 @@ func (d *Controller) IssueDataClaim(uclaim *claim.Session, source string, group 
 		DataTables: []string{"*"},
 		IsExec:     false,
 	}
+
+	pp.Println("DATA_CLAIM =>", dc)
 
 	return d.signer.SignData(uclaim.TenentId, &dc)
 }

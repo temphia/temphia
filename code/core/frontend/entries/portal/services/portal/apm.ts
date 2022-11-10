@@ -89,11 +89,16 @@ export class ApiManager {
   };
 
   get_data_api = async (source: string, group: string) => {
-    const resp = await this.self_api.issue_data({
-      source,
-      group,
-    });
+    const data = {
+      source: source,
+      group: group,
+    };
+
+    console.log("##", data)
+
+    const resp = await this.self_api.issue_data(data);
     if (!resp.ok) {
+      console.log("@@err", resp);
       return;
     }
 

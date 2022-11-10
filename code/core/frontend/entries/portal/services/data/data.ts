@@ -27,15 +27,17 @@ export class DataService {
       this.current_group.source === source &&
       this.current_group.name === group
     ) {
-      return;
+      return this.current_group;
     }
+    await this.current_group.close();
+    return this.create_group(source, group);
   };
 
   private create_group = async (source: string, group: string) => {
     const data_api = await this.apm.get_data_api(source, group);
     if (!data_api) {
-      console.log("BIG ERR")
-      return
+      console.log("BIG ERR");
+      return;
     }
 
     const group_svc = new GroupService({

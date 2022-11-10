@@ -7,34 +7,41 @@ export class GroupService {
   api: DataAPI;
 
   tables: object[];
+  cabinet_ticket: string;
+
+  /*
+  
+  fixme
+    - sockd  
+  */ 
+
 
   constructor(opts: { source: string; name: string; api: DataAPI }) {
     this.source = opts.source;
     this.name = opts.name;
     this.api = opts.api;
+    this.tables = [];
   }
 
-  init = async (table?: string) => {
+  init = async () => {
     const resp = await this.api.load();
     if (!resp.ok) {
+      console.log("GROUP_SERVICE_INIT_ERR", resp);
       return;
     }
 
-    this.tables = resp.data;
-
-    console.log("TABLES", this.tables)
-
-    if (!table) {
-      table = this.tables[0]["slug"];
-    }
-    if (!table) {
-      return;
-    }
+    this.tables = resp.data["tables"] || [];
+    this.cabinet_ticket = resp.data["cabinet_ticket"] || "";
   };
 
-  default_table() {
-    return this.tables[0]["slug"];
+  default_table = () => {
+    return this.tables[0]["slug"] || undefined;
   }
+
+  table_service = () => {
+
+  }
+
 
   run = async () => {
     console.log("Starting event loop");

@@ -5,17 +5,28 @@
   import { LoadingSpinner } from "../admin/core";
 
   export let source = $params.source;
-  export let group = $params.group;
+  export let group = $params.dgroup;
 
   const app: PortalService = getContext("__app__");
+
+  let loading = true;
 
   const load = async () => {
     const ds = await app.get_data_service();
     const gs = await ds.group_service(source, group);
-    app.nav.data_table(source, group, gs.default_table());
+
+    const table = gs.default_table();
+    if (!table) {
+      loading = false;
+    }
+    app.nav.data_table(source, group, table);
   };
 
   load();
 </script>
 
-<LoadingSpinner />
+{#if loading}
+  <LoadingSpinner />
+{:else}
+  <div>Create New</div>
+{/if}

@@ -118,7 +118,7 @@ func (s *Server) issueFolderTkt(ctx httpx.Request) {
 }
 
 type DataIssueRequest struct {
-	Source string `json:"string,omitempty"`
+	Source string `json:"source,omitempty"`
 	Group  string `json:"group,omitempty"`
 }
 
@@ -131,9 +131,10 @@ func (s *Server) issueDataTkt(ctx httpx.Request) {
 		return
 	}
 
-	resp, err := s.cCabinet.NewFolderTicket(
+	resp, err := s.cData.IssueDataClaim(
 		ctx.Session,
-		ctx.Http.Param("folder"),
+		req.Source,
+		req.Group,
 	)
 
 	httpx.WriteJSON(ctx.Http, gin.H{"data_token": resp}, err)

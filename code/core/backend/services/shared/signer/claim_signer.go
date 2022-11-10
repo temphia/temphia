@@ -198,6 +198,8 @@ func (cs *ClaimSigner) ParseData(tenantId, payload string) (*claim.Data, error) 
 		return nil, err
 	}
 
+	data.TenentId = tenantId
+
 	return data, nil
 }
 

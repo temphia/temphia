@@ -5,8 +5,8 @@
   import { LoadingSpinner } from "../admin/core";
 
   export let source = $params.source;
-  export let group = $params.group;
-  export let table = $params.table;
+  export let group = $params.dgroup;
+  export let table = $params.dtable;
 
   const app: PortalService = getContext("__app__");
 
