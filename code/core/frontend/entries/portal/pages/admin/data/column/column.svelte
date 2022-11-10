@@ -33,7 +33,7 @@
       message = resp.data;
       return;
     }
-    app.nav.admin_data_columns(source, group, column);
+    app.nav.admin_data_columns(source, group, table);
   };
 </script>
 
@@ -127,7 +127,7 @@
           key_name: "extra_meta",
         },
       ],
-      name: "Edit User Group",
+      name: "Edit Column",
       required_fields: [],
     }}
     onSave={save}

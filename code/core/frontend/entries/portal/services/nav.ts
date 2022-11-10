@@ -249,13 +249,17 @@ export class Navigator {
     this.set(`#/admin/data/${source}/view/${group}/${table}`);
   };
 
-  admin_data_view = (
+  admin_data_view_new = (source: string,group: string,table: string) => {
+    this.set(`#/admin/data/${source}/view/${group}/${table}/new`);
+  };
+
+  admin_data_view_edit = (
     source: string,
     group: string,
     table: string,
     id: string
   ) => {
-    this.set(`#/admin/data/${source}/view/${group}/${table}/${id}`);
+    this.set(`#/admin/data/${source}/view/${group}/${table}/${id}/edit`);
   };
 
   // resources

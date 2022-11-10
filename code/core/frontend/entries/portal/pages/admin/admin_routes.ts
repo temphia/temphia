@@ -42,8 +42,10 @@ import AdminDataHook from "./data/hook/hook.svelte";
 import AdminDataHooks from "./data/hook/hooks.svelte";
 import AdminDataApp from "./data/app/app.svelte";
 import AdminDataApps from "./data/app/apps.svelte";
-import AdminDataView from "./data/view/view.svelte";
+
 import AdminDataViews from "./data/view/views.svelte";
+import AdminDataViewNew from "./data/view/view_new.svelte";
+import AdminDataViewEdit from "./data/view/view_edit.svelte";
 import Admin from "./admin.svelte";
 
 // resource
@@ -159,7 +161,8 @@ export default {
     "/:source/app/:group/:table": AdminDataApps,
     "/:source/app/:group/:table/:id": AdminDataApp,
     "/:source/view/:group/:table": AdminDataViews,
-    "/:source/view/:group/:table/:id": AdminDataView,
+    "/:source/view/:group/:table/new": AdminDataViewNew,
+    "/:source/view/:group/:table/:id/edit": AdminDataViewEdit,
   },
 
   "/ugroup": {

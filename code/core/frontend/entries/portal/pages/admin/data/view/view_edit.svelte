@@ -1,35 +1,37 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import { AutoForm, LoadingSpinner, PortalService } from "../core";
+  import { AutoForm, LoadingSpinner, PortalService } from "../../core";
   import { params } from "svelte-hash-router";
 
-  export let ugroup = $params.ugroup;
+  export let source = $params.source;
+  export let group = $params.group;
+  export let table = $params.table;
+  export let id = $params.id;
 
   const app = getContext("__app__") as PortalService;
-  const api = app.api_manager.get_admin_ugroup_api();
+  const api = app.api_manager.get_admin_data_api();
 
   let message = "";
   let data = {};
   let loading = true;
 
   const load = async () => {
-    const resp = await api.get(ugroup);
-    if (!resp.ok) {
-      return;
-    }
+    const resp = await api.get_view(source, group, table, id);
+    if (!resp.ok) return;
 
     data = resp.data;
+    loading = false;
   };
 
   load();
 
   const save = async (_data) => {
-    const resp = await api.update(ugroup, _data);
+    const resp = await api.edit_view(source, group, table, id, _data);
     if (!resp.ok) {
       message = resp.data;
       return;
     }
-    app.nav.admin_ugroups();
+    app.nav.admin_data_views(source, group, table);
   };
 </script>
 
@@ -49,31 +51,7 @@
           name: "Slug",
           ftype: "TEXT_SLUG",
           key_name: "slug",
-          slug_gen: null, // fixme
-        },
-
-        {
-          name: "Icon",
-          ftype: "TEXT",
-          key_name: "icon",
-        },
-
-        {
-          name: "Enable Password",
-          ftype: "BOOL",
-          key_name: "enable_pass_auth",
-        },
-
-        {
-          name: "Scopes",
-          ftype: "MULTI_TEXT",
-          key_name: "scopes",
-        },
-
-        {
-          name: "Open Sign Up",
-          ftype: "BOOL",
-          key_name: "open_sign_up",
+          disabled: true,
         },
 
         {
@@ -82,7 +60,7 @@
           key_name: "extra_meta",
         },
       ],
-      name: "Edit Data Group",
+      name: "Edit View",
       required_fields: [],
     }}
     onSave={save}

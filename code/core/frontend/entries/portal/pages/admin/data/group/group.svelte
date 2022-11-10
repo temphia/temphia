@@ -84,7 +84,7 @@
           key_name: "extra_meta",
         },
       ],
-      name: "Edit User Group",
+      name: "Edit Group",
       required_fields: [],
     }}
     onSave={save}
