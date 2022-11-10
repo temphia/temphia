@@ -25,8 +25,10 @@ export class TableService {
     this.state = new TableState(this);
   }
 
+  init = async () => {};
   apply_remote_changes = () => {};
   poll = async () => {};
+  close = () => {};
 }
 
 export class TableState {
