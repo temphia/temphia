@@ -1,25 +1,47 @@
-import { Websocket } from "../vendor/ws";
+import { Sockd } from "../sockd";
 
 export class SockdAPI {
-  constructor(baseUrl: string) {
-    
+  base_url: string;
+  constructor(base_url: string) {
+    this.base_url = base_url;
   }
 
-  userSocket() {}
-  dataSocket() {}
-  roomSocket() {}
-  devSocket() {}
+  async user() {
+    const sockd = new Sockd({
+      OnHandler: null,
+      URL: `${this.base_url}/sockd/user/ws`,
+    });
+
+    await sockd.init();
+    return sockd;
+  }
+
+  async data() {
+    const sockd = new Sockd({
+      OnHandler: null,
+      URL: `${this.base_url}/sockd/data/ws`,
+    });
+
+    await sockd.init();
+    return sockd;
+  }
+
+  async room() {
+    const sockd = new Sockd({
+      OnHandler: null,
+      URL: `${this.base_url}/sockd/room/ws`,
+    });
+
+    await sockd.init();
+    return sockd;
+  }
+  async dev() {
+    const sockd = new Sockd({
+      OnHandler: null,
+      URL: `${this.base_url}/sockd/dev/ws`,
+    });
+
+    await sockd.init();
+    return sockd;
+  }
 }
-
-/*
-
-[GIN-debug] GET    /z/api/:tenant_id/v2/sockd/user/ws --> github.com/temphia/temphia/code/core/backend/app/server.(*Server).sockdUserWS-fm (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/sockd/data/ws --> github.com/temphia/temphia/code/core/backend/app/server.(*Server).sockdDataWS-fm (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/sockd/data/update --> github.com/temphia/temphia/code/core/backend/app/server.(*Server).sockdDataUpdateWS-fm (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/sockd/room/ws --> github.com/temphia/temphia/code/core/backend/app/server.(*Server).sockdRoomWS-fm (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/sockd/room/update --> github.com/temphia/temphia/code/core/backend/app/server.(*Server).sockdRoomUpdateWS-fm (3 handlers)
-[GIN-debug] GET    /z/api/:tenant_id/v2/sockd/dev/room/ws --> github.com/temphia/temphia/code/core/backend/app/server.(*Server).sockdDevWS-fm (3 handlers)
-
-
-
-*/
