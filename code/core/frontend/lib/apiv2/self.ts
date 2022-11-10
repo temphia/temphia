@@ -49,4 +49,9 @@ export class SelfAPI {
   modify_message(data: any) {
     return this.base.post("/self/message", data);
   }
+
+  issue_data(data: any) {
+    return this.base.post("/self/issue/data", data);
+  }
+
 }

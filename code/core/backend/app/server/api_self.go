@@ -24,6 +24,7 @@ func (s *Server) selfAPI(rg *gin.RouterGroup) {
 	rg.POST("/self", s.X(s.selfUpdate))
 
 	rg.POST("/issue/folder", s.X(s.issueFolderTkt))
+	rg.POST("/issue/data", s.X(s.issueDataTkt))
 
 }
 
@@ -114,4 +115,26 @@ func (s *Server) issueFolderTkt(ctx httpx.Request) {
 	)
 
 	httpx.WriteJSON(ctx.Http, resp, err)
+}
+
+type DataIssueRequest struct {
+	Source string `json:"string,omitempty"`
+	Group  string `json:"group,omitempty"`
+}
+
+func (s *Server) issueDataTkt(ctx httpx.Request) {
+
+	req := &DataIssueRequest{}
+	err := ctx.Http.BindJSON(req)
+	if err != nil {
+		httpx.WriteErr(ctx.Http, err)
+		return
+	}
+
+	resp, err := s.cCabinet.NewFolderTicket(
+		ctx.Session,
+		ctx.Http.Param("folder"),
+	)
+
+	httpx.WriteJSON(ctx.Http, gin.H{"data_token": resp}, err)
 }

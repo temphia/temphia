@@ -24,3 +24,21 @@ func New(dhub store.DataHub, cabHub store.CabinetHub, signer service.Signer) *Co
 func getTarget(uclaim *claim.Data) (string, string) {
 	return uclaim.DataSource, uclaim.DataGroup
 }
+
+func (d *Controller) IssueDataClaim(uclaim *claim.Session, source string, group string) (string, error) {
+
+	dc := claim.Data{
+		TenentId:   uclaim.TenentId,
+		Type:       claim.CTypeData,
+		UserID:     uclaim.UserID,
+		UserGroup:  uclaim.UserGroup,
+		SessionID:  uclaim.SessionID,
+		DeviceId:   uclaim.DeviceId,
+		DataSource: source,
+		DataGroup:  group,
+		DataTables: []string{"*"},
+		IsExec:     false,
+	}
+
+	return d.signer.SignData(uclaim.TenentId, &dc)
+}

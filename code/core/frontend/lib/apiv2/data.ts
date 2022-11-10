@@ -1,48 +1,54 @@
-import type { ApiBase } from "./base";
+import { Http } from "./http";
 
 export class DataAPI {
-  base: ApiBase;
-  constructor(base: ApiBase) {
-    this.base = base;
+  http: Http;
+  constructor(base_url: string, token: string) {
+    this.http = new Http(base_url, {
+      "Content-Type": "application/json",
+      Authorization: token,
+    });
+  }
+
+  load() {
+    return this.http.get(`/data`);
   }
 
   newRow(tid: string) {
-    return this.base.get(`/data/${tid}/row`);
+    return this.http.get(`/data/${tid}/row`);
   }
 
   getRow(tid: string, rid: string) {
-    return this.base.get(`/data/${tid}/row/${rid}`);
+    return this.http.get(`/data/${tid}/row/${rid}`);
   }
 
   updateRow(tid: string, rid: string, data: any) {
-    return this.base.post(`/data/${tid}/row/${rid}`, data);
+    return this.http.post(`/data/${tid}/row/${rid}`, data);
   }
 
   deleteRow(tid: string, rid: string) {
-    return this.base.delete(`/data/${tid}/row/${rid}`);
+    return this.http.delete(`/data/${tid}/row/${rid}`);
   }
 
   simpleQuery(tid: string, query: any) {
-    return this.base.post(`/data/${tid}/simple_query`, query);
+    return this.http.post(`/data/${tid}/simple_query`, query);
   }
 
   refLoad(tid: string, data: any) {
-    return this.base.post(`/data/${tid}/ref_load`, data);
+    return this.http.post(`/data/${tid}/ref_load`, data);
   }
 
   refResolve(tid: string, data: any) {
-    return this.base.post(`/data/${tid}/ref_resolve`, data);
+    return this.http.post(`/data/${tid}/ref_resolve`, data);
   }
 
   reverseRefLoad(tid: string, data: any) {
-    return this.base.post(`/data/${tid}/rev_ref_load`, data);
+    return this.http.post(`/data/${tid}/rev_ref_load`, data);
   }
   listActivity(tid: string, rid: string) {
-    return this.base.get(`/data/${tid}/activity${rid}`);
+    return this.http.get(`/data/${tid}/activity${rid}`);
   }
 
   commentRow(tid: string, rid: string, data: any) {
-    return this.base.post(`/data/${tid}/activity${rid}`, data);
+    return this.http.post(`/data/${tid}/activity${rid}`, data);
   }
 }
-

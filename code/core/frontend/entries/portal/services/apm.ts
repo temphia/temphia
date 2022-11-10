@@ -1,4 +1,4 @@
-import { RepoAPI, SelfAPI, UserAPI } from "../../../lib/apiv2";
+import { DataAPI, RepoAPI, SelfAPI, UserAPI } from "../../../lib/apiv2";
 import { AdminTargetAPI } from "../../../lib/apiv2/admin/target";
 import { ApiBase } from "../../../lib/apiv2/base";
 import type { SelfLoad } from "./stypes";
@@ -75,7 +75,7 @@ export class ApiManager {
 
     const data = resp.data as SelfLoad;
 
-    this.cache.user_plugs = data["plug_apps"] || []
+    this.cache.user_plugs = data["plug_apps"] || [];
 
     console.log("@data", data);
   }
@@ -88,6 +88,22 @@ export class ApiManager {
 
   get_repo_api = () => {
     return new RepoAPI(this.base);
+  };
+
+  get_user_api = () => {
+    return new UserAPI(this.base);
+  };
+
+  get_data_api = async (source: string, group: string) => {
+    const resp = await this.self_api.issue_data({
+      source,
+      group,
+    });
+    if (!resp.ok) {
+      return;
+    }
+
+    return new DataAPI(this.api_base_url, resp.data["data_token"]);
   };
 
   // admin api
@@ -130,12 +146,6 @@ export class ApiManager {
 
   get_admin_check_api = () => {
     return new AdminCheckAPI(this.base);
-  };
-
-  // other api
-
-  get_user_api = () => {
-    return new UserAPI(this.base);
   };
 }
 

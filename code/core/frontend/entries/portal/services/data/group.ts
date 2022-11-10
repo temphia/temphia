@@ -12,15 +12,20 @@ export class GroupService {
     source: string;
     name: string;
     api: DataAPI;
-    tables: object[];
   }) {
     this.source = opts.source;
     this.name = opts.name;
     this.api = opts.api;
-    this.tables = opts.tables;
   }
 
   init = async (table?: string) => {
+    const resp = await this.api.load();
+    if (!resp.ok) {
+        return
+    }
+
+    this.tables = resp.data;
+
     if (!table) {
       table = this.tables[0]["slug"];
     }
@@ -38,6 +43,6 @@ export class GroupService {
   };
 
   close = async () => {
-    
+
   };
 }

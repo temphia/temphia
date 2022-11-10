@@ -1,14 +1,19 @@
+import type { DataAPI, SelfAPI } from "../../../../lib/apiv2";
 import type { AdminDataAPI } from "../../../../lib/apiv2/admin";
-import type { GroupService } from "./group";
+import { GroupService } from "./group";
+
+interface Apm {
+  get_admin_data_api(): AdminDataAPI;
+  get_data_api(source: string, group: string): Promise<DataAPI>;
+}
 
 export class DataService {
   sources: string[];
-  admin_api: AdminDataAPI;
   current_group: GroupService | null;
+  apm: Apm;
 
-  constructor(opts: { sources: string[]; admin_api: AdminDataAPI }) {
+  constructor(opts: { sources: string[]; apm: Apm }) {
     this.sources = opts.sources;
-    this.admin_api = opts.admin_api;
     this.current_group = null;
   }
 
@@ -25,6 +30,15 @@ export class DataService {
     }
   };
 
+  private create_group = async (source: string, group: string) => {
+    const data_api = await this.apm.get_data_api(source, group);
+    const group_svc = new GroupService({
+        api: data_api,
+        name: group,
+        source: source,
+    })
 
-  private create_group = async (source: string, group: string) => {};
+    await group_svc.init()
+    return group_svc;
+  };
 }
