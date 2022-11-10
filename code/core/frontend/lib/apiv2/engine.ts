@@ -1,4 +1,6 @@
-export {}
+export class EngineAPI {
+    constructor() {}
+}
 
 /*
 
@@ -6,6 +8,7 @@ export {}
 [GIN-debug] POST   /z/api/:tenant_id/v2/engine/launch/user --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
 [GIN-debug] POST   /z/api/:tenant_id/v2/engine/launch/admin --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
 [GIN-debug] POST   /z/api/:tenant_id/v2/engine/launch/domain --> github.com/temphia/temphia/code/core/backend/app/server/middleware.(*Middleware).Authed.func1 (3 handlers)
+
 [GIN-debug] POST   /z/api/:tenant_id/v2/engine/launch/authd --> github.com/temphia/temphia/code/core/backend/app/server.(*Server).launchAuthd-fm (3 handlers)
 [GIN-debug] POST   /z/api/:tenant_id/v2/engine/launch/widget --> github.com/temphia/temphia/code/core/backend/app/server.(*Server).launchWidget-fm (3 handlers)
 [GIN-debug] POST   /z/api/:tenant_id/v2/engine/execute/:action --> github.com/temphia/temphia/code/core/backend/app/server.(*Server).execute-fm (3 handlers)

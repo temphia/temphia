@@ -42,6 +42,7 @@ export class FolderTktAPI {
   ticket: string;
   constructor(baseUrl: string, token: string) {
     this.http = new Http(baseUrl, {});
+    this.ticket = token;
   }
 
   //  /folder/:ticket/
