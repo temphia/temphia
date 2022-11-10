@@ -193,8 +193,14 @@ func (s *Server) commentRow(uclaim *claim.Data, ctx *gin.Context) {
 }
 
 func (s *Server) DataX(fn func(uclaim *claim.Data, ctx *gin.Context)) func(*gin.Context) {
+	return func(ctx *gin.Context) {
+		uclaim, err := s.signer.ParseData(ctx.Param("tenant_id"), ctx.GetHeader("Authorization"))
+		if err != nil {
+			return
+		}
 
-	return nil
+		fn(uclaim, ctx)
+	}
 }
 
 // private

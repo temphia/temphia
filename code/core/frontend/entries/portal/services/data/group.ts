@@ -8,11 +8,7 @@ export class GroupService {
 
   tables: object[];
 
-  constructor(opts: {
-    source: string;
-    name: string;
-    api: DataAPI;
-  }) {
+  constructor(opts: { source: string; name: string; api: DataAPI }) {
     this.source = opts.source;
     this.name = opts.name;
     this.api = opts.api;
@@ -21,10 +17,12 @@ export class GroupService {
   init = async (table?: string) => {
     const resp = await this.api.load();
     if (!resp.ok) {
-        return
+      return;
     }
 
     this.tables = resp.data;
+
+    console.log("TABLES", this.tables)
 
     if (!table) {
       table = this.tables[0]["slug"];
@@ -34,6 +32,10 @@ export class GroupService {
     }
   };
 
+  default_table() {
+    return this.tables[0]["slug"];
+  }
+
   run = async () => {
     console.log("Starting event loop");
     while (true) {
@@ -42,7 +44,5 @@ export class GroupService {
     }
   };
 
-  close = async () => {
-
-  };
+  close = async () => {};
 }

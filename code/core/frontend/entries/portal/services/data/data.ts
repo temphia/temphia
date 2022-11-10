@@ -15,9 +15,10 @@ export class DataService {
   constructor(opts: { sources: string[]; apm: Apm }) {
     this.sources = opts.sources;
     this.current_group = null;
+    this.apm = opts.apm;
   }
 
-  activate_group = async (source: string, group: string) => {
+  group_service = async (source: string, group: string) => {
     if (!this.current_group) {
       return this.create_group(source, group);
     }
@@ -32,13 +33,18 @@ export class DataService {
 
   private create_group = async (source: string, group: string) => {
     const data_api = await this.apm.get_data_api(source, group);
-    const group_svc = new GroupService({
-        api: data_api,
-        name: group,
-        source: source,
-    })
+    if (!data_api) {
+      console.log("BIG ERR")
+      return
+    }
 
-    await group_svc.init()
+    const group_svc = new GroupService({
+      api: data_api,
+      name: group,
+      source: source,
+    });
+
+    await group_svc.init();
     return group_svc;
   };
 }

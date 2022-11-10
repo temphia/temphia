@@ -4,6 +4,7 @@ import { ApiManager } from "./apm";
 import { Launcher } from "../engine/launcher";
 import { Navigator } from "./nav";
 import { Notifier } from "./notifier";
+import { DataService } from "../data";
 
 export interface AppOptions {
   base_url: string;
@@ -26,11 +27,11 @@ export class PortalService {
   options: AppOptions;
   nav: Navigator;
   api_manager: ApiManager;
-
   notifier: Notifier;
   utils: Utils;
 
   launcher: Launcher;
+  data_service: DataService;
 
   constructor(opts: AppOptions) {
     this.options = opts;
@@ -48,6 +49,17 @@ export class PortalService {
 
     this.notifier = new Notifier(this.api_manager.self_api);
     await this.notifier.init();
+  }
+
+  async get_data_service() {
+    if (!this.data_service) {
+      this.data_service = new DataService({
+        apm: this.api_manager,
+        sources: await this.api_manager.self_data.get_data_sources(),
+      });
+    }
+
+    return this.data_service;
   }
 
   inject(utils: Utils) {
