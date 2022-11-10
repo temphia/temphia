@@ -1,0 +1,43 @@
+import { sleep } from "yootils";
+import type { DataAPI } from "../../../../lib/apiv2";
+
+export class GroupService {
+  source: string;
+  name: string;
+  api: DataAPI;
+
+  tables: object[];
+
+  constructor(opts: {
+    source: string;
+    name: string;
+    api: DataAPI;
+    tables: object[];
+  }) {
+    this.source = opts.source;
+    this.name = opts.name;
+    this.api = opts.api;
+    this.tables = opts.tables;
+  }
+
+  init = async (table?: string) => {
+    if (!table) {
+      table = this.tables[0]["slug"];
+    }
+    if (!table) {
+      return;
+    }
+  };
+
+  run = async () => {
+    console.log("Starting event loop");
+    while (true) {
+      console.log("Sleeping");
+      await sleep(100);
+    }
+  };
+
+  close = async () => {
+    
+  };
+}
