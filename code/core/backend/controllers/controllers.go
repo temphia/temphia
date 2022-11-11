@@ -16,6 +16,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
 )
@@ -76,7 +77,7 @@ func New(opts Options) *RootController {
 		cDev:    dev.New(pacman, corehub),
 		cEngine: engine.New(egine, signer),
 		cUser:   user.New(corehub),
-		//		cSockd:  sockd.New(deps.SockdHub().(sockdx.Hub).GetSockd()),
+		cSockd:  sockd.New(deps.SockdHub().(sockdx.Hub).GetSockd()),
 	}
 }
 

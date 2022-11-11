@@ -7,10 +7,10 @@ import (
 )
 
 type Controller struct {
-	sockd sockdx.Sockd
+	sockd sockdx.SockdCore
 }
 
-func New(sockd sockdx.Sockd) *Controller {
+func New(sockd sockdx.SockdCore) *Controller {
 	return &Controller{
 		sockd: sockd,
 	}

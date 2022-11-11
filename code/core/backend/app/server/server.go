@@ -16,6 +16,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/controllers/engine"
 	"github.com/temphia/temphia/code/core/backend/controllers/operator"
 	"github.com/temphia/temphia/code/core/backend/controllers/repo"
+	"github.com/temphia/temphia/code/core/backend/controllers/sockd"
 	"github.com/temphia/temphia/code/core/backend/controllers/user"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
@@ -58,6 +59,7 @@ type Server struct {
 	cRepo     *repo.Controller
 	cEngine   *engine.Controller
 	cDev      *dev.Controller
+	cSockd    *sockd.Controller
 }
 
 func New(opts Options) *Server {
@@ -104,6 +106,7 @@ func New(opts Options) *Server {
 		cEngine:   root.EngineController(),
 		cDev:      root.DevController(),
 		cUser:     root.UserController(),
+		cSockd:    root.SockdController(),
 		app:       opts.App,
 	}
 }
