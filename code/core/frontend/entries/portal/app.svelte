@@ -1,7 +1,7 @@
 <script lang="ts">
   import Tailwind from "../xcompo/common/_tailwind.svelte";
   import Portal from "./_portal.svelte";
-  import build from "./services/portal/builder";
+  import build from "./services";
 
   let loading = true;
 
@@ -10,10 +10,7 @@
     loading = false;
   });
 
-
-  console.log("@EEEEEE", app)
-
-
+  console.log("@portal_service", app);
 </script>
 
 {#if !loading}
