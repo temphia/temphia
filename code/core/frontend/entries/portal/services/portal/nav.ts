@@ -39,7 +39,11 @@ export class Navigator {
 
   // cab
 
-  cab_loader = (source: string) => {
+  cab_loader = () => {
+    this.set(`#/cabinet/`);
+  };
+
+  cab_folders = (source: string) => {
     this.set(`#/cabinet/${source}`);
   };
 
@@ -249,7 +253,7 @@ export class Navigator {
     this.set(`#/admin/data/${source}/view/${group}/${table}`);
   };
 
-  admin_data_view_new = (source: string,group: string,table: string) => {
+  admin_data_view_new = (source: string, group: string, table: string) => {
     this.set(`#/admin/data/${source}/view/${group}/${table}/new`);
   };
 

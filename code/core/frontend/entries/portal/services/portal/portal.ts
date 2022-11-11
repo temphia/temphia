@@ -1,9 +1,8 @@
-import { writable, Writable } from "svelte/store";
 import type { SiteUtils } from "../../../../lib/utils/site";
 import { ApiManager } from "./apm";
 import { Launcher } from "../engine/launcher";
 import { Navigator } from "./nav";
-import { Notifier } from "./notifier";
+import { Notifier } from "../notifier";
 import { DataService } from "../data";
 
 export interface AppOptions {
