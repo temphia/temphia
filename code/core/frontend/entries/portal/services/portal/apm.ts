@@ -90,7 +90,7 @@ export class ApiManager {
   };
 
   get_api_sockd = () => {
-    return new SockdAPI(this.base_url);
+    return new SockdAPI(this.api_base_url);
   };
 
   get_data_api = async (source: string, group: string) => {
