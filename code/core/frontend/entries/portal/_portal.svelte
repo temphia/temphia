@@ -12,6 +12,7 @@
   export let app: PortalService;
 
   const notifier = app.notifier;
+  const pending_notification = app.notifier.is_pending_read;
   const nstate = app.notifier.state;
 
   $: console.log("@PARAMS |>", $params, "@ROUTES |>", $routes);
@@ -49,14 +50,16 @@
   bind:toggle={notification_toggle}
   on:ndelete={(ev) => notifier.delete_message(ev.detail)}
   on:nread={(ev) => notifier.read_message(ev.detail)}
-  on:refresh={() => {}}
+  on:refresh={() => notifier.init()}
+
+
   loading={$nstate.loading}
   messages={$nstate.messages}
 />
 
 <MainLayout
   launcher={app.launcher}
-  pending_notification={!!$nstate.messages}
+  pending_notification={$pending_notification}
   on:notification_toggle={notification_toggle}
   on:self_profile={app.nav.self_profile}
 >

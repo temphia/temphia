@@ -1,4 +1,4 @@
-import { writable, Writable } from "svelte/store";
+import { derived, Readable, writable, Writable } from "svelte/store";
 import type { SelfAPI } from "../../../../lib/apiv2";
 import type { Sockd, SockdMessage } from "../../../../lib/sockd";
 
@@ -11,11 +11,23 @@ export interface State {
 export class Notifier {
   self_api: SelfAPI;
   state: Writable<State>;
+  is_pending_read: Readable<boolean>;
   sockd: Sockd;
 
   constructor(self_api: SelfAPI) {
     this.self_api = self_api;
     this.state = writable({ messages: [], cursor: 0, loading: false });
+
+    this.is_pending_read = derived([this.state], ([state]) => {
+      let pending = false;
+      state.messages.forEach((msg) => {
+        if (!msg["read"]) {
+          pending = true;
+          return;
+        }
+      });
+      return pending;
+    });
   }
 
   handle_sockd = (data: SockdMessage) => {
@@ -31,10 +43,9 @@ export class Notifier {
       default:
         console.log("@message =>", data);
         break;
-    }    
-
+    }
   };
-  
+
   set_sockd = (sockd: Sockd) => {
     this.sockd = sockd;
   };

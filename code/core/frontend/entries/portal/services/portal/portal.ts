@@ -54,7 +54,7 @@ export class PortalService {
     this.notifier = new Notifier(this.api_manager.self_api);
 
     const sockd = await sapi.user(
-      this.api_manager.user_token,
+      this.api_manager.session_token,
       this.notifier.handle_sockd
     );
 
