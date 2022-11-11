@@ -45,8 +45,20 @@ export class PortalService {
 
   async init() {
     await this.api_manager.init();
+    this.init_notifier();
+  }
+
+  private async init_notifier() {
+    const sapi = this.api_manager.get_api_sockd();
 
     this.notifier = new Notifier(this.api_manager.self_api);
+
+    const sockd = await sapi.user(
+      this.api_manager.user_token,
+      this.notifier.handle_sockd
+    );
+
+    this.notifier.set_sockd(sockd);
     await this.notifier.init();
   }
 

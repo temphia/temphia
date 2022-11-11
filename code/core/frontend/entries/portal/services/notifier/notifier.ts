@@ -1,5 +1,6 @@
 import { writable, Writable } from "svelte/store";
 import type { SelfAPI } from "../../../../lib/apiv2";
+import type { Sockd, SockdMessage } from "../../../../lib/sockd";
 
 export interface State {
   messages: object[];
@@ -10,11 +11,18 @@ export interface State {
 export class Notifier {
   self_api: SelfAPI;
   state: Writable<State>;
+  sockd: Sockd;
 
   constructor(self_api: SelfAPI) {
     this.self_api = self_api;
     this.state = writable({ messages: [], cursor: 0, loading: false });
   }
+
+  handle_sockd = (data: SockdMessage) => {};
+  
+  set_sockd = (sockd: Sockd) => {
+    this.sockd = sockd;
+  };
 
   async init() {
     this.state.update((old) => ({ ...old, loading: true }));

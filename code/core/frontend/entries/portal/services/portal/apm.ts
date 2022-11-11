@@ -14,6 +14,7 @@ import {
   AdminUserAPI,
   AdminUserGroupAPI,
 } from "../../../../lib/apiv2/admin";
+import { SockdAPI } from "../../../../lib/apiv2/sockd";
 
 export class ApiManager {
   base_url: string;
@@ -88,13 +89,17 @@ export class ApiManager {
     return new UserAPI(this.base);
   };
 
+  get_api_sockd = () => {
+    return new SockdAPI(this.base_url);
+  };
+
   get_data_api = async (source: string, group: string) => {
     const data = {
       source: source,
       group: group,
     };
 
-    console.log("##", data)
+    console.log("##", data);
 
     const resp = await this.self_api.issue_data(data);
     if (!resp.ok) {

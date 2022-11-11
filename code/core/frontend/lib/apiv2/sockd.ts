@@ -1,4 +1,4 @@
-import { Sockd } from "../sockd";
+import { Sockd, SockdMessage } from "../sockd";
 
 export class SockdAPI {
   base_url: string;
@@ -6,39 +6,40 @@ export class SockdAPI {
     this.base_url = base_url;
   }
 
-  async user() {
+  async user(token: string, on_handler: (message: SockdMessage) => void) {
     const sockd = new Sockd({
-      OnHandler: null,
-      URL: `${this.base_url}/sockd/user/ws`,
+      OnHandler: on_handler,
+      URL: `${this.base_url}/sockd/user/ws?token=${token}`,
     });
 
     await sockd.init();
     return sockd;
   }
 
-  async data() {
+  async data(token: string, on_handler: (message: SockdMessage) => void) {
     const sockd = new Sockd({
-      OnHandler: null,
-      URL: `${this.base_url}/sockd/data/ws`,
+      OnHandler: on_handler,
+      URL: `${this.base_url}/sockd/data/ws?token=${token}`,
     });
 
     await sockd.init();
     return sockd;
   }
 
-  async room() {
+  async room(token: string, on_handler: (message: SockdMessage) => void) {
     const sockd = new Sockd({
-      OnHandler: null,
-      URL: `${this.base_url}/sockd/room/ws`,
+      OnHandler: on_handler,
+      URL: `${this.base_url}/sockd/room/ws?token=${token}`,
     });
 
     await sockd.init();
     return sockd;
   }
-  async dev() {
+
+  async dev(token: string, on_handler: (message: SockdMessage) => void) {
     const sockd = new Sockd({
-      OnHandler: null,
-      URL: `${this.base_url}/sockd/dev/ws`,
+      OnHandler: on_handler,
+      URL: `${this.base_url}/sockd/dev/ws?token=${token}`,
     });
 
     await sockd.init();
