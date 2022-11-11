@@ -56,7 +56,7 @@
 
 <MainLayout
   launcher={app.launcher}
-  pending_notification={true}
+  pending_notification={!!$nstate.messages}
   on:notification_toggle={notification_toggle}
   on:self_profile={app.nav.self_profile}
 >

@@ -18,7 +18,22 @@ export class Notifier {
     this.state = writable({ messages: [], cursor: 0, loading: false });
   }
 
-  handle_sockd = (data: SockdMessage) => {};
+  handle_sockd = (data: SockdMessage) => {
+    switch (data.payload["type"]) {
+      case "new":
+        this.state.update((old) => {
+          return {
+            ...old,
+            messages: [...old.messages, data.payload["data"]],
+          };
+        });
+        break;
+      default:
+        console.log("@message =>", data);
+        break;
+    }    
+
+  };
   
   set_sockd = (sockd: Sockd) => {
     this.sockd = sockd;
