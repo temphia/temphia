@@ -6,4 +6,5 @@ export * from "./repo";
 export * from "./resource";
 export * from "./tenant";
 export * from "./ugroup";
+export * from "./user_grouped";
 export * from "./user";

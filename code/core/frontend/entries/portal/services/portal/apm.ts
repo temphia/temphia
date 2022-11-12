@@ -13,6 +13,8 @@ import {
   AdminTenantAPI,
   AdminUserAPI,
   AdminUserGroupAPI,
+  AdminUserGroupedAPI
+
 } from "../../../../lib/apiv2/admin";
 import { SockdAPI } from "../../../../lib/apiv2/sockd";
 
@@ -142,6 +144,10 @@ export class ApiManager {
 
   get_admin_ugroup_api = () => {
     return new AdminUserGroupAPI(this.base);
+  };
+
+  get_admin_user_grouped_api = () => {
+    return new AdminUserGroupedAPI(this.base);
   };
 
   get_admin_user_api = () => {
