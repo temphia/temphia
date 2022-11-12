@@ -22,11 +22,18 @@
           />
 
           <div class="flex text-sm p-1 gap-1">
-            <Icon name="calendar" class="h-5 w-5" />
-             Now
-            <span class="text-zinc-800 underline">To</span> 2022/04/05 [6:33]
+            <div class="bg-green-100 p-1 rounded-lg flex space-x-2 flex-row cursor-pointer">
+              <Icon name="chevron-left" class="h-4" />
+              <p class="text-xs">2021-01-15 [5:30]</p>
+              <Icon name="calendar" class="h-4" />
+            </div>
+            
+            <div class="bg-red-100 p-1 rounded-lg flex space-x-2 flex-row cursor-pointer">
+              <Icon name="calendar" class="h-4" />
+              <p class="text-xs">2021-02-17 [7:30]</p>
+              <Icon name="chevron-right" class="h-4" />
+            </div>
           </div>
-
         </div>
       </div>
 
