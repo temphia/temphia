@@ -57,7 +57,7 @@
       <div class="flex flex-wrap -m-4">
         {#each groups as group}
           <div class="xl:w-1/3 md:w-1/2 p-4">
-            <div class="bg-white p-6 rounded-lg">
+            <div class="bg-white p-6 rounded-lg border hover:border-blue-400 shadow">
               <img
                 class="lg:h-60 xl:h-56 md:h-64 sm:h-72 xs:h-72 h-72  rounded w-full object-cover object-center mb-6"
                 src="https://picsum.photos/seed/{strHash(
@@ -79,7 +79,7 @@
               <div class="flex p-5">
                 <button
                   on:click={() => app.nav.data_group(source, group["slug"])}
-                  class="text-center text-sm bg-blue-500 rounded py-2 p-2 text-white mt-2"
+                  class="text-center text-sm bg-blue-500 rounded py-2 p-2 text-white mt-2 hover:bg-blue-700"
                 >
                   Explore
                 </button>
