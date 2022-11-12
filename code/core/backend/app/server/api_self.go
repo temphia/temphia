@@ -22,7 +22,8 @@ func (s *Server) selfAPI(rg *gin.RouterGroup) {
 	rg.POST("/message", s.X(s.selfModifyMessages))
 	rg.GET("/self", s.X(s.self))
 	rg.POST("/self", s.X(s.selfUpdate))
-
+	rg.GET("/user/:user_id", s.X(s.selfUserGet))
+	rg.POST("/user/:user_id", s.X(s.selfUserMessage))
 	rg.POST("/issue/folder", s.X(s.issueFolderTkt))
 	rg.POST("/issue/data", s.X(s.issueDataTkt))
 
@@ -138,4 +139,25 @@ func (s *Server) issueDataTkt(ctx httpx.Request) {
 	)
 
 	httpx.WriteJSON(ctx.Http, gin.H{"data_token": resp}, err)
+}
+
+func (s *Server) selfUserGet(ctx httpx.Request) {
+	resp, err := s.cUser.Get(
+		ctx.Session,
+		ctx.MustParam("user_id"),
+	)
+	httpx.WriteJSON(ctx.Http, resp, err)
+}
+
+func (s *Server) selfUserMessage(ctx httpx.Request) {
+	var out string
+
+	err := ctx.Http.BindJSON(&out)
+	if err != nil {
+		httpx.WriteErr(ctx.Http, err)
+		return
+	}
+
+	_, err = s.cUser.Message(ctx.Session, ctx.MustParam("user_id"), string(out))
+	httpx.WriteFinal(ctx.Http, err)
 }

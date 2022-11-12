@@ -44,7 +44,6 @@ func (s *Server) API(rg *gin.RouterGroup) {
 	s.selfAPI(rg.Group("/self"))
 	s.repoAPI(rg.Group("/repo"))
 	s.sockdAPI(rg.Group("/sockd"))
-	s.userAPI(rg.Group("/user"))
 
 }
 

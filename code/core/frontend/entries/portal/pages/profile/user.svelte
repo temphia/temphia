@@ -10,14 +10,14 @@
 
   const app: PortalService = getContext("__app__");
 
-  const api = app.api_manager.get_user_api();
+  const api = app.api_manager.get_self_api();
 
   let userData = {};
   let loading = true;
   let message = "";
 
   const load = async () => {
-    const resp = await api.get(id);
+    const resp = await api.user_profile(id);
     if (!resp.ok) {
       return;
     }
@@ -27,11 +27,7 @@
 
   load();
 
-  const sendMessage = async () =>
-    api.message(id, {
-      user_id: id,
-      message,
-    });
+  const sendMessage = async () => api.user_message(id, message);
 </script>
 
 <div class="h-full w-full bg-indigo-100 overflow-auto">

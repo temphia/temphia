@@ -1,4 +1,4 @@
-import { CabinetAPI, DataAPI, RepoAPI, SelfAPI, UserAPI } from "../../../../lib/apiv2";
+import { CabinetAPI, DataAPI, RepoAPI, SelfAPI } from "../../../../lib/apiv2";
 import { AdminTargetAPI } from "../../../../lib/apiv2/admin/target";
 import { ApiBase } from "../../../../lib/apiv2/base";
 import type { SelfLoad } from "./stypes";
@@ -13,8 +13,6 @@ import {
   AdminTenantAPI,
   AdminUserAPI,
   AdminUserGroupAPI,
-  AdminUserGroupedAPI
-
 } from "../../../../lib/apiv2/admin";
 import { SockdAPI } from "../../../../lib/apiv2/sockd";
 
@@ -87,10 +85,6 @@ export class ApiManager {
     return new RepoAPI(this.base);
   };
 
-  get_user_api = () => {
-    return new UserAPI(this.base);
-  };
-
   get_api_sockd = () => {
     return new SockdAPI(this.api_base_url);
   };
@@ -148,10 +142,6 @@ export class ApiManager {
 
   get_admin_ugroup_api = () => {
     return new AdminUserGroupAPI(this.base);
-  };
-
-  get_admin_user_grouped_api = () => {
-    return new AdminUserGroupedAPI(this.base);
   };
 
   get_admin_user_api = () => {

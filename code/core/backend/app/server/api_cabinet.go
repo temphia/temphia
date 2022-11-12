@@ -15,6 +15,7 @@ func (s *Server) cabinetAPI(rg *gin.RouterGroup) {
 	rg.GET("/:folder/file/:fname", s.X(s.getFile))
 	rg.POST("/:folder/file/:fname", s.X(s.uploadFile))
 	rg.DELETE("/:folder/file/:fname", s.X(s.deleteFile))
+
 	rg.GET("/:folder/preview/:fname", s.X(s.getFilePreview))
 }
 

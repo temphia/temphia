@@ -30,6 +30,14 @@ export class SelfAPI {
     return this.base.get("/self/self");
   }
 
+  user_profile(userid: string) {
+    return this.base.get(`/self/user/${userid}`);
+  }
+
+  user_message(userid: string, message: string) {
+    return this.base.post(`/self/user/${userid}`, message);
+  }
+
   self_update(data: any) {
     return this.base.post("/self/self", data);
   }
@@ -53,5 +61,4 @@ export class SelfAPI {
   issue_data(data: any) {
     return this.base.post("/self/issue/data", data);
   }
-
 }
