@@ -13,42 +13,42 @@ export class DataAPI {
     return this.http.get(`/data`);
   }
 
-  newRow(tid: string) {
-    return this.http.get(`/data/${tid}/row`);
+  new_row(tid: string, data: any) {
+    return this.http.post(`/data/${tid}/row`, data);
   }
 
-  getRow(tid: string, rid: string) {
+  get_row(tid: string, rid: string) {
     return this.http.get(`/data/${tid}/row/${rid}`);
   }
 
-  updateRow(tid: string, rid: string, data: any) {
+  update_row(tid: string, rid: string, data: any) {
     return this.http.post(`/data/${tid}/row/${rid}`, data);
   }
 
-  deleteRow(tid: string, rid: string) {
+  delete_row(tid: string, rid: string) {
     return this.http.delete(`/data/${tid}/row/${rid}`);
   }
 
-  simpleQuery(tid: string, query: any) {
+  simple_query(tid: string, query: any) {
     return this.http.post(`/data/${tid}/simple_query`, query);
   }
 
-  refLoad(tid: string, data: any) {
+  ref_load(tid: string, data: any) {
     return this.http.post(`/data/${tid}/ref_load`, data);
   }
 
-  refResolve(tid: string, data: any) {
+  ref_resolve(tid: string, data: any) {
     return this.http.post(`/data/${tid}/ref_resolve`, data);
   }
 
-  reverseRefLoad(tid: string, data: any) {
+  reverse_ref_load(tid: string, data: any) {
     return this.http.post(`/data/${tid}/rev_ref_load`, data);
   }
-  listActivity(tid: string, rid: string) {
+  list_activity(tid: string, rid: string) {
     return this.http.get(`/data/${tid}/activity${rid}`);
   }
 
-  commentRow(tid: string, rid: string, data: any) {
+  comment_row(tid: string, rid: string, data: any) {
     return this.http.post(`/data/${tid}/activity${rid}`, data);
   }
 }

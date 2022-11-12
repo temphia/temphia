@@ -5,9 +5,7 @@
 
   const app: PortalService = getContext("__app__");
 
-  let table_service: TableService;
-
-
+  export let table_service: TableService;
 </script>
 
 <div>Grid Layout</div>

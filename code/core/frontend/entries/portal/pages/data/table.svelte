@@ -33,5 +33,5 @@
 {:else if layout === "card"}
   <CardLayout />
 {:else}
-  <GridLayout />
+  <GridLayout {table_service} />
 {/if}
