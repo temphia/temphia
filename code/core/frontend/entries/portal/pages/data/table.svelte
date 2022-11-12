@@ -5,6 +5,7 @@
   import type { TableService } from "../../services/data/table";
   import { LoadingSpinner } from "../admin/core";
 
+
   import CardLayout from "./layout/card/card.svelte";
   import GridLayout from "./layout/grid/grid.svelte";
 
@@ -14,7 +15,6 @@
   export let layout = $params.layout;
 
   const app: PortalService = getContext("__app__");
-
   let table_service: TableService;
   let loading = true;
 

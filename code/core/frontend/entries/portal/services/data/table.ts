@@ -10,10 +10,10 @@ export interface DataState {
   reverse_ref_column: object[];
 
   rows: number[];
-  indexed_rows: { [_: number]: object };
+  indexed_rows: { [_: string]: object };
 
   sparse_rows: number[];
-  remote_dirty: { [_: number]: true };
+  remote_dirty: { [_: string]: true };
   views: object[];
 }
 
@@ -155,7 +155,7 @@ export class TableService {
 export class TableState {
   dirty_store: Writable<DirtyData>;
   nav_store: Writable<NavData>;
-  data_store: Writable<{ [_: string]: DataState }>;
+  data_store: Writable<DataState>;
 
   last_loading: number;
   service: TableService;
@@ -185,7 +185,16 @@ export class TableState {
     });
 
     this.nav_store.subscribe((ndata) => (this._nav_store = ndata));
-    this.data_store = writable({});
+    this.data_store = writable({
+      indexed_column: {},
+      column_order: [],
+      reverse_ref_column: [],
+      rows: [],
+      indexed_rows: {},
+      sparse_rows: [],
+      remote_dirty: {},
+      views: [],
+    });
 
     // debug
     this.nav_store.subscribe((ndata) => console.log("NAV_STORE|>", ndata));
@@ -302,17 +311,14 @@ export class TableState {
       );
 
       return {
-        ...old,
-        [this.service.table_slug]: {
-          ...oldstate,
-          column_order,
-          indexed_column,
-          indexed_rows,
-          reverse_ref_column,
-          rows,
-          hooks,
-          views,
-        },
+        ...oldstate,
+        column_order,
+        indexed_column,
+        indexed_rows,
+        reverse_ref_column,
+        rows,
+        hooks,
+        views,
       };
     });
   };

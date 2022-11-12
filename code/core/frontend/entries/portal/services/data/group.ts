@@ -47,8 +47,8 @@ export class GroupService {
       tservice = new TableService({
         all_tables: this.tables,
         data_api: this.data_api,
-        group_name: this.name,
-        table_name: table,
+        group_slug: this.name,
+        table_slug: table,
       });
 
       await tservice.init();

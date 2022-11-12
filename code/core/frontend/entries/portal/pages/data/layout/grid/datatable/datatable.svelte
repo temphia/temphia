@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ActionBtn from "./action_btn.svelte";
+  import ActionBtn from "./_action_button.svelte";
   import { ColumnResize } from "./column_resize";
   import VirtualList from "./_virtual_list.svelte";
   import Loading from "./_loading.svelte";

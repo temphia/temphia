@@ -6,9 +6,12 @@
 </script>
 
 <button
-  class="py-1 px-3 text-gray-700 inline-flex font-light h-8 rounded hover:bg-gray-200 {clx}"
+  class="p-1 text-gray-700 inline-flex font-light rounded hover:bg-gray-200 {clx}"
   on:click={action["action"]}
 >
-  {@html icon}
+  <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+    {@html icon}
+  </svg>
+
   {name}
 </button>
