@@ -36,7 +36,7 @@
   };
 </script>
 
-<div class="p-2 overflow-auto">
+<div class="p-2 overflow-visible">
   <table class="table-auto border-collapse w-full bg-white shadow rounded-xl">
     <thead>
       <tr
