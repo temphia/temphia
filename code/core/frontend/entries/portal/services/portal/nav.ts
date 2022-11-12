@@ -330,6 +330,13 @@ export class Navigator {
 
   // user
 
+  admin_users() {
+    this.set(`#/admin/user/`);
+  }
+  admin_user(userid: string) {
+    this.set(`#/admin/user/${userid}`);
+  }
+
   admin_ugroups() {
     this.set(`#/admin/ugroup/`);
   }

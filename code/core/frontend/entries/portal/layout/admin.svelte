@@ -90,7 +90,7 @@
         <a href={item.path}>
           <SvelteTooltip tip={item.name} right color="#7c3aed">
             <span
-              class="text-gray-600 cursor-pointer py-3 px-4 hover:bg-red-100 block focus:outline-none uppercase {item.id ==
+              class="text-gray-600 cursor-pointer p-2 md:p-3 hover:bg-red-100 block focus:outline-none uppercase {item.id ==
               _current_page
                 ? active
                 : ''}"

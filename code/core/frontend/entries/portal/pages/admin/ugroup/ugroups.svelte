@@ -39,7 +39,7 @@
 
 <TopActions
   actions={{
-    "All Users": () => {},
+    "All Users": () => app.nav.admin_users(),
   }}
 />
 
