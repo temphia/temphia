@@ -1,4 +1,4 @@
-import { DataAPI, RepoAPI, SelfAPI, UserAPI } from "../../../../lib/apiv2";
+import { CabinetAPI, DataAPI, RepoAPI, SelfAPI, UserAPI } from "../../../../lib/apiv2";
 import { AdminTargetAPI } from "../../../../lib/apiv2/admin/target";
 import { ApiBase } from "../../../../lib/apiv2/base";
 import type { SelfLoad } from "./stypes";
@@ -94,6 +94,10 @@ export class ApiManager {
   get_api_sockd = () => {
     return new SockdAPI(this.api_base_url);
   };
+
+  get_cabinet = () => {
+    return new CabinetAPI(this.api_base_url, "" )
+  }
 
   get_data_api = async (source: string, group: string) => {
     const data = {

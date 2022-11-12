@@ -4,8 +4,6 @@
   import type { PortalService } from "../../services";
   import type { TableService } from "../../services/data/table";
   import { LoadingSpinner } from "../admin/core";
-
-
   import CardLayout from "./layout/card/card.svelte";
   import GridLayout from "./layout/grid/grid.svelte";
 

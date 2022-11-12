@@ -1,6 +1,6 @@
-import type { PortalService } from "../../../services";
-import type { Hook } from "../../../services/data/dtypes";
-import type { TableService } from "../../../services/data/table";
+import type { PortalService } from "../../../../services";
+import type { Hook } from "../../../../services/data/dtypes";
+import type { TableService } from "../../../../services/data/table";
 
 export const action_builder = (
   table_service: TableService,

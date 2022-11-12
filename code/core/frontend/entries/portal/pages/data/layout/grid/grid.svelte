@@ -2,7 +2,7 @@
   import { getContext } from "svelte";
   import type { PortalService } from "../../../../services";
   import type { TableService } from "../../../../services/data/table";
-  import { action_builder } from "../../actions";
+  import { action_builder } from "../../renderer/actions";
   import Datatable from "./datatable/datatable.svelte";
 
   const app: PortalService = getContext("__app__");
