@@ -11,6 +11,7 @@
   });
 
   console.log("@portal_service", app);
+  window["ps"] = app
 </script>
 
 {#if !loading}

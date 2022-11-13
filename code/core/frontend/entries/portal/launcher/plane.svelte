@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import type { Launcher } from "../services/engine/launcher";
 
   export let launcher: Launcher;
@@ -18,14 +19,19 @@
   <div class="flex justify-between border border-gray-100">
     <div class="grow h-10 flex flex-row flex-nowrap overflow-hidden">
       {#each __instances as instance}
-        <button
-          class="text-gray-600 py-2 px-2 block hover:text-blue-500 focus:outline-none {instance.id ===
+        <div
+          on:click={() => launcher.instance_change(instance.id)}
+          class="text-gray-600 py-2 px-2 flex hover:text-blue-500 cursor-pointer focus:outline-none {instance.id ===
           __active_instance
             ? 'text-blue-500 border-b-2 font-medium border-blue-500'
             : ''}"
         >
           {instance.name}
-        </button>
+
+          <span on:click={() => launcher.instance_close(instance.id)}>
+            <Icon name="x-circle" class="h-6 w-8 pt-1 hover:text-red-500" />
+          </span>
+        </div>
       {/each}
     </div>
 
@@ -53,10 +59,10 @@
     {#each __instances as instance}
       <iframe
         title={instance.name}
-        class="w-full h-full {instance.id === __active_instance
+        class="w-full h-full transition-all {instance.id === __active_instance
           ? ''
           : 'hidden'}"
-        src="http://www.example.com/"
+        src="https://picsum.photos/seed/{instance.id}/1300/700"
       />
     {/each}
   </div>

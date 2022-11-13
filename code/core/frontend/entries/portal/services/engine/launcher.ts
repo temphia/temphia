@@ -62,4 +62,21 @@ export class Launcher {
 
     return instance_id;
   }
+
+  instance_change(instance_id: string) {
+    // fixme => check if instance is still in instances array
+    this.state.update((old) => ({ ...old, active_instance: instance_id }));
+  }
+
+  instance_close(instance_id: string) {
+    this.state.update((old) => {
+      const instances = old.instances.filter((v) => v.id !== instance_id);
+
+      return {
+        ...old,
+        active_instance: instances.length > 0 ? instances[0].id : undefined,
+        instances,
+      };
+    });
+  }
 }
