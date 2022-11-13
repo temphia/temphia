@@ -15,9 +15,13 @@ export class Navigator {
     this.set("#/");
   };
 
-  launch_app = (name: string) => {
-    this.set(`#/launch/${name}`);
-  };
+  launch_target(target: string) {
+    this.set(`#/launch/${target}`);
+  }
+
+  launcher() {
+    this.set(`#/launch/`);
+  }
 
   // data
 
@@ -371,7 +375,5 @@ export class Navigator {
     this.set(`#/admin/tenant/domain/new`);
   }
 
-  launch_target(target: string) {
-    this.set(`#/launch/${target}`);
-  }
+
 }

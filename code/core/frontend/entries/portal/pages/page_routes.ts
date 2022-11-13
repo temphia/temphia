@@ -24,6 +24,7 @@ import Play from "./play/play.svelte";
 import NotFound from "./notfound.svelte";
 
 import LaunchInstance from "../launcher/instancer.svelte";
+import Launcher from "../launcher/launcher.svelte";
 
 export default {
   "/": Start,
@@ -53,7 +54,12 @@ export default {
     "/user/:id": UserProfile,
   },
 
-  "/launch/:target": LaunchInstance,
+  "/launch": {
+    "/": Launcher,
+    "/:target": LaunchInstance,
+  },
+
+  
 
   "*": NotFound,
 };

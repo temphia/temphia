@@ -2,4 +2,4 @@
   import AppListings from "../../launcher/listing.svelte";
 </script>
 
-<AppListings />
+<AppListings show_running={true} />
