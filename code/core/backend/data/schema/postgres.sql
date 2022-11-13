@@ -79,6 +79,27 @@ create table target_hooks(
     tenant_id text not null
 );
 
+
+-- create table target_kv(
+--     key text not null,
+--     value text not null,
+--     target_type text not null,
+--     target text not null,
+--     tenant_id text not null,
+--     PRIMARY KEY(tenant_id, key, plug_id)
+-- );
+
+-- create table target_event(
+--     id serial primary key,
+--     target_type text not null,
+--     target text not null,
+--     data text not null,
+--     extra_meta json not null default '{}',
+--     tenant_id text not null,
+--     PRIMARY KEY(tenant_id, key, plug_id)
+-- );
+
+
 create table tenant_repos(
     id serial primary key,
     name text not null default '',
