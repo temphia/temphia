@@ -10,6 +10,7 @@
       agent_id: "yyyyy",
       icon: "",
       ticket: "",
+      target_id: "mno",
     },
 
     {
@@ -18,6 +19,7 @@
       agent_id: "yyyyy",
       icon: "",
       ticket: "",
+      target_id: "pqr",
     },
 
     {
@@ -26,6 +28,7 @@
       agent_id: "yyyyy",
       icon: "",
       ticket: "",
+      target_id: "xyz",
     },
   ];
 </script>
@@ -57,7 +60,7 @@
   <div class="p-8 flex flex-wrap justify-center gap-4">
     {#each plugs as plug}
       <div
-        on:click={() => app.nav.launch_instance(plug.plug_id)}
+        on:click={() => app.nav.launch_target(plug.target_id)}
         class="bg-white flex flex-col items-center h-32 w-32 p-2 overflow-hidden shadow-lg rounded-lg cursor-pointer hover:border-2 border-blue-400"
       >
         {#if plug.icon === ""}

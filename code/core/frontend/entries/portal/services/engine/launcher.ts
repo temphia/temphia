@@ -9,7 +9,7 @@ interface LauncherState {
 
 interface Instance {
   id: string;
-  target_id: number;
+  target_id: string;
   plug_id: string;
   agent_id: string;
   name: string;
@@ -22,11 +22,24 @@ interface Instance {
 
 export class Launcher {
   state: Writable<LauncherState>;
+
+  target_index: { [_: string]: string };
+
   constructor() {
     this.state = writable({
       display: "HIDDEN",
       instances: [],
     });
+
+    this.state.subscribe((_state) => {
+      this.target_index = {};
+      _state.instances.forEach((instance) => {
+        this.target_index[instance.target_id] = instance.id;
+      });
+    });
+
+    this.state.subscribe((lstate) => console.log("@launcher_state", lstate));
+    
   }
 
   plane_hide() {
@@ -55,7 +68,7 @@ export class Launcher {
           name: "Test1",
           plug_id: "fixme",
           agent_id: "fixme",
-          target_id: 0,
+          target_id: target_app["target_id"],
         },
       ],
     }));

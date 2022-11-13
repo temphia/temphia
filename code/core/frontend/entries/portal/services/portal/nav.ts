@@ -371,7 +371,7 @@ export class Navigator {
     this.set(`#/admin/tenant/domain/new`);
   }
 
-  launch_instance(instance: string) {
-    this.set(`#/launch/${instance}`);
+  launch_target(target: string) {
+    this.set(`#/launch/${target}`);
   }
 }

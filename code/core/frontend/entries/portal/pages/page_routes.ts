@@ -53,7 +53,7 @@ export default {
     "/user/:id": UserProfile,
   },
 
-  "/launch/:instance": LaunchInstance,
+  "/launch/:target": LaunchInstance,
 
   "*": NotFound,
 };
