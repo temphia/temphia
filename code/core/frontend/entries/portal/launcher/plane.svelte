@@ -2,36 +2,31 @@
   import type { Launcher } from "../services/engine/launcher";
 
   export let launcher: Launcher;
+  const state = launcher.state;
 
-  const display_state = launcher.display_state;
+  $: __instances = $state.instances;
+  $: __active_instance = $state.active_instance;
 </script>
 
 <div
-  class={$display_state === "HIDDEN"
+  class={$state.display === "HIDDEN"
     ? "hidden"
-    : $display_state === "FLOATING"
+    : $state.display === "FLOATING"
     ? "floating"
     : "not-floating"}
 >
   <div class="flex justify-between border border-gray-100">
     <div class="grow h-10 flex flex-row flex-nowrap overflow-hidden">
-      <button
-        class="text-gray-600 py-2 px-2 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500"
-      >
-        Tab 1
-      </button><button
-        class="text-gray-600 py-2 px-2 block hover:text-blue-500 focus:outline-none"
-      >
-        Tab 2
-      </button><button
-        class="text-gray-600 py-2 px-2 block hover:text-blue-500 focus:outline-none"
-      >
-        Tab 3
-      </button><button
-        class="text-gray-600 py-2 px-2 block hover:text-blue-500 focus:outline-none"
-      >
-        Tab 4
-      </button>
+      {#each __instances as instance}
+        <button
+          class="text-gray-600 py-2 px-2 block hover:text-blue-500 focus:outline-none {instance.id ===
+          __active_instance
+            ? 'text-blue-500 border-b-2 font-medium border-blue-500'
+            : ''}"
+        >
+          {instance.name}
+        </button>
+      {/each}
     </div>
 
     <div class="grow-0 h-8 w-8 p-1">
@@ -51,15 +46,20 @@
     </div>
   </div>
 
-  <div class="border border-red-600 w-full" style="height: calc(100vh - 2.75rem);">
-    <iframe
-    title="test"
-    class="w-full h-full"
-    src="http://www.example.com/"
-  />
+  <div
+    class="border border-red-600 w-full"
+    style="height: calc(100vh - 2.75rem);"
+  >
+    {#each __instances as instance}
+      <iframe
+        title={instance.name}
+        class="w-full h-full {instance.id === __active_instance
+          ? ''
+          : 'hidden'}"
+        src="http://www.example.com/"
+      />
+    {/each}
   </div>
-
-
 </div>
 
 <style>

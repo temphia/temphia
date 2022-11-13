@@ -6,10 +6,10 @@
   const launcher = app.launcher;
 
   onMount(() => {
-    launcher.not_float();
+    launcher.plane_show();
   });
 
   onDestroy(() => {
-    launcher.hide();
+    launcher.plane_hide();
   });
 </script>
