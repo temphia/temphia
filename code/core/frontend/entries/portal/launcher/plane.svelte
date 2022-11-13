@@ -5,6 +5,7 @@
 
   import { getContext } from "svelte";
   import type { PortalService } from "../services";
+  import LauncherOptions from "./launcher_options.svelte";
 
   const app = getContext("__app__") as PortalService;
 
@@ -57,26 +58,23 @@
             &nbsp;&nbsp;
 
             <span on:click={() => launcher.instance_close(instance.id)}>
-              <Icon name="x-circle" class="w-5 pt-1 hover:text-red-500" />
+              <Icon name="x-circle" class="w-5 pt-1 text-gray-500 hover:text-red-500" />
             </span>
           </div>
         {/each}
       </div>
 
       <div class="grow-0 h-8 w-8 p-1">
-        <svg
-          class="w-6 h-6 rounded border"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
+        <button
+          on:click={() => {
+            app.utils.small_modal_open(LauncherOptions, { app });
+          }}
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"
+          <Icon
+            name="menu"
+            class="w-6 h-6 rounded border hover:text-blue-500"
           />
-        </svg>
+        </button>
       </div>
     </div>
 
