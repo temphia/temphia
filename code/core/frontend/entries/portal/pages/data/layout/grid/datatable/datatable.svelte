@@ -5,6 +5,8 @@
   import Loading from "./_loading.svelte";
   import DOMPurify from "dompurify";
   import { createEventDispatcher } from "svelte";
+  import LayoutPicker from "./_layout_picker.svelte";
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
 
   export let columns_index: { [_: string]: object };
   export let columns: string[];
@@ -20,18 +22,15 @@
   export let loading: boolean = false;
   export let selectedRows = [];
 
-
-
   const dispatch = createEventDispatcher();
   const onChangeDtable = (payload) => dispatch("on_table_change", payload);
   const onPageButtom = () => dispatch("on_page_buttom");
   const onPageTop = () => dispatch("on_page_top");
   const rowClick = (payload) => dispatch("on_row_click", payload);
   const newRowClick = (payload) => dispatch("on_new_row", payload);
-  const rowToggleSelect = (payload) => dispatch("on_row_toggle_select", payload);
+  const rowToggleSelect = (payload) =>
+    dispatch("on_row_toggle_select", payload);
   const onHookClick = (payload) => dispatch("on_hook_click", payload);
-
-  
 
   let left_ref;
   let head_ref;
@@ -140,6 +139,26 @@
             {/if}
           {/each}
         {/key}
+      </div>
+
+      <div>
+        <LayoutPicker>
+          <button
+            on:click={() => {}}
+            class="flex justify-between rounded-sm px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white"
+          >
+            <Icon name="table" class="h-5 w-5" />
+            <span> Grid </span>
+          </button>
+
+          <button
+            on:click={() => {}}
+            class="flex justify-between rounded-sm px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white"
+          >
+            <Icon name="color-swatch" class="h-5 w-5" />
+            <span> Card </span>
+          </button>
+        </LayoutPicker>
       </div>
     </div>
     <!-- TOOLBAR  END -->
