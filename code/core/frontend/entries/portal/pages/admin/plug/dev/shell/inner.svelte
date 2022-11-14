@@ -1,32 +1,31 @@
 <script lang="ts">
-//   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-//   import OpenRPC from "./openrpc.svelte";
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
+  import OpenRPC from "../docs/_openrpc.svelte";
 
-//   import { PortalService, CEditor } from "../../../core";
+  import { PortalService, CEditor } from "../../../core";
+  import type { DevShellService } from "../../../../../services/engine/dev_shell";
 
-//   export let pid: string;
-//   export let aid: string;
-//   export let tkt: string;
-//   export let app: PortalService;
+  export let pid: string;
+  export let aid: string;
+  export let service: DevShellService;
+  export let app: PortalService;
 
-//   let watch_mode = false;
+  let watch_mode = false;
 
-//   const tkt_api = new DevTktAPI(app._base_app._api_url, tkt);
-
-//   let method = "";
-//   let editor;
-//   let resp_data;
-
-//   const submit = async () => {
-//     console.log("@editor", editor);
-//     if (!method) {
-//       return;
-//     }
-//     resp_data = await tkt_api.exec_run(pid, aid, method, editor.getValue());
-//   };
+  let method = "";
+  let editor;
+  let resp_data;
+  2;
+  const submit = async () => {
+    // console.log("@editor", editor);
+    // if (!method) {
+    //   return;
+    // }
+    // resp_data = await tkt_api.exec_run(pid, aid, method, editor.getValue());
+  };
 </script>
 
-<!-- <div class="h-full w-full p-2">
+<div class="h-full w-full p-2">
   <div
     class="w-full h-full flex flex-col p-4 rounded bg-white"
     style="height:calc(100vh - 4.5rem);"
@@ -57,9 +56,7 @@
         </button>
 
         <button
-          on:click={() => {
-            // app.big_modal_open(OpenRPC, {});
-          }}
+          on:click={() => app.utils.big_modal_open(OpenRPC, {})}
           class="p-1 rounded bg-blue-300 shadow hover:bg-blue-600 flex text-white"
         >
           <Icon name="information-circle" class="h-6 w-6" solid />
@@ -109,4 +106,4 @@
       </div>
     </div>
   </div>
-</div> -->
+</div>

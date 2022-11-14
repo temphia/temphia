@@ -16,7 +16,7 @@
 
   const load = async () => {
     const api = app.api_manager.get_admin_plug_api();
-    const resp = await api.list_plug();
+    const resp = await api.list_agent(pid);
     if (!resp.ok) {
       return;
     }

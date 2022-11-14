@@ -14,6 +14,7 @@ import {
   AdminUserAPI,
   AdminUserGroupAPI,
 } from "../../../../lib/apiv2/admin";
+import { PlugDevTktAPI } from "../../../../lib/apiv2/plug_dev_tkt";
 
 export class ApiManager {
   base_url: string;
@@ -85,8 +86,8 @@ export class ApiManager {
   };
 
   get_cabinet = () => {
-    return new CabinetAPI(this.api_base_url, "" )
-  }
+    return new CabinetAPI(this.api_base_url, "");
+  };
 
   get_data_api = async (source: string, group: string) => {
     const data = {
@@ -145,6 +146,10 @@ export class ApiManager {
 
   get_admin_check_api = () => {
     return new AdminCheckAPI(this.base);
+  };
+
+  get_dev_plug_tkt_api = (dev_ticket: string) => {
+    return new PlugDevTktAPI(this.api_base_url, dev_ticket);
   };
 }
 
