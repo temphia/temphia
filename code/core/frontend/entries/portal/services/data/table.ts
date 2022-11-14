@@ -42,7 +42,7 @@ export class TableService {
   }
 
   init = async () => {
-    const data = this.do_query({
+    const data = await this.do_query({
       ...defaultViewData(),
       load_extra_meta: true,
     });
