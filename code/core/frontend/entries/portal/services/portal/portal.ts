@@ -4,6 +4,7 @@ import { Launcher } from "../engine/launcher";
 import { Navigator } from "./nav";
 import { Notifier } from "../notifier";
 import { DataService } from "../data";
+import { SockdService } from "../sockd/sockd";
 
 export interface AppOptions {
   base_url: string;
@@ -26,6 +27,7 @@ export class PortalService {
   options: AppOptions;
   nav: Navigator;
   api_manager: ApiManager;
+  sockd_service: SockdService;
   notifier: Notifier;
   utils: Utils;
 
@@ -41,6 +43,7 @@ export class PortalService {
       opts.user_token
     );
     this.launcher = new Launcher();
+    this.sockd_service = new SockdService();
   }
 
   async init() {
@@ -49,12 +52,12 @@ export class PortalService {
   }
 
   private async init_notifier() {
-    const sapi = this.api_manager.get_api_sockd();
+    const wsurl = this.api_manager.self_api.self_ws_url();
 
     this.notifier = new Notifier(this.api_manager.self_api);
 
-    const sockd = await sapi.user(
-      this.api_manager.session_token,
+    const sockd = await this.sockd_service.build(
+      wsurl,
       this.notifier.handle_sockd
     );
 
@@ -76,4 +79,8 @@ export class PortalService {
   inject(utils: Utils) {
     this.utils = utils;
   }
+
+  get_sockd_service = () => {
+    return this.sockd_service;
+  };
 }

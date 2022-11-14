@@ -36,6 +36,8 @@ func (s *Server) API(rg *gin.RouterGroup) {
 	s.admin.API(rg.Group("/admin"))
 	s.authAPI(rg.Group("/auth"))
 	s.dataAPI(rg.Group("/data"))
+	s.dataWSAPI(rg.Group("/data_ws"))
+
 	s.cabinetAPI(rg.Group("/cabinet"))
 	s.folderTktAPI(rg.Group("/folder"))
 
@@ -43,7 +45,6 @@ func (s *Server) API(rg *gin.RouterGroup) {
 	s.engineAPI(rg.Group("/engine"))
 	s.selfAPI(rg.Group("/self"))
 	s.repoAPI(rg.Group("/repo"))
-	s.sockdAPI(rg.Group("/sockd"))
 
 }
 

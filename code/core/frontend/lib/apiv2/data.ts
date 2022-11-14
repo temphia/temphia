@@ -52,3 +52,14 @@ export class DataAPI {
     return this.http.post(`/data/${tid}/activity${rid}`, data);
   }
 }
+
+
+// async data(token: string, on_handler: (message: SockdMessage) => void) {
+//   const sockd = new Sockd({
+//     OnHandler: on_handler,
+//     URL: `${this.base_url}/sockd/data/ws?token=${token}`,
+//   });
+
+//   await sockd.init();
+//   return sockd;
+// }

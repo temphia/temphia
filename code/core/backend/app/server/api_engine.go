@@ -88,3 +88,13 @@ func (s *Server) launchDomain(ctx httpx.Request) {
 
 func (s *Server) launchAuthd(ctx *gin.Context)  {}
 func (s *Server) launchWidget(ctx *gin.Context) {}
+
+// engine/exec sockd
+
+// func (s *Server) sockdRoomWS(ctx *gin.Context) {
+
+// }
+
+// func (s *Server) sockdRoomUpdateWS(ctx *gin.Context) {
+
+// }

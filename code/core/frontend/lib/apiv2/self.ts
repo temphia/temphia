@@ -30,6 +30,10 @@ export class SelfAPI {
     return this.base.get("/self/self");
   }
 
+  self_ws_url() {
+    return `${this.base.base_url}/self/self/ws?token=${this.base.http.headers["Authorization"]}`
+  }
+
   user_profile(userid: string) {
     return this.base.get(`/self/user/${userid}`);
   }

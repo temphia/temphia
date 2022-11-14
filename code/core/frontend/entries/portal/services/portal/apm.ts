@@ -14,7 +14,6 @@ import {
   AdminUserAPI,
   AdminUserGroupAPI,
 } from "../../../../lib/apiv2/admin";
-import { SockdAPI } from "../../../../lib/apiv2/sockd";
 
 export class ApiManager {
   base_url: string;
@@ -83,10 +82,6 @@ export class ApiManager {
 
   get_repo_api = () => {
     return new RepoAPI(this.base);
-  };
-
-  get_api_sockd = () => {
-    return new SockdAPI(this.api_base_url);
   };
 
   get_cabinet = () => {

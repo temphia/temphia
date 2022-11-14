@@ -4,6 +4,8 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/core/backend/controllers/sockd"
+	"github.com/temphia/temphia/code/core/backend/services/sockdhub/transports"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 )
@@ -26,6 +28,7 @@ func (s *Server) selfAPI(rg *gin.RouterGroup) {
 	rg.POST("/user/:user_id", s.X(s.selfUserMessage))
 	rg.POST("/issue/folder", s.X(s.issueFolderTkt))
 	rg.POST("/issue/data", s.X(s.issueDataTkt))
+	rg.GET("/self/ws", s.sockdUserWS)
 
 }
 
@@ -160,4 +163,25 @@ func (s *Server) selfUserMessage(ctx httpx.Request) {
 
 	_, err = s.cUser.Message(ctx.Session, ctx.MustParam("user_id"), string(out))
 	httpx.WriteFinal(ctx.Http, err)
+}
+
+func (s *Server) sockdUserWS(ctx *gin.Context) {
+
+	sclaim, err := s.signer.ParseSession(ctx.Param("tenant_id"), ctx.Query("token"))
+	if err != nil {
+		return
+	}
+	conn, err := transports.NewConnWS(ctx, 0)
+	if err != nil {
+		return
+	}
+
+	s.cSockd.AddUserConn(sockd.UserConnOptions{
+		TenantId: ctx.Param("tenant_id"),
+		UserId:   sclaim.UserID,
+		GroupId:  sclaim.UserGroup,
+		DeviceId: sclaim.DeviceId,
+		Conn:     conn,
+	})
+
 }

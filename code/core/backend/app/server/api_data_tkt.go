@@ -27,6 +27,11 @@ func (s *Server) dataAPI(rg *gin.RouterGroup) {
 	rg.POST("/:tid/activity/:row_id", s.DataX(s.commentRow))
 }
 
+func (s *Server) dataWSAPI(rg *gin.RouterGroup) {
+	rg.GET("/", s.sockdDataWS)
+	rg.POST("/", s.sockdDataUpdateWS)
+}
+
 type newRowReq struct {
 	Cells map[string]interface{} `json:"cells,omitempty"`
 }
@@ -206,4 +211,12 @@ func (s *Server) DataX(fn func(uclaim *claim.Data, ctx *gin.Context)) func(*gin.
 	}
 }
 
-// private
+// data sockd
+
+func (s *Server) sockdDataWS(ctx *gin.Context) {
+
+}
+
+func (s *Server) sockdDataUpdateWS(ctx *gin.Context) {
+
+}
