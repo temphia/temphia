@@ -452,13 +452,54 @@ export class RowService {
   }
 }
 
+export type Callback = () => void;
 
-/*
+export class DirtyRowService {
+  dirtyStore: Writable<DirtyData>;
+  callbacks: Map<string, Callback>;
+  constructor(store: Writable<DirtyData>) {
+    this.dirtyStore = store;
+    this.callbacks = new Map();
+  }
 
-  DataService
-  GroupService
-  TableService
-  
-  DirtyRowService
+  register_before_save(field: string, callback: Callback): void {
+    this.callbacks.set(field, callback);
+  }
 
-*/
+  on_ohange(_filed: string, _value: any): void {
+    this.set_value(_filed, _value);
+  }
+
+  // row stuff
+  start_modify_row = (row: number) => {
+    this.callbacks.clear();
+    this.dirtyStore.set({ rowid: row, data: {} });
+  };
+
+  start_new_row = () => {
+    this.callbacks.clear();
+    this.dirtyStore.set({ rowid: 0, data: {} });
+  };
+
+  set_value = (_filed: string, value: any) => {
+    this.dirtyStore.update((old) => ({
+      ...old,
+      data: { ...old.data, [_filed]: value },
+    }));
+  };
+
+  clear_dirty_row = () => {
+    this.dirtyStore.set({ rowid: 0, data: {} });
+  };
+
+  set_ref_copy(column: string, value: any) {
+    this.dirtyStore.update((old) => ({
+      ...old,
+      data: { ...old.data, [column]: value },
+    }));
+  }
+
+  before_save() {
+    this.callbacks.forEach((val) => val());
+  }
+}
