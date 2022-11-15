@@ -452,17 +452,16 @@ export class RowService {
   }
 }
 
-export type Callback = () => void;
 
 export class DirtyRowService {
   dirtyStore: Writable<DirtyData>;
-  callbacks: Map<string, Callback>;
+  callbacks: Map<string, () => void>;
   constructor(store: Writable<DirtyData>) {
     this.dirtyStore = store;
     this.callbacks = new Map();
   }
 
-  register_before_save(field: string, callback: Callback): void {
+  register_before_save(field: string, callback: () => void): void {
     this.callbacks.set(field, callback);
   }
 
