@@ -1,18 +1,21 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import { KeyPrimary,  } from "../../../../../../../lib/core/dyntypes";
-  import type { DataTableService, Column } from "../../../../../../../lib/service/dyn";
+  import type { Column, TableRowService } from "../../../../../services/data";
+  import { KeyPrimary } from "../field";
   import RefPanel from "./ref_panel.svelte";
 
-  const { open, close } = getContext("simple-modal");
+  const { open, close } = getContext("simple-modal") as {
+    open: any;
+    close: any;
+  };
 
   export let value;
   export let column: Column;
   export let onChange: (value: any) => void;
-  export let manager: DataTableService;
+  export let row_service: TableRowService;
 
   const loader = (cursor: number) => {
-    return manager.ref_load({
+    return row_service.ref_load({
       column: column.slug,
       type: column.ref_type,
       target: column.ref_target,

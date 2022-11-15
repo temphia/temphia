@@ -1,16 +1,14 @@
 <script lang="ts">
-  import type { DataService } from "../../../../../services/data";
+  import type { Column, TableService } from "../../../../../services/data";
   import Field from "../../fields/field.svelte";
 
   export let columns: string[];
   export let columns_indexded: { [_: string]: object };
   export let row: object;
   export let rowid: number;
-  export let manager: DataService;
+  export let table_service: TableService;
 
-  const _columns_indexded = columns_indexded as { [_: string]: object };
-
-
+  const _columns_indexded = columns_indexded as { [_: string]: Column };
 </script>
 
 <div class="flex-grow flex flex-col h-32 p-2 space-y-1 overflow-y-auto">
@@ -19,8 +17,7 @@
       <Field
         {row}
         column={_columns_indexded[col]}
-        {manager}
-        row_editor={null}
+        row_service={table_service.get_row_service()}
         onChange={(value) => {}}
       />
     </div>

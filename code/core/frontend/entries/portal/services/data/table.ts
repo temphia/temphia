@@ -24,6 +24,9 @@ export class TableService {
   data_api: DataAPI;
   state: TableState;
 
+  _open_modal: (compo: any, props: object) => void;
+  _close_modal: () => void;
+
   row_service: TableRowService;
 
   constructor(opts: {
@@ -31,11 +34,15 @@ export class TableService {
     table_slug: string;
     group_slug: string;
     data_api: DataAPI;
+    open_modal: (compo: any, props: object) => void;
+    close_modal: () => void;
   }) {
     this.all_tables = opts.all_tables;
     this.table_slug = opts.table_slug;
     this.group_slug = opts.group_slug;
     this.data_api = opts.data_api;
+    this._open_modal = opts.open_modal;
+    this._close_modal = opts.close_modal;
 
     this.state = new TableState(this);
     this.row_service = new TableRowService(this, this.state);
@@ -322,11 +329,19 @@ export class TableState {
       };
     });
   };
+
+  start_row_edit = (row_id: number) => {
+    this.dirty_store.set({
+      data: {},
+      rowid: row_id,
+    });
+  };
 }
 
 export class TableRowService {
   service: TableService;
   state: TableState;
+
   constructor(service: TableService, state: TableState) {
     this.service = service;
     this.state = state;
@@ -431,4 +446,8 @@ export class TableRowService {
 
     this.state.set_row_data(resp.data);
   };
+
+  open_model(compo: any, opts: object) {
+    this.service._open_modal(compo, opts);
+  }
 }

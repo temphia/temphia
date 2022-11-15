@@ -1,10 +1,9 @@
 <script lang="ts">
-  import type { RowEditor } from "../../manager";
-  import type { Column } from "../../manager/dtypes";
+  import type { TableRowService, Column } from "../../../../../services/data";
 
   export let column: Column;
   export let value: any;
-  export let row_editor: RowEditor;
+  export let row_service: TableRowService;
 </script>
 
 <div>JSON</div>

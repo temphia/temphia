@@ -1,17 +1,12 @@
 <script lang="ts">
-  import { getContext } from "svelte";
-
-  import type {
-    PortalApp,
-    DataTableService,
-  } from "../../../../../../../lib/app/portal";
+  import type { TableService } from "../../../../../services/data/table";
   import Embed from "../../embed/embed.svelte";
 
   export let reverse_ref_column: object[];
-  export let manager: DataTableService;
+  export let table_service: TableService;
   export let row: object;
 
-  const app: PortalApp = getContext("__app__");
+  const row_service = table_service.get_row_service();
 
   let selected = false;
   let loading = false;
@@ -19,7 +14,7 @@
   const load = async (column: object) => {
     selected = true;
     loading = true;
-    const resp = await manager.rev_ref_load(
+    const resp = await row_service.rev_ref_load(
       column["table_id"],
       column["slug"],
       row["__id"]

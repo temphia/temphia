@@ -9,7 +9,7 @@
   import Json from "./json/json.svelte";
   import RefPrimary from "./reference/ref_primary.svelte";
   import RefText from "./reference/ref_text.svelte";
-  import type { Column } from "../manager/dtypes";
+
   import {
     CtypeShortText,
     CtypePhone,
@@ -36,15 +36,19 @@
     RefSoftText,
     RefHardText,
   } from "./field";
-  import type { DataTableService, RowEditor } from "../../../../../../lib/app/portal";
+  import type {
+    Column,
+    DataService,
+    TableRowService,
+  } from "../../../../services/data";
 
   export let row: object;
   export let column: Column;
   export let onChange: (value: any) => void;
-  export let manager: DataTableService;
-  export let row_editor: RowEditor;
+  export let row_service: TableRowService;
 
-  let dirty_store = row_editor._dirtyStore;
+  let dirty_store = row_service.state.dirty_store;
+
   $: _value = $dirty_store.data[column.slug] || row[column.slug] || "";
 
   const change = (ev) => {
@@ -75,7 +79,7 @@
 >
 
 {#if column.ref_type === RefHardPriId || column.ref_type === RefSoftPriId}
-  <RefPrimary {column} {manager} {onChange} value={_value} />
+  <RefPrimary {column} {onChange} value={_value} {row_service} />
 {:else if column.ref_type === RefSoftText || column.ref_type === RefHardText}
   <RefText />
 {:else if column.ctype === CtypeShortText}
@@ -146,25 +150,11 @@
     />
   </div>
 {:else if column.ctype === CtypeFile}
-  <File
-    multi={false}
-    value={_value}
-    {column}
-    {onChange}
-    {row_editor}
-    {manager}
-  />
+  <File multi={false} value={_value} {column} {onChange} {row_service} />
 {:else if column.ctype === CtypeMultiFile}
-  <File
-    multi={true}
-    value={_value}
-    {column}
-    {onChange}
-    {row_editor}
-    {manager}
-  />
+  <File multi={true} value={_value} {column} {onChange} {row_service} />
 {:else if column.ctype === CtypeLocation}
-  <Location {column} {onChange} value={_value} />
+  <Location {column} {onChange} value={_value} {row_service} />
 {:else if column.ctype === CtypeDateTime}
   <!-- <Reference {column} {onChange} {value} {manager} /> -->
 
@@ -197,7 +187,7 @@
     />
   </div>
 {:else if column.ctype === CtypeJSON}
-  <Json {column} value={_value} {row_editor} />
+  <Json {column} value={_value} {row_service} />
 {:else if column.ctype === CtypeRangeNumber}
   <div class="flex w-full">
     <input

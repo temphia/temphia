@@ -2,10 +2,12 @@
   import Card from "./_card.svelte";
   import EmojiSelector from "svelte-emoji-selector";
   import UserSelector from "./_user_selector.svelte";
-  import type { DataService } from "../../../../../services/data";
+  import type { TableService } from "../../../../../services/data/table";
 
-  export let manager: DataService;
+  export let table_service: TableService;
   export let rowid: number;
+
+  const row_editor = table_service.get_row_service();
 
   let timelines = [];
   let loaded = false;
@@ -13,10 +15,10 @@
 
   const load = () => {
     if (rowid !== 0) {
-      // manager.list_activity(rowid).then((resp) => {
-      //   timelines = resp.data;
-      //   loaded = true;
-      // });
+      row_editor.list_activity(rowid).then((resp) => {
+        timelines = resp.data;
+        loaded = true;
+      });
     }
   };
 
@@ -62,11 +64,11 @@
       <button
         class="rounded bg-blue-500 hover:bg-blue-300 text-white p-1"
         on:click={async () => {
-          // if (!message) {
-          //   return;
-          // }
-          // await manager.comment_row(rowid, message);
-          // load();
+          if (!message) {
+            return;
+          }
+          await row_editor.comment_row(rowid, message);
+          load();
         }}>comment</button
       >
     </div>

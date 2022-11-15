@@ -3,35 +3,29 @@
   import FilesPreview from "./_files_preview.svelte";
   import { ctypeFileDecode } from "../field";
   import FilepickDialog from "./_file_panel.svelte";
-  import type Column from "../../../../admin/dtable/_column.svelte";
-  import type {
-    DataTableService,
-    RowEditor,
-  } from "../../../../../../../lib/service/dyn";
+  import type { Column, TableRowService } from "../../../../../services/data";
 
   export let multi: boolean;
   export let value: any;
   export let column: Column;
-  export let manager: DataTableService;
-  export let row_editor: RowEditor;
+  export let row_service: TableRowService;
 
   export let onChange: (_value: any) => void;
 
-  const { open, close } = getContext("simple-modal");
 
   $: _files = ctypeFileDecode(value);
 
   const showPreview = (file: string) => {
-    open(FilesPreview, {
-      folder_api: manager.FolderTktAPI,
+    row_service.open_model(FilesPreview, {
+      folder_api: null, //manager.FolderTktAPI,
       files: _files,
       current_file: file,
     });
   };
 
   const showDialog = () => {
-    open(FilepickDialog, {
-      folder_api: manager.FolderTktAPI,
+    row_service.open_model(FilepickDialog, {
+      folder_api: null, //manager.FolderTktAPI,
       onSelect: (file: string) => {
         if (multi) {
           _files = Array.from(new Set([..._files, file]));
@@ -84,7 +78,7 @@
 
         <img
           on:click={() => showPreview(file)}
-          src={manager.FolderTktAPI.get_file_preview_link(file)}
+          src={"manager.FolderTktAPI.get_file_preview_link(file)"}
           class="h-20 p-1 border bg-white cursor-pointer"
           alt=""
         />

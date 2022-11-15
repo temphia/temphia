@@ -1,11 +1,12 @@
 <script lang="ts">
   import { getContext } from "svelte";
+  import type { TableRowService } from "../../../../../services/data";
   import LocationSelect from "./_location_panel.svelte";
   export let value: any;
   export let column: object;
-  export let onChange: (_value: any) => void;
+  export let row_service: TableRowService;
 
-  const { open, close } = getContext("simple-modal");
+  export let onChange: (_value: any) => void;
 
   $: __value = value;
   const callback = (_lat: number, _lng: number) => {
@@ -27,7 +28,7 @@
       props["lat"] = __value[0];
       props["lng"] = __value[1];
     }
-    open(LocationSelect, props);
+    row_service.open_model(LocationSelect, props);
   };
 </script>
 

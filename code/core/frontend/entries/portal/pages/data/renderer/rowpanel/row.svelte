@@ -5,16 +5,16 @@
   import Properties from "./properties/properties.svelte";
   import Rowlayout from "./_layout.svelte";
   import Relations from "./relations/relations.svelte";
-  import type { DataTableService } from "../../../../../../lib/app/portal";
+  import type { TableService } from "../../../../services/data/table";
 
   export let show_editor = false;
-  export let manager: DataTableService;
+  export let table_service: TableService;
   export let rows_indexed: { [_: number]: object };
   export let columns: string[];
   export let columns_indexded: { [_: string]: object };
   export let reverse_ref_column: object[];
 
-  $: _dirty_store = manager.dirtyStore;
+  $: _dirty_store = table_service.state.dirty_store;
   $: _rowid = $_dirty_store.rowid || 0;
   $: _row = rows_indexed[_rowid] || {};
 </script>
@@ -22,11 +22,17 @@
 {#key _rowid}
   <Rowlayout bind:show_editor row_id={_rowid}>
     <svelte:fragment slot="edit">
-      <Edit rowid={_rowid} row={_row} {columns} {columns_indexded} {manager} />
+      <Edit
+        rowid={_rowid}
+        row={_row}
+        {columns}
+        {columns_indexded}
+        {table_service}
+      />
     </svelte:fragment>
 
     <svelte:fragment slot="activity">
-      <Activity rowid={_rowid} {manager} />
+      <Activity rowid={_rowid} {table_service} />
     </svelte:fragment>
 
     <svelte:fragment slot="meta">
@@ -34,7 +40,7 @@
     </svelte:fragment>
 
     <svelte:fragment slot="relations">
-      <Relations {reverse_ref_column} {manager} row={_row} />
+      <Relations {reverse_ref_column} row={_row} {table_service} />
     </svelte:fragment>
   </Rowlayout>
 {/key}
