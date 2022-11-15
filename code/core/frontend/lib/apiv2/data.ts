@@ -45,11 +45,11 @@ export class DataAPI {
     return this.http.post(`/data/${tid}/rev_ref_load`, data);
   }
   list_activity(tid: string, rid: string) {
-    return this.http.get(`/data/${tid}/activity${rid}`);
+    return this.http.get(`/data/${tid}/activity/${rid}`);
   }
 
   comment_row(tid: string, rid: string, data: any) {
-    return this.http.post(`/data/${tid}/activity${rid}`, data);
+    return this.http.post(`/data/${tid}/activity/${rid}`, data);
   }
 }
 
