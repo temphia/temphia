@@ -39,13 +39,13 @@
   import type {
     Column,
     DataService,
-    TableRowService,
+    RowService,
   } from "../../../../services/data";
 
   export let row: object;
   export let column: Column;
   export let onChange: (value: any) => void;
-  export let row_service: TableRowService;
+  export let row_service: RowService;
 
   let dirty_store = row_service.state.dirty_store;
 

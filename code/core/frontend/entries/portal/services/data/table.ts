@@ -27,7 +27,7 @@ export class TableService {
   _open_modal: (compo: any, props: object) => void;
   _close_modal: () => void;
 
-  row_service: TableRowService;
+  row_service: RowService;
 
   constructor(opts: {
     all_tables: object[];
@@ -45,7 +45,7 @@ export class TableService {
     this._close_modal = opts.close_modal;
 
     this.state = new TableState(this);
-    this.row_service = new TableRowService(this, this.state);
+    this.row_service = new RowService(this, this.state);
   }
 
   init = async () => {
@@ -338,7 +338,7 @@ export class TableState {
   };
 }
 
-export class TableRowService {
+export class RowService {
   service: TableService;
   state: TableState;
 
@@ -451,3 +451,14 @@ export class TableRowService {
     this.service._open_modal(compo, opts);
   }
 }
+
+
+/*
+
+  DataService
+  GroupService
+  TableService
+  
+  DirtyRowService
+
+*/

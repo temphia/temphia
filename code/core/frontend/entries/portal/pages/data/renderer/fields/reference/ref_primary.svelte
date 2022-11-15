@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import type { Column, TableRowService } from "../../../../../services/data";
+  import type { Column, RowService } from "../../../../../services/data";
   import { KeyPrimary } from "../field";
   import RefPanel from "./ref_panel.svelte";
 
@@ -12,7 +12,7 @@
   export let value;
   export let column: Column;
   export let onChange: (value: any) => void;
-  export let row_service: TableRowService;
+  export let row_service: RowService;
 
   const loader = (cursor: number) => {
     return row_service.ref_load({

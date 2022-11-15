@@ -3,12 +3,12 @@
   import FilesPreview from "./_files_preview.svelte";
   import { ctypeFileDecode } from "../field";
   import FilepickDialog from "./_file_panel.svelte";
-  import type { Column, TableRowService } from "../../../../../services/data";
+  import type { Column, RowService } from "../../../../../services/data";
 
   export let multi: boolean;
   export let value: any;
   export let column: Column;
-  export let row_service: TableRowService;
+  export let row_service: RowService;
 
   export let onChange: (_value: any) => void;
 

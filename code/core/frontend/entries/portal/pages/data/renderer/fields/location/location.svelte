@@ -1,10 +1,10 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import type { TableRowService } from "../../../../../services/data";
+  import type { RowService } from "../../../../../services/data";
   import LocationSelect from "./_location_panel.svelte";
   export let value: any;
   export let column: object;
-  export let row_service: TableRowService;
+  export let row_service: RowService;
 
   export let onChange: (_value: any) => void;
 

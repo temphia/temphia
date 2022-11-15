@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { TableRowService, Column } from "../../../../../services/data";
+  import type { RowService, Column } from "../../../../../services/data";
 
   export let column: Column;
   export let value: any;
-  export let row_service: TableRowService;
+  export let row_service: RowService;
 </script>
 
 <div>JSON</div>
