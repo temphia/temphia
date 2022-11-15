@@ -11,8 +11,8 @@ export class AdminTargetAPI {
   listApp() {
     return this.base.get(`/admin/target/app`);
   }
-  listAppByType(ttype: string) {
-    return this.base.get(`/admin/target/app/${ttype}`);
+  listAppByType(ttype: string, target="") {
+    return this.base.get(`/admin/target/app/${ttype}?target=${target}`);
   }
   newApp(ttype: string, data: any) {
     return this.base.post(`/admin/target/app/${ttype}`, data);
@@ -32,8 +32,8 @@ export class AdminTargetAPI {
   listHook() {
     return this.base.get(`/admin/target/hook`);
   }
-  listHookByType(ttype: string) {
-    return this.base.get(`/admin/target/hook/${ttype}`);
+  listHookByType(ttype: string, target="") {
+    return this.base.get(`/admin/target/hook/${ttype}?target=${target}`);
   }
   newHook(ttype: string, data: any) {
     return this.base.post(`/admin/target/hook/${ttype}`, data);

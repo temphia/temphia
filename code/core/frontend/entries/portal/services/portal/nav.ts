@@ -230,26 +230,16 @@ export class Navigator {
     this.set(`#/admin/data/${source}/hook/${group}/${table}`);
   };
 
-  admin_data_hook = (
-    source: string,
-    group: string,
-    table: string,
-    id: string
-  ) => {
-    this.set(`#/admin/data/${source}/hook/${group}/${table}/${id}`);
+  admin_data_hook = (source: string, group: string, table: string) => {
+    this.set(`#/admin/data/${source}/hook/${group}/${table}/new`);
   };
 
   admin_data_apps = (source: string, group: string, table: string) => {
     this.set(`#/admin/data/${source}/app/${group}/${table}`);
   };
 
-  admin_data_app = (
-    source: string,
-    group: string,
-    table: string,
-    id: string
-  ) => {
-    this.set(`#/admin/data/${source}/app/${group}/${table}/${id}`);
+  admin_data_app = (source: string, group: string, table: string) => {
+    this.set(`#/admin/data/${source}/app/${group}/${table}/new`);
   };
   // views
 
@@ -374,6 +364,4 @@ export class Navigator {
   admin_tenant_domain_new() {
     this.set(`#/admin/tenant/domain/new`);
   }
-
-
 }

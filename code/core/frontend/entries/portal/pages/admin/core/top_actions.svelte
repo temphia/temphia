@@ -2,7 +2,7 @@
   export let actions: { [_: string]: () => void } = {};
 </script>
 
-<div class="flex justify-end p-2">
+<div class="flex justify-end p-2 gap-1">
   {#each Object.entries(actions) as [action, aFn]}
     <button
       on:click={aFn}

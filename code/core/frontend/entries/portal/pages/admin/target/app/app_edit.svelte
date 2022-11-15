@@ -105,6 +105,6 @@
       required_fields: [],
     }}
     onSave={save}
-    data={{}}
+    {data}
   />
 {/if}

@@ -1,12 +1,22 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { AutoForm, PortalService } from "../../core";
+  import { params } from "svelte-hash-router";
+  export let ttype = $params.ttype;
+  export let target = undefined;
 
   const app = getContext("__app__") as PortalService;
   const api = app.api_manager.get_admin_target_api();
 
   let message = "";
+  let data = {};
+  if (ttype) {
+    data["target_type"] = ttype;
+  }
 
+  if (target) {
+    data["target"] = target;
+  }
   const save = async (_data) => {
     const resp = await api.newApp(_data["target_type"], _data);
     if (!resp.ok) {
@@ -30,6 +40,7 @@
         name: "Target Type",
         ftype: "TEXT",
         key_name: "target_type",
+        disabled: !!ttype,
         options: [
           "user_app",
           "auth_app",
@@ -41,6 +52,7 @@
         name: "Target",
         ftype: "TEXT",
         key_name: "target",
+        disabled: !!target,
       },
 
       {
@@ -82,5 +94,5 @@
     required_fields: [],
   }}
   onSave={save}
-  data={{}}
+  {data}
 />

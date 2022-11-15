@@ -71,6 +71,7 @@ func (r *ApiAdmin) ListTargetAppByType(ctx httpx.Request) {
 	resp, err := r.cAdmin.ListTargetAppByType(
 		ctx.Session,
 		ctx.MustParam("target_type"),
+		ctx.Http.Query("target"),
 	)
 
 	r.rutil.WriteJSON(ctx.Http, resp, err)
@@ -142,6 +143,7 @@ func (r *ApiAdmin) ListTargetHookByType(ctx httpx.Request) {
 	resp, err := r.cAdmin.ListTargetHookByType(
 		ctx.Session,
 		ctx.MustParam("target_type"),
+		ctx.Http.Query("target"),
 	)
 
 	r.rutil.WriteJSON(ctx.Http, resp, err)

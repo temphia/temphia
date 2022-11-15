@@ -63,18 +63,18 @@ type TenantOps interface {
 
 type TargetOps interface {
 	AddTargetHook(data *entities.TargetHook) error
-	UpdateTargetHook(tenantId, targetType string, id int64, data map[string]any) error
+	UpdateTargetHook(tenantId, ttype string, id int64, data map[string]any) error
 	ListTargetHook(tenantId string) ([]*entities.TargetHook, error)
-	ListTargetHookByType(tenantId, targetType string) ([]*entities.TargetHook, error)
-	GetTargetHook(tenantId, targetType string, id int64) (*entities.TargetHook, error)
-	RemoveTargetHook(tenantId, targetType string, id int64) error
+	ListTargetHookByType(tenantId, ttype, target string) ([]*entities.TargetHook, error)
+	GetTargetHook(tenantId, ttype string, id int64) (*entities.TargetHook, error)
+	RemoveTargetHook(tenantId, ttype string, id int64) error
 
 	AddTargetApp(data *entities.TargetApp) error
-	UpdateTargetApp(tenantId, targetType string, id int64, data map[string]any) error
+	UpdateTargetApp(tenantId, ttype string, id int64, data map[string]any) error
 	ListTargetApp(tenantId string) ([]*entities.TargetApp, error)
-	ListTargetAppByType(tenantId, targetType string) ([]*entities.TargetApp, error)
-	GetTargetApp(tenantId, targetType string, id int64) (*entities.TargetApp, error)
-	RemoveTargetApp(tenantId, targetType string, id int64) error
+	ListTargetAppByType(tenantId, ttype, target string) ([]*entities.TargetApp, error)
+	GetTargetApp(tenantId, ttype string, id int64) (*entities.TargetApp, error)
+	RemoveTargetApp(tenantId, ttype string, id int64) error
 
 	ListTargetAppByUgroup(tenantId, ugroup string) ([]*entities.TargetApp, error)
 }

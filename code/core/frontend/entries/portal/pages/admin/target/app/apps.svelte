@@ -7,6 +7,9 @@
     PortalService,
   } from "../../core";
   import TopActions from "../../core/top_actions.svelte";
+  export let ttype = undefined;
+  export let target = undefined;
+  export let action_new = () => app.nav.admin_target_app_new();
 
   const app = getContext("__app__") as PortalService;
 
@@ -15,7 +18,14 @@
   const api = app.api_manager.get_admin_target_api();
 
   const load = async () => {
-    const resp = await api.listApp();
+    let resp;
+
+    if (!ttype) {
+      resp = await api.listApp();
+    } else {
+      resp = await api.listAppByType(ttype, target);
+    }
+
     if (!resp.ok) {
       return;
     }
@@ -34,15 +44,18 @@
     load();
   };
 
-  const action_new = () => app.nav.admin_target_app_new();
+ 
+
+  const actions = {
+    Hooks: () => app.nav.admin_target_hooks(),
+  };
+
+  if (ttype) {
+    actions["All Apps"] = () => app.nav.admin_target_apps();
+  }
 </script>
 
-<TopActions
-  actions={{
-    "Hooks": () => app.nav.admin_target_hooks(),
-  }}
-/>
-
+<TopActions {actions} />
 
 {#if loading}
   <LoadingSpinner />

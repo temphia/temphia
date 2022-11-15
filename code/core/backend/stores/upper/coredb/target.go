@@ -10,10 +10,10 @@ func (d *DB) AddTargetHook(data *entities.TargetHook) error {
 	return err
 }
 
-func (d *DB) UpdateTargetHook(tenantId, targetType string, id int64, data map[string]any) error {
+func (d *DB) UpdateTargetHook(tenantId, ttype string, id int64, data map[string]any) error {
 	return d.targetHookTable().Find(db.Cond{
 		"id": id, "tenant_id": tenantId,
-		"target_type": targetType}).Update(data)
+		"target_type": ttype}).Update(data)
 }
 
 func (d *DB) ListTargetHook(tenantId string) ([]*entities.TargetHook, error) {
@@ -27,10 +27,19 @@ func (d *DB) ListTargetHook(tenantId string) ([]*entities.TargetHook, error) {
 	return ws, nil
 }
 
-func (d *DB) ListTargetHookByType(tenantId, targetType string) ([]*entities.TargetHook, error) {
+func (d *DB) ListTargetHookByType(tenantId, ttype, target string) ([]*entities.TargetHook, error) {
 	ws := make([]*entities.TargetHook, 0)
 
-	err := d.targetHookTable().Find(db.Cond{"tenant_id": tenantId, "target_type": targetType}).All(&ws)
+	cond := db.Cond{
+		"tenant_id":   tenantId,
+		"target_type": ttype,
+	}
+
+	if target != "" {
+		cond["target"] = target
+	}
+
+	err := d.targetHookTable().Find(cond).All(&ws)
 	if err != nil {
 		return nil, err
 	}
@@ -38,11 +47,11 @@ func (d *DB) ListTargetHookByType(tenantId, targetType string) ([]*entities.Targ
 	return ws, nil
 }
 
-func (d *DB) GetTargetHook(tenantId, targetType string, id int64) (*entities.TargetHook, error) {
+func (d *DB) GetTargetHook(tenantId, ttype string, id int64) (*entities.TargetHook, error) {
 	w := &entities.TargetHook{}
 	err := d.targetHookTable().Find(db.Cond{
 		"id": id, "tenant_id": tenantId,
-		"target_type": targetType,
+		"target_type": ttype,
 	}).One(w)
 
 	if err != nil {
@@ -50,11 +59,11 @@ func (d *DB) GetTargetHook(tenantId, targetType string, id int64) (*entities.Tar
 	}
 	return w, nil
 }
-func (d *DB) RemoveTargetHook(tenantId, targetType string, id int64) error {
+func (d *DB) RemoveTargetHook(tenantId, ttype string, id int64) error {
 	return d.targetHookTable().Find(db.Cond{
 		"id":          id,
 		"tenant_id":   tenantId,
-		"target_type": targetType,
+		"target_type": ttype,
 	}).Delete()
 }
 
@@ -65,10 +74,10 @@ func (d *DB) AddTargetApp(data *entities.TargetApp) error {
 	return err
 }
 
-func (d *DB) UpdateTargetApp(tenantId, targetType string, id int64, data map[string]any) error {
+func (d *DB) UpdateTargetApp(tenantId, ttype string, id int64, data map[string]any) error {
 	return d.targetAppTable().Find(db.Cond{
 		"id": id, "tenant_id": tenantId,
-		"target_type": targetType}).Update(data)
+		"target_type": ttype}).Update(data)
 }
 
 func (d *DB) ListTargetApp(tenantId string) ([]*entities.TargetApp, error) {
@@ -82,10 +91,19 @@ func (d *DB) ListTargetApp(tenantId string) ([]*entities.TargetApp, error) {
 	return ws, nil
 }
 
-func (d *DB) ListTargetAppByType(tenantId, targetType string) ([]*entities.TargetApp, error) {
+func (d *DB) ListTargetAppByType(tenantId, ttype, target string) ([]*entities.TargetApp, error) {
 	ws := make([]*entities.TargetApp, 0)
 
-	err := d.targetAppTable().Find(db.Cond{"tenant_id": tenantId, "target_type": targetType}).All(&ws)
+	cond := db.Cond{
+		"tenant_id":   tenantId,
+		"target_type": ttype,
+	}
+
+	if target != "" {
+		cond["target"] = target
+	}
+
+	err := d.targetAppTable().Find(cond).All(&ws)
 	if err != nil {
 		return nil, err
 	}
@@ -93,11 +111,11 @@ func (d *DB) ListTargetAppByType(tenantId, targetType string) ([]*entities.Targe
 	return ws, nil
 }
 
-func (d *DB) GetTargetApp(tenantId, targetType string, id int64) (*entities.TargetApp, error) {
+func (d *DB) GetTargetApp(tenantId, ttype string, id int64) (*entities.TargetApp, error) {
 	w := &entities.TargetApp{}
 	err := d.targetAppTable().Find(db.Cond{
 		"id": id, "tenant_id": tenantId,
-		"target_type": targetType,
+		"target_type": ttype,
 	}).One(w)
 
 	if err != nil {
@@ -105,11 +123,11 @@ func (d *DB) GetTargetApp(tenantId, targetType string, id int64) (*entities.Targ
 	}
 	return w, nil
 }
-func (d *DB) RemoveTargetApp(tenantId, targetType string, id int64) error {
+func (d *DB) RemoveTargetApp(tenantId, ttype string, id int64) error {
 	return d.targetAppTable().Find(db.Cond{
 		"id":          id,
 		"tenant_id":   tenantId,
-		"target_type": targetType,
+		"target_type": ttype,
 	}).Delete()
 }
 
