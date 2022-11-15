@@ -44,36 +44,41 @@
             <ul
               class="list-reset flex border-t-1 ml-4 divide divide-light-blue-400"
             >
-              <li class="border-0 border-t-1 border-r-1 border-l-1">
-                <a
+              <li class="border-0 border-t-1 border-r-1 border-l-1 cursor-pointer">
+                <span
                   class={_mode === MODE_EDIT ? active_css : inactive_css}
-                  href="#"
                   on:click={() => {
                     _mode = MODE_EDIT;
                   }}
                 >
                   Edit
-                </a>
-                <a
+                </span>
+              </li>
+
+              <li class="border-0 border-t-1 border-r-1 border-l-1  cursor-pointer">
+                <span
                   class={_mode === MODE_META_EDIT ? active_css : inactive_css}
                   on:click={() => {
                     _mode = MODE_META_EDIT;
-                  }}
-                  href="#">Properties</a
+                  }}>Properties</span
                 >
-                <a
+              </li>
+
+              <li class="border-0 border-t-1 border-r-1 border-l-1 cursor-pointer ">
+                <span
                   class={_mode === MODE_RELATIONS ? active_css : inactive_css}
                   on:click={() => {
                     _mode = MODE_RELATIONS;
-                  }}
-                  href="#">Relations</a
+                  }}>Relations</span
                 >
-                <a
+              </li>
+
+              <li class="border-0 border-t-1 border-r-1 border-l-1 cursor-pointer">
+                <span
                   class={_mode === MODE_ACTIVITY ? active_css : inactive_css}
                   on:click={() => {
                     _mode = MODE_ACTIVITY;
-                  }}
-                  href="#">Activity</a
+                  }}>Activity</span
                 >
               </li>
             </ul>
