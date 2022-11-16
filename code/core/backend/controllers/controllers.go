@@ -14,6 +14,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/controllers/user"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
@@ -60,9 +61,10 @@ func New(opts Options) *RootController {
 	cab := deps.Cabinet().(store.CabinetHub)
 	dynhub := deps.DataHub().(store.DataHub)
 	egine := deps.Engine().(etypes.Engine)
+	logservice := deps.LogService().(logx.Service)
 
 	return &RootController{
-		cAdmin:   admin.New(pacman, cplane, corehub, signer, dynhub, cab),
+		cAdmin:   admin.New(pacman, cplane, corehub, signer, dynhub, cab, logservice.GetLogProxy()),
 		cAuth:    authed.New(corehub, signer, seq),
 		cBasic:   basic.New(corehub, cab, dynhub, pacman),
 		cCabinet: cabinet.New(cab, signer),

@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
@@ -15,9 +16,10 @@ type Controller struct {
 
 	dynHub store.DataHub
 	cabHub store.CabinetHub
+	log    logx.Proxy
 }
 
-func New(pacman repox.Hub, cplane xplane.ControlPlane, coredb store.CoreHub, signer service.Signer, dynHub store.DataHub, cabHub store.CabinetHub) *Controller {
+func New(pacman repox.Hub, cplane xplane.ControlPlane, coredb store.CoreHub, signer service.Signer, dynHub store.DataHub, cabHub store.CabinetHub, log logx.Proxy) *Controller {
 	return &Controller{
 
 		cplane: cplane,
@@ -26,5 +28,6 @@ func New(pacman repox.Hub, cplane xplane.ControlPlane, coredb store.CoreHub, sig
 		pacman: pacman,
 		dynHub: dynHub,
 		cabHub: cabHub,
+		log:    log,
 	}
 }

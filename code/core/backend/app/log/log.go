@@ -27,6 +27,8 @@ type LogService struct {
 	appLogger    zerolog.Logger
 	engineLogger zerolog.Logger
 	siteLogger   zerolog.Logger
+
+	simpleProxy SimpleLogProxy
 }
 
 func Default(xplane xplane.ControlPlane) *LogService {
@@ -79,6 +81,9 @@ func New(opts LogOptions) *LogService {
 		appLogger:    root.With().Str("index", "app").Logger(),
 		engineLogger: root.With().Str("index", "engine").Logger(),
 		siteLogger:   root.With().Str("index", "site").Logger(),
+		simpleProxy: SimpleLogProxy{
+			Path: actualPath,
+		},
 	}
 }
 
@@ -101,5 +106,5 @@ func (ls *LogService) GetServiceLogger(service string) zerolog.Logger {
 }
 
 func (ls *LogService) GetLogProxy() logx.Proxy {
-	return nil
+	return &ls.simpleProxy
 }
