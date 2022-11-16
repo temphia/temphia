@@ -33,7 +33,9 @@ func (s *SimpleLogProxy) query(index, from, to, tenantId string, filters map[str
 	fileScanner := bufio.NewScanner(readFile)
 	fileScanner.Split(bufio.ScanLines)
 
-	result := make([]logx.Log, 0, 20)
+	const max = 100
+
+	result := make([]logx.Log, 0, max)
 	for fileScanner.Scan() {
 		line := fileScanner.Bytes()
 		out := gjson.GetBytes(line, "index")
@@ -41,6 +43,11 @@ func (s *SimpleLogProxy) query(index, from, to, tenantId string, filters map[str
 			continue
 		}
 		result = append(result, logx.Log(line))
+
+		if len(result) == max {
+			break
+		}
+
 	}
 
 	readFile.Close()

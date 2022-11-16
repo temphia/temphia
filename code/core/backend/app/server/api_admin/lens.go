@@ -7,9 +7,9 @@ import (
 )
 
 func (a *ApiAdmin) LensAPI(rg *gin.RouterGroup) {
-	rg.GET("/app", a.X(a.LensQueryApp))
-	rg.GET("/engine", a.X(a.LensQueryEngine))
-	rg.GET("/site", a.X(a.LensQuerySite))
+	rg.POST("/app", a.X(a.LensQueryApp))
+	rg.POST("/engine", a.X(a.LensQueryEngine))
+	rg.POST("/site", a.X(a.LensQuerySite))
 }
 
 func (a *ApiAdmin) LensQueryApp(ctx httpx.Request) {
@@ -21,7 +21,8 @@ func (a *ApiAdmin) LensQueryApp(ctx httpx.Request) {
 		return
 	}
 
-	a.cAdmin.LensQueryApp(ctx.Session, query)
+	resp, err := a.cAdmin.LensQueryApp(ctx.Session, query)
+	a.rutil.WriteJSON(ctx.Http, resp, err)
 }
 
 func (a *ApiAdmin) LensQueryEngine(ctx httpx.Request) {
@@ -33,8 +34,8 @@ func (a *ApiAdmin) LensQueryEngine(ctx httpx.Request) {
 		return
 	}
 
-	a.cAdmin.LensQueryEngine(ctx.Session, query)
-
+	resp, err := a.cAdmin.LensQueryEngine(ctx.Session, query)
+	a.rutil.WriteJSON(ctx.Http, resp, err)
 }
 
 func (a *ApiAdmin) LensQuerySite(ctx httpx.Request) {
@@ -46,5 +47,6 @@ func (a *ApiAdmin) LensQuerySite(ctx httpx.Request) {
 		return
 	}
 
-	a.cAdmin.LensQuerySite(ctx.Session, query)
+	resp, err := a.cAdmin.LensQuerySite(ctx.Session, query)
+	a.rutil.WriteJSON(ctx.Http, resp, err)
 }

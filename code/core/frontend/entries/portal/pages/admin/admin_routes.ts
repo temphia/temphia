@@ -72,7 +72,6 @@ import AdminUgroupUsers from "./ugroup/user/users.svelte";
 import AdminUgroupUser from "./ugroup/user/user.svelte";
 
 // lens
-import AdminLens from "./lens/lens.svelte";
 import AdminLensApp from "./lens/app.svelte";
 import AdminLensEngine from "./lens/engine.svelte";
 import AdminLensSite from "./lens/site.svelte";
@@ -181,7 +180,6 @@ export default {
   },
 
   "/lens": {
-    $$component: AdminLens,
     "/app": AdminLensApp,
     "/engine": AdminLensEngine,
     "/site": AdminLensSite,

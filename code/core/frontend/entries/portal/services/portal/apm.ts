@@ -7,6 +7,7 @@ import {
   AdminBprintAPI,
   AdminCheckAPI,
   AdminDataAPI,
+  AdminLensAPI,
   AdminPlugAPI,
   AdminRepoAPI,
   AdminResourceAPI,
@@ -146,6 +147,10 @@ export class ApiManager {
 
   get_admin_check_api = () => {
     return new AdminCheckAPI(this.base);
+  };
+
+  get_admin_lens_api = () => {
+    return new AdminLensAPI(this.base);
   };
 
   get_dev_plug_tkt_api = (dev_ticket: string) => {

@@ -364,4 +364,8 @@ export class Navigator {
   admin_tenant_domain_new() {
     this.set(`#/admin/tenant/domain/new`);
   }
+
+  admin_lens(idx: string) {
+    this.set(`#/admin/lens/${idx}`);
+  }
 }

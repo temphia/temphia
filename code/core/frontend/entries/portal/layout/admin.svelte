@@ -103,7 +103,7 @@
     </nav>
   </div>
 
-  <div class="w-full mt-14">
+  <div class="w-full h-full mt-14" style="height: calc(100vh - 3.5rem);">
     <slot>
       <p>Empty slot</p>
     </slot>

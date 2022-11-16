@@ -8,3 +8,4 @@ export * from "./tenant";
 export * from "./ugroup";
 export * from "./user_tkt";
 export * from "./user";
+export * from  "./lens";
