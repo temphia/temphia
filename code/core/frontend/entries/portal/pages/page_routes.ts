@@ -45,7 +45,7 @@ export default {
   "/repo": {
     "/": RepoLoader,
     "/:source": Repo,
-    "/:source/:group/:islug": RepoItem,
+    "/:source/:group/*": RepoItem,
   },
 
   "/play": Play,

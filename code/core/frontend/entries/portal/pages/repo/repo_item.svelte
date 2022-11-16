@@ -5,12 +5,13 @@
   import type { PortalService } from "../../services";
 
   import Importer from "./importer/importer.svelte";
+  import { LoadingSpinner } from "../admin/core";
 
   const app = getContext("__app__") as PortalService;
 
-  let item = $params.islug;
   let source = $params.source;
   let group = $params.group;
+  let item = $params._;
 
   let data;
 
@@ -31,4 +32,6 @@
       app.utils.small_modal_open(Importer, { data, group, source, app });
     }}
   />
+{:else}
+  <LoadingSpinner />
 {/if}

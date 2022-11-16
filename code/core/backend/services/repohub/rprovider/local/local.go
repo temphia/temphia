@@ -15,20 +15,31 @@ import (
 
 func init() {
 	registry.SetRepoBuilder("local", New)
+	registry.SetRepoBuilder("dev", DevNew)
 }
 
 type Local struct {
 	rootFolder string
+	name       string
+}
+
+func DevNew(opts *repox.BuilderOptions) (repox.Repository, error) {
+
+	return &Local{
+		rootFolder: "./cmd/dev/repo",
+		name:       "dev",
+	}, nil
 }
 
 func New(opts *repox.BuilderOptions) (repox.Repository, error) {
 
 	return &Local{
-		rootFolder: opts.BaseURL,
+		rootFolder: opts.BasePath,
+		name:       "local",
 	}, nil
 }
 
-func (l *Local) Name() string { return "local" }
+func (l *Local) Name() string { return l.name }
 
 func (l *Local) Query(tenantId string, opts *repox.RepoQuery) ([]entities.BPrint, error) {
 

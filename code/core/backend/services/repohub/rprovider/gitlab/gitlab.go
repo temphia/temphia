@@ -21,7 +21,7 @@ func init() {
 func NewProvider(opts *repox.BuilderOptions) (repox.Repository, error) {
 	// https://gitlab.com/temphia/blueprint_store/-/raw/master/
 
-	url, err := url.Parse(opts.BaseURL)
+	url, err := url.Parse(opts.BasePath)
 	if err != nil {
 		return nil, err
 	}

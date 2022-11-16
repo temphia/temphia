@@ -9,34 +9,36 @@
   const rapi = app.api_manager.get_repo_api();
 
   let sources;
-  let current_source = $params.source;
   let loading = true;
   let items = [];
 
-  (async () => {
+  const load = async (__source: string) => {
+    loading = true;
     sources = await app.api_manager.self_data.get_repo_sources();
-    const resp = await rapi.load(current_source);
+    const resp = await rapi.load(__source);
     if (!resp.ok) {
       return;
     }
     items = resp.data;
     loading = false;
-  })();
+  };
+
+  $: load($params.source);
 </script>
 
 {#if loading}
   <Skeleton />
-{:else}
+{:else if $params.source}
   <Listings
     onChangeSource={(next) => app.nav.repo_source(next)}
     onItemSelect={(item) => {
       app.nav.repo_item(
-        current_source,
+        $params.source,
         item["group"] || item["type"],
         item["slug"]
       );
     }}
-    currentSource={current_source}
+    currentSource={$params.source}
     {items}
     {sources}
   />

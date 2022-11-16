@@ -6,7 +6,7 @@ import (
 
 type BuilderOptions struct {
 	TenantId string
-	BaseURL  string
+	BasePath string
 }
 
 type Builder func(opts *BuilderOptions) (Repository, error)
