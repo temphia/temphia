@@ -106,7 +106,7 @@
   <div class="fixed bottom-10 right-10">
     <button
       on:click={() => app.nav.launcher()}
-      class="p-0 w-12 h-12 bg-blue-400 rounded-full hover:bg-blue-800 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
+      class="p-0 w-12 h-12 bg-blue-500 rounded-full hover:bg-blue-900 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
     >
       <Icon name="lightning-bolt" class="text-white p-1" solid />
     </button>
