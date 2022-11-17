@@ -14,6 +14,7 @@
     if (instance) {
       launcher.instance_change(instance);
     } else {
+      // fixme => get target_app data and pass here  
       instance = launcher.instance_by_target({ target_id: target });
     }
     launcher.plane_show();
