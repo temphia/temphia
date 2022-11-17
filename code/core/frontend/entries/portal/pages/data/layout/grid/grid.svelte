@@ -61,4 +61,5 @@
     console.log(ev);
   }}
   on:on_table_change
+  on:on_change_to_card
 />

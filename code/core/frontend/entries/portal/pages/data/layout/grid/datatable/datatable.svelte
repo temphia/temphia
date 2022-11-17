@@ -5,6 +5,7 @@
   import Loading from "./_loading.svelte";
   import DOMPurify from "dompurify";
   import { createEventDispatcher } from "svelte";
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
 
   export let columns_index: { [_: string]: object };
   export let columns: string[];
@@ -73,10 +74,10 @@
         class="list-reset flex overflow-x-auto border-t-1 ml-4 divide divide-light-blue-400"
       >
         {#each all_tables as tbl}
-          <li class="border-0 border-t-1 border-r-1 border-l-1">
+          <li class="border-0 border-t border-r border-l">
             {#if tbl["slug"] !== active_table}
               <span
-                class="bg-gray-50 inline-block border border-gray-300 rounded-t px-1 md:px-2 text-xs md:text-base text-blue-dark font-semibold"
+                class="bg-gray-100 inline-block border border-gray-300 rounded-t px-1 md:px-2 text-xs md:text-base text-blue-dark font-semibold"
               >
                 <button
                   on:click={gotoDtable(tbl["slug"])}
@@ -85,13 +86,9 @@
               </span>
             {:else}
               <span
-                class="bg-white inline-block px-1 md:px-2 text-xs md:text-base text-blue hover:text-blue-darker border-t border-l border-r border-b-0 font-semibold"
+                class="bg-white inline-block p-1 md:px-2 text-xs md:text-base text-blue hover:text-blue-darker font-semibold"
               >
-                <div class="dropdown">
-                  <div class="dropdown-toggle align-middle rounded h-8 md:h-10">
-                    {tbl["name"]}
-                  </div>
-                </div>
+                {tbl["name"]}
               </span>
             {/if}
           </li>
@@ -141,13 +138,10 @@
       </div>
 
       <div>
-        <ActionBtn
-          action={{
-            name: "Card Layout",
-            action: onChangeToCardLayout,
-            icon: "color-swatch",
-          }}
-        />
+        <button on:click={onChangeToCardLayout} class="p-1 bg-gray-50 text-gray-700 inline-flex font-light rounded hover:bg-gray-200">
+          <Icon name="color-swatch" solid class="h-5 w-5" />
+          Card Layout
+        </button>
       </div>
     </div>
     <!-- TOOLBAR  END -->

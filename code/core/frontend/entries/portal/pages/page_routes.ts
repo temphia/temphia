@@ -34,6 +34,7 @@ export default {
     "/:source": DataGroups,
     "/:source/:dgroup": DataGroup,
     "/:source/:dgroup/:dtable": DataTable,
+    "/:source/:dgroup/:dtable/:layout": DataTable,
   },
 
   "/cabinet": {

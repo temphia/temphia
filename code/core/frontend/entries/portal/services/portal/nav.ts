@@ -37,8 +37,8 @@ export class Navigator {
     this.set(`#/data/${source}/${dgroup}`);
   }
 
-  data_table(source: string, dgroup: string, table: string) {
-    this.set(`#/data/${source}/${dgroup}/${table}`);
+  data_table(source: string, dgroup: string, table: string, layout="") {
+    this.set(`#/data/${source}/${dgroup}/${table}${layout}`);
   }
 
   // cab
