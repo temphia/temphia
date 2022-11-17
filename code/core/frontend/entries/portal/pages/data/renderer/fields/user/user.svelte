@@ -1,18 +1,15 @@
 <script lang="ts">
-  import { getContext } from "svelte";
+  import type { Column, RowService } from "../../../../../services/data";
   import UserPanel from "./_user_panel.svelte";
-  import type { Column } from "../../../../../../../lib/app/portal/dyn/data_types";
-  import type { PortalApp } from "../../../../../../../lib/app/portal";
 
   export let value;
   export let column: Column;
   export let onChange: (value: any) => void;
+  export let row_service: RowService;
 
   $: __value = [];
 
-  const app: PortalApp = getContext("__app__");
-
-  const link_gen = app.user_profile_image_link;
+  const link_gen = (user: string) => ""; // fixme
 
   const unSelectUser = (userId: string) => () => {
     __value = [...__value.filter((val) => val !== userId)];
@@ -40,7 +37,7 @@
           />
         </svg>
         <img
-          class="w-10 h-10 h-auto rounded-full"
+          class="w-10 h-auto rounded-full"
           src={link_gen(item)}
           alt=""
         />
@@ -52,7 +49,7 @@
   <div
     class="p-2 flex justify-end text-gray-600 cursor-pointer"
     on:click={() => {
-      app.simple_modal_open(UserPanel, { profile: link_gen });
+      row_service.open_model(UserPanel, { profile: link_gen });
     }}
   >
     <svg

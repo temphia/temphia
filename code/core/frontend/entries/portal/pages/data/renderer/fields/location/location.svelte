@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { getContext } from "svelte";
   import type { RowService } from "../../../../../services/data";
   import LocationSelect from "./_location_panel.svelte";
   export let value: any;

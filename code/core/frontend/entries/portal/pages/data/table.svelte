@@ -9,27 +9,34 @@
 
   export let source = $params.source;
   export let group = $params.dgroup;
-  export let table = $params.dtable;
-  export let layout = $params.layout;
 
   const app: PortalService = getContext("__app__");
   let table_service: TableService;
   let loading = true;
 
-  const load = async () => {
+  const load = async (table: string) => {
+    loading = true;
     const ds = await app.get_data_service();
     const gs = await ds.group_service(source, group);
     table_service = await gs.table_service(table);
     loading = false;
   };
 
-  load();
+  $: load($params.dtable);
 </script>
 
 {#if loading}
   <LoadingSpinner />
-{:else if layout === "card"}
-  <CardLayout />
 {:else}
-  <GridLayout {table_service} />
+  {#key $params.dtable && $params.layout}
+    {#if $params.layout === "card"}
+      <CardLayout />
+    {:else}
+      <GridLayout
+        {table_service}
+        on:on_table_change={(ev) =>
+          app.nav.data_table(source, group, ev.detail)}
+      />
+    {/if}
+  {/key}
 {/if}

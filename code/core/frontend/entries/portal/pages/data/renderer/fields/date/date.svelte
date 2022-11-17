@@ -1,6 +1,6 @@
 <script lang="ts">
   import Flatpickr from "svelte-flatpickr";
-  import type { Column } from "../../manager/dtypes";
+  import type { Column } from "../../../../../services/data";
 
   export let column: Column;
   export let onChange: (val: string) => void;
@@ -35,7 +35,6 @@
   element={_element}
   on:change={(ev) => {
     const _new_date = ev.detail[0][0].toISOString();
-;
     onChange(_new_date);
   }}
 >

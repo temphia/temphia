@@ -1,13 +1,7 @@
 <script lang="ts">
-  import { getContext } from "svelte";
   import type { Column, RowService } from "../../../../../services/data";
   import { KeyPrimary } from "../field";
   import RefPanel from "./ref_panel.svelte";
-
-  const { open, close } = getContext("simple-modal") as {
-    open: any;
-    close: any;
-  };
 
   export let value;
   export let column: Column;
@@ -25,15 +19,14 @@
   };
 
   const openPanel = () => {
-    open(RefPanel, {
+    row_service.open_model(RefPanel, {
       loader,
       onRowSelect: (row: object) => {
         console.log("ROW", row);
         onChange(row[KeyPrimary]);
 
         // fixme => ref_copy here
-
-        close();
+        // row_service.modal_close()
       },
     });
   };

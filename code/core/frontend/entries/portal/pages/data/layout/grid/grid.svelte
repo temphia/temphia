@@ -41,16 +41,24 @@
   rows={$data_store.rows}
   rows_index={$data_store.indexed_rows}
   selectedRows={[]}
-  on:on_hook_click={(ev) => {}}
+  on:on_hook_click={(ev) => {
+    console.log(ev);
+  }}
   on:on_new_row={(ev) => {
     show_editor = true;
   }}
-  on:on_page_buttom={(ev) => {}}
-  on:on_page_top={(ev) => {}}
+  on:on_page_buttom={(ev) => {
+    console.log(ev);
+  }}
+  on:on_page_top={(ev) => {
+    console.log(ev);
+  }}
   on:on_row_click={(ev) => {
     row_service.state.start_row_edit(ev.detail);
     show_editor = true;
   }}
-  on:on_row_toggle_select={(ev) => {}}
-  on:on_table_change={(ev) => {}}
+  on:on_row_toggle_select={(ev) => {
+    console.log(ev);
+  }}
+  on:on_table_change
 />

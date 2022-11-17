@@ -1,9 +1,10 @@
 <script lang="ts">
-  import type { FolderTktAPI } from "../../../../../../../lib/core/tktapi";
-  import type { RowEditor } from "../../../../../../../lib/service/dyn";
+//  import type { FolderTktAPI } from "../../../../../../../lib/core/tktapi";
 
-  export let row_editor: RowEditor;
-  export let folder_api: FolderTktAPI;
+  import type { RowService } from "../../../../../services/data";
+
+  export let row_editor: RowService;
+  export let folder_api: any; //FolderTktAPI;
 
   export let onSelect: (file: string) => void;
 
