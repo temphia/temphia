@@ -7,7 +7,7 @@ interface LauncherState {
   instances: Instance[];
 }
 
-interface Instance {
+export interface Instance {
   id: string;
   target_id: string;
   plug_id: string;
@@ -39,7 +39,6 @@ export class Launcher {
     });
 
     this.state.subscribe((lstate) => console.log("@launcher_state", lstate));
-    
   }
 
   plane_hide() {

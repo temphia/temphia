@@ -1,0 +1,1 @@
+<div>Inline Dom</div>

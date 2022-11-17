@@ -1,11 +1,11 @@
 <script lang="ts">
-  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import { afterUpdate } from "svelte";
+  import { afterUpdate, getContext } from "svelte";
   import type { Launcher } from "../services/engine/launcher";
-
-  import { getContext } from "svelte";
   import type { PortalService } from "../services";
-  import LauncherOptions from "./launcher_options.svelte";
+
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
+  import LauncherOptions from "./options/options.svelte";
+  import Instance from "./hostproxy/instance.svelte";
 
   const app = getContext("__app__") as PortalService;
 
@@ -58,7 +58,10 @@
             &nbsp;&nbsp;
 
             <span on:click={() => launcher.instance_close(instance.id)}>
-              <Icon name="x-circle" class="w-5 pt-1 text-gray-500 hover:text-red-500" />
+              <Icon
+                name="x-circle"
+                class="w-5 pt-1 text-gray-500 hover:text-red-500"
+              />
             </span>
           </div>
         {/each}
@@ -83,13 +86,14 @@
       style="height: calc(100vh - 2.75rem);"
     >
       {#each __instances as instance}
-        <iframe
-          title={instance.name}
-          class="w-full h-full transition-all {instance.id === __active_instance
+        <div
+          class="w-full h-full {instance.id === __active_instance
             ? ''
             : 'hidden'}"
-          src="https://picsum.photos/seed/{instance.id}/1300/700"
-        />
+        >
+          <Instance options={instance} />
+        </div>
+        
       {/each}
     </div>
   </div>
