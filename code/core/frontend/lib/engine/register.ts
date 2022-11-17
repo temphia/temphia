@@ -1,3 +1,5 @@
+// register factor helper functions 
+
 export const registerPlugFactory = (entryName: string, factory: (opts: any) => void) => registerFactory("plug.factory", entryName, factory)
 export const registerExecLoaderFactory = (name: string, factory: (opts: any) => void) => registerFactory("loader.factory", name, factory)
 export const registerFactory = (ftype: string, name: string, factory: (opts: any) => void) => {
@@ -8,4 +10,3 @@ export const registerFactory = (ftype: string, name: string, factory: (opts: any
     }
     pf(ftype, name, factory);
 }
-

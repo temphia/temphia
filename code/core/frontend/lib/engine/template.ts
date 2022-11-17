@@ -1,4 +1,4 @@
-import type { LoaderOptions } from "../ecore";
+import type { LoaderOptions } from "./plug";
 
 interface iframeBuildOptions {
   base_url: string;
@@ -36,9 +36,9 @@ export const iframeTemplateBuild = (opts: iframeBuildOptions) => {
         
         <script src=${`${opts.base_url}engine/launcher.js`}></script>
         ${execscript}
-        <script defer="true" src="${opts.base_url}engine/${opts.plug}/${opts.agent}/serve/${
-    opts.js_plug_script
-  }"></script>
+        <script defer="true" src="${opts.base_url}engine/${opts.plug}/${
+    opts.agent
+  }/serve/${opts.js_plug_script}"></script>
         <link href="${opts.base_url}engine/${opts.plug}/${opts.agent}/serve/${
     opts.style_file
   }" rel="stylesheet" ></link>
