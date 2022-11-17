@@ -13,9 +13,7 @@
   
     const all_files = data["files"] || [];
     let files = [];
-  
-    let new_id = (data["slug"] || "") + "_" + generateId();
-  
+    let new_id = ((data["slug"] || "").replaceAll(".", "_")) + "_" + generateId(); 
     let loading = true;
 </script>
 
