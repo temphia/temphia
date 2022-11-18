@@ -5,12 +5,16 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 )
 
-type Admin struct {
+type AdminLaunchData struct {
 	PlugId  string
 	AgentId string
 }
 
-func (c *Controller) launchAdmin(uclaim *claim.Session, data Admin) (string, error) {
+func (c *Controller) LaunchAdmin(uclaim *claim.Session, data AdminLaunchData) (string, error) {
+	return c.launchAdmin(uclaim, data)
+}
+
+func (c *Controller) launchAdmin(uclaim *claim.Session, data AdminLaunchData) (string, error) {
 
 	return c.signer.SignExecutor(uclaim.TenentId, &claim.Executor{
 		TenentId:   uclaim.TenentId,

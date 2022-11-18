@@ -4,4 +4,4 @@
   export let options: Instance;
 </script>
 
-<Iframe name={options.name} secret_id={options.id} />
+<Iframe {options} />

@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/engine/invokers/web"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 )
 
@@ -55,35 +54,4 @@ func (c *Controller) ServeAgentFile(tenantId, plugId, agentId, file string) ([]b
 
 func (c *Controller) ServeExecutorFile(tenantId, plugId, agentId, file string) ([]byte, error) {
 	return c.engine.ServeExecutorFile(tenantId, plugId, agentId, file)
-}
-
-func (c *Controller) LaunchAdmin(uclaim *claim.Session, data Admin) (string, error) {
-	return c.launchAdmin(uclaim, data)
-}
-
-func (c *Controller) LaunchDev(uclaim *claim.Session, data Admin) (string, error) {
-	//return c.launchAdmin(uclaim, data)
-	return "", nil
-}
-
-func (c *Controller) LaunchData(uclaim *claim.Session, data Data) (string, error) {
-	return c.launchData(uclaim, data)
-}
-
-func (c *Controller) LaunchUser(uclaim *claim.Session, data User) (string, error) {
-	return c.launchUser(uclaim, data)
-}
-
-func (c *Controller) LaunchAuthd(uclaim *claim.Session, data Authd) (string, error) {
-	return c.launchAuthd(uclaim, data)
-}
-
-func (c *Controller) LaunchWidget(uclaim *claim.Session, data Widget) (string, error) {
-	return c.launchWidget(uclaim, data)
-}
-
-func (c *Controller) LaunchDomain(uclaim *claim.Session, data Domain) (string, error) {
-	// DomainEditor
-	return c.launchDomain(uclaim, data)
-
 }

@@ -8,13 +8,9 @@ import (
 
 func (s *Server) engineAPI(rg *gin.RouterGroup) {
 
-	rg.POST("/launch/data", s.X(s.launchData))
-	rg.POST("/launch/user", s.X(s.launchUser))
+	rg.POST("/launch/target", s.X(s.launchTarget))
 	rg.POST("/launch/admin", s.X(s.launchAdmin))
-	rg.POST("/launch/domain", s.X(s.launchDomain))
-
-	rg.POST("/launch/authd", s.launchAuthd)
-	rg.POST("/launch/widget", s.launchWidget)
+	rg.POST("/launch/auth", s.X(s.launchAuth))
 
 	rg.POST("/execute/:action", s.execute)
 
@@ -37,33 +33,21 @@ func (s *Server) executorFile(ctx *gin.Context) {
 
 // launch
 
-func (s *Server) launchData(ctx httpx.Request) {
-	data := engine.Data{}
+func (s *Server) launchTarget(ctx httpx.Request) {
+
+	data := engine.TargetLaunchData{}
 
 	err := ctx.Http.BindJSON(data)
 	if err != nil {
 		return
 	}
 
-	out, err := s.cEngine.LaunchData(ctx.Session, data)
-	httpx.WriteJSON(ctx.Http, out, err)
-}
-
-func (s *Server) launchUser(ctx httpx.Request) {
-
-	data := engine.Data{}
-
-	err := ctx.Http.BindJSON(data)
-	if err != nil {
-		return
-	}
-
-	out, err := s.cEngine.LaunchData(ctx.Session, data)
+	out, err := s.cEngine.LaunchTarget(ctx.Session, data)
 	httpx.WriteJSON(ctx.Http, out, err)
 }
 
 func (s *Server) launchAdmin(ctx httpx.Request) {
-	data := engine.Admin{}
+	data := engine.AdminLaunchData{}
 
 	err := ctx.Http.BindJSON(data)
 	if err != nil {
@@ -72,29 +56,23 @@ func (s *Server) launchAdmin(ctx httpx.Request) {
 
 	out, err := s.cEngine.LaunchAdmin(ctx.Session, data)
 	httpx.WriteJSON(ctx.Http, out, err)
+
 }
 
-func (s *Server) launchDomain(ctx httpx.Request) {
-	data := engine.Domain{}
+func (s *Server) launchAuth(ctx httpx.Request) {
+	data := engine.AuthLaunchData{}
 
 	err := ctx.Http.BindJSON(data)
 	if err != nil {
 		return
 	}
 
-	out, err := s.cEngine.LaunchDomain(ctx.Session, data)
+	out, err := s.cEngine.LaunchAuth(ctx.Session, data)
 	httpx.WriteJSON(ctx.Http, out, err)
-}
 
-func (s *Server) launchAuthd(ctx *gin.Context)  {}
-func (s *Server) launchWidget(ctx *gin.Context) {}
+}
 
 // engine/exec sockd
 
-// func (s *Server) sockdRoomWS(ctx *gin.Context) {
-
-// }
-
-// func (s *Server) sockdRoomUpdateWS(ctx *gin.Context) {
-
-// }
+// func (s *Server) sockdRoomWS(ctx *gin.Context) {}
+// func (s *Server) sockdRoomUpdateWS(ctx *gin.Context) {}
