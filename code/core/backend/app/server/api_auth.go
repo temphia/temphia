@@ -29,6 +29,7 @@ func (s *Server) authAPI(rg *gin.RouterGroup) {
 	rg.POST("/reset/finish", s.authResetFinish)
 
 	rg.POST("/refresh", s.authRefresh)
+	rg.GET("/about", s.authAbout)
 
 	rg.GET("/auth/oauth_redirect", func(ctx *gin.Context) {
 		ctx.Writer.Write([]byte("<h1> Nice </h1>"))
@@ -196,4 +197,15 @@ func (s *Server) authRefresh(c *gin.Context) {
 	}
 	resp := s.cAuth.RefreshService(uclaim, opts)
 	httpx.WriteJSON(c, resp, nil)
+}
+
+func (s *Server) authAbout(c *gin.Context) {
+	uclaim, err := s.signer.ParseUser(c.Param("tenant_id"), c.GetHeader("Authorization"))
+	if err != nil {
+		httpx.WriteErr(c, err)
+		return
+	}
+
+	resp, err := s.cAuth.About(uclaim)
+	httpx.WriteJSON(c, resp, err)
 }

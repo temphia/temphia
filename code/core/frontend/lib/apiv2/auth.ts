@@ -52,6 +52,13 @@ export class AuthAPI {
   reset_finish = async (data: any) => {
     return this.http.post("/reset/finish", data);
   };
+
+  about = async (user_token: string) => {
+    const http = new Http(this.http.baseURL, {
+      "Content-Type": "application/json",
+      Authorization: user_token,
+    });
+
+    return http.get("/auth/about");
+  };
 }
-
-

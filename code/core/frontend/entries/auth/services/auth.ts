@@ -1,12 +1,10 @@
 import { AuthAPI } from "../../../lib/apiv2/auth";
-import { EngineService } from "../../../lib/engine/service";
 import { apiURL, SiteData, SiteUtils } from "../../../lib/utils/site";
 import { AuthNav } from "./nav";
 
 export class AuthService {
   auth_api: AuthAPI;
   nav: AuthNav;
-  engine_service: EngineService;
   site_manager: SiteUtils;
   active_auth_id: number;
 
@@ -22,7 +20,6 @@ export class AuthService {
       apiURL(site_data.tenant_id),
       site_data.site_token
     );
-    this.engine_service = new EngineService({});
     this.active_auth_id = 0;
 
     this.user_group = site_data.user_group;
@@ -130,5 +127,15 @@ export class AuthService {
 
   clear_authed_data = () => {
     this.site_manager.clearAuthedData();
+  };
+
+  about = async () => {
+    const adata = this.site_manager.getAuthedData();
+    const resp = await this.auth_api.about(adata.user_token);
+    if (!resp.ok) {
+      return;
+    }
+
+    return resp.data;
   };
 }
