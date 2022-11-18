@@ -1,4 +1,4 @@
-import { Http } from "./http";
+import { Http } from "../http";
 
 export class PlugDevTktAPI {
   http: Http;
@@ -51,4 +51,3 @@ export class PlugDevTktAPI {
     return this.http.post(`/dev/exec/modify/agent/${aid}`, data);
   }
 }
-

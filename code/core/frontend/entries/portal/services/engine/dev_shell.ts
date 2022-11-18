@@ -1,5 +1,5 @@
 import type { AdminBprintAPI, AdminPlugAPI } from "../../../../lib/apiv2";
-import type { PlugDevTktAPI } from "../../../../lib/apiv2/plug_dev_tkt";
+import type { PlugDevTktAPI } from "../../../../lib/apiv2/engine/plug_dev_tkt";
 import type { ApiManager } from "../portal/apm";
 
 export class DevShellService {

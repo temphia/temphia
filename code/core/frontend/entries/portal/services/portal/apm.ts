@@ -15,7 +15,7 @@ import {
   AdminUserAPI,
   AdminUserGroupAPI,
 } from "../../../../lib/apiv2/admin";
-import { PlugDevTktAPI } from "../../../../lib/apiv2/plug_dev_tkt";
+import { PlugDevTktAPI } from "../../../../lib/apiv2/engine/plug_dev_tkt";
 
 export class ApiManager {
   base_url: string;
