@@ -9,32 +9,36 @@
   export let options: Instance;
 
   const app = getContext("__app__") as PortalService;
-  const papi = app.api_manager.get_admin_plug_api();
+  const eapi = app.api_manager.get_engine_api();
 
   let loading = true;
-  let agent = {};
+  let src = "";
 
   const load = async () => {
-    const resp = await papi.get_agent(options.plug_id, options.agent_id);
+    const resp = await eapi.launch_target({
+      target_id: 0,
+      target_type: "",
+    });
     if (!resp.ok) {
+      console.log("Err", resp);
       return;
     }
-    agent = resp.data;
+    const data = resp.data;
+    src = iframeTemplateBuild({
+      plug: data["plug"],
+      agent: data["agent"],
+      base_url: data["base_url"],
+      entry_name: data["entry"],
+      exec_loader: data["exec_loader"],
+      js_plug_script: data["js_plug_script"],
+      style_file: data["style"],
+      token: data["token"] || "",
+      ext_scripts: data["ext_scripts"],
+      parent_secret: this._secret,
+      startup_payload: {},
+    });
+    loading = false;
   };
-
-  const src = iframeTemplateBuild({
-    plug: options.plug_id,
-    agent: options.agent_id,
-    base_url: this._engine_data["base_url"],
-    entry_name: this._engine_data["entry"],
-    exec_loader: this._engine_data["exec_loader"],
-    js_plug_script: this._engine_data["js_plug_script"],
-    style_file: this._engine_data["style"],
-    token: this._engine_data["token"] || "",
-    ext_scripts: this._engine_data["ext_scripts"],
-    parent_secret: this._secret,
-    startup_payload: {},
-  });
 
   load();
 </script>
@@ -42,5 +46,5 @@
 {#if loading}
   <LoadingSpinner />
 {:else}
-  <IframeInner {options} {agent} />
+  <IframeInner {options} source={src} />
 {/if}

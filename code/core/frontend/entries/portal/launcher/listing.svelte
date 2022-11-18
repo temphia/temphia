@@ -63,7 +63,7 @@
   <div class="p-8 flex flex-wrap justify-center gap-4">
     {#each plugs as plug}
       <div
-        on:click={() => app.nav.launch_target(plug.target_id)}
+        on:click={() => app.nav.launch_target(plug.target_id, plug.plug_name)}
         class="bg-white flex flex-col items-center h-32 w-32 p-2 overflow-hidden shadow-lg rounded-lg cursor-pointer hover:border-2 border-blue-400"
       >
         {#if plug.icon === ""}

@@ -58,6 +58,7 @@ export default {
   "/launch": {
     "/": Launcher,
     "/:target": LaunchTargetPage,
+    "/:target/*": LaunchTargetPage,
   },
 
   "*": NotFound,

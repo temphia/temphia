@@ -8,14 +8,14 @@
   const app = getContext("__app__") as PortalService;
   const launcher = app.launcher;
 
-  onMount(() => {
+  onMount(async () => {
     console.log("@on_mount target |> ", target);
     let instance = launcher.target_index[target];
     if (instance) {
       launcher.instance_change(instance);
     } else {
-      // fixme => get target_app data and pass here  
-      instance = launcher.instance_by_target({ target_id: target });
+      const name = $params._ ? window.btoa($params._) : "";
+      instance = launcher.instance_by_target({ target_id: target, name });
     }
     launcher.plane_show();
   });

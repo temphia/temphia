@@ -54,8 +54,7 @@
               ? 'text-blue-500 border-b-2 font-medium border-blue-500'
               : ''}"
           >
-            {instance.name}
-            &nbsp;&nbsp;
+            {instance.name || ""} [{instance.id || ""}] &nbsp;&nbsp;
 
             <span on:click={() => launcher.instance_close(instance.id)}>
               <Icon
@@ -93,7 +92,6 @@
         >
           <Instance options={instance} />
         </div>
-        
       {/each}
     </div>
   </div>

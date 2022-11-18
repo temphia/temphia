@@ -43,12 +43,18 @@ func (s *Server) launchTarget(ctx httpx.Request) {
 
 	data := engine.TargetLaunchData{}
 
-	err := ctx.Http.BindJSON(data)
+	err := ctx.Http.BindJSON(&data)
 	if err != nil {
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
 	out, err := s.cEngine.LaunchTarget(ctx.Session, data)
+	if err != nil {
+		httpx.WriteErr(ctx.Http, err)
+		return
+	}
+
 	out.BaseURL = httpx.BaseURL(ctx.Http.Request.Host, ctx.Session.TenentId)
 	httpx.WriteJSON(ctx.Http, out, err)
 }
@@ -56,12 +62,18 @@ func (s *Server) launchTarget(ctx httpx.Request) {
 func (s *Server) launchAdmin(ctx httpx.Request) {
 	data := engine.AdminLaunchData{}
 
-	err := ctx.Http.BindJSON(data)
+	err := ctx.Http.BindJSON(&data)
 	if err != nil {
+		httpx.WriteErr(ctx.Http, err)
 		return
 	}
 
 	out, err := s.cEngine.LaunchAdmin(ctx.Session, data)
+	if err != nil {
+		httpx.WriteErr(ctx.Http, err)
+		return
+	}
+
 	out.BaseURL = httpx.BaseURL(ctx.Http.Request.Host, ctx.Session.TenentId)
 	httpx.WriteJSON(ctx.Http, out, err)
 
@@ -70,12 +82,18 @@ func (s *Server) launchAdmin(ctx httpx.Request) {
 func (s *Server) launchAuth(ctx *gin.Context) {
 	data := engine.AuthLaunchData{}
 
-	err := ctx.BindJSON(data)
+	err := ctx.BindJSON(&data)
 	if err != nil {
+		httpx.WriteErr(ctx, err)
 		return
 	}
 
 	out, err := s.cEngine.LaunchAuth(data)
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
 	httpx.WriteJSON(ctx, out, err)
 
 }

@@ -15,8 +15,8 @@ export class Navigator {
     this.set("#/");
   };
 
-  launch_target(target: string) {
-    this.set(`#/launch/${target}`);
+  launch_target(target: string, name?: string) {
+    this.set(`#/launch/${target}${name ? "/" + atob(name) : ""}`);
   }
 
   launcher() {
@@ -37,7 +37,7 @@ export class Navigator {
     this.set(`#/data/${source}/${dgroup}`);
   }
 
-  data_table(source: string, dgroup: string, table: string, layout="") {
+  data_table(source: string, dgroup: string, table: string, layout = "") {
     this.set(`#/data/${source}/${dgroup}/${table}${layout}`);
   }
 

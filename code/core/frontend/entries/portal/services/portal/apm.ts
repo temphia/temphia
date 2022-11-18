@@ -16,6 +16,7 @@ import {
   AdminUserGroupAPI,
 } from "../../../../lib/apiv2/admin";
 import { PlugDevTktAPI } from "../../../../lib/apiv2/engine/plug_dev_tkt";
+import { EngineAPI } from "../../../../lib/apiv2/engine/engine";
 
 export class ApiManager {
   base_url: string;
@@ -84,6 +85,10 @@ export class ApiManager {
 
   get_repo_api = () => {
     return new RepoAPI(this.base);
+  };
+
+  get_engine_api = () => {
+    return new EngineAPI(this.base);
   };
 
   get_cabinet = () => {
