@@ -8,15 +8,21 @@ import (
 
 func (s *Server) engineAPI(rg *gin.RouterGroup) {
 
+	// launch
 	rg.POST("/launch/target", s.X(s.launchTarget))
 	rg.POST("/launch/admin", s.X(s.launchAdmin))
 	rg.POST("/launch/auth", s.launchAuth)
 
+	// execute action
 	rg.POST("/execute/:action", s.execute)
 
+	// serve file
 	rg.GET("/plug/:pid/agent/:aid/serve/:file", s.agentServeFile)
 	rg.GET("/plug/:pid/agent/:aid/executor/:eid/:file", s.executorFile)
 
+	// engine sockd
+	rg.GET("/ws", func(ctx *gin.Context) {})
+	rg.POST("/ws/update", func(ctx *gin.Context) {})
 }
 
 func (s *Server) execute(ctx *gin.Context) {
@@ -56,6 +62,7 @@ func (s *Server) launchAdmin(ctx httpx.Request) {
 	}
 
 	out, err := s.cEngine.LaunchAdmin(ctx.Session, data)
+	out.BaseURL = httpx.BaseURL(ctx.Http.Request.Host, ctx.Session.TenentId)
 	httpx.WriteJSON(ctx.Http, out, err)
 
 }
