@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"github.com/temphia/temphia/code/core/backend/engine/invokers"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/vmodels"
 )
@@ -31,12 +32,12 @@ func (c *Controller) launchTarget(uclaim *claim.Session, data TargetLaunchData) 
 		UserId:     uclaim.UserID,
 		UserGroup:  uclaim.UserGroup,
 		DeviceId:   "",
-		Type:       "",
+		Type:       "executor",
 		SessionId:  uclaim.SessionID,
 		ExecId:     0,
 		PlugId:     target.PlugId,
 		AgentId:    target.AgentId,
-		ExecType:   "user",
+		ExecType:   invokers.TypeUserApp,
 		Attributes: map[string]string{},
 	})
 	if err != nil {
