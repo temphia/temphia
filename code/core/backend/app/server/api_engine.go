@@ -10,7 +10,7 @@ func (s *Server) engineAPI(rg *gin.RouterGroup) {
 
 	rg.POST("/launch/target", s.X(s.launchTarget))
 	rg.POST("/launch/admin", s.X(s.launchAdmin))
-	rg.POST("/launch/auth", s.X(s.launchAuth))
+	rg.POST("/launch/auth", s.launchAuth)
 
 	rg.POST("/execute/:action", s.execute)
 
@@ -43,6 +43,7 @@ func (s *Server) launchTarget(ctx httpx.Request) {
 	}
 
 	out, err := s.cEngine.LaunchTarget(ctx.Session, data)
+	out.BaseURL = httpx.BaseURL(ctx.Http.Request.Host, ctx.Session.TenentId)
 	httpx.WriteJSON(ctx.Http, out, err)
 }
 
@@ -59,16 +60,16 @@ func (s *Server) launchAdmin(ctx httpx.Request) {
 
 }
 
-func (s *Server) launchAuth(ctx httpx.Request) {
+func (s *Server) launchAuth(ctx *gin.Context) {
 	data := engine.AuthLaunchData{}
 
-	err := ctx.Http.BindJSON(data)
+	err := ctx.BindJSON(data)
 	if err != nil {
 		return
 	}
 
-	out, err := s.cEngine.LaunchAuth(ctx.Session, data)
-	httpx.WriteJSON(ctx.Http, out, err)
+	out, err := s.cEngine.LaunchAuth(data)
+	httpx.WriteJSON(ctx, out, err)
 
 }
 

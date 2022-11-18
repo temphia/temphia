@@ -77,7 +77,7 @@ func New(opts Options) *RootController {
 			opts.OperatorUser,
 			opts.OperatorPassword),
 		cDev:    dev.New(pacman, corehub),
-		cEngine: engine.New(egine, signer),
+		cEngine: engine.New(egine, signer, corehub),
 		cUser:   user.New(corehub),
 		cSockd:  sockd.New(deps.SockdHub().(sockdx.Hub).GetSockd()),
 	}

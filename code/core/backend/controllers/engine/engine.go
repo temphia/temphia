@@ -7,17 +7,20 @@ import (
 	"github.com/temphia/temphia/code/core/backend/engine/invokers/web"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
 type Controller struct {
-	engine etypes.Engine
-	signer service.Signer
+	engine  etypes.Engine
+	signer  service.Signer
+	corehub store.CoreHub
 }
 
-func New(engine etypes.Engine, signer service.Signer) *Controller {
+func New(engine etypes.Engine, signer service.Signer, corehub store.CoreHub) *Controller {
 	return &Controller{
-		engine: engine,
-		signer: signer,
+		engine:  engine,
+		signer:  signer,
+		corehub: corehub,
 	}
 }
 
