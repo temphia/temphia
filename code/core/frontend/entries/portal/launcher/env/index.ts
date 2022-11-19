@@ -1,6 +1,7 @@
-import { actionFetch } from "../../../../lib/engine/action_fetch";
-import type { ActionResponse, Environment } from "../../../../lib/engine/env";
+import { ExecAPI } from "../../../../lib/apiv2/engine/exec";
+import type { Environment } from "../../../../lib/engine/env";
 import type { Pipe } from "../../../../lib/engine/pipe";
+import type { Registry } from "../../../../lib/registry/registry";
 import { generateId } from "../../../../lib/utils";
 
 export interface EnvOptions {
@@ -11,6 +12,7 @@ export interface EnvOptions {
   parent_secret?: string;
   pipe: Pipe;
   startup_payload?: any;
+  registry: Registry<any>;
 }
 
 interface Pending {
@@ -20,11 +22,10 @@ interface Pending {
 
 export class Env implements Environment {
   _opts: EnvOptions; // only for debug remove this
-  _fetch: (name: string, data: string) => Promise<Response>;
-
-  _sockd_url: string;
-
+  _exec_api: ExecAPI;
   _startup_payload?: any;
+  _registry: Registry<any>;
+
   _pipe: Pipe;
   _pending_pipe_msg: Map<string, Pending>;
   _default_parent_handler: (data: any) => {};
@@ -32,18 +33,16 @@ export class Env implements Environment {
   constructor(opts: EnvOptions) {
     window["debug_env"] = this; // only for debug remove this
 
+    this._registry = opts.registry;
     this._opts = opts;
-    this._pending_pipe_msg = new Map();
-
-    this._pipe = opts.pipe;
     this._startup_payload = opts.startup_payload;
-    this._fetch = actionFetch(
-      `${opts.base_url}engine/${opts.plug}/${opts.agent}/exec_con`,
-      opts.token
-    );
+    this.set_up_pipe(opts.pipe);
+    this._exec_api = new ExecAPI(opts.base_url, opts.token);
+  }
 
-    this._sockd_url = `${opts.base_url}engine/${opts.plug}/${opts.agent}/exec_ws`;
-
+  set_up_pipe(pipe: Pipe) {
+    this._pipe = pipe;
+    this._pending_pipe_msg = new Map();
     this._pipe.set_handler((xid: string, action: string, data: any) => {
       const pending = this._pending_pipe_msg.get(xid);
       if (!pending) {
@@ -59,33 +58,10 @@ export class Env implements Environment {
 
   init = async () => {};
 
-  PreformAction = async (name: string, data: any): Promise<ActionResponse> => {
-    const encoded = JSON.stringify(data);
-    try {
-      const resp = await this._fetch(name, encoded);
-      const ctype = resp.headers.get("Content-Type");
+  // public
 
-      if (resp.status !== 200) {
-        const txt = await resp.text();
-        return {
-          status_ok: false,
-          content_type: ctype,
-          body: txt,
-        };
-      }
-
-      const respData = await resp.json();
-      return {
-        body: respData,
-        content_type: ctype,
-        status_ok: true,
-      };
-    } catch (error) {
-      return {
-        status_ok: false,
-        body: error,
-      };
-    }
+  PreformAction = async (name: string, data: any): Promise<any> => {
+    return null;
   };
 
   startup_payload = () => {
@@ -110,7 +86,9 @@ export class Env implements Environment {
     this._default_parent_handler = handler;
   };
 
-  GetRegistry = (): any => {};
+  GetRegistry = (): any => {
+    return this._registry;
+  };
 
   GetFolderTktAPI = (ticket: string): any => {
     //return new FolderTktAPI(this._opts.base_url, ticket);
@@ -123,5 +101,5 @@ export class Env implements Environment {
     return null;
   };
 
-  GetDtableTktAPI = (ticket: string): any => {};
+  GetDataTableTktAPI = (ticket: string): any => {};
 }

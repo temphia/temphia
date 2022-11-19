@@ -1,9 +1,12 @@
 export * from "./portal/portal";
 
+import { initRegistry } from "../../../lib/engine/putils";
 import { SiteUtils, baseURL } from "../../../lib/utils/site";
 import { PortalService } from "./portal/portal";
 
 const build = () => {
+  initRegistry();
+  
   const site = new SiteUtils();
 
   if (!site.isLogged()) {
@@ -19,6 +22,7 @@ const build = () => {
     tenant_id: adata.tenant_id,
     user_token: adata.user_token,
     site_utils: site,
+    registry: window["__registry__"],
   });
 };
 

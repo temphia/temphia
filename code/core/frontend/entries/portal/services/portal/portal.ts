@@ -5,12 +5,14 @@ import { Navigator } from "./nav";
 import { Notifier } from "../notifier";
 import { DataService } from "../data";
 import { SockdService } from "../sockd/sockd";
+import type { Registry } from "../../../../lib/registry/registry";
 
 export interface AppOptions {
   base_url: string;
   tenant_id: string;
   user_token: string;
   site_utils: SiteUtils;
+  registry: Registry<any>
 }
 
 export interface Utils {
@@ -30,6 +32,8 @@ export class PortalService {
   sockd_service: SockdService;
   notifier: Notifier;
   utils: Utils;
+  registry: Registry<any>
+  
 
   launcher: Launcher;
   data_service: DataService;

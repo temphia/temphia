@@ -31,6 +31,7 @@ const env_init = async (ev: MessageEvent<any>) => {
     base_url: opts.base_url,
     parent_secret: opts.parent_secret,
     pipe: pipe,
+    registry: window["__registry__"],
   });
 
   await env.init();
