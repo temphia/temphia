@@ -1,12 +1,14 @@
 <script lang="ts">
-  import type { DataTableService } from "../../../../../../lib/app/portal";
+  import type { TableService } from "../../../../services/data";
+
+
   import Inner from "./_inner.svelte";
 
   import Layout from "./_layout.svelte";
 
   export let show = false;
 
-  export let manager: DataTableService;
+  export let manager: TableService;
   export let columns: object[];
 
   let rootstate = manager.store.states;

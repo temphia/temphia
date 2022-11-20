@@ -1,30 +1,271 @@
-<script>
-  import FormEdit from "../admin/core/form/auto_form.svelte";
+<script lang="ts">
+  import { getContext } from "svelte";
+  import type { PortalService } from "../../services";
+  import View2 from "./view2/view2.svelte";
+
+  const app: PortalService = getContext("__app__");
+
+  const columns = [
+    {
+      name: "Checkbox",
+      slug: "cb1",
+      ctype: "checkbox",
+      description: "this is checkbox example",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Color",
+      slug: "clr1",
+      ctype: "color",
+      description: "this is color example",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Currency",
+      slug: "cy1",
+      ctype: "currency",
+      description: "this is currency example",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Datetime",
+      slug: "dt1",
+      ctype: "datetime",
+      description: "this is datetime example",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Email",
+      slug: "email",
+      ctype: "email",
+      description: "this is email example",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "File",
+      slug: "f1",
+      ctype: "file",
+      description: "this is file example",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Hard Num Ref",
+      slug: "hnref",
+      ctype: "number",
+      description: "this is  Hard reference number",
+      options: [],
+      ref_id: "ref1",
+      ref_type: "hard_pri",
+      ref_target: "ex2",
+      ref_object: "__id",
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Hard Text Ref",
+      slug: "htref",
+      ctype: "shorttext",
+      description: "this is hard reference text",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Json",
+      slug: "js1",
+      ctype: "json",
+      description: "this is json example",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Location",
+      slug: "l1",
+      ctype: "location",
+      description: "this is location example",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Longtext",
+      slug: "long1",
+      ctype: "longtext",
+      description: "this is longtext example",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Multi File",
+      slug: "mf1",
+      ctype: "multifile",
+      description: "this is multi file example",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Multiselect",
+      slug: "ms1",
+      ctype: "multiselect",
+      description: "this is multiselect example",
+      options: ["zebra", "cat", "dog", "mouse", "snake", "elephant"],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Multi User",
+      slug: "muser",
+      ctype: "multiuser",
+      description: "this is multiuser example",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Number",
+      slug: "n1",
+      ctype: "number",
+      description: "this is number example",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Phone Number",
+      slug: "pn1",
+      ctype: "phonenumber",
+      description: "this is phonenumber example",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Row Formula",
+      slug: "rf1",
+      ctype: "rowformula",
+      description: "this is select example",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Range Number",
+      slug: "rg1",
+      ctype: "rangenumber",
+      description: "this is Range Number example",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Short Text",
+      slug: "sh1",
+      ctype: "shorttext",
+      description: "this is shorttext exmaple",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Single User",
+      slug: "siguser",
+      ctype: "singleuser",
+      description: "this is singleuser example",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Soft Num Ref",
+      slug: "snref",
+      ctype: "number",
+      description: "this is  Soft reference number",
+      options: [],
+      ref_id: "ref2",
+      ref_type: "soft_pri",
+      ref_target: "ex2",
+      ref_object: "__id",
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Select",
+      slug: "ss1",
+      ctype: "select",
+      description: "this is select example",
+      options: ["apple", "mango", "pineapple"],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "Soft Text Ref",
+      slug: "stref",
+      ctype: "shorttext",
+      description: "this is Soft reference text",
+      options: [],
+      ref_id: "ref3",
+      ref_type: "soft_text",
+      ref_target: "ex2",
+      ref_object: "title",
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+    {
+      name: "words",
+      slug: "w1",
+      ctype: "shorttext",
+      description: "it contain words",
+      options: [],
+      table_id: "b1",
+      group_id: "ks2bhheuw",
+      tenant_id: "default0",
+    },
+  ];
 </script>
 
-<div class="w-full h-full">
-  <!-- <iframe
-    height="100%"
-    width="100%"
-    title="aa"
-    src="http://localhost:8000"
-    frameborder="0"
-  /> -->
-
-  <FormEdit
-    schema={{
-      name: "TEST1",
-      fields: [
-        {
-          disabled: false,
-          ftype: "TEXT",
-          key_name: "field1",
-          name: "Field 1",
-          options: ["apple", "banana"],
-        },
-      ],
-    }}
-    data={{}}
-    message=""
-  />
-</div>
+<button
+  class="p-2 bg-gray-600 text-white"
+  on:click={() => {
+    app.utils.big_modal_open(View2, { columns, data: {} });
+  }}
+>
+  Open View
+</button>
