@@ -43,8 +43,8 @@ type ClaimSigner interface {
 	SignData(tenantId string, data *claim.Data) (string, error)
 	ParseData(tenantId, payload string) (*claim.Data, error)
 
-	SignCabinet(tenantId string, data *claim.Cabinet) (string, error)
-	ParseCabinet(tenantId, payload string) (*claim.Cabinet, error)
+	SignFolder(tenantId string, data *claim.Folder) (string, error)
+	ParseFolder(tenantId, payload string) (*claim.Folder, error)
 
 	SignRoomTagTkt(tenantId string, data *claim.RoomTagTkt) (string, error)
 	ParseRoomTagTkt(tenantId, payload string) (*claim.RoomTagTkt, error)

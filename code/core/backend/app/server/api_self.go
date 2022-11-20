@@ -111,10 +111,21 @@ func (s *Server) ListRepoSources(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
+type FolderIssueRequest struct {
+	Source string `json:"source,omitempty"`
+}
+
 func (s *Server) issueFolderTkt(ctx httpx.Request) {
+
+	req := &FolderIssueRequest{}
+	err := ctx.Http.BindJSON(req)
+	if err != nil {
+		return
+	}
 
 	resp, err := s.cCabinet.NewFolderTicket(
 		ctx.Session,
+		req.Source,
 		ctx.Http.Param("folder"),
 	)
 

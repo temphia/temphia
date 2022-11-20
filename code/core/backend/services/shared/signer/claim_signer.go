@@ -203,11 +203,11 @@ func (cs *ClaimSigner) ParseData(tenantId, payload string) (*claim.Data, error) 
 	return data, nil
 }
 
-func (cs *ClaimSigner) SignCabinet(tenantId string, data *claim.Cabinet) (string, error) {
+func (cs *ClaimSigner) SignFolder(tenantId string, data *claim.Folder) (string, error) {
 	return cs.signer.Sign(tenantId, data)
 }
-func (cs *ClaimSigner) ParseCabinet(tenantId, payload string) (*claim.Cabinet, error) {
-	data := &claim.Cabinet{}
+func (cs *ClaimSigner) ParseFolder(tenantId, payload string) (*claim.Folder, error) {
+	data := &claim.Folder{}
 
 	err := cs.signer.Parse(tenantId, payload, data)
 	if err != nil {

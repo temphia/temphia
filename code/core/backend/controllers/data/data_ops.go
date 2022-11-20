@@ -25,14 +25,14 @@ func (c *Controller) LoadGroup(uclaim *claim.Data) (*store.LoadDgroupResp, error
 		tg.CabinetFolder = "data_common"
 	}
 
-	fcalim := &claim.Cabinet{
+	fcalim := &claim.Folder{
 		Folder: tg.CabinetFolder,
 		Source: tg.CabinetSource,
 		Expiry: 0,
 		//	DeviceId: uclaim.DeviceId,
 	}
 
-	cabToken, err := c.signer.SignCabinet(uclaim.TenentId, fcalim)
+	cabToken, err := c.signer.SignFolder(uclaim.TenentId, fcalim)
 	if err != nil {
 		return nil, err
 	}

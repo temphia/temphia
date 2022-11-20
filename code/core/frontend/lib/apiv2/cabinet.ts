@@ -1,39 +1,41 @@
+import type { ApiBase } from "./base";
 import { Http } from "./http";
 
 export class CabinetAPI {
-  http: Http;
-  constructor(baseUrl: string, token: string) {
-    this.http = new Http(baseUrl, {
-      Authorization: token,
-    });
+  base: ApiBase;
+  source: string
+  constructor(source: string, base: ApiBase) {
+    this.source = source
+    this.base = base;
   }
 
   listRoot() {
-    return this.http.get("/cabinet/");
+    return this.base.get(`/cabinet/${this.source}/`);
   }
 
+
   listFolder(folder: string) {
-    return this.http.get(`/cabinet/${folder}`);
+    return this.base.get(`/cabinet/${this.source}/${folder}`);
   }
 
   newFolder(folder: string, data: any) {
-    return this.http.post(`/cabinet/${folder}`, data);
+    return this.base.post(`/cabinet/${this.source}/${folder}`, data);
   }
 
   getFile(folder: string, fname: string) {
-    return this.http.get(`/cabinet/${folder}/file/${fname}`);
+    return this.base.get(`/cabinet/${this.source}/${folder}/file/${fname}`);
   }
 
   uploadFile(folder: string, fname: string, data: any) {
-    return this.http.postForm(`/cabinet/${folder}/file/${fname}`, true, data);
+    return this.base.postForm(`/cabinet/${this.source}/${folder}/file/${fname}`, true, data);
   }
 
   deleteFile(folder: string, fname: string) {
-    return this.http.delete(`/cabinet/${folder}/file/${fname}`);
+    return this.base.delete(`/cabinet/${this.source}/${folder}/file/${fname}`);
   }
 
   getFilePreview(folder: string, fname: string) {
-    return this.http.get(`/cabinet/${folder}/preview/${fname}`);
+    return this.base.get(`/cabinet/${this.source}/${folder}/preview/${fname}`);
   }
 }
 

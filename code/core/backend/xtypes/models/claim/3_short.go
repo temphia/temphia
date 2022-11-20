@@ -27,7 +27,7 @@ type Data struct {
 	IsExec     bool     `json:"is_exec,omitempty"`
 }
 
-type Cabinet struct {
+type Folder struct {
 	TenentId  string `json:"-"`
 	UserId    string `json:"user_id,omitempty"`
 	SessionID int64  `json:"session_id,omitempty"`

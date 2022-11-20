@@ -91,8 +91,8 @@ export class ApiManager {
     return new EngineAPI(this.base);
   };
 
-  get_cabinet = () => {
-    return new CabinetAPI(this.api_base_url, "");
+  get_cabinet = (source: string) => {
+    return new CabinetAPI(source, this.base);
   };
 
   get_data_api = async (source: string, group: string) => {
