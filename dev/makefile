@@ -7,6 +7,8 @@ check: # check if binaries required are in $PATH
 	@which rustc
 
 backend_docker_run:
-	cd cmd/dev && docker-compose up
+	cd ../cmd/dev && docker-compose up
 backend_server_run:
-	go run .
+	cd .. && go run dev/*.go
+
+.PHONY: check backend_docker_run backend_server_run
