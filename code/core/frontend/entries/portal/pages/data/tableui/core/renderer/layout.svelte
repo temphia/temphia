@@ -12,6 +12,7 @@
   export let actions: object[];
   export let loading: boolean = false;
   export let selected_rows = [];
+  export let layout: string = "grid";
 
   const dispatch = createEventDispatcher();
   const onChangeDtable = (payload) => dispatch("on_table_change", payload);
@@ -19,7 +20,13 @@
   const newRowClick = (payload) => dispatch("on_new_row", payload);
 
   const onHookClick = (payload) => dispatch("on_hook_click", payload);
-  const onChangeToCardLayout = () => dispatch("on_change_to_card");
+  const onChangeLayout = () => {
+    if (layout === "card") {
+      dispatch("on_change_to_grid");
+    } else {
+      dispatch("on_change_to_card");
+    }
+  };
 
   const gotoDtable = (dtable) => () => {
     onChangeDtable(dtable);
@@ -63,9 +70,7 @@
     </div>
     <!-- TABS  end -->
 
-    <div
-      class="rounded-t-lg flex flex-col shadow md:flex-row justify-between items-center"
-    >
+    <div class="rounded-t-lg flex shadow justify-between items-center">
       <!-- TOOLBAR  start -->
       <div class="flex flex-wrap p-1 pr-4 gap-x-1">
         {#key re_render}
@@ -103,19 +108,32 @@
         {/key}
       </div>
 
-      <div>
+      <div class="p-1">
         <button
-          on:click={onChangeToCardLayout}
-          class="p-1 bg-gray-50 text-gray-700 inline-flex font-light rounded hover:bg-gray-200"
+          on:click={onChangeLayout}
+          class="p-1 bg-gray-50 text-gray-700 inline-flex font-light rounded hover:bg-blue-200"
         >
-          <Icon name="color-swatch" solid class="h-5 w-5" />
-          Card Layout
+          {#if layout === "card"}
+            <Icon name="table" solid class="h-6 w-6 pt-1" />
+            Layout
+          {:else}
+            <Icon name="color-swatch" solid class="h-6 w-6 pt-1" />
+            Layout
+          {/if}
         </button>
       </div>
     </div>
 
-    <div class="w-full h-full overflow-hidden border border-gray-300">
+    <div class="w-full h-full overflow-hidden">
       <slot>Empty slot</slot>
+
+      <div class="flex justify-start p-0.5 bg-slate-200">
+        <p class="text-slate-900 text-lg">
+          Rows <span class="text-slate-700 text-base"
+            >[ {`${1000}/${200}`} ]</span
+          >
+        </p>
+      </div>
     </div>
     <!-- end right  -->
   </div>

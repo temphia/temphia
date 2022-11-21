@@ -44,11 +44,10 @@
   $: re_render = 0;
 </script>
 
-<!-- TOOLBAR  END -->
 
 <!-- left start -->
 <div class="flex w-full" style="height:calc(100vh - 6em);">
-  <div class="w-80 h-full border border-gray-300">
+  <div class="w-40 h-full border border-gray-300">
     <div class="flex flex-col gap-1 h-full block">
       <div
         class="h-10 border-b border-gray-300 flex justify-center text-sm bg-gray-50"
