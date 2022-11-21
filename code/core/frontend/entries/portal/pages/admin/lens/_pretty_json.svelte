@@ -23,14 +23,6 @@
         {JSON.stringify(data, null, "\t")}
     </pre>
   {:else}
-    <span class="bg-blue-100 p-1 rounded">
-      {index}
-    </span>
-
-    <span class="bg-pink-100 p-1 rounded">
-      {data["log_event_id"] || ""}
-    </span>
-
     {#each Object.entries(data) as [k, v]}
       <div class="flex flex-nowrap">
         <span class="px-1 bg-slate-100 rounded">{k}</span>:
