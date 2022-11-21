@@ -20,7 +20,7 @@
     loaded = true;
   };
 
-  $: __open_row_idx = undefined;
+  $: __open_row_idx = null;
 </script>
 
 <Layout do_query={(qstr) => load()} index="app">
@@ -30,18 +30,29 @@
         <div
           on:click={() => {
             if (__open_row_idx === idx) {
-              __open_row_idx = undefined;
-            } else {
-              __open_row_idx = idx;
+              return;
             }
+            __open_row_idx = idx;
           }}
           class="flex items-center flex-nowrap w-full border border-slate-200 p-1 gap-2 cursor-pointer"
         >
-          <PrettyJson
-            data={JSON.parse(item) || {}}
-            index={idx}
-            is_open={idx === __open_row_idx}
-          />
+          {#key __open_row_idx}
+            <PrettyJson
+              data={JSON.parse(item) || {}}
+              index={idx}
+
+              is_open={idx === __open_row_idx}
+              toggleFunc={() => {
+                console.log("@CLICK");
+                if (__open_row_idx === idx) {
+                  __open_row_idx = null;
+                } else {
+                  __open_row_idx = idx;
+                }
+                console.log("@row_idx", __open_row_idx);
+              }}
+            />
+          {/key}
         </div>
       </VirtualList>
     </div>
