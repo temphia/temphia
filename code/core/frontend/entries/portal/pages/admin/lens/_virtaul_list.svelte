@@ -143,7 +143,7 @@
   >
     {#each visible as row (row.index)}
       <svelte-virtual-list-row>
-        <slot item={row.data}>Missing template</slot>
+        <slot item={row.data} idx={row.index}>Missing template</slot>
       </svelte-virtual-list-row>
     {/each}
   </svelte-virtual-list-contents>
@@ -162,7 +162,7 @@
     display: block;
   }
 
-  svelte-virtual-list-row {
+  /* svelte-virtual-list-row {
     overflow: hidden;
-  }
+  } */
 </style>

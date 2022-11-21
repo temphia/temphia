@@ -3,6 +3,7 @@
   import VirtualList from "./_virtaul_list.svelte";
   import type { PortalService } from "../core";
   import Layout from "./_layout.svelte";
+  import PrettyJson from "./_pretty_json.svelte";
 
   const app = getContext("__app__") as PortalService;
   const lapi = app.api_manager.get_admin_lens_api();
@@ -18,13 +19,30 @@
     datas = resp.data;
     loaded = true;
   };
+
+  $: __open_row_idx = undefined;
 </script>
 
 <Layout do_query={(qstr) => load()} index="app">
   {#if loaded}
     <div class="p-2 w-full h-full bg-white rounded">
-      <VirtualList items={datas} let:item>
-        <div class="p-1 border border-slate-50">{item}</div>
+      <VirtualList items={datas} let:item let:idx>
+        <div
+          on:click={() => {
+            if (__open_row_idx === idx) {
+              __open_row_idx = undefined;
+            } else {
+              __open_row_idx = idx;
+            }
+          }}
+          class="flex items-center flex-nowrap w-full border border-slate-200 p-1 gap-2 cursor-pointer"
+        >
+          <PrettyJson
+            data={JSON.parse(item) || {}}
+            index={idx}
+            is_open={idx === __open_row_idx}
+          />
+        </div>
       </VirtualList>
     </div>
 

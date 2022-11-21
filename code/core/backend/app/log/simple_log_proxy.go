@@ -33,7 +33,7 @@ func (s *SimpleLogProxy) query(index, from, to, tenantId string, filters map[str
 	fileScanner := bufio.NewScanner(readFile)
 	fileScanner.Split(bufio.ScanLines)
 
-	const max = 100
+	const max = 1000
 
 	result := make([]logx.Log, 0, max)
 	for fileScanner.Scan() {
