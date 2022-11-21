@@ -28,52 +28,50 @@
             placeholder="Search .."
             required
           />
-
-          <div class="flex text-sm p-1 gap-1">
-            <div
-              class="bg-green-100 p-1 rounded-lg flex space-x-2 flex-row cursor-pointer"
-            >
-              <Icon name="chevron-left" class="h-4" />
-              <p class="text-xs">2021-01-15 [5:30]</p>
-              <Icon name="calendar" class="h-4" />
-            </div>
-
-            <div
-              class="bg-red-100 p-1 rounded-lg flex space-x-2 flex-row cursor-pointer"
-            >
-              <Icon name="calendar" class="h-4" />
-              <p class="text-xs">2021-02-17 [7:30]</p>
-              <Icon name="chevron-right" class="h-4" />
-            </div>
-          </div>
         </div>
       </div>
 
-      <div class="flex-none flex flex-col p-1 gap-1">
-        <div class="flex gap-1">
-          <select
-            class="font-medium rounded text-sm px-1 py-2"
-            value={index}
-            on:change={(ev) => app.nav.admin_lens(ev.target["value"])}
-          >
-            <option value="site">Site Index</option>
-            <option value="engine">Engine Index</option>
-            <option value="app">App Index</option>
-          </select>
-
-          <button
-            on:click={() => {}}
-            class="p-1 rounded bg-blue-300 shadow hover:bg-blue-600 flex text-white"
-          >
-            <Icon name="information-circle" class="h-6 w-6" solid />
-          </button>
-        </div>
-
+      <div class="flex p-1 gap-1">
         <button
           on:click={() => do_query("")}
           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-2"
           >Search</button
         >
+
+        <button
+          on:click={() => {}}
+          class="p-1 rounded bg-blue-300 shadow hover:bg-blue-600 flex text-white"
+        >
+          <Icon name="information-circle" class="h-6 w-6" solid />
+        </button>
+      </div>
+    </div>
+
+    <div class="flex text-sm p-1 gap-1">
+      <select
+        class="font-medium rounded text-sm px-1 py-2"
+        value={index}
+        on:change={(ev) => app.nav.admin_lens(ev.target["value"])}
+      >
+        <option value="site">Site Index</option>
+        <option value="engine">Engine Index</option>
+        <option value="app">App Index</option>
+      </select>
+
+      <div
+        class="bg-green-100 p-1 rounded-lg flex space-x-2 flex-row cursor-pointer"
+      >
+        <Icon name="chevron-left" class="h-4" />
+        <p class="text-xs">2021-01-15 [5:30]</p>
+        <Icon name="calendar" class="h-4" />
+      </div>
+
+      <div
+        class="bg-red-100 p-1 rounded-lg flex space-x-2 flex-row cursor-pointer"
+      >
+        <Icon name="calendar" class="h-4" />
+        <p class="text-xs">2021-02-17 [7:30]</p>
+        <Icon name="chevron-right" class="h-4" />
       </div>
     </div>
   </div>
