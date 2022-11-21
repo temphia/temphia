@@ -40,16 +40,13 @@
             <PrettyJson
               data={JSON.parse(item) || {}}
               index={idx}
-
               is_open={idx === __open_row_idx}
               toggleFunc={() => {
-                console.log("@CLICK");
                 if (__open_row_idx === idx) {
                   __open_row_idx = null;
                 } else {
                   __open_row_idx = idx;
                 }
-                console.log("@row_idx", __open_row_idx);
               }}
             />
           {/key}

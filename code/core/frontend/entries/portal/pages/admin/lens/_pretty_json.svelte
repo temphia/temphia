@@ -5,7 +5,7 @@
   export let toggleFunc: () => void;
 </script>
 
-<button on:click={toggleFunc}>
+<button on:click|stopPropagation|preventDefault={toggleFunc}>
   <div class="transition-all {is_open ? 'arrow-down' : 'arrow-right'}" />
 </button>
 
