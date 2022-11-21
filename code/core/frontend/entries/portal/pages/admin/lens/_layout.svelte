@@ -12,6 +12,18 @@
   export let do_query = (qstr) => {};
 </script>
 
+<div class="flex justify-end pt-2 pr-2">
+  <select
+    class="px-2 py-1 rounded-full bg-white hover:text-white hover:bg-slate-500 border border-slate-600"
+    value={index}
+    on:change={(ev) => app.nav.admin_lens(ev.target["value"])}
+  >
+    <option value="site">Site Index</option>
+    <option value="engine">Engine Index</option>
+    <option value="app">App Index</option>
+  </select>
+</div>
+
 <div class="p-2 w-full h-full" style="min-height: 80vh;">
   <div class="rounded bg-white p-2">
     <div class="flex items-start">
@@ -47,31 +59,40 @@
       </div>
     </div>
 
-    <div class="flex text-sm p-1 gap-1">
-      <select
-        class="font-medium rounded text-sm px-1 py-2"
-        value={index}
-        on:change={(ev) => app.nav.admin_lens(ev.target["value"])}
-      >
-        <option value="site">Site Index</option>
-        <option value="engine">Engine Index</option>
-        <option value="app">App Index</option>
-      </select>
+    <div class="flex justify-between text-sm">
+      <div class="flex text-sm p-1 gap-1">
+        <div
+          class="bg-green-100 p-1 rounded-lg flex space-x-2 flex-row cursor-pointer"
+        >
+          <Icon name="chevron-left" class="h-4" />
+          <p class="text-xs">2021-01-15 [5:30]</p>
+          <Icon name="calendar" class="h-4" />
+        </div>
 
-      <div
-        class="bg-green-100 p-1 rounded-lg flex space-x-2 flex-row cursor-pointer"
-      >
-        <Icon name="chevron-left" class="h-4" />
-        <p class="text-xs">2021-01-15 [5:30]</p>
-        <Icon name="calendar" class="h-4" />
-      </div>
+        <div
+          class="bg-red-100 p-1 rounded-lg flex space-x-2 flex-row cursor-pointer"
+        >
+          <Icon name="calendar" class="h-4" />
+          <p class="text-xs">2021-02-17 [7:30]</p>
+          <Icon name="chevron-right" class="h-4" />
+        </div>
 
-      <div
-        class="bg-red-100 p-1 rounded-lg flex space-x-2 flex-row cursor-pointer"
-      >
-        <Icon name="calendar" class="h-4" />
-        <p class="text-xs">2021-02-17 [7:30]</p>
-        <Icon name="chevron-right" class="h-4" />
+        <label class="inline-flex items-center">
+          <input type="checkbox" class="form-checkbox h-5 w-5" checked /><span
+            class="ml-2 text-gray-700">Unscope Organization</span
+          >
+        </label>
+
+        <label class="inline-flex items-center">
+          <select class="font-medium rounded text-sm p-1">
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="500">500</option>
+            <option value="1000">1000</option>
+          </select>
+
+          <span class="ml-2 text-gray-700">Logs count</span>
+        </label>
       </div>
     </div>
   </div>
