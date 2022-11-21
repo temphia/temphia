@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { time_ago } from "../../../../../../../lib/vendor/timeago";
-  import Jsonview from "../../../../../../xcompo/jsonview/jsonview.svelte";
+  import { time_ago } from "../../../../../../../../lib/vendor/timeago";
+  import Jsonview from "../../../../../../../xcompo/jsonview/jsonview.svelte";
 
   const CREATE_RECORD = "insert";
   const UPDATE_RECORD = "update";

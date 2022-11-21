@@ -63,3 +63,11 @@ export interface Hook {
   icon: string;
   payload: string;
 }
+
+export interface Action {
+  name: string;
+  type: "contextual" | "normal";
+  active: boolean;
+  icon: string;
+  action: any;
+}

@@ -21,7 +21,7 @@
     CtypeRangeNumber,
     CtypeColor,
     CtypeFilterConds,
-  } from "../../data/renderer/fields/field";
+  } from "../../data/tableui/core/fields/field";
 
   export let columns: Column[] = [];
   export let filter_conds: {

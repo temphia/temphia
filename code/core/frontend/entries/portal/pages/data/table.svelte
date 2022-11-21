@@ -4,8 +4,7 @@
   import type { PortalService } from "../../services";
   import type { TableService } from "../../services/data/table";
   import { LoadingSpinner } from "../admin/core";
-  import CardLayout from "./layout/card/card.svelte";
-  import GridLayout from "./layout/grid/grid.svelte";
+  import TableUI from "./tableui/tableui.svelte";
 
   export let source = $params.source;
   export let group = $params.dgroup;
@@ -29,16 +28,6 @@
   <LoadingSpinner />
 {:else}
   {#key $params.dtable && $params.layout}
-    {#if $params.layout === "card"}
-      <CardLayout />
-    {:else}
-      <GridLayout
-        {table_service}
-        on:on_table_change={(ev) =>
-          app.nav.data_table(source, group, ev.detail)}
-        on:on_change_to_card={(ev) =>
-          app.nav.data_table(source, group, $params.dtable, "/card")}
-      />
-    {/if}
+    <TableUI layout={$params.layout} {table_service} />
   {/key}
 {/if}
