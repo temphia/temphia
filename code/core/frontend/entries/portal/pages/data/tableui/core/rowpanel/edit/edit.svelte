@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Column, TableService } from "../../../../../services/data";
+  import type { TableService, Column } from "../../../../../../services/data";
   import Field from "../../fields/field.svelte";
 
   export let columns: string[];

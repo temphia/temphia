@@ -1,6 +1,5 @@
 <script lang="ts">
-  import type { TableService } from "../../../../services/data";
-
+  import type { TableService } from "../../../../../services/data";
 
   import Inner from "./_inner.svelte";
 
@@ -11,8 +10,9 @@
   export let manager: TableService;
   export let columns: object[];
 
-  let rootstate = manager.store.states;
-  let navstore = manager.navStore;
+  let rootstate = manager.state.data_store;
+  let navstore = manager.state.nav_store;
+
   let getViewData;
 
   $: _view = {
@@ -28,7 +28,7 @@
 
   const onViewChange = (v) => () => {
     _view = { ...v };
-    view_name = v.name || ""
+    view_name = v.name || "";
   };
 </script>
 
@@ -46,7 +46,7 @@
       <label for="">Views</label>
       <select class="p-1 rounded">
         <option value="__index_0" />
-        {#each $rootstate[manager.dtable].views || [] as v}
+        {#each $rootstate.views || [] as v}
           <option on:click={onViewChange(v)}>{v["name"] || ""}</option>
         {/each}
       </select>
@@ -54,7 +54,7 @@
 
     <button
       on:click={() =>
-        manager.applyView(view_name, {
+        manager.apply_view(view_name, {
           ...getViewData(),
         })}
       class="bg-blue-400 hover:bg-blue-600 w-20 text-white text-sm rounded"

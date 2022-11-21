@@ -4,7 +4,7 @@
   import RendererLayout from "../core/renderer/layout.svelte";
 
   export let table_service: TableService;
-  export let show_editor;
+  export let show_editor = false;
 
   export let hooks: object[];
   export let actions: object[];
@@ -40,6 +40,7 @@
       console.log(ev);
     }}
     on:on_new_row={(ev) => {
+      row_service.state.start_row_edit(0);
       show_editor = true;
     }}
     on:on_page_buttom={(ev) => {

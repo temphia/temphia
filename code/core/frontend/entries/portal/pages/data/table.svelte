@@ -33,10 +33,11 @@
       {table_service}
       on:on_change_to_card={(ev) =>
         app.nav.data_table(source, group, $params.dtable, "/card")}
-      on:on_table_change={(ev) =>
-        app.nav.data_table(source, group, $params.dtable)}
+      on:on_table_change={(ev) => app.nav.data_table(source, group, ev.detail)}
       on:on_change_to_grid={() =>
         app.nav.data_table(source, group, $params.dtable)}
+      on:admin_data_table={() =>
+        app.nav.admin_data_table(source, group, $params.dtable)}
     />
   {/key}
 {/if}

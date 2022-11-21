@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ViewFilter from "../../../admin/dtable/view/_view_filter.svelte";
+  import ViewItem from "./_view_item.svelte";
 
   export let columns;
   export let data;
@@ -39,7 +39,7 @@
   </div>
 
   <div class="w-full p-2">
-    <ViewFilter {columns} bind:filter_conds />
+    <ViewItem {columns} bind:filter_conds />
   </div>
 </div>
 

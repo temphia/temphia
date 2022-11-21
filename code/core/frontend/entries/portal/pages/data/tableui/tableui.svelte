@@ -4,6 +4,9 @@
   import GridLayout from "./grid/grid.svelte";
 
   import RowPanel from "./core/rowpanel/row.svelte";
+  import ViewPanel from "./core/view/view.svelte";
+
+  import { createEventDispatcher } from "svelte";
 
   export let table_service: TableService;
   export let layout: string;
@@ -12,7 +15,10 @@
   const nav_store = table_service.state.nav_store;
 
   let show_editor = false;
+  let show_view_panel = false;
   let selected_rows = [];
+
+  const dispatch = createEventDispatcher();
 
   const actions = [
     {
@@ -26,7 +32,7 @@
       name: "Setting",
       type: "normal",
       icon: `<path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z" />`,
-      action: () => {},
+      action: () => dispatch("admin_data_table", null),
     },
     {
       name: "Share",
@@ -40,7 +46,9 @@
       type: "normal",
       active: false,
       icon: `<path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />`,
-      action: () => {},
+      action: () => {
+        show_view_panel = !show_view_panel;
+      },
     },
 
     {
@@ -75,6 +83,12 @@
     columns_indexded={$data_store.indexed_column}
     reverse_ref_column={[]}
     rows_indexed={$data_store.indexed_rows}
+  />
+
+  <ViewPanel
+    columns={Object.values($data_store.indexed_column)}
+    manager={table_service}
+    bind:show={show_view_panel}
   />
 
   {#if layout === "card"}
