@@ -36,20 +36,18 @@
           }}
           class="flex items-center flex-nowrap w-full border border-slate-200 p-1 gap-2 cursor-pointer"
         >
-          {#key __open_row_idx}
-            <PrettyJson
-              data={JSON.parse(item) || {}}
-              index={idx}
-              is_open={idx === __open_row_idx}
-              toggleFunc={() => {
-                if (__open_row_idx === idx) {
-                  __open_row_idx = null;
-                } else {
-                  __open_row_idx = idx;
-                }
-              }}
-            />
-          {/key}
+          <PrettyJson
+            data={JSON.parse(item) || {}}
+            index={idx}
+            is_open={idx === __open_row_idx}
+            toggleFunc={() => {
+              if (__open_row_idx === idx) {
+                __open_row_idx = null;
+              } else {
+                __open_row_idx = idx;
+              }
+            }}
+          />
         </div>
       </VirtualList>
     </div>
