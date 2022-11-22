@@ -39,14 +39,12 @@
   let end;
 
   let heightClass = "h-12";
-  $: _selected_rows = [];
 
   $: re_render = 0;
 </script>
 
-
 <!-- left start -->
-<div class="flex w-full" style="height:calc(100vh - 6em);">
+<div class="flex w-full" style="height:calc(100vh - 7em);">
   <div class="w-40 h-full border border-gray-300">
     <div class="flex flex-col gap-1 h-full block">
       <div

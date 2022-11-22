@@ -11,6 +11,7 @@
   export let table_service: TableService;
   export let layout: string;
 
+  const row_service = table_service.get_row_service();
   const data_store = table_service.state.data_store;
   const nav_store = table_service.state.nav_store;
 
@@ -70,9 +71,36 @@
       type: "contextual",
       active: false,
       icon: `<path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd" />`,
-      action: () => {},
+      action: () => {
+        selected_rows = [];
+      },
     },
   ];
+
+  // event handlers
+
+  const on_new_row = (ev) => {
+    row_service.state.start_row_edit(0);
+    show_editor = true;
+  };
+
+  const on_hook_click = (ev) => {};
+  const on_page_buttom = (ev) => table_service.reached_buttom();
+  const on_page_top = (ev) => table_service.reached_top();
+  const on_row_click = (ev) => {
+    row_service.state.start_row_edit(ev.detail);
+    show_editor = true;
+  };
+
+  const on_row_toggle_select = (ev) => {
+    console.log("@toggle", ev)
+    const rowid: number = ev.detail;
+    if (selected_rows.includes(rowid)) {
+      selected_rows = selected_rows.filter((v) => v !== rowid);
+    } else {
+      selected_rows = [...selected_rows, rowid];
+    }
+  };
 </script>
 
 {#key layout}
@@ -105,11 +133,16 @@
     <GridLayout
       {actions}
       hooks={[]}
-      bind:show_editor
       {selected_rows}
       {table_service}
       on:on_table_change
       on:on_change_to_card
+      on:on_new_row={on_new_row}
+      on:on_page_top={on_page_top}
+      on:on_row_click={on_row_click}
+      on:on_hook_click={on_hook_click}
+      on:on_page_buttom={on_page_buttom}
+      on:on:on_row_toggle_select={on_row_toggle_select}
     />
   {/if}
 {/key}
