@@ -14,6 +14,8 @@
   let loading = true;
 
   const load = async (table: string) => {
+    if (!table) return;
+
     loading = true;
     const ds = await app.get_data_service();
     const gs = await ds.group_service(source, group);
