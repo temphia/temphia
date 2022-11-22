@@ -9,15 +9,17 @@
   export let selected_rows = [];
 
   const data_store = table_service.state.data_store;
+  const nav_store = table_service.state.nav_store;
 
   $: _data = $data_store;
+  $: _nav_store = $nav_store;
 </script>
 
 <RendererLayout
   {actions}
   active_table={table_service.table_slug}
   all_tables={table_service.all_tables}
-  loading={false}
+  loading={_nav_store.loading}
   {selected_rows}
   {hooks}
   on:on_change_to_card
@@ -28,7 +30,7 @@
   <Renderer
     columns={_data.column_order}
     columns_index={_data.indexed_column}
-    main_column=""
+    main_column={_nav_store.active_view.main_column}
     rows={_data.rows}
     rows_index={_data.indexed_rows}
     {selected_rows}

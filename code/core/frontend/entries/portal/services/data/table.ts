@@ -270,27 +270,17 @@ export class TableState {
     }
 
     this.data_store.update((old) => {
-      const oldstate = old[this.service.table_slug] || {
-        reverse_ref_column: [],
-        column_order: [],
-        hooks: [],
-        indexed_column: {},
-        indexed_rows: {},
-        remote_dirty: {},
-        rows: [],
-        sparse_rows: [],
-        views: [],
-      };
+      
 
       const indexed_column = data["columns"];
       const column_order = generate_column_order(indexed_column);
 
-      const old_rows = append ? oldstate["rows"] || [] : [];
-      const old_indexed = append ? oldstate["indexed_rows"] || {} : {};
+      const old_rows = append ? old["rows"] || [] : [];
+      const old_indexed = append ? old["indexed_rows"] || {} : {};
 
-      let reverse_ref_column = oldstate["reverse_ref_column"] || [];
-      let views = oldstate["views"] || [];
-      let hooks = oldstate["hooks"] || [];
+      let reverse_ref_column = old["reverse_ref_column"] || [];
+      let views = old["views"] || [];
+      let hooks = old["hooks"] || [];
 
       const extra_meta = data["extra_meta"];
 
@@ -318,7 +308,7 @@ export class TableState {
       );
 
       return {
-        ...oldstate,
+        ...old,
         column_order,
         indexed_column,
         indexed_rows,
