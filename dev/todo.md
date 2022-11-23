@@ -5,7 +5,7 @@
 - [ ] dev shell and execute
 - [ ] data table
     - [x] basic data layout
-    - [ ] complete layout and wiring
+    - [x] complete layout and wiring
     - [ ] row editor
         - [ ] edit row
         - [ ] add row
