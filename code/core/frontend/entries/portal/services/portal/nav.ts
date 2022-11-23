@@ -164,6 +164,18 @@ export class Navigator {
     this.set(`#/admin/plug/${pid}/agent/${aid}/ext/${eid}/edit`);
   };
 
+  admin_agent_res = (pid: string, aid: string) => {
+    this.set(`#/admin/plug/${pid}/agent/${aid}/res/`);
+  };
+
+  admin_agent_res_new = (pid: string, aid: string) => {
+    this.set(`#/admin/plug/${pid}/agent/${aid}/res/new`);
+  };
+
+  admin_agent_res_edit = (pid: string, aid: string, rid: string) => {
+    this.set(`#/admin/plug/${pid}/agent/${aid}/res/${rid}/edit`);
+  };
+
   // dev
 
   admin_plug_dev_flowmap = (pid: string) => {

@@ -27,6 +27,10 @@ import AdminAgentExtensions from "./plug/agent/extension/extensions.svelte";
 import AdminAgentExtensionNew from "./plug/agent/extension/extension_new.svelte";
 import AdminAgentExtensionEdit from "./plug/agent/extension/extension_edit.svelte";
 
+import AdminAgentResources from "./plug/agent/resource/resources.svelte";
+import AdminAgentResourceNew from "./plug/agent/resource/resource_new.svelte";
+import AdminAgentResourceEdit from "./plug/agent/resource/resource_edit.svelte";
+
 // repo
 import AdminRepos from "./repo/repos.svelte";
 import AdminRepoEdit from "./repo/repo_edit.svelte";
@@ -128,11 +132,15 @@ export default {
         "/new": AdminAgentExtensionNew,
         "/:eid/edit": AdminAgentExtensionEdit,
       },
+
+      "/:aid/res": {
+        "/": AdminAgentResources,
+        "/new": AdminAgentResourceNew,
+        "/:rid/edit": AdminAgentResourceEdit,
+      },
     },
     "/:pid/resource": AdminPlugResources,
   },
-
- 
 
   "/repo": {
     "/": AdminRepos,
