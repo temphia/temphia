@@ -53,13 +53,6 @@ func (r *ApiAdmin) ResourceRemove(ctx httpx.Request) {
 }
 
 func (r *ApiAdmin) ResourceList(ctx httpx.Request) {
-	plugId := ctx.Http.Query("plug_id")
-	if plugId != "" {
-		resp, err := r.cAdmin.ResourceListByPlug(ctx.Session, plugId)
-		r.rutil.WriteJSON(ctx.Http, resp, err)
-		return
-	}
-
 	resp, err := r.cAdmin.ResourceList(ctx.Session)
 	r.rutil.WriteJSON(ctx.Http, resp, err)
 }

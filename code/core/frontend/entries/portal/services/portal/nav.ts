@@ -118,6 +118,10 @@ export class Navigator {
     this.set(`#/admin/plug/edit/${bid}`);
   };
 
+  admin_plug_resource = (pid: string) => {
+    this.set(`#/admin/plug/${pid}/resource`);
+  };
+
   // agents
 
   admin_agents = (pid: string) => {
@@ -270,8 +274,8 @@ export class Navigator {
     this.set(`#/admin/resource/${rid}/edit`);
   };
 
-  admin_resource_new = () => {
-    this.set(`#/admin/resource/new`);
+  admin_resource_new = (plug_id?: string) => {
+    this.set(`#/admin/resource/new`, plug_id ? { plug_id } : undefined);
   };
 
   admin_resource_datagroup_new = () => {

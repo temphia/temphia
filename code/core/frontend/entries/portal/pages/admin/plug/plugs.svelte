@@ -31,10 +31,7 @@
 
   const action_list_agents = (id: string) => app.nav.admin_agents(id);
   const action_edit = (id: string) => app.nav.admin_plug_edit(id);
-
-  const action_list_resources = (id: string) => {
-    //           app.navigator.goto_admin_plug_resources(id);
-  };
+  const action_list_resources = (id: string) => app.nav.admin_plug_resource(id);
 
   const action_show_flowmap = (id: string) =>
     app.nav.admin_plug_dev_flowmap(id);

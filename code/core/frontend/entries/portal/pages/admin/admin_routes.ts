@@ -12,6 +12,8 @@ import AdminAgents from "./plug/agent/agents.svelte";
 import AdminAgentNew from "./plug/agent/agent_new.svelte";
 import AdminAgentEdit from "./plug/agent/agent_edit.svelte";
 
+import AdminPlugResources from "./plug/resources/resources.svelte";
+
 import AdminPlugDevDocs from "./plug/dev/docs/docs.svelte";
 import AdminPlugDevExec from "./plug/dev/execute/execute.svelte";
 import AdminPlugDevShell from "./plug/dev/shell/shell.svelte";
@@ -111,6 +113,7 @@ export default {
     },
 
     "/new": AdminPlugNew,
+
     "/:pid/agent": {
       "/": AdminAgents,
       "/:aid/edit": AdminAgentEdit,
@@ -126,7 +129,10 @@ export default {
         "/:eid/edit": AdminAgentExtensionEdit,
       },
     },
+    "/:pid/resource": AdminPlugResources,
   },
+
+ 
 
   "/repo": {
     "/": AdminRepos,

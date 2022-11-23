@@ -21,7 +21,8 @@ func (a *ApiAdmin) plugAPI(rg *gin.RouterGroup) {
 	rg.GET("/:plug_id/agent/:agent_id", a.X(a.GetAgent))
 	rg.POST("/:plug_id/agent/:agent_id", a.X(a.UpdateAgent))
 	rg.DELETE("/:plug_id/agent/:agent_id", a.X(a.DelAgent))
-	rg.POST("/:plug_id/agent/:agent_id/pair_token", a.X(a.PairAgentToken))
+
+	rg.GET("/:plug_id/resource", a.X(a.ListPlugResources))
 
 	rg.GET("/:plug_id/agent/:agent_id/link", a.X(a.AgentLinkList))
 	rg.POST("/:plug_id/agent/:agent_id/link", a.X(a.AgentLinkNew))
@@ -68,16 +69,16 @@ func (r *ApiAdmin) UpdatePlug(ctx httpx.Request) {
 		return
 	}
 
-	r.cAdmin.PlugUpdate(ctx.Session, ctx.Http.Param("plug_id"), data)
+	r.cAdmin.PlugUpdate(ctx.Session, ctx.MustParam("plug_id"), data)
 
 }
 
 func (r *ApiAdmin) GetPlug(ctx httpx.Request) {
-	plug, err := r.cAdmin.PlugGet(ctx.Session, ctx.Http.Param("plug_id"))
+	plug, err := r.cAdmin.PlugGet(ctx.Session, ctx.MustParam("plug_id"))
 	r.rutil.WriteJSON(ctx.Http, plug, err)
 }
 func (r *ApiAdmin) DelPlug(ctx httpx.Request) {
-	err := r.cAdmin.PlugDel(ctx.Session, ctx.Http.Param("plug_id"))
+	err := r.cAdmin.PlugDel(ctx.Session, ctx.MustParam("plug_id"))
 	r.rutil.WriteJSON(ctx.Http, nil, err)
 }
 
@@ -116,33 +117,36 @@ func (r *ApiAdmin) UpdateAgent(ctx httpx.Request) {
 		return
 	}
 
-	r.cAdmin.AgentUpdate(ctx.Session, ctx.Http.Param("plug_id"), ctx.Http.Param("agent_id"), data)
+	r.cAdmin.AgentUpdate(ctx.Session, ctx.MustParam("plug_id"), ctx.MustParam("agent_id"), data)
 }
 
 func (r *ApiAdmin) GetAgent(ctx httpx.Request) {
-	agent, err := r.cAdmin.AgentGet(ctx.Session, ctx.Http.Param("plug_id"), ctx.Http.Param("agent_id"))
+	agent, err := r.cAdmin.AgentGet(ctx.Session, ctx.MustParam("plug_id"), ctx.MustParam("agent_id"))
 	r.rutil.WriteJSON(ctx.Http, agent, err)
 }
 
 func (r *ApiAdmin) DelAgent(ctx httpx.Request) {
-	err := r.cAdmin.AgentDel(ctx.Session, ctx.Http.Param("plug_id"), ctx.Http.Param("agent_id"))
+	err := r.cAdmin.AgentDel(ctx.Session, ctx.MustParam("plug_id"), ctx.MustParam("agent_id"))
 	r.rutil.WriteFinal(ctx.Http, err)
 }
 
 func (r *ApiAdmin) ListAgent(ctx httpx.Request) {
-	agents, err := r.cAdmin.AgentList(ctx.Session, ctx.Http.Param("plug_id"))
+	agents, err := r.cAdmin.AgentList(ctx.Session, ctx.MustParam("plug_id"))
 	r.rutil.WriteJSON(ctx.Http, agents, err)
 }
 
-func (r *ApiAdmin) PairAgentToken(ctx httpx.Request) {
+// plug resource
 
+func (r *ApiAdmin) ListPlugResources(ctx httpx.Request) {
+	resp, err := r.cAdmin.ResourceListByPlug(ctx.Session, ctx.MustParam("plug_id"))
+	r.rutil.WriteJSON(ctx.Http, resp, err)
 }
 
 // link
 
 func (r *ApiAdmin) AgentLinkNew(ctx httpx.Request) {
-	plugId := ctx.Http.Param("plug_id")
-	agentId := ctx.Http.Param("agent_id")
+	plugId := ctx.MustParam("plug_id")
+	agentId := ctx.MustParam("agent_id")
 
 	data := &entities.AgentLink{}
 
@@ -162,9 +166,9 @@ func (r *ApiAdmin) AgentLinkNew(ctx httpx.Request) {
 func (r *ApiAdmin) AgentLinkUpdate(ctx httpx.Request) {
 	data := make(map[string]interface{})
 
-	plugId := ctx.Http.Param("plug_id")
-	agentId := ctx.Http.Param("agent_id")
-	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
+	plugId := ctx.MustParam("plug_id")
+	agentId := ctx.MustParam("agent_id")
+	id, err := strconv.ParseInt(ctx.MustParam("id"), 10, 64)
 	if err != nil {
 		r.rutil.WriteErr(ctx.Http, err.Error())
 		return
@@ -181,9 +185,9 @@ func (r *ApiAdmin) AgentLinkUpdate(ctx httpx.Request) {
 }
 
 func (r *ApiAdmin) AgentLinkGet(ctx httpx.Request) {
-	plugId := ctx.Http.Param("plug_id")
-	agentId := ctx.Http.Param("agent_id")
-	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
+	plugId := ctx.MustParam("plug_id")
+	agentId := ctx.MustParam("agent_id")
+	id, err := strconv.ParseInt(ctx.MustParam("id"), 10, 64)
 	if err != nil {
 		r.rutil.WriteErr(ctx.Http, err.Error())
 		return
@@ -195,10 +199,10 @@ func (r *ApiAdmin) AgentLinkGet(ctx httpx.Request) {
 }
 
 func (r *ApiAdmin) AgentLinkDel(ctx httpx.Request) {
-	plugId := ctx.Http.Param("plug_id")
-	agentId := ctx.Http.Param("agent_id")
+	plugId := ctx.MustParam("plug_id")
+	agentId := ctx.MustParam("agent_id")
 
-	id, _ := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
+	id, _ := strconv.ParseInt(ctx.MustParam("id"), 10, 64)
 
 	err := r.cAdmin.AgentLinkDel(ctx.Session, plugId, agentId, id)
 	r.rutil.WriteFinal(ctx.Http, err)
@@ -206,8 +210,8 @@ func (r *ApiAdmin) AgentLinkDel(ctx httpx.Request) {
 }
 
 func (r *ApiAdmin) AgentLinkList(ctx httpx.Request) {
-	plugId := ctx.Http.Param("plug_id")
-	agentId := ctx.Http.Param("agent_id")
+	plugId := ctx.MustParam("plug_id")
+	agentId := ctx.MustParam("agent_id")
 
 	resp, err := r.cAdmin.AgentLinkList(ctx.Session, plugId, agentId)
 	r.rutil.WriteJSON(ctx.Http, resp, err)
@@ -217,8 +221,8 @@ func (r *ApiAdmin) AgentLinkList(ctx httpx.Request) {
 // extension
 
 func (r *ApiAdmin) AgentExtensionNew(ctx httpx.Request) {
-	plugId := ctx.Http.Param("plug_id")
-	agentId := ctx.Http.Param("agent_id")
+	plugId := ctx.MustParam("plug_id")
+	agentId := ctx.MustParam("agent_id")
 
 	data := &entities.AgentExtension{}
 	err := ctx.Http.BindJSON(data)
@@ -238,9 +242,9 @@ func (r *ApiAdmin) AgentExtensionNew(ctx httpx.Request) {
 func (r *ApiAdmin) AgentExtensionUpdate(ctx httpx.Request) {
 	data := make(map[string]interface{})
 
-	plugId := ctx.Http.Param("plug_id")
-	agentId := ctx.Http.Param("agent_id")
-	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
+	plugId := ctx.MustParam("plug_id")
+	agentId := ctx.MustParam("agent_id")
+	id, err := strconv.ParseInt(ctx.MustParam("id"), 10, 64)
 	if err != nil {
 		r.rutil.WriteErr(ctx.Http, err.Error())
 		return
@@ -258,9 +262,9 @@ func (r *ApiAdmin) AgentExtensionUpdate(ctx httpx.Request) {
 }
 
 func (r *ApiAdmin) AgentExtensionGet(ctx httpx.Request) {
-	plugId := ctx.Http.Param("plug_id")
-	agentId := ctx.Http.Param("agent_id")
-	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
+	plugId := ctx.MustParam("plug_id")
+	agentId := ctx.MustParam("agent_id")
+	id, err := strconv.ParseInt(ctx.MustParam("id"), 10, 64)
 	if err != nil {
 		r.rutil.WriteErr(ctx.Http, err.Error())
 		return
@@ -272,10 +276,10 @@ func (r *ApiAdmin) AgentExtensionGet(ctx httpx.Request) {
 }
 
 func (r *ApiAdmin) AgentExtensionDel(ctx httpx.Request) {
-	plugId := ctx.Http.Param("plug_id")
-	agentId := ctx.Http.Param("agent_id")
+	plugId := ctx.MustParam("plug_id")
+	agentId := ctx.MustParam("agent_id")
 
-	id, err := strconv.ParseInt(ctx.Http.Param("id"), 10, 64)
+	id, err := strconv.ParseInt(ctx.MustParam("id"), 10, 64)
 	if err != nil {
 		r.rutil.WriteErr(ctx.Http, err.Error())
 		return
@@ -285,8 +289,8 @@ func (r *ApiAdmin) AgentExtensionDel(ctx httpx.Request) {
 }
 
 func (r *ApiAdmin) AgentExtensionList(ctx httpx.Request) {
-	plugId := ctx.Http.Param("plug_id")
-	agentId := ctx.Http.Param("agent_id")
+	plugId := ctx.MustParam("plug_id")
+	agentId := ctx.MustParam("agent_id")
 
 	resp, err := r.cAdmin.AgentExtensionList(ctx.Session, plugId, agentId)
 	r.rutil.WriteJSON(ctx.Http, resp, err)
@@ -295,8 +299,8 @@ func (r *ApiAdmin) AgentExtensionList(ctx httpx.Request) {
 // resource
 
 func (r *ApiAdmin) AgentResourceNew(ctx httpx.Request) {
-	plugId := ctx.Http.Param("plug_id")
-	agentId := ctx.Http.Param("agent_id")
+	plugId := ctx.MustParam("plug_id")
+	agentId := ctx.MustParam("agent_id")
 
 	data := &entities.AgentResource{}
 	err := ctx.Http.BindJSON(data)
@@ -316,9 +320,9 @@ func (r *ApiAdmin) AgentResourceNew(ctx httpx.Request) {
 func (r *ApiAdmin) AgentResourceUpdate(ctx httpx.Request) {
 	data := make(map[string]interface{})
 
-	plugId := ctx.Http.Param("plug_id")
-	agentId := ctx.Http.Param("agent_id")
-	id := ctx.Http.Param("id")
+	plugId := ctx.MustParam("plug_id")
+	agentId := ctx.MustParam("agent_id")
+	id := ctx.MustParam("id")
 
 	err := ctx.Http.BindJSON(&data)
 	if err != nil {
@@ -332,9 +336,9 @@ func (r *ApiAdmin) AgentResourceUpdate(ctx httpx.Request) {
 
 func (r *ApiAdmin) AgentResourceGet(ctx httpx.Request) {
 
-	plugId := ctx.Http.Param("plug_id")
-	agentId := ctx.Http.Param("agent_id")
-	id := ctx.Http.Param("id")
+	plugId := ctx.MustParam("plug_id")
+	agentId := ctx.MustParam("agent_id")
+	id := ctx.MustParam("id")
 
 	resp, err := r.cAdmin.AgentResourceGet(ctx.Session, plugId, agentId, id)
 	r.rutil.WriteJSON(ctx.Http, resp, err)
@@ -342,9 +346,9 @@ func (r *ApiAdmin) AgentResourceGet(ctx httpx.Request) {
 }
 
 func (r *ApiAdmin) AgentResourceDel(ctx httpx.Request) {
-	plugId := ctx.Http.Param("plug_id")
-	agentId := ctx.Http.Param("agent_id")
-	id := ctx.Http.Param("id")
+	plugId := ctx.MustParam("plug_id")
+	agentId := ctx.MustParam("agent_id")
+	id := ctx.MustParam("id")
 
 	err := r.cAdmin.AgentResourceDel(ctx.Session, plugId, agentId, id)
 	r.rutil.WriteFinal(ctx.Http, err)
@@ -352,8 +356,8 @@ func (r *ApiAdmin) AgentResourceDel(ctx httpx.Request) {
 }
 
 func (r *ApiAdmin) AgentResourceList(ctx httpx.Request) {
-	plugId := ctx.Http.Param("plug_id")
-	agentId := ctx.Http.Param("agent_id")
+	plugId := ctx.MustParam("plug_id")
+	agentId := ctx.MustParam("agent_id")
 
 	resp, err := r.cAdmin.AgentResourceList(ctx.Session, plugId, agentId)
 	r.rutil.WriteJSON(ctx.Http, resp, err)

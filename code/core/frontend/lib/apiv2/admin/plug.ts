@@ -26,6 +26,10 @@ export class AdminPlugAPI {
     return this.base.delete(`/admin/plug/${pid}`);
   }
 
+  list_plug_resource(pid: string) {
+    return this.base.get(`/admin/plug/${pid}/resource`);
+  }
+
   // agent
 
   list_agent(pid: string) {

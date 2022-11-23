@@ -6,6 +6,11 @@
   const api = app.api_manager.get_admin_resource_api();
 
   let message = "";
+  let data = {};
+  let plug_id = (app.nav.options || {})["plug_id"];
+  if (plug_id) {
+    data["plug_id"] = plug_id;
+  }
 
   const save = async (_data) => {
     const resp = await api.new(_data);
@@ -13,7 +18,7 @@
       message = resp.data;
       return;
     }
-    app.nav.admin_resources()
+    app.nav.admin_resources();
   };
 </script>
 
@@ -50,7 +55,6 @@
         ftype: "TEXT",
         key_name: "type",
       },
-      
 
       {
         name: "Target",
@@ -80,5 +84,5 @@
     required_fields: [],
   }}
   onSave={save}
-  data={{}}
+  {data}
 />
