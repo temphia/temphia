@@ -6,6 +6,7 @@ import { Notifier } from "../notifier";
 import { DataService } from "../data";
 import { SockdService } from "../sockd/sockd";
 import type { Registry } from "../../../../lib/registry/registry";
+import type { Logger } from "../../../../lib/logger";
 
 export interface AppOptions {
   base_url: string;
@@ -33,6 +34,7 @@ export class PortalService {
   notifier: Notifier;
   utils: Utils;
   registry: Registry<any>
+  logger: Logger
   
 
   launcher: Launcher;
