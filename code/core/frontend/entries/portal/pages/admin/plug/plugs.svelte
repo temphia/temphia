@@ -33,6 +33,8 @@
   const action_edit = (id: string) => app.nav.admin_plug_edit(id);
   const action_list_resources = (id: string) => app.nav.admin_plug_resource(id);
 
+  const action_list_states = (id: string) => app.nav.admin_plug_states(id);
+
   const action_show_flowmap = (id: string) =>
     app.nav.admin_plug_dev_flowmap(id);
   const action_delete = async (id: string) => {
@@ -74,6 +76,13 @@
         Action: action_list_resources,
         drop: true,
         icon: "paper-clip",
+      },
+
+      {
+        Name: "States",
+        Action: action_list_states,
+        drop: true,
+        icon: "database",
       },
 
       {

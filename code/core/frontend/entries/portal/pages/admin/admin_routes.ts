@@ -12,6 +12,10 @@ import AdminAgents from "./plug/agent/agents.svelte";
 import AdminAgentNew from "./plug/agent/agent_new.svelte";
 import AdminAgentEdit from "./plug/agent/agent_edit.svelte";
 
+import AdminPlugStates from "./plug/state/states.svelte";
+import AdminPlugStateNew from "./plug/state/state_new.svelte";
+import AdminPlugStateEdit from "./plug/state/state_edit.svelte";
+
 import AdminPlugResources from "./plug/resources/resources.svelte";
 
 import AdminPlugDevDocs from "./plug/dev/docs/docs.svelte";
@@ -139,6 +143,13 @@ export default {
         "/:rid/edit": AdminAgentResourceEdit,
       },
     },
+
+    "/:pid/state": {
+      "/": AdminPlugStates,
+      "/new": AdminPlugStateNew,
+      "/:skey/edit": AdminPlugStateEdit,
+    },
+
     "/:pid/resource": AdminPlugResources,
   },
 
