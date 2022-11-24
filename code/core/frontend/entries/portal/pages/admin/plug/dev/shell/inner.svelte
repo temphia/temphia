@@ -15,7 +15,7 @@
   let method = "";
   let editor;
   let resp_data;
-  2;
+  
   const submit = async () => {
     // console.log("@editor", editor);
     // if (!method) {
