@@ -62,9 +62,10 @@ func New(opts Options) *RootController {
 	dynhub := deps.DataHub().(store.DataHub)
 	egine := deps.Engine().(etypes.Engine)
 	logservice := deps.LogService().(logx.Service)
+	pstate := deps.PlugKV().(store.PlugStateKV)
 
 	return &RootController{
-		cAdmin:   admin.New(pacman, cplane, corehub, signer, dynhub, cab, logservice.GetLogProxy()),
+		cAdmin:   admin.New(pacman, cplane, corehub, signer, dynhub, cab, pstate, logservice.GetLogProxy()),
 		cAuth:    authed.New(corehub, signer, seq),
 		cBasic:   basic.New(corehub, cab, dynhub, pacman),
 		cCabinet: cabinet.New(cab, signer),

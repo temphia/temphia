@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/core/backend/controllers/admin"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 )
@@ -21,6 +22,12 @@ func (a *ApiAdmin) plugAPI(rg *gin.RouterGroup) {
 	rg.GET("/:plug_id/agent/:agent_id", a.X(a.GetAgent))
 	rg.POST("/:plug_id/agent/:agent_id", a.X(a.UpdateAgent))
 	rg.DELETE("/:plug_id/agent/:agent_id", a.X(a.DelAgent))
+
+	rg.GET("/:plug_id/state/", a.X(a.ListPlugState))
+	rg.POST("/:plug_id/state/", a.X(a.NewPlugState))
+	rg.GET("/:plug_id/state/:key", a.X(a.GetPlugState))
+	rg.POST("/:plug_id/state/:key", a.X(a.UpdatePlugState))
+	rg.DELETE("/:plug_id/state/:key", a.X(a.DelPlugState))
 
 	rg.GET("/:plug_id/resource", a.X(a.ListPlugResources))
 
@@ -69,7 +76,8 @@ func (r *ApiAdmin) UpdatePlug(ctx httpx.Request) {
 		return
 	}
 
-	r.cAdmin.PlugUpdate(ctx.Session, ctx.MustParam("plug_id"), data)
+	err = r.cAdmin.PlugUpdate(ctx.Session, ctx.MustParam("plug_id"), data)
+	r.rutil.WriteFinal(ctx.Http, err)
 
 }
 
@@ -117,7 +125,8 @@ func (r *ApiAdmin) UpdateAgent(ctx httpx.Request) {
 		return
 	}
 
-	r.cAdmin.AgentUpdate(ctx.Session, ctx.MustParam("plug_id"), ctx.MustParam("agent_id"), data)
+	err = r.cAdmin.AgentUpdate(ctx.Session, ctx.MustParam("plug_id"), ctx.MustParam("agent_id"), data)
+	r.rutil.WriteFinal(ctx.Http, err)
 }
 
 func (r *ApiAdmin) GetAgent(ctx httpx.Request) {
@@ -132,6 +141,46 @@ func (r *ApiAdmin) DelAgent(ctx httpx.Request) {
 
 func (r *ApiAdmin) ListAgent(ctx httpx.Request) {
 	agents, err := r.cAdmin.AgentList(ctx.Session, ctx.MustParam("plug_id"))
+	r.rutil.WriteJSON(ctx.Http, agents, err)
+}
+
+// plug state
+
+func (r *ApiAdmin) NewPlugState(ctx httpx.Request) {
+	data := admin.PlugStateNew{}
+	err := ctx.Http.BindJSON(&data)
+	if err != nil {
+		r.rutil.WriteErr(ctx.Http, err.Error())
+		return
+	}
+
+	err = r.cAdmin.PlugStateNew(ctx.Session, ctx.MustParam("plug_id"), data)
+	r.rutil.WriteFinal(ctx.Http, err)
+}
+
+func (r *ApiAdmin) UpdatePlugState(ctx httpx.Request) {
+	data := admin.PlugStateUpdate{}
+	err := ctx.Http.BindJSON(&data)
+	if err != nil {
+		r.rutil.WriteErr(ctx.Http, err.Error())
+		return
+	}
+
+	r.cAdmin.PlugStateUpdate(ctx.Session, ctx.MustParam("plug_id"), ctx.MustParam("key"), data)
+}
+
+func (r *ApiAdmin) GetPlugState(ctx httpx.Request) {
+	agent, err := r.cAdmin.PlugStateGet(ctx.Session, ctx.MustParam("plug_id"), ctx.MustParam("key"))
+	r.rutil.WriteJSON(ctx.Http, agent, err)
+}
+
+func (r *ApiAdmin) DelPlugState(ctx httpx.Request) {
+	err := r.cAdmin.PlugStateDel(ctx.Session, ctx.MustParam("plug_id"), ctx.MustParam("key"))
+	r.rutil.WriteFinal(ctx.Http, err)
+}
+
+func (r *ApiAdmin) ListPlugState(ctx httpx.Request) {
+	agents, err := r.cAdmin.PlugStateList(ctx.Session, ctx.MustParam("plug_id"))
 	r.rutil.WriteJSON(ctx.Http, agents, err)
 }
 

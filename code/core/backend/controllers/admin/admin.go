@@ -17,17 +17,29 @@ type Controller struct {
 	dynHub store.DataHub
 	cabHub store.CabinetHub
 	log    logx.Proxy
+
+	plugState store.PlugStateKV
 }
 
-func New(pacman repox.Hub, cplane xplane.ControlPlane, coredb store.CoreHub, signer service.Signer, dynHub store.DataHub, cabHub store.CabinetHub, log logx.Proxy) *Controller {
+func New(
+	pacman repox.Hub,
+	cplane xplane.ControlPlane,
+	coredb store.CoreHub,
+	signer service.Signer,
+	dynHub store.DataHub,
+	cabHub store.CabinetHub,
+	plugState store.PlugStateKV,
+	log logx.Proxy) *Controller {
+
 	return &Controller{
 
-		cplane: cplane,
-		coredb: coredb,
-		signer: signer,
-		pacman: pacman,
-		dynHub: dynHub,
-		cabHub: cabHub,
-		log:    log,
+		cplane:    cplane,
+		coredb:    coredb,
+		signer:    signer,
+		pacman:    pacman,
+		dynHub:    dynHub,
+		cabHub:    cabHub,
+		log:       log,
+		plugState: plugState,
 	}
 }
