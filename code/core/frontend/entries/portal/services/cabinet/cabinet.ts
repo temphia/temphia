@@ -14,7 +14,7 @@ export class CabinetService {
   constructor(apm: Apm) {
     this.apm = apm;
     this.source_apis = new Map();
-    this.sources = [];
+    this.sources = null;
   }
 
   get_source_api(src: string) {
@@ -24,6 +24,7 @@ export class CabinetService {
 
     const capi = this.apm.get_cabinet(src);
     this.source_apis.set(src, capi);
+    return capi
   }
 
   async get_cab_sources() {

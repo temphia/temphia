@@ -3,20 +3,29 @@
   import type { PortalService } from "../../services";
   import Layout from "./_layout.svelte";
 
-  export let source;
+  import { params } from "svelte-hash-router";
 
   const app: PortalService = getContext("__app__");
   const cservice = app.get_cabinet_service();
+  const capi = cservice.get_source_api($params.source);
 
   let sources = [];
+  let folders = [];
+  let loading = false;
 
   cservice.get_cab_sources().then((sresp) => {
     sources = sresp;
   });
 
-  let folders = [];
+  const load = async () => {
+    const resp = await capi.listRoot();
+    if (!resp.ok) {
+      return;
+    }
 
-  const load = async () => {};
+    folders = resp.data;
+    loading = true;
+  };
 
   const complete_new_folder = async (name) => {
     // const api = await app.get_apm().get_cabinet_api(source);
@@ -110,7 +119,7 @@
       {#each folders as folder}
         <div
           class="flex flex-col p-1 border rounded-lg bg-white hover:bg-gray-100 cursor-pointer"
-          on:click={() => {}}
+          on:click={() => app.nav.cab_folder($params.source, folder)}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
