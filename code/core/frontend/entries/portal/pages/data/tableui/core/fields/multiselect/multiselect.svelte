@@ -1,5 +1,7 @@
 <script lang="ts">
-  import type { Column } from "../../../../../services/data";
+  import type { Column } from "../../../../../../services/data";
+
+
   import { commaArrayDecode, commaArryEncode } from "../field";
   export let value: any;
   export let column: Column;

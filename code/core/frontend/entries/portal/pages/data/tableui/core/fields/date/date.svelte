@@ -1,6 +1,6 @@
 <script lang="ts">
   import Flatpickr from "svelte-flatpickr";
-  import type { Column } from "../../../../../services/data";
+  import type { Column } from "../../../../../../services/data";
 
   export let column: Column;
   export let onChange: (val: string) => void;

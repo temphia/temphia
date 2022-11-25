@@ -1,5 +1,6 @@
 <script lang="ts">
-  import type { Column, RowService } from "../../../../../services/data";
+  import type { Column, RowService } from "../../../../../../services/data";
+
   import { KeyPrimary } from "../field";
   import RefPanel from "./ref_panel.svelte";
 

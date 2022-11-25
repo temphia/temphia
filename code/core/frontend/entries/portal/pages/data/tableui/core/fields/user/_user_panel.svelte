@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { PortalApp } from "../../../../../../../lib/app/portal";
 
   export let profile;
 
