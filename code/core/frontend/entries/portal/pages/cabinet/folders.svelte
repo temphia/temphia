@@ -6,20 +6,17 @@
   export let source;
 
   const app: PortalService = getContext("__app__");
-  const apm = app.api_manager;
+  const cservice = app.get_cabinet_service();
 
   let sources = [];
-  apm.self_data.get_cab_sources().then((sresp) => {
+
+  cservice.get_cab_sources().then((sresp) => {
     sources = sresp;
   });
 
   let folders = [];
 
-  const load = async () => {
-    // const api = await apm.get_cabinet_api(source);
-    // const resp = await api.list_root();
-    // folders = await resp.data;
-  };
+  const load = async () => {};
 
   const complete_new_folder = async (name) => {
     // const api = await app.get_apm().get_cabinet_api(source);

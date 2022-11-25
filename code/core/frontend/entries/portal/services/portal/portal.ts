@@ -7,13 +7,14 @@ import { DataService } from "../data";
 import { SockdService } from "../sockd/sockd";
 import type { Registry } from "../../../../lib/registry/registry";
 import type { Logger } from "../../../../lib/logger";
+import { CabinetService } from "../cabinet/cabinet";
 
 export interface AppOptions {
   base_url: string;
   tenant_id: string;
   user_token: string;
   site_utils: SiteUtils;
-  registry: Registry<any>
+  registry: Registry<any>;
 }
 
 export interface Utils {
@@ -33,12 +34,12 @@ export class PortalService {
   sockd_service: SockdService;
   notifier: Notifier;
   utils: Utils;
-  registry: Registry<any>
-  logger: Logger
-  
+  registry: Registry<any>;
+  logger: Logger;
 
   launcher: Launcher;
   data_service: DataService;
+  cabinet_service: CabinetService;
 
   constructor(opts: AppOptions) {
     this.options = opts;
@@ -50,6 +51,7 @@ export class PortalService {
     );
     this.launcher = new Launcher();
     this.sockd_service = new SockdService();
+    this.cabinet_service = new CabinetService(this.api_manager);
   }
 
   async init() {
@@ -88,5 +90,9 @@ export class PortalService {
 
   get_sockd_service = () => {
     return this.sockd_service;
+  };
+
+  get_cabinet_service = () => {
+    return this.cabinet_service;
   };
 }

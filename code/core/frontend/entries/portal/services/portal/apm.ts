@@ -164,7 +164,6 @@ export class ApiManager {
 }
 
 export class SelfData {
-  cabinet_sources: string[];
   data_sources: string[];
   repo_sources: { [_: number]: string };
   user_plugs: object[];
@@ -189,18 +188,6 @@ export class SelfData {
     return this.repo_sources;
   }
 
-  async get_cab_sources() {
-    if (this.cabinet_sources) {
-      return this.cabinet_sources;
-    }
-
-    const resp = await this.api_manager.self_api.list_cabinet_sources();
-    if (!resp.ok) {
-      return [];
-    }
-    this.cabinet_sources = resp.data;
-    return this.cabinet_sources;
-  }
 
   async get_data_sources() {
     if (this.data_sources) {
