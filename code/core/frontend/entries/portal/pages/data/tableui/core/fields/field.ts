@@ -109,3 +109,26 @@ export const CtypeFilterConds = {
     "greater_than_or_equal",
   ], // between
 };
+
+
+export const CtypeIcons = {
+  [CtypeShortText]: "annotation",
+  [CtypePhone]: "phone",
+  [CtypeSelect]: "tag",
+  [CtypeRFormula]: "variable",
+  [CtypeFile]: "document",
+  [CtypeMultiFile]: "document",
+  [CtypeCheckBox]: "check-circle",
+  [CtypeCurrency]: "currency-dollar",
+  [CtypeNumber]: "hashtag",
+  [CtypeLocation]: "location-marker",
+  [CtypeDateTime]: "calendar",
+  [CtypeMultSelect]: "tag",
+  [CtypeLongText]: "document-text",
+  [CtypeSingleUser]: "user-circle",
+  [CtypeMultiUser]: "user-group",
+  [CtypeEmail]: "at-symbol",
+  [CtypeJSON]: "code",
+  [CtypeRangeNumber]: "calculator",
+  [CtypeColor]: "color-swatch",
+};

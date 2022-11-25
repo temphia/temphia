@@ -36,11 +36,8 @@
     RefSoftText,
     RefHardText,
   } from "./field";
-  import type {
-    Column,
-    DataService,
-    RowService,
-  } from "../../../../services/data";
+  import type { Column, RowService } from "../../../../../services/data";
+  import Cicon from "../cicon/cicon.svelte";
 
   export let row: object;
   export let column: Column;
@@ -74,8 +71,10 @@
   console.log("EDITing ", row, column);
 </script>
 
-<label for={column.slug} class="pb-2 text-gray-700 uppercase"
-  >{column.name}</label
+<label for={column.slug} class="pb-2 text-gray-700 uppercase flex">
+  <Cicon ctype={column.ctype} classes="h-6 w-6 pt-1" solid={true} />
+
+  {column.name}</label
 >
 
 {#if column.ref_type === RefHardPriId || column.ref_type === RefSoftPriId}
