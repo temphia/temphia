@@ -142,7 +142,7 @@
       on:on_row_click={on_row_click}
       on:on_hook_click={on_hook_click}
       on:on_page_buttom={on_page_buttom}
-      on:on:on_row_toggle_select={on_row_toggle_select}
+      on:on_row_toggle_select={on_row_toggle_select}
     />
   {/if}
 {/key}

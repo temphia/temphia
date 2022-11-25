@@ -2,6 +2,7 @@
   import type { TableService } from "../../../../services/data/table";
   import RendererLayout from "../core/renderer/layout.svelte";
   import CardItem from "./card_item.svelte";
+  import { calculate_order } from "./order";
 
   export let table_service: TableService;
   export let show_editor;
@@ -10,15 +11,12 @@
   export let actions: object[];
   export let selected_rows = [];
 
-  const row_service = table_service.get_row_service();
-
+  console.log("@table_service1", table_service);
   const data_store = table_service.state.data_store;
-  const dirty_store = table_service.state.dirty_store;
-  const nav_store = table_service.state.nav_store;
+  console.log("@table_service", table_service, data_store);
 
-  const rows = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-  ];
+  $: _data = $data_store;
+  $: _order = calculate_order(_data.indexed_column, {});
 </script>
 
 <RendererLayout
@@ -38,8 +36,12 @@
     <div
       class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 h-full overflow-auto w-full p-2"
     >
-      {#each rows as row}
-        <CardItem />
+      {#each _data.rows as row}
+        <CardItem
+          columns={_data.indexed_column}
+          order={_order}
+          row={_data.indexed_rows[row] || {}}
+        />
       {/each}
     </div>
   </div>
