@@ -39,6 +39,7 @@ export const CtypeEmail = "email";
 export const CtypeJSON = "json";
 export const CtypeRangeNumber = "rangenumber";
 export const CtypeColor = "color";
+// export const CtypeRatings = "ratings";
 
 // meta keys
 export const KeyPrimary = "__id";

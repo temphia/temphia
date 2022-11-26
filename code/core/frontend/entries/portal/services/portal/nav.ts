@@ -52,12 +52,14 @@ export class Navigator {
   };
 
   cab_folder = (source: string, folder: string) => {
-    this.set(`#/data/${source}/${folder}`);
+    this.set(`#/cabinet/${source}/${folder}`);
   };
 
   cab_file = (source: string, folder: string, file: string) => {
-    this.set(`#/data/${source}/${folder}/${file}`);
+    this.set(`#/cabinet/${source}/${folder}/${file}`);
   };
+
+  // repo
 
   repo_loader = () => {
     this.set(`#/repo/`);
