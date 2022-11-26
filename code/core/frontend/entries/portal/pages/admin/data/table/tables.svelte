@@ -36,13 +36,17 @@
   const action_delete = async (id: string) => {};
   const action_new = () => {};
 
-  const action_goto_columns = (id) => app.nav.admin_data_columns(source, group, id);
+  const action_goto_columns = (id) =>
+    app.nav.admin_data_columns(source, group, id);
   const action_goto_views = (id) => app.nav.admin_data_views(source, group, id);
   const action_goto_data_hooks = (id) =>
     app.nav.admin_data_hooks(source, group, id);
   const action_goto_data_apps = (id) =>
     app.nav.admin_data_apps(source, group, id);
   const action_goto_data = (id) => app.nav.data_table(source, group, id);
+
+  const action_goto_activities = (id) =>
+    app.nav.admin_data_activity(source, group, id);
 </script>
 
 {#if loading}
@@ -66,6 +70,12 @@
         Name: "Hooks",
         Class: "bg-green-400",
         Action: action_goto_data_hooks,
+      },
+
+      {
+        Name: "Activities",
+        Class: "bg-green-400",
+        Action: action_goto_activities,
       },
 
       {

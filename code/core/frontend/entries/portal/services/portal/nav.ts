@@ -137,7 +137,6 @@ export class Navigator {
   admin_plug_state_edit = (pid: string, skey) => {
     this.set(`#/admin/plug/${pid}/state/${skey}/edit`);
   };
-  
 
   admin_agents = (pid: string) => {
     this.set(`#/admin/plug/${pid}/agent/`);
@@ -290,6 +289,10 @@ export class Navigator {
   ) => {
     this.set(`#/admin/data/${source}/view/${group}/${table}/${id}/edit`);
   };
+
+  admin_data_activity(source: string, group: string, table: string) {
+    this.set(`#/admin/data/${source}/activity/${group}/${table}`);
+  }
 
   // resources
 

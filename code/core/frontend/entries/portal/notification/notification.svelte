@@ -2,6 +2,7 @@
   import Card from "./_card.svelte";
   import Processing from "./processing.svelte";
   import { createEventDispatcher } from "svelte";
+  import { Quotes } from "../services/notifier/quotes";
 
   export let loading = true;
   export let messages: object[] = [];
@@ -108,7 +109,7 @@
       tabindex="0"
       class="focus:outline-none text-sm flex flex-shrink-0 leading-normal px-3 py-16 text-gray-500"
     >
-      Existance is lie :|
+      {Quotes[0]}
     </p>
     <hr class="w-full" />
   </div>

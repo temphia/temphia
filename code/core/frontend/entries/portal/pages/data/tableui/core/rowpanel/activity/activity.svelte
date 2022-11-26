@@ -2,7 +2,9 @@
   import Card from "./_card.svelte";
   import EmojiSelector from "svelte-emoji-selector";
   import UserSelector from "./_user_selector.svelte";
-  import type { TableService } from "../../../../../services/data/table";
+  import type { TableService } from "../../../../../../services/data";
+
+  
 
   export let table_service: TableService;
   export let rowid: number;

@@ -62,12 +62,16 @@
             )}-50"
           >
             <div class="pl-1 flex items-center">
-              <input
-                checked={selected_rows.includes(row)}
-                type="checkbox"
-                on:click={() => rowToggleSelect(row)}
-                class="relative peer py-2 text-purple-600 rounded-md focus:ring-0"
-              />
+              <label
+                class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
+              >
+                <input
+                  checked={selected_rows.includes(row)}
+                  on:click={() => rowToggleSelect(row)}
+                  type="checkbox"
+                  class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline"
+                />
+              </label>
             </div>
 
             <div
