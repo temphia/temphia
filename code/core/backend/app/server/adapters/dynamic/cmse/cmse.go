@@ -10,10 +10,9 @@ type CMSE struct {
 	app     xtypes.App
 	runtime etypes.Runtime
 
-	Assets            []Asset
-	Actions           map[string][]Func
-	Filters           map[string][]Func
-	ShortCodeResolver map[string][]Func
+	Assets  []Asset
+	Actions map[string][]Func
+	Filters map[string][]Func
 }
 
 func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
