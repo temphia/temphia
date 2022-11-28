@@ -4,6 +4,7 @@
   import * as f from "../fields/field";
 
   import {
+  FilterBetweenDate,
     FilterCheckbox,
     FilterDate,
     FilterNumber,
@@ -56,12 +57,12 @@
     },
     [f.CtypeDateTime]: {
       [f.FilterEqual]: FilterDate,
-      [f.FilterNotEqual]: null,
+      [f.FilterNotEqual]: FilterDate,
       [f.FilterIn]: null,
       [f.FilterNotIn]: null,
-      [f.FilterBetween]: null,
-      [f.FilterBefore]: null,
-      [f.FilterAfter]: null,
+      [f.FilterBetween]: FilterBetweenDate,
+      [f.FilterBefore]: FilterDate,
+      [f.FilterAfter]: FilterDate,
     },
 
     // newer types
@@ -93,11 +94,19 @@
 
   $: _new_column_slug = "";
   $: _new_column_cond = "";
-  $: _new_filter_type =
-    (colindexed[_new_column_slug] || {}).ctype || f.CtypeShortText;
-  $: _possible_cond = CtypeFilterConds[_new_filter_type] || {};
+  $: _new_column_type = (colindexed[_new_column_slug] || {}).ctype || f.CtypeShortText;
+
+  $: _possible_cond = CtypeFilterConds[_new_column_type] || {};
   $: _new_filter_value = undefined;
-  $: _filer_component = _possible_cond[_new_filter_type];
+  $: _filer_component = _possible_cond[_new_column_cond];
+
+  $: console.log("@filter_component", _filer_component);
+  $: console.log("@possible_cond", _possible_cond);
+  $: console.log("@new_column_type", _new_column_type);
+  $: console.log("@new_filter_value", _new_column_type);
+
+
+  
 
   export let onAdd = () => {
     filter_conds = [
