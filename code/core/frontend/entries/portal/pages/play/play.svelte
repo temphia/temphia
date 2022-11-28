@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import type { PortalService } from "../../services";
-  import View2 from "./view2/view2.svelte";
+  // import View2 from "./view2/view2.svelte";
 
   const app: PortalService = getContext("__app__");
 
@@ -264,7 +264,7 @@
 <button
   class="p-2 bg-gray-600 text-white"
   on:click={() => {
-    app.utils.big_modal_open(View2, { columns, data: {} });
+    app.utils.big_modal_open("View2", { columns, data: {} });
   }}
 >
   Open View

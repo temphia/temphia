@@ -74,47 +74,43 @@ export const CtypeConvertables = {
   [CtypeColor]: [CtypeShortText],
 };
 
-export const CtypeFilterConds = {
-  [CtypeShortText]: ["equal", "not_equal", "in", "not_in"],
-  [CtypePhone]: ["equal", "not_equal", "in", "not_in"],
-  [CtypeSelect]: ["equal", "not_equal", "in", "not_in"],
-  [CtypeRFormula]: [],
-  [CtypeFile]: ["equal", "not_equal"],
-  [CtypeMultiFile]: [],
-  [CtypeCheckBox]: ["equal", "not_equal"], // is_null
-  [CtypeCurrency]: [
-    "equal",
-    "less_than",
-    "not_equal",
-    "greater_than",
-    "less_than_or_equal",
-    "greater_than_or_equal",
-  ],
-  [CtypeNumber]: [
-    "equal",
-    "not_equal",
-    "less_than",
-    "greater_than",
-    "less_than_or_equal",
-    "greater_than_or_equal",
-  ],
-  [CtypeLocation]: ["equal", "not_equal"], // around(50m), not_around(50m)
-  [CtypeDateTime]: [
-    "equal",
-    "not_equal",
-    "in",
-    "not_in",
-    "less_than",
-    "greater_than",
-    "less_than_or_equal",
-    "greater_than_or_equal",
-  ], // between
-};
+export const FilterEqual = "equal";
+export const FilterIsNull = "is_null";
+export const FilterIsNotNull = "is_not_null";
+export const FilterLessThan = "less_than";
+export const FilterNotEqual = "not_equal";
+export const FilterGreaterThan = "greater_than";
+export const FilterLessOrEqual = "less_than_or_equal";
+export const FilterGreatOrEqual = "greater_than_or_equal";
+export const FilterIn = "in";
+export const FilterNotIn = "not_in";
+export const FilterBetween = "between"; // around(50m), not_around(50m)
+export const FilterContains = "contains";
 
 
 export const CtypeIcons = {
   [CtypeShortText]: "annotation",
   [CtypePhone]: "phone",
+  [CtypeSelect]: "tag",
+  [CtypeRFormula]: "variable",
+  [CtypeFile]: "document",
+  [CtypeMultiFile]: "document",
+  [CtypeCheckBox]: "check-circle",
+  [CtypeCurrency]: "currency-dollar",
+  [CtypeNumber]: "hashtag",
+  [CtypeLocation]: "location-marker",
+  [CtypeDateTime]: "calendar",
+  [CtypeMultSelect]: "tag",
+  [CtypeLongText]: "document-text",
+  [CtypeSingleUser]: "user-circle",
+  [CtypeMultiUser]: "user-group",
+  [CtypeEmail]: "at-symbol",
+  [CtypeJSON]: "code",
+  [CtypeRangeNumber]: "calculator",
+  [CtypeColor]: "color-swatch",
+};
+
+export const CtypesPickables = {
   [CtypeSelect]: "tag",
   [CtypeRFormula]: "variable",
   [CtypeFile]: "document",

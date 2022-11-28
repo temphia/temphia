@@ -1,5 +1,7 @@
 <script lang="ts">
-  import type { TableService } from "../../../../../services/data/table";
+  import type { TableService } from "../../../../../../services/data";
+
+
   import Embed from "../../embed/embed.svelte";
 
   export let reverse_ref_column: object[];

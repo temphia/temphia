@@ -2,6 +2,8 @@
   import { ColumnResize } from "./column_resize";
   import VirtualList from "./_virtual_list.svelte";
   import { createEventDispatcher } from "svelte";
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
+  import Cicon from "../cicon/cicon.svelte";
 
   export let columns_index: { [_: string]: object };
   export let columns: string[];
@@ -120,6 +122,7 @@
       >
         <!-- COLUMNS -->
         {#each columns as col}
+        {@const coldata = columns_index[col]}
           {#if main_column !== col}
             <div
               class="flex justify-center font-sans align-middle"
@@ -128,7 +131,8 @@
               <button
                 class="menu font-thin text-gray-800 focus:outline-none focus:shadow-solid inline-flex"
               >
-                {columns_index[col]["name"] || columns_index[col]["slug"] || ""}
+              <Cicon ctype={coldata["ctype"]} classes="h-5 w-5 pt-1" />
+                {coldata["name"] || coldata["slug"] || ""}
               </button>
 
               <span class="p-2">

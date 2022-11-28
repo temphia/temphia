@@ -49,6 +49,9 @@ export class GroupService {
         data_api: this.data_api,
         group_slug: this.name,
         table_slug: table,
+
+        close_modal: null,
+        open_modal: null,
       });
 
       await tservice.init();

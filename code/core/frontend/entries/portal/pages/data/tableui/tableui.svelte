@@ -111,6 +111,8 @@
     columns_indexded={$data_store.indexed_column}
     reverse_ref_column={[]}
     rows_indexed={$data_store.indexed_rows}
+    
+
   />
 
   <ViewPanel

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import type { Column } from "../../../../../services/data";
 
   import {
@@ -21,8 +22,94 @@
     CtypeJSON,
     CtypeRangeNumber,
     CtypeColor,
-    CtypeFilterConds,
+
+    //
+    FilterEqual,
+    FilterIsNull,
+    FilterIsNotNull,
+    FilterLessThan,
+    FilterNotEqual,
+    FilterGreaterThan,
+    FilterLessOrEqual,
+    FilterGreatOrEqual,
+    FilterIn,
+    FilterNotIn,
+    FilterBetween,
   } from "../fields/field";
+
+  import {
+    FilterCheckbox,
+    FilterDate,
+    FilterNumber,
+    FilterText,
+  } from "./filters";
+
+  export const CtypeFilterConds = {
+    [CtypeSelect]: {
+      [FilterEqual]: FilterText,
+      [FilterIsNull]: null,
+      [FilterIsNotNull]: FilterText,
+      [FilterNotEqual]: null,
+    },
+
+    [CtypeRFormula]: {},
+    [CtypeFile]: {
+      [FilterEqual]: null,
+      [FilterNotEqual]: null,
+    },
+    [CtypeMultiFile]: {
+      [FilterEqual]: null,
+      [FilterNotEqual]: null,
+    },
+    [CtypeCheckBox]: {
+      [FilterEqual]: FilterCheckbox,
+      [FilterNotEqual]: FilterCheckbox,
+      [FilterIsNull]: null,
+      [FilterIsNotNull]: null,
+    },
+
+    [CtypeCurrency]: {
+      [FilterEqual]: FilterNumber,
+      [FilterLessThan]: FilterNumber,
+      [FilterNotEqual]: FilterNumber,
+      [FilterGreaterThan]: FilterNumber,
+      [FilterLessOrEqual]: FilterNumber,
+      [FilterGreatOrEqual]: FilterNumber,
+    },
+    [CtypeNumber]: {
+      [FilterEqual]: FilterNumber,
+      [FilterLessThan]: FilterNumber,
+      [FilterNotEqual]: FilterNumber,
+      [FilterGreaterThan]: FilterNumber,
+      [FilterLessOrEqual]: FilterNumber,
+      [FilterGreatOrEqual]: FilterNumber,
+    },
+    [CtypeLocation]: {
+      [FilterEqual]: null,
+      [FilterNotEqual]: null,
+    },
+    [CtypeDateTime]: {
+      [FilterEqual]: FilterDate,
+      [FilterNotEqual]: null,
+      [FilterIn]: null,
+      [FilterNotIn]: null,
+      [FilterBetween]: null,
+      
+      // after
+      // before
+
+    },
+
+    [CtypeMultSelect]: {},
+    [CtypeLongText]: {},
+    [CtypeSingleUser]: {},
+    [CtypeMultiUser]: {},
+    [CtypeEmail]: {},
+    [CtypeJSON]: {},
+    [CtypeRangeNumber]: {},
+    [CtypeColor]: {},
+    [CtypePhone]: {},
+  };
 
   export let columns: Column[] = [];
   export let filter_conds: {
@@ -42,8 +129,9 @@
   $: _new_column_cond = "";
   $: _new_filter_type =
     (colindexed[_new_column_slug] || {}).ctype || CtypeShortText;
-  $: _possible_cond = CtypeFilterConds[_new_filter_type] || [];
+  $: _possible_cond = CtypeFilterConds[_new_filter_type] || {};
   $: _new_filter_value = "";
+  $: _filer_component = _possible_cond[_new_filter_type];
 
   export let onAdd = () => {
     filter_conds = [
@@ -129,39 +217,17 @@
       <td class="py-3 px-6 text-left">
         <select class="p-1 rounded" bind:value={_new_column_cond}>
           <option />
-          {#each _possible_cond as cond}
+          {#each Object.entries(_possible_cond) as [cond, condCompo]}
             <option value={cond}>{cond}</option>
           {/each}
         </select>
       </td>
 
       <td class="py-3 px-6 text-center">
-        <!-- FIXME => implement all types and their cond -->
-        {#if _new_filter_type === CtypeCurrency || _new_filter_type === CtypeNumber}
-          <input
-            type="number"
-            class="w-full border"
-            bind:value={_new_filter_value}
-          />
-        {:else if _new_filter_type === CtypeCheckBox}
-          <select class="rounded p-1" bind:value={_new_filter_value}>
-            <option>yes</option>
-            <option>no</option>
-          </select>
-        {:else if _new_filter_type === CtypeDateTime}
-          <input
-            type="datetime-local"
-            class="w-full border"
-            bind:value={_new_filter_value}
-          />
-        {:else if _new_filter_type === CtypeLocation}
-          <div>not implemented</div>
+        {#if _filer_component}
+          <svelte:component this={_filer_component} />
         {:else}
-          <input
-            type="text"
-            class="w-full border"
-            bind:value={_new_filter_value}
-          />
+          <div>Nil</div>
         {/if}
       </td>
 
