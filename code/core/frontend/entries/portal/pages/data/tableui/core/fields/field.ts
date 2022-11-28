@@ -38,8 +38,8 @@ export const CtypeMultiUser = "multiuser";
 export const CtypeEmail = "email";
 export const CtypeJSON = "json";
 export const CtypeRangeNumber = "rangenumber";
+export const CtypeRatings = "ratings";
 export const CtypeColor = "color";
-// export const CtypeRatings = "ratings";
 
 // meta keys
 export const KeyPrimary = "__id";
@@ -84,33 +84,17 @@ export const FilterLessOrEqual = "less_than_or_equal";
 export const FilterGreatOrEqual = "greater_than_or_equal";
 export const FilterIn = "in";
 export const FilterNotIn = "not_in";
-export const FilterBetween = "between"; // around(50m), not_around(50m)
+export const FilterBetween = "between";
 export const FilterContains = "contains";
+export const FilterAround = "around";
+export const FilterNotAround = "not_around";
+export const FilterBefore = "before";
+export const FilterAfter = "after";
 
 
 export const CtypeIcons = {
   [CtypeShortText]: "annotation",
   [CtypePhone]: "phone",
-  [CtypeSelect]: "tag",
-  [CtypeRFormula]: "variable",
-  [CtypeFile]: "document",
-  [CtypeMultiFile]: "document",
-  [CtypeCheckBox]: "check-circle",
-  [CtypeCurrency]: "currency-dollar",
-  [CtypeNumber]: "hashtag",
-  [CtypeLocation]: "location-marker",
-  [CtypeDateTime]: "calendar",
-  [CtypeMultSelect]: "tag",
-  [CtypeLongText]: "document-text",
-  [CtypeSingleUser]: "user-circle",
-  [CtypeMultiUser]: "user-group",
-  [CtypeEmail]: "at-symbol",
-  [CtypeJSON]: "code",
-  [CtypeRangeNumber]: "calculator",
-  [CtypeColor]: "color-swatch",
-};
-
-export const CtypesPickables = {
   [CtypeSelect]: "tag",
   [CtypeRFormula]: "variable",
   [CtypeFile]: "document",

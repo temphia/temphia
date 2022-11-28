@@ -1,41 +1,7 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import type { Column } from "../../../../../services/data";
-
-  import {
-    CtypeMultSelect,
-    CtypeShortText,
-    CtypePhone,
-    CtypeSelect,
-    CtypeRFormula,
-    CtypeFile,
-    CtypeMultiFile,
-    CtypeCheckBox,
-    CtypeCurrency,
-    CtypeNumber,
-    CtypeLocation,
-    CtypeDateTime,
-    CtypeLongText,
-    CtypeSingleUser,
-    CtypeMultiUser,
-    CtypeEmail,
-    CtypeJSON,
-    CtypeRangeNumber,
-    CtypeColor,
-
-    //
-    FilterEqual,
-    FilterIsNull,
-    FilterIsNotNull,
-    FilterLessThan,
-    FilterNotEqual,
-    FilterGreaterThan,
-    FilterLessOrEqual,
-    FilterGreatOrEqual,
-    FilterIn,
-    FilterNotIn,
-    FilterBetween,
-  } from "../fields/field";
+  import * as f from "../fields/field";
 
   import {
     FilterCheckbox,
@@ -45,70 +11,70 @@
   } from "./filters";
 
   export const CtypeFilterConds = {
-    [CtypeSelect]: {
-      [FilterEqual]: FilterText,
-      [FilterIsNull]: null,
-      [FilterIsNotNull]: FilterText,
-      [FilterNotEqual]: null,
+    [f.CtypeSelect]: {
+      [f.FilterEqual]: FilterText,
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: FilterText,
+      [f.FilterNotEqual]: null,
     },
 
-    [CtypeRFormula]: {},
-    [CtypeFile]: {
-      [FilterEqual]: null,
-      [FilterNotEqual]: null,
+    [f.CtypeRFormula]: {},
+    [f.CtypeFile]: {
+      [f.FilterEqual]: null,
+      [f.FilterNotEqual]: null,
     },
-    [CtypeMultiFile]: {
-      [FilterEqual]: null,
-      [FilterNotEqual]: null,
+    [f.CtypeMultiFile]: {
+      [f.FilterEqual]: null,
+      [f.FilterNotEqual]: null,
     },
-    [CtypeCheckBox]: {
-      [FilterEqual]: FilterCheckbox,
-      [FilterNotEqual]: FilterCheckbox,
-      [FilterIsNull]: null,
-      [FilterIsNotNull]: null,
-    },
-
-    [CtypeCurrency]: {
-      [FilterEqual]: FilterNumber,
-      [FilterLessThan]: FilterNumber,
-      [FilterNotEqual]: FilterNumber,
-      [FilterGreaterThan]: FilterNumber,
-      [FilterLessOrEqual]: FilterNumber,
-      [FilterGreatOrEqual]: FilterNumber,
-    },
-    [CtypeNumber]: {
-      [FilterEqual]: FilterNumber,
-      [FilterLessThan]: FilterNumber,
-      [FilterNotEqual]: FilterNumber,
-      [FilterGreaterThan]: FilterNumber,
-      [FilterLessOrEqual]: FilterNumber,
-      [FilterGreatOrEqual]: FilterNumber,
-    },
-    [CtypeLocation]: {
-      [FilterEqual]: null,
-      [FilterNotEqual]: null,
-    },
-    [CtypeDateTime]: {
-      [FilterEqual]: FilterDate,
-      [FilterNotEqual]: null,
-      [FilterIn]: null,
-      [FilterNotIn]: null,
-      [FilterBetween]: null,
-      
-      // after
-      // before
-
+    [f.CtypeCheckBox]: {
+      [f.FilterEqual]: FilterCheckbox,
+      [f.FilterNotEqual]: FilterCheckbox,
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
     },
 
-    [CtypeMultSelect]: {},
-    [CtypeLongText]: {},
-    [CtypeSingleUser]: {},
-    [CtypeMultiUser]: {},
-    [CtypeEmail]: {},
-    [CtypeJSON]: {},
-    [CtypeRangeNumber]: {},
-    [CtypeColor]: {},
-    [CtypePhone]: {},
+    [f.CtypeCurrency]: {
+      [f.FilterEqual]: FilterNumber,
+      [f.FilterLessThan]: FilterNumber,
+      [f.FilterNotEqual]: FilterNumber,
+      [f.FilterGreaterThan]: FilterNumber,
+      [f.FilterLessOrEqual]: FilterNumber,
+      [f.FilterGreatOrEqual]: FilterNumber,
+    },
+    [f.CtypeNumber]: {
+      [f.FilterEqual]: FilterNumber,
+      [f.FilterLessThan]: FilterNumber,
+      [f.FilterNotEqual]: FilterNumber,
+      [f.FilterGreaterThan]: FilterNumber,
+      [f.FilterLessOrEqual]: FilterNumber,
+      [f.FilterGreatOrEqual]: FilterNumber,
+    },
+    [f.CtypeLocation]: {
+      [f.FilterEqual]: null,
+      [f.FilterNotEqual]: null,
+    },
+    [f.CtypeDateTime]: {
+      [f.FilterEqual]: FilterDate,
+      [f.FilterNotEqual]: null,
+      [f.FilterIn]: null,
+      [f.FilterNotIn]: null,
+      [f.FilterBetween]: null,
+      [f.FilterBefore]: null,
+      [f.FilterAfter]: null,
+    },
+
+    // newer types
+
+    [f.CtypeMultSelect]: {},
+    [f.CtypeLongText]: {},
+    [f.CtypeSingleUser]: {},
+    [f.CtypeMultiUser]: {},
+    [f.CtypeEmail]: {},
+    [f.CtypeJSON]: {},
+    [f.CtypeRangeNumber]: {},
+    [f.CtypeColor]: {},
+    [f.CtypePhone]: {},
   };
 
   export let columns: Column[] = [];
@@ -128,9 +94,9 @@
   $: _new_column_slug = "";
   $: _new_column_cond = "";
   $: _new_filter_type =
-    (colindexed[_new_column_slug] || {}).ctype || CtypeShortText;
+    (colindexed[_new_column_slug] || {}).ctype || f.CtypeShortText;
   $: _possible_cond = CtypeFilterConds[_new_filter_type] || {};
-  $: _new_filter_value = "";
+  $: _new_filter_value = undefined;
   $: _filer_component = _possible_cond[_new_filter_type];
 
   export let onAdd = () => {
@@ -224,11 +190,16 @@
       </td>
 
       <td class="py-3 px-6 text-center">
-        {#if _filer_component}
-          <svelte:component this={_filer_component} />
-        {:else}
-          <div>Nil</div>
-        {/if}
+        {#key _filer_component}
+          {#if _filer_component}
+            <svelte:component
+              this={_filer_component}
+              bind:value={_new_filter_value}
+            />
+          {:else}
+            <div>Nil</div>
+          {/if}
+        {/key}
       </td>
 
       <td class="py-3 px-6 text-center">

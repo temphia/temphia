@@ -41,11 +41,6 @@
 </div>
 
 <div class="flex flex-col p-2 mt-2 border">
-  <h2 class="inline-block text-lg text-slate-800">View Tags</h2>
-  <KvEditor data={{}} />
-</div>
-
-<div class="flex flex-col p-2 mt-2 border">
   <h2 class="inline-block text-lg text-slate-800">Select Columns</h2>
 
   <div class="flex flex-wrap text-gray-700 gap-1">
@@ -61,4 +56,9 @@
 <div class="flex flex-col p-2 mt-2 border">
   <h2 class="inline-block text-xl text-slate-800">Fetch Row Count</h2>
   <input type="number" class="border" bind:value={count} />
+</div>
+
+<div class="flex flex-col p-2 mt-2 border">
+  <h2 class="inline-block text-lg text-slate-800">View Tags</h2>
+  <KvEditor data={{}} />
 </div>
