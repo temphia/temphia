@@ -11,6 +11,9 @@ export class GroupService {
   tables: object[];
   cabinet_ticket: string;
 
+  close_modal: any;
+  open_modal: any;
+
   /*
   
   fixme
@@ -18,12 +21,21 @@ export class GroupService {
     - cabinet/folder
   */
 
-  constructor(opts: { source: string; name: string; api: DataAPI }) {
+  constructor(opts: {
+    source: string;
+    name: string;
+    api: DataAPI;
+    close_modal: any;
+    open_modal: any;
+  }) {
     this.source = opts.source;
     this.name = opts.name;
     this.data_api = opts.api;
     this.active_tables = new Map();
     this.tables = [];
+
+    this.close_modal = opts.close_modal;
+    this.open_modal = opts.open_modal;
   }
 
   init = async () => {
@@ -50,8 +62,8 @@ export class GroupService {
         group_slug: this.name,
         table_slug: table,
 
-        close_modal: null,
-        open_modal: null,
+        close_modal: this.close_modal,
+        open_modal: this.open_modal,
       });
 
       await tservice.init();

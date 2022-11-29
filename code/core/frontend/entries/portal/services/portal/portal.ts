@@ -78,6 +78,8 @@ export class PortalService {
       this.data_service = new DataService({
         apm: this.api_manager,
         sources: await this.api_manager.self_data.get_data_sources(),
+        close_modal: this.utils.big_modal_close,
+        open_modal: this.utils.big_modal_open,
       });
     }
 
