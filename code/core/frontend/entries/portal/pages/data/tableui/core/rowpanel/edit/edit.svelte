@@ -8,6 +8,8 @@
   export let rowid: number;
   export let table_service: TableService;
 
+  const rservice = table_service.get_row_service();
+  const dservice = rservice.get_dirty_service();
   const _columns_indexded = columns_indexded as { [_: string]: Column };
 </script>
 
@@ -18,7 +20,7 @@
         {row}
         column={_columns_indexded[col]}
         row_service={table_service.get_row_service()}
-        onChange={(value) => {}}
+        onChange={(value) => dservice.on_ohange(col, value)}
       />
     </div>
   {/each}
@@ -26,17 +28,17 @@
 
 <div class="flex-shrink h-8 border-t pt-1 pr-1 flex justify-end gap-x-2">
   <button
-    on:click={() => {}}
+    on:click={() => rservice.delete_row(rowid)}
     class="bg-red-100 hover:bg-red-600 w-14 text-red-600 text-sm hover:text-white rounded"
     >Delete</button
   >
   <button
-    on:click={() => {}}
+    on:click={() => rservice.fetch_row_latest(rowid)}
     class="bg-green-100 hover:bg-green-600 w-14 text-green-600 text-sm hover:text-white rounded"
     >Refresh</button
   >
   <button
-    on:click={() => {}}
+    on:click={rservice.save_row}
     class="bg-blue-400 hover:bg-blue-600 w-14 text-white text-sm rounded"
     >Save</button
   >

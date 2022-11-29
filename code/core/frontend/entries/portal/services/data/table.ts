@@ -244,23 +244,19 @@ export class TableState {
   };
 
   set_row_data = (data: any) => {
-    this.data_store.update((old) => {
-      const state = old[this.service.table_slug];
-
+    this.data_store.update((state) => {
       const row_id = data["__id"];
 
       let old_row = state.indexed_rows[row_id];
       if (old_row) {
         state.indexed_rows[row_id] = { ...old_row, ...data };
         return {
-          ...old,
-          [this.service.table_slug]: {
-            ...state,
-            indexed_rows: { ...state.indexed_rows },
-          },
+          ...state,
+          indexed_rows: { ...state.indexed_rows },
         };
       }
-      return old;
+
+      return state;
     });
   };
 
@@ -270,8 +266,6 @@ export class TableState {
     }
 
     this.data_store.update((old) => {
-      
-
       const indexed_column = data["columns"];
       const column_order = generate_column_order(indexed_column);
 
@@ -336,6 +330,10 @@ export class RowService {
     this.service = service;
     this.state = state;
   }
+
+  get_dirty_service = () => {
+    return new DirtyRowService(this.state.dirty_store);
+  };
 
   ref_load = async (data: any) => {
     return this.service.data_api.ref_load(this.service.table_slug, data);
@@ -409,7 +407,7 @@ export class RowService {
     const rowid = dirtyData.rowid;
     const data = get(this.state.data_store);
 
-    const version = data[table_slug].indexed_rows[rowid]["__version"];
+    const version = data.indexed_rows[rowid]["__version"];
 
     const resp = await api.update_row(table_slug, String(rowid), {
       cells: dirtyData.data,
@@ -442,7 +440,6 @@ export class RowService {
   }
 }
 
-
 export class DirtyRowService {
   dirtyStore: Writable<DirtyData>;
   callbacks: Map<string, () => void>;
@@ -455,8 +452,8 @@ export class DirtyRowService {
     this.callbacks.set(field, callback);
   }
 
-  on_ohange(_filed: string, _value: any): void {
-    this.set_value(_filed, _value);
+  on_ohange(_field: string, _value: any): void {
+    this.set_value(_field, _value);
   }
 
   // row stuff
