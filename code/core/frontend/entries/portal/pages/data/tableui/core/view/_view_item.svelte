@@ -2,9 +2,10 @@
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import type { Column } from "../../../../../services/data";
   import * as f from "../fields/field";
+  import Field from "../fields/field.svelte";
 
   import {
-  FilterBetweenDate,
+    FilterBetweenDate,
     FilterCheckbox,
     FilterDate,
     FilterNumber,
@@ -13,29 +14,38 @@
 
   export const CtypeFilterConds = {
     [f.CtypeSelect]: {
-      [f.FilterEqual]: FilterText,
       [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: FilterText,
-      [f.FilterNotEqual]: null,
+      [f.FilterIsNotNull]: null,
+      [f.FilterEqual]: FilterText,
+      [f.FilterNotEqual]: FilterText,
     },
 
     [f.CtypeRFormula]: {},
     [f.CtypeFile]: {
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
       [f.FilterEqual]: null,
       [f.FilterNotEqual]: null,
+      [f.FilterContains]: null,
     },
     [f.CtypeMultiFile]: {
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
       [f.FilterEqual]: null,
       [f.FilterNotEqual]: null,
     },
     [f.CtypeCheckBox]: {
-      [f.FilterEqual]: FilterCheckbox,
-      [f.FilterNotEqual]: FilterCheckbox,
       [f.FilterIsNull]: null,
       [f.FilterIsNotNull]: null,
+      [f.FilterIn]: null,
+      [f.FilterNotIn]: null,
+      [f.FilterEqual]: FilterCheckbox,
+      [f.FilterNotEqual]: FilterCheckbox,
     },
 
     [f.CtypeCurrency]: {
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
       [f.FilterEqual]: FilterNumber,
       [f.FilterLessThan]: FilterNumber,
       [f.FilterNotEqual]: FilterNumber,
@@ -44,18 +54,31 @@
       [f.FilterGreatOrEqual]: FilterNumber,
     },
     [f.CtypeNumber]: {
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
+      [f.FilterIn]: null,
+      [f.FilterNotIn]: null,
       [f.FilterEqual]: FilterNumber,
       [f.FilterLessThan]: FilterNumber,
       [f.FilterNotEqual]: FilterNumber,
       [f.FilterGreaterThan]: FilterNumber,
       [f.FilterLessOrEqual]: FilterNumber,
       [f.FilterGreatOrEqual]: FilterNumber,
+      [f.FilterBetween]: null,
     },
+
     [f.CtypeLocation]: {
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
       [f.FilterEqual]: null,
       [f.FilterNotEqual]: null,
+      [f.FilterAround]: null,
+      [f.FilterNotAround]: null,
+
     },
     [f.CtypeDateTime]: {
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
       [f.FilterEqual]: FilterDate,
       [f.FilterNotEqual]: FilterDate,
       [f.FilterIn]: null,
@@ -94,7 +117,8 @@
 
   $: _new_column_slug = "";
   $: _new_column_cond = "";
-  $: _new_column_type = (colindexed[_new_column_slug] || {}).ctype || f.CtypeShortText;
+  $: _new_column_type =
+    (colindexed[_new_column_slug] || {}).ctype || f.CtypeShortText;
 
   $: _possible_cond = CtypeFilterConds[_new_column_type] || {};
   $: _new_filter_value = undefined;
@@ -104,9 +128,6 @@
   $: console.log("@possible_cond", _possible_cond);
   $: console.log("@new_column_type", _new_column_type);
   $: console.log("@new_filter_value", _new_column_type);
-
-
-  
 
   export let onAdd = () => {
     filter_conds = [
