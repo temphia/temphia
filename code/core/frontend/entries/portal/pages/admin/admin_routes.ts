@@ -84,9 +84,7 @@ import AdminUgroupUsers from "./ugroup/user/users.svelte";
 import AdminUgroupUser from "./ugroup/user/user.svelte";
 
 // lens
-import AdminLensApp from "./lens/app.svelte";
-import AdminLensEngine from "./lens/engine.svelte";
-import AdminLensSite from "./lens/site.svelte";
+import AdminLens from "./lens/lens.svelte";
 
 // tenant
 import AdminTenant from "./tenant/tenant.svelte";
@@ -207,11 +205,7 @@ export default {
     "/:userid": AdminUser,
   },
 
-  "/lens": {
-    "/app": AdminLensApp,
-    "/engine": AdminLensEngine,
-    "/site": AdminLensSite,
-  },
+  "/lens/:index": AdminLens,
 
   "/target": {
     "/app": {

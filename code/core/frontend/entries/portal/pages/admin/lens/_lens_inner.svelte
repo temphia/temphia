@@ -5,6 +5,8 @@
   import Layout from "./_layout.svelte";
   import PrettyJson from "./_pretty_json.svelte";
 
+  export let index;
+
   const app = getContext("__app__") as PortalService;
   const lapi = app.api_manager.get_admin_lens_api();
 
@@ -12,7 +14,7 @@
   let loaded = false;
 
   const load = async () => {
-    const resp = await lapi.query_app({});
+    const resp = await lapi.query(index, {});
     if (!resp.ok) {
       return;
     }
@@ -23,7 +25,7 @@
   $: __open_row_idx = null;
 </script>
 
-<Layout do_query={(qstr) => load()} index="app">
+<Layout do_query={(qstr) => load()} {index}>
   {#if loaded}
     <div class="p-2 w-full h-full bg-white rounded">
       <VirtualList items={datas} let:item let:idx>
