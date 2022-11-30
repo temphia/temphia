@@ -34,14 +34,13 @@ export const iframeTemplateBuild = (opts: iframeBuildOptions) => {
           derive(opts)
         )}</script>
         
-        <script src=${`${opts.base_url}engine/launcher.js`}></script>
+        <script src=${`${opts.base_url}engine/launcher.js`}></script> 
+
         ${execscript}
-        <script defer="true" src="${opts.base_url}engine/plug/${opts.plug}/agent/${
-    opts.agent
-  }/serve/${opts.js_plug_script}"></script>
-        <link href="${opts.base_url}engine/plug/${opts.plug}/agent/${opts.agent}/serve/${
-    opts.style_file
-  }" rel="stylesheet" ></link>
+
+        <script defer="true" src="${opts.base_url}engine/plug/${opts.plug}/agent/${opts.agent}/serve/${opts.js_plug_script}"></script>
+        <link href="${opts.base_url}engine/plug/${opts.plug}/agent/${opts.agent}/serve/${opts.style_file}" rel="stylesheet" ></link>
+
     </head>
     <body>
     <div id="plugroot" style="height:100vh;"></div>
