@@ -48,7 +48,7 @@ type SubOriginData struct {
 }
 
 func (s *SubOriginData) BuildJSONOpts() error {
-	opts := &LoaderOptions{
+	opts := &ExecInstanceOptions{
 		BaseURL:      s.BaseURL,
 		Token:        s.Token,
 		EntryName:    s.EntryName,
@@ -68,7 +68,7 @@ func (s *SubOriginData) BuildJSONOpts() error {
 	return nil
 }
 
-type LoaderOptions struct {
+type ExecInstanceOptions struct {
 	BaseURL      string            `json:"base_url,omitempty"`
 	Token        string            `json:"token,omitempty"`
 	EntryName    string            `json:"entry,omitempty"`

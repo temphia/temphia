@@ -11,11 +11,11 @@ type TargetLaunchData struct {
 	TargetType string `json:"target_type,omitempty"`
 }
 
-func (c *Controller) LaunchTarget(uclaim *claim.Session, data TargetLaunchData) (*vmodels.LoaderOptions, error) {
+func (c *Controller) LaunchTarget(uclaim *claim.Session, data TargetLaunchData) (*vmodels.ExecInstanceOptions, error) {
 	return c.launchTarget(uclaim, data)
 }
 
-func (c *Controller) launchTarget(uclaim *claim.Session, data TargetLaunchData) (*vmodels.LoaderOptions, error) {
+func (c *Controller) launchTarget(uclaim *claim.Session, data TargetLaunchData) (*vmodels.ExecInstanceOptions, error) {
 
 	target, err := c.corehub.GetTargetApp(uclaim.TenentId, data.TargetType, data.TargetId)
 	if err != nil {
@@ -44,7 +44,7 @@ func (c *Controller) launchTarget(uclaim *claim.Session, data TargetLaunchData) 
 		return nil, err
 	}
 
-	return &vmodels.LoaderOptions{
+	return &vmodels.ExecInstanceOptions{
 		BaseURL:      "",
 		Token:        token,
 		EntryName:    agent.WebEntry,

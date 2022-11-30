@@ -1,11 +1,27 @@
 <script lang="ts">
-  import type { Instance } from "../../../services/engine/launcher";
+  import { iframeTemplateBuild } from "../../../../../lib/engine/template";
+  import type { ExecInstanceOptions } from "../../../services/engine/exec_type";
 
-  export let options: Instance;
-  export let source: string;
+  export let name;
+  export let exec_data: ExecInstanceOptions;
 
   let iframe: HTMLIFrameElement | null;
   const channel = new MessageChannel();
+
+  const src = iframeTemplateBuild({
+    plug: exec_data["plug"],
+    agent: exec_data["agent"],
+    base_url: exec_data["base_url"],
+    entry_name: exec_data["entry"],
+    exec_loader: exec_data["exec_loader"],
+    js_plug_script: exec_data["js_plug_script"],
+    style_file: exec_data["style"],
+    token: exec_data["token"] || "",
+    ext_scripts: exec_data["ext_scripts"] || {},
+    parent_secret: this._secret,
+    startup_payload: {},
+  });
+
 
   const onmessage = (ev) => {
     console.log("@message from iframe", ev);
@@ -20,8 +36,7 @@
   on:load={(ev) => {
     iframe.contentWindow.postMessage("port_transfer", "*", [channel.port2]);
   }}
-  title={options.name}
+  title={name}
   class="w-full h-full transition-all"
-  src="https://picsum.photos/seed/{options.id}/1300/700"
-  srcdoc={source}
+  srcdoc={src}
 />

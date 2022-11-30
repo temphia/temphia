@@ -11,11 +11,11 @@ type AdminLaunchData struct {
 	AgentId string
 }
 
-func (c *Controller) LaunchAdmin(uclaim *claim.Session, data AdminLaunchData) (*vmodels.LoaderOptions, error) {
+func (c *Controller) LaunchAdmin(uclaim *claim.Session, data AdminLaunchData) (*vmodels.ExecInstanceOptions, error) {
 	return c.launchAdmin(uclaim, data)
 }
 
-func (c *Controller) launchAdmin(uclaim *claim.Session, data AdminLaunchData) (*vmodels.LoaderOptions, error) {
+func (c *Controller) launchAdmin(uclaim *claim.Session, data AdminLaunchData) (*vmodels.ExecInstanceOptions, error) {
 
 	token, err := c.signer.SignExecutor(uclaim.TenentId, &claim.Executor{
 		TenentId:   uclaim.TenentId,
@@ -39,7 +39,7 @@ func (c *Controller) launchAdmin(uclaim *claim.Session, data AdminLaunchData) (*
 		return nil, err
 	}
 
-	return &vmodels.LoaderOptions{
+	return &vmodels.ExecInstanceOptions{
 		BaseURL:      "",
 		Token:        token,
 		EntryName:    agent.WebEntry,
