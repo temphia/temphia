@@ -1,7 +1,7 @@
 package httpx
 
 import (
-	"io/ioutil"
+	"io"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,5 +16,5 @@ func ReadForm(ctx *gin.Context) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return ioutil.ReadAll(file)
+	return io.ReadAll(file)
 }

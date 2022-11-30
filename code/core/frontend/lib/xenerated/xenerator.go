@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path"
@@ -11,7 +10,7 @@ import (
 func main() {
 	path := build()
 
-	out, err := ioutil.ReadFile(path)
+	out, err := os.ReadFile(path)
 	if err != nil {
 		panic(err)
 	}
@@ -29,7 +28,7 @@ func buildSubOrigin(artifact string) {
 
 	newPath := path.Join(cdir, "../../../../backend/data/assets/engine_launcher.js")
 
-	err = ioutil.WriteFile(newPath, []byte(final), 0777)
+	err = os.WriteFile(newPath, []byte(final), 0777)
 	if err != nil {
 		panic(err)
 	}

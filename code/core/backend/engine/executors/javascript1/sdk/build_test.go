@@ -1,7 +1,7 @@
 package main
 
 import (
-	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/dop251/goja"
@@ -14,7 +14,7 @@ func TestBuild(t *testing.T) {
 
 	rt.RunString(`var __dirname = ""; var module = {};`)
 
-	fout, err := ioutil.ReadFile("dist/libesplug.js")
+	fout, err := os.ReadFile("dist/libesplug.js")
 	if err != nil {
 		return
 	}

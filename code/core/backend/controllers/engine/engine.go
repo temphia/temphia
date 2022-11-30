@@ -1,7 +1,7 @@
 package engine
 
 import (
-	"io/ioutil"
+	"io"
 
 	"github.com/bwmarrin/snowflake"
 	"github.com/gin-gonic/gin"
@@ -35,7 +35,7 @@ func New(engine etypes.Engine, signer service.Signer, corehub store.CoreHub) *Co
 
 func (c *Controller) Execute(tenantId, action string, ctx *gin.Context) {
 
-	payload, err := ioutil.ReadAll(ctx.Request.Body)
+	payload, err := io.ReadAll(ctx.Request.Body)
 	if err != nil {
 		return
 	}

@@ -2,7 +2,7 @@ package local
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"os"
 	"path"
 
 	"github.com/k0kubun/pp"
@@ -43,7 +43,7 @@ func (l *Local) Name() string { return l.name }
 
 func (l *Local) Query(tenantId string, opts *repox.RepoQuery) ([]entities.BPrint, error) {
 
-	dirs, err := ioutil.ReadDir(l.rootFolder)
+	dirs, err := os.ReadDir(l.rootFolder)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (l *Local) Query(tenantId string, opts *repox.RepoQuery) ([]entities.BPrint
 			continue
 		}
 
-		out, err := ioutil.ReadFile(path.Join(l.rootFolder, dir.Name(), "index.json"))
+		out, err := os.ReadFile(path.Join(l.rootFolder, dir.Name(), "index.json"))
 		if err != nil {
 			pp.Println(err)
 			continue
@@ -83,7 +83,7 @@ func (l *Local) Query(tenantId string, opts *repox.RepoQuery) ([]entities.BPrint
 }
 
 func (l *Local) GetItem(tenantid, group, slug string) (*entities.BPrint, error) {
-	out, err := ioutil.ReadFile(path.Join(l.rootFolder, slug, "index.json"))
+	out, err := os.ReadFile(path.Join(l.rootFolder, slug, "index.json"))
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +98,7 @@ func (l *Local) GetItem(tenantid, group, slug string) (*entities.BPrint, error) 
 }
 
 func (l *Local) GetFile(tenantid, group, slug, file string) ([]byte, error) {
-	return ioutil.ReadFile(path.Join(l.rootFolder, slug, file))
+	return os.ReadFile(path.Join(l.rootFolder, slug, file))
 }
 
 func (l *Local) GetFileURL(tenantid, group, slug, file string) (string, error) {

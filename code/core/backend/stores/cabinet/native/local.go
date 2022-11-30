@@ -73,7 +73,7 @@ func (n *NativeBlob) AddBlob(ctx context.Context, tenant, folder string, file st
 		}
 	}
 
-	err = ioutil.WriteFile(n.filePath(tenant, folder, file), contents, 0755)
+	err = os.WriteFile(n.filePath(tenant, folder, file), contents, 0755)
 
 	pp.Println(err, contents)
 
@@ -82,7 +82,7 @@ func (n *NativeBlob) AddBlob(ctx context.Context, tenant, folder string, file st
 }
 
 func (n *NativeBlob) ListRoot(ctx context.Context, tenant string) ([]string, error) {
-	files, err := ioutil.ReadDir(n.tenantPath(tenant))
+	files, err := os.ReadDir(n.tenantPath(tenant))
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +117,7 @@ func (n *NativeBlob) ListFolderBlobs(ctx context.Context, tenant, folder string)
 }
 
 func (n *NativeBlob) GetBlob(ctx context.Context, tenant, folder string, file string) ([]byte, error) {
-	return ioutil.ReadFile(n.filePath(tenant, folder, file))
+	return os.ReadFile(n.filePath(tenant, folder, file))
 }
 
 func (n *NativeBlob) DeleteBlob(ctx context.Context, tenant, folder string, file string) error {

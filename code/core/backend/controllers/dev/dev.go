@@ -2,7 +2,6 @@ package dev
 
 import (
 	"io"
-	"io/ioutil"
 
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
@@ -44,7 +43,7 @@ func (c *Controller) DevPushFiles(tkt *claim.PlugDevTkt, files map[string]io.Rea
 			bprint.Files = append(bprint.Files, filekey)
 		}
 
-		out, err := ioutil.ReadAll(filerc)
+		out, err := io.ReadAll(filerc)
 		if err != nil {
 			// fixme => wrap error
 			return nil

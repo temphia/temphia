@@ -5,7 +5,7 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"os"
 )
 
 func main() {
@@ -24,14 +24,14 @@ func generateD() {
 	for _, f := range files {
 		file := fmt.Sprintf("dist/lib/%s", f)
 
-		out, err := ioutil.ReadFile(file)
+		out, err := os.ReadFile(file)
 		if err != nil {
 			panic(err)
 		}
 		buf.Write(out)
 	}
 
-	err := ioutil.WriteFile("dist/libesplug.d.ts", buf.Bytes(), 0777)
+	err := os.WriteFile("dist/libesplug.d.ts", buf.Bytes(), 0777)
 	if err != nil {
 		panic(err)
 	}
@@ -39,7 +39,7 @@ func generateD() {
 }
 
 func generateJS() {
-	out, err := ioutil.ReadFile("dist/lib/index.js")
+	out, err := os.ReadFile("dist/lib/index.js")
 	if err != nil {
 		panic(err)
 	}
@@ -53,7 +53,7 @@ func generateJS() {
 	buf2.Write(out)
 	buf2.WriteString(`Object.assign(globalThis, module.exports);`)
 
-	err = ioutil.WriteFile("dist/libesplug.js", buf2.Bytes(), 0777)
+	err = os.WriteFile("dist/libesplug.js", buf2.Bytes(), 0777)
 	if err != nil {
 		panic(err)
 	}

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"io/ioutil"
+	"os"
 
 	"github.com/dop251/goja"
 	"github.com/k0kubun/pp"
@@ -9,7 +9,7 @@ import (
 
 func main3() {
 
-	out, err := ioutil.ReadFile("with_ts.js")
+	out, err := os.ReadFile("with_ts.js")
 	if err != nil {
 		panic(err)
 	}

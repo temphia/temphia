@@ -1,8 +1,8 @@
 package data
 
 import (
+	"io"
 	"io/fs"
-	"io/ioutil"
 	"os"
 	"path"
 
@@ -101,7 +101,7 @@ func (a *AssetStore) tryRead(overlay, folder, name string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return ioutil.ReadAll(file)
+	return io.ReadAll(file)
 }
 
 func (a *AssetStore) tryReadFile(overlay, folder, name string) (fs.File, error) {

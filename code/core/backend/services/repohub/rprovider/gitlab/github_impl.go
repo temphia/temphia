@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
@@ -48,7 +48,7 @@ func (g *gitlab) get(tenantid, group, slug string) (*entities.BPrint, error) {
 		return nil, err
 	}
 
-	bytes, err := ioutil.ReadAll(resp.Body)
+	bytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +82,7 @@ func fetchBlueprints(url string) ([]entities.BPrint, error) {
 
 	var final []entities.BPrint
 
-	out, err := ioutil.ReadAll(resp.Body)
+	out, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +101,7 @@ func fetchBytes(url string) ([]byte, error) {
 		return nil, errors.New("count not fetch file http bad status")
 	}
 
-	return ioutil.ReadAll(resp.Body)
+	return io.ReadAll(resp.Body)
 }
 
 func (g *gitlab) fileUrl(group, slug, file string) string {

@@ -3,7 +3,6 @@ package net
 import (
 	"bytes"
 	"io"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
@@ -43,7 +42,7 @@ func httpRequest(client *http.Client, u, method string, header map[string]string
 		return nil, err
 	}
 
-	bytes, err := ioutil.ReadAll(res.Body)
+	bytes, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
 	}

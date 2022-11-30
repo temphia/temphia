@@ -7,7 +7,6 @@ import (
 	"image/jpeg"
 	"image/png"
 	"io"
-	"io/ioutil"
 	"strings"
 
 	"github.com/nfnt/resize"
@@ -60,6 +59,6 @@ func GeneratePreview(input []byte, filename string) ([]byte, error) {
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(outbuf)
+	body, err := io.ReadAll(outbuf)
 	return body, err
 }
