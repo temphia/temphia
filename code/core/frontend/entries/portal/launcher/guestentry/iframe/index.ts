@@ -1,5 +1,6 @@
 import type { LoaderOptions } from "../../../../../lib/engine/plug";
 import { initRegistry, plugStart } from "../../../../../lib/engine/putils";
+import { generateId } from "../../../../../lib/utils";
 import { Env } from "../../env";
 import { IFramePipe } from "./iframe_pipe";
 
@@ -36,7 +37,7 @@ const env_init = async (ev: MessageEvent<any>) => {
 
   await env.init();
 
-  pipe.send("", "env_loaded", {});
+  pipe.send(generateId(), "env_loaded", {});
 
   plugStart({
     plug: opts.plug,
