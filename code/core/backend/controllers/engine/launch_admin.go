@@ -24,7 +24,7 @@ func (c *Controller) launchAdmin(uclaim *claim.Session, data AdminLaunchData) (*
 		DeviceId:   uclaim.DeviceId,
 		Type:       "executor",
 		SessionId:  uclaim.SessionID,
-		ExecId:     0, // fixme =>
+		ExecId:     c.idgen.Generate().Int64(),
 		PlugId:     data.PlugId,
 		AgentId:    data.AgentId,
 		ExecType:   invokers.TypeWebAdmin,

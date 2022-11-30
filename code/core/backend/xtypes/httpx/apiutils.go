@@ -54,7 +54,8 @@ func WriteBinary(c *gin.Context, data []byte) {
 }
 
 func BaseURL(host, tenantId string) string {
-	return fmt.Sprintf("http://%s/z/api/%s/v1/", host, tenantId)
+
+	return fmt.Sprintf("http://%s/z/api/%s/v2/", host, tenantId)
 }
 
 type Rutil struct{}

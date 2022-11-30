@@ -1,6 +1,8 @@
 package server
 
 import (
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/controllers/engine"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
@@ -30,11 +32,20 @@ func (s *Server) execute(ctx *gin.Context) {
 }
 
 func (s *Server) agentServeFile(ctx *gin.Context) {
-	s.cEngine.ServeAgentFile(ctx.Param("tenant_id"), ctx.Param("pid"), ctx.Param("aid"), ctx.Param("file"))
+
+	out, err := s.cEngine.ServeAgentFile(ctx.Param("tenant_id"), ctx.Param("pid"), ctx.Param("aid"), ctx.Param("file"))
+	if err != nil {
+		return
+	}
+	writeFile(ctx.Param("file"), out, ctx)
 }
 
 func (s *Server) executorFile(ctx *gin.Context) {
-	s.cEngine.ServeExecutorFile(ctx.Param("tenant_id"), ctx.Param("pid"), ctx.Param("aid"), ctx.Param("file"))
+	out, err := s.cEngine.ServeExecutorFile(ctx.Param("tenant_id"), ctx.Param("pid"), ctx.Param("aid"), ctx.Param("file"))
+	if err != nil {
+		return
+	}
+	writeFile(ctx.Param("file"), out, ctx)
 }
 
 // launch
@@ -102,3 +113,17 @@ func (s *Server) launchAuth(ctx *gin.Context) {
 
 // func (s *Server) sockdRoomWS(ctx *gin.Context) {}
 // func (s *Server) sockdRoomUpdateWS(ctx *gin.Context) {}
+
+func writeFile(file string, data []byte, ctx *gin.Context) {
+
+	ffiles := strings.Split(file, ".")
+
+	switch ffiles[1] {
+	case "js":
+		ctx.Writer.Header().Set("Content-Type", "application/javascript")
+	case "css":
+		ctx.Writer.Header().Set("Content-Type", "text/css")
+
+	}
+	ctx.Writer.Write(data)
+}

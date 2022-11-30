@@ -3,6 +3,7 @@ package engine
 import (
 	"io/ioutil"
 
+	"github.com/bwmarrin/snowflake"
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/engine/invokers/web"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
@@ -14,13 +15,21 @@ type Controller struct {
 	engine  etypes.Engine
 	signer  service.Signer
 	corehub store.CoreHub
+	idgen   *snowflake.Node
 }
 
 func New(engine etypes.Engine, signer service.Signer, corehub store.CoreHub) *Controller {
+
+	idgen, err := snowflake.NewNode(1)
+	if err != nil {
+		panic(err)
+	}
+
 	return &Controller{
 		engine:  engine,
 		signer:  signer,
 		corehub: corehub,
+		idgen:   idgen,
 	}
 }
 

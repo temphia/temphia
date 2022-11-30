@@ -34,7 +34,7 @@ func (c *Controller) launchTarget(uclaim *claim.Session, data TargetLaunchData) 
 		DeviceId:   "",
 		Type:       "executor",
 		SessionId:  uclaim.SessionID,
-		ExecId:     0,
+		ExecId:     c.idgen.Generate().Int64(),
 		PlugId:     target.PlugId,
 		AgentId:    target.AgentId,
 		ExecType:   invokers.TypeUserApp,
