@@ -2,8 +2,9 @@
   import { iframeTemplateBuild } from "../../../../../lib/engine/template";
   import type { ExecInstanceOptions } from "../../../services/engine/exec_type";
 
-  export let name;
+  export let name: string;
   export let exec_data: ExecInstanceOptions;
+  export let secret_id: string;
 
   let iframe: HTMLIFrameElement | null;
   const channel = new MessageChannel();
@@ -18,10 +19,9 @@
     style_file: exec_data["style"],
     token: exec_data["token"] || "",
     ext_scripts: exec_data["ext_scripts"] || {},
-    parent_secret: this._secret,
+    parent_secret: secret_id,
     startup_payload: {},
   });
-
 
   const onmessage = (ev) => {
     console.log("@message from iframe", ev);

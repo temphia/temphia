@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Instance } from "../../../services/engine/launcher";
   import LoadingSpinner from "../../../../xcompo/common/loading_spinner.svelte";
-  import IframeInner from "./iframe_inner.svelte";
+  import IframeInner from "./iframe_execute.svelte";
   import type { PortalService } from "../../../services";
   import { getContext } from "svelte";
   import type { ExecInstanceOptions } from "../../../services/engine/exec_type";
@@ -33,5 +33,5 @@
 {#if loading}
   <LoadingSpinner />
 {:else}
-  <IframeInner exec_data={data} name={options.name} />
+  <IframeInner exec_data={data} name={options.name} secret_id={options.id} />
 {/if}

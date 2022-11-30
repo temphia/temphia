@@ -7,8 +7,8 @@ import (
 )
 
 type AdminLaunchData struct {
-	PlugId  string
-	AgentId string
+	PlugId  string `json:"plug_id,omitempty"`
+	AgentId string `json:"agent_id,omitempty"`
 }
 
 func (c *Controller) LaunchAdmin(uclaim *claim.Session, data AdminLaunchData) (*vmodels.ExecInstanceOptions, error) {
@@ -24,7 +24,7 @@ func (c *Controller) launchAdmin(uclaim *claim.Session, data AdminLaunchData) (*
 		DeviceId:   uclaim.DeviceId,
 		Type:       "executor",
 		SessionId:  uclaim.SessionID,
-		ExecId:     0,
+		ExecId:     0, // fixme =>
 		PlugId:     data.PlugId,
 		AgentId:    data.AgentId,
 		ExecType:   invokers.TypeWebAdmin,
