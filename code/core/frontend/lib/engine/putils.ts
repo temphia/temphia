@@ -2,6 +2,8 @@ import { Registry } from "../registry/registry";
 import type { FactoryOptions } from "./plug";
 
 export const initRegistry = () => {
+  console.log("init registry");
+  
   if (window["__registry__"]) {
     console.warn("Registry already loaded, skipping...");
     return;

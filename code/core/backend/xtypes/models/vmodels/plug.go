@@ -15,8 +15,8 @@ type AgentHint struct {
 	Executor  string            `json:"executor,omitempty"`
 	IfaceFile string            `json:"iface_file,omitempty"`
 	WebEntry  string            `json:"web_entry,omitempty"`
-	WebScript string            `json:"web_script,omitempty"`
-	WebStyle  string            `json:"web_style,omitempty"`
+	WebScript string            `json:"web_script,omitempty"` // file
+	WebStyle  string            `json:"web_style,omitempty"`  // file
 	WebLoader string            `json:"web_loader,omitempty"`
 	WebFiles  map[string]string `json:"web_files,omitempty"`
 	Resources map[string]string `json:"resources,omitempty"`
