@@ -17,28 +17,15 @@ func (s *Server) assets(rg *gin.RouterGroup) {
 
 // static assets that are "static" not build files
 func (s *Server) serveStaticAssets() func(c *gin.Context) {
-	fs := http.FS(s.app.Data().AssetAdapter())
-	return func(c *gin.Context) {
-
-		c.FileFromFS(c.Param("file"), fs)
-	}
+	return s.assetServe("static")
 }
 
 func (s *Server) serveBuildAssets() func(c *gin.Context) {
-	return func(c *gin.Context) {
-		// engine_iframe_loader.js
-		// engine_suborigin_loader.js
-		// portal.js
-		// portal.css
-		// operator.js
-		// operator.js
-		// temphia_base.js (registry + sockd_factory )
-
-	}
+	return s.assetServe("build")
 }
 
 func (s *Server) serveLibAssets() func(c *gin.Context) {
-	return func(c *gin.Context) {}
+	return s.assetServe("lib")
 }
 
 // bashed on public folder in tenant's root cabinet source
@@ -63,5 +50,14 @@ func (s *Server) serveSystemAssets() func(c *gin.Context) {
 
 		*/
 
+	}
+}
+
+// private utils
+
+func (s *Server) assetServe(folder string) func(c *gin.Context) {
+	fs := http.FS(s.app.Data().AssetAdapter(folder))
+	return func(c *gin.Context) {
+		c.FileFromFS(c.Param("file"), fs)
 	}
 }

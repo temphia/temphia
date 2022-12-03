@@ -8,16 +8,12 @@ import (
 )
 
 type EmbedRepo struct {
-	assetStore *AssetStore
-	//	TenantId   string
-	//	BaseURL string
+	assetStore *DataBox
 }
 
 func NewEmbed(opts *repox.BuilderOptions) (repox.Repository, error) {
 	return &EmbedRepo{
-		assetStore: defaultAssetStore,
-		//	TenantId:   opts.TenantId,
-		//		BaseURL: opts.BaseURL,
+		assetStore: defaultDataBox,
 	}, nil
 }
 

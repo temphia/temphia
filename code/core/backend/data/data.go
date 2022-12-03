@@ -5,123 +5,89 @@ import (
 	"io/fs"
 	"os"
 	"path"
-
-	"github.com/k0kubun/pp"
-	"gitlab.com/mr_balloon/golib"
 )
-
-var (
-	defaultAssetStore *AssetStore
-)
-
-func lazyInit() {
-	var frontendBuild = "code/core/frontend/public/build"
-	if exits, _ := golib.FileExists(frontendBuild); !exits {
-		frontendBuild = ""
-	}
-
-	pp.Println("Using overlay assets from", frontendBuild)
-
-	defaultAssetStore = &AssetStore{
-		dataFolder:     "",
-		schemaFolder:   "",
-		templateFolder: "",
-		ifaceFolder:    "",
-		assetsFolder:   frontendBuild,
-		fallbackFS:     dataDir,
-	}
-
-}
 
 type Options struct {
-	OverlayDataFolder      string
-	OverlaySchemaFolder    string
-	OverlayTemplateFolder  string
-	OverlayInterfaceFolder string
-	OverlayAssetsFolder    string
-	FS                     fs.FS
+	OverlayDataFolder        string
+	OverlayBuildAssetsFolder string
+	FS                       fs.FS
 }
 
-// AssetStore tries to read from specific overlay folder
-// (OverlaySchemaFolder, OverlayTemplateFolder, OverlayBuildFolder)
-// if its not given then try to read from global overlay (OverlayDataFolder)
-// if it still cannot read atlast read from embed fs
-type AssetStore struct {
-	dataFolder     string
-	schemaFolder   string
-	templateFolder string
-	assetsFolder   string
-	ifaceFolder    string
-	fallbackFS     fs.FS
+type DataBox struct {
+	dataOverlay        string
+	buildAssetsOverlay string
+	fs                 fs.FS
 }
 
-func DefaultNew() *AssetStore {
-	if defaultAssetStore == nil {
+func DefaultNew() *DataBox {
+	if defaultDataBox == nil {
 		lazyInit()
 	}
 
-	return defaultAssetStore
+	return defaultDataBox
 }
 
-func New(opts Options) *AssetStore {
-	ass := &AssetStore{
-		dataFolder:     opts.OverlayDataFolder,
-		schemaFolder:   opts.OverlaySchemaFolder,
-		templateFolder: opts.OverlayTemplateFolder,
-		assetsFolder:   opts.OverlayAssetsFolder,
-		ifaceFolder:    opts.OverlayInterfaceFolder,
-		fallbackFS:     opts.FS,
+func (d *DataBox) GetSchema(name string) ([]byte, error) {
+	return d.tryRead(d.dataOverlay, "schema", name)
+}
+
+func (d *DataBox) GetTemplate(name string) ([]byte, error) {
+	return d.tryRead(d.dataOverlay, "templates", name)
+}
+
+func (d *DataBox) GetIfaceFile(name string) ([]byte, error) {
+	return d.tryRead(d.dataOverlay, "interfaces", name)
+}
+
+func (d *DataBox) GetAsset(folder, name string) ([]byte, error) {
+	file, err := d.tryReadAssetsFile(folder, name)
+	if err != nil {
+		return nil, err
 	}
 
-	if ass.fallbackFS == nil {
-		ass.fallbackFS = dataDir
+	return io.ReadAll(file)
+}
+
+func (d *DataBox) AssetAdapter(folder string) fs.FS {
+	return &AssetAdapter{
+		d:      d,
+		folder: folder,
+	}
+}
+
+func readFile(paths ...string) (fs.File, error) {
+	return os.Open(path.Join(paths...))
+}
+
+// private
+
+func (d *DataBox) tryReadAssetsFile(folder, name string) (fs.File, error) {
+	if folder == "build" && d.buildAssetsOverlay != "" {
+		file, err := readFile(d.buildAssetsOverlay, name)
+		if err == nil {
+			return file, nil
+		}
 	}
 
-	return ass
+	return d.fs.Open(path.Join(d.dataOverlay, "assets", folder, name))
 }
 
-func (a *AssetStore) GetSchema(name string) ([]byte, error) {
-	return a.tryRead(a.schemaFolder, "schema", name)
-}
-
-func (a *AssetStore) GetIfaceFile(name string) ([]byte, error) {
-	return a.tryRead(a.ifaceFolder, "interfaces", name)
-}
-
-func (a *AssetStore) GetTemplate(name string) ([]byte, error) {
-	return a.tryRead(a.templateFolder, "templates", name)
-}
-
-func (a *AssetStore) GetAsset(name string) ([]byte, error) {
-	return a.tryRead(a.assetsFolder, "assets", name)
-}
-
-func (a *AssetStore) tryRead(overlay, folder, name string) ([]byte, error) {
-	file, err := a.tryReadFile(overlay, folder, name)
+func (d *DataBox) tryRead(overlay, folder, name string) ([]byte, error) {
+	file, err := d.tryReadFile(overlay, folder, name)
 	if err != nil {
 		return nil, err
 	}
 	return io.ReadAll(file)
 }
 
-func (a *AssetStore) tryReadFile(overlay, folder, name string) (fs.File, error) {
-	if overlay != "" {
-		bytes, err := readFile(overlay, name)
+func (d *DataBox) tryReadFile(paths ...string) (fs.File, error) {
+
+	if paths[0] != "" {
+		bytes, err := readFile(paths...)
 		if err == nil {
 			return bytes, nil
 		}
 	}
 
-	subFolder := path.Join(folder, name)
-	if a.dataFolder != "" {
-		bytes, err := readFile(a.dataFolder, subFolder)
-		if err == nil {
-			return bytes, nil
-		}
-	}
-	return a.fallbackFS.Open(subFolder)
-}
-
-func readFile(folder, file string) (fs.File, error) {
-	return os.Open(path.Join("./", folder, file))
+	return d.fs.Open(path.Join(paths...))
 }

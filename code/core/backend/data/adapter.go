@@ -1,19 +1,12 @@
 package data
 
-import (
-	"io/fs"
-)
+import "io/fs"
 
-type AssetsFSAdapter struct {
-	as AssetStore
+type AssetAdapter struct {
+	d      *DataBox
+	folder string
 }
 
-func (a *AssetStore) AssetAdapter() fs.FS {
-	return &AssetsFSAdapter{
-		as: *a,
-	}
-}
-
-func (a *AssetsFSAdapter) Open(name string) (fs.File, error) {
-	return a.as.tryReadFile(a.as.assetsFolder, "assets", name)
+func (a AssetAdapter) Open(name string) (fs.File, error) {
+	return a.d.tryReadAssetsFile(a.folder, name)
 }
