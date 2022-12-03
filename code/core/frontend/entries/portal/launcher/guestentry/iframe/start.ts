@@ -11,12 +11,12 @@ export default () => {
 
   let transfered_port: MessagePort;
 
-  const handle_port_transfer = (ev: MessageEvent<any>) => {
+  const handle_port_transfer = (ev) => {
     transfered_port = ev.ports[0];
     window.removeEventListener("message", handle_port_transfer);
   };
 
-  const env_init = async (ev: MessageEvent<any>) => {
+  const env_init = async (ev) => {
     const opts = window["__loader_options__"] as LoaderOptions;
     if (!opts) {
       console.log("Loader Options not found");
