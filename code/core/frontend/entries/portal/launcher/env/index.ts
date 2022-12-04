@@ -37,7 +37,7 @@ export class Env implements Environment {
     this._opts = opts;
     this._startup_payload = opts.startup_payload;
     this.set_up_pipe(opts.pipe);
-    this._exec_api = new ExecAPI(opts.base_url, opts.token);
+    this._exec_api = new ExecAPI(opts.base_url.replace("v2/", "v2"), opts.token);
   }
 
   set_up_pipe(pipe: Pipe) {
@@ -62,7 +62,7 @@ export class Env implements Environment {
   // public
 
   PreformAction = async (name: string, data: any): Promise<any> => {
-    return null;
+    return this._exec_api.preform_action(name, data);
   };
 
   startup_payload = () => {
