@@ -32,14 +32,14 @@ func (c *Controller) LoadGroup(uclaim *claim.Data) (*store.LoadDgroupResp, error
 		//	DeviceId: uclaim.DeviceId,
 	}
 
-	cabToken, err := c.signer.SignFolder(uclaim.TenentId, fcalim)
+	fclaim, err := c.signer.SignFolder(uclaim.TenentId, fcalim)
 	if err != nil {
 		return nil, err
 	}
 
 	resp := &store.LoadDgroupResp{
 		Tables:          tables,
-		CabinetTicket:   cabToken,
+		FolderTicket:    fclaim,
 		SockdRoomTicket: "",
 	}
 

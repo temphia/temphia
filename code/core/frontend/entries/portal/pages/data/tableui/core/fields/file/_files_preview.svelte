@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { FolderTktAPI } from "../../../../../../../lib/core/tktapi";
+  import type { FolderTktAPI } from "../../../../../../../../lib/apiv2";
 
   export let folder_api: FolderTktAPI;
   export let files: string[];
@@ -15,7 +15,7 @@
   <div class="w-full flex justify-center">
     {#if isImage(_current_file)}
       <img
-        src={folder_api.get_file_preview_link(current_file)}
+        src={folder_api.getFilePreviewUrl(current_file)}
         alt=""
         class="rounded p-1 border"
       />

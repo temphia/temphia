@@ -80,6 +80,7 @@ export class PortalService {
         sources: await this.api_manager.self_data.get_data_sources(),
         close_modal: this.utils.big_modal_close,
         open_modal: this.utils.big_modal_open,
+        api_base_url: this.api_manager.api_base_url,
       });
     }
 

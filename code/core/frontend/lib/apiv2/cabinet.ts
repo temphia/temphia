@@ -42,9 +42,11 @@ export class CabinetAPI {
 export class FolderTktAPI {
   http: Http;
   ticket: string;
+  base_url: string
   constructor(baseUrl: string, token: string) {
     this.http = new Http(baseUrl, {});
     this.ticket = token;
+    this.base_url = baseUrl;
   }
 
   //  /folder/:ticket/
@@ -57,8 +59,8 @@ export class FolderTktAPI {
     return this.http.get(`/folder/${this.ticket}/${file}`);
   }
 
-  getFilePreview(file: string) {
-    return this.http.get(`/folder/${this.ticket}/${file}/preview`);
+  getFilePreviewUrl(file: string) {
+    return `${this.base_url}/folder/${this.ticket}/${file}/preview`;
   }
 
   uploadFile(file: string, data: any) {

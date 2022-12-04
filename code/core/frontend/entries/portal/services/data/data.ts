@@ -13,17 +13,19 @@ export class DataService {
   apm: Apm;
   close_modal: any;
   open_modal: any;
+  api_base_url: string;
 
   constructor(opts: {
     sources: string[];
     apm: Apm;
+    api_base_url: string;
     close_modal: any;
     open_modal: any;
   }) {
     this.sources = opts.sources;
     this.current_group = null;
     this.apm = opts.apm;
-
+    this.api_base_url = opts.api_base_url;
     this.close_modal = opts.close_modal;
     this.open_modal = opts.open_modal;
   }
@@ -56,6 +58,7 @@ export class DataService {
       source: source,
       close_modal: this.close_modal,
       open_modal: this.open_modal,
+      api_base_url: this.api_base_url,
     });
 
     await group_svc.init();

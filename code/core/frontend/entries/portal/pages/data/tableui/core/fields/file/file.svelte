@@ -3,7 +3,8 @@
   import FilesPreview from "./_files_preview.svelte";
   import { ctypeFileDecode } from "../field";
   import FilepickDialog from "./_file_panel.svelte";
-  import type { Column, RowService } from "../../../../../services/data";
+  import type { Column, RowService } from "../../../../../../services/data";
+
 
   export let multi: boolean;
   export let value: any;
@@ -12,12 +13,13 @@
 
   export let onChange: (_value: any) => void;
 
+  // here asasa
 
   $: _files = ctypeFileDecode(value);
 
   const showPreview = (file: string) => {
     row_service.open_model(FilesPreview, {
-      folder_api: null, //manager.FolderTktAPI,
+      folder_api: row_service.folder_api(),
       files: _files,
       current_file: file,
     });
@@ -25,7 +27,7 @@
 
   const showDialog = () => {
     row_service.open_model(FilepickDialog, {
-      folder_api: null, //manager.FolderTktAPI,
+      folder_api: row_service.folder_api(),
       onSelect: (file: string) => {
         if (multi) {
           _files = Array.from(new Set([..._files, file]));

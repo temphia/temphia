@@ -26,11 +26,6 @@ func (s *Server) dataAPI(rg *gin.RouterGroup) {
 	rg.POST("/:tid/activity/:row_id", s.dx(s.commentRow))
 }
 
-func (s *Server) dataWSAPI(rg *gin.RouterGroup) {
-	rg.GET("/", s.sockdDataWS)
-	rg.POST("/", s.sockdDataUpdateWS)
-}
-
 func (s *Server) loadGroup(uclaim *claim.Data, ctx *gin.Context) {
 	gr, err := s.cData.LoadGroup(uclaim)
 	if err != nil {
@@ -193,16 +188,6 @@ func (s *Server) dx(fn func(uclaim *claim.Data, ctx *gin.Context)) func(*gin.Con
 	return s.middleware.DataX(fn)
 }
 
-// data sockd
-
-func (s *Server) sockdDataWS(ctx *gin.Context) {
-
-}
-
-func (s *Server) sockdDataUpdateWS(ctx *gin.Context) {
-
-}
-
 // models
 
 type newRowReq struct {
@@ -211,4 +196,19 @@ type newRowReq struct {
 
 type commentRowReq struct {
 	Message string `json:"message,omitempty"`
+}
+
+// data sockd
+
+func (s *Server) dataWSAPI(rg *gin.RouterGroup) {
+	rg.GET("/", s.sockdDataWS)
+	rg.POST("/", s.sockdDataUpdateWS)
+}
+
+func (s *Server) sockdDataWS(ctx *gin.Context) {
+
+}
+
+func (s *Server) sockdDataUpdateWS(ctx *gin.Context) {
+
 }

@@ -141,6 +141,6 @@ type QueryMeta struct {
 
 type LoadDgroupResp struct {
 	Tables          []*entities.Table `json:"tables,omitempty"`
-	CabinetTicket   string            `json:"cabinet_ticket,omitempty"`
+	FolderTicket    string            `json:"folder_ticket,omitempty"`
 	SockdRoomTicket string            `json:"sockd_room_ticket,omitempty"`
 }

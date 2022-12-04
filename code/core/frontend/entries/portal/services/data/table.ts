@@ -1,5 +1,5 @@
 import { get, writable, Writable } from "svelte/store";
-import type { DataAPI } from "../../../../lib/apiv2";
+import type { DataAPI, FolderTktAPI } from "../../../../lib/apiv2";
 import { generate_column_order } from "./data_utils";
 import { defaultViewData } from "./dtypes";
 import type { DirtyData, FilterItem, NavData, ViewData } from "./dtypes";
@@ -22,6 +22,7 @@ export class TableService {
   table_slug: string;
   group_slug: string;
   data_api: DataAPI;
+  foler_api: FolderTktAPI;
   state: TableState;
 
   _open_modal: (compo: any, props: object) => void;
@@ -34,6 +35,7 @@ export class TableService {
     table_slug: string;
     group_slug: string;
     data_api: DataAPI;
+    foler_api: FolderTktAPI;
     open_modal: (compo: any, props: object) => void;
     close_modal: () => void;
   }) {
@@ -41,6 +43,7 @@ export class TableService {
     this.table_slug = opts.table_slug;
     this.group_slug = opts.group_slug;
     this.data_api = opts.data_api;
+    this.foler_api = opts.foler_api;
     this._open_modal = opts.open_modal;
     this._close_modal = opts.close_modal;
 
@@ -437,6 +440,10 @@ export class RowService {
 
   open_model(compo: any, opts: object) {
     this.service._open_modal(compo, opts);
+  }
+
+  folder_api() {
+    return this.service.foler_api;
   }
 }
 
