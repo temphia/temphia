@@ -1,14 +1,15 @@
-import type { CabinetAPI, SelfAPI } from "../../../../lib/apiv2";
+import type { CabinetAPI, FolderTktAPI, SelfAPI } from "../../../../lib/apiv2";
 
 interface Apm {
   get_cabinet(source: string): CabinetAPI;
   get_self_api(): SelfAPI;
+  get_folder_api: (source: string, folder: string) => Promise<FolderTktAPI>
 }
 
 export class CabinetService {
   apm: Apm;
   source_apis: Map<string, CabinetAPI>;
-  folder_apis: Map<string, any>;
+  folder_apis: Map<string, FolderTktAPI>;
   sources: string[];
 
   constructor(apm: Apm) {
@@ -24,7 +25,7 @@ export class CabinetService {
 
     const capi = this.apm.get_cabinet(src);
     this.source_apis.set(src, capi);
-    return capi
+    return capi;
   }
 
   async get_cab_sources() {
@@ -40,5 +41,17 @@ export class CabinetService {
     }
     this.sources = resp.data;
     return this.sources;
+  }
+
+  async get_folder_api(source: string, folder: string) {
+    const key = `${source}#${folder}`
+
+    let fapi = this.folder_apis.get(key)
+    if (fapi) {
+      return fapi
+    }
+
+    fapi = await this.apm.get_folder_api(source, folder)
+    this.folder_apis.set(key, fapi);
   }
 }

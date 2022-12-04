@@ -65,4 +65,9 @@ export class SelfAPI {
   issue_data(data: any) {
     return this.base.post("/self/issue/data", data);
   }
+
+  issue_folder(data: any) {
+    return this.base.post("/self/issue/folder", data);
+  }
+
 }

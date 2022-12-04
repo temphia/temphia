@@ -111,10 +111,6 @@ func (s *Server) ListRepoSources(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-type FolderIssueRequest struct {
-	Source string `json:"source,omitempty"`
-}
-
 func (s *Server) issueFolderTkt(ctx httpx.Request) {
 
 	req := &FolderIssueRequest{}
@@ -130,11 +126,6 @@ func (s *Server) issueFolderTkt(ctx httpx.Request) {
 	)
 
 	httpx.WriteJSON(ctx.Http, resp, err)
-}
-
-type DataIssueRequest struct {
-	Source string `json:"source,omitempty"`
-	Group  string `json:"group,omitempty"`
 }
 
 func (s *Server) issueDataTkt(ctx httpx.Request) {
@@ -195,4 +186,16 @@ func (s *Server) sockdUserWS(ctx *gin.Context) {
 		Conn:     conn,
 	})
 
+}
+
+// models
+
+type DataIssueRequest struct {
+	Source string `json:"source,omitempty"`
+	Group  string `json:"group,omitempty"`
+}
+
+type FolderIssueRequest struct {
+	Source string `json:"source,omitempty"`
+	Folder string `json:"folder,omitempty"`
 }

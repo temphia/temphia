@@ -1,4 +1,4 @@
-import { CabinetAPI, DataAPI, RepoAPI, SelfAPI } from "../../../../lib/apiv2";
+import { CabinetAPI, DataAPI, FolderTktAPI, RepoAPI, SelfAPI } from "../../../../lib/apiv2";
 import { AdminTargetAPI } from "../../../../lib/apiv2/admin/target";
 import { ApiBase } from "../../../../lib/apiv2/base";
 import type { SelfLoad } from "./stypes";
@@ -112,6 +112,20 @@ export class ApiManager {
     return new DataAPI(this.api_base_url, resp.data["data_token"]);
   };
 
+  get_folder_api = async (source: string, folder: string) => {
+    const resp = await this.self_api.issue_data({
+      source,
+      folder,
+    });
+
+    if (!resp.ok) {
+      console.log("@@err", resp);
+      return;
+    }
+
+    return new FolderTktAPI(this.api_base_url, resp.data);
+  };
+
   // admin api
 
   get_admin_bprint_api = () => {
@@ -187,7 +201,6 @@ export class SelfData {
     this.repo_sources = resp.data;
     return this.repo_sources;
   }
-
 
   async get_data_sources() {
     if (this.data_sources) {
