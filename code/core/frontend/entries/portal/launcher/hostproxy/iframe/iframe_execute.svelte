@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { iframeTemplateBuild } from "../../../../../lib/engine/template";
   import type { ExecInstanceOptions } from "../../../services/engine/exec_type";
 
@@ -34,6 +35,7 @@
 <iframe
   bind:this={iframe}
   on:load={(ev) => {
+    console.log("@port_transfer_from_HOST");
     iframe.contentWindow.postMessage("port_transfer", "*", [channel.port2]);
   }}
   title={name}

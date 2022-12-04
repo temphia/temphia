@@ -43,6 +43,7 @@ export class Env implements Environment {
   set_up_pipe(pipe: Pipe) {
     this._pipe = pipe;
     this._pending_pipe_msg = new Map();
+
     this._pipe.set_handler((xid: string, action: string, data: any) => {
       const pending = this._pending_pipe_msg.get(xid);
       if (!pending) {

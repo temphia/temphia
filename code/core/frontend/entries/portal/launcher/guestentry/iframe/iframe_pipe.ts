@@ -15,10 +15,12 @@ export class IFramePipe implements Pipe {
     this.port = port;
 
     window.addEventListener("message", (ev) => {
-      const decoded: PipeMessage = JSON.parse(ev.data);
-      this.handlers.forEach((fn) =>
-        fn(decoded.xid, decoded.action, decoded.data)
-      );
+      try {
+        const decoded: PipeMessage = JSON.parse(ev.data);
+        this.handlers.forEach((fn) =>
+          fn(decoded.xid, decoded.action, decoded.data)
+        );
+      } catch (error) {}
     });
   }
 

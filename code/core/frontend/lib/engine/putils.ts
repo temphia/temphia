@@ -30,11 +30,10 @@ export const initRegistry = () => {
       });
     }
   );
-
-  console.log("GLOBAL_REGISTRY =>", r);
-
+  
   window["__registry__"] = r;
   window["__register_factory__"] = r.RegisterFactory;
+  window["RegisterFactory"] = r.RegisterFactory;
 };
 
 // it will find appoprate loader and call loader

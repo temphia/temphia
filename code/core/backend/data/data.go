@@ -55,15 +55,11 @@ func (d *DataBox) AssetAdapter(folder string) fs.FS {
 	}
 }
 
-func readFile(paths ...string) (fs.File, error) {
-	return os.Open(path.Join(paths...))
-}
-
 // private
 
 func (d *DataBox) tryReadAssetsFile(folder, name string) (fs.File, error) {
 	if folder == "build" && d.buildAssetsOverlay != "" {
-		file, err := readFile(d.buildAssetsOverlay, name)
+		file, err := readFile(d.buildAssetsOverlay, folder, name)
 		if err == nil {
 			return file, nil
 		}
@@ -90,4 +86,8 @@ func (d *DataBox) tryReadFile(paths ...string) (fs.File, error) {
 	}
 
 	return d.fs.Open(path.Join(paths...))
+}
+
+func readFile(paths ...string) (fs.File, error) {
+	return os.Open(path.Join(paths...))
 }

@@ -34,7 +34,7 @@ export const iframeTemplateBuild = (opts: iframeBuildOptions) => {
           derive(opts)
         )}</script>
         
-        <script src=${`${opts.base_url}engine/launcher.js`}></script> 
+        <script async="true" src="${opts.base_url}engine/plug/${opts.plug}/agent/${opts.agent}/launcher/engine_iframe_guest.js"></script> 
 
         ${execscript}
 

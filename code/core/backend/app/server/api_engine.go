@@ -1,6 +1,7 @@
 package server
 
 import (
+	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -17,6 +18,11 @@ func (s *Server) engineAPI(rg *gin.RouterGroup) {
 
 	// execute action
 	rg.POST("/execute/:action", s.execute)
+
+	fs := http.FS(s.app.Data().AssetAdapter("build"))
+	rg.GET("/plug/:pid/agent/:aid/launcher/:file", func(ctx *gin.Context) {
+		ctx.FileFromFS(ctx.Param("file"), fs)
+	})
 
 	// serve file
 	rg.GET("/plug/:pid/agent/:aid/serve/:file", s.agentServeFile)

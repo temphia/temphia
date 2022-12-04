@@ -1,3 +1,4 @@
+import { sleep } from "yootils";
 import type { LoaderOptions } from "../../../../../lib/engine/plug";
 import { initRegistry, plugStart } from "../../../../../lib/engine/putils";
 import { generateId } from "../../../../../lib/utils";
@@ -12,8 +13,15 @@ export default () => {
   let transfered_port: MessagePort;
 
   const handle_port_transfer = (ev) => {
+    if (ev.data !== "port_transfer") {
+      console.log("wrong event listener", ev)
+      return 
+    }
+
     transfered_port = ev.ports[0];
+    console.log("@received_port_@guest",  transfered_port)
     window.removeEventListener("message", handle_port_transfer);
+    env_init(null);
   };
 
   const env_init = async (ev) => {
@@ -53,5 +61,4 @@ export default () => {
   };
 
   window.addEventListener("message", handle_port_transfer, false);
-  window.addEventListener("load", env_init, false);
 };
