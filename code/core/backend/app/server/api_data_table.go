@@ -11,28 +11,24 @@ import (
 
 func (s *Server) dataAPI(rg *gin.RouterGroup) {
 
-	rg.GET("/", s.DataX(s.loadGroup))
+	rg.GET("/", s.dx(s.loadGroup))
 
-	rg.POST("/:tid/row", s.DataX(s.newRow))
-	rg.GET("/:tid/row/:id", s.DataX(s.getRow))
-	rg.POST("/:tid/row/:id", s.DataX(s.updateRow))
-	rg.DELETE("/:tid/row/:id", s.DataX(s.deleteRow))
-	rg.POST("/:tid/simple_query", s.DataX(s.simpleQuery))
-	rg.POST("/:tid/fts_query", s.DataX(s.FTSQuery)) // fixme => remove this and consolidate this to simple_query ?
-	rg.POST("/:tid/ref_load", s.DataX(s.refLoad))
-	rg.POST("/:tid/ref_resolve", s.DataX(s.refResolve))
-	rg.POST("/:tid/rev_ref_load", s.DataX(s.reverseRefLoad))
-	rg.GET("/:tid/activity/:row_id", s.DataX(s.listActivity))
-	rg.POST("/:tid/activity/:row_id", s.DataX(s.commentRow))
+	rg.POST("/:tid/row", s.dx(s.newRow))
+	rg.GET("/:tid/row/:id", s.dx(s.getRow))
+	rg.POST("/:tid/row/:id", s.dx(s.updateRow))
+	rg.DELETE("/:tid/row/:id", s.dx(s.deleteRow))
+	rg.POST("/:tid/simple_query", s.dx(s.simpleQuery))
+	rg.POST("/:tid/fts_query", s.dx(s.FTSQuery)) // fixme => remove this and consolidate this to simple_query ?
+	rg.POST("/:tid/ref_load", s.dx(s.refLoad))
+	rg.POST("/:tid/ref_resolve", s.dx(s.refResolve))
+	rg.POST("/:tid/rev_ref_load", s.dx(s.reverseRefLoad))
+	rg.GET("/:tid/activity/:row_id", s.dx(s.listActivity))
+	rg.POST("/:tid/activity/:row_id", s.dx(s.commentRow))
 }
 
 func (s *Server) dataWSAPI(rg *gin.RouterGroup) {
 	rg.GET("/", s.sockdDataWS)
 	rg.POST("/", s.sockdDataUpdateWS)
-}
-
-type newRowReq struct {
-	Cells map[string]interface{} `json:"cells,omitempty"`
 }
 
 func (s *Server) loadGroup(uclaim *claim.Data, ctx *gin.Context) {
@@ -174,10 +170,6 @@ func (s *Server) listActivity(uclaim *claim.Data, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, resp, err)
 }
 
-type commentRowReq struct {
-	Message string `json:"message,omitempty"`
-}
-
 func (s *Server) commentRow(uclaim *claim.Data, ctx *gin.Context) {
 	rid, err := strconv.ParseInt(ctx.Param("row_id"), 10, 64)
 	if err != nil {
@@ -197,7 +189,7 @@ func (s *Server) commentRow(uclaim *claim.Data, ctx *gin.Context) {
 	httpx.WriteFinal(ctx, err)
 }
 
-func (s *Server) DataX(fn func(uclaim *claim.Data, ctx *gin.Context)) func(*gin.Context) {
+func (s *Server) dx(fn func(uclaim *claim.Data, ctx *gin.Context)) func(*gin.Context) {
 	return s.middleware.DataX(fn)
 }
 
@@ -209,4 +201,14 @@ func (s *Server) sockdDataWS(ctx *gin.Context) {
 
 func (s *Server) sockdDataUpdateWS(ctx *gin.Context) {
 
+}
+
+// models
+
+type newRowReq struct {
+	Cells map[string]interface{} `json:"cells,omitempty"`
+}
+
+type commentRowReq struct {
+	Message string `json:"message,omitempty"`
 }
