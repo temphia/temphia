@@ -18,8 +18,9 @@ export class CabinetAPI {
     return this.base.get(`/cabinet/${this.source}/${folder}`);
   }
 
-  newFolder(folder: string, data: any) {
-    return this.base.post(`/cabinet/${this.source}/${folder}`, data);
+
+  newFolder(folder: string) {
+    return this.base.post(`/cabinet/${this.source}/${folder}`, {});
   }
 
   getFile(folder: string, fname: string) {

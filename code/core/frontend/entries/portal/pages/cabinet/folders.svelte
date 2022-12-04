@@ -28,8 +28,10 @@
     loading = true;
   };
 
-  const complete_new_folder = async (name) =>
-    capi.newFolder($params.folder, name);
+  const complete_new_folder = async (name) => {
+    await capi.newFolder(name);
+    load();
+  };
 
   const new_folder = () => {
     app.utils.small_modal_open(PanelNewFolder, {
