@@ -22,44 +22,23 @@ func (c *Controller) NewFolderTicket(uclaim *claim.Session, source, folder strin
 }
 
 // Ticket cabinet
-func (c *Controller) TicketFile(tenantId, file string, ticket *claim.Folder) ([]byte, error) {
-	// if !ticket.AllowGet {
-	// 	return nil, easyerr.NotAuthorized()
-	// }
-
-	// if ticket.PinnedFiles != nil {
-	// 	if !funk.ContainsString(ticket.PinnedFiles, file) {
-	// 		return nil, easyerr.NotAuthorized()
-	// 	}
-	// }
-
-	// fixme => check prefix
-
-	sourced := c.hub.GetSource(ticket.Source, tenantId)
+func (c *Controller) TicketFile(ticket *claim.Folder, file string) ([]byte, error) {
+	sourced := c.hub.GetSource(ticket.Source, ticket.TenentId)
 	return sourced.GetBlob(context.TODO(), ticket.Folder, file)
 }
 
-func (c *Controller) TicketPreview(tenantId, file string, ticket *claim.Folder) ([]byte, error) {
-	// if !ticket.AllowGet {
-	// 	return nil, easyerr.NotAuthorized()
-	// }
-	// fixme => implement preview
-	sourced := c.hub.GetSource(ticket.Source, tenantId)
+func (c *Controller) TicketPreview(file string, ticket *claim.Folder) ([]byte, error) {
+	sourced := c.hub.GetSource(ticket.Source, ticket.TenentId)
 	return sourced.GetBlob(context.TODO(), ticket.Folder, file)
 }
 
-func (c *Controller) TicketList(tenantId string, ticket *claim.Folder) ([]*store.BlobInfo, error) {
-	// pp.Println(ticket)
-	// if !ticket.AllowList {
-	// 	return nil, easyerr.NotAuthorized()
-	// }
-
-	sourced := c.hub.GetSource(ticket.Source, tenantId)
+func (c *Controller) TicketList(ticket *claim.Folder) ([]*store.BlobInfo, error) {
+	sourced := c.hub.GetSource(ticket.Source, ticket.TenentId)
 	return sourced.ListFolder(context.TODO(), ticket.Folder)
 }
 
-func (c *Controller) TicketUpload(tenantId, file string, data []byte, ticket *claim.Folder) error {
+func (c *Controller) TicketUpload(ticket *claim.Folder, file string, data []byte) error {
 	// fixme =>  send back upload proof token
-	sourced := c.hub.GetSource(ticket.Source, tenantId)
+	sourced := c.hub.GetSource(ticket.Source, ticket.TenentId)
 	return sourced.AddBlob(context.TODO(), ticket.Folder, file, data)
 }

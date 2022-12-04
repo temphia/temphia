@@ -4,7 +4,6 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
@@ -199,16 +198,7 @@ func (s *Server) commentRow(uclaim *claim.Data, ctx *gin.Context) {
 }
 
 func (s *Server) DataX(fn func(uclaim *claim.Data, ctx *gin.Context)) func(*gin.Context) {
-	return func(ctx *gin.Context) {
-		uclaim, err := s.signer.ParseData(ctx.Param("tenant_id"), ctx.GetHeader("Authorization"))
-		if err != nil {
-			return
-		}
-
-		pp.Println(uclaim)
-
-		fn(uclaim, ctx)
-	}
+	return s.middleware.DataX(fn)
 }
 
 // data sockd

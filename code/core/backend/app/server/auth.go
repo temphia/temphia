@@ -81,8 +81,9 @@ func (s *Server) extractTenant(ctx *gin.Context) string {
 }
 
 func (s *Server) extractUserGroup(tenantId string, ctx *gin.Context) string {
-	if ctx.Query("ugroup") != "" {
-		return ctx.Query("ugroup")
+	ugroup := ctx.Query("ugroup")
+	if ugroup != "" {
+		return ugroup
 	}
 
 	return xtypes.UserGroupSuperAdmin

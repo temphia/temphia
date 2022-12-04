@@ -45,5 +45,5 @@ func (a *ApiAdmin) API(rg *gin.RouterGroup) {
 }
 
 func (a *ApiAdmin) X(fn func(ctx httpx.Request)) func(*gin.Context) {
-	return a.middleware.Authed(fn)
+	return a.middleware.LoggedX(fn)
 }
