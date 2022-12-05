@@ -38,7 +38,8 @@
         if (final !== value) {
           onChange(final);
         }
-        close();
+        
+        row_service.close_model()
       },
     });
   };

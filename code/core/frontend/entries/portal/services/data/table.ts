@@ -442,6 +442,10 @@ export class RowService {
     this.service._open_modal(compo, opts);
   }
 
+  close_model() {
+    this.service._close_modal();
+  }
+
   folder_api() {
     return this.service.foler_api;
   }
