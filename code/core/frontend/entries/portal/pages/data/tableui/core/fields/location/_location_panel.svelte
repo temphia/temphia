@@ -32,7 +32,6 @@
 
   function select() {
     callback(current[0], current[1]);
-    close();
   }
 </script>
 

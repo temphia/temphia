@@ -11,7 +11,7 @@
   $: __value = value;
   const callback = (_lat: number, _lng: number) => {
     __value = [_lat, _lng];
-    close();
+    row_service.close_model()
 
     if (value === __value) {
       return;

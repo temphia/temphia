@@ -13,6 +13,8 @@
 
   export let onChange: (_value: any) => void;
 
+  const folder_api = row_service.folder_api()
+
   // here asasa
 
   $: _files = ctypeFileDecode(value);
@@ -38,7 +40,7 @@
         if (final !== value) {
           onChange(final);
         }
-        
+
         row_service.close_model()
       },
     });
@@ -81,7 +83,7 @@
 
         <img
           on:click={() => showPreview(file)}
-          src={"manager.FolderTktAPI.get_file_preview_link(file)"}
+          src={folder_api.getFilePreviewUrl(file)}
           class="h-20 p-1 border bg-white cursor-pointer"
           alt=""
         />
