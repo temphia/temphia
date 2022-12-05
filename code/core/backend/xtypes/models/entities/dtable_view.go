@@ -13,6 +13,7 @@ type DataView struct {
 	Selects     []string    `json:"selects,omitempty" db:"selects"`
 	MainColumn  string      `json:"main_column,omitempty" db:"main_column"`
 	SearchTerm  string      `json:"search_term,omitempty" db:"search_term"`
+	Tags        JsonStrMap  `json:"tags,omitempty" db:"tags,omitempty"`
 	TableID     string      `json:"table_id,omitempty" db:"table_id"`
 	GroupID     string      `json:"group_id,omitempty" db:"group_id"`
 	TenantID    string      `json:"tenant_id,omitempty" db:"tenant_id"`

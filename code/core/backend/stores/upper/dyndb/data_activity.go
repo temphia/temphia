@@ -1,8 +1,6 @@
 package dyndb
 
 import (
-	"fmt"
-
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 
@@ -10,8 +8,7 @@ import (
 )
 
 func (d *DynDB) activityTable(tenantId, group, table string) db.Collection {
-	dtable := d.tns.Table(tenantId, group, table)
-	return d.session.Collection(fmt.Sprintf("dact_%s", dtable))
+	return d.session.Collection(d.tns.ActivityTable(tenantId, group, table))
 }
 
 func (d *DynDB) QueryActivity(tenantId, group, table string, query *entities.ActivityQuery) ([]*entities.DynActivity, error) {

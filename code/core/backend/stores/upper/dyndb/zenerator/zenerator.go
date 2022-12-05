@@ -92,11 +92,12 @@ func (g *zenerator) NewTable(tenantId, gslug string, model *bprints.NewTable, si
 
 func (g *zenerator) DropTable(tenantId, gslug, tslug string) (string, error) {
 	tbl := g.tns.Table(tenantId, gslug, tslug)
+	atbl := g.tns.ActivityTable(tenantId, gslug, tslug)
 
 	return fmt.Sprintf(`
 		DROP TABLE IF EXISTS %s CASCADE;
-		DROP TABLE IF EXISTS dact_%s CASCADE;
-	`, tbl, tbl), nil
+		DROP TABLE IF EXISTS %s CASCADE;
+	`, tbl, atbl), nil
 }
 
 func (g *zenerator) AddColumn(tenantId, gslug, tslug, cslug string, model *bprints.NewColumn) (string, error) {

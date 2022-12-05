@@ -76,10 +76,12 @@ func (t *tzz) CreateTable() (string, error) {
 
 	if t.gzz.vendor == store.VendorPostgres {
 
+		activityTable := t.tns.ActivityTable(t.tenantId, t.gslug, t.model.Slug)
+
 		wctx.Write(
 			fmt.Sprintf(`
 
-			CREATE TABLE dact_%s (
+			CREATE TABLE %s (
 				id serial primary key,
 				type TEXT NOT NULL,
 				row_id integer not null,
@@ -92,7 +94,7 @@ func (t *tzz) CreateTable() (string, error) {
 				created_at timestamptz not null default now()
 			);
 			
-			`, tname,
+			`, activityTable,
 			),
 		)
 

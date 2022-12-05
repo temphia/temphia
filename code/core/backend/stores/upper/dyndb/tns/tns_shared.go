@@ -10,7 +10,11 @@ import (
 type tnsShared struct{}
 
 func (t *tnsShared) Table(tenantId, groupId, tableId string) string {
-	return fmt.Sprintf("%s_%s_%s", tenantId, groupId, tableId)
+	return fmt.Sprintf("xd_%s_%s_%s", tenantId, groupId, tableId)
+}
+
+func (t *tnsShared) ActivityTable(tenantId, groupId, tableId string) string {
+	return fmt.Sprintf("xd_%s_%s_%s_activity", tenantId, groupId, tableId)
 }
 
 func (t *tnsShared) MetaTableGroup(tenantId string) string { return "data_table_groups" }

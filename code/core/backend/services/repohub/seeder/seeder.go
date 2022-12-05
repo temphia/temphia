@@ -1,4 +1,4 @@
-package dtable
+package seeder
 
 import (
 	"fmt"
@@ -27,6 +27,21 @@ type Seeder struct {
 	selectableUsers  []string
 }
 
+func New(schema *bprints.NewTableGroup, pman repox.Hub, dsource store.DynSource, tenantId, dataGroup, userId string) *Seeder {
+	return &Seeder{
+		tg:               schema,
+		model:            nil,
+		pacman:           pman,
+		source:           dsource,
+		tenant:           tenantId,
+		group:            dataGroup,
+		selectableImages: []string{},
+		selectableUsers:  []string{},
+		userId:           userId,
+	}
+
+}
+
 func (s *Seeder) getTable(name string) *bprints.NewTable {
 	for _, tbl := range s.tg.Tables {
 		if tbl.Slug == name {
@@ -36,7 +51,7 @@ func (s *Seeder) getTable(name string) *bprints.NewTable {
 	return nil
 }
 
-func (s *Seeder) dataSeed() error {
+func (s *Seeder) DataSeed() error {
 
 	bytes, err := s.pacman.BprintGetBlob(s.tenant, s.model.ID, "data.yaml")
 	if err != nil {
@@ -50,6 +65,8 @@ func (s *Seeder) dataSeed() error {
 
 	return s.applySeed(data.Data)
 }
+
+//
 
 func (s *Seeder) applySeed(data map[string][]map[string]any) error {
 
@@ -133,7 +150,7 @@ func (s *Seeder) applySeed(data map[string][]map[string]any) error {
 
 }
 
-func (s *Seeder) generatedSeed(no int) error {
+func (s *Seeder) GeneratedSeed(no int) error {
 
 	pp.Println("Generating seed")
 

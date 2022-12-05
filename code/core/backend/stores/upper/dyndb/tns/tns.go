@@ -9,6 +9,7 @@ var (
 
 type TNS interface {
 	Table(tenantId, groupId, tableId string) string
+	ActivityTable(tenantId, groupId, tableId string) string
 	CheckGroupSlug(string) error
 	CheckTableSlug(string) error
 	CheckColumnSlug(string) error
@@ -22,8 +23,8 @@ func New(mode string) TNS {
 	case "shared":
 		return &tnsShared{}
 	case "sharded":
+		fallthrough
 	default:
 		panic("invalid option")
 	}
-	return nil
 }

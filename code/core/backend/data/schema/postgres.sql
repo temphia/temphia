@@ -322,6 +322,7 @@ create table data_views (
     main_column text not null default '',
     search_term text not null default '',
     ascending boolean not null default true,
+    tags json not null default '{}',
     table_id TEXT not null,
     group_id TEXT not null,
     tenant_id TEXT not null,
@@ -359,7 +360,7 @@ BEGIN
                 RAISE INFO '@@version => %d', _version;
                 
 				EXECUTE format(
-					'INSERT INTO dact_%s( type,row_id,row_version,user_id,user_sign,init_sign,payload) VALUES ($1,$2,$3,$4,$5,$6,$7);',
+					'INSERT INTO xd_%s_activity( type,row_id,row_version,user_id,user_sign,init_sign,payload) VALUES ($1,$2,$3,$4,$5,$6,$7);',
 					_table
 				)
 				USING _type,_id,_version,_user_id,_user_sign,_init_sign,_payload;
@@ -379,10 +380,10 @@ DECLARE
     _init_sign text =  COALESCE((_raw_mod_ctx->>'init_sign')::text, '');
 	_old record = null;
 BEGIN
-	EXECUTE format('SELECT __version FROM %s WHERE __id = $1', _table) INTO _old USING _id;
+	EXECUTE format('SELECT __version FROM xd_%s WHERE __id = $1', _table) INTO _old USING _id;
 	EXECUTE format(
 		'INSERT INTO 
-			dact_%s(
+			xd_%s_activity(
 				type,row_id,row_version,user_id,user_sign,init_sign
 				) VALUES ($1,$2,$3,$4,$5);',_table) 
 		USING 'delete',_id,_old.__version,_user_id,_user_sign,_init_sign;

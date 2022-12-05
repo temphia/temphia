@@ -3,6 +3,8 @@ package dtable
 import (
 	"encoding/json"
 
+	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/core/backend/services/repohub/seeder"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints/instancer"
@@ -34,6 +36,9 @@ func New(app xtypes.App) *dtabeInstancer {
 }
 
 func (di *dtabeInstancer) Instance(opts instancer.Options) (any, error) {
+
+	pp.Println("INSTANCE WITH OPTIONS |>", opts)
+	pp.Println("INSTANCE WITH OPTIONS |>", string(opts.Data))
 
 	schemaData := &bprints.NewTableGroup{}
 	err := di.pacman.ParseInstanceFile(opts.TenantId, opts.Bid, opts.File, schemaData)
@@ -79,6 +84,8 @@ func (di *dtabeInstancer) instance(tenantId, file string, opts *instance.DataGro
 	for _, table := range schema.Tables {
 		tableOpts, ok := opts.TableOptions[table.Slug]
 		if !ok {
+			table.SyncType = store.DynSyncTypeEventAndData
+			table.ActivityType = store.DynActivityTypeStrict
 			continue
 		}
 		table.SyncType = tableOpts.SyncType
@@ -119,25 +126,17 @@ func (di *dtabeInstancer) instance(tenantId, file string, opts *instance.DataGro
 		}
 	}
 
-	seeder := Seeder{
-		tg:     schema,
-		model:  nil,
-		pacman: di.pacman,
-		source: dhub,
-		tenant: tenantId,
-		group:  opts.GroupSlug,
-		userId: opts.UserId,
-	}
+	seeder := seeder.New(schema, di.pacman, dhub, tenantId, opts.GroupSlug, opts.UserId)
 
 	switch opts.SeedType {
 	case store.DynSeedTypeData:
-		err := seeder.dataSeed()
+		err := seeder.DataSeed()
 		if err != nil {
 			resp.SeedError = err.Error()
 		}
 
 	case store.DynSeedTypeAutogen:
-		err = seeder.generatedSeed(200)
+		err = seeder.GeneratedSeed(200)
 		if err != nil {
 			resp.SeedError = err.Error()
 		}
