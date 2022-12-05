@@ -68,6 +68,8 @@ export class FolderTktAPI {
     return this.http.post(`/folder/${this.ticket}/${file}`, data);
   }
 
+  // downgraded_ticket() {}
+
   deleteFile(file: string) {
     return this.http.delete(`/folder/${this.ticket}/${file}`);
   }

@@ -1,18 +1,19 @@
 <script lang="ts">
+  import type { FolderTktAPI } from "../../../../../../../../lib/apiv2";
   import type { RowService } from "../../../../../../services/data";
 
-
-//  import type { FolderTktAPI } from "../../../../../../../lib/core/tktapi";
-
-
   export let row_editor: RowService;
-  export let folder_api: any; //FolderTktAPI;
+  export let folder_api: FolderTktAPI;
 
   export let onSelect: (file: string) => void;
 
   let files = [];
   const load = async () => {
-    files = await folder_api.list();
+    const resp = await folder_api.list()
+    if (!resp.ok) {
+      return
+    }
+    files = resp.data;
   };
 
   load();
@@ -20,11 +21,8 @@
   let selectd = "";
 </script>
 
-<div class="w-full">
-  <div
-    class="flex flex-wrap space-x-2 space-y-2 overflow-auto"
-    style="max-height: 80vh;"
-  >
+<div class="w-full h-full flex flex-col">
+  <div class="grow flex flex-wrap space-x-2 space-y-2 overflow-auto items-start">
     {#each files as file}
       <div
         on:click={() => {
@@ -36,7 +34,7 @@
           : ''}"
       >
         <img
-          src={folder_api.get_file_preview_link(file.name)}
+          src={folder_api.getFilePreviewUrl(file.name)}
           class="w-32 border"
           alt=""
         />
@@ -50,7 +48,7 @@
     {/each}
   </div>
 
-  <div class="flex justify-between pt-4 border-t">
+  <div class="flex grow-0 justify-between pt-4 border-t">
     <div class="text-gray-600">
       {selectd === "" ? "Select a file" : `File Selected ${selectd}`}
     </div>

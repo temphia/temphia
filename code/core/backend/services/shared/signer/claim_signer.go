@@ -129,6 +129,8 @@ func (cs *ClaimSigner) ParseExecutor(tenantId, payload string) (*claim.Executor,
 		return nil, err
 	}
 
+	data.TenentId = tenantId
+
 	return data, nil
 }
 
@@ -213,6 +215,8 @@ func (cs *ClaimSigner) ParseFolder(tenantId, payload string) (*claim.Folder, err
 	if err != nil {
 		return nil, err
 	}
+
+	data.TenentId = tenantId
 
 	return data, nil
 }
