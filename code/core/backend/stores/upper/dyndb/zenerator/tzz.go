@@ -98,7 +98,7 @@ func (t *tzz) CreateTable() (string, error) {
 			),
 		)
 
-		if t.model.SyncType == store.DynActivityTypeStrict {
+		if t.model.ActivityType == store.DynActivityTypeStrict {
 			wctx.Write(fmt.Sprintf(`CREATE TRIGGER 
 			data_tg_%s AFTER INSERT OR UPDATE ON 
 			%s FOR EACH ROW EXECUTE 

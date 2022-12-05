@@ -19,7 +19,7 @@
     {table.description}
   </td>
 
-  sync_type
+  
   <td class="p-1 border-b border-grey-light">
     <select
       class="p-1 rounded bg-slate-300"

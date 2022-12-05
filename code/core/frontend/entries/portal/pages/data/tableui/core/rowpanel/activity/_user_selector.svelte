@@ -1,5 +1,5 @@
 <script>
-  const { default: Icon } = require("@krowten/svelte-heroicons/Icon.svelte");
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
 </script>
 
 <button>

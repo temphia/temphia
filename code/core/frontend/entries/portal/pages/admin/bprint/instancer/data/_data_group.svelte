@@ -84,9 +84,12 @@
           </thead>
           <tbody>
             {#each data.tables as table}
-              <DataTable {table} on:table_change={(ev) => {
-                table_options[table.slug] = ev.detail;
-              }} />
+              <DataTable
+                {table}
+                on:table_change={(ev) => {
+                  table_options[table.slug] = ev.detail;
+                }}
+              />
             {/each}
           </tbody>
         </table>
@@ -100,8 +103,8 @@
         </legend>
         <select class="p-1 rounded bg-slate-300" bind:value={seed_source}>
           <option value="">none</option>
-          <option>data</option>
-          <option>autogen</option>
+          <option value="data">data</option>
+          <option value="autogen">autogen</option>
         </select>
       </div>
 

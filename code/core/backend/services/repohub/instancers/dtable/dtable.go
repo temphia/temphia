@@ -37,9 +37,6 @@ func New(app xtypes.App) *dtabeInstancer {
 
 func (di *dtabeInstancer) Instance(opts instancer.Options) (any, error) {
 
-	pp.Println("INSTANCE WITH OPTIONS |>", opts)
-	pp.Println("INSTANCE WITH OPTIONS |>", string(opts.Data))
-
 	schemaData := &bprints.NewTableGroup{}
 	err := di.pacman.ParseInstanceFile(opts.TenantId, opts.Bid, opts.File, schemaData)
 	if err != nil {
@@ -81,6 +78,8 @@ func (di *dtabeInstancer) instance(tenantId, file string, opts *instance.DataGro
 		schema.CabinetSource = opts.CabinetSource
 	}
 
+	pp.Println("@table    ===================|>", schema, opts)
+
 	for _, table := range schema.Tables {
 		tableOpts, ok := opts.TableOptions[table.Slug]
 		if !ok {
@@ -88,6 +87,14 @@ func (di *dtabeInstancer) instance(tenantId, file string, opts *instance.DataGro
 			table.ActivityType = store.DynActivityTypeStrict
 			continue
 		}
+		if tableOpts.SyncType == "" {
+			tableOpts.SyncType = store.DynSyncTypeEventAndData
+		}
+
+		if tableOpts.ActivityType == "" {
+			tableOpts.ActivityType = store.DynActivityTypeStrict
+		}
+
 		table.SyncType = tableOpts.SyncType
 		table.ActivityType = tableOpts.ActivityType
 	}

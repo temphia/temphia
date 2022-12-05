@@ -361,7 +361,7 @@ BEGIN
                 RAISE INFO '@@version => %d', _version;
                 
 				EXECUTE format(
-					'INSERT INTO xd_%s_activity( type,row_id,row_version,user_id,user_sign,init_sign,payload) VALUES ($1,$2,$3,$4,$5,$6,$7);',
+					'INSERT INTO %s_activity( type,row_id,row_version,user_id,user_sign,init_sign,payload) VALUES ($1,$2,$3,$4,$5,$6,$7);',
 					_table
 				)
 				USING _type,_id,_version,_user_id,_user_sign,_init_sign,_payload;
