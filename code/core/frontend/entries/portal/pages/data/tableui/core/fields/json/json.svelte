@@ -1,9 +1,13 @@
 <script lang="ts">
-  import type { RowService, Column } from "../../../../../services/data";
+  import type { Column, RowService } from "../../../../../../services/data";
+  import { CEditor } from "../../../../../admin/core";
 
   export let column: Column;
   export let value: any;
   export let row_service: RowService;
 </script>
 
-<div>JSON</div>
+<CEditor
+  on:change
+  code={value}
+/>

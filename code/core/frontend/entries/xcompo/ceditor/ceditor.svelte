@@ -105,6 +105,7 @@
     color: var(--cm-text-color);
     background: var(--cm-background-color);
     height: 100%;
+    resize: vertical;
   }
 
   /* PADDING */
