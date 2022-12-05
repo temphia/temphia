@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import type { TableService, Column } from "../../../../../../services/data";
   import Field from "../../fields/field.svelte";
 
@@ -26,20 +27,28 @@
   {/each}
 </div>
 
-<div class="flex-shrink h-8 border-t pt-1 pr-1 flex justify-end gap-x-2">
+<div class="flex-shrink h-10 border-t pt-1 pr-1 flex justify-end gap-x-2">
   <button
     on:click={() => rservice.delete_row(rowid)}
-    class="bg-red-100 hover:bg-red-600 w-14 text-red-600 text-sm hover:text-white rounded"
-    >Delete</button
+    class="bg-red-100 hover:bg-red-600 text-red-600 hover:text-white rounded inline-flex p-2"
+  >
+    <Icon name="trash" class="h-6 w-6 pt-1" />
+    Delete</button
   >
   <button
     on:click={() => rservice.fetch_row_latest(rowid)}
-    class="bg-green-100 hover:bg-green-600 w-14 text-green-600 text-sm hover:text-white rounded"
-    >Refresh</button
+    class="bg-green-100 hover:bg-green-600 text-green-600 hover:text-white rounded inline-flex p-2"
+    >
+    <Icon name="refresh" class="h-6 w-6 pt-1" />
+
+    Refresh</button
   >
   <button
     on:click={rservice.save_row}
-    class="bg-blue-400 hover:bg-blue-600 w-14 text-white text-sm rounded"
-    >Save</button
+    
+    class="bg-blue-400 hover:bg-blue-600 text-white rounded inline-flex p-2"
+    >
+    <Icon name="save" class="h-6 w-6 pt-1" />
+    Save</button
   >
 </div>
