@@ -8,6 +8,7 @@
   } from "../../../core";
   import type { NewTableGroup } from "../instance";
   import { InstanceHelper } from "../instance";
+  import DataTable from "./_data_table.svelte";
 
   export let data: NewTableGroup;
   export let bid: string;
@@ -22,6 +23,7 @@
   let cabinet_source: string = "";
   let cabinet_folder: string = "";
   let seed_source: string = "";
+  let table_options: { [_: string]: object } = {};
 </script>
 
 <WizardLayout total_steps={3} curent_step={2}>
@@ -82,31 +84,9 @@
           </thead>
           <tbody>
             {#each data.tables as table}
-              <tr class="hover:bg-grey-lighter">
-                <td class="p-1 border-b border-grey-light">{table.name}</td>
-                <td class="p-1 border-b border-grey-light">{table.slug}</td>
-                <td class="p-1 border-b border-grey-light">
-                  {table.description}
-                </td>
-                <td class="p-1 border-b border-grey-light">
-                  <select class="p-1 rounded bg-slate-300">
-                    <option>strict</option>
-                    <option>lazy</option>
-                    <option>none</option>
-                  </select>
-                </td>
-                <td class="p-1 border-b border-grey-light">
-                  <select class="p-1 rounded bg-slate-300">
-                    <option>none</option>
-                    <option>event_only</option>
-                    <option>event_and_data</option>
-                  </select>
-                </td>
-
-                <td class="p-1 border-b border-grey-light">
-                  <input type="checkbox" checked />
-                </td>
-              </tr>
+              <DataTable {table} on:table_change={(ev) => {
+                table_options[table.slug] = ev.detail;
+              }} />
             {/each}
           </tbody>
         </table>
@@ -142,8 +122,6 @@
           <option value="">none</option>
         </select>
       </div>
-
-
     </div>
 
     <details>
