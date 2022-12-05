@@ -85,8 +85,8 @@ create table target_hooks(
 --     value text not null,
 --     target_type text not null,
 --     target text not null,
---     tenant_id text not null,
---     PRIMARY KEY(tenant_id, key, plug_id)
+--     tenant_id text not null default '',
+--     unique(key, target_type target, tenant_id)
 -- );
 
 -- create table target_event(
@@ -95,8 +95,7 @@ create table target_hooks(
 --     target text not null,
 --     data text not null,
 --     extra_meta json not null default '{}',
---     tenant_id text not null,
---     PRIMARY KEY(tenant_id, key, plug_id)
+--     tenant_id text not null default ''
 -- );
 
 
