@@ -80,7 +80,7 @@
 {#if column.ref_type === RefHardPriId || column.ref_type === RefSoftPriId}
   <RefPrimary {column} {onChange} value={_value} {row_service} />
 {:else if column.ref_type === RefSoftText || column.ref_type === RefHardText}
-  <RefText />
+  <RefText {column} {onChange} value={_value} {row_service} />
 {:else if column.ctype === CtypeShortText}
   <div class="flex w-full">
     <input
