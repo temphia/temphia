@@ -7,13 +7,14 @@
   export let current_file: string;
 
   $: _current_file = current_file;
+  $: _preview_url = folder_api.getFilePreviewUrl(_current_file)
 
   const imagExts = ["jpg", "png", "webp", "svg"];
   const isImage = (file: string) => imagExts.includes(file.split(".").pop());
 </script>
 
 <div class="w-full h-full flex flex-col">
-  <div class="w-full flex justify-center h-full">
+  <div class="w-full flex justify-center">
     <div
       class="flex absolute bottom-5 left-1/2 z-30 space-x-3 -translate-x-1/2"
     >
@@ -64,15 +65,17 @@
       </span>
     </button>
 
-    {#if isImage(_current_file)}
-      <img
-        src={folder_api.getFilePreviewUrl(current_file)}
-        alt=""
-        class="rounded p-1 border"
-      />
-    {:else}
-      <div>AA</div>
-    {/if}
+    {#key _current_file}
+      {#if isImage(_current_file)}
+        <img
+          src={_preview_url}
+          alt=""
+          class="rounded p-1 border"
+        />
+      {:else}
+        <div>AA</div>
+      {/if}
+    {/key}
   </div>
   <div class="flex">
     <div />
