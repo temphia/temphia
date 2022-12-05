@@ -49,27 +49,32 @@
   </script>
 </svelte:head>
 
-<div class="w-full h-80 shadow rounded">
-  <LeafletMap options={mapOptions} events={["click"]} on:click={updateCurrent}>
-    <TileLayer url={tileUrl} options={tileLayerOptions} />
-    <Marker latLng={current}>
-      <Popup>Select a location</Popup>
-    </Marker>
-  </LeafletMap>
+<div class="w-full h-full flex flex-col">
+  <div class="w-full grow shadow rounded">
+    <LeafletMap options={mapOptions} events={["click"]} on:click={updateCurrent}>
+      <TileLayer url={tileUrl} options={tileLayerOptions} />
+      <Marker latLng={current}>
+        <Popup>Select a location</Popup>
+      </Marker>
+    </LeafletMap>
+  </div>
+
+  <div class="flex grow-0 p-2 justify-end">
+    <button
+      class="px-2 py-1 mr-2 shadow bg-blue-500 rounded text-white font-semibold"
+      on:click={mark}
+    >
+      Mark
+    </button>
+  
+    <button
+      class="px-2 py-1 shadow bg-green-500 rounded text-white font-semibold"
+      on:click={select}
+    >
+      Select
+    </button>
+  </div>
 </div>
 
-<div class="flex mt-2 justify-end">
-  <button
-    class="px-2 py-1 mr-2 shadow bg-blue-500 rounded text-white font-semibold"
-    on:click={mark}
-  >
-    Mark
-  </button>
 
-  <button
-    class="px-2 py-1 shadow bg-green-500 rounded text-white font-semibold"
-    on:click={select}
-  >
-    Select
-  </button>
-</div>
+
