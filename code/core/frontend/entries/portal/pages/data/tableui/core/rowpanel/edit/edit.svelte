@@ -27,17 +27,17 @@
   {/each}
 </div>
 
-<div class="flex-shrink h-10 border-t pt-1 pr-1 flex justify-end gap-x-2">
+<div class="flex-shrink h-10 border-t p-1 flex justify-end gap-x-2">
   <button
     on:click={() => rservice.delete_row(rowid)}
-    class="bg-red-100 hover:bg-red-600 text-red-600 hover:text-white rounded inline-flex p-2"
+    class="bg-red-100 hover:bg-red-600 text-red-600 hover:text-white rounded inline-flex p-1"
   >
     <Icon name="trash" class="h-6 w-6 pt-1" />
     Delete</button
   >
   <button
     on:click={() => rservice.fetch_row_latest(rowid)}
-    class="bg-green-100 hover:bg-green-600 text-green-600 hover:text-white rounded inline-flex p-2"
+    class="bg-green-100 hover:bg-green-600 text-green-600 hover:text-white rounded inline-flex p-1"
     >
     <Icon name="refresh" class="h-6 w-6 pt-1" />
 
@@ -46,7 +46,7 @@
   <button
     on:click={rservice.save_row}
     
-    class="bg-blue-400 hover:bg-blue-600 text-white rounded inline-flex p-2"
+    class="bg-blue-400 hover:bg-blue-600 text-white rounded inline-flex p-1"
     >
     <Icon name="save" class="h-6 w-6 pt-1" />
     Save</button
