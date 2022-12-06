@@ -14,7 +14,7 @@
   <div
     class="relative inline-block duration-300 ease-in-out transition-transform transform hover:border border-blue-500 w-full"
   >
-    <div class="shadow p-4 rounded-lg bg-white">
+    <div class="shadow p-2 rounded-lg bg-white">
       <div class="flex justify-center relative rounded-lg overflow-hidden h-52">
         <div
           class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full"
@@ -68,21 +68,20 @@
         {/if}
       </div>
 
-      <div class="grid grid-cols-2 grid-rows-2 gap-4 mt-8">
+      <div
+        class="grid grid-cols-2 gap-y-4 gap-x-2 mt-8 overflow-y-auto justify-self-start content-start"
+        style="max-height: 15rem"
+      >
         {#each order.other as ocol}
           {@const column = columns[ocol]}
 
-          <p
-            class="inline-flex flex-col xl:flex-row xl:items-center text-gray-800"
-          >
+          <p class="flex justify-start items-start text-gray-800">
             <Cicon ctype={column.ctype} />
-
-            <span class="mt-2 xl:mt-0"> {column.name || ""} </span>
+            <span> {column.name || ""} </span>
           </p>
-          <p
-            class="inline-flex flex-col xl:flex-row xl:items-center text-gray-800"
-          >
-            <span class="mt-2 xl:mt-0"> {row[ocol] || ""} </span>
+
+          <p class="flex items-start text-gray-800 flex-wrap truncate">
+            {row[ocol] || ""}
           </p>
         {/each}
       </div>
