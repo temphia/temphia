@@ -25,6 +25,7 @@ import NotFound from "./notfound.svelte";
 
 import LaunchTargetPage from "../launcher/target_page.svelte";
 import Launcher from "../launcher/launcher.svelte";
+import Breath from "./play/breath.svelte";
 
 export default {
   "/": Start,
@@ -50,6 +51,7 @@ export default {
   },
 
   "/play": Play,
+  "/play/breath": Breath,
   "/profile": {
     "/self": SelfProfile,
     "/user/:id": UserProfile,
