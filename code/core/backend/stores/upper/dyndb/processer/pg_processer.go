@@ -51,7 +51,18 @@ func (pg *PGCtypeProcesser) FromRowDBType(row map[string]interface{}) error {
 		case store.CtypeMultiFile:
 		case store.CtypeCheckBox:
 		case store.CtypeCurrency:
-			s, err := strconv.ParseFloat(string(v.([]uint8)), 64)
+			fstr := ""
+
+			switch vv := v.(type) {
+			case string:
+				fstr = vv
+			case []uint8:
+				fstr = string(vv)
+			default:
+				continue
+			}
+
+			s, err := strconv.ParseFloat(fstr, 64)
 			if err != nil {
 				return err
 			}

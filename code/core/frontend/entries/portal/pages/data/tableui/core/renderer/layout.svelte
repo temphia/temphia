@@ -125,7 +125,7 @@
     <div class="w-full h-full overflow-hidden">
       <slot>Empty slot</slot>
 
-      <div class="flex justify-start p-0.5 text-sm gap-2 bg-slate-200 uppercase">
+      <div class="flex justify-start p-0.5 text-sm gap-2 bg-slate-100 uppercase">
         <button>
           <Icon name="chevron-double-right" solid class="h-5 w-5 text-slate-700" />
         </button>
@@ -140,7 +140,7 @@
   </div>
 </div>
 
-<div class="fixed bottom-8 z-5 right-10 ">
+<div class="fixed bottom-4 z-5 right-10 ">
   {#if loading}
     <Loading />
   {:else}

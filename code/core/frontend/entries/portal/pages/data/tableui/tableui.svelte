@@ -129,7 +129,7 @@
       on:on_table_change
       on:on_page_top={on_page_top}
       on:on_page_buttom={on_page_buttom}
-      on:on_new_row={on_row_click}
+      on:on_new_row={on_new_row}
       on:on_row_click={on_row_click}
     />
   {:else}

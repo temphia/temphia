@@ -13,7 +13,7 @@
   });
 </script>
 
-<div class="w-full flex flex-col" style="height: 80vh;">
+<div class="w-full h-full flex flex-col" >
   <div class="flex-grow flex flex-col h-32 p-2 space-y-1 overflow-y-auto">
     {#if loaded}
       <table class="w-full border overflow-scroll">
@@ -62,9 +62,9 @@
     {/if}
   </div>
 
-  <div class="flex-shrink h-10 w-full pb-1 border-b flex justify-between">
+  <div class="flex-shrink h-10 w-full pb-1 border-b flex justify-end">
     {#if selected}
-      <div class="flex mt-2 justify-end">
+      <div class="flex mt-2">
         <button
           class="px-2 py-1 shadow bg-green-500 rounded text-white font-semibold"
           on:click={() => {
