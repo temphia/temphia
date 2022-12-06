@@ -1,5 +1,6 @@
 import type { DataAPI, SelfAPI } from "../../../../lib/apiv2";
 import type { AdminDataAPI } from "../../../../lib/apiv2/admin";
+import type { SockdService } from "../sockd/sockd";
 import { GroupService } from "./group";
 
 interface Apm {
@@ -10,6 +11,7 @@ interface Apm {
 export class DataService {
   sources: string[];
   current_group: GroupService | null;
+  sockd_builder: SockdService;
   apm: Apm;
   close_modal: any;
   open_modal: any;
@@ -19,6 +21,7 @@ export class DataService {
     sources: string[];
     apm: Apm;
     api_base_url: string;
+    sockd_builder: SockdService;
     close_modal: any;
     open_modal: any;
   }) {
@@ -28,6 +31,7 @@ export class DataService {
     this.api_base_url = opts.api_base_url;
     this.close_modal = opts.close_modal;
     this.open_modal = opts.open_modal;
+    this.sockd_builder = opts.sockd_builder;
   }
 
   group_service = async (source: string, group: string) => {
@@ -59,6 +63,7 @@ export class DataService {
       close_modal: this.close_modal,
       open_modal: this.open_modal,
       api_base_url: this.api_base_url,
+      sockd_builder: this.sockd_builder,
     });
 
     await group_svc.init();

@@ -2,11 +2,16 @@ import { Http } from "./http";
 
 export class DataAPI {
   http: Http;
+  base_url: string;
+  token: string
   constructor(base_url: string, token: string) {
     this.http = new Http(base_url, {
       "Content-Type": "application/json",
       Authorization: token,
     });
+
+    this.token = token;
+    this.base_url = base_url;
   }
 
   load() {
@@ -51,15 +56,8 @@ export class DataAPI {
   comment_row(tid: string, rid: string, data: any) {
     return this.http.post(`/data/${tid}/activity/${rid}`, data);
   }
+
+  sockd_url = () => {
+    return `${this.base_url}/data_ws/?token=${this.token}`;
+  };
 }
-
-
-// async data(token: string, on_handler: (message: SockdMessage) => void) {
-//   const sockd = new Sockd({
-//     OnHandler: on_handler,
-//     URL: `${this.base_url}/sockd/data/ws?token=${token}`,
-//   });
-
-//   await sockd.init();
-//   return sockd;
-// }

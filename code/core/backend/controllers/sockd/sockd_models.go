@@ -33,3 +33,11 @@ type DevConnOptions struct {
 	AgentId  string
 	Conn     sockdx.Conn
 }
+
+type DataConnOptions struct {
+	TenantId  string
+	UserId    string
+	DynSource string
+	DynGroup  string
+	Conn      sockdx.Conn
+}

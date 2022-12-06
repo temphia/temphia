@@ -1,6 +1,6 @@
 import { derived, Readable, writable, Writable } from "svelte/store";
 import type { SelfAPI } from "../../../../lib/apiv2";
-import type { Sockd, SockdMessage } from "../../../../lib/sockd";
+import type { ISockd, SockdMessage } from "../../../../lib/sockd";
 
 export interface State {
   messages: object[];
@@ -12,7 +12,7 @@ export class Notifier {
   self_api: SelfAPI;
   state: Writable<State>;
   is_pending_read: Readable<boolean>;
-  sockd: Sockd;
+  sockd: ISockd;
 
   constructor(self_api: SelfAPI) {
     this.self_api = self_api;
@@ -46,7 +46,7 @@ export class Notifier {
     }
   };
 
-  set_sockd = (sockd: Sockd) => {
+  set_sockd = (sockd: ISockd) => {
     this.sockd = sockd;
   };
 

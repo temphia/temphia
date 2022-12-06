@@ -59,6 +59,21 @@ func (s *Controller) AddUserConn(opts UserConnOptions) error {
 
 }
 
+func (s *Controller) AddData(opts DataConnOptions) error {
+
+	return s.sockd.NewConnection(sockdx.ConnOptions{
+		NameSpace: opts.TenantId,
+		Conn:      opts.Conn,
+		Expiry:    0,
+		Room:      sockdx.ROOM_SYS_USERS,
+		Tags: []string{
+			fmt.Sprint("sys.user_", opts.UserId),
+			fmt.Sprintf("dgroup.%s.%s", opts.DynSource, opts.DynGroup),
+		},
+	})
+
+}
+
 func (s *Controller) UpdateDynRoomTags(opts UpdateDynRoomTagsOptions) error {
 
 	return s.sockd.RoomUpdateTags(

@@ -1,5 +1,7 @@
 import { sleep } from "yootils";
 import { DataAPI, FolderTktAPI } from "../../../../lib/apiv2";
+import type { ISockd, SockdMessage } from "../../../../lib/sockd";
+import type { SockdService } from "../sockd/sockd";
 import { TableService } from "./table";
 
 export class GroupService {
@@ -13,16 +15,16 @@ export class GroupService {
   close_modal: any;
   open_modal: any;
   folder_api: FolderTktAPI;
-  /*
-  
-  fixme
-    - sockd  
-  */
+
+  // sockd
+  sockd_builder: SockdService;
+  sockd_conn: ISockd;
 
   constructor(opts: {
     source: string;
     name: string;
     api: DataAPI;
+    sockd_builder: SockdService;
     api_base_url: string;
     close_modal: any;
     open_modal: any;
@@ -34,6 +36,7 @@ export class GroupService {
     this.tables = [];
     this.api_base_url = opts.api_base_url;
 
+    this.sockd_builder = opts.sockd_builder;
     this.close_modal = opts.close_modal;
     this.open_modal = opts.open_modal;
   }
@@ -47,7 +50,16 @@ export class GroupService {
 
     this.tables = resp.data["tables"] || [];
     const folder_ticket = resp.data["folder_ticket"] || "";
-    this.folder_api = new FolderTktAPI(this.api_base_url, folder_ticket)
+    this.folder_api = new FolderTktAPI(this.api_base_url, folder_ticket);
+
+    this.sockd_conn = await this.sockd_builder.build(
+      this.data_api.sockd_url(),
+      this.__sockd_handle
+    );
+  };
+
+  __sockd_handle = (msg: SockdMessage) => {
+    console.log("MESSAGE FROM DATA WS SOCKD THING|>", msg);
   };
 
   default_table = () => {

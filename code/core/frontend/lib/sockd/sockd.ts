@@ -32,7 +32,7 @@ export class Sockd implements ISockd {
   constructor(opts: Options) {
     this._builder = new WebsocketBuilder(opts.URL);
     this._builder.onMessage(this.handleIncoming);
-    this._builder.withBackoff(new LinearBackoff(1, 3));
+    this._builder.withBackoff(new LinearBackoff(0, 10, 100));
     this._builder.withBuffer(new LRUBuffer(20));
     this._handler = opts.OnHandler;
   }

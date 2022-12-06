@@ -1,9 +1,12 @@
 package server
 
 import (
+	"math/rand"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/core/backend/controllers/sockd"
+	"github.com/temphia/temphia/code/core/backend/services/sockdhub/transports"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
@@ -206,6 +209,34 @@ func (s *Server) dataWSAPI(rg *gin.RouterGroup) {
 }
 
 func (s *Server) sockdDataWS(ctx *gin.Context) {
+	if !ctx.IsWebsocket() {
+		return
+	}
+
+	dclaim, err := s.signer.ParseData(ctx.Param("tenant_id"), ctx.Query("token"))
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	conn, err := transports.NewConnWS(ctx, int64(rand.Int())) // FIXME
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	err = s.cSockd.AddData(sockd.DataConnOptions{
+		TenantId:  dclaim.TenentId,
+		UserId:    dclaim.UserID,
+		DynSource: dclaim.DataSource,
+		DynGroup:  dclaim.DataGroup,
+		Conn:      conn,
+	})
+
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
 
 }
 

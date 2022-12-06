@@ -26,10 +26,12 @@ func (c *Controller) LoadGroup(uclaim *claim.Data) (*store.LoadDgroupResp, error
 	}
 
 	fcalim := &claim.Folder{
-		Folder: tg.CabinetFolder,
-		Source: tg.CabinetSource,
-		Expiry: 0,
-		//	DeviceId: uclaim.DeviceId,
+		Folder:    tg.CabinetFolder,
+		Source:    tg.CabinetSource,
+		Expiry:    0,
+		TenentId:  "",
+		UserId:    uclaim.UserID,
+		SessionID: uclaim.SessionID,
 	}
 
 	fclaim, err := c.signer.SignFolder(uclaim.TenentId, fcalim)
@@ -38,9 +40,8 @@ func (c *Controller) LoadGroup(uclaim *claim.Data) (*store.LoadDgroupResp, error
 	}
 
 	resp := &store.LoadDgroupResp{
-		Tables:          tables,
-		FolderTicket:    fclaim,
-		SockdRoomTicket: "",
+		Tables:       tables,
+		FolderTicket: fclaim,
 	}
 
 	return resp, nil
