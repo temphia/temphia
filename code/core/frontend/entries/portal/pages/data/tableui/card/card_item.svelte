@@ -7,6 +7,7 @@
   export let order: Order;
   export let row: object;
   export let columns: { [_: string]: Column };
+  export let onEdit = () => {};
 </script>
 
 <div class="relative mx-auto w-full">
@@ -23,9 +24,12 @@
 
         <div class="absolute flex justify-center bottom-0 mb-3">
           <div
-            class="flex bg-white px-4 py-1 space-x-5 rounded-lg overflow-hidden shadow"
+            class="flex bg-white px-4 py-1 space-x-5 rounded-full overflow-hidden shadow hover:bg-slate-200"
           >
-            <button class="inline-flex uppercase text-slate-600 text-sm">
+            <button
+              class="inline-flex uppercase text-slate-600 text-sm"
+              on:click={onEdit}
+            >
               <Icon name="pencil-alt" solid class="h-5 w-5" />
               Edit
             </button>
@@ -39,6 +43,12 @@
             {row[order.tag] || ""}
           </span>
         {/if}
+
+        <span
+          class="absolute top-2 right-2 py-1 px-2 rounded-full z-10 bg-blue-400 text-sm font-medium text-white select-none"
+        >
+          {row["__id"] || ""}
+        </span>
       </div>
 
       <div class="mt-4">

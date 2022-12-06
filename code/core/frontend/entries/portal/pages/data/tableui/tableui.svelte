@@ -93,7 +93,6 @@
   };
 
   const on_row_toggle_select = (ev) => {
-    console.log("@toggle", ev)
     const rowid: number = ev.detail;
     if (selected_rows.includes(rowid)) {
       selected_rows = selected_rows.filter((v) => v !== rowid);
@@ -111,8 +110,6 @@
     columns_indexded={$data_store.indexed_column}
     reverse_ref_column={[]}
     rows_indexed={$data_store.indexed_rows}
-    
-
   />
 
   <ViewPanel
@@ -130,6 +127,10 @@
       {table_service}
       on:on_change_to_grid
       on:on_table_change
+      on:on_page_top={on_page_top}
+      on:on_page_buttom={on_page_buttom}
+      on:on_new_row={on_row_click}
+      on:on_row_click={on_row_click}
     />
   {:else}
     <GridLayout
