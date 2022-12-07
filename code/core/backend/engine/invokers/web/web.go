@@ -10,8 +10,6 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 )
 
-var _ invoker.Invoker = (*WebRequest)(nil)
-
 type WebRequest struct {
 	rctx  *gin.Context
 	claim *claim.Executor

@@ -18,3 +18,14 @@ type Invoker interface {
 type Module interface {
 	Handle(method string, data xtypes.LazyData) (xtypes.LazyData, error)
 }
+
+// new
+type Invoker2 interface {
+	Type() string
+	ExecuteModule(module, action string, data xtypes.LazyData) (xtypes.LazyData, error)
+	ListModules() []string
+	UserContext() *User
+
+	GetAttr(string) interface{}
+	GetAttrs() map[string]interface{}
+}
