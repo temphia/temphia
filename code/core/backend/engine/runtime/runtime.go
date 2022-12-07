@@ -4,7 +4,6 @@ import (
 	"sync"
 
 	"github.com/rs/zerolog"
-	"github.com/thoas/go-funk"
 
 	"github.com/temphia/temphia/code/core/backend/engine/binders/standard"
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
@@ -78,19 +77,21 @@ func (r *runtime) Run(builders map[string]etypes.ExecutorBuilder, modules map[st
 func (r *runtime) Preform(j *job.Job) (*event.Response, error) {
 	ns := r.getNS(j.Namespace, true)
 
-	if j.PendingPrePolicy {
-		err := ns.fencer.Execute(j)
-		if err != nil {
-			return nil, err
-		}
-	}
+	// if j.PendingPrePolicy {
+	// 	err := ns.fencer.Execute(j)
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
+	// }
 
-	if j.NodeTag == "" || funk.ContainsString(r.nodeTags, j.NodeTag) || r.router == nil {
-		// fixme => run post_policy here
-		return ns.doWork(j)
-	}
+	// if j.NodeTag == "" || funk.ContainsString(r.nodeTags, j.NodeTag) || r.router == nil {
+	// 	// fixme => run post_policy here
+	// 	return ns.doWork(j)
+	// }
 
-	return r.router.Route(j)
+	return ns.doWork(j)
+
+	//return r.router.Route(j)
 }
 
 func (r *runtime) PreformAsync(j *job.AsyncJob) {

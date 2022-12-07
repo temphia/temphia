@@ -2,9 +2,11 @@ package engine
 
 import (
 	"io"
+	"net/http"
 
 	"github.com/bwmarrin/snowflake"
 	"github.com/gin-gonic/gin"
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/engine/invokers/web"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
@@ -37,13 +39,17 @@ func (c *Controller) Execute(tenantId, action string, ctx *gin.Context) {
 
 	payload, err := io.ReadAll(ctx.Request.Body)
 	if err != nil {
+		ctx.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
 
 	eclaim, err := c.signer.ParseExecutor(tenantId, ctx.GetHeader("Authorization"))
 	if err != nil {
+		ctx.AbortWithError(http.StatusUnauthorized, err)
 		return
 	}
+
+	pp.Println("@here_payload_before", string(payload))
 
 	out, err := c.engine.Execute(etypes.Execution{
 		TenantId: tenantId,
@@ -53,7 +59,10 @@ func (c *Controller) Execute(tenantId, action string, ctx *gin.Context) {
 		Payload:  payload,
 		Invoker:  web.NewWeb(ctx, eclaim),
 	})
+
 	if err != nil {
+		pp.Println("@here_err_after", string(payload))
+		ctx.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
 
