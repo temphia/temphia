@@ -27,8 +27,9 @@ func (c *Controller) refreshService(uclaim *claim.User, opts RefreshReq) *Refres
 }
 
 func (c *Controller) sessionClaim(uclaim *claim.User, opts RefreshReq) *RefreshResp {
-	deviceId := xid.New().String()
-	serviceId := c.sessman.SessionId()
+	deviceId := xid.New().String() // fixme
+	serviceId := c.sessionNode.Generate().Int64()
+
 	if opts.OldToken != "" {
 		sess, err := c.signer.ParseSession(uclaim.TenentId, opts.OldToken)
 		if err != nil {

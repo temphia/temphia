@@ -173,7 +173,8 @@ func (s *Server) sockdUserWS(ctx *gin.Context) {
 	if err != nil {
 		return
 	}
-	conn, err := transports.NewConnWS(ctx, 0)
+
+	conn, err := transports.NewConnWS(ctx, s.sockdConnIdGenerator.Generate().Int64())
 	if err != nil {
 		return
 	}

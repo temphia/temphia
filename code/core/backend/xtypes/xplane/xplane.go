@@ -16,5 +16,5 @@ type ControlPlane interface {
 	GetEventBus() EventBus
 
 	GetNodeId() int64
-	GetSequencer() Sequencer
+	GetIdService() IDService
 }

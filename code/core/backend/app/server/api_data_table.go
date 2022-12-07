@@ -1,7 +1,6 @@
 package server
 
 import (
-	"math/rand"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -219,7 +218,7 @@ func (s *Server) sockdDataWS(ctx *gin.Context) {
 		return
 	}
 
-	conn, err := transports.NewConnWS(ctx, int64(rand.Int())) // FIXME
+	conn, err := transports.NewConnWS(ctx, s.sockdConnIdGenerator.Generate().Int64())
 	if err != nil {
 		httpx.WriteErr(ctx, err)
 		return

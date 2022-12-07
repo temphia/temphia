@@ -53,7 +53,7 @@ func New(opts Options) *RootController {
 	deps := opts.App.GetDeps()
 
 	cplane := deps.ControlPlane().(xplane.ControlPlane)
-	seq := cplane.GetSequencer()
+	seq := cplane.GetIdService()
 
 	corehub := deps.CoreHub().(store.CoreHub)
 	pacman := deps.RepoHub().(repox.Hub)

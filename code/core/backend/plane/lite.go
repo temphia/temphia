@@ -2,6 +2,7 @@ package plane
 
 import (
 	"github.com/temphia/temphia/code/core/backend/app/config"
+	"github.com/temphia/temphia/code/core/backend/plane/idservice"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
@@ -14,7 +15,7 @@ type PlaneLite struct {
 	locker   *Locker
 	router   *Router
 	nodeId   int64
-	seq      Sequencer
+	seq      idservice.IDService
 }
 
 func NewLite(CoreHub store.CoreHub) *PlaneLite {
@@ -26,7 +27,7 @@ func NewLite(CoreHub store.CoreHub) *PlaneLite {
 		locker:   NewLocker(),
 		router:   nil,
 		nodeId:   nodeId,
-		seq:      NewSeq(nodeId),
+		seq:      *idservice.New(nodeId),
 	}
 }
 
@@ -66,4 +67,4 @@ func (p *PlaneLite) GetNodeId() int64 {
 	return p.nodeId
 }
 
-func (p *PlaneLite) GetSequencer() xplane.Sequencer { return &p.seq }
+func (p *PlaneLite) GetIdService() xplane.IDService { return &p.seq }

@@ -3,6 +3,7 @@ package server
 import (
 	"net"
 
+	"github.com/bwmarrin/snowflake"
 	"github.com/gin-gonic/gin"
 	apiadmin "github.com/temphia/temphia/code/core/backend/app/server/api_admin"
 	"github.com/temphia/temphia/code/core/backend/app/server/middleware"
@@ -21,6 +22,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
 )
 
 type Options struct {
@@ -50,16 +52,17 @@ type Server struct {
 
 	// controllers
 
-	cOperator *operator.Controller
-	cAuth     *authed.Controller
-	cBasic    *basic.Controller
-	cUser     *user.Controller
-	cData     *data.Controller
-	cCabinet  *cabinet.Controller
-	cRepo     *repo.Controller
-	cEngine   *engine.Controller
-	cDev      *dev.Controller
-	cSockd    *sockd.Controller
+	cOperator            *operator.Controller
+	cAuth                *authed.Controller
+	cBasic               *basic.Controller
+	cUser                *user.Controller
+	cData                *data.Controller
+	cCabinet             *cabinet.Controller
+	cRepo                *repo.Controller
+	cEngine              *engine.Controller
+	cDev                 *dev.Controller
+	cSockd               *sockd.Controller
+	sockdConnIdGenerator *snowflake.Node
 }
 
 func New(opts Options) *Server {
@@ -74,6 +77,8 @@ func New(opts Options) *Server {
 	}
 
 	root := opts.RootController
+
+	plane := deps.ControlPlane().(xplane.ControlPlane)
 
 	return &Server{
 		ginEngine: opts.GinEngine,
@@ -97,17 +102,18 @@ func New(opts Options) *Server {
 
 		// controllers
 
-		cOperator: root.OperatorController(),
-		cAuth:     root.AuthController(),
-		cBasic:    root.BasicController(),
-		cData:     root.DtableController(),
-		cCabinet:  root.CabinetController(),
-		cRepo:     root.RepoController(),
-		cEngine:   root.EngineController(),
-		cDev:      root.DevController(),
-		cUser:     root.UserController(),
-		cSockd:    root.SockdController(),
-		app:       opts.App,
+		cOperator:            root.OperatorController(),
+		cAuth:                root.AuthController(),
+		cBasic:               root.BasicController(),
+		cData:                root.DtableController(),
+		cCabinet:             root.CabinetController(),
+		cRepo:                root.RepoController(),
+		cEngine:              root.EngineController(),
+		cDev:                 root.DevController(),
+		cUser:                root.UserController(),
+		cSockd:               root.SockdController(),
+		app:                  opts.App,
+		sockdConnIdGenerator: plane.GetIdService().NewNode("temphia.sockd"),
 	}
 }
 

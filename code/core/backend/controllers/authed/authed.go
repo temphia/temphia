@@ -3,6 +3,7 @@ package authed
 import (
 	"strings"
 
+	"github.com/bwmarrin/snowflake"
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
@@ -13,16 +14,16 @@ import (
 )
 
 type Controller struct {
-	coredb  store.CoreHub
-	signer  service.Signer
-	sessman xplane.Sequencer
+	coredb      store.CoreHub
+	signer      service.Signer
+	sessionNode *snowflake.Node
 }
 
-func New(coredb store.CoreHub, signer service.Signer, seq xplane.Sequencer) *Controller {
+func New(coredb store.CoreHub, signer service.Signer, seq xplane.IDService) *Controller {
 	return &Controller{
-		coredb:  coredb,
-		signer:  signer,
-		sessman: seq,
+		coredb:      coredb,
+		signer:      signer,
+		sessionNode: seq.SessionNode(),
 	}
 }
 
