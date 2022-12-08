@@ -35,6 +35,8 @@
   };
 
   const action_new = () => app.nav.admin_ugroup_new();
+  const action_explore_group_user = (id: string) =>
+    app.nav.admin_ugroup_users(id);
 </script>
 
 <TopActions
@@ -47,12 +49,12 @@
   <LoadingSpinner />
 {:else}
   <AutoTable
-    action_key="id"
+    action_key="slug"
     actions={[
       {
         Name: "Explore",
         Class: "bg-green-400",
-        Action: () => {},
+        Action: action_explore_group_user,
         icon: "book-open",
       },
 
@@ -60,6 +62,12 @@
         Name: "Edit",
         Action: action_edit,
         icon: "pencil-alt",
+      },
+      {
+        Name: "Auths",
+        Class: "bg-yellow-400",
+        Action: () => {},
+        icon: "shield-exclamation",
       },
       {
         Name: "Delete",
