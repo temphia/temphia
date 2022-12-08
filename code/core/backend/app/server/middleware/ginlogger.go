@@ -21,6 +21,9 @@ func (m *Middleware) Log(c *gin.Context) {
 	// before request
 	path := c.Request.URL.Path
 	raw := c.Request.URL.RawQuery
+
+	// time.Sleep(2 * time.Second)
+
 	c.Next()
 	// after request
 	// latency := time.Since(t)
