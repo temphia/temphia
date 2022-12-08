@@ -19,7 +19,12 @@
       return;
     }
 
-    text = resp.data;
+    if (typeof resp.data === "object") {
+      text = JSON.stringify(resp.data);
+    } else {
+      text = resp.data;
+    }
+
     loading = false;
   };
 

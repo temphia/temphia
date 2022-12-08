@@ -54,7 +54,7 @@
       },
 
       {
-        Name: "Edit",
+        Name: "Download",
         Class: "bg-green-400",
         icon: "download",
         Action: (name) => {},
