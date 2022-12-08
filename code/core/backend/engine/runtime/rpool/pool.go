@@ -163,6 +163,10 @@ func (p *Pool) getRandom(currPlug, currAgent string) *standard.Binder {
 }
 
 func (p *Pool) calculate(singleCounter int64) int64 {
+	if p.totalAccessCounter == 0 {
+		return 0
+	}
+
 	count := (singleCounter * p.maxTotalCount) / p.totalAccessCounter
 
 	if count > p.maxSingleCount {
