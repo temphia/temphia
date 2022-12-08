@@ -78,8 +78,8 @@
           key_name: "extra_meta",
         },
       ],
-      name: "New Plug",
-      required_fields: ["bprint_id"],
+      name: "Edit Blueprint",
+      required_fields: [],
     }}
     onSave={save}
     {data}
