@@ -1,9 +1,8 @@
 package apiadmin
 
 import (
-	"io"
-
 	"github.com/gin-gonic/gin"
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/controllers/admin"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
@@ -86,13 +85,19 @@ func (r *ApiAdmin) BprintNewBlob(ctx httpx.Request) {
 }
 
 func (r *ApiAdmin) BprintUpdateBlob(ctx httpx.Request) {
-	bytes, err := io.ReadAll(ctx.Http.Request.Body)
+	pp.Println("@@@@@")
+
+	bytes, err := httpx.ReadForm(ctx.Http)
 	if err != nil {
+		pp.Println("aaaa", err)
 		r.rutil.WriteErr(ctx.Http, err.Error())
 		return
 	}
 
 	err = r.cAdmin.BprintUpdateBlob(ctx.Session, ctx.Http.Param("id"), ctx.Http.Param("file_id"), bytes)
+
+	pp.Println(err)
+
 	r.rutil.WriteJSON(ctx.Http, nil, err)
 }
 

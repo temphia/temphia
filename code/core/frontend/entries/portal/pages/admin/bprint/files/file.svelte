@@ -8,13 +8,15 @@
   export let file = $params._;
 
   let loading = true;
-  let text = "";
+  let code = "";
+  let editor;
+  let modified = false;
+  let ext = (file || "a.js").split(".").pop();
 
   const app = getContext("__app__") as PortalService;
   const api = app.api_manager.get_admin_bprint_api();
 
   const load = async () => {
-
     const resp = await api.get_file(bid, file);
     if (!resp.ok) {
       console.log("@err", resp);
@@ -22,9 +24,9 @@
     }
 
     if (typeof resp.data === "object") {
-      text = JSON.stringify(resp.data);
+      code = JSON.stringify(resp.data, undefined, 2);
     } else {
-      text = resp.data;
+      code = resp.data;
     }
 
     loading = false;
@@ -32,12 +34,26 @@
 
   load();
 
+  let message = "";
+  let save_loading = false;
   const save = async () => {
-    // api.update_file(bid, file, "")
-  }
+    if (loading || save_loading) {
+      return;
+    }
 
+    save_loading = true;
 
-
+    const formdata = new FormData();
+    formdata.append("file", editor.getValue());
+    const resp = await api.update_file(bid, file, formdata);
+    save_loading = false;
+    if (resp.ok) {
+      modified = false;
+      message = "";
+      return;
+    }
+    message = await resp.text();
+  };
 </script>
 
 {#if loading}
@@ -61,9 +77,15 @@
               Editor
             </button>
 
-            <button class="hover:bg-gray-300 rounded inline-flex border p-1">
-              <Icon name="save" class="h-5 w-5" />
-              Save
+            <button
+              class="hover:bg-gray-300 rounded inline-flex border p-1"
+              on:click={save}
+            >
+              <Icon
+                name="save"
+                class="h-5 w-5 {save_loading ? 'animate-spin' : ''}"
+              />
+              {modified ? "*" : ""} Save
             </button>
 
             <button
@@ -77,10 +99,22 @@
         </div>
       </div>
 
-      <div class="toolbar" />
+      <div class="toolbar">
+        <p class="text-red-600">
+          {message}
+        </p>
+      </div>
 
       <div class="h-full bg-white rounded p-2 ">
-        <CEditor code={text} container_style="height:85vh;" />
+        <CEditor
+          {code}
+          mode={ext}
+          bind:editor
+          container_style="height:85vh;"
+          on:change={(ev) => {
+            modified = true;
+          }}
+        />
       </div>
     </div>
   </div>

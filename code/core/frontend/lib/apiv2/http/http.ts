@@ -95,6 +95,14 @@ export class Http {
     });
   }
 
+  async patchForm(path: string, auth: boolean, data: any) {
+    return await fetch(`${this.baseURL}${path}`, {
+      method: "PATCH",
+      headers: auth ? { Authorization: this.headers["Authorization"] } : {},
+      body: data,
+    });
+  }
+
   async delete(path: string, data?: any): Promise<HttpResponse> {
     const resp = await fetch(`${this.baseURL}${path}`, {
       method: "DELETE",

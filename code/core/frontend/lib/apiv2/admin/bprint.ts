@@ -38,15 +38,12 @@ export class AdminBprintAPI {
     return this.base.get(`/admin/bprint/${bid}/file/${file}`);
   }
 
-  // fixme => make this formdata
   add_file(bid: string, file: string, data: any) {    
     return this.base.postForm(`/admin/bprint/${bid}/file/${file}`, true, data);
   }
-
-  // fixme => make this formdata
+  
   update_file(bid: string, file: string, data: any) {
-    
-    return this.base.postForm(`/admin/bprint/${bid}/file/${file}`, true, data);
+    return this.base.patchForm(`/admin/bprint/${bid}/file/${file}`, true, data);
   }
 
   delete_file(bid: string, file: string) {

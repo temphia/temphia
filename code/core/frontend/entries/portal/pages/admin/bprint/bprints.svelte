@@ -86,8 +86,8 @@
       {
         Name: "Files",
         Action: action_goto_files,
+        Class: "bg-green-400",
         icon: "document-duplicate",
-        drop: true,
       },
 
       {

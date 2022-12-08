@@ -42,6 +42,10 @@ export class ApiBase {
     return this.http.postForm(path, auth, data);
   }
 
+  async patchForm(path: string, auth: boolean, data: any) {
+    return this.http.patchForm(path, auth, data);
+  }
+
   async put(path: string, data: any) {
     return this.http.put(path, data);
   }
