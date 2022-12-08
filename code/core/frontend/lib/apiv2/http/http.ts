@@ -24,11 +24,22 @@ export class Http {
     });
 
     if (resp.ok) {
-      return Promise.resolve({
-        ok: true,
-        data: await resp.json(),
-        status: resp.status,
-      });
+      const text = await resp.text();
+      
+      try {
+        const data = JSON.parse(text);
+        return Promise.resolve({
+          ok: true,
+          data,
+          status: resp.status,
+        });
+      } catch (error) {
+        return Promise.resolve({
+          ok: true,
+          data: text,
+          status: resp.status,
+        });
+      }
     }
 
     return Promise.resolve({

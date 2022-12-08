@@ -52,6 +52,7 @@
     app.utils.small_modal_open(Issuer, { app, bid: id });
 
   const action_file_edit = (id: string) => {};
+  const action_goto_files = (id: string) => app.nav.admin_bprint_files(id);
 
   const action_delete = async (id: string) => {
     const api = app.api_manager.get_admin_bprint_api();
@@ -81,6 +82,14 @@
         icon: "pencil-alt",
         drop: true,
       },
+
+      {
+        Name: "Files",
+        Action: action_goto_files,
+        icon: "document-duplicate",
+        drop: true,
+      },
+
       {
         Name: "Issue",
         Action: action_issue,

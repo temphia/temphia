@@ -94,8 +94,12 @@ export class Navigator {
     this.set(`#/admin/bprint/${bid}`);
   };
 
-  admin_bprint_editor = (bid: string) => {
-    this.set(`#/admin/bprint/${bid}/editor`);
+  admin_bprint_files = (bid: string) => {
+    this.set(`#/admin/bprint/${bid}/file`);
+  };
+
+  admin_bprint_file = (bid: string, file: string) => {
+    this.set(`#/admin/bprint/${bid}/file/${file}`);
   };
 
   admin_bprint_data_instancer = (bid: string, file: string, opts?: any) => {

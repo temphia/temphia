@@ -1,6 +1,7 @@
 import AdminBprint from "./bprint/bprint.svelte";
 import AdminBprints from "./bprint/bprints.svelte";
-import AdminBprintEditor from "./bprint/editor/editor.svelte";
+import AdminBprintFiles from "./bprint/files/files.svelte";
+import AdminBprintFile from "./bprint/files/file.svelte";
 import AdminBprintDataInstancer from "./bprint/instancer/data/data.svelte";
 import AdminBprintPlugInstancer from "./bprint/instancer/plug/plug.svelte";
 
@@ -105,9 +106,10 @@ export default {
   "/bprint": {
     "/": AdminBprints,
     "/:bid": AdminBprint,
-    "/:bid/editor": AdminBprintEditor,
     "/:bid/instance/data/*": AdminBprintDataInstancer,
     "/:bid/instance/plug/*": AdminBprintPlugInstancer,
+    "/:bid/file": AdminBprintFiles,
+    "/:bid/file/*": AdminBprintFile,
   },
 
   "/plug": {
