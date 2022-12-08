@@ -70,7 +70,7 @@
             <div class="flex flex-row">
               {#each extern_actions as action}
                 <button
-                  on:click={() => action.Action(data[action_key])}
+                  on:click={() => action.Action(data[action_key], data)}
                   class="flex p-1 m-1 text-sm font-semibold text-white rounded transform hover:scale-110 {action.Class ||
                     'bg-blue-400'}"
                 >

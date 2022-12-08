@@ -340,9 +340,10 @@ export class Navigator {
   admin_target_apps = () => {
     this.set(`#/admin/target/app/`);
   };
-  admin_target_app_edit = (id: number) => {
-    this.set(`#/admin/target/app/${id}/edit`);
+  admin_target_app_edit = (ttype: string, id: number) => {
+    this.set(`#/admin/target/app/${ttype}/${id}/edit`);
   };
+
 
   admin_target_app_new = () => {
     this.set(`#/admin/target/app/new`);
@@ -353,8 +354,8 @@ export class Navigator {
   admin_target_hooks = () => {
     this.set(`#/admin/target/hook/`);
   };
-  admin_target_hook_edit = (id: number) => {
-    this.set(`#/admin/target/hook/${id}/edit`);
+  admin_target_hook_edit = (ttype: string, id: number) => {
+    this.set(`#/admin/target/hook/${ttype}/${id}/edit`);
   };
   admin_target_hook_new = () => {
     this.set(`#/admin/target/hook/new`);
