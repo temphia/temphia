@@ -42,7 +42,7 @@
   <LoadingSpinner />
 {:else}
   <AutoTable
-    show_drop={true}
+    show_drop={false}
     color={[]}
     action_key="name"
     actions={[
