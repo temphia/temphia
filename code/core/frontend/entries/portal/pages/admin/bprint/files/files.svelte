@@ -7,6 +7,7 @@
     PortalService,
   } from "../../core";
   import { params } from "svelte-hash-router";
+  import FileNew from "./_file_new.svelte";
 
   export let bid = $params.bid;
 
@@ -33,7 +34,13 @@
 
   // actions
 
-  const action_new = () => {}
+  const action_new = () => {
+    app.utils.small_modal_open(FileNew, {
+      app,
+      close_modal: app.utils.small_modal_close,
+      bid,
+    });
+  };
   const action_edit_file = async (name: string) =>
     app.nav.admin_bprint_file(bid, name);
 </script>
