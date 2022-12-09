@@ -9,15 +9,19 @@ export class Navigator {
   set = (new_url: string, opts?: any) => {
     this.options = opts;
     location.hash = new_url;
-
   };
 
   start = () => {
     this.set("#/");
   };
 
-  launch_target(target: string, name?: string) {
-    this.set(`#/launch/${target}${name ? "/" + window.btoa(name) : ""}`);
+  launch_target(target: string, opts?: { name?: string; target_type: string }) {
+    this.set(
+      `#/launch/${target}${
+        (opts || {}).name ? "/" + window.btoa(opts.name) : ""
+      }`,
+      opts
+    );
   }
 
   launcher() {
@@ -344,7 +348,6 @@ export class Navigator {
   admin_target_app_edit = (ttype: string, id: number) => {
     this.set(`#/admin/target/app/${ttype}/${id}/edit`);
   };
-
 
   admin_target_app_new = () => {
     this.set(`#/admin/target/app/new`);

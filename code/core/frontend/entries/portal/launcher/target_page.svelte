@@ -6,6 +6,8 @@
   export let target = $params.target;
 
   const app = getContext("__app__") as PortalService;
+  let lopts = app.nav.options || {};
+
   const launcher = app.launcher;
 
   onMount(async () => {
@@ -15,7 +17,11 @@
       launcher.instance_change(instance);
     } else {
       const name = $params._ ? window.atob($params._) : "";
-      instance = launcher.instance_by_target({ target_id: target, name });
+      instance = launcher.instance_by_target({
+        target_id: target,
+        name,
+        target_type: lopts["target_type"] || "",
+      });
     }
     launcher.plane_show();
   });

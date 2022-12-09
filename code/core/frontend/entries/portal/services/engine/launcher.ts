@@ -10,8 +10,7 @@ interface LauncherState {
 export interface Instance {
   id: string;
   target_id: string;
-  plug_id: string;
-  agent_id: string;
+  target_type: string
   name: string;
   invoker?: {
     close_instance: (id: string) => void;
@@ -53,7 +52,7 @@ export class Launcher {
     this.state.update((old) => ({ ...old, display: "SHOW" }));
   }
 
-  instance_by_target(target_app: object): string {
+  instance_by_target(topts: object): string {
     const instance_id = generateId();
 
     this.state.update((old) => ({
@@ -64,10 +63,9 @@ export class Launcher {
         {
           id: instance_id,
           invoker_name: "fixme",
-          name: "Test1",
-          plug_id: "fixme",
-          agent_id: "fixme",
-          target_id: target_app["target_id"],
+          name: topts["name"] || "",
+          target_type: topts["target_type"] || "",
+          target_id: topts["target_id"],
         },
       ],
     }));

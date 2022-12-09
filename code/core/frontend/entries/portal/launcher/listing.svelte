@@ -37,7 +37,11 @@
   <div class="p-8 flex flex-wrap justify-center gap-4">
     {#each user_apps as uapp}
       <div
-        on:click={() => app.nav.launch_target(uapp["target_id"], uapp["name"])}
+        on:click={() =>
+          app.nav.launch_target(uapp["target_id"], {
+            name: uapp["name"],
+            target_type: "user_group_app",
+          })}
         class="bg-white flex flex-col items-center h-32 w-32 p-2 overflow-hidden shadow-lg rounded-lg cursor-pointer hover:border-2 border-blue-400"
       >
         {#if !uapp["icon"]}
@@ -61,7 +65,7 @@
             <!-- fixme => escape contents -->
           </div>
         {/if}
-        
+
         <h2 class="text-lg text-gray-500 font-semibold font-mono">
           {uapp["name"]}
         </h2>
