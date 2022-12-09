@@ -2,6 +2,7 @@ package engine
 
 import (
 	"github.com/temphia/temphia/code/core/backend/engine/invokers"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/vmodels"
 )
@@ -51,4 +52,19 @@ func (c *Controller) launchAdmin(uclaim *claim.Session, data AdminLaunchData) (*
 		ExtScripts:   nil,
 	}, nil
 
+}
+
+func (c *Controller) ExecuteDev(dclaim *claim.PlugDevTkt, plug, agent, action string, body []byte) ([]byte, error) {
+
+	// fixme => check tkt and user perms here
+	// fixme => ability to send arbitary invoker type or dev invoker type?
+
+	return c.engine.Execute(etypes.Execution{
+		TenantId: dclaim.TenantId,
+		PlugId:   plug,
+		AgentId:  agent,
+		Action:   action,
+		Payload:  body,
+		Invoker:  nil, //web.NewWeb(ctx, eclaim),
+	})
 }

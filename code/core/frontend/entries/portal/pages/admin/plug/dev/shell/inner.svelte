@@ -4,6 +4,7 @@
 
   import { PortalService, CEditor } from "../../../core";
   import type { DevShellService } from "../../../../../services/engine/dev_shell";
+  import Jsonview from "../../../../../../xcompo/jsonview/jsonview.svelte";
 
   export let pid: string;
   export let aid: string;
@@ -13,16 +14,62 @@
   let watch_mode = false;
 
   let method = "";
+  let code = "{}";
+  let message = "";
   let editor;
   let resp_data;
-  
+
   const submit = async () => {
-    // console.log("@editor", editor);
-    // if (!method) {
-    //   return;
-    // }
-    // resp_data = await tkt_api.exec_run(pid, aid, method, editor.getValue());
+    if (!method) {
+      message = "Empty method";
+      return;
+    }
+
+    message = "";
+    const resp = await service.dev_api.exec_run_agent_action(
+      pid,
+      aid,
+      method,
+      JSON.parse(editor.getValue() || "{}")
+    );
+    if (!resp.ok) {
+      message = resp.data;
+      resp_data = "";
+      return;
+    }
+
+    resp_data = resp.data;
+
+    putLocal();
   };
+
+  const tryLocal = () => {
+    if (window.localStorage) {
+      const old = JSON.parse(
+        localStorage.getItem("__temphia_portal_dev_shell_") || "{}"
+      );
+      if (old["code"]) {
+        code = old["code"];
+      }
+      if (old["method"]) {
+        method = old["method"];
+      }
+    }
+  };
+
+  const putLocal = () => {
+    if (window.localStorage) {
+      localStorage.setItem(
+        "__temphia_portal_dev_shell_",
+        JSON.stringify({
+          code,
+          message,
+        })
+      );
+    }
+  };
+
+  tryLocal();
 </script>
 
 <div class="h-full w-full p-2">
@@ -64,14 +111,12 @@
       </div>
     </div>
 
+    <p class="text-red-500">{message}</p>
+
     <div class="flex flex-col h-96 flex-grow">
-      <CEditor
-        code={`{"data": 11}`}
-        bind:editor
-        container_style={"min-height:20rem;"}
-      />
-      <div class="h-1/2">
-        <nav class="flex flex-col sm:flex-row">
+      <CEditor {code} bind:editor container_style={"min-height:20rem;"} />
+      <div class="flex flex-col flex-grow h-52">
+        <nav class="flex">
           <button
             on:click={() => (watch_mode = false)}
             class="text-gray-600 p-1 block hover:text-blue-500 focus:outline-non {watch_mode
@@ -90,15 +135,15 @@
           </button>
         </nav>
 
-        <div class="flex p-1">
+        <div class="flex flex-col p-1 grow overflow-auto">
           {#if !watch_mode}
-            <div class="p-1 border rounded bg-gray-50 w-full">
+            <div class="p-1 border rounded bg-gray-50 w-full grow h-content">
               {#if resp_data}
-                <pre class="p-1">{JSON.stringify(resp_data, null, 4)}</pre>
+                <Jsonview json={resp_data} />
               {/if}
             </div>
           {:else}
-            <div class="p-1 border rounded bg-gray-50 w-full">
+            <div class="p-1 border rounded bg-gray-50 w-full h-full">
               <span>Not watching anything</span>
             </div>
           {/if}

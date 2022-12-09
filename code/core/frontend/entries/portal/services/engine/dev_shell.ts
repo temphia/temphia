@@ -18,6 +18,7 @@ export class DevShellService {
     this.apm = apm;
     this.pid = pid;
     this.aid = aid;
+    console.log("$DEV_SHELL", this);
   }
 
   async init(): Promise<true | string> {
@@ -41,7 +42,10 @@ export class DevShellService {
       return resp.data;
     }
 
-    this.dev_api = this.apm.get_dev_plug_tkt_api(resp.data["dev_ticket"]);
+    const data = JSON.parse(window.atob(resp.data));
+
+    this.dev_api = this.apm.get_dev_plug_tkt_api(data["dev_ticket"]);
+
     const aresp = await this.plug_api.get_agent(this.pid, this.aid);
     if (!aresp.ok) {
       return resp.data;

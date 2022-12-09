@@ -103,19 +103,34 @@ func (s *Server) DevExecReset(ctx *gin.Context) {
 }
 
 func (s *Server) DevExecRun(ctx *gin.Context) {
-	// tkt, err := r.parseDevTkt(ctx)
-	// if err != nil {
-	// 	r.rutil.WriteErr(ctx, err.Error())
-	// 	return
-	// }
+	tkt, err := s.parseDevTkt(ctx)
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
 
-	// plugId := ctx.Param("pid")
-	// agentId := ctx.Param("aid")
-	// action := ctx.Param("action")
+	plugId := ctx.Param("pid")
+	agentId := ctx.Param("aid")
+	action := ctx.Param("action")
 
-	// // fixme check if tkt can execute this plug/agent
+	data, err := ctx.GetRawData()
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
 
-	// r.engine.ExecAction(tkt.TenantId, plugId, agentId, action, ctx)
+	out, err := s.cEngine.ExecuteDev(tkt, plugId, agentId, action, data)
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	ctx.Writer.Write(out)
 }
 
 func (s *Server) DevModifyPlug(ctx *gin.Context) {
