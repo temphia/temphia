@@ -9,6 +9,7 @@ export class Navigator {
   set = (new_url: string, opts?: any) => {
     this.options = opts;
     location.hash = new_url;
+
   };
 
   start = () => {
@@ -16,7 +17,7 @@ export class Navigator {
   };
 
   launch_target(target: string, name?: string) {
-    this.set(`#/launch/${target}${name ? "/" + atob(name) : ""}`);
+    this.set(`#/launch/${target}${name ? "/" + window.btoa(name) : ""}`);
   }
 
   launcher() {

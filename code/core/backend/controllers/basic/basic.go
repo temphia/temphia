@@ -81,15 +81,16 @@ func (c *Controller) GetSelfInfo(uclaim *claim.Session) (*entities.SelfLoad, err
 	}
 
 	apps, err := c.coredb.ListTargetAppByUgroup(uclaim.TenentId, uclaim.UserGroup)
-	papps := make([]entities.PlugApp, 0, len(apps))
+	papps := make([]entities.UserApp, 0, len(apps))
 	if err == nil {
 		for _, app := range apps {
-			papps = append(papps, entities.PlugApp{
-				Id:      app.Id,
-				Name:    app.Name,
-				PlugId:  app.PlugId,
-				AgentId: app.AgentId,
-				Icon:    app.Icon,
+			papps = append(papps, entities.UserApp{
+				Id:       app.Id,
+				Name:     app.Name,
+				PlugId:   app.PlugId,
+				AgentId:  app.AgentId,
+				Icon:     app.Icon,
+				TargetId: app.Id,
 			})
 		}
 	}
@@ -106,7 +107,7 @@ func (c *Controller) GetSelfInfo(uclaim *claim.Session) (*entities.SelfLoad, err
 		TenantName: tenant.Name,
 		TenantId:   uclaim.TenentId,
 		Scopes:     scs,
-		PlugApps:   papps,
+		Apps:       papps,
 	}, nil
 
 }

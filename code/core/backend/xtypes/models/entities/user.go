@@ -62,13 +62,14 @@ type SelfLoad struct {
 	TenantId   string    `json:"tenant_id,omitempty"`
 	UserInfo   UserInfo  `json:"user_info,omitempty"`
 	Scopes     []string  `json:"scopes,omitempty"`
-	PlugApps   []PlugApp `json:"plug_apps,omitempty"`
+	Apps       []UserApp `json:"apps,omitempty"`
 }
 
-type PlugApp struct {
-	Id      int64  `json:"id,omitempty"`
-	Name    string `json:"name,omitempty"`
-	PlugId  string `json:"plug_id,omitempty"`
-	AgentId string `json:"agent_id,omitempty"`
-	Icon    string `json:"icon,omitempty"`
+type UserApp struct {
+	Id       int64  `json:"id,omitempty"`
+	Name     string `json:"name,omitempty"`
+	PlugId   string `json:"plug_id,omitempty"`
+	AgentId  string `json:"agent_id,omitempty"`
+	Icon     string `json:"icon,omitempty"`
+	TargetId int64  `json:"target_id,omitempty"`
 }

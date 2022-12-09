@@ -147,7 +147,7 @@ func (d *DB) ListTargetAppByUgroup(tenantId, ugroup string) ([]*entities.TargetA
 	err := d.targetAppTable().Find(
 		db.Cond{
 			"tenant_id":   tenantId,
-			"target_type": "user_group",
+			"target_type": entities.TargetAppTypeUserGroupApp,
 			"target":      ugroup,
 		},
 	).All(&ws)

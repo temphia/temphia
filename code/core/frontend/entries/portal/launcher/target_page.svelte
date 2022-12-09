@@ -14,7 +14,7 @@
     if (instance) {
       launcher.instance_change(instance);
     } else {
-      const name = $params._ ? window.btoa($params._) : "";
+      const name = $params._ ? window.atob($params._) : "";
       instance = launcher.instance_by_target({ target_id: target, name });
     }
     launcher.plane_show();

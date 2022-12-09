@@ -6,34 +6,8 @@
   export let show_running = false;
 
   const app = getContext("__app__") as PortalService;
-  const plugs = [
-    {
-      plug_name: "Example",
-      plug_id: "zzzz",
-      agent_id: "yyyyy",
-      icon: "",
-      ticket: "",
-      target_id: "mno",
-    },
 
-    {
-      plug_name: "Notes",
-      plug_id: "zzzz",
-      agent_id: "yyyyy",
-      icon: "",
-      ticket: "",
-      target_id: "pqr",
-    },
-
-    {
-      plug_name: "Example 2",
-      plug_id: "zzzz",
-      agent_id: "yyyyy",
-      icon: "",
-      ticket: "",
-      target_id: "xyz",
-    },
-  ];
+  const user_apps = app.api_manager.self_data.get_user_apps();
 </script>
 
 <div
@@ -61,12 +35,12 @@
   </div>
 
   <div class="p-8 flex flex-wrap justify-center gap-4">
-    {#each plugs as plug}
+    {#each user_apps as uapp}
       <div
-        on:click={() => app.nav.launch_target(plug.target_id, plug.plug_name)}
+        on:click={() => app.nav.launch_target(uapp["target_id"], uapp["name"])}
         class="bg-white flex flex-col items-center h-32 w-32 p-2 overflow-hidden shadow-lg rounded-lg cursor-pointer hover:border-2 border-blue-400"
       >
-        {#if plug.icon === ""}
+        {#if !uapp["icon"]}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="w-28 h-28 text-gray-500"
@@ -83,19 +57,13 @@
           </svg>
         {:else}
           <div class="w-28 h-28">
-            {@html plug.icon}
+            {@html uapp["icon"]}
             <!-- fixme => escape contents -->
           </div>
         {/if}
-
-        <h3
-          class="tracking-widest text-indigo-500 text-sm uppercase font-medium title-font"
-        >
-          {plug.plug_id}#{plug.agent_id}
-        </h3>
-
+        
         <h2 class="text-lg text-gray-500 font-semibold font-mono">
-          {plug.plug_name}
+          {uapp["name"]}
         </h2>
       </div>
     {/each}

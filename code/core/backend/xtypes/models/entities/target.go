@@ -16,10 +16,15 @@ type TargetApp struct {
 	TenantId    string     `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`
 }
 
+const (
+	TargetAppTypeUserGroupApp  = "user_group_app"
+	TargetAppTypeUserGroupAuth = "user_group_auth"
+)
+
 /*
 	app targets
 
-	- user_app
+	-
 	- auth_app
 	- domain_widget_app
 	- domain_editor_app

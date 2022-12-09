@@ -3,5 +3,5 @@ export interface SelfLoad {
   tenant_id: string;
   user_info: object;
   scopes: string[];
-  plug_apps: object[];
+  apps: object[];
 }

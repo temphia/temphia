@@ -180,13 +180,13 @@ export class ApiManager {
 export class SelfData {
   data_sources: string[];
   repo_sources: { [_: number]: string };
-  user_plugs: object[];
+  user_apps: object[];
 
   api_manager: ApiManager;
 
   constructor(apm: ApiManager, data: SelfLoad) {
     this.api_manager = apm;
-    this.user_plugs = data["plug_apps"] || [];
+    this.user_apps = data.apps || [];
   }
 
   async get_repo_sources() {
@@ -215,9 +215,9 @@ export class SelfData {
     return this.data_sources;
   }
 
-  get_user_plugs() {
-    if (this.user_plugs) {
-      return this.user_plugs;
+  get_user_apps() {
+    if (this.user_apps) {
+      return this.user_apps;
     }
 
     return [];

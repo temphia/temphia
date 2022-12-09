@@ -16,7 +16,7 @@
 
   const load = async () => {
     const resp = await eapi.launch_target({
-      target_id: options.target_id,
+      target_id: Number(options.target_id),
       target_type: "",
     });
     if (!resp.ok) {

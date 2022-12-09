@@ -67,6 +67,7 @@
         Action: action_edit,
         icon: "pencil-alt",
       },
+
       {
         Name: "Delete",
         Class: "bg-red-400",
