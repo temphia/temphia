@@ -35,7 +35,7 @@
 
         {
           name: "Default User Group",
-          ftype: "LONG_TEXT",
+          ftype: "TEXT",
           key_name: "default_ugroup",
         },
 

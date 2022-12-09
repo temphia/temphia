@@ -118,6 +118,7 @@
               ["id", "ID"],
               ["name", "Name"],
               ["renderer_type", "Http Adapter"],
+              ["about", "About"],
             ]}
             datas={domains}
             color={["renderer_type"]}
