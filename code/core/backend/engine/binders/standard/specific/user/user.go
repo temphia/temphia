@@ -141,6 +141,6 @@ func (ub *Binding) loadInvokeUser() {
 		return
 	}
 
-	invoker := ub.handle.Job.Invoker
-	ub.iuserCache = invoker.User()
+	// invoker := ub.handle.Job.Invoker
+	// ub.iuserCache = invoker.User()
 }

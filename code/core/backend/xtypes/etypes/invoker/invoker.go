@@ -1,6 +1,10 @@
 package invoker
 
-import "github.com/temphia/temphia/code/core/backend/xtypes"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/core/backend/xtypes"
+	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
+)
 
 type User struct {
 	Id        string
@@ -10,17 +14,6 @@ type User struct {
 }
 
 type Invoker interface {
-	User() *User
-	Name() string
-	Module
-}
-
-type Module interface {
-	Handle(method string, data xtypes.LazyData) (xtypes.LazyData, error)
-}
-
-// new
-type Invoker2 interface {
 	Type() string
 	ExecuteModule(module, action string, data xtypes.LazyData) (xtypes.LazyData, error)
 	ListModules() []string
@@ -29,3 +22,14 @@ type Invoker2 interface {
 	GetAttr(string) interface{}
 	GetAttrs() map[string]interface{}
 }
+
+type DevOptions struct {
+	App     xtypes.App
+	HttpCtx *gin.Context
+	Args    map[string]any
+	PlugId  string
+	AgentId string
+	Claim   *claim.PlugDevTkt
+}
+
+type DevInvokerBuilder func(opts DevOptions) Invoker

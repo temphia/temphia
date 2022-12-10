@@ -7,7 +7,6 @@ import (
 	"github.com/bwmarrin/snowflake"
 	"github.com/gin-gonic/gin"
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/core/backend/engine/invokers/web"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
@@ -57,7 +56,7 @@ func (c *Controller) Execute(tenantId, action string, ctx *gin.Context) {
 		AgentId:  eclaim.AgentId,
 		Action:   action,
 		Payload:  payload,
-		Invoker:  web.NewWeb(ctx, eclaim),
+		Invoker:  nil, //web.NewWeb(ctx, eclaim),
 	})
 
 	if err != nil {

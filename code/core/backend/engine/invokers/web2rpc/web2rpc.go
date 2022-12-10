@@ -1,13 +1,6 @@
 package web2rpc
 
-import (
-	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/core/backend/engine/invokers"
-	"github.com/temphia/temphia/code/core/backend/libx/lazydata"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/invoker"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
-)
+/*
 
 type Web2Rpc struct {
 	rctx   *gin.Context
@@ -87,3 +80,5 @@ func getTargetName(data xtypes.LazyData) (string, error) {
 	}
 	return req.Name, nil
 }
+
+*/

@@ -2,7 +2,6 @@ package self
 
 import (
 	"github.com/rs/xid"
-	"github.com/temphia/temphia/code/core/backend/engine/invokers/forked"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
 )
 
@@ -23,7 +22,7 @@ func (b *Binding) selfForkExec(method string, data []byte) error {
 			Loaded:            b.handle.Job.Loaded,
 			Plug:              b.handle.Job.Plug,
 			Agent:             b.handle.Job.Agent,
-			Invoker:           forked.New(b.handle.EventId),
+			Invoker:           nil, //forked.New(b.handle.EventId),
 		})
 	}()
 
