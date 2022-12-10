@@ -6,6 +6,7 @@
     FloatingAdd,
     PortalService,
   } from "../core";
+  import PickResourceType from "./_pick_resource_type.svelte";
 
   const app = getContext("__app__") as PortalService;
 
@@ -35,8 +36,9 @@
     }
     load();
   };
-  
-  const action_new = () => app.nav.admin_resource_new();
+
+  const action_new = () =>
+    app.utils.small_modal_open(PickResourceType, { app });
 </script>
 
 {#if loading}
