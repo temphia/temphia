@@ -28,7 +28,7 @@
 
   // actions
 
-  const action_edit = (id: string) => {};
+  const action_edit = (id: string) => app.nav.admin_ugroup_edit(id);
   const action_delete = async (id: string) => {
     const resp = await api.delete(id);
     load();
@@ -37,6 +37,8 @@
   const action_new = () => app.nav.admin_ugroup_new();
   const action_explore_group_user = (id: string) =>
     app.nav.admin_ugroup_users(id);
+
+  const action_group_auths = (id: string) => app.nav.admin_ugroup_auths(id);
 </script>
 
 <TopActions
@@ -66,7 +68,7 @@
       {
         Name: "Auths",
         Class: "bg-yellow-400",
-        Action: () => {},
+        Action: action_group_auths,
         icon: "shield-exclamation",
       },
       {

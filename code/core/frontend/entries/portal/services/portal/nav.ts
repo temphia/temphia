@@ -392,6 +392,18 @@ export class Navigator {
     this.set(`#/admin/ugroup/${ugroup}/user/${user_id}/edit`);
   }
 
+  admin_ugroup_auths(ugroup: string) {
+    this.set(`#/admin/ugroup/${ugroup}/auth`);
+  }
+
+  admin_ugroup_auth_new(ugroup: string, ) {
+    this.set(`#/admin/ugroup/${ugroup}/edit/new`);
+  }
+
+  admin_ugroup_auth_edit(ugroup: string, id: string) {
+    this.set(`#/admin/ugroup/${ugroup}/auth/edit/${id}`);
+  }
+
   admin_tenant() {
     this.set(`#/admin/tenant/`);
   }

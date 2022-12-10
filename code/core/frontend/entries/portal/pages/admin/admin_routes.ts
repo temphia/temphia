@@ -84,6 +84,10 @@ import AdminUgroupEdit from "./ugroup/ugroup_edit.svelte";
 import AdminUgroupUsers from "./ugroup/user/users.svelte";
 import AdminUgroupUser from "./ugroup/user/user.svelte";
 
+import AdminUgroupAuths from "./ugroup/auth/auths.svelte";
+import AdminUgroupAuthNew from "./ugroup/auth/auth_new.svelte";
+import AdminUgroupAuthEdit from "./ugroup/auth/auth_edit.svelte";
+
 // lens
 import AdminLens from "./lens/lens.svelte";
 
@@ -200,6 +204,11 @@ export default {
       "/": AdminUgroupUsers,
       "/:userid/edit": AdminUgroupUser,
     },
+
+    "/:ugroup/auth": AdminUgroupAuths,
+    "/:ugroup/auth/edit/:id": AdminUgroupAuthEdit,
+    "/:ugroup/auth/new": AdminUgroupAuthNew,
+    
   },
 
   "/user": {
