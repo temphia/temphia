@@ -19,6 +19,7 @@
     }
 
     data = resp.data;
+    loading = false
   };
 
   load();
