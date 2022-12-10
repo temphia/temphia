@@ -9,30 +9,39 @@
   import { params } from "svelte-hash-router";
   import NewPick from "./_new_pick.svelte";
 
-  export let source = $params.source;
-
   const app = getContext("__app__") as PortalService;
 
+  let sources = [];
   let datas = [];
   let loading = true;
   const api = app.api_manager.get_admin_data_api();
 
-  const load = async () => {
-    const resp = await api.list_group(source);
+  const load = async (src) => {
+    if (!src) {
+      return;
+    }
+
+    const sreq = app.api_manager.self_data.get_data_sources();
+
+    const resp = await api.list_group(src);
     if (!resp.ok) {
       return;
     }
 
     datas = resp.data;
     loading = false;
+
+    sources = await sreq;
   };
 
-  load();
+  $: load($params.source);
 
   // actions
 
-  const action_edit = (id: string) => app.nav.admin_data_group(source, id);
-  const action_explore = (id: string) => app.nav.admin_data_tables(source, id);
+  const action_edit = (id: string) =>
+    app.nav.admin_data_group($params.source, id);
+  const action_explore = (id: string) =>
+    app.nav.admin_data_tables($params.source, id);
   const action_delete = async (id: string) => {};
   const action_new = () => {
     app.utils.small_modal_open(NewPick, { app });
@@ -42,6 +51,18 @@
 {#if loading}
   <LoadingSpinner />
 {:else}
+  <div class="flex justify-end pt-2 pr-2">
+    <select
+      class="px-2 py-1 rounded-full bg-white hover:text-white hover:bg-slate-500 border border-slate-600"
+      value={$params.source}
+      on:change={(ev) => app.nav.admin_data_groups(ev.target["value"])}
+    >
+      {#each sources || [] as source}
+        <option value={source}>{source}</option>
+      {/each}
+    </select>
+  </div>
+
   <AutoTable
     action_key="slug"
     actions={[
