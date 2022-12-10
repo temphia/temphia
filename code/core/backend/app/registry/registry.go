@@ -6,6 +6,7 @@ import (
 
 	"github.com/temphia/temphia/code/core/backend/app/config"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/invoker"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
@@ -23,6 +24,7 @@ type Registry struct {
 	dynamicScripts      map[string]DynamicScript
 	storeBuilders       map[string]StoreBuilder
 	httpAdapterBuilders map[string]httpx.Builder
+	devInvokers         map[string]invoker.DevInvokerBuilder
 
 	freezed bool
 	mlock   *sync.Mutex
@@ -129,6 +131,16 @@ func (r *Registry) SetAapterBuilder(name string, rb httpx.Builder) {
 	r.httpAdapterBuilders[name] = rb
 }
 
+func (r *Registry) SetDevInvokerBuilders(name string, rb invoker.DevInvokerBuilder) {
+	r.mlock.Lock()
+	defer r.mlock.Unlock()
+	if r.freezed {
+		panic(errTooLate)
+	}
+
+	r.devInvokers[name] = rb
+}
+
 func (r *Registry) SetStoreBuilder(name string, b StoreBuilder) {
 	r.mlock.Lock()
 	defer r.mlock.Unlock()
@@ -194,4 +206,14 @@ func (r *Registry) GetAdapterBuilders() map[string]httpx.Builder {
 	}
 
 	return r.httpAdapterBuilders
+}
+
+func (r *Registry) GetDevInvokerBuilders() map[string]invoker.DevInvokerBuilder {
+	r.mlock.Lock()
+	defer r.mlock.Unlock()
+	if !r.freezed {
+		panic(errTooSoon)
+	}
+
+	return r.devInvokers
 }
