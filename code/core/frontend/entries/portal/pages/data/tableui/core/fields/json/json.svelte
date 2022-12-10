@@ -5,9 +5,15 @@
   export let column: Column;
   export let value: any;
   export let row_service: RowService;
+  export let onChange;
+
+  let editor;
 </script>
 
 <CEditor
-  on:change
+  bind:editor
+  on:change={() => {
+    onChange(editor.getValue());
+  }}
   code={value}
 />

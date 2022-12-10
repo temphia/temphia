@@ -186,15 +186,7 @@
     />
   </div>
 {:else if column.ctype === CtypeJSON}
-  <Json
-    {column}
-    bind:value={_value}
-    {row_service}
-    on:change={(ev) => {
-      _value = ev.detail;
-      onChange(_value);
-    }}
-  />
+  <Json {column} {row_service} value={_value} {onChange} />
 {:else if column.ctype === CtypeRangeNumber}
   <div class="flex w-full">
     <input
