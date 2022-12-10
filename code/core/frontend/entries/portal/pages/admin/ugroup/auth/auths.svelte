@@ -44,7 +44,7 @@
   <LoadingSpinner />
 {:else}
   <AutoTable
-    action_key="slug"
+    action_key="id"
     actions={[
       {
         Name: "Edit",

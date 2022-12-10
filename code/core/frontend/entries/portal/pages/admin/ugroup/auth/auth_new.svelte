@@ -11,7 +11,7 @@
   let message = "";
 
   const save = async (_data) => {
-    const resp = await api.new(_data);
+    const resp = await api.newAuth(ugroup, _data);
     if (!resp.ok) {
       message = resp.data;
       return;

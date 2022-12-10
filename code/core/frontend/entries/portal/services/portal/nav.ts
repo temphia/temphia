@@ -397,7 +397,7 @@ export class Navigator {
   }
 
   admin_ugroup_auth_new(ugroup: string, ) {
-    this.set(`#/admin/ugroup/${ugroup}/edit/new`);
+    this.set(`#/admin/ugroup/${ugroup}/auth/new`);
   }
 
   admin_ugroup_auth_edit(ugroup: string, id: string) {

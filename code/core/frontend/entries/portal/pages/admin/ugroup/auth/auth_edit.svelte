@@ -14,7 +14,7 @@
   let loading = true;
 
   const load = async () => {
-    const resp = await api.get(ugroup);
+    const resp = await api.getAuth(ugroup, id);
     if (!resp.ok) {
       return;
     }
