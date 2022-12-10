@@ -36,7 +36,7 @@ type Notz struct {
 
 	rendererBuilders map[string]httpx.Builder
 	renderers        map[string]httpx.Adapter
-	rlock            sync.Mutex // DANGER => cannot copy manager cz its not pointer
+	rlock            sync.Mutex // DANGER => cannot copy (by value) manager cz its not pointer
 }
 
 func New(opts NotzOptions) Notz {
