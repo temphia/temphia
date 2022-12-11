@@ -2,6 +2,7 @@
   import Tailwind from "../xcompo/common/_tailwind.svelte";
   import Portal from "./_portal.svelte";
   import build from "./services";
+  import { onMount } from "svelte";
 
   let loading = true;
 
@@ -11,7 +12,14 @@
   });
 
   console.log("@portal_service", app);
-  window["ps"] = app
+  window["ps"] = app;
+
+  onMount(() => {
+    window.onunhandledrejection = (e) => {
+      console.log("we got exception, but the app has crashed", e);
+      e.preventDefault();
+    };
+  });
 </script>
 
 {#if !loading}
