@@ -12,11 +12,6 @@ import (
 
 func (s *Server) selfAPI(rg *gin.RouterGroup) {
 
-	rg.GET("/system/cabinet", s.X(s.cabinetSources))
-	rg.GET("/system/datatable", s.X(s.dtableSources))
-	rg.GET("/system/adapter", s.X(s.ListRenderers))
-	rg.GET("/system/repo", s.X(s.ListRepoSources))
-
 	rg.GET("/load", s.X(s.selfGetInfo))
 	rg.GET("/session", s.X(s.selfListSession))
 	rg.POST("/email/change", s.X(s.selfChangeEmail))
@@ -30,17 +25,14 @@ func (s *Server) selfAPI(rg *gin.RouterGroup) {
 	rg.POST("/issue/data", s.X(s.issueDataTkt))
 	rg.GET("/self/ws", s.sockdUserWS)
 
-}
+	rg.GET("/system/cabinet", s.X(s.ListCabinetSources))
+	rg.GET("/system/datatable", s.X(s.ListDtableSources))
+	rg.GET("/system/adapter", s.X(s.ListRenderers))
+	rg.GET("/system/repo", s.X(s.ListRepoSources))
+	rg.GET("/system/module", s.X(s.ListModules))
+	rg.GET("/system/executor", s.X(s.ListExecutor))
+	rg.GET("/system/invoker", s.X(s.ListInvokers))
 
-func (s *Server) cabinetSources(ctx httpx.Request) {
-	sources, err := s.cBasic.ListCabinetSources(ctx.Session)
-	httpx.WriteJSON(ctx.Http, sources, err)
-
-}
-
-func (s *Server) dtableSources(ctx httpx.Request) {
-	sources, err := s.cBasic.ListDyndbSources(ctx.Session)
-	httpx.WriteJSON(ctx.Http, sources, err)
 }
 
 func (s *Server) self(ctx httpx.Request) {
@@ -99,16 +91,6 @@ func (s *Server) selfListSession(ctx httpx.Request) {
 
 func (s *Server) selfChangeEmail(ctx httpx.Request) {
 
-}
-
-func (s *Server) ListRenderers(ctx httpx.Request) {
-	resp := s.notz.ListRenderers()
-	httpx.WriteJSON(ctx.Http, resp, nil)
-}
-
-func (s *Server) ListRepoSources(ctx httpx.Request) {
-	resp, err := s.cBasic.ListRepoSources(ctx.Session)
-	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
 func (s *Server) issueFolderTkt(ctx httpx.Request) {
@@ -186,6 +168,39 @@ func (s *Server) sockdUserWS(ctx *gin.Context) {
 		DeviceId: sclaim.DeviceId,
 		Conn:     conn,
 	})
+
+}
+
+func (s *Server) ListCabinetSources(ctx httpx.Request) {
+	sources, err := s.cBasic.ListCabinetSources(ctx.Session)
+	httpx.WriteJSON(ctx.Http, sources, err)
+
+}
+
+func (s *Server) ListDtableSources(ctx httpx.Request) {
+	sources, err := s.cBasic.ListDyndbSources(ctx.Session)
+	httpx.WriteJSON(ctx.Http, sources, err)
+}
+
+func (s *Server) ListRenderers(ctx httpx.Request) {
+	resp := s.notz.ListRenderers()
+	httpx.WriteJSON(ctx.Http, resp, nil)
+}
+
+func (s *Server) ListRepoSources(ctx httpx.Request) {
+	resp, err := s.cBasic.ListRepoSources(ctx.Session)
+	httpx.WriteJSON(ctx.Http, resp, err)
+}
+
+func (s *Server) ListExecutor(ctx httpx.Request) {
+
+}
+
+func (s *Server) ListModules(ctx httpx.Request) {
+
+}
+
+func (s *Server) ListInvokers(ctx httpx.Request) {
 
 }
 
