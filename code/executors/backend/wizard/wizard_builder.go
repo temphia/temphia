@@ -1,7 +1,6 @@
 package wizard
 
 import (
-	"io/ioutil"
 	"os"
 
 	"path"
@@ -138,5 +137,5 @@ func (sd *SWBuilder) Init(app interface{}) error {
 }
 
 func (sd *SWBuilder) serveFile(dpath, file string) ([]byte, error) {
-	return ioutil.ReadFile(path.Join("executors/frontend/public/build/", file))
+	return os.ReadFile(path.Join("executors/frontend/public/build/", file))
 }
