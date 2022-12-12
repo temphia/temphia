@@ -1,10 +1,13 @@
-import type {
-  FactoryOptions,
-  ActionResponse,
-  Environment,
-} from "temphia-ui/dist/cjs/lib/engine";
+export type registerExecLoaderFactory = any;
 
-import { registerExecLoaderFactory } from "temphia-ui/dist/cjs/lib/engine";
+// sync this
+export interface Environment {
+  PreformAction: (name: string, data: any) => Promise<any>;
+  PreformParentAction: (name: string, data: any) => Promise<any>;
+  OnParentAction: (handler: (data: any) => {}) => void;
 
-export type { ActionResponse, FactoryOptions, Environment };
-export { registerExecLoaderFactory };
+  GetRegistry: () => any;
+  GetFolderTktAPI: (ticket: string) => any;
+  GetRoomTktAPI: (room: string, ticket?: string) => Promise<any>;
+  GetDataTableTktAPI: (ticket: string) => any;
+}
