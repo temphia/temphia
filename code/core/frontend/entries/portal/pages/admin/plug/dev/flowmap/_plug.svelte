@@ -1,7 +1,6 @@
 <script lang="ts">
   import Oicon from "./oicon.svelte";
   import Agent from "./_agent.svelte";
-  import Port from "./_port.svelte";
 
   const data = {
     root_plug: {
@@ -29,7 +28,7 @@
 </script>
 
 <div class="bg-white shadow rounded-lg w-80">
-  <header class="p-6 border-b border-gray-200">
+  <header class="p-2 border-b border-gray-200">
     <h3 class="text-lg font-semibold text-gray-700 inline-flex">
       <Oicon name="plug" />
       &nbsp;

@@ -1,11 +1,11 @@
 <script>
-  import Draggable from "./v2/draggable.svelte";
-  import Plug from "./v2/_plug.svelte";
-  import PlugCard from "./_plug_card.svelte";
+  import Draggable from "./_draggable.svelte";
+  import Plug from "./_plug.svelte";
 
   $: _main_plug_pos = [0, 0, 0, 0];
-
   $: _main_plug_center = [];
+
+
 </script>
 
 <div class="h-full w-full max-h-screen p-2">
@@ -20,18 +20,7 @@
             background-size: 13px 13px; background-color: rgba(71, 211, 255, 0.06);
       "
     >
-      <!-- <PlugCard
-        name="Xyz"
-        on:card_pos={(ev) => {
-          _main_plug_pos = [
-            ev.detail["top"],
-            ev.detail["left"],
-            ev.detail["height"],
-            ev.detail["width"],
-          ];
-          _main_plug_pos = _main_plug_pos;
-        }}
-      /> -->
+
 
       <Draggable>
         <Plug />
