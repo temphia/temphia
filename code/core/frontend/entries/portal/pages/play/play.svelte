@@ -7,6 +7,6 @@
   const app: PortalService = getContext("__app__");
 </script>
 
-<div class="flex items-center justify-center h-screen">
+<div class="flex items-center justify-center h-screen bg-green-50">
   <PlugCard />
 </div>

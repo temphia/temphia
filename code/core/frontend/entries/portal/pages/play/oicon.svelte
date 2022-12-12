@@ -3,6 +3,7 @@
   export let name;
   export let classes = "h-5 w-5";
   const objects = {
+    plug: "view-grid-add",
     agent: "users",
     resource: "cube",
     link: "link",
