@@ -28,9 +28,10 @@
 
 <div class="bg-white shadow rounded-lg w-80 relative">
   <header class="p-6 border-b border-gray-200 relative">
-    <div
-      class="h-2 w-2 rounded-full absolute -right-2 top-1/2 bg-red-400 hover:bg-red-400"
-    />
+    <div class="h-4 w-6 absolute -right-2 top-1/2 text-red-300 border rounded flex bg-white text-sm justify-between items-center">
+      IN
+      <div class="w-2 h-2 rounded-full bg-red-400 hover:bg-red-400" />
+    </div>
     <h3 class="text-lg font-semibold text-gray-700 inline-flex">
       <Oicon name="plug" />
       &nbsp;
@@ -77,9 +78,13 @@
               {#each agent.resources as resource}
                 <div class="flex justify-around">
                   Id
-                  <span class="px-1 bg-fuchsia-300 text-fuchsia-50 rounded">{resource.id}</span>
+                  <span class="px-1 bg-fuchsia-300 text-fuchsia-50 rounded"
+                    >{resource.id}</span
+                  >
                   Slot
-                  <span class="px-1 bg-fuchsia-300 text-fuchsia-50 rounded">{resource.slot}</span>
+                  <span class="px-1 bg-fuchsia-300 text-fuchsia-50 rounded"
+                    >{resource.slot}</span
+                  >
                 </div>
               {/each}
             </div>
@@ -97,9 +102,13 @@
               {#each agent.extensions as ext}
                 <div class="flex justify-around">
                   Bprint
-                  <span class="px-1 bg-fuchsia-300 text-fuchsia-50 rounded">{ext.bprint_id} </span>
+                  <span class="px-1 bg-fuchsia-300 text-fuchsia-50 rounded"
+                    >{ext.bprint_id}
+                  </span>
                   File
-                  <span class="px-1 bg-fuchsia-300 text-fuchsia-50 rounded">{ext.file}</span>
+                  <span class="px-1 bg-fuchsia-300 text-fuchsia-50 rounded"
+                    >{ext.file}</span
+                  >
                 </div>
               {/each}
             </div>
@@ -123,9 +132,13 @@
           {#each data.root_plug.resources as resource}
             <div class="flex justify-around">
               Id
-              <span class="px-1 bg-fuchsia-300 text-fuchsia-50 rounded" >{resource}</span>
+              <span class="px-1 bg-fuchsia-300 text-fuchsia-50 rounded"
+                >{resource}</span
+              >
               Type
-              <span class="px-1 bg-fuchsia-300 text-fuchsia-50 rounded" >{""}</span>
+              <span class="px-1 bg-fuchsia-300 text-fuchsia-50 rounded"
+                >{""}</span
+              >
             </div>
           {/each}
         </div>
