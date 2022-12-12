@@ -53,6 +53,7 @@ import AdminDataHook from "./data/hook/hook.svelte";
 import AdminDataHooks from "./data/hook/hooks.svelte";
 import AdminDataApp from "./data/app/app.svelte";
 import AdminDataApps from "./data/app/apps.svelte";
+import AdminDataQuery from "./data/query/query.svelte";
 
 import AdminDataViews from "./data/view/views.svelte";
 import AdminDataViewNew from "./data/view/view_new.svelte";
@@ -194,6 +195,7 @@ export default {
     "/:source/view/:group/:table/new": AdminDataViewNew,
     "/:source/view/:group/:table/:id/edit": AdminDataViewEdit,
     "/:source/activity/:group/:table": AdminActivity,
+    "/:source/query/:group": AdminDataQuery,    
   },
 
   "/ugroup": {

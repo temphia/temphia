@@ -303,6 +303,10 @@ export class Navigator {
     this.set(`#/admin/data/${source}/activity/${group}/${table}`);
   }
 
+  admin_data_query(source: string, group: string) {
+    this.set(`#/admin/data/${source}/query/${group}`);
+  }
+  
   // resources
 
   admin_resources = () => {
@@ -396,7 +400,7 @@ export class Navigator {
     this.set(`#/admin/ugroup/${ugroup}/auth`);
   }
 
-  admin_ugroup_auth_new(ugroup: string, ) {
+  admin_ugroup_auth_new(ugroup: string) {
     this.set(`#/admin/ugroup/${ugroup}/auth/new`);
   }
 

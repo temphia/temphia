@@ -65,6 +65,7 @@
 
   <AutoTable
     action_key="slug"
+    show_drop={true}
     actions={[
       {
         Name: "Edit",
@@ -77,11 +78,21 @@
         icon: "book-open",
         Action: action_explore,
       },
+
+      {
+        Class: "bg-green-400",
+        Name: "Query",
+        icon: "database",
+        Action: (id) => app.nav.admin_data_query($params.source, id),
+        drop: true,
+      },
+
       {
         Name: "Delete",
         Class: "bg-red-400",
         Action: action_delete,
         icon: "trash",
+        drop: true,
       },
     ]}
     key_names={[
