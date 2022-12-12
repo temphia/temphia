@@ -22,7 +22,7 @@ var (
 	//go:embed embed/wizard.loader.css
 	loaderCSS []byte
 
-	DevPath = "../executors/frontend/public/build/"
+	DevPath = "./code/executors/frontend/public/build/"
 )
 
 type SimpleWizard struct {

@@ -2,8 +2,8 @@
   "name": "svelte-app",
   "version": "1.0.0",
   "scripts": {
-    "build_wizard": "ENTRY_FILE=wizard rollup --config rollup.config.js",
-    "build_dashed": "ENTRY_FILE=dashed rollup --config rollup.config.js",
+    "build:wizard": "ENTRY_FILE=wizard rollup --config rollup.config.js",
+    "build:dashed": "ENTRY_FILE=dashed rollup --config rollup.config.js",
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public",
