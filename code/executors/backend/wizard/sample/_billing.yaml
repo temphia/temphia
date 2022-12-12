@@ -1,0 +1,104 @@
+title: Billing Helper
+dev: true
+splash:
+  message: Welcome to billing helper!
+  after_validate: script/select_stage_group
+  fields:
+    - proceed_action:
+      name: Action
+      info: "select a action"
+      type: basic.select
+      optional: false
+      options:
+        - make_sale
+        - preview_sale
+        - calculate_xyz
+
+stage_groups:
+  - name: make_sale
+    stages:
+      - select_account
+      - sale_select_products
+      - sale_apply_discounts
+      - sale_finish
+  - name: preview_sale
+    stages:
+      - select_account
+      - pick_sale
+      - preview_sale
+      - modify_sale_product
+      - modify_discount
+      - apply_modification
+  - name: calculate_daily_report
+    stages:
+      - daily_report
+  - name: calculate_account_payment
+    stages:
+      - select_account
+      - payment_report
+  - name: nested_select_product
+    stages:
+      - nested_pick_product_from_list
+      - nested_apply_discount
+stages:
+  select_account: 
+    fields:
+      - name: account
+        type: adv.json_inline_object
+        optional: false
+        source: load_accounts
+  sale_select_products:
+    fields:
+      - name: Pick sale items
+        type: adv.nested_json_array
+        options:
+          render_options:
+            id_key: id
+            image_key: image
+            auto_colors: [cat]
+        source: nested_select_product
+  sale_apply_discounts:
+    fields:
+    - name: Example Text
+      type: basic.shorttext
+
+  nested_pick_product_from_list:
+    fields:
+      - name: Name
+        type: adv.select_json_obj
+        render_options:
+          id_key: id
+          image_key: image
+          auto_colors: [cat]
+        source: load_all_products      
+  nested_apply_discount:
+      fields:
+        - name: Discounted Price
+          type: basic.number
+          source: calculate_discounted_price
+
+sources:
+  source1:
+    name: source one
+    type: static
+    value: ""
+    data: [1, 2, 3]
+  html_source:
+    name: source two
+    type: static
+    value: ""
+    data: "<p>This is a html element<p>"
+  load_accounts:
+    name: load_accounts
+    type: static
+    value: ""
+    data: [{
+      "__id": 1,
+      "username": john12,
+      "name": John Michel,
+    }]
+  nested_select_product:
+    name: nested_select_product
+    type: static
+    value: ""
+    data: [1, 2, 3]

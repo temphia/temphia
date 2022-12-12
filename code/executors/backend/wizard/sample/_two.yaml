@@ -1,0 +1,52 @@
+title: Two
+dev: true
+splash:
+  message: Sample two
+  after_validate: ""
+  fields:
+    - before_form:
+      name: Before Form 
+      type: view.paragraph
+      optional: true
+      options: This mobo jombo before you start.
+
+stage_groups:
+  - name: first_group
+    last_message: Thank you for filling useless form.
+    stages:
+      - first
+stages:
+  first:
+    message: Remember!, this is a first stage
+    fields:
+      - name: Test
+        type: basic.shorttext
+        optional: true
+      - name: Account
+        type: adv.jmulti_inline
+        optional: true
+        options:
+          message: This is nested stage
+          fields:
+            - name: First Name
+              type: basic.shorttext
+              optional: true
+            - name: Bio
+              type: basic.longtext
+              optional: true
+        source: first_source
+sources:
+  first_source:
+    type: static
+    data: [
+      {
+        __id: 1,
+        user_name: "john12",
+        full_name: "John Michel",
+        },
+      {
+        __id: 2,
+        user_name: "ram14",
+        full_name: "Ram Chandra",
+      },
+    ]

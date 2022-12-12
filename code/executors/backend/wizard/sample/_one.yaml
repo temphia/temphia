@@ -1,0 +1,42 @@
+title: One
+dev: true
+splash:
+  message: Sample one
+  after_validate: ""
+  fields:
+    - before_form:
+      name: Before Form 
+      type: view.paragraph
+      optional: true
+      options: This mobo jombo before you start.
+
+stage_groups:
+  - name: first_group
+    last_message: Thank you for filling useless form.
+    stages:
+      - first
+      - second
+      - third
+stages:
+  first:
+    message: Remember!, this is a first stage
+    fields:
+      - name: Best Color
+        type: basic.color
+        optional: true
+      - name: First Name
+        type: basic.shorttext
+        optional: true
+      - name: Bio
+        type: basic.longtext
+        optional: true
+  second:
+    fields:
+      - name: Second Required
+        type: basic.longtext
+        optional: false
+  third:
+    fields:
+      - name: First Post
+        type: basic.longtext
+        optional: true
