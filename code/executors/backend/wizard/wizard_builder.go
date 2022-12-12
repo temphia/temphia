@@ -9,27 +9,26 @@ import (
 	"github.com/dop251/goja"
 	"github.com/goccy/go-yaml"
 
-	"github.com/temphia/temphia/code/core/backend/app/registry"
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/libx/xutils"
+	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/executors/backend/wizard/wmodels"
 	"github.com/ztrue/tracerr"
 )
 
-func init() {
-	registry.SetExecutor("simple.wizard", func(app interface{}) (etypes.ExecutorBuilder, error) {
-		return &SWBuilder{}, nil
-	})
+func NewBuilder(app interface{}) (etypes.ExecutorBuilder, error) {
+	return &SWBuilder{
+		app: app.(xtypes.App),
+	}, nil
 }
 
-type SWBuilder struct{}
+type SWBuilder struct {
+	app xtypes.App
+}
 
-var DevMode = true
-
-func New(opts etypes.ExecutorOption) (etypes.Executor, error) {
-
-	if DevMode {
+func (sw *SWBuilder) New(opts etypes.ExecutorOption) (etypes.Executor, error) {
+	if sw.app.DevMode() {
 		return newDev(opts)
 	}
 
@@ -104,7 +103,7 @@ func newDev(opts etypes.ExecutorOption) (etypes.Executor, error) {
 }
 
 func (sd *SWBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, error) {
-	return New(opts)
+	return sd.New(opts)
 }
 
 func (sd *SWBuilder) ExecFile(file string) ([]byte, error) {

@@ -1,12 +1,11 @@
 package dashed
 
 import (
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/goccy/go-yaml"
 
-	"github.com/temphia/temphia/code/core/backend/app/registry"
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/executors/backend/dashed/dashmodels"
@@ -14,10 +13,8 @@ import (
 	"github.com/ztrue/tracerr"
 )
 
-func init() {
-	registry.SetExecutor("simple.dash", func(app interface{}) (etypes.ExecutorBuilder, error) {
-		return &SDBuilder{}, nil
-	})
+func NewBuilder(app interface{}) (etypes.ExecutorBuilder, error) {
+	return &SDBuilder{}, nil
 }
 
 type SDBuilder struct{}
@@ -28,15 +25,15 @@ func (sd *SDBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 
 func (sd *SDBuilder) ExecFile(file string) ([]byte, error) {
 	if strings.HasSuffix(file, ".js") {
-		return ioutil.ReadFile("frontend/public/build/dashed.js")
+		return os.ReadFile("frontend/public/build/dashed.js")
 	}
 
 	if strings.HasSuffix(file, ".css") {
-		return ioutil.ReadFile("frontend/public/build/dashed.css")
+		return os.ReadFile("frontend/public/build/dashed.css")
 	}
 
 	if strings.HasSuffix(file, ".js.map") {
-		return ioutil.ReadFile("frontend/public/build/dashed.js.map")
+		return os.ReadFile("frontend/public/build/dashed.js.map")
 	}
 
 	return nil, easyerr.NotFound()

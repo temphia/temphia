@@ -1,5 +1,5 @@
 import { writable, Writable } from "svelte/store";
-import type { ActionResponse, Environment } from "../../../lib";
+import type { Environment } from "../../../lib";
 import { StageStore } from "./stage";
 import type { State, Manager } from "./wizard_types";
 
@@ -51,7 +51,7 @@ export class WizardManager implements Manager {
     }
   };
 
-  applySplashFields = (resp: ActionResponse) => {
+  applySplashFields = (resp) => {
     this._stage_Store = new StageStore(this);
 
     this.wizard_title = resp.body["wizard_title"] || "";
@@ -87,7 +87,7 @@ export class WizardManager implements Manager {
     }
   };
 
-  applyStageFields = (resp: ActionResponse) => {
+  applyStageFields = (resp) => {
     this._stage_Store = new StageStore(this);
     const fields = resp.body["fields"] || [];
     this._opaqueData = resp.body["odata"] || "";
