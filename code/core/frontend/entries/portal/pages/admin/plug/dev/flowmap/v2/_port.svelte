@@ -6,8 +6,8 @@
 
 <div
   class="h-4 w-10 absolute {left
-    ? 'left-0'
-    : 'right-0' } bottom-1 text-{color}-300 border rounded flex bg-white text-sm justify-between items-center"
+    ? '-left-2'
+    : '-right-2' } bottom-1 text-{color}-300 border rounded flex bg-white text-sm justify-between items-center"
 >
   {#if !left}
     {name}
