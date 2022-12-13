@@ -7,6 +7,8 @@
 
   import AddColumn from "./_add_column.svelte";
   import AddTable from "./_add_table.svelte";
+  import EditColumn from "./_edit_column.svelte";
+  import EditTable from "./_edit_table.svelte";
   export let schema: typeof Schema;
 
   export let open_modal: (compo: any, opts: any) => void;
@@ -225,14 +227,14 @@
 
               <button
                 class="hover:bg-gray-300 rounded inline-flex border p-1"
-                on:click={() => {}}
+                on:click={() => open_modal(EditTable, {})}
               >
                 <Icon name="pencil-alt" class="h-5 w-5" />
                 Edit
               </button>
 
               <button
-                on:click={() => {}}
+                on:click={() => action_delete_table(table.slug)}
                 class="hover:bg-gray-300 rounded inline-flex border p-1"
               >
                 <Icon name="trash" class="h-5 w-5" />
@@ -295,8 +297,13 @@
                       >
 
                       <td class="px-3 py-1 flex gap-2">
-                        <ActionEditButton onClick={() => {}} />
-                        <ActionDeleteButton onClick={() => {}} />
+                        <ActionEditButton
+                          onClick={() => open_modal(EditColumn, {})}
+                        />
+                        <ActionDeleteButton
+                          onClick={() =>
+                            action_delete_column(table.slug, col.slug)}
+                        />
                       </td>
                     </tr>
                   {/each}
