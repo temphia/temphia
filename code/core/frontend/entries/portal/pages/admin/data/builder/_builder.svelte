@@ -1,5 +1,6 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
+  import { hslColor, numHash } from "../../../../../../lib/utils";
   import { ActionDeleteButton, ActionEditButton } from "../../../../../xcompo";
   import Cicon from "../../../data/tableui/core/cicon/cicon.svelte";
   import type Schema from "./sample";
@@ -141,8 +142,11 @@
 
 <div class="bg-blue-100 p-10 w-full h-full overflow-auto text-gray-800">
   <div class="bg-white rounded p-2 flex content-center justify-between mb-4">
-    <div class="flex gap-2">
-      <h1 class="text-gray-800">{__schema.name}</h1>
+    <div class="flex gap-2 items-center">
+      <h1 class="font-medium text-xl text-gray-800 line-clamp-1">
+        {__schema.name}
+      </h1>
+
       <span class="px-1 bg-gray-400 text-gray-50 rounded font-semibold"
         >{__schema.slug}</span
       >
@@ -164,9 +168,14 @@
 
   <div class="flex flex-wrap gap-2">
     {#each __schema.tables || [] as table, idx}
+      {@const table_color = `border-color: hsl(${
+        numHash(table.slug) % 360
+      }, 100%, 80%)`}
       {#if table !== null}
         <div class="p-2 border bg-white shadow w-90 rounded-lg">
-          <div class="flex flex-wrap content-center justify-between">
+          <div
+            class="flex flex-wrap content-center justify-between border-b mb-2"
+          >
             <div
               class="flex p-2 content-center justify-around gap-2 items-center"
             >
@@ -182,7 +191,11 @@
               >
                 <svg
                   fill="currentColor"
-                  class="bi bi-triangle-fill w-4 h-4 text-gray-700 transition-all {collapsed.includes(idx) ? 'rotate-90': 'rotate-180'}"
+                  class="bi bi-triangle-fill w-4 h-4 text-gray-700 transition-all {collapsed.includes(
+                    idx
+                  )
+                    ? 'rotate-90'
+                    : 'rotate-180'}"
                   viewBox="0 0 16 16"
                 >
                   <path
@@ -207,7 +220,7 @@
                   })}
               >
                 <Icon name="plus" class="h-5 w-5" />
-                Add
+                Column
               </button>
 
               <button
@@ -230,7 +243,16 @@
 
           {#if !collapsed.includes(idx)}
             {#if table.columns && table.columns.length > 0}
-              <table class="table-auto border-collapse w-full border">
+              <h2
+                class="font-medium text-base md:text-lg text-gray-800 line-clamp-1 py-2"
+              >
+                Table
+              </h2>
+
+              <table
+                class="table-auto border-collapse w-full border-2 rounded"
+                style={table_color}
+              >
                 <thead
                   ><tr
                     class="rounded-lg text-sm font-medium text-gray-700 text-left"
@@ -283,6 +305,12 @@
             {/if}
 
             {#if table.column_refs && table.column_refs.length > 0}
+              <h2
+                class="font-medium text-base md:text-lg text-gray-800 line-clamp-1 py-2"
+              >
+                References
+              </h2>
+
               <table class="table-auto border-collapse w-full border">
                 <thead
                   ><tr
@@ -297,7 +325,8 @@
 
                     <th
                       class="px-2 py-1"
-                      style="background-color: rgb(248, 248, 248);">Target</th
+                      style="background-color: rgb(248, 248, 248);"
+                      >Target Table</th
                     >
 
                     <th
@@ -330,13 +359,20 @@
                         ><span class="p-1 rounded-lg">{cref.type}</span></td
                       >
                       <td class="px-3 py-1"
-                        ><span class="p-1 rounded-lg">{cref.target}</span></td
+                        ><span
+                          class="p-1 rounded-lg"
+                          style={`background: hsl(${
+                            numHash(cref.target) % 360
+                          }, 100%, 80%)`}>{cref.target}</span
+                        ></td
                       >
 
                       <td class="px-3 py-1">
                         <div class="flex">
                           {#each cref.from_cols as col}
-                            <span class="p-1 rounded bg-slate-400 text-slate-50">{col}</span>
+                            <span class="p-1 rounded bg-slate-400 text-slate-50"
+                              >{col}</span
+                            >
                           {/each}
                         </div>
                       </td>
