@@ -16,6 +16,6 @@
 
 <Builder
   schema={sample}
-  open_modal={app.utils.small_modal_open}
-  close_modal={app.utils.small_modal_close}
+  open_modal={(comp, opts) => app.utils.small_modal_open(comp, opts)}
+  close_modal={() => app.utils.small_modal_close()}
 />
