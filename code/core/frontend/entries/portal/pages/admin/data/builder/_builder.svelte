@@ -1,6 +1,6 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import { hslColor, numHash } from "../../../../../../lib/utils";
+  import { numHash } from "../../../../../../lib/utils";
   import { ActionDeleteButton, ActionEditButton } from "../../../../../xcompo";
   import Cicon from "../../../data/tableui/core/cicon/cicon.svelte";
   import type Schema from "./sample";
@@ -90,11 +90,13 @@
   };
 
   const action_delete_table = (slug: string) => {
+    // fixme => does cref (reverse type be validated) or cref remove
+
     __schema.tables = __schema.tables.filter((val) => val.slug !== slug);
     __schema = { ...__schema };
   };
 
-  const action_add_column = (table: string, data: any) => {
+  const action_add_column = (table: string, data: any, ref_data?: any) => {
     const tidx = get_table_index(table);
 
     const tbl = __schema.tables[tidx];
@@ -124,10 +126,10 @@
 
     __schema.tables[tidx].columns[cidx] = {
       ...col,
-      name: data["name"] || "",
-      slug: data["slug"] || "",
-      ctype: data["ctype"],
-      description: data["info"],
+      name: data["name"] || col["name"] || "",
+      slug: data["slug"] || col["slug"] || "",
+      ctype: data["ctype"] || col["ctype"] || "",
+      description: data["info"] || col["description"] || "",
     };
 
     __schema = { ...__schema };
@@ -136,6 +138,8 @@
   const action_delete_column = (table: string, column: string) => {
     const [tidx, cidx] = get_column_index(table, column);
     const tbl = __schema.tables[tidx];
+
+    // fixme => does cref (reverse type be validated) or cref remove
 
     tbl.columns = tbl.columns.filter((val) => val.slug != column);
     __schema = { ...__schema };
@@ -218,7 +222,9 @@
                 on:click={() =>
                   open_modal(AddColumn, {
                     current_schema: __schema,
-                    callback: (data) => action_add_column(table.slug, data),
+                    current_table: table.slug,
+                    callback: (data, ref_data) =>
+                      action_add_column(table.slug, data, ref_data),
                   })}
               >
                 <Icon name="plus" class="h-5 w-5" />
@@ -227,7 +233,11 @@
 
               <button
                 class="hover:bg-gray-300 rounded inline-flex border p-1"
-                on:click={() => open_modal(EditTable, {})}
+                on:click={() =>
+                  open_modal(EditTable, {
+                    data: table,
+                    callback: (data) => action_edit_table(table.slug, data),
+                  })}
               >
                 <Icon name="pencil-alt" class="h-5 w-5" />
                 Edit
@@ -298,7 +308,12 @@
 
                       <td class="px-3 py-1 flex gap-2">
                         <ActionEditButton
-                          onClick={() => open_modal(EditColumn, {})}
+                          onClick={() =>
+                            open_modal(EditColumn, {
+                              data: col,
+                              callback: (data) =>
+                                action_edit_column(table.slug, col.slug, data),
+                            })}
                         />
                         <ActionDeleteButton
                           onClick={() =>
@@ -396,7 +411,6 @@
 
                       <td class="px-3 py-1 flex gap-2">
                         <ActionEditButton onClick={() => {}} />
-                        <ActionDeleteButton onClick={() => {}} />
                       </td>
                     </tr>
                   {/each}
