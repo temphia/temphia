@@ -25,6 +25,7 @@ func (a *ApiAdmin) dataAPI(rg *gin.RouterGroup) {
 	rg.PATCH("/:source/group/:gid/table/:tid/column/:cid", a.X(a.EditColumn))
 	rg.GET("/:source/group/:gid/table/:tid/column/:cid", a.X(a.GetColumn))
 	rg.DELETE("/:source/group/:gid/table/:tid/column/:cid", a.X(a.DeleteColumn))
+	rg.POST("/:source/group/:gid/seed", a.X(a.seed))
 
 	rg.GET("/:source/group/:gid/table/:tid/view", a.X(a.ListView))
 	rg.POST("/:source/group/:gid/table/:tid/view", a.X(a.NewView))
@@ -207,5 +208,9 @@ func (a *ApiAdmin) DeleteColumn(ctx httpx.Request) {
 	)
 
 	a.rutil.WriteFinal(ctx.Http, err)
+
+}
+
+func (a *ApiAdmin) seed(ctx httpx.Request) {
 
 }
