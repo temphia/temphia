@@ -31,9 +31,13 @@
 
   let name = "";
   let slug = "";
-  let info = "";
+  let description = "";
   let ctype = f.CtypeShortText;
-  
+  let icon: string = "";
+  let options: string[] = [];
+  let not_nullable: boolean = true;
+  let pattern: string = "";
+  let strict_pattern: boolean = false;
 
   let ref_enable = false;
   let ref_table = "";
@@ -57,26 +61,49 @@
     _possible_ref_columns
   );
 
+  $: __refable =
+    f.CtypeShapes.text.includes(ctype) || f.CtypeShapes.number.includes(ctype);
+
   const onAdd = () => {
     const data = {
       name,
       slug,
+      description,
       ctype,
-      info,
+      icon,
+      options,
+      not_nullable,
+      pattern,
+      strict_pattern,
     };
 
-    // fixme add reftype
+    let ref_type = "";
+    if (ref_column === f.KeyPrimary) {
+      if (ref_hard) {
+        ref_type = f.RefHardPriId;
+      } else {
+        ref_type = f.RefSoftPriId;
+      }
+    } else if (f.CtypeShapes.text.includes(ctype)) {
+      if (ref_hard) {
+        ref_type = f.RefHardText;
+      } else {
+        ref_type = f.RefSoftText;
+      }
+    } else {
+      console.log("fixme => Handle ref");
+    }
 
     const ref_data = {
-      ref_table,
-      ref_column,
+      slug: "",
+      type: ref_type,
+      target: ref_table,
+      from_cols: [],
+      to_cols: [],
     };
 
     callback(data, ref_enable ? ref_data : null);
   };
-
-  $: __refable =
-    f.CtypeShapes.text.includes(ctype) || f.CtypeShapes.number.includes(ctype);
 </script>
 
 <div class="p-2">
@@ -116,14 +143,14 @@
       <textarea
         type="text"
         class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200"
-        bind:value={info}
+        bind:value={description}
       />
     </div>
 
     <div class="flex-col flex py-3">
       <label class="pb-2 text-gray-700 font-semibold"
-        >Nullable
-        <input type="checkbox" />
+        >Not Nullable
+        <input type="checkbox" bind:checked={not_nullable} />
       </label>
     </div>
 
@@ -157,6 +184,8 @@
           <div class="flex-col flex py-3">
             <label class="pb-2 text-gray-700 font-semibold">Column</label>
             <select bind:value={ref_column} class="p-2 rounded">
+              <option value={f.KeyPrimary}>{f.KeyPrimary}</option>
+
               {#each _possible_ref_columns || [] as col}
                 <option value={col.slug}>{col.name}</option>
               {/each}

@@ -4,7 +4,6 @@
   import { ActionDeleteButton, ActionEditButton } from "../../../../../xcompo";
   import Cicon from "../../../data/tableui/core/cicon/cicon.svelte";
   import type { Builder } from "./builder";
-  import type Schema from "./sample";
 
   import AddColumn from "./_add_column.svelte";
   import AddTable from "./_add_table.svelte";
@@ -19,6 +18,60 @@
   let collapsed = [];
   const state = builder.state;
   $: __schema = $state;
+
+  const action_add_table = () => {
+    open_modal(AddTable, {
+      callback: (data: any) => {
+        builder.add_table(data);
+        close_modal();
+      },
+    });
+  };
+
+  const action_edit_table = (table: string) => () => {
+    open_modal(EditTable, {
+      data: table,
+      callback: (data) => {
+        builder.edit_table(table, data);
+        close_modal();
+      },
+    });
+  };
+
+  const action_delete_table = (table: string) => () => {
+    builder.delete_table(table);
+  };
+
+  const action_add_column = (table: string) => () => {
+    open_modal(AddColumn, {
+      current_schema: __schema,
+      current_table: table,
+      callback: (data, ref_data) => {
+        builder.add_column(data, ref_data);
+        close_modal();
+      },
+    });
+  };
+
+  const action_edit_column = (table: string, col: any) => () => {
+    open_modal(EditColumn, {
+      data: col,
+      callback: (data) => {
+        builder.edit_column(table, col.slug, data);
+        close_modal();
+      },
+    });
+  };
+
+  const action_delete_column = (table: string, column: string) => () => {
+    builder.delete_column(table, column);
+  };
+
+  const action_delete_column_ref = (table: string, refidx: number) => {
+    // builder.delete_column_ref()
+    
+  };
+
 </script>
 
 <div class="bg-blue-100 p-10 w-full h-full overflow-auto text-gray-800">
@@ -36,10 +89,7 @@
     <div class="flex gap-1">
       <button
         class="hover:bg-gray-300 rounded inline-flex border p-1"
-        on:click={() =>
-          open_modal(AddTable, {
-            //            callback: action_add_table,
-          })}
+        on:click={action_add_table}
       >
         <Icon name="plus" class="h-5 w-5" />
         Add
@@ -94,13 +144,7 @@
             <div class="flex gap-1 p-2">
               <button
                 class="hover:bg-gray-300 rounded inline-flex border p-1"
-                on:click={() =>
-                  open_modal(AddColumn, {
-                    current_schema: __schema,
-                    current_table: table.slug,
-                    callback: (data, ref_data) => {},
-                    // action_add_column(table.slug, data, ref_data),
-                  })}
+                on:click={action_add_column(table.slug)}
               >
                 <Icon name="plus" class="h-5 w-5" />
                 Column
@@ -108,17 +152,16 @@
 
               <button
                 class="hover:bg-gray-300 rounded inline-flex border p-1"
-                on:click={() =>
-                  open_modal(EditTable, {
-                    data: table,
-                    callback: (data) => {}, //action_edit_table(table.slug, data),
-                  })}
+                on:click={action_edit_table(table.slug)}
               >
                 <Icon name="pencil-alt" class="h-5 w-5" />
                 Edit
               </button>
 
-              <button class="hover:bg-gray-300 rounded inline-flex border p-1">
+              <button
+                on:click={action_delete_table(table.slug)}
+                class="hover:bg-gray-300 rounded inline-flex border p-1"
+              >
                 <Icon name="trash" class="h-5 w-5" />
                 Delete
               </button>
@@ -180,18 +223,10 @@
 
                       <td class="px-3 py-1 flex gap-2">
                         <ActionEditButton
-                          onClick={() => {
-                            // open_modal(EditColumn, {
-                            //   data: col,
-                            //   callback: (data) =>
-                            //     action_edit_column(table.slug, col.slug, data),
-                            // })
-                          }}
+                          onClick={action_edit_column(table.slug, col)}
                         />
                         <ActionDeleteButton
-                          onClick={() => {
-                            // action_delete_column(table.slug, col.slug)
-                          }}
+                          onClick={action_delete_column(table.slug, col.slug)}
                         />
                       </td>
                     </tr>
@@ -285,9 +320,10 @@
 
                       <td class="px-3 py-1 flex gap-2">
                         <ActionDeleteButton
-                          onClick={() => {
-                            // action_remove_cref(table.slug, crefidx, true)
-                          }}
+                          onClick={action_delete_column_ref(
+                            table.slug,
+                            crefidx
+                          )}
                         />
                       </td>
                     </tr>
