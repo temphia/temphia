@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import type { PortalService } from "../../services";
-  import Builder from "../admin/data/builder/builder.svelte";
+  import Builder from "../admin/data/tools/builder/builder.svelte";
 
   const app: PortalService = getContext("__app__");
 </script>

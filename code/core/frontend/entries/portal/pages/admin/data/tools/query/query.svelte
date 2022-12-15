@@ -2,7 +2,7 @@
   import { Router } from "svelte-hash-router";
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import { getContext } from "svelte";
-  import { CEditor, PortalService } from "../../core";
+  import { CEditor, PortalService } from "../../../core";
 
   const app = getContext("__app__") as PortalService;
 

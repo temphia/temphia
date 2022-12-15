@@ -1,6 +1,6 @@
 <script lang="ts">
-  import * as f from "../../../data/tableui/core/fields/field";
-  import { ActionButton } from "../../core";
+  import * as f from "../../../../data/tableui/core/fields/field";
+  import { ActionButton } from "../../../core";
 
   const ctypes = [
     f.CtypeShortText,

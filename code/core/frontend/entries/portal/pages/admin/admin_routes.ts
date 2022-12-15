@@ -53,14 +53,14 @@ import AdminDataHook from "./data/hook/hook.svelte";
 import AdminDataHooks from "./data/hook/hooks.svelte";
 import AdminDataApp from "./data/app/app.svelte";
 import AdminDataApps from "./data/app/apps.svelte";
-import AdminDataQuery from "./data/query/query.svelte";
+import AdminDataQuery from "./data/tools/query/query.svelte";
 
 import AdminDataViews from "./data/view/views.svelte";
 import AdminDataViewNew from "./data/view/view_new.svelte";
 import AdminDataViewEdit from "./data/view/view_edit.svelte";
 import Admin from "./admin.svelte";
 
-import AdminActivity from "./data/activity/activity.svelte";
+import AdminActivity from "./data/tools/activity/activity.svelte";
 
 // resource
 import AdminResources from "./resource/resources.svelte";

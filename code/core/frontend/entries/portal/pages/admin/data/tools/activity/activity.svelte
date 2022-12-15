@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import { AutoForm, LoadingSpinner, PortalService } from "../../core";
+  import { AutoForm, LoadingSpinner, PortalService } from "../../../core";
   import { params } from "svelte-hash-router";
   import ActivityInner from "./_activity_inner.svelte";
 

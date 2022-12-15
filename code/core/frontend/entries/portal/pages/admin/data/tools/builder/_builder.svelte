@@ -1,8 +1,8 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import { numHash } from "../../../../../../lib/utils";
-  import { ActionDeleteButton, ActionEditButton } from "../../../../../xcompo";
-  import Cicon from "../../../data/tableui/core/cicon/cicon.svelte";
+  import { numHash } from "../../../../../../../lib/utils";
+  import { ActionDeleteButton, ActionEditButton } from "../../../../../../xcompo";
+  import Cicon from "../../../../data/tableui/core/cicon/cicon.svelte";
   import type { Builder } from "./builder";
 
   import AddColumn from "./_add_column.svelte";
