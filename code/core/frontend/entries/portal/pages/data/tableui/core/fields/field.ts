@@ -91,7 +91,6 @@ export const FilterNotAround = "not_around";
 export const FilterBefore = "before";
 export const FilterAfter = "after";
 
-
 export const CtypeIcons = {
   [CtypeShortText]: "annotation",
   [CtypePhone]: "phone",
@@ -112,4 +111,18 @@ export const CtypeIcons = {
   [CtypeJSON]: "code",
   [CtypeRangeNumber]: "calculator",
   [CtypeColor]: "color-swatch",
+};
+
+export const CtypeShapes = {
+  text: [
+    CtypeShortText,
+    CtypePhone,
+    CtypeSelect,
+    CtypeFile,
+    CtypeLongText,
+    CtypeSingleUser,
+    CtypeEmail,
+    CtypeColor,
+  ],
+  number: [CtypeCurrency, CtypeNumber, CtypeRangeNumber],
 };

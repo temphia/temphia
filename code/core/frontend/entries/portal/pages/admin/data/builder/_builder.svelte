@@ -3,147 +3,22 @@
   import { numHash } from "../../../../../../lib/utils";
   import { ActionDeleteButton, ActionEditButton } from "../../../../../xcompo";
   import Cicon from "../../../data/tableui/core/cicon/cicon.svelte";
+  import type { Builder } from "./builder";
   import type Schema from "./sample";
 
   import AddColumn from "./_add_column.svelte";
   import AddTable from "./_add_table.svelte";
   import EditColumn from "./_edit_column.svelte";
   import EditTable from "./_edit_table.svelte";
-  export let schema: typeof Schema;
 
   export let open_modal: (compo: any, opts: any) => void;
   export let close_modal: () => void;
 
+  export let builder: Builder;
+
   let collapsed = [];
-
-  $: __schema = { ...schema };
-
-  const get_column_index = (table: string, column: string) => {
-    let _tidx = -1;
-    let _cidx = -1;
-
-    __schema.tables.forEach((val, tidx) => {
-      if (val.slug !== table) {
-        return;
-      }
-      val.columns.forEach((col, cidx) => {
-        if (col.slug !== column) {
-          return;
-        }
-        _tidx = tidx;
-        _cidx = cidx;
-        return;
-      });
-    });
-
-    return [_tidx, _cidx];
-  };
-
-  const get_table_index = (table: string) => {
-    let _tidx = -1;
-    __schema.tables.forEach((val, tidx) => {
-      if (val.slug !== table) {
-        return;
-      }
-      _tidx = tidx;
-    });
-
-    return _tidx;
-  };
-
-  const action_add_table = (data) => {
-    __schema = {
-      ...__schema,
-      tables: [
-        ...__schema.tables,
-        {
-          name: data.name,
-          slug: data.slug,
-          description: data.info || "",
-          icon: data["icon"] || "",
-          main_column: data["main_column"] || "",
-          columns: data["columns"] || [],
-          column_refs: data["column_refs"] || [],
-        },
-      ],
-    };
-
-    close_modal();
-  };
-
-  $: console.log("$SCHEMA", __schema);
-
-  const action_edit_table = (table: string, data: any) => {
-    const tidx = get_table_index(table);
-    const tbl = __schema.tables[tidx];
-
-    __schema.tables[tidx] = {
-      ...tbl,
-      ...{
-        name: data.name,
-        slug: data.slug,
-        description: data.info || "",
-      },
-    };
-
-    __schema = { ...__schema };
-  };
-
-  const action_delete_table = (slug: string) => {
-    // fixme => does cref (reverse type be validated) or cref remove
-
-    __schema.tables = __schema.tables.filter((val) => val.slug !== slug);
-    __schema = { ...__schema };
-  };
-
-  const action_add_column = (table: string, data: any, ref_data?: any) => {
-    const tidx = get_table_index(table);
-
-    const tbl = __schema.tables[tidx];
-
-    tbl.columns = [
-      {
-        name: data["name"] || "",
-        slug: data["slug"] || "",
-        ctype: data["ctype"],
-        description: data["info"],
-        icon: data["icon"] || "",
-        options: data["options"] || [],
-        not_nullable: !!data["not_nullable"],
-        pattern: data["pattern"],
-        strict_pattern: !!data["strict_pattern"],
-      },
-      ...tbl.columns,
-    ];
-
-    __schema = { ...__schema };
-    close_modal();
-  };
-
-  const action_edit_column = (table: string, column: string, data: any) => {
-    const [tidx, cidx] = get_column_index(table, column);
-    const col = __schema.tables[tidx].columns[cidx];
-
-    __schema.tables[tidx].columns[cidx] = {
-      ...col,
-      name: data["name"] || col["name"] || "",
-      slug: data["slug"] || col["slug"] || "",
-      ctype: data["ctype"] || col["ctype"] || "",
-      description: data["info"] || col["description"] || "",
-    };
-
-    __schema = { ...__schema };
-  };
-
-  const action_delete_column = (table: string, column: string) => {
-    const [tidx, cidx] = get_column_index(table, column);
-    const tbl = __schema.tables[tidx];
-
-    // fixme => does cref (reverse type be validated) or cref remove
-
-    tbl.columns = tbl.columns.filter((val) => val.slug != column);
-    __schema = { ...__schema };
-  };
+  const state = builder.state;
+  $: __schema = $state;
 </script>
 
 <div class="bg-blue-100 p-10 w-full h-full overflow-auto text-gray-800">
@@ -163,7 +38,7 @@
         class="hover:bg-gray-300 rounded inline-flex border p-1"
         on:click={() =>
           open_modal(AddTable, {
-            callback: action_add_table,
+            //            callback: action_add_table,
           })}
       >
         <Icon name="plus" class="h-5 w-5" />
@@ -223,8 +98,8 @@
                   open_modal(AddColumn, {
                     current_schema: __schema,
                     current_table: table.slug,
-                    callback: (data, ref_data) =>
-                      action_add_column(table.slug, data, ref_data),
+                    callback: (data, ref_data) => {},
+                    // action_add_column(table.slug, data, ref_data),
                   })}
               >
                 <Icon name="plus" class="h-5 w-5" />
@@ -236,17 +111,14 @@
                 on:click={() =>
                   open_modal(EditTable, {
                     data: table,
-                    callback: (data) => action_edit_table(table.slug, data),
+                    callback: (data) => {}, //action_edit_table(table.slug, data),
                   })}
               >
                 <Icon name="pencil-alt" class="h-5 w-5" />
                 Edit
               </button>
 
-              <button
-                on:click={() => action_delete_table(table.slug)}
-                class="hover:bg-gray-300 rounded inline-flex border p-1"
-              >
+              <button class="hover:bg-gray-300 rounded inline-flex border p-1">
                 <Icon name="trash" class="h-5 w-5" />
                 Delete
               </button>
@@ -308,16 +180,18 @@
 
                       <td class="px-3 py-1 flex gap-2">
                         <ActionEditButton
-                          onClick={() =>
-                            open_modal(EditColumn, {
-                              data: col,
-                              callback: (data) =>
-                                action_edit_column(table.slug, col.slug, data),
-                            })}
+                          onClick={() => {
+                            // open_modal(EditColumn, {
+                            //   data: col,
+                            //   callback: (data) =>
+                            //     action_edit_column(table.slug, col.slug, data),
+                            // })
+                          }}
                         />
                         <ActionDeleteButton
-                          onClick={() =>
-                            action_delete_column(table.slug, col.slug)}
+                          onClick={() => {
+                            // action_delete_column(table.slug, col.slug)
+                          }}
                         />
                       </td>
                     </tr>
@@ -370,7 +244,7 @@
                 </thead>
 
                 <tbody class="text-sm font-normal text-gray-700">
-                  {#each table.column_refs as cref}
+                  {#each table.column_refs as cref, crefidx}
                     <tr
                       class="hover:bg-gray-100 border-b border-gray-200 py-10 text-gray-700"
                     >
@@ -410,7 +284,11 @@
                       </td>
 
                       <td class="px-3 py-1 flex gap-2">
-                        <ActionEditButton onClick={() => {}} />
+                        <ActionDeleteButton
+                          onClick={() => {
+                            // action_remove_cref(table.slug, crefidx, true)
+                          }}
+                        />
                       </td>
                     </tr>
                   {/each}

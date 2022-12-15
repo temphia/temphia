@@ -33,9 +33,12 @@
   let slug = "";
   let info = "";
   let ctype = f.CtypeShortText;
+  
+
   let ref_enable = false;
   let ref_table = "";
   let ref_column = "";
+  let ref_hard = false;
 
   $: _possible_ref_tables = current_schema.tables.filter(
     (val) => val.slug !== current_table
@@ -62,6 +65,8 @@
       info,
     };
 
+    // fixme add reftype
+
     const ref_data = {
       ref_table,
       ref_column,
@@ -69,6 +74,9 @@
 
     callback(data, ref_enable ? ref_data : null);
   };
+
+  $: __refable =
+    f.CtypeShapes.text.includes(ctype) || f.CtypeShapes.number.includes(ctype);
 </script>
 
 <div class="p-2">
@@ -114,12 +122,21 @@
 
     <div class="flex-col flex py-3">
       <label class="pb-2 text-gray-700 font-semibold"
-        >Reference
-        <input type="checkbox" bind:checked={ref_enable} />
+        >Nullable
+        <input type="checkbox" />
       </label>
     </div>
 
-    {#if ref_enable}
+    {#if __refable}
+      <div class="flex-col flex py-3">
+        <label class="pb-2 text-gray-700 font-semibold"
+          >Reference
+          <input type="checkbox" bind:checked={ref_enable} />
+        </label>
+      </div>
+    {/if}
+
+    {#if ref_enable && __refable}
       <div class="flex-col flex p-2 border">
         <div class="flex-col flex py-3">
           <label class="pb-2 text-gray-700 font-semibold">Table</label>
@@ -146,6 +163,13 @@
             </select>
           </div>
         {/key}
+      </div>
+
+      <div class="flex-col flex py-3">
+        <label class="pb-2 text-gray-700 font-semibold"
+          >Hard Reference
+          <input type="checkbox" bind:checked={ref_hard} />
+        </label>
       </div>
     {/if}
 
