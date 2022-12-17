@@ -11,4 +11,7 @@ backend_docker_run:
 backend_server_run:
 	cd .. && go run dev/*.go
 
+backend_server_tests_run:
+	echo "hmm"
+
 .PHONY: check backend_docker_run backend_server_run

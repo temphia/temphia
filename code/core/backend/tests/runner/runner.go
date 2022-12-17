@@ -1,20 +1,25 @@
 package runner
 
-import "github.com/temphia/temphia/code/core/backend/xtypes"
+import (
+	"github.com/temphia/temphia/code/core/backend/xtypes"
+)
+
+type RunnerTest func(app xtypes.App) error
 
 type Runner struct {
-	app xtypes.App
+	app   xtypes.App
+	tests map[string][]RunnerTest
 }
 
 func New(app xtypes.App) *Runner {
 	return &Runner{
-		app: app,
+		app:   app,
+		tests: make(map[string][]RunnerTest),
 	}
 }
 
-func (r *Runner) WithBasic() error {
-
-	return nil
+func (r *Runner) Register(name string, tests []RunnerTest) {
+	r.tests[name] = tests
 }
 
 /*
