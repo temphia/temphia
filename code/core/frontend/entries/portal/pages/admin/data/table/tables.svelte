@@ -54,36 +54,13 @@
 {:else}
   <AutoTable
     action_key="slug"
+    show_drop={true}
     actions={[
       {
         Class: "bg-green-400",
         Name: "Columns",
         Action: action_goto_columns,
       },
-
-      {
-        Name: "Views",
-        Action: action_goto_views,
-      },
-
-      {
-        Name: "Hooks",
-        Class: "bg-green-400",
-        Action: action_goto_data_hooks,
-      },
-
-      {
-        Name: "Activities",
-        Class: "bg-green-400",
-        Action: action_goto_activities,
-      },
-
-      {
-        Name: "Apps",
-        Class: "bg-green-400",
-        Action: action_goto_data_apps,
-      },
-
       {
         Name: "Data",
         Class: "bg-yellow-400",
@@ -91,9 +68,40 @@
       },
 
       {
+        Name: "Views",
+        Action: action_goto_views,
+        drop: true,
+        icon: "filter",
+      },
+
+      {
+        Name: "Hooks",
+        Class: "bg-green-400",
+        Action: action_goto_data_hooks,
+        drop: true,
+        icon: "code",
+      },
+
+      {
+        Name: "Activities",
+        Class: "bg-green-400",
+        Action: action_goto_activities,
+        drop: true,
+        icon: "rss",
+      },
+
+      {
+        Name: "Apps",
+        Class: "bg-green-400",
+        Action: action_goto_data_apps,
+        icon: "view-grid",
+        drop: true,
+      },
+      {
         Name: "Edit",
         Action: action_edit,
         icon: "pencil-alt",
+        drop: true,
       },
 
       {
@@ -101,6 +109,7 @@
         Class: "bg-red-400",
         Action: action_delete,
         icon: "trash",
+        drop: true,
       },
     ]}
     key_names={[
