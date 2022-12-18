@@ -1,5 +1,6 @@
 <script lang="ts">
-  import type { PortalService } from "../../core";
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
+  import { LoadingSpinner, PortalService } from "../../core";
   import { instance_helper } from "./instance";
 
   export let bid: string;
@@ -7,6 +8,7 @@
   export let bprint: object;
 
   let bundle_objects;
+  let loading = true;
 
   (async () => {
     const bapi = app.api_manager.get_admin_bprint_api();
@@ -15,26 +17,42 @@
       return;
     }
     bundle_objects = resp.data;
+    loading = false;
   })();
+
+  const iconTypes = {
+    data_group: "collection",
+    plug: "view-grid-add",
+  };
 </script>
 
-{#if bundle_objects}
-  <h3>Bundle Objects</h3>
+{#if loading}
+  <LoadingSpinner />
+{:else}
+  <div class="flex items-center justify-between">
+    <h4 class="font-semibold text-lg text-slate-800">Pick a object to instance.</h4>
+  </div>
 
-  <div class="flex flex-col gap-2">
+  <div class="space-y-2 mt-4">
     {#each Object.entries(bundle_objects) as [bkey, be]}
-      <div class="p-2 rounded border flex justify-evenly">
-        <p>{bkey}</p>
+      <div
+        on:click={() => {
+          instance_helper(app, be["type"], bprint, be["file"]);
+          app.utils.small_modal_close();
+        }}
+        class="flex space-x-4 rounded-xl bg-white p-3 shadow-sm hover:border border-blue-500 cursor-pointer"
+      >
+        <Icon
+          name={iconTypes[be["type"]] || "hashtag"}
+          class="w-10 h-10 text-zinc-600"
+        />
 
-        <span class="p-1 rounded bg-pink-200">{be["type"]}</span>
-
-        <button
-          class="p-1 bg-blue-500 hover:bg-blue-700 text-white rounded"
-          on:click={() => {
-            instance_helper(app, be["type"], bprint, be["file"]);
-            app.utils.small_modal_close();
-          }}>Instance</button
-        >
+        <div>
+          <h4 class="font-semibold text-gray-600">{bkey}</h4>
+          <p class="text-sm text-slate-400">
+            {be["type"]}
+          </p>
+        </div>
       </div>
     {/each}
   </div>

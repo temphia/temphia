@@ -1,15 +1,13 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import Issuer from "./issuer/issuer.svelte";
-  import InstanceBundlePicker from "./instancer/bundle_picker.svelte";
-
   import {
     AutoTable,
     LoadingSpinner,
     FloatingAdd,
     PortalService,
   } from "../core";
-  import { instance_helper } from "./instancer/instance";
+  import InstancerPick from "./instancer/instancer_pick.svelte";
 
   let datas = [];
   let loading = true;
@@ -31,21 +29,8 @@
   // actions
 
   const action_instance = async (id: string) => {
-    const api = app.api_manager.get_admin_bprint_api();
-    const resp = await api.get(id);
-    if (!resp.ok) {
-      console.log("@@");
-      return;
-    }
-
-    const bprint = resp.data;
-
-    const file = bprint["files"].filter(
-      (v) => v !== "schema.json" || v !== "schema.yaml"
-    )[0];
-
-    instance_helper(app, bprint["type"], bprint, file, InstanceBundlePicker);
-  };
+    app.utils.small_modal_open(InstancerPick, {app, id} )
+   };
 
   const action_edit = (id: string) => app.nav.admin_bprint(id);
   const action_issue = (id: string) =>
@@ -59,7 +44,7 @@
     await api.delete(id);
     load();
   };
-  const action_new = async () => {};
+  const action_new = () => app.nav.repo_loader();
 </script>
 
 {#if loading}
