@@ -9,8 +9,7 @@ check: # check if binaries required are in $PATH
 backend_docker_run:
 	cd ../cmd/dev && docker-compose up
 backend_server_run:
-	cd .. && go run dev/*.go
-
+	cd .. && go run dev/dev.go
 backend_server_tests_run:
 	echo "hmm"
 

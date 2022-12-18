@@ -25,14 +25,14 @@ func (c *Controller) PlugStateUpdate(uclaim *claim.Session, pid, key string, sta
 	return c.plugState.Update(0, uclaim.TenentId, pid, key, state.Value, state.Options)
 }
 
-func (c *Controller) PlugStateList(uclaim *claim.Session, pid string) ([]*entities.PlugKV, error) {
-	// fixme => implement pagination
+func (c *Controller) PlugStateList(uclaim *claim.Session, pid, key_cursor string, page uint) ([]*entities.PlugKV, error) {
 
 	return c.plugState.Query(0, uclaim.TenentId, pid, &store.PkvQuery{
 		KeyPrefix: "",
 		LoadMeta:  true,
 		PageCount: 100,
-		Page:      0,
+		Page:      page,
+		KeyCursor: key_cursor,
 	})
 }
 

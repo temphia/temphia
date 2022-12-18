@@ -146,13 +146,19 @@ func (p *PlugKV) Query(txid uint32, tenantId, plugId string, query *store.PkvQue
 			conds["key LIKE"] = query.KeyPrefix + "%"
 		}
 
-		err := sql.SelectFrom(tableName).Where(
+		if query.KeyCursor != "" {
+			conds["key >"] = query.KeyCursor
+		}
+
+		slect := sql.SelectFrom(tableName).Where(
 			conds,
 			db.Or(db.Cond{"ttl": nil}, db.Cond{"ttl >": time.Now()}),
-		).All(&data)
+		)
 
+		err := slect.Paginate(query.PageCount).Page(query.Page + 1).All(&data)
 		return err
 	})
+
 	if err != nil {
 		return nil, err
 	}

@@ -180,7 +180,9 @@ func (r *ApiAdmin) DelPlugState(ctx httpx.Request) {
 }
 
 func (r *ApiAdmin) ListPlugState(ctx httpx.Request) {
-	agents, err := r.cAdmin.PlugStateList(ctx.Session, ctx.MustParam("plug_id"))
+	page, _ := strconv.ParseUint(ctx.Http.Query("page"), 10, 64)
+
+	agents, err := r.cAdmin.PlugStateList(ctx.Session, ctx.MustParam("plug_id"), ctx.Http.Query("key_cursor"), uint(page))
 	r.rutil.WriteJSON(ctx.Http, agents, err)
 }
 

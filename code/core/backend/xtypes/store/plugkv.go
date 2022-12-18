@@ -44,4 +44,5 @@ type PkvQuery struct {
 	Tag3s     []string `json:"tag3s,omitempty"`
 	PageCount uint     `json:"page_count,omitempty"`
 	Page      uint     `json:"page,omitempty"`
+	KeyCursor string   `json:"key_cursor,omitempty"`
 }

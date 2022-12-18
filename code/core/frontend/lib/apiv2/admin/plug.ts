@@ -120,6 +120,26 @@ export class AdminPlugAPI {
   delete_agent_resource(pid: string, aid: string, rid: string) {
     return this.base.delete(`/admin/plug/${pid}/agent/${aid}/resource/${rid}`);
   }
+
+  // state
+
+  list_plug_state(pid: string, page?: number) {
+    return this.base.get(`/admin/plug/${pid}/state/?page=${page ? page : 0}`);
+  }
+
+  new_plug_state(pid: string, data: any) {
+    return this.base.post(`/admin/plug/${pid}/state/`, data);
+  }
+
+  get_plug_state(pid: string, skey: string) {
+    return this.base.get(`/admin/plug/${pid}/state/${skey}`);
+  }
+
+  update_plug_state(pid: string, skey: string, data: any) {
+    return this.base.post(`/admin/plug/${pid}/state/${skey}`, data);
+  }
+
+  delete_plug_state(pid: string, skey: string) {
+    return this.base.delete(`/admin/plug/${pid}/state/${skey}`);
+  }
 }
-
-
