@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { params } from "svelte-hash-router";
-  import { LoadingSpinner, PortalService } from "../../core";
+  import { FloatingAdd, LoadingSpinner, PortalService } from "../../core";
 
   export let pid = $params.pid;
 
@@ -136,11 +136,16 @@
             >
               <button
                 class="p-1 text-white text-sm font-semibold flex self-center shadow rounded hover:scale-110 bg-blue-400"
+                on:click={() => app.nav.admin_plug_state_edit(pid, data["key"])}
               >
                 Edit
               </button>
 
               <button
+                on:click={async () => {
+                  const resp = await api.delete_plug_state(pid, data["key"]);
+                  load();
+                }}
                 class="p-1 text-white text-sm font-semibold flex self-center shadow rounded hover:scale-110 bg-red-400"
               >
                 Delete
@@ -179,3 +184,5 @@
     </div>
   </div>
 {/if}
+
+<FloatingAdd onClick={() => app.nav.admin_plug_state_new(pid)} />

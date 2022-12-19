@@ -7,9 +7,9 @@ import (
 )
 
 type PlugStateNew struct {
-	Key     string
-	Value   string
-	Options *store.SetOptions
+	Key     string            `json:"key,omitempty"`
+	Value   string            `json:"value,omitempty"`
+	Options *store.SetOptions `json:"options,omitempty"`
 }
 
 func (c *Controller) PlugStateNew(uclaim *claim.Session, pid string, state PlugStateNew) error {

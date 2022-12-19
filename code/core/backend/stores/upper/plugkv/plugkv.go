@@ -116,7 +116,11 @@ func (p *PlugKV) Update(txid uint32, tenantId, plugId, key, value string, opts *
 func (p *PlugKV) Get(txid uint32, tenantId, plugId, key string) (*entities.PlugKV, error) {
 	pkv := &entities.PlugKV{}
 	err := p.stateTx(txid, func(tbl db.Collection) error {
-		return tbl.Find("tenant_id", tenantId, "plug_id", plugId, "key", key).One(pkv)
+		return tbl.Find(db.Cond{
+			"tenant_id": tenantId,
+			"plug_id":   plugId,
+			"key":       key,
+		}).One(pkv)
 	})
 
 	if err != nil {
@@ -126,8 +130,13 @@ func (p *PlugKV) Get(txid uint32, tenantId, plugId, key string) (*entities.PlugK
 }
 
 func (p *PlugKV) Del(txid uint32, tenantId, plugId, key string) error {
+
 	return p.stateTx(txid, func(tbl db.Collection) error {
-		return tbl.Find("tenant_id", tenantId, "plug_id", plugId, "key", key).Delete()
+		return tbl.Find(db.Cond{
+			"tenant_id": tenantId,
+			"plug_id":   plugId,
+			"key":       key,
+		}).Delete()
 	})
 }
 
@@ -191,9 +200,9 @@ func (s *PlugKV) Commit(txid uint32) error {
 
 // private
 
-func (s *PlugKV) txOr(tx uint32, fn func(sess db.Session) error) error {
-	return s.txn.TxOr(tx, s.db, fn)
-}
+// func (s *PlugKV) txOr(tx uint32, fn func(sess db.Session) error) error {
+// 	return s.txn.TxOr(tx, s.db, fn)
+// }
 
 func (s *PlugKV) stateTx(tx uint32, fn func(tbl db.Collection) error) error {
 	return s.txn.TxOr(tx, s.db, func(sess db.Session) error {
