@@ -170,8 +170,8 @@ func (r *ApiAdmin) UpdatePlugState(ctx httpx.Request) {
 }
 
 func (r *ApiAdmin) GetPlugState(ctx httpx.Request) {
-	agent, err := r.cAdmin.PlugStateGet(ctx.Session, ctx.MustParam("plug_id"), ctx.MustParam("key"))
-	r.rutil.WriteJSON(ctx.Http, agent, err)
+	key, err := r.cAdmin.PlugStateGet(ctx.Session, ctx.MustParam("plug_id"), ctx.MustParam("key"))
+	r.rutil.WriteJSON(ctx.Http, key, err)
 }
 
 func (r *ApiAdmin) DelPlugState(ctx httpx.Request) {

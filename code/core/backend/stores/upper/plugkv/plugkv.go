@@ -126,7 +126,8 @@ func (p *PlugKV) Get(txid uint32, tenantId, plugId, key string) (*entities.PlugK
 	if err != nil {
 		return nil, err
 	}
-	return nil, err
+
+	return pkv, err
 }
 
 func (p *PlugKV) Del(txid uint32, tenantId, plugId, key string) error {
