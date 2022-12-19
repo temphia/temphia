@@ -5,6 +5,7 @@
   import { PortalService, CEditor } from "../../../core";
   import type { DevShellService } from "../../../../../services/engine/dev_shell";
   import Jsonview from "../../../../../../xcompo/jsonview/jsonview.svelte";
+  import SetInvoker from "./_set_invoker.svelte";
 
   export let pid: string;
   export let aid: string;
@@ -41,6 +42,13 @@
     resp_data = resp.data;
 
     putLocal();
+  };
+
+  let invoker = "";
+  let invoker_options = {};
+  const set_invoker = () => {
+    invoker = "test"
+    app.utils.small_modal_open(SetInvoker, {});
   };
 
   const tryLocal = () => {
@@ -94,6 +102,14 @@
         </label>
       </div>
       <div class="flex gap-2 items-center">
+        <button
+          on:click={set_invoker}
+          class="p-1 rounded bg-gray-500 shadow hover:bg-gray-900 flex text-white"
+        >
+          <Icon name="globe-alt" class="h-6 w-6" solid />
+          {invoker}
+        </button>
+
         <button
           on:click={submit}
           class="p-1 rounded bg-green-500 shadow hover:bg-green-900 flex text-white"
