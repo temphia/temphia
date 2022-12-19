@@ -40,7 +40,7 @@
 
   const action_edit = (id: string) =>
     app.nav.admin_data_group($params.source, id);
-  const action_explore = (id: string) =>
+  const action_table = (id: string) =>
     app.nav.admin_data_tables($params.source, id);
   const action_delete = async (id: string) => {};
   const action_new = () => {
@@ -74,9 +74,9 @@
       },
       {
         Class: "bg-green-400",
-        Name: "explore",
-        icon: "book-open",
-        Action: action_explore,
+        Name: "Tables",
+        icon: "table",
+        Action: action_table,
       },
 
       {
