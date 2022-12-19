@@ -123,8 +123,13 @@ export class AdminPlugAPI {
 
   // state
 
-  list_plug_state(pid: string, page?: number) {
-    return this.base.get(`/admin/plug/${pid}/state/?page=${page ? page : 0}`);
+  list_plug_state(pid: string, qparms: { key_cursor?: string; page?: number }) {
+    const u = new URLSearchParams();
+
+    u.set("page", String(qparms.page || 0));
+    u.set("key_cursor", qparms.key_cursor || "");
+
+    return this.base.get(`/admin/plug/${pid}/state/?${u.toString()}`);
   }
 
   new_plug_state(pid: string, data: any) {
