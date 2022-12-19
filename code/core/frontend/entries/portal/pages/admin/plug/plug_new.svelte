@@ -34,16 +34,6 @@
         key_name: "name",
       },
       {
-        name: "Live",
-        ftype: "BOOL",
-        key_name: "live",
-      },
-      {
-        name: "Dev",
-        ftype: "BOOL",
-        key_name: "dev",
-      },
-      {
         name: "Bprint Id",
         ftype: "TEXT",
         key_name: "bprint_id",
@@ -52,6 +42,16 @@
         name: "Invoke Policy",
         ftype: "TEXT_POLICY",
         key_name: "invoke_policy",
+      },
+      {
+        name: "Live",
+        ftype: "BOOL",
+        key_name: "live",
+      },
+      {
+        name: "Dev",
+        ftype: "BOOL",
+        key_name: "dev",
       },
       {
         name: "Extra Meta",
