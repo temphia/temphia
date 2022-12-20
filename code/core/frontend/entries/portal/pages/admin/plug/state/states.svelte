@@ -171,7 +171,7 @@
         on:click={() => {
           if (datas.length > 0) {
             cursor_history.push(key_cursor);
-            key_cursor = datas[datas.length - 1].key;
+            key_cursor = datas[datas.length - 1].key || "";
           } else {
             key_cursor = "";
             cursor_history = [];

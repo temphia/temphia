@@ -20,5 +20,5 @@ type ActivityQuery struct {
 	UserId      string    `json:"user_id,omitempty"`
 	BetweenTime [2]string `json:"between_time,omitempty"`
 	Count       int64     `json:"count,omitempty"`
-	Offset      string    `json:"offset,omitempty"`
+	Offset      int64     `json:"offset,omitempty"`
 }

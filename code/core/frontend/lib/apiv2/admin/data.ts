@@ -41,7 +41,10 @@ export class AdminDataAPI {
   }
 
   edit_table(source: string, gid: string, tid: string, data: any) {
-    return this.base.post(`/admin/data/${source}/group/${gid}/table/${tid}`, data);
+    return this.base.post(
+      `/admin/data/${source}/group/${gid}/table/${tid}`,
+      data
+    );
   }
 
   delete_table(source: string, gid: string, tid: string) {
@@ -51,7 +54,9 @@ export class AdminDataAPI {
   // column
 
   list_column(source: string, gid: string, tid: string) {
-    return this.base.get(`/admin/data/${source}/group/${gid}/table/${tid}/column`);
+    return this.base.get(
+      `/admin/data/${source}/group/${gid}/table/${tid}/column`
+    );
   }
 
   add_column(source: string, data: any, gid: string, tid: string) {
@@ -89,7 +94,9 @@ export class AdminDataAPI {
   // view
 
   list_view(source: string, gid: string, tid: string) {
-    return this.base.get(`/admin/data/${source}/group/${gid}/table/${tid}/view`);
+    return this.base.get(
+      `/admin/data/${source}/group/${gid}/table/${tid}/view`
+    );
   }
 
   add_view(source: string, data: any, gid: string, tid: string) {
@@ -117,4 +124,17 @@ export class AdminDataAPI {
       `/admin/data/${source}/group/${gid}/table/${tid}/view/${id}`
     );
   }
+
+  seed_table = () => {};
+
+  list_table_activity = (
+    source: string,
+    gid: string,
+    tid: string,
+    offset: number
+  ) => {
+    return this.base.get(
+      `/admin/data/${source}/group/${gid}/table/${tid}/activity?offset=${offset}`
+    );
+  };
 }

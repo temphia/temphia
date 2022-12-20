@@ -1,6 +1,8 @@
 package apiadmin
 
 import (
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
@@ -20,12 +22,15 @@ func (a *ApiAdmin) dataAPI(rg *gin.RouterGroup) {
 	rg.GET("/:source/group/:gid/table/:tid", a.X(a.GetTable))
 	rg.PATCH("/:source/group/:gid/table/:tid", a.X(a.EditTable))
 	rg.DELETE("/:source/group/:gid/table/:tid", a.X(a.DeleteTable))
+
+	rg.GET("/:source/group/:gid/table/:tid/activity", a.X(a.QueryActivity))
+	rg.GET("/:source/group/:gid/table/:tid/seed", a.X(a.seed))
+
 	rg.GET("/:source/group/:gid/table/:tid/column", a.X(a.ListColumns))
 	rg.POST("/:source/group/:gid/table/:tid/column", a.X(a.AddColumn)) // fixme
 	rg.PATCH("/:source/group/:gid/table/:tid/column/:cid", a.X(a.EditColumn))
 	rg.GET("/:source/group/:gid/table/:tid/column/:cid", a.X(a.GetColumn))
 	rg.DELETE("/:source/group/:gid/table/:tid/column/:cid", a.X(a.DeleteColumn))
-	rg.POST("/:source/group/:gid/seed", a.X(a.seed))
 
 	rg.GET("/:source/group/:gid/table/:tid/view", a.X(a.ListView))
 	rg.POST("/:source/group/:gid/table/:tid/view", a.X(a.NewView))
@@ -198,6 +203,7 @@ func (a *ApiAdmin) ListColumns(ctx httpx.Request) {
 	a.rutil.WriteJSON(ctx.Http, cols, err)
 
 }
+
 func (a *ApiAdmin) DeleteColumn(ctx httpx.Request) {
 
 	err := a.cAdmin.DeleteColumn(ctx.Session,
@@ -209,6 +215,25 @@ func (a *ApiAdmin) DeleteColumn(ctx httpx.Request) {
 
 	a.rutil.WriteFinal(ctx.Http, err)
 
+}
+
+func (a *ApiAdmin) QueryActivity(ctx httpx.Request) {
+
+	offset, err := strconv.ParseInt(ctx.Http.Query("offset"), 10, 64)
+	if err != nil {
+		a.rutil.WriteErr(ctx.Http, err.Error())
+		return
+	}
+
+	resp, err := a.cAdmin.DataActivityQuery(
+		ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+		ctx.MustParam("tid"),
+		offset,
+	)
+
+	a.rutil.WriteJSON(ctx.Http, resp, err)
 }
 
 func (a *ApiAdmin) seed(ctx httpx.Request) {

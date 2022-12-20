@@ -124,3 +124,15 @@ func (c *Controller) RemoveIndex(uclaim *claim.Session, source, group, tslug, sl
 	dynDB := c.dynHub.GetSource(source, uclaim.TenentId)
 	return dynDB.RemoveIndex(group, tslug, slug)
 }
+
+func (c *Controller) DataActivityQuery(uclaim *claim.Session, source, group, tslug string, offset int64) ([]*entities.DynActivity, error) {
+
+	return c.dynHub.GetSource(source, uclaim.TenentId).QueryActivity(group, tslug, &entities.ActivityQuery{
+		Types:       nil,
+		UserId:      "",
+		BetweenTime: [2]string{},
+		Count:       100,
+		Offset:      offset,
+	})
+
+}
