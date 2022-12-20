@@ -127,6 +127,10 @@ export class AdminDataAPI {
 
   seed_table = () => {};
 
+  query = (source: string, gid: string, opts: any) => {
+    return this.base.post(`/admin/data/${source}/group/${gid}/query`, opts);
+  };
+
   list_table_activity = (
     source: string,
     gid: string,

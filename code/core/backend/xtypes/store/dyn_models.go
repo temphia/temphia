@@ -118,11 +118,16 @@ type TemplateQueryReq struct {
 	Name      string                    `json:"name,omitempty"`
 }
 
-type RawQueryReq struct {
-	TenantId    string `json:"-"`
-	NoTransform string `json:"no_transform,omitempty"`
+type SqlQueryReq struct {
+	NoTransform bool   `json:"no_transform,omitempty"`
+	Raw         bool   `json:"raw,omitempty"`
 	Group       string `json:"group,omitempty"`
 	QStr        string `json:"qstr,omitempty"`
+}
+
+type SqlQueryResult struct {
+	Records any                         `json:"records,omitempty"`
+	Columns map[string]*entities.Column `json:"columns,omitempty"`
 }
 
 type QueryResult struct {

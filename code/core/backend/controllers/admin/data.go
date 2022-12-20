@@ -4,6 +4,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
 func (c *Controller) ListSources(uclaim *claim.Session) ([]string, error) {
@@ -135,4 +136,18 @@ func (c *Controller) DataActivityQuery(uclaim *claim.Session, source, group, tsl
 		Offset:      offset,
 	})
 
+}
+
+type DataGroupQuery struct {
+	Raw         bool   `json:"raw,omitempty"`
+	QueryString string `json:"query_string,omitempty"`
+}
+
+func (c *Controller) QueryDataGroup(uclaim *claim.Session, source, group string, query DataGroupQuery) (any, error) {
+	return c.dynHub.GetSource(source, uclaim.TenentId).SqlQuery(0, store.SqlQueryReq{
+		NoTransform: false,
+		Raw:         query.Raw,
+		Group:       group,
+		QStr:        query.QueryString,
+	})
 }

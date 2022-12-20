@@ -198,3 +198,13 @@ func (d *dynSource) NewActivity(group, table string, record *entities.DynActivit
 
 	return err
 }
+
+func (d *dynSource) SqlQuery(txid uint32, req store.SqlQueryReq) (*store.SqlQueryResult, error) {
+	ddb := d.dynDB()
+	if !req.Raw {
+		return ddb.SqlQueryScopped(txid, d.tenantId, req.Group, req.QStr)
+	}
+
+	// fixme => check if tenant allows raw query
+	return ddb.SqlQueryRaw(txid, d.tenantId, req.Group, req.QStr)
+}

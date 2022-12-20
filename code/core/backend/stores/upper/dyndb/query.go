@@ -7,6 +7,7 @@ import (
 
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/stores/upper/dyndb/processer"
+	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 	"github.com/upper/db/v4"
 )
@@ -126,9 +127,15 @@ func (d *DynDB) _FTSQuery(txid uint32, req store.FTSQueryReq) (*store.QueryResul
 	return nil, nil
 }
 
-func (d *DynDB) rawQuery(txid uint32, req store.RawQueryReq) (interface{}, error) {
+func (d *DynDB) sqlQuery(txid uint32, tenantId string, req store.SqlQueryReq) (*store.SqlQueryResult, error) {
 
-	return nil, nil
+	pp.Println("@sqlquery", req)
+
+	return &store.SqlQueryResult{
+		Records: nil,
+		Columns: make(map[string]*entities.Column),
+	}, nil
+
 }
 
 func (d *DynDB) templateQuery(txid uint32, req store.TemplateQueryReq) (*store.QueryResult, error) {

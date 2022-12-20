@@ -5,6 +5,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/stores/upper/dyndb/dyncore"
 	"github.com/temphia/temphia/code/core/backend/stores/upper/dyndb/tns"
 	"github.com/temphia/temphia/code/core/backend/stores/upper/ucore"
+	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 	"github.com/upper/db/v4"
@@ -89,8 +90,31 @@ func (d *DynDB) TemplateQuery(txid uint32, req store.TemplateQueryReq) (*store.Q
 	return d.templateQuery(txid, req)
 }
 
-func (d *DynDB) RawQuery(txid uint32, req store.RawQueryReq) (interface{}, error) {
-	return d.rawQuery(txid, req)
+func (d *DynDB) SqlQueryRaw(txid uint32, tenantId, group, qstr string) (*store.SqlQueryResult, error) {
+	var rs []map[string]any
+
+	err := d.txOr(txid, func(sess db.Session) error {
+		rows, err := sess.SQL().Query(qstr)
+		if err != nil {
+			return err
+		}
+
+		rs, err = dbutils.SelectScan(rows)
+		return err
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &store.SqlQueryResult{
+		Records: rs,
+		Columns: make(map[string]*entities.Column),
+	}, nil
+}
+
+func (d *DynDB) SqlQueryScopped(txid uint32, tenantId, group, qstr string) (*store.SqlQueryResult, error) {
+	return nil, nil
 }
 
 func (d *DynDB) RefLoad(txid uint32, tenantId, gslug string, req *store.RefLoadReq) (*store.QueryResult, error) {

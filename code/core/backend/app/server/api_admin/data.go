@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/core/backend/controllers/admin"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
@@ -16,6 +17,8 @@ func (a *ApiAdmin) dataAPI(rg *gin.RouterGroup) {
 	rg.PATCH("/:source/group/:gid", a.X(a.EditGroup))
 	rg.GET("/:source/group/:gid", a.X(a.GetGroup))
 	rg.DELETE("/:source/group/:gid", a.X(a.DeleteGroup))
+
+	rg.POST("/:source/group/:gid/query", a.X(a.query))
 
 	rg.GET("/:source/group/:gid/table", a.X(a.ListTables))
 	rg.POST("/:source/group/:gid/table", a.X(a.AddTable))
@@ -231,6 +234,25 @@ func (a *ApiAdmin) QueryActivity(ctx httpx.Request) {
 		ctx.MustParam("gid"),
 		ctx.MustParam("tid"),
 		offset,
+	)
+
+	a.rutil.WriteJSON(ctx.Http, resp, err)
+}
+
+func (a *ApiAdmin) query(ctx httpx.Request) {
+	opts := admin.DataGroupQuery{}
+
+	err := ctx.Http.BindJSON(&opts)
+	if err != nil {
+		a.rutil.WriteErr(ctx.Http, err.Error())
+		return
+	}
+
+	resp, err := a.cAdmin.QueryDataGroup(
+		ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+		opts,
 	)
 
 	a.rutil.WriteJSON(ctx.Http, resp, err)

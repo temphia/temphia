@@ -148,6 +148,8 @@ type DynSource interface {
 	RefResolve(txid uint32, gslug string, req *RefResolveReq) (*QueryResult, error)
 	RefLoad(txid uint32, gslug string, req *RefLoadReq) (*QueryResult, error)
 	ReverseRefLoad(txid uint32, gslug string, req *RevRefLoadReq) (*QueryResult, error)
+
+	SqlQuery(txid uint32, req SqlQueryReq) (*SqlQueryResult, error)
 }
 
 type DynDB interface {
@@ -203,7 +205,9 @@ type DynDB interface {
 	ReverseRefLoad(txid uint32, tenantId, gslug string, req *RevRefLoadReq) (*QueryResult, error)
 
 	TemplateQuery(txid uint32, req TemplateQueryReq) (*QueryResult, error)
-	RawQuery(txid uint32, req RawQueryReq) (any, error)
+
+	SqlQueryRaw(txid uint32, tenantId, group, qstr string) (*SqlQueryResult, error)
+	SqlQueryScopped(txid uint32, tenantId, group, qstr string) (*SqlQueryResult, error)
 
 	GetCache() DCache
 }
