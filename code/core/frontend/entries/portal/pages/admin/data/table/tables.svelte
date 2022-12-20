@@ -47,6 +47,8 @@
 
   const action_goto_activities = (id) =>
     app.nav.admin_data_activity(source, group, id);
+
+  const action_goto_seed = (id) => app.nav.admin_data_seed(source, group, id);
 </script>
 
 {#if loading}
@@ -76,7 +78,7 @@
 
       {
         Name: "Hooks",
-        Class: "bg-green-400",
+
         Action: action_goto_data_hooks,
         drop: true,
         icon: "code",
@@ -84,15 +86,20 @@
 
       {
         Name: "Activities",
-        Class: "bg-green-400",
         Action: action_goto_activities,
         drop: true,
         icon: "rss",
       },
 
       {
+        Name: "Seed",
+        Action: action_goto_seed,
+        drop: true,
+        icon: "sparkles",
+      },
+
+      {
         Name: "Apps",
-        Class: "bg-green-400",
         Action: action_goto_data_apps,
         icon: "view-grid",
         drop: true,
@@ -106,7 +113,6 @@
 
       {
         Name: "Delete",
-        Class: "bg-red-400",
         Action: action_delete,
         icon: "trash",
         drop: true,

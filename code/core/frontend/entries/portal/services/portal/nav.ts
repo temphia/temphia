@@ -303,10 +303,14 @@ export class Navigator {
     this.set(`#/admin/data/${source}/activity/${group}/${table}`);
   }
 
+  admin_data_seed(source: string, group: string, table: string) {
+    this.set(`#/admin/data/${source}/seed/${group}/${table}`);
+  }
+
   admin_data_query(source: string, group: string) {
     this.set(`#/admin/data/${source}/query/${group}`);
   }
-  
+
   // resources
 
   admin_resources = () => {

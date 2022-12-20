@@ -61,6 +61,7 @@ import AdminDataViewEdit from "./data/view/view_edit.svelte";
 import Admin from "./admin.svelte";
 
 import AdminActivity from "./data/tools/activity/activity.svelte";
+import AdminSeed from "./data/tools/seed/seed.svelte"
 
 // resource
 import AdminResources from "./resource/resources.svelte";
@@ -195,6 +196,7 @@ export default {
     "/:source/view/:group/:table/new": AdminDataViewNew,
     "/:source/view/:group/:table/:id/edit": AdminDataViewEdit,
     "/:source/activity/:group/:table": AdminActivity,
+    "/:source/seed/:group/:table": AdminSeed,
     "/:source/query/:group": AdminDataQuery,    
   },
 
