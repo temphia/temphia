@@ -14,6 +14,9 @@
   export let selected_rows = [];
   export let layout: string = "grid";
 
+  export let rows_loaded_no = 0;
+  export let rows_total_no = 0
+
   const dispatch = createEventDispatcher();
   const onChangeDtable = (payload) => dispatch("on_table_change", payload);
   const newRowClick = (payload) => dispatch("on_new_row", payload);
@@ -131,7 +134,7 @@
         </button>
         <p class="text-slate-900">
           Rows <span class="text-slate-700 text-base"
-            >[ {`${1000}/${200}`} ]</span
+            >[ {`${rows_loaded_no}/${rows_total_no}`} ]</span
           >
         </p>
       </div>

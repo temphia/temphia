@@ -51,6 +51,10 @@
   on:on_new_row
   on:on_table_change
   on:on_change_to_grid
+  
+  rows_total_no={0}
+  rows_loaded_no={_data.rows.length || 0}
+
   layout={"card"}
 >
   <div class="flex w-full" style="height:calc(100vh - 7em);">

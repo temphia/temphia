@@ -26,6 +26,8 @@
   on:on_hook_click
   on:on_new_row
   on:on_table_change
+  rows_total_no={0}
+  rows_loaded_no={_data.rows.length || 0}
 >
   <Renderer
     columns={_data.column_order}
