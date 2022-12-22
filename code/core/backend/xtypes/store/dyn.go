@@ -150,6 +150,8 @@ type DynSource interface {
 	ReverseRefLoad(txid uint32, gslug string, req *RevRefLoadReq) (*QueryResult, error)
 
 	SqlQuery(txid uint32, req SqlQueryReq) (*SqlQueryResult, error)
+
+	LiveSeed(group, table, userId string, max int) error
 }
 
 type DynDB interface {

@@ -151,3 +151,8 @@ func (c *Controller) QueryDataGroup(uclaim *claim.Session, source, group string,
 		QStr:        query.QueryString,
 	})
 }
+
+func (c *Controller) LiveSeed(uclaim *claim.Session, source, group, table string, max int) error {
+	src := c.dynHub.GetSource(source, uclaim.TenentId)
+	return src.LiveSeed(group, table, uclaim.UserID, max)
+}

@@ -260,4 +260,18 @@ func (a *ApiAdmin) query(ctx httpx.Request) {
 
 func (a *ApiAdmin) seed(ctx httpx.Request) {
 
+	max, err := strconv.ParseInt(ctx.Http.Query("max"), 10, 64)
+	if err != nil {
+		a.rutil.WriteErr(ctx.Http, err.Error())
+		return
+	}
+
+	a.cAdmin.LiveSeed(
+		ctx.Session,
+		ctx.MustParam("source"),
+		ctx.MustParam("gid"),
+		ctx.MustParam("tid"),
+		int(max),
+	)
+
 }

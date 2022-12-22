@@ -6,27 +6,12 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
-type SeederCore struct {
-	Group            string
-	MainTable        *entities.Table
-	MainTableColumns map[string]*entities.Column
-	SiblingTables    map[string]*entities.Table
-	SiblingColumns   map[string][]*entities.Column
-	FileCache        map[string][]string
-	UserCache        map[string][]string
+type SeedType interface {
+	Files(column string) []string
+	Users(column string) []string
 }
 
-func (s *SeederCore) files(column string) []string {
-	return s.FileCache[column]
-}
-
-func (s *SeederCore) users(column string) []string {
-	return s.UserCache[column]
-}
-
-func (s *SeederCore) newRecord(column string) any {
-
-	c := s.MainTableColumns[column]
+func NewRecord(c *entities.Column, stype SeedType) any {
 
 	switch c.Ctype {
 	case store.CtypeShortText:
@@ -50,9 +35,9 @@ func (s *SeederCore) newRecord(column string) any {
 		}
 
 	case store.CtypeFile, store.CtypeMultiFile:
-		opts := s.files(c.Slug)
+		opts := stype.Files(c.Slug)
 		if len(opts) > 0 {
-			return gofakeit.RandomString(s.files(c.Slug))
+			return gofakeit.RandomString(stype.Files(c.Slug))
 		}
 
 	case store.CtypeCheckBox:
@@ -66,7 +51,7 @@ func (s *SeederCore) newRecord(column string) any {
 	case store.CtypeDateTime:
 		return gofakeit.Date().UTC()
 	case store.CtypeSingleUser, store.CtypeMultiUser:
-		opts := s.users(c.Slug)
+		opts := stype.Users(c.Slug)
 		if len(opts) > 0 {
 			return gofakeit.RandomString(opts)
 		}

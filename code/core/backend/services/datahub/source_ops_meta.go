@@ -6,6 +6,8 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+
+	seeder2 "github.com/temphia/temphia/code/core/backend/services/datahub/seeder2"
 )
 
 // group
@@ -207,4 +209,21 @@ func (d *dynSource) SqlQuery(txid uint32, req store.SqlQueryReq) (*store.SqlQuer
 
 	// fixme => check if tenant allows raw query
 	return ddb.SqlQueryRaw(txid, d.tenantId, req.Group, req.QStr)
+}
+
+func (d *dynSource) LiveSeed(group, table, userId string, max int) error {
+
+	lseder, err := seeder2.NewLiveSeeder(seeder2.LiveSeederOptions{
+		TenantId:  d.tenantId,
+		Group:     group,
+		Table:     table,
+		UserId:    userId,
+		Source:    d,
+		MaxRecord: int(max),
+	})
+	if err != nil {
+		return err
+	}
+
+	return lseder.Seed()
 }

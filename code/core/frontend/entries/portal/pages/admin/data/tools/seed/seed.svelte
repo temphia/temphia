@@ -34,20 +34,31 @@
   load();
 
   let done = false;
-  let done_data = {};
-  const do_seed = async () => {};
+  let done_data;
+  const do_seed = async () => {
+    const resp = await api.seed_table(source, group, table, seed_no);
+    done_data = resp.data;
+    done = true;
+    loading = false;
+  };
 </script>
 
 {#if loading}
   <LoadingSpinner />
 {:else if done}
-  <p>Done?</p>
+  <div class="flex justify-center py-5">
+    <div class="flex flex-col">
+      <p>{done_data || ""}</p>
+      <button
+        on:click={() => app.nav.data_table(source, group, table)}
+        class="p-2 bg-blue-400 text-white rounded">Table Data</button
+      >
+    </div>
+  </div>
 {:else}
   <div class="p-4">
     <div class="p-4 bg-white rounded-md">
-
       <div class="text-2xl text-indigo-900 mb-6">Seeder</div>
-
 
       <div>
         <legend class="text-base text-1.5xl font-medium text-gray-900 mb-2"
@@ -79,7 +90,7 @@
               {#each datas as data}
                 <tr class="hover:bg-grey-lighter">
                   <td class="p-1 border-b border-grey-light">
-                    <input type="checkbox" />
+                    <!-- <input type="checkbox" /> -->
                   </td>
                   <td class="p-1 border-b border-grey-light">{data.slug}</td>
                   <td class="p-1 border-b border-grey-light">{data.name}</td>
