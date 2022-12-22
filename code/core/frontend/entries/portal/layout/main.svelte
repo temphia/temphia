@@ -74,10 +74,7 @@
 
         <div
           on:click={() => dispatch("notification_toggle")}
-          class="
-                h-16 cursor-pointer mx-auto w-full 
-                flex justify-center items-center
-                focus:text-orange-500 hover:bg-red-200 focus:outline-none relative"
+          class="h-12 cursor-pointer mx-auto w-full flex justify-center items-center focus:text-orange-500 hover:bg-red-200 focus:outline-none relative"
         >
           {#if pending_notification}
             <span class="flex absolute -mt-5 ml-4">

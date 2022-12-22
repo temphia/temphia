@@ -51,8 +51,6 @@
   on:ndelete={(ev) => notifier.delete_message(ev.detail)}
   on:nread={(ev) => notifier.read_message(ev.detail)}
   on:refresh={() => notifier.init()}
-
-
   loading={$nstate.loading}
   messages={$nstate.messages}
 />
@@ -62,6 +60,7 @@
   pending_notification={$pending_notification}
   on:notification_toggle={notification_toggle}
   on:self_profile={app.nav.self_profile}
+  on:open_executors={() => app.nav.launcher()}
 >
   <Router />
 </MainLayout>
