@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import { createEventDispatcher } from "svelte";
   import SvelteTooltip from "svelte-tooltip";
   import {
@@ -64,6 +65,13 @@
 
     <div class="mt-auto flex items-center w-full">
       <div class="flex flex-col items-center w-full">
+        <div
+          on:click={() => dispatch("open_executors")}
+          class="h-12 cursor-pointer mx-auto flex justify-center items-center w-full focus:text-orange-500 hover:bg-red-200 focus:outline-none"
+        >
+          <Icon name="lightning-bolt" class="w-6 h-6" />
+        </div>
+
         <div
           on:click={() => dispatch("notification_toggle")}
           class="
@@ -146,6 +154,14 @@
       </a>
     </div>
     <!-- Responsive navbar -->
+
+    <div
+      on:click={() => dispatch("open_executors")}
+      class="flex mr-6 items-center cursor-pointer"
+    >
+      <Icon name="lightning-bolt" class="w-6 h-6" />
+    </div>
+
     <div
       class="flex mr-6 items-center cursor-pointer"
       on:click={() => dispatch("notification_toggle")}
