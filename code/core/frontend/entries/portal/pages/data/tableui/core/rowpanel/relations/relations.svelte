@@ -1,18 +1,23 @@
 <script lang="ts">
   import type { TableService } from "../../../../../../services/data";
 
-
   import Embed from "../../embed/embed.svelte";
 
   export let reverse_ref_column: object[];
   export let table_service: TableService;
   export let row: object;
 
+  export let onReverseFollow;
+
   const row_service = table_service.get_row_service();
 
   let selected = false;
   let loading = false;
   let data = {};
+
+  let selected_table = "";
+  let selected_column = "";
+
   const load = async (column: object) => {
     selected = true;
     loading = true;
@@ -23,6 +28,8 @@
     );
 
     data = resp.data;
+    selected_table = column["table_id"];
+    selected_column = column["slug"];
     loading = false;
   };
 </script>
@@ -45,7 +52,7 @@
           class="p-1 text-white bg-blue-500 rounded hover:scale-110"
           on:click={() => {
             // generate filter condition
-            // app.navigator.goto_dtable("", "", "", {});
+            onReverseFollow(selected_table, selected_column, {});
           }}>Follow</button
         >
       {/if}

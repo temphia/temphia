@@ -13,6 +13,7 @@
   export let columns: string[];
   export let columns_indexded: { [_: string]: object };
   export let reverse_ref_column: object[];
+  export let onReverseFollow;
 
   $: _dirty_store = table_service.state.dirty_store;
   $: _rowid = $_dirty_store.rowid || 0;
@@ -40,7 +41,12 @@
     </svelte:fragment>
 
     <svelte:fragment slot="relations">
-      <Relations {reverse_ref_column} row={_row} {table_service} />
+      <Relations
+        {reverse_ref_column}
+        row={_row}
+        {table_service}
+        {onReverseFollow}
+      />
     </svelte:fragment>
   </Rowlayout>
 {/key}
