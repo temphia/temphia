@@ -2,7 +2,7 @@
   import Builder from "./_builder.svelte";
   import sample from "./sample";
   import { getContext } from "svelte";
-  import type { PortalService } from "../../core";
+  import type { PortalService } from "../../../core";
 
   import * as b from "./builder";
 
