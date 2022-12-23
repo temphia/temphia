@@ -1,5 +1,7 @@
-<script>
+<script lang="ts">
   export let value = "";
+  export let column: object;
+
   const __value = value.split("#");
 
   let from = __value[0] || "";

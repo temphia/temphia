@@ -85,11 +85,16 @@ export const FilterGreatOrEqual = "greater_than_or_equal";
 export const FilterIn = "in";
 export const FilterNotIn = "not_in";
 export const FilterBetween = "between";
-export const FilterContains = "contains";
+
 export const FilterAround = "around";
 export const FilterNotAround = "not_around";
 export const FilterBefore = "before";
 export const FilterAfter = "after";
+
+export const FilterContains = "contains";
+export const FilterHasPrefix = "has_prefix";
+export const FilterHasSuffix = "has_suffix";
+
 
 export const CtypeIcons = {
   [CtypeShortText]: "annotation",

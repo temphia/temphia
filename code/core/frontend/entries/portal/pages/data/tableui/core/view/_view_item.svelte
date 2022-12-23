@@ -5,40 +5,52 @@
   import Field from "../fields/field.svelte";
 
   import {
-    FilterBetweenDate,
+    FilterDateBi,
     FilterCheckbox,
     FilterDate,
     FilterNumber,
     FilterText,
+    FilterBiNumber,
+    FilterMultiText,
+    FilterSelect,
   } from "./filters";
 
   export const CtypeFilterConds = {
+    [f.CtypeShortText]: {
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
+      [f.FilterIn]: FilterMultiText,
+      [f.FilterNotIn]: FilterMultiText,
+      [f.FilterEqual]: FilterText,
+      [f.FilterContains]: FilterText,
+      [f.FilterHasPrefix]: FilterText,
+      [f.FilterHasSuffix]: FilterText,
+    },
+
     [f.CtypeSelect]: {
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
+      [f.FilterEqual]: FilterSelect,
+      [f.FilterNotEqual]: FilterSelect,
+      [f.FilterIn]: FilterMultiText,
+      [f.FilterNotIn]: FilterMultiText,
+    },
+
+    [f.CtypeFile]: {
       [f.FilterIsNull]: null,
       [f.FilterIsNotNull]: null,
       [f.FilterEqual]: FilterText,
       [f.FilterNotEqual]: FilterText,
-    },
-
-    [f.CtypeRFormula]: {},
-    [f.CtypeFile]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterEqual]: null,
-      [f.FilterNotEqual]: null,
-      [f.FilterContains]: null,
+      [f.FilterContains]: FilterText,
     },
     [f.CtypeMultiFile]: {
       [f.FilterIsNull]: null,
       [f.FilterIsNotNull]: null,
-      [f.FilterEqual]: null,
-      [f.FilterNotEqual]: null,
+      [f.FilterContains]: null,
     },
     [f.CtypeCheckBox]: {
       [f.FilterIsNull]: null,
       [f.FilterIsNotNull]: null,
-      [f.FilterIn]: null,
-      [f.FilterNotIn]: null,
       [f.FilterEqual]: FilterCheckbox,
       [f.FilterNotEqual]: FilterCheckbox,
     },
@@ -64,7 +76,7 @@
       [f.FilterGreaterThan]: FilterNumber,
       [f.FilterLessOrEqual]: FilterNumber,
       [f.FilterGreatOrEqual]: FilterNumber,
-      [f.FilterBetween]: null,
+      [f.FilterBetween]: FilterBiNumber,
     },
 
     [f.CtypeLocation]: {
@@ -74,7 +86,6 @@
       [f.FilterNotEqual]: null,
       [f.FilterAround]: null,
       [f.FilterNotAround]: null,
-
     },
     [f.CtypeDateTime]: {
       [f.FilterIsNull]: null,
@@ -83,22 +94,106 @@
       [f.FilterNotEqual]: FilterDate,
       [f.FilterIn]: null,
       [f.FilterNotIn]: null,
-      [f.FilterBetween]: FilterBetweenDate,
+      [f.FilterBetween]: FilterDateBi,
       [f.FilterBefore]: FilterDate,
       [f.FilterAfter]: FilterDate,
     },
 
+    [f.CtypeRFormula]: {},
+
     // newer types
 
-    [f.CtypeMultSelect]: {},
-    [f.CtypeLongText]: {},
-    [f.CtypeSingleUser]: {},
-    [f.CtypeMultiUser]: {},
-    [f.CtypeEmail]: {},
-    [f.CtypeJSON]: {},
-    [f.CtypeRangeNumber]: {},
-    [f.CtypeColor]: {},
-    [f.CtypePhone]: {},
+    [f.CtypeMultSelect]: {
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
+      [f.FilterIn]: FilterMultiText,
+      [f.FilterNotIn]: FilterMultiText,
+      [f.FilterEqual]: FilterText,
+      [f.FilterContains]: FilterText,
+      [f.FilterHasPrefix]: FilterText,
+      [f.FilterHasSuffix]: FilterText,
+    },
+    [f.CtypeLongText]: {
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
+      [f.FilterIn]: FilterMultiText,
+      [f.FilterNotIn]: FilterMultiText,
+      [f.FilterEqual]: FilterText,
+      [f.FilterContains]: FilterText,
+      [f.FilterHasPrefix]: FilterText,
+      [f.FilterHasSuffix]: FilterText,
+    },
+    [f.CtypeSingleUser]: {
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
+      [f.FilterIn]: FilterMultiText,
+      [f.FilterNotIn]: FilterMultiText,
+      [f.FilterEqual]: FilterText,
+      [f.FilterContains]: FilterText,
+      [f.FilterHasPrefix]: FilterText,
+      [f.FilterHasSuffix]: FilterText,
+    },
+    [f.CtypeMultiUser]: {
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
+      [f.FilterIn]: FilterMultiText,
+      [f.FilterNotIn]: FilterMultiText,
+      [f.FilterEqual]: FilterText,
+      [f.FilterContains]: FilterText,
+      [f.FilterHasPrefix]: FilterText,
+      [f.FilterHasSuffix]: FilterText,
+    },
+    [f.CtypeEmail]: {
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
+      [f.FilterIn]: FilterMultiText,
+      [f.FilterNotIn]: FilterMultiText,
+      [f.FilterEqual]: FilterText,
+      [f.FilterContains]: FilterText,
+      [f.FilterHasPrefix]: FilterText,
+      [f.FilterHasSuffix]: FilterText,
+    },
+    [f.CtypeJSON]: {
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
+      [f.FilterIn]: FilterMultiText,
+      [f.FilterNotIn]: FilterMultiText,
+      [f.FilterEqual]: FilterText,
+      [f.FilterContains]: FilterText,
+      [f.FilterHasPrefix]: FilterText,
+      [f.FilterHasSuffix]: FilterText,
+    },
+    [f.CtypeRangeNumber]: {
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
+      [f.FilterIn]: null,
+      [f.FilterNotIn]: null,
+      [f.FilterEqual]: FilterNumber,
+      [f.FilterLessThan]: FilterNumber,
+      [f.FilterNotEqual]: FilterNumber,
+      [f.FilterGreaterThan]: FilterNumber,
+      [f.FilterLessOrEqual]: FilterNumber,
+      [f.FilterGreatOrEqual]: FilterNumber,
+      [f.FilterBetween]: FilterBiNumber,
+    },
+
+    [f.CtypeColor]: {
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
+      [f.FilterIn]: FilterMultiText,
+      [f.FilterNotIn]: FilterMultiText,
+      [f.FilterEqual]: FilterText,
+    },
+    [f.CtypePhone]: {
+      [f.FilterIsNull]: null,
+      [f.FilterIsNotNull]: null,
+      [f.FilterIn]: FilterMultiText,
+      [f.FilterNotIn]: FilterMultiText,
+      [f.FilterEqual]: FilterText,
+      [f.FilterContains]: FilterText,
+      [f.FilterHasPrefix]: FilterText,
+      [f.FilterHasSuffix]: FilterText,
+    },
   };
 
   export let columns: Column[] = [];
@@ -117,8 +212,8 @@
 
   $: _new_column_slug = "";
   $: _new_column_cond = "";
-  $: _new_column_type =
-    (colindexed[_new_column_slug] || {}).ctype || f.CtypeShortText;
+  $: _current_column = colindexed[_new_column_slug] || {};
+  $: _new_column_type = _current_column.ctype || f.CtypeShortText;
 
   $: _possible_cond = CtypeFilterConds[_new_column_type] || {};
   $: _new_filter_value = undefined;
@@ -225,6 +320,7 @@
             <svelte:component
               this={_filer_component}
               bind:value={_new_filter_value}
+              column={_current_column}
             />
           {:else}
             <div>Nil</div>
