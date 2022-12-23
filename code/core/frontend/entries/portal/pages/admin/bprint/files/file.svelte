@@ -3,6 +3,7 @@
   import { getContext } from "svelte";
   import { params } from "svelte-hash-router";
   import { CEditor, LoadingSpinner, PortalService } from "../../core";
+  import PickEditor from "./_pick_editor.svelte";
 
   export let bid = $params.bid;
   export let file = $params._;
@@ -72,7 +73,10 @@
           </div>
 
           <div class="flex gap-1 p-1">
-            <button class="hover:bg-gray-300 rounded inline-flex border p-1">
+            <button
+              class="hover:bg-gray-300 rounded inline-flex border p-1"
+              on:click={() => app.utils.small_modal_open(PickEditor, { app })}
+            >
               <Icon name="beaker" class="h-5 w-5" />
               Editor
             </button>

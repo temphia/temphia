@@ -3,25 +3,26 @@
 
   export let app: PortalService;
   export let bid;
+  export let file;
 
-  app.registry.GetAll("bprint_editor_type");
+  // app.registry.GetAll("bprint_editor_type");
+
+  const BprintEditors = [{ name: "Data Schema" }, { name: "Data Migrator" }];
 
   const fromRepo = () => {};
 </script>
 
 <div class="flex items-center justify-between">
-  <h4 class="font-medium text-slate-500">Bprint Editors.</h4>
+  <h4 class="text-slate-800 font-semibold text-xl p-1 mb-2">Bprint Editors</h4>
 </div>
-<div class="space-y-2 mt-4">
-  <div
-    on:click={fromRepo}
-    class="flex space-x-4 rounded-xl bg-white p-3 shadow-sm hover:border border-blue-500 cursor-pointer"
-  >
-    <div>
-      <h4 class="font-semibold text-gray-600">From Repo</h4>
-      <p class="text-sm text-slate-400">
-        You can import blueprint from some repo and instance it.
-      </p>
+<div class="flex flex-col gap-2">
+  {#each BprintEditors as be}
+    <div
+      on:click={fromRepo}
+      class="flex justify-between rounded-xl bg-white p-3 shadow-sm border "
+    >
+      <h4 class="font-semibold text-gray-600">{be.name}</h4>
+      <button class="p-1 bg-blue-400 hover:bg-blue-600 rounded text-white">Open</button>
     </div>
-  </div>
+  {/each}
 </div>
