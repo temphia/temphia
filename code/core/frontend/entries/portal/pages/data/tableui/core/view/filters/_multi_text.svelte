@@ -1,1 +1,0 @@
-<div>Multi Text</div>

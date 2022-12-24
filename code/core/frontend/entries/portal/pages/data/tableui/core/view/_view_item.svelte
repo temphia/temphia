@@ -1,200 +1,7 @@
 <script lang="ts">
-  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import type { Column } from "../../../../../services/data";
   import * as f from "../fields/field";
-  import Field from "../fields/field.svelte";
-
-  import {
-    FilterDateBi,
-    FilterCheckbox,
-    FilterDate,
-    FilterNumber,
-    FilterText,
-    FilterBiNumber,
-    FilterMultiText,
-    FilterSelect,
-  } from "./filters";
-
-  export const CtypeFilterConds = {
-    [f.CtypeShortText]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterIn]: FilterMultiText,
-      [f.FilterNotIn]: FilterMultiText,
-      [f.FilterEqual]: FilterText,
-      [f.FilterContains]: FilterText,
-      [f.FilterHasPrefix]: FilterText,
-      [f.FilterHasSuffix]: FilterText,
-    },
-
-    [f.CtypeSelect]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterEqual]: FilterSelect,
-      [f.FilterNotEqual]: FilterSelect,
-      [f.FilterIn]: FilterMultiText,
-      [f.FilterNotIn]: FilterMultiText,
-    },
-
-    [f.CtypeFile]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterEqual]: FilterText,
-      [f.FilterNotEqual]: FilterText,
-      [f.FilterContains]: FilterText,
-    },
-    [f.CtypeMultiFile]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterContains]: null,
-    },
-    [f.CtypeCheckBox]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterEqual]: FilterCheckbox,
-      [f.FilterNotEqual]: FilterCheckbox,
-    },
-
-    [f.CtypeCurrency]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterEqual]: FilterNumber,
-      [f.FilterLessThan]: FilterNumber,
-      [f.FilterNotEqual]: FilterNumber,
-      [f.FilterGreaterThan]: FilterNumber,
-      [f.FilterLessOrEqual]: FilterNumber,
-      [f.FilterGreatOrEqual]: FilterNumber,
-    },
-    [f.CtypeNumber]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterIn]: null,
-      [f.FilterNotIn]: null,
-      [f.FilterEqual]: FilterNumber,
-      [f.FilterLessThan]: FilterNumber,
-      [f.FilterNotEqual]: FilterNumber,
-      [f.FilterGreaterThan]: FilterNumber,
-      [f.FilterLessOrEqual]: FilterNumber,
-      [f.FilterGreatOrEqual]: FilterNumber,
-      [f.FilterBetween]: FilterBiNumber,
-    },
-
-    [f.CtypeLocation]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterEqual]: null,
-      [f.FilterNotEqual]: null,
-      [f.FilterAround]: null,
-      [f.FilterNotAround]: null,
-    },
-    [f.CtypeDateTime]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterEqual]: FilterDate,
-      [f.FilterNotEqual]: FilterDate,
-      [f.FilterIn]: null,
-      [f.FilterNotIn]: null,
-      [f.FilterBetween]: FilterDateBi,
-      [f.FilterBefore]: FilterDate,
-      [f.FilterAfter]: FilterDate,
-    },
-
-    [f.CtypeRFormula]: {},
-
-    // newer types
-
-    [f.CtypeMultSelect]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterIn]: FilterMultiText,
-      [f.FilterNotIn]: FilterMultiText,
-      [f.FilterEqual]: FilterText,
-      [f.FilterContains]: FilterText,
-      [f.FilterHasPrefix]: FilterText,
-      [f.FilterHasSuffix]: FilterText,
-    },
-    [f.CtypeLongText]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterIn]: FilterMultiText,
-      [f.FilterNotIn]: FilterMultiText,
-      [f.FilterEqual]: FilterText,
-      [f.FilterContains]: FilterText,
-      [f.FilterHasPrefix]: FilterText,
-      [f.FilterHasSuffix]: FilterText,
-    },
-    [f.CtypeSingleUser]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterIn]: FilterMultiText,
-      [f.FilterNotIn]: FilterMultiText,
-      [f.FilterEqual]: FilterText,
-      [f.FilterContains]: FilterText,
-      [f.FilterHasPrefix]: FilterText,
-      [f.FilterHasSuffix]: FilterText,
-    },
-    [f.CtypeMultiUser]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterIn]: FilterMultiText,
-      [f.FilterNotIn]: FilterMultiText,
-      [f.FilterEqual]: FilterText,
-      [f.FilterContains]: FilterText,
-      [f.FilterHasPrefix]: FilterText,
-      [f.FilterHasSuffix]: FilterText,
-    },
-    [f.CtypeEmail]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterIn]: FilterMultiText,
-      [f.FilterNotIn]: FilterMultiText,
-      [f.FilterEqual]: FilterText,
-      [f.FilterContains]: FilterText,
-      [f.FilterHasPrefix]: FilterText,
-      [f.FilterHasSuffix]: FilterText,
-    },
-    [f.CtypeJSON]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterIn]: FilterMultiText,
-      [f.FilterNotIn]: FilterMultiText,
-      [f.FilterEqual]: FilterText,
-      [f.FilterContains]: FilterText,
-      [f.FilterHasPrefix]: FilterText,
-      [f.FilterHasSuffix]: FilterText,
-    },
-    [f.CtypeRangeNumber]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterIn]: null,
-      [f.FilterNotIn]: null,
-      [f.FilterEqual]: FilterNumber,
-      [f.FilterLessThan]: FilterNumber,
-      [f.FilterNotEqual]: FilterNumber,
-      [f.FilterGreaterThan]: FilterNumber,
-      [f.FilterLessOrEqual]: FilterNumber,
-      [f.FilterGreatOrEqual]: FilterNumber,
-      [f.FilterBetween]: FilterBiNumber,
-    },
-
-    [f.CtypeColor]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterIn]: FilterMultiText,
-      [f.FilterNotIn]: FilterMultiText,
-      [f.FilterEqual]: FilterText,
-    },
-    [f.CtypePhone]: {
-      [f.FilterIsNull]: null,
-      [f.FilterIsNotNull]: null,
-      [f.FilterIn]: FilterMultiText,
-      [f.FilterNotIn]: FilterMultiText,
-      [f.FilterEqual]: FilterText,
-      [f.FilterContains]: FilterText,
-      [f.FilterHasPrefix]: FilterText,
-      [f.FilterHasSuffix]: FilterText,
-    },
-  };
+  import { CtypeFilterConds } from "./filters";
 
   export let columns: Column[] = [];
   export let filter_conds: {
@@ -230,9 +37,14 @@
       {
         column: _new_column_slug,
         cond: _new_column_cond,
-        value: _new_filter_value,
+        value:
+          typeof _new_filter_value === "undefined" ? "" : _new_filter_value,
       },
     ];
+
+    _new_column_slug = "";
+    _new_column_cond = "";
+    _new_filter_value = undefined;
     filter_modified = true;
   };
   export let onRemove = (ftcond) => {
@@ -318,12 +130,12 @@
         {#key _filer_component}
           {#if _filer_component}
             <svelte:component
-              this={_filer_component}
+              this={_filer_component[0]}
               bind:value={_new_filter_value}
               column={_current_column}
             />
-          {:else}
-            <div>Nil</div>
+          <!-- {:else}
+            <div>Nil</div> -->
           {/if}
         {/key}
       </td>

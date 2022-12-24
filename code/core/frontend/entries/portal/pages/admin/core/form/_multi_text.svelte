@@ -1,8 +1,9 @@
 <script>
   export let value = "";
   export let onChange = null;
+  export let seperator = ",";
 
-  $: _value = value.split(",");
+  $: _value = value.split(seperator);
 
   let new_val = "";
 
