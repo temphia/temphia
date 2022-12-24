@@ -5,19 +5,6 @@
 
 ## Docs
 
-- [ ] glossarry
-    - repo/store
-    - blueprint
-    - plug
-    - agent
-    - resource
-    - target (hook|app)
-    - domain
-    - domain adapters
-    - user group
-    - user auth
-    - user
-
 - [ ] arch
     - l1
     - l2
