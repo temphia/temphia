@@ -1,6 +1,6 @@
 <script lang="ts">
   import Builder from "./_builder.svelte";
-  import sample from "./sample";
+  import sample from "./sample/sample";
   import { getContext } from "svelte";
   import type { PortalService } from "../../../core";
 

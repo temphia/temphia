@@ -1,14 +1,17 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import { numHash } from "../../../../../../../lib/utils";
-  import { ActionDeleteButton, ActionEditButton } from "../../../../../../xcompo";
+  import {
+    ActionDeleteButton,
+    ActionEditButton,
+  } from "../../../../../../xcompo";
   import Cicon from "../../../../data/tableui/core/cicon/cicon.svelte";
   import type { Builder } from "./builder";
 
-  import AddColumn from "./_add_column.svelte";
-  import AddTable from "./_add_table.svelte";
-  import EditColumn from "./_edit_column.svelte";
-  import EditTable from "./_edit_table.svelte";
+  import AddColumn from "./panels/_add_column.svelte";
+  import AddTable from "./panels/_add_table.svelte";
+  import EditColumn from "./panels/_edit_column.svelte";
+  import EditTable from "./panels/_edit_table.svelte";
 
   export let open_modal: (compo: any, opts: any) => void;
   export let close_modal: () => void;
@@ -69,9 +72,7 @@
 
   const action_delete_column_ref = (table: string, refidx: number) => {
     // builder.delete_column_ref()
-    
   };
-
 </script>
 
 <div class="bg-blue-100 p-10 w-full h-full overflow-auto text-gray-800">

@@ -1,29 +1,5 @@
 <script lang="ts">
-  import * as f from "../../../../data/tableui/core/fields/field";
-  import { ActionButton } from "../../../core";
-
-  const ctypes = [
-    f.CtypeShortText,
-    f.CtypePhone,
-    f.CtypeSelect,
-    f.CtypeRFormula,
-    f.CtypeFile,
-    f.CtypeMultiFile,
-    f.CtypeCheckBox,
-    f.CtypeCurrency,
-    f.CtypeNumber,
-    f.CtypeLocation,
-    f.CtypeDateTime,
-    f.CtypeMultSelect,
-    f.CtypeLongText,
-    f.CtypeSingleUser,
-    f.CtypeMultiUser,
-    f.CtypeEmail,
-    f.CtypeJSON,
-    f.CtypeRangeNumber,
-    f.CtypeRatings,
-    f.CtypeColor,
-  ];
+  import { ActionButton } from "../../../../core";
 
   export let callback: (data: any) => void;
   export let data = {};
@@ -31,7 +7,6 @@
   let name = data["name"] || "";
   let slug = data["slug"] || "";
   let info = data["description"] || "";
-  let ctype = data["ctype"] || f.CtypeShortText;
 
   const onEdit = () => {
     const data = {
@@ -45,7 +20,7 @@
 </script>
 
 <div class="p-2">
-  <h2 class="font-medium leading-tight text-xl">Edit Column</h2>
+  <h2 class="font-medium leading-tight text-xl">Edit Table</h2>
 
   <div class="flex flex-col">
     <div class="flex-col flex py-3">
@@ -68,15 +43,6 @@
     </div>
 
     <div class="flex-col flex py-3">
-      <label class="pb-2 text-gray-700 font-semibold">Ctype </label>
-      <select value={ctype} class="p-2 rounded" disabled>
-        {#each ctypes as ct}
-          <option value={ct}>{ct}</option>
-        {/each}
-      </select>
-    </div>
-
-    <div class="flex-col flex py-3">
       <label class="pb-2 text-gray-700 font-semibold">Info </label>
       <textarea
         type="text"
@@ -86,7 +52,7 @@
     </div>
 
     <div class="flex justify-end">
-      {#if name && slug && ctype}
+      {#if name && slug}
         <ActionButton icon_name="pencil-alt" name="Edit" onClick={onEdit} />
       {/if}
     </div>

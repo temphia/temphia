@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ActionButton } from "../../../core";
+  import { ActionButton } from "../../../../core";
 
   export let callback: (data: any) => void;
 
