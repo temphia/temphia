@@ -3,7 +3,7 @@
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import LensHelp from "./_help.svelte";
   import { getContext } from "svelte";
-  import type { PortalService } from "../core";
+  import type { PortalService } from "../../core";
 
   export let index;
 
@@ -59,21 +59,23 @@
       </div>
     </div>
 
-    <div class="flex justify-between text-sm">
+    <div class="flex flex-wrap justify-between text-sm">
       <div class="flex text-sm p-1 gap-1">
         <div
-          class="bg-green-100 p-1 rounded-lg flex space-x-2 flex-row cursor-pointer"
+          class="bg-green-100 p-1 rounded-lg flex space-x-1 flex-row cursor-pointer"
         >
           <Icon name="chevron-left" class="h-4" />
-          <p class="text-xs">2021-01-15 [5:30]</p>
+          <input type="datetime-local" class="text-xs" />
+          <!-- <p class="text-xs">2021-01-15 [5:30]</p> -->
           <Icon name="calendar" class="h-4" />
         </div>
 
         <div
-          class="bg-red-100 p-1 rounded-lg flex space-x-2 flex-row cursor-pointer"
+          class="bg-red-100 p-1 rounded-lg flex space-x-1 flex-row cursor-pointer"
         >
           <Icon name="calendar" class="h-4" />
-          <p class="text-xs">2021-02-17 [7:30]</p>
+          <input type="datetime-local" class="text-xs" />
+          <!-- <p class="text-xs">2021-02-17 [7:30]</p> -->
           <Icon name="chevron-right" class="h-4" />
         </div>
 

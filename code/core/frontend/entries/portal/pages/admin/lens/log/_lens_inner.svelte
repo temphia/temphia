@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import VirtualList from "./_virtaul_list.svelte";
-  import type { PortalService } from "../core";
+  import type { PortalService } from "../../core";
   import Layout from "./_layout.svelte";
   import PrettyJson from "./_pretty_json.svelte";
 

@@ -92,7 +92,7 @@ import AdminUgroupAuthNew from "./ugroup/auth/auth_new.svelte";
 import AdminUgroupAuthEdit from "./ugroup/auth/auth_edit.svelte";
 
 // lens
-import AdminLens from "./lens/lens.svelte";
+import AdminLens from "./lens/log/lens.svelte";
 
 // tenant
 import AdminTenant from "./tenant/tenant.svelte";
