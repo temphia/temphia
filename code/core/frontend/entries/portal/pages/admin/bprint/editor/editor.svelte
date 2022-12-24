@@ -1,13 +1,14 @@
 <script lang="ts">
+  import { getContext } from "svelte";
   import type { PortalService } from "../../core";
-  import DataMigrator from "./data_migrator/index.svelte";
-  import DataSchema from "./data_schema/index.svelte";
+  import { params } from "svelte-hash-router";
 
-  export let bid: string;
-  export let etype: string;
-  export let file: string;
+  export let bid: string = $params.bid;
+  export let etype: string = $params.etype;
+  export let file: string = $params._;
 
-  // app.registry.GetAll("bprint_editor_type");
+  const app = getContext("__app__") as PortalService;
+  const compo = app.xtmgr.bprint_editors.get(etype);
 </script>
 
-<div>Editor</div>
+<svelte:component this={compo} {bid} {app} {etype} {file} />

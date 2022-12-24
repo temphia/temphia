@@ -1,12 +1,9 @@
 export * from "./portal/portal";
 
-import { initRegistry } from "../../../lib/engine/putils";
 import { SiteUtils, baseURL } from "../../../lib/utils/site";
 import { PortalService } from "./portal/portal";
 
-const build = () => {
-  initRegistry();
-  
+const build = () => {  
   const site = new SiteUtils();
 
   if (!site.isLogged()) {

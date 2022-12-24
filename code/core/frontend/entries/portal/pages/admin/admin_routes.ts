@@ -4,6 +4,7 @@ import AdminBprintFiles from "./bprint/files/files.svelte";
 import AdminBprintFile from "./bprint/files/file.svelte";
 import AdminBprintDataInstancer from "./bprint/instancer/data/data.svelte";
 import AdminBprintPlugInstancer from "./bprint/instancer/plug/plug.svelte";
+import AdminBprintEditor from "./bprint/editor/editor.svelte";
 
 // plug
 import AdminPlugs from "./plug/plugs.svelte";
@@ -61,7 +62,7 @@ import AdminDataViewEdit from "./data/view/view_edit.svelte";
 import Admin from "./admin.svelte";
 
 import AdminActivity from "./data/tools/activity/activity.svelte";
-import AdminSeed from "./data/tools/seed/seed.svelte"
+import AdminSeed from "./data/tools/seed/seed.svelte";
 
 // resource
 import AdminResources from "./resource/resources.svelte";
@@ -116,6 +117,7 @@ export default {
     "/:bid/instance/plug/*": AdminBprintPlugInstancer,
     "/:bid/file": AdminBprintFiles,
     "/:bid/file/*": AdminBprintFile,
+    "/:bid/editor/:etype/*": AdminBprintEditor,
   },
 
   "/plug": {
@@ -197,7 +199,7 @@ export default {
     "/:source/view/:group/:table/:id/edit": AdminDataViewEdit,
     "/:source/activity/:group/:table": AdminActivity,
     "/:source/seed/:group/:table": AdminSeed,
-    "/:source/query/:group": AdminDataQuery,    
+    "/:source/query/:group": AdminDataQuery,
   },
 
   "/ugroup": {
@@ -212,7 +214,6 @@ export default {
     "/:ugroup/auth": AdminUgroupAuths,
     "/:ugroup/auth/edit/:id": AdminUgroupAuthEdit,
     "/:ugroup/auth/new": AdminUgroupAuthNew,
-    
   },
 
   "/user": {

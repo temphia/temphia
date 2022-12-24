@@ -8,6 +8,7 @@ import { SockdService } from "../sockd/sockd";
 import type { Registry } from "../../../../lib/registry/registry";
 import type { Logger } from "../../../../lib/logger";
 import { CabinetService } from "../cabinet/cabinet";
+import { XtMgr } from "./xtmgr";
 
 export interface AppOptions {
   base_url: string;
@@ -36,6 +37,7 @@ export class PortalService {
   utils: Utils;
   registry: Registry<any>;
   logger: Logger;
+  xtmgr: XtMgr;
 
   launcher: Launcher;
   data_service: DataService;
@@ -52,11 +54,14 @@ export class PortalService {
     this.launcher = new Launcher();
     this.sockd_service = new SockdService();
     this.cabinet_service = new CabinetService(this.api_manager);
+    this.registry = opts.registry;
+    this.xtmgr = new XtMgr(this, this.registry);
   }
 
   async init() {
     await this.api_manager.init();
     this.init_notifier();
+    this.xtmgr.init();
   }
 
   private async init_notifier() {

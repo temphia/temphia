@@ -115,6 +115,10 @@ export class Navigator {
     this.set(`#/admin/bprint/${bid}/instance/plug/${file}`, opts);
   };
 
+  admin_bprint_editor = (bid: string, etype: string, file: string) => {
+    this.set(`#/admin/bprint/${bid}/editor/${etype}/${file}`);
+  };
+
   // plugs
 
   admin_plugs = () => {
