@@ -5,3 +5,8 @@ export class DataWriteTktAPI {
 export class DataQueryTktAPI {
   constructor() {}
 }
+
+
+export class DataSubscribeAPI {
+  constructor() {}
+}

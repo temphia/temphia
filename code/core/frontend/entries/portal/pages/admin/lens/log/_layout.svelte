@@ -3,11 +3,14 @@
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import LensHelp from "./_help.svelte";
   import { getContext } from "svelte";
-  import type { PortalService } from "../../core";
+  import { CEditor, PortalService } from "../../core";
 
   export let index;
+  export let fromDate = null;
+  export let toDate = null;
 
   const app = getContext("__app__") as PortalService;
+  let editor;
 
   export let do_query = (qstr) => {};
 </script>
@@ -33,39 +36,18 @@
           class="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label
         >
         <div class="relative">
-          <textarea
-            type="search"
-            id="default-search"
-            class="block p-2 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
-            placeholder="Search .."
-            required
-          />
+          <CEditor bind:editor />
         </div>
-      </div>
-
-      <div class="flex p-1 gap-1">
-        <button
-          on:click={() => do_query("")}
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-2"
-          >Search</button
-        >
-
-        <button
-          on:click={() => {}}
-          class="p-1 rounded bg-blue-300 shadow hover:bg-blue-600 flex text-white"
-        >
-          <Icon name="information-circle" class="h-6 w-6" solid />
-        </button>
       </div>
     </div>
 
     <div class="flex flex-wrap justify-between text-sm">
-      <div class="flex text-sm p-1 gap-1">
+      <div class="flex flex-wrap text-sm p-1 gap-1">
         <div
           class="bg-green-100 p-1 rounded-lg flex space-x-1 flex-row cursor-pointer"
         >
           <Icon name="chevron-left" class="h-4" />
-          <input type="datetime-local" class="text-xs" />
+          <input type="datetime-local" class="text-xs" bind:value={toDate} />
           <!-- <p class="text-xs">2021-01-15 [5:30]</p> -->
           <Icon name="calendar" class="h-4" />
         </div>
@@ -74,7 +56,7 @@
           class="bg-red-100 p-1 rounded-lg flex space-x-1 flex-row cursor-pointer"
         >
           <Icon name="calendar" class="h-4" />
-          <input type="datetime-local" class="text-xs" />
+          <input type="datetime-local" class="text-xs" bind:value={fromDate} />
           <!-- <p class="text-xs">2021-02-17 [7:30]</p> -->
           <Icon name="chevron-right" class="h-4" />
         </div>
@@ -95,6 +77,21 @@
 
           <span class="ml-2 text-gray-700">Logs count</span>
         </label>
+      </div>
+
+      <div class="flex justify-end p-1 gap-1">
+        <button
+          on:click={() => do_query("")}
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-2"
+          >Search</button
+        >
+
+        <button
+          on:click={() => {}}
+          class="p-1 rounded bg-blue-300 shadow hover:bg-blue-600 flex text-white"
+        >
+          <Icon name="information-circle" class="h-6 w-6" solid />
+        </button>
       </div>
     </div>
   </div>

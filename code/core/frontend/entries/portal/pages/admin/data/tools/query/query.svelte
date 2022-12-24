@@ -76,16 +76,15 @@
     </div>
   </div>
 
-  <div class="p-2 flex flex-col gap-2 overflow-auto rounded bg-white mt-2 flex-grow">
-
+  <div
+    class="p-2 flex flex-col gap-2 overflow-auto rounded bg-white mt-2 flex-grow"
+  >
     {#key data}
-
-    {#each data["records"] || [] as record}
-      <div class="flex border rounded p-1">
-        <pre class="">{JSON.stringify(record)}</pre>
-      </div>
-    {/each}      
+      {#each data["records"] || [] as record}
+        <div class="flex border rounded p-1">
+          <pre class="">{JSON.stringify(record)}</pre>
+        </div>
+      {/each}
     {/key}
-
   </div>
 </div>
