@@ -16,7 +16,7 @@ An agent is a piece of code that performs some action or task. It may have a use
 A link is a connection between two agents that allows them to communicate with another through RPCs like system using JSON messages. An agent can have multiple links, which can extend its functionality or allow it to send messages about events. For example, an e-commerce system might use links to connect to different payment processors dynamically. This allows the system to communicate with the payment processors and access their functionality as needed.
 
 ## Extension
-Extension are way to extend the ui of the agent using js file. It allows to extend some agent instanced from one bprint to using js file using another bprint. This allows to modify (mod) a agent using third party (one which is not the original author of app/agent) similar to greasemonkey/userscript but without agent user fiddling with browser extension
+Extension are way to extend the ui of the agent using js file. It allows to extend some agent instanced from one bprint to using js file using another bprint. This allows to modify (mod) a agent using third party (one which is not the original author of app/agent) similar to greasemonkey/userscript but without end user fiddling with browser extension.
 
 ## Resource
 Resources are entities that can be associated with an agent, granting it specific capabilities. For example, a room resource may allow the agent to post messages to a specific websocket room, while a folder resource allows the agent to perform file operations within a particular folder.  
