@@ -36,7 +36,8 @@ export class DataService {
 
   group_service = async (source: string, group: string) => {
     if (!this.current_group) {
-      return this.create_group(source, group);
+      this.current_group = await this.create_group(source, group);
+      return this.current_group;
     }
 
     if (
