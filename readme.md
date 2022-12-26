@@ -3,7 +3,7 @@
 
 Platform for apps.
 
-**🚨🚨🚨Alpha software🚨🚨🚨**
+> **🚨🚨🚨Alpha software🚨🚨🚨**
 
 ## Docs
 - [FAQ](./docs/faq.md)
