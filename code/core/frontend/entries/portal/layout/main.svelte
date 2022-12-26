@@ -43,7 +43,7 @@
 
     <div class="h-16 flex items-center w-full">
       <!-- Logo Section -->
-      <a class="h-6 mx-auto" href="http://svelte.dev/">
+      <a class="h-6 mx-auto" href="http://github.com/temphia/temphia/">
         <Logo />
       </a>
     </div>
