@@ -14,6 +14,6 @@ type BuildConfig struct {
 }
 
 type BuildResult struct {
-	ErroredItems map[string]string
+	ErroredItems map[string]error
 	Outputs      map[string]string
 }

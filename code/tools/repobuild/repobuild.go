@@ -2,6 +2,7 @@ package repobuild
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
 	"os/exec"
 	"path"
@@ -35,7 +36,7 @@ func New(conf []byte) (*RepoBuild, error) {
 func (rb *RepoBuild) BuildAll() (*BuildResult, error) {
 
 	result := &BuildResult{
-		ErroredItems: make(map[string]string),
+		ErroredItems: make(map[string]error),
 		Outputs:      make(map[string]string),
 	}
 
@@ -43,7 +44,7 @@ func (rb *RepoBuild) BuildAll() (*BuildResult, error) {
 
 		ofolder, err := rb.BuildOne(k, false)
 		if err != nil {
-			result.ErroredItems[k] = err.Error()
+			result.ErroredItems[k] = err
 			continue
 		}
 		result.Outputs[k] = ofolder
@@ -79,17 +80,21 @@ func (rb *RepoBuild) buildItem(name string) (string, error) {
 	_, err = git.PlainClone(buildPath, false, &git.CloneOptions{
 		URL:           item.GitURL,
 		Progress:      os.Stdout,
-		ReferenceName: plumbing.ReferenceName(item.Branch),
+		ReferenceName: plumbing.NewBranchReferenceName(item.Branch),
 		SingleBranch:  true,
 		Depth:         1,
 	})
+
 	if err != nil {
-		return "", err
+		if !errors.Is(git.ErrRepositoryAlreadyExists, err) {
+			return "", err
+		}
 	}
 
 	cmd := exec.Command(item.BuildCommand)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
+	cmd.Path = buildPath
 
 	err = cmd.Run()
 	if err != nil {
