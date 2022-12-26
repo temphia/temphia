@@ -9,6 +9,7 @@ import (
 
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/libx/xutils"
 )
 
@@ -91,10 +92,15 @@ func (rb *RepoBuild) buildItem(name string) (string, error) {
 		}
 	}
 
+	curr, _ := os.Getwd()
+
 	cmd := exec.Command(item.BuildCommand)
+
+	pp.Println("@prev", cmd)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	cmd.Path = buildPath
+	cmd.Dir = path.Join(curr, buildPath)
+	pp.Println("@after", cmd)
 
 	err = cmd.Run()
 	if err != nil {
