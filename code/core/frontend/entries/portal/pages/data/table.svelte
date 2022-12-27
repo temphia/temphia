@@ -40,6 +40,8 @@
         app.nav.data_table(source, group, $params.dtable)}
       on:admin_data_table={() =>
         app.nav.admin_data_table(source, group, $params.dtable)}
+      on:goto_history={() =>
+        app.nav.admin_data_activity(source, group, $params.dtable)}
     />
   {/key}
 {/if}
