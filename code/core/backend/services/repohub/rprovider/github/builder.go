@@ -18,7 +18,7 @@ func NewOfficial(opts *repox.BuilderOptions) (repox.Repository, error) {
 		ExtraMeta: map[string]string{
 			"branch": "main",
 			"user":   "temphia",
-			"repo":   "temphia",
+			"repo":   "repo",
 		},
 	})
 }
