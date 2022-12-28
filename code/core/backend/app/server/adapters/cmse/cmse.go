@@ -1,6 +1,7 @@
 package cmse
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
@@ -22,6 +23,10 @@ func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 		app:     opts.App,
 		runtime: engine.GetRuntime(),
 	}, nil
+}
+
+func (d *CMSE) ServeEditorFile(ctx *gin.Context, file string) error {
+	return nil
 }
 
 func (d *CMSE) Handle(ctx httpx.Context) {

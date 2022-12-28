@@ -5,6 +5,7 @@ import (
 
 	"github.com/antonmedv/expr"
 	"github.com/antonmedv/expr/vm"
+	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
@@ -36,6 +37,10 @@ func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 			},
 		},
 	}, nil
+}
+
+func (d *dynamic) ServeEditorFile(ctx *gin.Context, file string) error {
+	return nil
 }
 
 func (d *dynamic) Handle(ctx httpx.Context) {

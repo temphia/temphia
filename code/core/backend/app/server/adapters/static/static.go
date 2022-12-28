@@ -24,8 +24,8 @@ func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 	}, nil
 }
 
-func (s *static) Render(ctx *gin.Context) {
-
+func (s *static) ServeEditorFile(ctx *gin.Context, file string) error {
+	return nil
 }
 
 func (s *static) Handle(ctx httpx.Context) {

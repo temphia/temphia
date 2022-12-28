@@ -1,6 +1,7 @@
 package landings
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 )
 
@@ -15,6 +16,10 @@ func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 	return &landings{
 		rendered: []byte(`<h1>Todo</h1>`),
 	}, nil
+}
+
+func (l *landings) ServeEditorFile(ctx *gin.Context, file string) error {
+	return nil
 }
 
 func (l *landings) Handle(ctx httpx.Context) {

@@ -12,6 +12,8 @@ type Context struct {
 }
 
 type Adapter interface {
+	ServeEditorFile(ctx *gin.Context, file string) error
+
 	Handle(ctx Context)
 }
 
