@@ -78,8 +78,9 @@ func (p *PacMan) getRepoSource(tenantId string, source int64) repox.Repository {
 	}
 
 	newrepo, err := repoBuilder(&repox.BuilderOptions{
-		TenantId: tenantId,
-		BasePath: rrepo.URL,
+		TenantId:  tenantId,
+		BasePath:  rrepo.URL,
+		ExtraMeta: rrepo.ExtraMeta,
 	})
 	if err != nil {
 		return nil

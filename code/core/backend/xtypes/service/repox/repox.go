@@ -5,8 +5,9 @@ import (
 )
 
 type BuilderOptions struct {
-	TenantId string
-	BasePath string
+	TenantId  string
+	BasePath  string
+	ExtraMeta map[string]string
 }
 
 type Builder func(opts *BuilderOptions) (Repository, error)
