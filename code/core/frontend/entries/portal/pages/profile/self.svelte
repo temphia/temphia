@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import type { PortalService } from "../../services";
+  import TopActions from "../admin/core/top_actions.svelte";
 
   const app: PortalService = getContext("__app__");
   const api = app.api_manager.get_self_api();
@@ -29,6 +30,12 @@
 </script>
 
 <div class="h-full w-full bg-indigo-100 overflow-auto">
+  <TopActions
+    actions={{
+      Devices: () => app.nav.self_devices(),
+    }}
+  />
+
   <div class="md:p-12 flex flex-row flex-wrap">
     <div
       class="md:w-1/2-screen m-0 p-5 bg-white w-full tw-h-full shadow md:rounded-lg relative"
@@ -58,7 +65,6 @@
         <div class="flex-col flex py-3 relative">
           <label class="pb-2 text-gray-700 font-semibold">Bio</label>
           <textarea
-            type="text"
             value={data["bio"] || ""}
             on:change={onModData("bio")}
             class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200"
@@ -101,7 +107,6 @@
         <div class="flex-col flex py-3 relative">
           <label class="pb-2 text-gray-700 font-semibold">Pub Key</label>
           <textarea
-            type="text"
             value={data["pub_key"] || ""}
             on:change={onModData("pub_key")}
             class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200"

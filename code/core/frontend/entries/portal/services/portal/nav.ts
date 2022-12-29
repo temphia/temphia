@@ -85,6 +85,10 @@ export class Navigator {
     this.set(`#/profile/user/${user}`);
   };
 
+  self_devices = () => {
+    this.set(`#/profile/device`);
+  };
+
   play = () => {
     this.set(`#/play`);
   };
