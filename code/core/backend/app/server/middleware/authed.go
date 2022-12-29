@@ -43,7 +43,7 @@ func (m *Middleware) LoggedX(fn func(ctx httpx.Request)) func(*gin.Context) {
 			Str("tenant_id", tenantId).
 			Str("user_group", sclaim.UserGroup).
 			Str("user_id", sclaim.UserID).
-			Str("device_id", sclaim.DeviceId).
+			Int64("device_id", sclaim.DeviceId).
 			Int64("session_id", sclaim.SessionID).
 			Str("handler_method", funcName(fn)).Msg(logid.RoutesSessionParsed)
 

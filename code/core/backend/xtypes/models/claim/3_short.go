@@ -4,7 +4,7 @@ type Executor struct {
 	TenentId   string            `json:"-"`
 	UserId     string            `json:"user_id,omitempty"`
 	UserGroup  string            `json:"group,omitempty"`
-	DeviceId   string            `json:"device_id,omitempty"`
+	DeviceId   int64             `json:"device_id,omitempty"`
 	Type       string            `json:"type,omitempty"`
 	SessionId  int64             `json:"session_id,omitempty"`
 	ExecId     int64             `json:"exec_id,omitempty"`
@@ -20,7 +20,7 @@ type Data struct {
 	UserID     string   `json:"user_id,omitempty"`
 	UserGroup  string   `json:"ugroup,omitempty"`
 	SessionID  int64    `json:"session_id,omitempty"`
-	DeviceId   string   `json:"device_id,omitempty"`
+	DeviceId   int64    `json:"device_id,omitempty"`
 	DataSource string   `json:"source,omitempty"`
 	DataGroup  string   `json:"group,omitempty"`
 	DataTables []string `json:"tables,omitempty"`

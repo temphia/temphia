@@ -15,7 +15,7 @@ type UserConnOptions struct {
 	TenantId string
 	UserId   string
 	GroupId  string
-	DeviceId string
+	DeviceId int64
 	Conn     sockdx.Conn
 }
 

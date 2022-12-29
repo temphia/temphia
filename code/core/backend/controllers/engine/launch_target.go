@@ -31,7 +31,7 @@ func (c *Controller) launchTarget(uclaim *claim.Session, data TargetLaunchData) 
 		TenentId:   uclaim.TenentId,
 		UserId:     uclaim.UserID,
 		UserGroup:  uclaim.UserGroup,
-		DeviceId:   "",
+		DeviceId:   uclaim.DeviceId,
 		Type:       "executor",
 		SessionId:  uclaim.SessionID,
 		ExecId:     c.idgen.Generate().Int64(),

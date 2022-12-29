@@ -1,7 +1,6 @@
 package authed
 
 import (
-	"github.com/rs/xid"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 )
 
@@ -27,26 +26,17 @@ func (c *Controller) refreshService(uclaim *claim.User, opts RefreshReq) *Refres
 }
 
 func (c *Controller) sessionClaim(uclaim *claim.User, opts RefreshReq) *RefreshResp {
-	deviceId := xid.New().String() // fixme
+
 	serviceId := c.sessionNode.Generate().Int64()
 
 	if opts.OldToken != "" {
 		sess, err := c.signer.ParseSession(uclaim.TenentId, opts.OldToken)
 		if err != nil {
-			deviceId = sess.DeviceId
 			serviceId = sess.SessionID
 		}
 	}
 
-	sclaim := &claim.Session{
-		TenentId:   uclaim.TenentId,
-		UserID:     uclaim.UserID,
-		UserGroup:  uclaim.UserGroup,
-		Type:       "session",
-		Attributes: nil,
-		SessionID:  serviceId,
-		DeviceId:   deviceId,
-	}
+	sclaim := uclaim.DeriveSession(serviceId)
 
 	token, err := c.signer.SignSession(uclaim.TenentId, sclaim)
 	if err != nil {
