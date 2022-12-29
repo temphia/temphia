@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"sync"
 
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
@@ -31,7 +32,9 @@ type Github struct {
 	user   string
 	repo   string
 	branch string
-	cache  map[string]*entities.BPrint
+
+	cache map[string]*entities.BPrint
+	cLock sync.Mutex
 }
 
 func (g *Github) Name() string { return "github" }
@@ -103,7 +106,12 @@ func (g *Github) fillCache() error {
 		return err
 	}
 
-	g.cache = db.Items
+	if g.cache == nil {
+		g.cLock.Lock()
+		g.cache = db.Items
+		g.cLock.Unlock()
+	}
+
 	return nil
 }
 
