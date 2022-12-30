@@ -160,18 +160,18 @@ create table user_datas(
 );
 
 create table user_devices(
-    xid text not null,
-    user_id text not null,
+    id serial primary key,
     name text not null default '',
-    last_addr text not null,
-    apn_token text not null,
+    user_id text not null,
+    device_type text not null default 'device', --- device/login
+    last_addr text not null default '',
+    apn_token text not null default '',
+    scopes text not null default '',
+    extra_meta json not null default '{}',
     tenant_id text not null,
-    using_auth integer not null default 0,
-    manual_generated boolean not null default FALSE,
-    blocked boolean not null default FALSE,
-    foreign KEY(user_id, tenant_id) references users(user_id, tenant_id),
-    primary KEY(xid, tenant_id)
+    foreign KEY(user_id, tenant_id) references users(user_id, tenant_id)
 );
+
 
 create table user_messages(
     id serial primary key,
