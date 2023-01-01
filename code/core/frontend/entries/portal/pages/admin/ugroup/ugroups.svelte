@@ -81,8 +81,8 @@
     key_names={[
       ["name", "Name"],
       ["slug", "Slug"],
-      ["enable_pass_auth", "Enabled Password"],
-      ["Open Sign Up", "open_sign_up"],
+      ["scopes", "Scopes"],
+      ["mod_version", "Mod Version"]
     ]}
     color={[]}
     {datas}
