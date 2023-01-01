@@ -116,14 +116,10 @@ create table user_groups(
     icon text not null default '',
     scopes text not null default '',
     tenant_id text not null,
-    enable_pass_auth boolean not null default TRUE,
-    open_sign_up boolean not null default FALSE,
+    features text not null default '',
+    feature_opts json not null default '{}',
     extra_meta json not null default '{}',
-    default_domain text not null default '',
-
-    -- mod_version integer not null default 0,
-    -- apn_device_push boolean not null default FALSE,
-
+    mod_version integer not null default 0,
     primary KEY(slug, tenant_id)
 );
 
