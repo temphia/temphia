@@ -19,7 +19,7 @@
     }
 
     data = resp.data;
-    loading = false
+    loading = false;
   };
 
   load();
@@ -60,21 +60,21 @@
         },
 
         {
-          name: "Enable Password",
-          ftype: "BOOL",
-          key_name: "enable_pass_auth",
-        },
-
-        {
           name: "Scopes",
           ftype: "MULTI_TEXT",
           key_name: "scopes",
         },
 
         {
-          name: "Open Sign Up",
-          ftype: "BOOL",
-          key_name: "open_sign_up",
+          name: "Features",
+          ftype: "MULTI_TEXT",
+          key_name: "features",
+        },
+
+        {
+          name: "Feature Options",
+          ftype: "KEY_VALUE_TEXT",
+          key_name: "feature_opts",
         },
 
         {
