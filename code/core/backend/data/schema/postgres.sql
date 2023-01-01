@@ -163,6 +163,10 @@ create table user_devices(
     apn_token text not null default '',
     scopes text not null default '',
     extra_meta json not null default '{}',
+
+    -- expires_on timestampz not null,
+    -- last_logged_on timestampz,
+
     tenant_id text not null,
     foreign KEY(user_id, tenant_id) references users(user_id, tenant_id),
     primary key(id)
