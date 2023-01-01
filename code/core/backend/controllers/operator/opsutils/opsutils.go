@@ -32,7 +32,6 @@ func AddTenant(app xtypes.App, data *opmodels.NewTenant) error {
 	err = coredb.AddUserGroup(&entities.UserGroup{
 		Name:     "Super Admin",
 		Slug:     "super_admin",
-		Icon:     "",
 		TenantID: data.Slug,
 	})
 

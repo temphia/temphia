@@ -113,7 +113,6 @@ create table tenant_repos(
 create table user_groups(
     name text not null default '',
     slug text not null,
-    icon text not null default '',
     scopes text not null default '',
     tenant_id text not null,
     features text not null default '',

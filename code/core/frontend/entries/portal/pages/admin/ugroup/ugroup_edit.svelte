@@ -54,12 +54,6 @@
         },
 
         {
-          name: "Icon",
-          ftype: "TEXT",
-          key_name: "icon",
-        },
-
-        {
           name: "Scopes",
           ftype: "MULTI_TEXT",
           key_name: "scopes",

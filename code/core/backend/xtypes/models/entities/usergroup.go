@@ -3,7 +3,6 @@ package entities
 type UserGroup struct {
 	Name        string     `json:"name,omitempty" db:"name"`
 	Slug        string     `json:"slug,omitempty" db:"slug"`
-	Icon        string     `json:"icon,omitempty" db:"icon"`
 	Scopes      string     `json:"scopes,omitempty" db:"scopes"`
 	Features    string     `json:"features,omitempty" db:"features"`
 	FeatureOpts JsonStrMap `json:"feature_opts" db:"feature_opts,omitempty"`
