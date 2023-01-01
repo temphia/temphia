@@ -1,1 +1,0 @@
-<div>Pair device</div>

@@ -19,6 +19,7 @@ import RepoItem from "./repo/repo_item.svelte";
 import SelfProfile from "./profile/self.svelte";
 import UserProfile from "./profile/user.svelte";
 import SelfDevices from "./profile/device/devices.svelte";
+import SelfDeviceNew from "./profile/device/device_new.svelte";
 
 import admin_pages from "./admin/admin_routes";
 import Play from "./play/play.svelte";
@@ -57,6 +58,7 @@ export default {
     "/self": SelfProfile,
     "/user/:id": UserProfile,
     "/device": SelfDevices,
+    "/device/new": SelfDeviceNew,
   },
 
   "/launch": {

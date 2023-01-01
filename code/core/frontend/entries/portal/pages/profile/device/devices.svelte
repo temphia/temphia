@@ -1,8 +1,11 @@
 <script lang="ts">
-  import { AutoTable, FloatingAdd, PortalService } from "../../admin/core";
+  import {
+    AutoTable,
+    FloatingAdd,
+    LoadingSpinner,
+    PortalService,
+  } from "../../admin/core";
   import { getContext } from "svelte";
-  import PairDevice from "./_pair_device.svelte";
-  import LoadingSpinner from "../../../../xcompo/common/loading_spinner.svelte";
 
   const app = getContext("__app__") as PortalService;
 
@@ -53,4 +56,4 @@
   </div>
 {/if}
 
-<FloatingAdd onClick={() => app.utils.small_modal_open(PairDevice, {})} />
+<FloatingAdd onClick={() => app.nav.self_device_new()} />
