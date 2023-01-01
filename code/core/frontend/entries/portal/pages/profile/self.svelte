@@ -32,7 +32,7 @@
 <div class="h-full w-full bg-indigo-100 overflow-auto">
   <TopActions
     actions={{
-      Devices: () => app.nav.self_devices(),
+      "Devices and Logins": () => app.nav.self_devices(),
     }}
   />
 

@@ -97,6 +97,12 @@ type UserOps interface {
 
 	GetUserData(tenantId string, slug string) (*entities.UserData, error)
 	UpdateUserData(tenantId, slug string, data map[string]any) error
+
+	AddUserDevice(tenantId string, user string, data *entities.UserDevice) error
+	UpdateUserDevice(tenantId string, user string, id int64, data map[string]any) error
+	GetUserDevice(tenantId string, user string, id int64) (*entities.UserDevice, error)
+	ListUserDevice(tenantId string, user string) ([]*entities.UserDevice, error)
+	RemoveUserDevice(tenantId string, user string, id int64) error
 }
 
 type UserPermissionOps interface {

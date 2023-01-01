@@ -39,7 +39,7 @@ func (c *Controller) loginNext(opts LoginNextRequest) (*LoginNextResponse, error
 		return nil, err
 	}
 
-	if !ugroup.EnablePassAuth && ugroup.Slug != "super_admin" {
+	if !ugroup.HasFeature("pass_auth") && ugroup.Slug != "super_admin" {
 		return &LoginNextResponse{
 			Message: "auth method not allowed",
 		}, nil

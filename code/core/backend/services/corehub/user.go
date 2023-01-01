@@ -130,3 +130,25 @@ func (c *CoreHub) GetUserData(tenantId string, slug string) (*entities.UserData,
 func (c *CoreHub) UpdateUserData(tenantId, slug string, data map[string]any) error {
 	return c.coredb.UpdateUserData(tenantId, slug, data)
 }
+
+// user devices
+
+func (c *CoreHub) AddUserDevice(tenantId string, user string, data *entities.UserDevice) error {
+	return c.coredb.AddUserDevice(tenantId, user, data)
+}
+
+func (c *CoreHub) UpdateUserDevice(tenantId string, user string, id int64, data map[string]any) error {
+	return c.coredb.UpdateUserDevice(tenantId, user, id, data)
+}
+
+func (c *CoreHub) GetUserDevice(tenantId string, user string, id int64) (*entities.UserDevice, error) {
+	return c.coredb.GetUserDevice(tenantId, user, id)
+}
+
+func (c *CoreHub) ListUserDevice(tenantId string, user string) ([]*entities.UserDevice, error) {
+	return c.coredb.ListUserDevice(tenantId, user)
+}
+
+func (c *CoreHub) RemoveUserDevice(tenantId string, user string, id int64) error {
+	return c.coredb.RemoveUserDevice(tenantId, user, id)
+}

@@ -45,6 +45,10 @@ func (d *DB) userGroupTable() db.Collection {
 	return d.table("user_groups")
 }
 
+func (d *DB) userDevices() db.Collection {
+	return d.table("user_devices")
+}
+
 func (d *DB) userGroupAuth() db.Collection {
 	return d.table("user_group_auths")
 }

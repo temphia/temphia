@@ -2,6 +2,7 @@ package apiadmin
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/core/backend/controllers/admin"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 )
@@ -29,6 +30,12 @@ func (a *ApiAdmin) userAPI(rg *gin.RouterGroup) {
 	rg.GET("/user_role", a.X(a.ListAllUserRole))
 	rg.POST("/user_role", a.X(a.AddUserRole))
 	rg.DELETE("/user_role", a.X(a.RemoveUserRole))
+
+	rg.GET("/:user_id/device", a.X(a.ListUserDevices))
+	rg.GET("/:user_id/device/:id", a.X(a.GetUserDevice))
+	rg.POST("/:user_id/device/:id", a.X(a.UpdateUserDevice))
+	rg.DELETE("/:user_id/device/:id", a.X(a.RemoveUserDevices))
+	rg.POST("/:user_id/device", a.X(a.AddUserDevices))
 
 	// rg.GET("/user_perm", r.Authed(r.ListUserPerm)) // user query
 }
@@ -83,6 +90,47 @@ func (r *ApiAdmin) ListUsers(ctx httpx.Request) {
 	}
 
 	r.rutil.WriteJSON(ctx.Http, usrs, err)
+}
+
+func (r *ApiAdmin) ListUserDevices(ctx httpx.Request) {
+	resp, err := r.cAdmin.ListUserDevice(ctx.Session, ctx.MustParam("user_id"))
+	r.rutil.WriteJSON(ctx.Http, resp, err)
+}
+
+func (r *ApiAdmin) GetUserDevice(ctx httpx.Request) {
+	resp, err := r.cAdmin.GetUserDevice(ctx.Session, ctx.MustParam("user_id"), ctx.MustParamInt("id"))
+	r.rutil.WriteJSON(ctx.Http, resp, err)
+}
+
+func (r *ApiAdmin) UpdateUserDevice(ctx httpx.Request) {
+	data := make(map[string]interface{})
+	err := ctx.Http.BindJSON(&data)
+	if err != nil {
+		r.rutil.WriteErr(ctx.Http, err.Error())
+		return
+	}
+
+	err = r.cAdmin.UpdateUserDevice(ctx.Session, ctx.MustParam("user_id"), ctx.MustParamInt("id"), data)
+	r.rutil.WriteJSON(ctx.Http, nil, err)
+}
+
+func (r *ApiAdmin) RemoveUserDevices(ctx httpx.Request) {
+	err := r.cAdmin.RemoveUserDevice(ctx.Session, ctx.MustParam("user_id"), ctx.MustParamInt("id"))
+	r.rutil.WriteJSON(ctx.Http, nil, err)
+
+}
+
+func (r *ApiAdmin) AddUserDevices(ctx httpx.Request) {
+
+	data := admin.NewUserDevice{}
+	err := ctx.Http.BindJSON(&data)
+	if err != nil {
+		r.rutil.WriteErr(ctx.Http, err.Error())
+		return
+	}
+
+	err = r.cAdmin.AddUserDevice(ctx.Session, ctx.MustParam("user_id"), &data)
+	r.rutil.WriteJSON(ctx.Http, nil, err)
 }
 
 // perm placeholder stuff
