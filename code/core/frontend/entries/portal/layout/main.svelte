@@ -99,6 +99,7 @@
         </div>
 
         <button
+          on:click={() => dispatch("logout")}
           class="h-12 cursor-pointer mx-auto flex justify-center items-center
                         w-full focus:text-orange-500 hover:bg-red-200 focus:outline-none"
         >

@@ -104,4 +104,9 @@ export class PortalService {
   get_cabinet_service = () => {
     return this.cabinet_service;
   };
+
+  logout = () => {
+    this.options.site_utils.clearAuthedData();
+    location.href = "/z/auth";
+  };
 }

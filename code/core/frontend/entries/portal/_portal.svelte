@@ -61,6 +61,7 @@
   on:notification_toggle={notification_toggle}
   on:self_profile={app.nav.self_profile}
   on:open_executors={() => app.nav.launcher()}
+  on:logout={() => app.logout()}
 >
   <Router />
 </MainLayout>
