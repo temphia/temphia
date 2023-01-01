@@ -12,7 +12,8 @@ type Context struct {
 }
 
 type Adapter interface {
-	ServeEditorFile(ctx *gin.Context, file string) error
+	ServeEditorFile(file string) ([]byte, error)
+	PreformEditorAction(name string, data []byte) (any, error)
 
 	Handle(ctx Context)
 }

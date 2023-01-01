@@ -41,6 +41,7 @@ func (a *ApiAdmin) API(rg *gin.RouterGroup) {
 	a.checkAPI(rg.Group("/check"))
 	a.TargetAPI(rg.Group("/target"))
 	a.LensAPI(rg.Group("/lens"))
+	a.adapterEditorAPI(rg.Group("/adapter"))
 
 }
 

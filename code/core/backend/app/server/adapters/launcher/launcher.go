@@ -1,7 +1,6 @@
 package launcher
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 )
@@ -20,9 +19,9 @@ func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 	}, nil
 }
 
-func (d *launcher) ServeEditorFile(ctx *gin.Context, file string) error {
-	return nil
-}
+func (d *launcher) ServeEditorFile(file string) ([]byte, error) { return nil, nil }
+
+func (d *launcher) PreformEditorAction(name string, data []byte) (any, error) { return nil, nil }
 
 func (s *launcher) Handle(ctx httpx.Context) {
 

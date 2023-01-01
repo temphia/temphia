@@ -1,7 +1,6 @@
 package cmse
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
@@ -25,10 +24,6 @@ func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 	}, nil
 }
 
-func (d *CMSE) ServeEditorFile(ctx *gin.Context, file string) error {
-	return nil
-}
-
-func (d *CMSE) Handle(ctx httpx.Context) {
-
-}
+func (d *CMSE) ServeEditorFile(file string) ([]byte, error)               { return nil, nil }
+func (d *CMSE) PreformEditorAction(name string, data []byte) (any, error) { return nil, nil }
+func (d *CMSE) Handle(ctx httpx.Context)                                  {}

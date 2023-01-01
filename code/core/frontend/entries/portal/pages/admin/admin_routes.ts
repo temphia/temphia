@@ -99,6 +99,7 @@ import AdminTenant from "./tenant/tenant.svelte";
 import AdminTenantEdit from "./tenant/tenant_edit.svelte";
 import AdminTenantDomainEdit from "./tenant/domain/domain_edit.svelte";
 import AdminTenantDomainAdd from "./tenant/domain/domain_add.svelte";
+import AdminTenantDomainAdapterEditor from "./tenant/domain/adapter_editor.svelte";
 
 import AdminTargetApps from "./target/app/apps.svelte";
 import AdminTargetAppNew from "./target/app/app_new.svelte";
@@ -241,5 +242,6 @@ export default {
     "/edit": AdminTenantEdit,
     "/domain/:did/edit": AdminTenantDomainEdit,
     "/domain/new": AdminTenantDomainAdd,
+    "/domain/:did/adapter_editor": AdminTenantDomainAdapterEditor,
   },
 };

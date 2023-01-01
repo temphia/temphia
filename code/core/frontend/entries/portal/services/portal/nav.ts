@@ -93,7 +93,6 @@ export class Navigator {
     this.set(`#/profile/device/new`);
   };
 
-
   play = () => {
     this.set(`#/play`);
   };
@@ -439,6 +438,10 @@ export class Navigator {
 
   admin_tenant_domain_new() {
     this.set(`#/admin/tenant/domain/new`);
+  }
+
+  admin_tenant_domain_adapter_editor(did: string) {
+    this.set(`#/admin/tenant/domain/${did}/adapter_editor`);
   }
 
   admin_lens(idx: string) {

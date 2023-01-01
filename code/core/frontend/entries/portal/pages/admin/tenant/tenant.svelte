@@ -5,18 +5,14 @@
   const app: PortalService = getContext("__app__");
   const tapi = app.api_manager.get_admin_tenant_api();
 
-
   let domains = [];
 
   let tenant = {};
   let loaded = false;
 
   const load = async () => {
-
     const resp1 = tapi.get();
     const resp2 = tapi.get_domains();
-
-
 
     const [r1, r2] = await Promise.all([resp1, resp2]);
 
@@ -100,6 +96,12 @@
             action_key="id"
             actions={[
               {
+                Name: "Adapter Editor",
+                Action: (id) => app.nav.admin_tenant_domain_adapter_editor(id),
+                icon: "lightning-bolt",
+              },
+
+              {
                 Name: "Edit",
                 Action: (id) => app.nav.admin_tenant_domain_edit(id),
                 icon: "pencil",
@@ -109,8 +111,8 @@
                 Class: "bg-red-400",
                 icon: "trash",
                 Action: async (id) => {
-                  await tapi.delete_domain(id)
-                  load()
+                  await tapi.delete_domain(id);
+                  load();
                 },
               },
             ]}

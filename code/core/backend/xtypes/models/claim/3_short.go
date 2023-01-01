@@ -37,3 +37,14 @@ type Folder struct {
 	Source    string `json:"source,omitempty"`
 	Folder    string `json:"folder,omitempty"`
 }
+
+type AdapterEditor struct {
+	TenentId   string `json:"-"`
+	AdapterId  int64  `json:"adapter_id,omitempty"`
+	DomainName string `json:"domain_name,omitempty"`
+	Type       string `json:"type,omitempty"`
+	UserID     string `json:"user_id,omitempty"`
+	UserGroup  string `json:"ugroup,omitempty"`
+	SessionID  int64  `json:"session_id,omitempty"`
+	DeviceId   int64  `json:"device_id,omitempty"`
+}

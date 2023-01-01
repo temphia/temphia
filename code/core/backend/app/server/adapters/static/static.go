@@ -1,7 +1,6 @@
 package static
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
@@ -24,9 +23,9 @@ func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 	}, nil
 }
 
-func (s *static) ServeEditorFile(ctx *gin.Context, file string) error {
-	return nil
-}
+func (s *static) ServeEditorFile(file string) ([]byte, error) { return nil, nil }
+
+func (d *static) PreformEditorAction(name string, data []byte) (any, error) { return nil, nil }
 
 func (s *static) Handle(ctx httpx.Context) {
 	out, err := s.source.GetBlob(ctx.Http.Request.Context(), s.folder, ctx.Http.Request.URL.Path)
