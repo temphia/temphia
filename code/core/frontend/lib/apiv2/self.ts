@@ -6,22 +6,6 @@ export class SelfAPI {
     this.base = base;
   }
 
-  list_cabinet_sources() {
-    return this.base.get("/self/system/cabinet");
-  }
-
-  list_data_sources() {
-    return this.base.get("/self/system/datatable");
-  }
-
-  list_adapter_providers() {
-    return this.base.get("/self/system/adapter");
-  }
-
-  list_repo_sources() {
-    return this.base.get("/self/system/repo");
-  }
-
   load() {
     return this.base.get("/self/load");
   }
@@ -31,7 +15,7 @@ export class SelfAPI {
   }
 
   self_ws_url() {
-    return `${this.base.base_url}/self/self/ws?token=${this.base.http.headers["Authorization"]}`
+    return `${this.base.base_url}/self/self/ws?token=${this.base.http.headers["Authorization"]}`;
   }
 
   user_profile(userid: string) {
@@ -70,4 +54,39 @@ export class SelfAPI {
     return this.base.post("/self/issue/folder", data);
   }
 
+  // system
+
+  list_cabinet_sources() {
+    return this.base.get("/self/system/cabinet");
+  }
+
+  list_data_sources() {
+    return this.base.get("/self/system/datatable");
+  }
+
+  list_adapter_providers() {
+    return this.base.get("/self/system/adapter");
+  }
+
+  list_repo_sources() {
+    return this.base.get("/self/system/repo");
+  }
+
+  // device
+
+  list_devices() {
+    return this.base.get("/self/device/");
+  }
+
+  add_device(opts: any) {
+    return this.base.post("/self/device/", opts);
+  }
+
+  get_device(id: number) {
+    return this.base.get(`/self/device/${id}`);
+  }
+
+  delete_device(id: number) {
+    return this.base.delete(`/self/device/${id}`);
+  }
 }

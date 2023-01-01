@@ -43,7 +43,7 @@ func (d *DB) ListUserDevice(tenantId string, user string) ([]*entities.UserDevic
 	err := d.userDevices().Find(db.Cond{
 		"tenant_id": tenantId,
 		"user_id":   user,
-	}).All(data)
+	}).All(&data)
 	if err != nil {
 		return nil, err
 	}
