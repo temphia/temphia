@@ -50,8 +50,8 @@
 
         {#if show_timeout}
           <span class="text-md"
-            >, returning <a href={return_url}
-              >back to previous page in {seconds} seconds</a
+            >, Redirecting <a href={return_url}
+              > in {seconds} seconds</a
             ></span
           >
           <button class="text-blue-600" on:click={cancel}>Cancel</button>
