@@ -1,13 +1,11 @@
 package authed
 
 import (
-	"strings"
-
 	"github.com/bwmarrin/snowflake"
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
@@ -17,6 +15,7 @@ type Controller struct {
 	coredb      store.CoreHub
 	signer      service.Signer
 	sessionNode *snowflake.Node
+	deviceNode  *snowflake.Node
 }
 
 func New(coredb store.CoreHub, signer service.Signer, seq xplane.IDService) *Controller {
@@ -24,6 +23,7 @@ func New(coredb store.CoreHub, signer service.Signer, seq xplane.IDService) *Con
 		coredb:      coredb,
 		signer:      signer,
 		sessionNode: seq.SessionNode(),
+		deviceNode:  seq.DeviceNode(),
 	}
 }
 
@@ -78,7 +78,15 @@ func (c *Controller) AuthListMethods(sitetoken, ugroup string) (*ListAuthRespons
 	return &resp, nil
 }
 
-func (c *Controller) AuthFinish(opts AuthFinishRequest) (*AuthFinishResponse, error) {
+/*
+	// fixme  => device scope properly
+		scope.Derive(sclaim.Scopes, strings.Split(ugroup.Scopes, ",")),
+		ugroup.Scopes
+
+
+*/
+
+func (c *Controller) AuthFinish(opts AuthFinishRequest, deviceName, addr string) (*AuthFinishResponse, error) {
 	sclaim, err := c.signer.ParseSite(opts.SiteToken)
 	if err != nil {
 		return nil, err
@@ -95,14 +103,26 @@ func (c *Controller) AuthFinish(opts AuthFinishRequest) (*AuthFinishResponse, er
 		return nil, err
 	}
 
-	uclaim := claim.NewUserLogged(
-		sclaim.TenentId,
-		paclaim.UserID,
-		paclaim.UserGroup,
-		strings.Split(ugroup.Scopes, ","), // fixme scope.Derive(sclaim.Scopes, strings.Split(ugroup.Scopes, ",")),
-	)
+	did := c.deviceNode.Generate().Int64()
 
-	utok, err := c.signer.SignUser(sclaim.TenentId, uclaim)
+	device := &entities.UserDevice{
+		Id:         did,
+		Name:       deviceName,
+		UserId:     paclaim.UserID,
+		DeviceType: "login",
+		LastAddr:   addr,
+		APNToken:   "",
+		Scopes:     ugroup.Scopes,
+		ExtraMeta:  nil,
+		TenantID:   sclaim.TenentId,
+	}
+
+	err = c.coredb.AddUserDevice(sclaim.TenentId, paclaim.UserID, device)
+	if err != nil {
+		return nil, err
+	}
+
+	utok, err := c.signer.SignUser(sclaim.TenentId, device.Derive(paclaim.UserGroup))
 	if err != nil {
 		return nil, err
 	}

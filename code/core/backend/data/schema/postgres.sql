@@ -155,7 +155,7 @@ create table user_datas(
 );
 
 create table user_devices(
-    id serial primary key,
+    id bigint not null,
     name text not null default '',
     user_id text not null,
     device_type text not null default 'device', --- device/login
@@ -164,7 +164,8 @@ create table user_devices(
     scopes text not null default '',
     extra_meta json not null default '{}',
     tenant_id text not null,
-    foreign KEY(user_id, tenant_id) references users(user_id, tenant_id)
+    foreign KEY(user_id, tenant_id) references users(user_id, tenant_id),
+    primary key(id)
 );
 
 

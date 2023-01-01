@@ -79,7 +79,7 @@ func (s *Server) authedFinish(c *gin.Context) {
 		return
 	}
 
-	resp, err := s.cAuth.AuthFinish(opts)
+	resp, err := s.cAuth.AuthFinish(opts, "FIXME device name", c.ClientIP())
 	httpx.WriteJSON(c, resp, err)
 
 }
@@ -178,7 +178,7 @@ func (s *Server) authResetFinish(c *gin.Context) {
 		return
 	}
 
-	resp, err := s.cAuth.AuthFinish(opts)
+	resp, err := s.cAuth.AuthFinish(opts, "FIXME device name", c.ClientIP())
 	httpx.WriteJSON(c, resp, err)
 }
 

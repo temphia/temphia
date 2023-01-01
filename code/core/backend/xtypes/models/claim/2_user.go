@@ -26,13 +26,13 @@ func NewUserDevice(tenantId, userId, groupId string, scopes []string) *User {
 	}
 }
 
-func NewUserLogged(tenantId, userId, groupId string, scopes []string) *User {
+func NewUserLogged(tenantId, userId, groupId string, device int64, scopes []string) *User {
 	return &User{
 		TenentId:   tenantId,
 		Type:       "logged",
 		UserID:     userId,
 		UserGroup:  groupId,
-		DeviceId:   0,
+		DeviceId:   device,
 		Scopes:     scopes,
 		Attributes: make(map[string]string),
 	}

@@ -27,6 +27,15 @@ func (c *Controller) refreshService(uclaim *claim.User, opts RefreshReq) *Refres
 
 func (c *Controller) sessionClaim(uclaim *claim.User, opts RefreshReq) *RefreshResp {
 
+	_, err := c.coredb.GetUserDevice(uclaim.TenentId, uclaim.UserID, uclaim.DeviceId)
+	if err != nil {
+		return &RefreshResp{
+			Token:    "",
+			Message:  "device not found",
+			StatusOk: false,
+		}
+	}
+
 	serviceId := c.sessionNode.Generate().Int64()
 
 	if opts.OldToken != "" {
