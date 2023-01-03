@@ -72,8 +72,8 @@ func (m *Notz) ServePublic(c *gin.Context, file string) {
 	c.Writer.Write(out)
 }
 
-func (m *Notz) ListRenderers() []string {
-	return m.adapterManager.ListRenderers()
+func (m *Notz) ListAdapters() []string {
+	return m.adapterManager.ListAdapters()
 }
 
 func (m *Notz) ServeEditorFile(tenantId, file string, did int64, ctx *gin.Context) {

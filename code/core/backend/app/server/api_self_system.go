@@ -9,7 +9,7 @@ func (s *Server) selfSysAPI(rg *gin.RouterGroup) {
 
 	rg.GET("/cabinet", s.X(s.ListCabinetSources))
 	rg.GET("/datatable", s.X(s.ListDtableSources))
-	rg.GET("/adapter", s.X(s.ListRenderers))
+	rg.GET("/adapter", s.X(s.ListAdapters))
 	rg.GET("/repo", s.X(s.ListRepoSources))
 	rg.GET("/module", s.X(s.ListModules))
 	rg.GET("/executor", s.X(s.ListExecutor))
@@ -28,8 +28,8 @@ func (s *Server) ListDtableSources(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, sources, err)
 }
 
-func (s *Server) ListRenderers(ctx httpx.Request) {
-	resp := s.notz.ListRenderers()
+func (s *Server) ListAdapters(ctx httpx.Request) {
+	resp := s.notz.ListAdapters()
 	httpx.WriteJSON(ctx.Http, resp, nil)
 }
 

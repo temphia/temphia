@@ -21,7 +21,7 @@ type AdapterManager struct {
 	app               xtypes.App
 	corehub           store.CoreHub
 	cabinethub        store.CabinetHub
-	rendererBuilders  map[string]httpx.Builder
+	adapterBuilders   map[string]httpx.Builder
 	activeDomains     map[int64]*DomainInstance
 	tenantInits       map[string]bool
 	domainTenantIndex map[string]int64
@@ -40,7 +40,7 @@ func newAdapterManager(app xtypes.App) AdapterManager {
 		tenantInits:       make(map[string]bool),
 		cReInstance:       make(chan DomainIdent),
 		cInstanceTenant:   make(chan string),
-		rendererBuilders:  deps.Registry().(*registry.Registry).GetAdapterBuilders(),
+		adapterBuilders:   deps.Registry().(*registry.Registry).GetAdapterBuilders(),
 		corehub:           deps.CoreHub().(store.CoreHub),
 		cabinethub:        deps.Cabinet().(store.CabinetHub),
 		domainTenantIndex: make(map[string]int64),
@@ -48,10 +48,10 @@ func newAdapterManager(app xtypes.App) AdapterManager {
 
 }
 
-func (am *AdapterManager) ListRenderers() []string {
+func (am *AdapterManager) ListAdapters() []string {
 
-	keys := make([]string, 0, len(am.rendererBuilders))
-	for k := range am.rendererBuilders {
+	keys := make([]string, 0, len(am.adapterBuilders))
+	for k := range am.adapterBuilders {
 		keys = append(keys, k)
 	}
 
@@ -65,7 +65,7 @@ func (am *AdapterManager) serveEditorFile(tenantId string, did int64, file strin
 		return nil, easyerr.NotFound()
 	}
 
-	return instance.adapter.ServeEditorFile(file)
+	return instance.serveEditorFile(file)
 }
 
 func (am *AdapterManager) preformEditorAction(tenantId, name string, did int64, data []byte) (any, error) {
@@ -75,7 +75,7 @@ func (am *AdapterManager) preformEditorAction(tenantId, name string, did int64, 
 		return nil, easyerr.NotFound()
 	}
 
-	return instance.adapter.PreformEditorAction(name, data)
+	return instance.preformEditorAction(name, data)
 }
 
 func (am *AdapterManager) Handle(tenantId, host string, ctx *gin.Context) {

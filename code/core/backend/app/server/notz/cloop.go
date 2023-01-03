@@ -24,17 +24,7 @@ func (am *AdapterManager) run() {
 
 			am.build(data.tenantId, domain)
 		case tenantId := <-am.cInstanceTenant:
-
-			domains, err := am.corehub.ListDomain(tenantId)
-			if err != nil {
-				continue
-			}
-
-			for _, td := range domains {
-				am.build(tenantId, td)
-			}
-
-			am.tenantInits[tenantId] = true
+			pp.Println(am.buildTenant(tenantId))
 		}
 
 	}
@@ -43,24 +33,32 @@ func (am *AdapterManager) run() {
 
 func (am *AdapterManager) init() error {
 	if am.app.SingleTenant() {
-		tenantId := am.app.TenantId()
-		domains, err := am.corehub.ListDomain(tenantId)
-		if err != nil {
-			return err
-		}
-
-		for _, td := range domains {
-			am.build(tenantId, td)
-		}
+		return am.buildTenant(am.app.TenantId())
 	}
 
 	return nil
 
 }
 
+func (am *AdapterManager) buildTenant(tenantId string) error {
+
+	domains, err := am.corehub.ListDomain(tenantId)
+	if err != nil {
+		return err
+	}
+
+	for _, td := range domains {
+		am.build(tenantId, td)
+	}
+
+	am.tenantInits[tenantId] = true
+
+	return nil
+}
+
 func (am *AdapterManager) build(tenantId string, model *entities.TenantDomain) {
 
-	builder := am.rendererBuilders[model.AdapterType]
+	builder := am.adapterBuilders[model.AdapterType]
 	if builder == nil {
 		return
 	}
