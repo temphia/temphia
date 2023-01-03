@@ -77,11 +77,8 @@ func (am *AdapterManager) build(tenantId string, model *entities.TenantDomain) {
 		adapter: adpr,
 		model:   model,
 	}
+	// "<host>|<tenant>"
 
-	if model.Name == "*" {
-		am.domainTenantIndex["*/"+tenantId] = model.Id
-	} else {
-		am.domainTenantIndex[model.Name] = model.Id
-	}
+	am.domainTenantIndex[model.Name+"|"+tenantId] = model.Id
 
 }

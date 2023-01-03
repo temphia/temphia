@@ -114,7 +114,7 @@ func (am *AdapterManager) get(tenantId string, did int64) *DomainInstance {
 
 func (am *AdapterManager) domainId(tenantId, domain string) int64 {
 
-	did, ok := am.domainTenantIndex[domain]
+	did, ok := am.domainTenantIndex[domain+"|"+tenantId]
 	if ok {
 		return did
 	}
@@ -122,11 +122,11 @@ func (am *AdapterManager) domainId(tenantId, domain string) int64 {
 	dparts := strings.Split(domain, ".")
 	dparts[0] = "*"
 
-	did, ok = am.domainTenantIndex[strings.Join(dparts, ".")]
+	did, ok = am.domainTenantIndex[strings.Join(dparts, ".")+"|"+tenantId]
 	if ok {
 		return did
 	}
 
-	return am.domainTenantIndex["*/"+tenantId]
+	return am.domainTenantIndex["*|"+tenantId]
 
 }
