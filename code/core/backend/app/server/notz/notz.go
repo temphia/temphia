@@ -4,10 +4,10 @@ package notz
 
 import (
 	"io"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
+	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
@@ -82,7 +82,7 @@ func (m *Notz) ServeEditorFile(tenantId, file string, did int64, ctx *gin.Contex
 		return
 	}
 
-	ctx.Data(http.StatusOK, "fixme/xyz", out)
+	httpx.WriteFile(file, out, ctx)
 }
 
 func (m *Notz) PreformEditorAction(tenantId, name string, did int64, ctx *gin.Context) {
