@@ -2,6 +2,7 @@ package notz
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 )
@@ -24,6 +25,8 @@ func (d *DomainInstance) middleWare(ctx *gin.Context) error {
 }
 
 func (d *DomainInstance) handle(ctx *gin.Context) {
+	pp.Println("@serve domain instance")
+
 	d.adapter.Handle(httpx.Context{
 		Rid:  d.model.Id,
 		Http: ctx,

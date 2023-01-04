@@ -2,6 +2,8 @@ package notz
 
 import "github.com/gin-gonic/gin"
 
+// global middleware
+
 func (am *AdapterManager) MiddleWare(tenantId, host string, ctx *gin.Context) {
 
 	// fixme => actually implement

@@ -11,7 +11,7 @@ type App struct {
 	nodeId           string
 	clusterId        string
 	singleTenantMode bool
-	tenantId         string
+	tenantIds        []string
 	devmode          bool
 	port             string
 	deps             AppDeps
@@ -26,7 +26,7 @@ func (a *App) NodeId() string                 { return a.nodeId }
 func (a *App) ClusterId() string              { return a.clusterId }
 func (a *App) DevMode() bool                  { return a.devmode }
 func (a *App) SingleTenant() bool             { return a.singleTenantMode }
-func (a *App) TenantId() string               { return a.tenantId }
+func (a *App) StaticTenants() []string        { return a.tenantIds }
 func (a *App) GetDeps() xtypes.Deps           { return &a.deps }
 func (a *App) GetServer() xtypes.Server       { return nil }
 func (a *App) GetGlobalVar() xtypes.GlobalVar { return &a.global }

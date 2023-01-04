@@ -8,7 +8,7 @@ type App interface {
 	DevMode() bool
 
 	SingleTenant() bool
-	TenantId() string
+	StaticTenants() []string
 
 	HostAddrs(privatePriIp, privateSecIps, p2p bool) []string
 

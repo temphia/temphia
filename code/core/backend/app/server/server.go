@@ -43,7 +43,7 @@ type Server struct {
 	admin     apiadmin.ApiAdmin
 	log       logx.Service
 	signer    service.Signer
-	notz      notz.Notz
+	notz      *notz.Notz
 	data      xtypes.DataBox
 	port      string
 

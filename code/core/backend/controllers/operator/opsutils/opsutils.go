@@ -13,7 +13,7 @@ import (
 func AddTenant(app xtypes.App, data *opmodels.NewTenant) error {
 
 	if app.SingleTenant() {
-		if app.TenantId() != data.Slug {
+		if app.StaticTenants()[0] != data.Slug {
 			return easyerr.Error("Server is in single tenant mode, you cannot add this tenant")
 		}
 	}

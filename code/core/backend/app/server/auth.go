@@ -67,7 +67,7 @@ func (s *Server) AuthIndex(ctx *gin.Context) {
 
 func (s *Server) extractTenant(ctx *gin.Context) string {
 	if s.app.SingleTenant() {
-		return s.app.TenantId()
+		return s.app.StaticTenants()[0]
 	}
 
 	// fixme => reverse_extract from domain

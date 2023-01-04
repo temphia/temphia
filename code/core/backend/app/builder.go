@@ -36,8 +36,9 @@ func (b *Builder) SetConfig(conf *config.Config) {
 	b.config = conf
 	if b.config.NodeOptions.TenantId != "" {
 		b.app.singleTenantMode = true
-		b.app.tenantId = b.config.NodeOptions.TenantId
+		b.app.tenantIds = []string{b.config.NodeOptions.TenantId}
 	}
+
 }
 
 func (b *Builder) SetRegistry(reg *registry.Registry) {
@@ -83,5 +84,5 @@ func (b *Builder) SetMode(dev bool) {
 
 func (b *Builder) SetSingleTenant(tenantId string) {
 	b.app.singleTenantMode = true
-	b.app.tenantId = tenantId
+	b.app.tenantIds = []string{tenantId}
 }

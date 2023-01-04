@@ -2,16 +2,20 @@ package notz
 
 import (
 	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 )
 
 func (am *AdapterManager) run() {
+	pp.Println("@run")
 
 	err := am.init()
 	if err != nil {
 		pp.Println(err)
 	}
+
+	pp.Println("@after_init", am.activeDomains)
 
 	for {
 
@@ -32,8 +36,13 @@ func (am *AdapterManager) run() {
 }
 
 func (am *AdapterManager) init() error {
-	if am.app.SingleTenant() {
-		return am.buildTenant(am.app.TenantId())
+
+	tenants := am.app.StaticTenants()
+	for _, tenantId := range tenants {
+		err := am.buildTenant(tenantId)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
@@ -48,7 +57,9 @@ func (am *AdapterManager) buildTenant(tenantId string) error {
 	}
 
 	for _, td := range domains {
-		am.build(tenantId, td)
+
+		pp.Println("@building => ", tenantId, td)
+		pp.Println(am.build(tenantId, td))
 	}
 
 	am.tenantInits[tenantId] = true
@@ -56,11 +67,12 @@ func (am *AdapterManager) buildTenant(tenantId string) error {
 	return nil
 }
 
-func (am *AdapterManager) build(tenantId string, model *entities.TenantDomain) {
+func (am *AdapterManager) build(tenantId string, model *entities.TenantDomain) error {
 
 	builder := am.adapterBuilders[model.AdapterType]
 	if builder == nil {
-		return
+		pp.Println("@builder nil, model =>", model)
+		return easyerr.NotFound()
 	}
 
 	adpr, err := builder(httpx.BuilderOptions{
@@ -68,9 +80,9 @@ func (am *AdapterManager) build(tenantId string, model *entities.TenantDomain) {
 		TenantId: tenantId,
 		Domain:   model,
 	})
-
 	if err != nil {
-		return
+		pp.Println("ERR WHEN BUILDING")
+		return err
 	}
 
 	am.activeDomains[model.Id] = &DomainInstance{
@@ -80,5 +92,7 @@ func (am *AdapterManager) build(tenantId string, model *entities.TenantDomain) {
 	// "<host>|<tenant>"
 
 	am.domainTenantIndex[model.Name+"|"+tenantId] = model.Id
+
+	return nil
 
 }

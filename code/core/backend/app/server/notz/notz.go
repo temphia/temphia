@@ -6,6 +6,7 @@ import (
 	"io"
 
 	"github.com/gin-gonic/gin"
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
@@ -29,11 +30,11 @@ type Notz struct {
 	adapterManager      AdapterManager
 }
 
-func New(opts NotzOptions) Notz {
+func New(opts NotzOptions) *Notz {
 
 	am := newAdapterManager(opts.App)
 
-	n := Notz{
+	n := &Notz{
 		staticHosts:         opts.StaticHosts,
 		app:                 opts.App,
 		resolveHostTenantFn: opts.ResolveHostTenant,
@@ -49,8 +50,12 @@ func New(opts NotzOptions) Notz {
 }
 
 func (m *Notz) Serve(ctx *gin.Context) {
+
+	pp.Println("@serve 1")
+
 	tenantId, hostname, err := m.extract(ctx)
 	if err != nil {
+		pp.Println("@serve extract err", err)
 		return
 	}
 

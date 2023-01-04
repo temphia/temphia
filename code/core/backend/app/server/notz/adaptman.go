@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/app/registry"
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
@@ -78,9 +79,16 @@ func (am *AdapterManager) preformEditorAction(tenantId, name string, did int64, 
 	return instance.preformEditorAction(name, data)
 }
 
+// serve not /z
+
 func (am *AdapterManager) Handle(tenantId, host string, ctx *gin.Context) {
 	did := am.domainId(tenantId, host)
+
+	pp.Println("@serve did error", did)
+
 	instance := am.activeDomains[did]
+
+	pp.Println("@serve instance", instance)
 
 	instance.handle(ctx)
 }

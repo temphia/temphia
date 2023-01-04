@@ -24,9 +24,13 @@ import (
 
 	// file providers
 	_ "github.com/temphia/temphia/code/core/backend/stores/cabinet/native"
+
+	// domain adapters
+	_ "github.com/temphia/temphia/code/core/backend/app/server/adapters"
 )
 
 func init() {
+
 	registry.SetExecutor("goja", goja.NewBuilder)
 	registry.SetExecutor("wasm1", wazero.NewBuilder)
 	registry.SetExecutor("simple.wizard", wizard.NewBuilder)

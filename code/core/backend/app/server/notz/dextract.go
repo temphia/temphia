@@ -19,8 +19,7 @@ func (m *Notz) extract(c *gin.Context) (string, string, error) {
 	}
 
 	if m.app.SingleTenant() {
-
-		return m.app.TenantId(), hostname, easyerr.NotFound()
+		return m.app.StaticTenants()[0], hostname, nil
 	}
 
 	if m.tenantHostBase != "" && strings.HasSuffix(hostname, m.tenantHostBase) {
