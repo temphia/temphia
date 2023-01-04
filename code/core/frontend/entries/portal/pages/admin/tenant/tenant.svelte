@@ -119,11 +119,11 @@
             key_names={[
               ["id", "ID"],
               ["name", "Name"],
-              ["renderer_type", "Http Adapter"],
+              ["adapter_type", "Http Adapter"],
               ["about", "About"],
             ]}
             datas={domains}
-            color={["renderer_type"]}
+            color={["adapter_type"]}
           />
         </div>
       {/if}
