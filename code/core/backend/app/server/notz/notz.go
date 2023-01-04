@@ -6,9 +6,9 @@ import (
 	"io"
 
 	"github.com/gin-gonic/gin"
-	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/core/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
@@ -51,11 +51,11 @@ func New(opts NotzOptions) *Notz {
 
 func (m *Notz) Serve(ctx *gin.Context) {
 
-	pp.Println("@serve 1")
-
 	tenantId, hostname, err := m.extract(ctx)
 	if err != nil {
-		pp.Println("@serve extract err", err)
+		m.adapterManager.applogger.Error().
+			Str("tenant_id", tenantId).
+			Msg(logid.NotzHostExtractErr)
 		return
 	}
 

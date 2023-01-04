@@ -5,11 +5,13 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/k0kubun/pp"
+	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/core/backend/app/registry"
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
+	"github.com/temphia/temphia/code/core/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
@@ -30,10 +32,14 @@ type AdapterManager struct {
 	// cloop chan
 	cReInstance     chan DomainIdent
 	cInstanceTenant chan string
+	applogger       *zerolog.Logger
+	logService      logx.Service
 }
 
 func newAdapterManager(app xtypes.App) AdapterManager {
 	deps := app.GetDeps()
+
+	ls := app.GetDeps().LogService().(logx.Service)
 
 	return AdapterManager{
 		app:               app,
@@ -45,6 +51,8 @@ func newAdapterManager(app xtypes.App) AdapterManager {
 		corehub:           deps.CoreHub().(store.CoreHub),
 		cabinethub:        deps.Cabinet().(store.CabinetHub),
 		domainTenantIndex: make(map[string]int64),
+		applogger:         ls.GetAppLogger(),
+		logService:        ls,
 	}
 
 }
@@ -63,6 +71,13 @@ func (am *AdapterManager) serveEditorFile(tenantId string, did int64, file strin
 
 	instance := am.get(tenantId, did)
 	if instance == nil {
+		am.applogger.Error().
+			Str("tenant_id", tenantId).
+			Int64("domain_id", did).
+			Str("handler", "serve_editor_file").
+			Str("file", file).
+			Msg(logid.NotzAdapterNotFound)
+
 		return nil, easyerr.NotFound()
 	}
 
@@ -73,6 +88,13 @@ func (am *AdapterManager) preformEditorAction(tenantId, name string, did int64, 
 
 	instance := am.get(tenantId, did)
 	if instance != nil {
+		am.applogger.Error().
+			Str("tenant_id", tenantId).
+			Int64("domain_id", did).
+			Str("handler", "perform_editor_action").
+			Str("action", name).
+			Msg(logid.NotzAdapterNotFound)
+
 		return nil, easyerr.NotFound()
 	}
 
@@ -83,12 +105,15 @@ func (am *AdapterManager) preformEditorAction(tenantId, name string, did int64, 
 
 func (am *AdapterManager) Handle(tenantId, host string, ctx *gin.Context) {
 	did := am.domainId(tenantId, host)
-
-	pp.Println("@serve did error", did)
-
 	instance := am.activeDomains[did]
-
-	pp.Println("@serve instance", instance)
+	if instance == nil {
+		am.applogger.Error().
+			Str("tenant_id", tenantId).
+			Str("host", host).
+			Str("handler", "handle").
+			Int64("domain_id", did).
+			Msg(logid.NotzAdapterNotFound)
+	}
 
 	instance.handle(ctx)
 }

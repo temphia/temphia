@@ -9,4 +9,5 @@ const (
 	NotzAdapterBuildErr        = "adapter_build_err"
 	NotzAdapterBuildOk         = "adapter_build_ok"
 	NotzAdapterNotFound        = "adapter_instance_not_found"
+	NotzHostExtractErr         = "host_extract_err"
 )
