@@ -113,6 +113,7 @@ func (am *AdapterManager) Handle(tenantId, host string, ctx *gin.Context) {
 			Str("handler", "handle").
 			Int64("domain_id", did).
 			Msg(logid.NotzAdapterNotFound)
+		return
 	}
 
 	instance.handle(ctx)

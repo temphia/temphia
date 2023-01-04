@@ -1,6 +1,7 @@
 package notz
 
 import (
+	"net"
 	"net/http"
 	"strings"
 
@@ -11,7 +12,7 @@ import (
 )
 
 func (m *Notz) extract(c *gin.Context) (string, string, error) {
-	hostname := c.Request.URL.Hostname()
+	hostname, _, _ := net.SplitHostPort(c.Request.Host)
 
 	tenantId := ""
 	if m.resolveHostTenantFn != nil {

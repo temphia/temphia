@@ -12,6 +12,7 @@ import (
 func init() {
 	registry.G.SetAapterBuilder("cmse", cmse.New)
 	registry.G.SetAapterBuilder("noop", noop.New)
+	registry.G.SetAapterBuilder("", noop.New)
 	registry.G.SetAapterBuilder("landings", landings.New)
 	registry.G.SetAapterBuilder("launcher", launcher.New)
 	registry.G.SetAapterBuilder("static", static.New)

@@ -1,6 +1,8 @@
 package noop
 
 import (
+	"fmt"
+
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 )
 
@@ -10,8 +12,23 @@ type NoOp struct {
 
 func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 
+	source := fmt.Sprintf(`
+		<h1>It Works</h1>
+
+		<details>
+		<summary>Detail</summary>
+		<div>Domain Id: %d </div>
+		<div>Domain Name: %s </div>
+		<div>Adapter Type: %s </div>
+	  </details> 
+	
+	`,
+		opts.Domain.Id,
+		opts.Domain.Name,
+		opts.Domain.AdapterType)
+
 	return &NoOp{
-		rendered: []byte(`<h1>It Works</h1>`),
+		rendered: []byte(source),
 	}, nil
 }
 
