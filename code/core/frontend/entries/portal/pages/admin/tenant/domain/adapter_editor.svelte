@@ -14,18 +14,37 @@
   let source = "";
 
   const load = async () => {
+    const resp = await api.domain_issue_adapter_editor(did);
+    if (!resp.ok) {
+      message = resp.data;
+      loading = false;
+      return;
+    }
+
     source = GenerateSRC({
-      adapter_editor_token: "",
-      adapter_type: "",
-      base_url: "",
-      did: "",
-      tenant_id: "",
+      adapter_editor_token: resp.data["token"],
+      adapter_type: resp.data["adapter_type"],
+      base_url: app.api_manager.base_url,
+      did: did,
+      tenant_id: app.api_manager.tenant_id,
     });
+    loading = false;
   };
+
+  load();
 </script>
 
-{#if !loading}
-  <iframe srcdoc={source} title="Adapter Editor" />
-{:else}
-  <LoadingSpinner />
-{/if}
+<div class="h-full w-full p-2">
+  {#if !loading}
+    <p class="text-color-red-500">{message}</p>
+    <iframe
+      srcdoc={source}
+      title="Adapter Editor"
+      class="w-full h-full transition-all bg-slate-200"
+      height="100"
+      width="100"
+    />
+  {:else}
+    <LoadingSpinner />
+  {/if}
+</div>

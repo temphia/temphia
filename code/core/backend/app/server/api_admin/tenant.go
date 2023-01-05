@@ -101,7 +101,7 @@ func (r *ApiAdmin) RemoveTenantDomain(ctx httpx.Request) {
 }
 
 func (a *ApiAdmin) domainIssueAdapterEditor(ctx httpx.Request) {
-	resp, err := a.cAdmin.DomainAdapterEditorIssue(ctx.Session, ctx.MustParamInt("did"))
+	resp, err := a.cAdmin.DomainAdapterEditorIssue(ctx.Session, ctx.MustParamInt("id"))
 
 	a.rutil.WriteJSON(ctx.Http, resp, err)
 }

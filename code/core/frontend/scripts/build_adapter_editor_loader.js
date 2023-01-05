@@ -3,7 +3,7 @@
 const fs = require('fs');
 const { execSync } = require("child_process");
 
-const build = execSync(`ncc build entries/portal/adapter_editor_loader/index.ts --out public/build/adapter_editor_loader`);
+const build = execSync(`ncc build entries/adapter_editor_loader/index.ts --out public/build/adapter_editor_loader`);
 
 console.log(build.toString('utf-8'));
 
