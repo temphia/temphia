@@ -52,12 +52,13 @@
 {:else}
   <AutoTable
     action_key="slug"
+    show_drop={true}
     actions={[
       {
-        Name: "Explore",
+        Name: "Users",
         Class: "bg-green-400",
         Action: action_explore_group_user,
-        icon: "book-open",
+        icon: "users",
       },
 
       {
@@ -67,15 +68,31 @@
       },
       {
         Name: "Auths",
-        Class: "bg-yellow-400",
         Action: action_group_auths,
         icon: "shield-exclamation",
+        drop: true,
       },
+
+      {
+        Name: "Apps",
+        Action: (id) => {},
+        icon: "view-grid-add",
+        drop: true,
+      },
+
+      {
+        Name: "Datas",
+        Action: (id) => {},
+        icon: "collection",
+        drop: true,
+      },
+      
+
       {
         Name: "Delete",
-        Class: "bg-red-400",
         Action: action_delete,
         icon: "trash",
+        drop: true,
       },
     ]}
     key_names={[
