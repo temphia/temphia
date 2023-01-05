@@ -13,6 +13,7 @@ func (e *Engine) serveAgentFile(tenantId, plugId, agentId, file string) ([]byte,
 			Str("tenant_id", tenantId).
 			Str("plug_id", plugId).
 			Str("agent_id", agentId).
+			Err(err).
 			Str("file", file).
 			Msg(logid.EngineServePlugLoadError)
 
@@ -25,6 +26,7 @@ func (e *Engine) serveAgentFile(tenantId, plugId, agentId, file string) ([]byte,
 			Str("tenant_id", tenantId).
 			Str("plug_id", plugId).
 			Str("agent_id", agentId).
+			Err(err).
 			Str("file", file).
 			Msg(logid.EngineServeAgentLoadError)
 
