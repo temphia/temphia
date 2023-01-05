@@ -40,7 +40,7 @@
     <iframe
       srcdoc={source}
       title="Adapter Editor"
-      class="w-full h-full transition-all bg-slate-200"
+      class="w-full h-full transition-all bg-white border-slate-500 rounded"
       height="100"
       width="100"
     />

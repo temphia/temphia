@@ -21,7 +21,8 @@ const FILES = [
     "start.css",
     "start.js",
     "start.js.map",
-    "adapter_editor_loader.js"
+    "adapter_editor_loader.js",
+    "adapter_editor_noop.js"
 ]
 
 

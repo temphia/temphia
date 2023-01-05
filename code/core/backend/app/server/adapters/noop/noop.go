@@ -3,11 +3,13 @@ package noop
 import (
 	"fmt"
 
+	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 )
 
 type NoOp struct {
 	rendered []byte
+	dataBox  xtypes.DataBox
 }
 
 func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
@@ -16,7 +18,7 @@ func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 		<h1>It Works!</h1>
 
 		<p>
-		you should probably change to more useful adapter or <a href="/z/auth">click</a> to goto portal auth page.
+		you should probably change to more useful adapter. <a href="/z/auth">click</a> to goto portal auth page.
 		<p>
 
 		<details>
@@ -33,10 +35,15 @@ func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 
 	return &NoOp{
 		rendered: []byte(source),
+		dataBox:  opts.App.Data(),
 	}, nil
 }
 
 func (l *NoOp) ServeEditorFile(file string) ([]byte, error) {
+	if file == "main.js" {
+		return l.dataBox.GetAsset("build", "adapter_editor_noop.js")
+	}
+
 	return []byte(``), nil
 }
 

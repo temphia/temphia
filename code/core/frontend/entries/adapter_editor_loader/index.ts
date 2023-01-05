@@ -4,7 +4,7 @@ import { initRegistry } from "../../lib/engine/putils";
 import type { Registry } from "../../lib/registry/registry";
 initRegistry();
 
-window.addEventListener("load", (ev) => {
+window.addEventListener("load", async (ev) => {
   const registry = window["__registry__"] as Registry<any>;
   const loaderOpts = window["__loader_options__"] || {};
 
@@ -19,10 +19,23 @@ window.addEventListener("load", (ev) => {
   console.log("@adapter_editor_loader", loaderOpts, env, registry);
 
   const adapterType = loaderOpts["adapter_type"] || "";
-  const factory = registry.Get(
+  let factory = registry.Get(
     "temphia.adapter_editor.loader",
     `${adapterType}.main`
   );
+
+  if (!factory) {
+    await registry.WatchLoad(
+      "temphia.adapter_editor.loader",
+      `${adapterType}.main`,
+      20000
+    );
+
+    factory = registry.Get(
+      "temphia.adapter_editor.loader",
+      `${adapterType}.main`
+    );
+  }
 
   if (factory) {
     factory({
