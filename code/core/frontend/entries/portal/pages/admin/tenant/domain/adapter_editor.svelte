@@ -24,7 +24,7 @@
     source = GenerateSRC({
       adapter_editor_token: resp.data["token"],
       adapter_type: resp.data["adapter_type"],
-      base_url: app.api_manager.base_url,
+      base_url: app.api_manager.api_base_url,
       did: did,
       tenant_id: app.api_manager.tenant_id,
     });

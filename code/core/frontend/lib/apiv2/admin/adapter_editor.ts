@@ -1,9 +1,9 @@
-import type { ApiBase } from "../base";
+import { ApiBase } from "../base";
 
 export class AdapterEditorAPI {
   base: ApiBase;
-  constructor(base: ApiBase) {
-    this.base = base;
+  constructor(base_url: string, tenant_id: string, token: string) {
+    this.base = new ApiBase(base_url, tenant_id, token);
   }
 
   perform_action(name: string, data: any) {
