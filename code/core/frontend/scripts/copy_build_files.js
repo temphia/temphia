@@ -20,7 +20,8 @@ const FILES = [
     "portal.js.map",
     "start.css",
     "start.js",
-    "start.js.map"
+    "start.js.map",
+    "adapter_editor_loader.js"
 ]
 
 

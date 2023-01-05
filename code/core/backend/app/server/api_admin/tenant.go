@@ -18,6 +18,7 @@ func (a *ApiAdmin) tenantAPI(rg *gin.RouterGroup) {
 	rg.GET("/domain/:id", a.X(a.GetTenantDomain))
 	rg.POST("/domain/:id", a.X(a.UpdateTenantDomain))
 	rg.DELETE("/domain/:id", a.X(a.RemoveTenantDomain))
+	rg.GET("/domain/:id/issue/adapter_editor", a.X(a.domainIssueAdapterEditor))
 
 }
 
@@ -97,4 +98,10 @@ func (r *ApiAdmin) RemoveTenantDomain(ctx httpx.Request) {
 
 	err = r.cAdmin.RemoveDomain(ctx.Session, id)
 	r.rutil.WriteFinal(ctx.Http, err)
+}
+
+func (a *ApiAdmin) domainIssueAdapterEditor(ctx httpx.Request) {
+	resp, err := a.cAdmin.DomainAdapterEditorIssue(ctx.Session, ctx.MustParamInt("did"))
+
+	a.rutil.WriteJSON(ctx.Http, resp, err)
 }

@@ -15,6 +15,7 @@
     "build:all": "npm run build:operator && npm run build:portal && npm run build:auth && npm run build:start",
     "build_ui_sdk_package": "tsc -p tsconfig.package.json ",
     "build:iframe_guest": "node scripts/build_iframe_guest.js",
+    "build:adapter_editor_loader": "node scripts/build_adapter_editor_loader.js",
     "copy:build_files": "node scripts/copy_build_files.js",
     "dev": "rollup -c -w",
     "start": "sirv public",

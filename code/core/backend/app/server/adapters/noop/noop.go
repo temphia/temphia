@@ -13,7 +13,11 @@ type NoOp struct {
 func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 
 	source := fmt.Sprintf(`
-		<h1>It Works</h1>
+		<h1>It Works!</h1>
+
+		<p>
+		you should probably change to more useful adapter or <a href="/z/auth">click</a> to goto portal auth page.
+		<p>
 
 		<details>
 		<summary>Detail</summary>
