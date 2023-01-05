@@ -15,7 +15,21 @@ window.addEventListener("load", (ev) => {
       loaderOpts["adapter_editor_token"]
     ),
   });
-  
 
   console.log("@adapter_editor_loader", loaderOpts, env, registry);
+
+  const adapterType = loaderOpts["adapter_type"] || "";
+  const factory = registry.Get(
+    "temphia.adapter_editor.loader",
+    `${adapterType}.main`
+  );
+
+  if (factory) {
+    factory({
+      env: env,
+      target: document.getElementById("adapter-editor-root"),
+    });
+  } else {
+    console.warn("@adapter_editor_loader", "factory not found");
+  }
 });
