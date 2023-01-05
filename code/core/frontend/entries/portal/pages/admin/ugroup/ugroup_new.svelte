@@ -13,7 +13,7 @@
       message = resp.data;
       return;
     }
-    app.nav.admin_resources()
+    app.nav.admin_ugroups()
   };
 </script>
 

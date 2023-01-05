@@ -14,8 +14,8 @@ export class AdminUserAPI {
     return this.base.get(`/admin/user/${uid}`);
   }
 
-  new(uid: string, data: any) {
-    return this.base.post(`/admin/user/${uid}`, data);
+  new( data: any) {
+    return this.base.post(`/admin/user/`, data);
   }
 
   update(uid: string, data: any) {

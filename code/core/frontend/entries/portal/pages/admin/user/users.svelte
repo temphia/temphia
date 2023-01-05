@@ -15,7 +15,7 @@
   const api = app.api_manager.get_admin_user_api();
 
   const load = async () => {
-    let loading = true;
+    loading = true;
     const resp = await api.list();
     if (!resp.ok) {
       return;
