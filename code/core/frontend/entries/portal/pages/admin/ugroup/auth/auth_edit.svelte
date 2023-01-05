@@ -14,20 +14,24 @@
   let loading = true;
 
   const load = async () => {
+    loading = true
     const resp = await api.getAuth(ugroup, id);
     if (!resp.ok) {
       return;
     }
-
     data = resp.data;
+    loading = false
+
   };
 
   load();
 
   const save = async (_data) => {
+    loading = true
     const resp = await api.updateAuth(ugroup, id, _data);
     if (!resp.ok) {
       message = resp.data;
+      loading = false;
       return;
     }
     app.nav.admin_ugroup_auths(ugroup);

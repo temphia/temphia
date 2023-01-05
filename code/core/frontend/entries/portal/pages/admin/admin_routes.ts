@@ -78,8 +78,14 @@ import AdminResourceRoomEdit from "./resource/room/room_edit.svelte";
 
 // user
 import AdminUsers from "./user/users.svelte";
-import AdminUserNew from "./user/user_new.svelte"
-import AdminUserEdit from "./user/user_edit.svelte"
+import AdminUserNew from "./user/user_new.svelte";
+import AdminUserEdit from "./user/user_edit.svelte";
+
+import AdminPerms from "./user/permission/perms.svelte";
+import AdminPermNew from "./user/permission/perm_new.svelte";
+import AdminRoles from "./user/role/roles.svelte";
+import AdminRoleNew from "./user/role/role_new.svelte";
+
 
 // ugroup
 import AdminUgroups from "./ugroup/ugroups.svelte";
@@ -220,8 +226,14 @@ export default {
 
   "/user": {
     "/": AdminUsers,
-    "/:userid/edit": AdminUserEdit,
+    "/edit/:userid": AdminUserEdit,
     "/new": AdminUserNew,
+    
+    "/perm": AdminPerms,
+    "/perm/new": AdminPermNew,
+
+    "/role": AdminRoles,
+    "/role/new": AdminRoleNew,
   },
 
   "/lens/:index": AdminLens,

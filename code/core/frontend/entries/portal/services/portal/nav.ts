@@ -392,11 +392,27 @@ export class Navigator {
   }
 
   admin_user_edit(userid: string) {
-    this.set(`#/admin/user/${userid}/edit`);
+    this.set(`#/admin/user/edit/${userid}`);
   }
 
   admin_user_new() {
     this.set(`#/admin/user/new`);
+  }
+
+  admin_perms() {
+    this.set(`#/admin/user/perm`);
+  }
+
+  admin_perm_new() {
+    this.set(`#/admin/user/perm/new`);
+  }
+
+  admin_roles() {
+    this.set(`#/admin/user/role`);
+  }
+
+  admin_role_new() {
+    this.set(`#/admin/user/role/new`);
   }
 
   admin_ugroups() {

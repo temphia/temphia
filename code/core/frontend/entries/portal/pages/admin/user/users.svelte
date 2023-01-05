@@ -39,16 +39,21 @@
   };
 
   const action_reset_password = (id: string) => {
-    app.utils.small_modal_open(ResetPassword, {app, uid: id })
+    app.utils.small_modal_open(ResetPassword, { app, uid: id });
   };
   const action_email_change = (id: string) => {
-    app.utils.small_modal_open(ChangeEmail, {app, uid: id })
+    app.utils.small_modal_open(ChangeEmail, { app, uid: id });
   };
+
+  const action_roles = (id: string) => {};
+
   const action_new = () => app.nav.admin_user_new();
 </script>
 
 <TopActions
   actions={{
+    Permissions: () => app.nav.admin_perms(),
+    Roles: () => app.nav.admin_roles(),
     "User Groups": () => app.nav.admin_ugroups(),
   }}
 />
@@ -90,6 +95,13 @@
         Name: "Change Email",
         Action: action_email_change,
         icon: "at-symbol",
+        drop: true,
+      },
+
+      {
+        Name: "Roles",
+        Action: action_roles,
+        icon: "identification",
         drop: true,
       },
 
