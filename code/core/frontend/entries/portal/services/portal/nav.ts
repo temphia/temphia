@@ -390,8 +390,13 @@ export class Navigator {
   admin_users() {
     this.set(`#/admin/user/`);
   }
-  admin_user(userid: string) {
-    this.set(`#/admin/user/${userid}`);
+
+  admin_user_edit(userid: string) {
+    this.set(`#/admin/user/${userid}/edit`);
+  }
+
+  admin_user_new() {
+    this.set(`#/admin/user/new`);
   }
 
   admin_ugroups() {

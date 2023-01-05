@@ -78,7 +78,8 @@ import AdminResourceRoomEdit from "./resource/room/room_edit.svelte";
 
 // user
 import AdminUsers from "./user/users.svelte";
-import AdminUser from "./user/user.svelte";
+import AdminUserNew from "./user/user_new.svelte"
+import AdminUserEdit from "./user/user_edit.svelte"
 
 // ugroup
 import AdminUgroups from "./ugroup/ugroups.svelte";
@@ -219,7 +220,8 @@ export default {
 
   "/user": {
     "/": AdminUsers,
-    "/:userid": AdminUser,
+    "/:userid/edit": AdminUserEdit,
+    "/new": AdminUserNew,
   },
 
   "/lens/:index": AdminLens,
