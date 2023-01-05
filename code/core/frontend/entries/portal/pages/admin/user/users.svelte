@@ -7,6 +7,8 @@
     PortalService,
   } from "../core";
   import TopActions from "../core/top_actions.svelte";
+  import ChangeEmail from "./actions/change_email.svelte";
+  import ResetPassword from "./actions/reset_password.svelte";
 
   const app = getContext("__app__") as PortalService;
 
@@ -32,8 +34,15 @@
   const action_edit = (id: string) => app.nav.admin_user_edit(id);
   const action_profile = (id: string) => app.nav.user_profile(id);
   const action_delete = async (id: string) => {
-    await api.delete(id)
-    load()
+    await api.delete(id);
+    load();
+  };
+
+  const action_reset_password = (id: string) => {
+    app.utils.small_modal_open(ResetPassword, {app, uid: id })
+  };
+  const action_email_change = (id: string) => {
+    app.utils.small_modal_open(ChangeEmail, {app, uid: id })
   };
   const action_new = () => app.nav.admin_user_new();
 </script>
@@ -71,12 +80,25 @@
       },
 
       {
+        Name: "Reset Password",
+        Action: action_reset_password,
+        icon: "lock-open",
+        drop: true,
+      },
+
+      {
+        Name: "Change Email",
+        Action: action_email_change,
+        icon: "at-symbol",
+        drop: true,
+      },
+
+      {
         Name: "Delete",
         Action: action_delete,
         icon: "trash",
         drop: true,
       },
-
     ]}
     key_names={[
       ["user_id", "User Id"],
