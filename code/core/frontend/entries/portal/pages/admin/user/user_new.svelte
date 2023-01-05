@@ -23,8 +23,8 @@
       return;
     }
 
-    message = ""
-    
+    message = "";
+
     const resp = await api.new(_data);
     if (!resp.ok) {
       message = resp.data;
@@ -63,6 +63,12 @@
       },
 
       {
+        name: "Bio",
+        ftype: "LONG_TEXT",
+        key_name: "bio",
+      },
+
+      {
         name: "Password",
         ftype: "TEXT",
         key_name: "password",
@@ -80,7 +86,7 @@
         key_name: "active",
       },
     ],
-    name: "New User Group",
+    name: "New User",
     required_fields: [],
   }}
   onSave={save}
