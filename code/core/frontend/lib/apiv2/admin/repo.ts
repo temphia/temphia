@@ -21,6 +21,6 @@ export class AdminRepoAPI {
     return this.base.post(`/admin/repo/${rid}`, data);
   }
   delete(rid: string) {
-    return this.base.get(`/admin/repo/${rid}`);
+    return this.base.delete(`/admin/repo/${rid}`);
   }
 }
