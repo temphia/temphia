@@ -3,6 +3,19 @@ import type grapesjs from "grapesjs";
 
 export const easyPageStore =
   (service: EasypageService) => (editor: grapesjs.Editor) => {
+    console.log("@grapejs_editor", editor);
+
+    editor.Panels.addButton("options", {
+      id: "the_save_button",
+      className: "saveButton fa fa-floppy-o",
+      command: (editor) => {
+        editor.store({});
+      },
+      attributes: { title: "Save" },
+      active: true,
+      
+    });
+
     editor.Storage.add("easypage-store", {
       async load(options = {}) {
         const resp = await service.getPageData(options["page_slug"]);
