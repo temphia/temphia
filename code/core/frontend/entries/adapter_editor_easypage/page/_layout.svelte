@@ -1,9 +1,13 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import type { EasypageService } from "../service/easypage";
+  import NewPage from "./_panels/new_page.svelte";
 
   const service = getContext("__easypage_service__") as EasypageService;
 
+  const addPage = () => {
+    service.modal.small_open(NewPage, {});
+  };
 </script>
 
 <div class="bg-blue-50 w-full h-screen font-sans flex flex-col">
@@ -16,6 +20,11 @@
       <button
         class="bg-blue-200 hover:bg-blue-500 rounded  font-bold text-white text-sm px-2"
         >↻</button
+      >
+      <button
+        on:click={addPage}
+        class="bg-blue-200 hover:bg-blue-500 rounded  font-bold text-white text-sm px-2"
+        >+</button
       >
     </div>
   </div>
