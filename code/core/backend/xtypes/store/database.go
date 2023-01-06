@@ -38,7 +38,7 @@ type SystemOps interface {
 	RemoveSystemEvent(id int64) error
 	ListSystemEvent(tenantId, etype string, last int64) ([]*entities.SystemEvent, error)
 
-	AddSystemKV(tenantId, data *entities.SystemKV) error
+	AddSystemKV(tenantId string, data *entities.SystemKV) error
 	UpdateSystemKV(tenantId, key, ktype string, data map[string]any) error
 	GetSystemKV(tenantId, key, ktype string) (*entities.SystemKV, error)
 	RemoveSystemKV(tenantId, key, ktype string) error

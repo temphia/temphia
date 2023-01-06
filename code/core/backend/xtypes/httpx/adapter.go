@@ -20,7 +20,16 @@ type Adapter interface {
 }
 
 type AdapterHandler interface {
+
+	// kv
+	KvAdd(key, value string) error
+	KvUpdate(key, value string) error
+	KvGet(key string) (string, error)
+	KvRemove(key string) error
+	KvList(prefix string) ([]string, error)
+
 	// log
+	GetLogger() *zerolog.Logger
 	LogInfo(rid int64) *zerolog.Event
 	LogError(rid int64) *zerolog.Event
 }

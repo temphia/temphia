@@ -14,7 +14,7 @@ func (c *CoreHub) ListSystemEvent(tenantId, etype string, last int64) ([]*entiti
 	return c.coredb.ListSystemEvent(tenantId, etype, last)
 }
 
-func (c *CoreHub) AddSystemKV(tenantId, data *entities.SystemKV) error {
+func (c *CoreHub) AddSystemKV(tenantId string, data *entities.SystemKV) error {
 	return c.coredb.AddSystemKV(tenantId, data)
 }
 

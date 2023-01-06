@@ -39,7 +39,7 @@ func (d *DB) ListSystemEvent(tenantId, etype string, last int64) ([]*entities.Sy
 
 // systemkv
 
-func (d *DB) AddSystemKV(tenantId, data *entities.SystemKV) error {
+func (d *DB) AddSystemKV(tenantId string, data *entities.SystemKV) error {
 	_, err := d.systemKVTable().Insert(data)
 	return err
 
