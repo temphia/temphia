@@ -87,7 +87,7 @@ func (am *AdapterManager) serveEditorFile(tenantId string, did int64, file strin
 func (am *AdapterManager) preformEditorAction(tenantId, name string, did int64, data []byte) (any, error) {
 
 	instance := am.get(tenantId, did)
-	if instance != nil {
+	if instance == nil {
 		am.applogger.Error().
 			Str("tenant_id", tenantId).
 			Int64("domain_id", did).

@@ -41,12 +41,20 @@ func (a *ApiAdmin) adapterGetHook(aclaim *claim.AdapterEditor, ctx *gin.Context)
 func (a *ApiAdmin) adapterUpdateHook(aclaim *claim.AdapterEditor, ctx *gin.Context) {}
 func (a *ApiAdmin) adapterDeleteHook(aclaim *claim.AdapterEditor, ctx *gin.Context) {}
 
-func (a *ApiAdmin) adapterPreformAction(aclaim *claim.AdapterEditor, ctx *gin.Context) {}
+func (a *ApiAdmin) adapterPreformAction(aclaim *claim.AdapterEditor, ctx *gin.Context) {
+	a.notz.PreformEditorAction(aclaim.TenentId, ctx.Param("name"), aclaim.AdapterId, ctx)
+}
 
 // private
 
 func (a *ApiAdmin) adapterX(fn func(aclaim *claim.AdapterEditor, ctx *gin.Context)) func(ctx *gin.Context) {
+
 	return func(ctx *gin.Context) {
-		fn(nil, ctx)
+		aclaim, err := a.signer.ParseAdapterEditor(ctx.Param("tenant_id"), ctx.GetHeader("Authorization"))
+		if err != nil {
+			return
+		}
+
+		fn(aclaim, ctx)
 	}
 }

@@ -96,5 +96,6 @@ func (m *Notz) PreformEditorAction(tenantId, name string, did int64, ctx *gin.Co
 		return
 	}
 
-	m.adapterManager.preformEditorAction(tenantId, name, did, out)
+	resp, err := m.adapterManager.preformEditorAction(tenantId, name, did, out)
+	httpx.WriteJSON(ctx, resp, err)
 }

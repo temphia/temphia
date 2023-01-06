@@ -2,6 +2,7 @@ package notz
 
 import (
 	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/core/backend/app/server/notz/ahandle"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
@@ -78,10 +79,18 @@ func (am *AdapterManager) build(tenantId string, model *entities.TenantDomain) {
 		return
 	}
 
+	logger := am.logService.GetSiteLogger(tenantId, model.Name)
+
 	adpr, err := builder(httpx.BuilderOptions{
 		App:      am.app,
 		TenantId: tenantId,
 		Domain:   model,
+		Handle: ahandle.New(ahandle.Options{
+			Corehub:  am.corehub,
+			Logger:   &logger,
+			DomainId: model.Id,
+			TenantId: tenantId,
+		}),
 	})
 	if err != nil {
 		am.applogger.Error().

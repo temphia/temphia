@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	_ httpx.AdapterHandler = (*AHandle)(nil)
+	_ httpx.AdapterHandle = (*AHandle)(nil)
 )
 
 type Options struct {

@@ -81,23 +81,27 @@ func New(opts Options) *Server {
 
 	plane := deps.ControlPlane().(xplane.ControlPlane)
 
+	nz := notz.New(notz.NotzOptions{
+		App:               opts.App,
+		StaticHosts:       opts.StaticHosts,
+		ResolveHostTenant: opts.ResolveHostTenant,
+		RootHost:          opts.RootHost,
+		TenantHostBase:    opts.TenantHostBase,
+	})
+
 	return &Server{
 		ginEngine: opts.GinEngine,
 		admin: apiadmin.New(apiadmin.Options{
 			Admin:      root.AdminController(),
 			MiddleWare: mware,
+			Notz:       nz,
+			Signer:     signer,
 		}),
 		log:    logsvc,
 		signer: signer,
 		port:   opts.Port,
-		notz: notz.New(notz.NotzOptions{
-			App:               opts.App,
-			StaticHosts:       opts.StaticHosts,
-			ResolveHostTenant: opts.ResolveHostTenant,
-			RootHost:          opts.RootHost,
-			TenantHostBase:    opts.TenantHostBase,
-		}),
-		data: opts.App.Data(),
+		notz:   nz,
+		data:   opts.App.Data(),
 
 		middleware: mware,
 

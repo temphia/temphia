@@ -19,7 +19,7 @@ type Adapter interface {
 	Handle(ctx Context)
 }
 
-type AdapterHandler interface {
+type AdapterHandle interface {
 
 	// kv
 	KvAdd(key, value string) error
@@ -38,7 +38,7 @@ type BuilderOptions struct {
 	App      xtypes.App
 	TenantId string
 	Domain   *entities.TenantDomain
-	Handler  AdapterHandler
+	Handle   AdapterHandle
 }
 
 type Builder func(opts BuilderOptions) (Adapter, error)
