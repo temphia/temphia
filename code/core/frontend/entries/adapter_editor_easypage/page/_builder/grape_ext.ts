@@ -13,7 +13,16 @@ export const easyPageStore =
       },
       attributes: { title: "Save" },
       active: true,
-      
+    });
+
+    editor.Panels.addButton("options", {
+      id: "the_go_home",
+      className: "goHome fa fa-home",
+      command: async (editor) => {
+        location.hash = "/";
+      },
+      attributes: { title: "Home" },
+      active: true,
     });
 
     editor.Storage.add("easypage-store", {
