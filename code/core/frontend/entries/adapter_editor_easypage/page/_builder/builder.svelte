@@ -48,7 +48,7 @@
     rel="stylesheet"
     href="https://unpkg.com/grapesjs/dist/css/grapes.min.css"
   />
-  <script src="https://unpkg.com/grapesjs-lory-slider"></script>
+  <!-- <script src="https://unpkg.com/grapesjs-lory-slider"></script> -->
 </svelte:head>
 
 <div bind:this={rootElem}>Site Builder</div>
