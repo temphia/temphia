@@ -4,6 +4,7 @@
   import NewPage from "./_panels/new_page.svelte";
 
   export let onSave;
+  export let onRefresh;
 
   const service = getContext("__easypage_service__") as EasypageService;
 
@@ -20,6 +21,7 @@
 
     <div class="flex gap-2">
       <button
+        on:click={onRefresh}
         class="bg-blue-200 hover:bg-blue-500 rounded  font-bold text-white text-sm px-2"
         >↻</button
       >

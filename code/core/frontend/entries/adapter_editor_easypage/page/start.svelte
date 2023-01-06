@@ -9,12 +9,10 @@
   let loading = true;
   let message = "";
 
-  let datas = [
-    { slug: "index", name: "Main Page" },
-    { slug: "test", name: "Test page" },
-  ];
+  let datas = [];
 
   const load = async () => {
+    loading = true
     const resp = await service.listPage();
     if (!resp.ok) {
       message = resp.data;
@@ -33,6 +31,9 @@
   <LoadingSpinner />
 {:else}
   <Layout
+    onRefresh={() => {
+      load();
+    }}
     onSave={async (data) => {
       const resp = await service.updatePages([...datas, data]);
       if (!resp.ok) {
