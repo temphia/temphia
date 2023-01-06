@@ -1,3 +1,11 @@
+<script lang="ts">
+  import { getContext } from "svelte";
+  import type { EasypageService } from "../service/easypage";
+
+  const service = getContext("__easypage_service__") as EasypageService;
+
+</script>
+
 <div class="bg-blue-50 w-full h-screen font-sans flex flex-col">
   <div class="flex p-2 justify-between bg-blue-400">
     <div class="flex">

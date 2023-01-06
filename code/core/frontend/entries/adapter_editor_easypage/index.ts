@@ -5,6 +5,6 @@ const r = window["__registry__"] as Registry<any>;
 r.RegisterFactory("temphia.adapter_editor.loader", `easypage.main`, (opts) => {
   new AdapterEditorEasypage({
     target: opts.target,
-    props: {},
+    props: { env: opts.env },
   });
 });

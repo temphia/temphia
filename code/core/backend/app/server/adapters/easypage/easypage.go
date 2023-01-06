@@ -8,6 +8,7 @@ import (
 type EasyPage struct {
 	options httpx.BuilderOptions
 	dataBox xtypes.DataBox
+	ahandle httpx.AdapterHandle
 }
 
 func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
@@ -15,6 +16,7 @@ func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 	return &EasyPage{
 		options: opts,
 		dataBox: opts.App.Data(),
+		ahandle: opts.Handle,
 	}, nil
 }
 
