@@ -3,6 +3,7 @@
   import { Autotable, LoadingSpinner } from "../core";
   import type { EasypageService } from "../service/easypage";
   import Layout from "./_layout.svelte";
+  import Link from "./_panels/link.svelte";
 
   const service = getContext("__easypage_service__") as EasypageService;
 
@@ -50,7 +51,13 @@
       actions={[
         {
           Name: "Visit",
-          Action: (id) => {},
+          Action: (id) => {
+            service.modal.small_open(Link, {
+              domain: "http://test.temphia.local:4000", // fixme => replace this
+              slug: id,
+              service,
+            });
+          },
           Class: "bg-green-400",
           icon: "link",
         },
