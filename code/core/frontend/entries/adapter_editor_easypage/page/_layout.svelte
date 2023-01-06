@@ -3,10 +3,12 @@
   import type { EasypageService } from "../service/easypage";
   import NewPage from "./_panels/new_page.svelte";
 
+  export let onSave;
+
   const service = getContext("__easypage_service__") as EasypageService;
 
   const addPage = () => {
-    service.modal.small_open(NewPage, {});
+    service.modal.small_open(NewPage, { onSave });
   };
 </script>
 

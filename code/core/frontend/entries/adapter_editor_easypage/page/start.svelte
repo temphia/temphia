@@ -32,7 +32,18 @@
 {#if loading}
   <LoadingSpinner />
 {:else}
-  <Layout>
+  <Layout
+    onSave={async (data) => {
+      const resp = await service.updatePages([...datas, data]);
+      if (!resp.ok) {
+        console.log(resp);
+        return;
+      }
+      service.modal.small_close();
+
+      load();
+    }}
+  >
     <Autotable
       action_key={"slug"}
       actions={[

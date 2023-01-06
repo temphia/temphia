@@ -13,7 +13,11 @@
   import twPlugin from "grapesjs-tailwind";
 
   import { onMount } from "svelte";
-  import { DemoCSS, DemoHTML } from "./demo";
+  import { easyPageStore } from "./grape_ext";
+  import type { EasypageService } from "../../service/easypage";
+
+  export let page_slug: string;
+  export let service: EasypageService;
 
   let rootElem;
   let editor: grapejs.Editor;
@@ -21,8 +25,6 @@
   onMount(() => {
     editor = grapejs.init({
       container: rootElem,
-      components: DemoHTML,
-      style: DemoCSS,
       plugins: [
         webpagePlugin,
         basicPlugin,
@@ -36,9 +38,19 @@
         tabPlugin,
         toolTipPlugin,
         twPlugin,
+        easyPageStore(service),
       ],
+
       pluginsOpts: {},
-      storageManager: false,
+      storageManager: {
+        type: "easypage-store",
+        stepsBeforeSave: 3,
+        options: {
+          "easypage-store": {
+            page_slug,
+          },
+        },
+      },
     });
   });
 </script>

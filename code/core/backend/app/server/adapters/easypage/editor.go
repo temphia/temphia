@@ -67,15 +67,8 @@ func (e *EasyPage) setPageData(data []byte) error {
 		return err
 	}
 
-	err = e.ahandle.KvUpdate(pageKey(pd.Slug), pd.Data)
-	if err != nil {
-		err2 := e.ahandle.KvAdd(pageKey(pd.Slug), pd.Data)
-		if err2 != nil {
-			return err2
-		}
-	}
+	return e.ahandle.KvUpdate(pageKey(pd.Slug), pd.Data)
 
-	return nil
 }
 
 func (e *EasyPage) getPageData(data []byte) (string, error) {
@@ -85,7 +78,20 @@ func (e *EasyPage) getPageData(data []byte) (string, error) {
 		return "", err
 	}
 
-	return e.ahandle.KvGet(pageKey(pslug))
+	value, err := e.ahandle.KvGet(pageKey(pslug))
+	if err == nil {
+		return value, nil
+	}
+
+	defval := "{pages:[]}"
+
+	err = e.ahandle.KvAdd(pageKey(pslug), defval)
+	if err != nil {
+		return "", err
+	}
+
+	return defval, nil
+
 }
 
 func (e *EasyPage) delPageData(data []byte) error {
