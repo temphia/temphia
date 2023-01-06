@@ -42,7 +42,7 @@ type SystemOps interface {
 	UpdateSystemKV(tenantId, key, ktype string, data map[string]any) error
 	GetSystemKV(tenantId, key, ktype string) (*entities.SystemKV, error)
 	RemoveSystemKV(tenantId, key, ktype string) error
-	ListSystemKV(tenantId, etype string) ([]*entities.SystemKV, error)
+	ListSystemKV(tenantId, ktype, prefix string) ([]*entities.SystemKV, error)
 }
 
 type TenantOps interface {

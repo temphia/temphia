@@ -26,10 +26,10 @@ type AdapterHandler interface {
 }
 
 type BuilderOptions struct {
-	App            xtypes.App
-	TenantId       string
-	Domain         *entities.TenantDomain
-	AdapterHandler AdapterHandler
+	App      xtypes.App
+	TenantId string
+	Domain   *entities.TenantDomain
+	Handler  AdapterHandler
 }
 
 type Builder func(opts BuilderOptions) (Adapter, error)
