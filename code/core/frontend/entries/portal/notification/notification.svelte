@@ -109,7 +109,7 @@
       tabindex="0"
       class="focus:outline-none text-sm flex flex-shrink-0 leading-normal px-3 py-16 text-gray-500"
     >
-      {Quotes[0]}
+      {Quotes[Math.floor(Math.random() * Quotes.length)]}
     </p>
     <hr class="w-full" />
   </div>
