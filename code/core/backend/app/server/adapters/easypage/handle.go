@@ -3,6 +3,7 @@ package easypage
 import (
 	"bytes"
 	"net/http"
+	"strings"
 
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/tidwall/gjson"
@@ -11,8 +12,8 @@ import (
 func (s *EasyPage) handle(ctx httpx.Context) {
 	// path := "index"
 
-	path := ctx.Http.Request.URL.Path
-	if path == "/" {
+	path := strings.TrimLeft(ctx.Http.Request.URL.Path, "/")
+	if path == "" {
 		path = "index"
 	}
 
