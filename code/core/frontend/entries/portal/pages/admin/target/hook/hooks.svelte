@@ -40,7 +40,7 @@
   // actions
 
   const action_edit = (id: string) =>
-    app.nav.admin_target_hook_edit(Number(id));
+    app.nav.admin_target_hook_edit(ttype, Number(id));
   const action_delete = async (id: string, data: object) => {
     const resp = await api.deleteHook(data["target_type"], Number(id));
     load();

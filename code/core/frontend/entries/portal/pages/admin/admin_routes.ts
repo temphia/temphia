@@ -86,7 +86,6 @@ import AdminPermNew from "./user/permission/perm_new.svelte";
 import AdminRoles from "./user/role/roles.svelte";
 import AdminRoleNew from "./user/role/role_new.svelte";
 
-
 // ugroup
 import AdminUgroups from "./ugroup/ugroups.svelte";
 import AdminUgroupNew from "./ugroup/ugroup_new.svelte";
@@ -107,6 +106,8 @@ import AdminTenantEdit from "./tenant/tenant_edit.svelte";
 import AdminTenantDomainEdit from "./tenant/domain/domain_edit.svelte";
 import AdminTenantDomainAdd from "./tenant/domain/domain_add.svelte";
 import AdminTenantDomainAdapterEditor from "./tenant/domain/adapter_editor.svelte";
+import AdminTenantSystemKvs from "./tenant/system/kv/kvs.svelte";
+import AdminTenantSystemEvents from "./tenant/system/event/events.svelte";
 
 import AdminTargetApps from "./target/app/apps.svelte";
 import AdminTargetAppNew from "./target/app/app_new.svelte";
@@ -228,7 +229,7 @@ export default {
     "/": AdminUsers,
     "/edit/:userid": AdminUserEdit,
     "/new": AdminUserNew,
-    
+
     "/perm": AdminPerms,
     "/perm/new": AdminPermNew,
 
@@ -257,5 +258,7 @@ export default {
     "/domain/:did/edit": AdminTenantDomainEdit,
     "/domain/new": AdminTenantDomainAdd,
     "/domain/:did/adapter_editor": AdminTenantDomainAdapterEditor,
+    "/system/kv": AdminTenantSystemKvs,
+    "/system/event": AdminTenantSystemEvents,
   },
 };

@@ -465,6 +465,14 @@ export class Navigator {
     this.set(`#/admin/tenant/domain/${did}/adapter_editor`);
   }
 
+  admin_tenant_system_kvs() {
+    this.set(`#/admin/tenant/system/kv`);
+  }
+
+  admin_tenant_system_events() {
+    this.set(`#/admin/tenant/system/event`);
+  }
+
   admin_lens(idx: string) {
     this.set(`#/admin/lens/${idx}`);
   }

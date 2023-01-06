@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { AutoTable, ActionAddButton, PortalService } from "../core";
+  import TopActions from "../core/top_actions.svelte";
 
   const app: PortalService = getContext("__app__");
   const tapi = app.api_manager.get_admin_tenant_api();
@@ -25,7 +26,13 @@
 </script>
 
 <div class="h-full w-full overflow-auto">
-  <div class="md:p-12 bg-indigo-100 flex flex-row flex-wrap">
+  <TopActions
+    actions={{
+      "System KV": () => app.nav.admin_tenant_system_kvs(),
+      "System Event": () => app.nav.admin_tenant_system_events(),
+    }}
+  />
+  <div class="md:p-8 bg-indigo-100 flex flex-row flex-wrap">
     <div
       class="md:w-1/2-screen m-0 p-5 bg-white w-full tw-h-full shadow md:rounded-lg relative"
     >
