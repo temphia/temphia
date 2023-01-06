@@ -12,7 +12,7 @@
   let datas = [];
 
   const load = async () => {
-    loading = true
+    loading = true;
     const resp = await service.listPage();
     if (!resp.ok) {
       message = resp.data;
@@ -65,7 +65,15 @@
         {
           Name: "Delete",
           Class: "bg-red-400",
-          Action: () => {},
+          Action: async (id) => {
+            loading = true;
+
+            const newDatas = datas.filter((v) => v["slug"] !== id);
+            await service.updatePages(newDatas);
+            await service.deletePageData(id);
+
+            load();
+          },
           icon: "trash",
         },
       ]}

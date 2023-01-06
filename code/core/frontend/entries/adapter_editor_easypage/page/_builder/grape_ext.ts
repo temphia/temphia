@@ -14,6 +14,8 @@ export const easyPageStore =
       },
 
       async store(data, options = {}) {
+        data["gen_html"] = extractHtml(editor);
+
         const resp = await service.setPageData(
           options["page_slug"],
           JSON.stringify(data)
@@ -25,3 +27,13 @@ export const easyPageStore =
       },
     });
   };
+
+const extractHtml = (editor: grapesjs.Editor) => {
+  return editor.Pages.getAll().map((page) => {
+    const component = page.getMainComponent();
+    return {
+      html: editor.getHtml({ component }),
+      css: editor.getCss({ component }),
+    };
+  });
+};
