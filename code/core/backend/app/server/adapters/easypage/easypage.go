@@ -5,12 +5,14 @@ import (
 
 	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
 type EasyPage struct {
 	options httpx.BuilderOptions
 	dataBox xtypes.DataBox
 	ahandle httpx.AdapterHandle
+	cabHub  store.CabinetHub
 
 	pageCache map[string][]byte
 	pLock     sync.Mutex
@@ -18,12 +20,15 @@ type EasyPage struct {
 
 func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 
+	deps := opts.App.GetDeps()
+
 	return &EasyPage{
 		options:   opts,
 		dataBox:   opts.App.Data(),
 		ahandle:   opts.Handle,
 		pageCache: make(map[string][]byte),
 		pLock:     sync.Mutex{},
+		cabHub:    deps.Cabinet().(store.CabinetHub),
 	}, nil
 }
 

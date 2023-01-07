@@ -12,7 +12,13 @@ import (
 func (s *EasyPage) handle(ctx httpx.Context) {
 	// path := "index"
 
-	path := strings.TrimLeft(ctx.Http.Request.URL.Path, "/")
+	path := ctx.Http.Request.URL.Path
+	if strings.HasPrefix(path, "/image/") {
+		s.handleImg(ctx, strings.Replace(path, "/image/", "", 1))
+		return
+	}
+
+	path = strings.TrimLeft(ctx.Http.Request.URL.Path, "/")
 	if path == "" {
 		path = "index"
 	}
@@ -30,6 +36,19 @@ func (s *EasyPage) handle(ctx httpx.Context) {
 
 	ctx.Http.Data(http.StatusOK, "text/html", out)
 }
+
+func (s *EasyPage) handleImg(ctx httpx.Context, file string) {
+	source := s.cabHub.GetSource(s.options.Domain.AdapterCabSource, s.options.TenantId)
+
+	out, err := source.GetBlob(ctx.Http.Request.Context(), s.options.Domain.AdapterCabFolder, file)
+	if err != nil {
+		return
+	}
+
+	httpx.WriteBinary(ctx.Http, out)
+}
+
+// private
 
 func (s *EasyPage) fetch(path string) ([]byte, error) {
 	val, err := s.ahandle.KvGet(pageKey(path))
