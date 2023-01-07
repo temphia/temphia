@@ -1,6 +1,9 @@
 # TODO
 
-## Frontend
+- add validation to all slugs in frontend/backend
+- resource bashed new page
+
+<!-- ## Frontend
 - [ ] std plugs
 
 ## Docs
@@ -13,4 +16,4 @@
     - develop plug
     - develop executor
     - develop adapter
-    - develop module
+    - develop module -->
