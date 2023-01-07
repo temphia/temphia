@@ -15,6 +15,7 @@
   let loading = true;
 
   const load = async () => {
+    loading = true;
     const resp = await sapi.list_devices();
     if (resp.status !== 200) {
       console.log("Err", resp);
