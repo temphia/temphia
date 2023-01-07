@@ -105,6 +105,10 @@ export class PortalService {
     return this.cabinet_service;
   };
 
+  get_user_profile = (name) => {
+    return `${this.options.base_url}/z/assets/system/${this.options.tenant_id}/user/${name}`;
+  };
+
   logout = () => {
     this.options.site_utils.clearAuthedData();
     location.href = "/z/auth";

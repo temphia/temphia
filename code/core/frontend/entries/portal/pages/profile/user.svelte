@@ -40,9 +40,9 @@
       {:else}
         <div class="text-center p-6  border-b">
           <img
-            class="h-24 w-24 rounded-full mx-auto"
-            src={"FIXME: app.user_profile_image_link(user)"}
-            alt={id}
+            class="w-24 rounded-full mx-auto"
+            src={app.get_user_profile(id)}
+            alt="user proile {id}"
           />
           <p class="pt-2 text-lg font-semibold">
             {userData["full_name"] || ""}
@@ -99,9 +99,11 @@
         </div>
 
         <div class="flex-col flex py-3 relative">
-          <label class="pb-2 text-gray-700 font-semibold">Message</label>
+          <label for="message" class="pb-2 text-gray-700 font-semibold"
+            >Message</label
+          >
           <textarea
-            type="text"
+            id="message"
             bind:value={message}
             class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200"
             placeholder="Hey, ..."
