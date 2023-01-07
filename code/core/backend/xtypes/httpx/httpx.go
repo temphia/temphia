@@ -16,14 +16,15 @@ func WriteFile(file string, data []byte, ctx *gin.Context) {
 
 	ffiles := strings.Split(file, ".")
 
+	ctype := ""
 	switch ffiles[1] {
 	case "js":
-		ctx.Writer.Header().Set("Content-Type", "application/javascript")
+		ctype = "application/javascript"
 	case "css":
-		ctx.Writer.Header().Set("Content-Type", "text/css")
+		ctype = "text/css"
 	default:
-		ctx.Writer.Header().Set("Content-Type", http.DetectContentType(data))
+		ctype = http.DetectContentType(data)
 	}
 
-	ctx.Writer.Write(data)
+	ctx.Data(http.StatusOK, ctype, data)
 }
