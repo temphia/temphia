@@ -22,8 +22,8 @@ func (e *EasyPage) serveEditorFile(file string) ([]byte, error) {
 func (e *EasyPage) preformEditorAction(name string, data []byte) (any, error) {
 
 	switch name {
-	case "list_pages":
-		return e.listPages(name)
+	case "load":
+		return e.load()
 	case "update_pages":
 		return nil, e.updatePages(data)
 	case "get_page_data":
@@ -37,7 +37,23 @@ func (e *EasyPage) preformEditorAction(name string, data []byte) (any, error) {
 	}
 }
 
-func (e *EasyPage) listPages(name string) ([]Page, error) {
+func (e *EasyPage) load() (*LoadResponse, error) {
+
+	pages, err := e.listPages()
+	if err != nil {
+		return nil, err
+	}
+
+	lr := &LoadResponse{
+		Pages:         pages,
+		CabinetTicket: "",
+	}
+
+	return lr, nil
+
+}
+
+func (e *EasyPage) listPages() ([]Page, error) {
 	main, err := e.ahandle.KvGet("main")
 	if err != nil {
 		err2 := e.initState()

@@ -16,8 +16,8 @@ export class EasypageService {
     this.env = env;
   }
 
-  listPage = () => {
-    return this.api.perform_action("list_pages", null);
+  load = () => {
+    return this.api.perform_action("load", null);
   };
 
   updatePages = (data: any[]) => {

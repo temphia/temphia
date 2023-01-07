@@ -14,14 +14,14 @@
 
   const load = async () => {
     loading = true;
-    const resp = await service.listPage();
+    const resp = await service.load()
     if (!resp.ok) {
       message = resp.data;
       console.log("Err", resp.data);
       return;
     }
 
-    datas = resp.data;
+    datas = resp.data["pages"] || [];
     loading = false;
   };
 
