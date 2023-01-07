@@ -125,6 +125,12 @@ func (am *AdapterManager) get(tenantId string, did int64) *DomainInstance {
 	instance := am.activeDomains[did]
 
 	if instance == nil {
+		time.Sleep(300)
+		instance = am.activeDomains[did]
+		if instance != nil {
+			return instance
+		}
+
 		if am.tenantInits[tenantId] {
 			am.cInstanceTenant <- tenantId
 		} else {

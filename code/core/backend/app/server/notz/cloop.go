@@ -1,6 +1,10 @@
 package notz
 
 import (
+	"fmt"
+	"time"
+
+	lru "github.com/hashicorp/golang-lru"
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/app/server/notz/ahandle"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
@@ -14,17 +18,37 @@ func (am *AdapterManager) run() {
 	am.init()
 	am.applogger.Info().Msg(logid.NotzAdaptersAfterInit)
 
+	lcahe, err := lru.New(10)
+	if err != nil {
+		panic(err)
+	}
+
 	for {
 
 		select {
 		case data := <-am.cReInstance:
+			key := func() string {
+				return fmt.Sprintf("%s__%d", data.tenantId, data.domainId)
+			}
+
+			lasttime, ok := lcahe.Get(key())
+			if ok {
+				lt := lasttime.(time.Time)
+				sub := time.Until(lt)
+				if sub < time.Second*60 {
+					return
+				}
+			}
+
 			domain, err := am.corehub.GetDomain(data.tenantId, data.domainId)
 			if err != nil {
 				continue
 			}
 
 			am.build(data.tenantId, domain)
+			lcahe.Add(key(), time.Now())
 		case tenantId := <-am.cInstanceTenant:
+
 			pp.Println(am.buildTenant(tenantId))
 		}
 

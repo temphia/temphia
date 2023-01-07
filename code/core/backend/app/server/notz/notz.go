@@ -77,6 +77,13 @@ func (m *Notz) ServePublic(c *gin.Context, file string) {
 	c.Writer.Write(out)
 }
 
+func (m *Notz) Reset(tenantId string, domainId int64) {
+	m.adapterManager.cReInstance <- DomainIdent{
+		tenantId: tenantId,
+		domainId: domainId,
+	}
+}
+
 func (m *Notz) ListAdapters() []string {
 	return m.adapterManager.ListAdapters()
 }

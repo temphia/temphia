@@ -101,6 +101,7 @@
 
           <AutoTable
             action_key="id"
+            show_drop={true}
             actions={[
               {
                 Name: "Adapter Editor",
@@ -113,9 +114,19 @@
                 Action: (id) => app.nav.admin_tenant_domain_edit(id),
                 icon: "pencil",
               },
+
+              {
+                Name: "Reset",
+                drop: true,
+                icon: "refresh",
+                Action: async (id) => {
+                  tapi.domain_adapter_reset(id);
+                },
+              },
+
               {
                 Name: "Delete",
-                Class: "bg-red-400",
+                drop: true,
                 icon: "trash",
                 Action: async (id) => {
                   await tapi.delete_domain(id);
