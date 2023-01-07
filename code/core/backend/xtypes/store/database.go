@@ -66,6 +66,7 @@ type TargetOps interface {
 	UpdateTargetHook(tenantId, ttype string, id int64, data map[string]any) error
 	ListTargetHook(tenantId string) ([]*entities.TargetHook, error)
 	ListTargetHookByType(tenantId, ttype, target string) ([]*entities.TargetHook, error)
+	ListTargetHookByPlug(tenantId, plug string) ([]*entities.TargetHook, error)
 	GetTargetHook(tenantId, ttype string, id int64) (*entities.TargetHook, error)
 	RemoveTargetHook(tenantId, ttype string, id int64) error
 
@@ -73,6 +74,7 @@ type TargetOps interface {
 	UpdateTargetApp(tenantId, ttype string, id int64, data map[string]any) error
 	ListTargetApp(tenantId string) ([]*entities.TargetApp, error)
 	ListTargetAppByType(tenantId, ttype, target string) ([]*entities.TargetApp, error)
+	ListTargetAppByPlug(tenantId, plug string) ([]*entities.TargetApp, error)
 	GetTargetApp(tenantId, ttype string, id int64) (*entities.TargetApp, error)
 	RemoveTargetApp(tenantId, ttype string, id int64) error
 
@@ -193,11 +195,15 @@ type AgentOps interface {
 	AgentLinkList(tenantId, pid, aid string) ([]*entities.AgentLink, error)
 	AgentLinkListReverse(tenantId, pid, aid string) ([]*entities.AgentLink, error)
 
+	AgentLinkListByPlug(tenantId, pid string) ([]*entities.AgentLink, error)
+
 	AgentExtensionNew(tenantId string, data *entities.AgentExtension) error
 	AgentExtensionUpdate(tenantId, pid, aid string, id int64, data map[string]any) error
 	AgentExtensionGet(tenantId, pid, aid string, id int64) (*entities.AgentExtension, error)
 	AgentExtensionDel(tenantId, pid, aid string, id int64) error
 	AgentExtensionList(tenantId, pid, aid string) ([]*entities.AgentExtension, error)
+
+	AgentExtensionListByPlug(tenantId, pid string) ([]*entities.AgentExtension, error)
 
 	AgentResourceNew(tenantId string, data *entities.AgentResource) error
 	AgentResourceUpdate(tenantId, pid, aid, slug string, data map[string]any) error

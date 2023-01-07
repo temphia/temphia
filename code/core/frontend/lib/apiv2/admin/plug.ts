@@ -30,6 +30,10 @@ export class AdminPlugAPI {
     return this.base.get(`/admin/plug/${pid}/resource`);
   }
 
+  flowmap(pid: string) {
+    return this.base.get(`/admin/plug/${pid}/flowmap`);
+  }
+
   // agent
 
   list_agent(pid: string) {

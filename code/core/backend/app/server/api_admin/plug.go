@@ -29,6 +29,8 @@ func (a *ApiAdmin) plugAPI(rg *gin.RouterGroup) {
 	rg.POST("/:plug_id/state/:key", a.X(a.UpdatePlugState))
 	rg.DELETE("/:plug_id/state/:key", a.X(a.DelPlugState))
 
+	rg.GET("/:plug_id/flowmap", a.X(a.PlugFlowmap))
+
 	rg.GET("/:plug_id/resource", a.X(a.ListPlugResources))
 
 	rg.GET("/:plug_id/agent/:agent_id/link", a.X(a.AgentLinkList))
@@ -411,5 +413,10 @@ func (r *ApiAdmin) AgentResourceList(ctx httpx.Request) {
 	agentId := ctx.MustParam("agent_id")
 
 	resp, err := r.cAdmin.AgentResourceList(ctx.Session, plugId, agentId)
+	r.rutil.WriteJSON(ctx.Http, resp, err)
+}
+
+func (r *ApiAdmin) PlugFlowmap(ctx httpx.Request) {
+	resp, err := r.cAdmin.PlugFlowmap(ctx.Session, ctx.MustParam("plug_id"))
 	r.rutil.WriteJSON(ctx.Http, resp, err)
 }

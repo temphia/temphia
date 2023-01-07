@@ -1,6 +1,9 @@
 package admin
 
 import (
+	"sync"
+
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/vmodels"
@@ -81,6 +84,108 @@ func (c *Controller) ResourceList(uclaim *claim.Session) ([]*entities.Resource, 
 
 func (c *Controller) ResourceListByPlug(uclaim *claim.Session, plugId string) ([]*entities.Resource, error) {
 	return c.coredb.ResourceListByPlug(uclaim.TenentId, plugId)
+}
+
+type FlowmapData struct {
+	Plug       *entities.Plug                      `json:"plug,omitempty"`
+	Agents     []*entities.Agent                   `json:"agents,omitempty"`
+	AgentLinks map[string]*entities.AgentLink      `json:"agent_links,omitempty"`
+	AgentExts  map[string]*entities.AgentExtension `json:"agent_exts,omitempty"`
+
+	TargetApps     []*entities.TargetApp         `json:"target_apps,omitempty"`
+	TargetHooks    []*entities.TargetHook        `json:"target_hooks,omitempty"`
+	Resources      []*entities.Resource          `json:"resources,omitempty"`
+	AgentResources map[string]*entities.Resource `json:"agent_resources,omitempty"`
+}
+
+func (c *Controller) PlugFlowmap(uclaim *claim.Session, plugId string) (*FlowmapData, error) {
+
+	data := FlowmapData{
+		Plug:           nil,
+		Agents:         nil,
+		AgentLinks:     make(map[string]*entities.AgentLink),
+		AgentExts:      make(map[string]*entities.AgentExtension),
+		TargetApps:     nil,
+		TargetHooks:    nil,
+		Resources:      nil,
+		AgentResources: make(map[string]*entities.Resource),
+	}
+
+	var wg sync.WaitGroup
+
+	func() {
+		wg.Add(1)
+		defer wg.Done()
+		plug, _ := c.coredb.PlugGet(uclaim.TenentId, plugId)
+		data.Plug = plug
+	}()
+
+	func() {
+		wg.Add(1)
+		defer wg.Done()
+		agents, _ := c.coredb.AgentList(uclaim.TenentId, plugId)
+		data.Agents = agents
+	}()
+
+	func() {
+		wg.Add(1)
+		defer wg.Done()
+		links, err := c.coredb.AgentLinkListByPlug(uclaim.TenentId, plugId)
+		if err != nil {
+			return
+		}
+
+		for _, link := range links {
+			data.AgentLinks[link.FromAgent] = link
+		}
+	}()
+
+	func() {
+		wg.Add(1)
+		defer wg.Done()
+		exts, err := c.coredb.AgentExtensionListByPlug(uclaim.TenentId, plugId)
+		if err != nil {
+			return
+		}
+
+		for _, ext := range exts {
+			data.AgentExts[ext.Agent] = ext
+		}
+	}()
+
+	func() {
+		wg.Add(1)
+		defer wg.Done()
+		hooks, _ := c.coredb.ListTargetHookByPlug(uclaim.TenentId, plugId)
+		data.TargetHooks = hooks
+	}()
+
+	func() {
+		wg.Add(1)
+		defer wg.Done()
+		apps, _ := c.coredb.ListTargetAppByPlug(uclaim.TenentId, plugId)
+		data.TargetApps = apps
+	}()
+
+	func() {
+		wg.Add(1)
+		defer wg.Done()
+		ress, _ := c.coredb.ResourceListByPlug(uclaim.TenentId, plugId)
+		data.Resources = ress
+	}()
+
+	func() {
+		wg.Add(1)
+		defer wg.Done()
+		data.AgentResources = map[string]*entities.Resource{} // fixme
+	}()
+
+	wg.Wait()
+
+	pp.Println(data)
+
+	return &data, nil
+
 }
 
 func (c *Controller) ResourceAgentList(uclaim *claim.Session, req *vmodels.ResourceQuery) ([]*entities.Resource, error) {

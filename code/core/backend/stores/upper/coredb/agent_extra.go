@@ -219,6 +219,32 @@ func (d *DB) ResourceListByAgent(tenantId string, pid, aid string) ([]*entities.
 	return ress, nil
 }
 
+func (d *DB) AgentExtensionListByPlug(tenantId, pid string) ([]*entities.AgentExtension, error) {
+	data := make([]*entities.AgentExtension, 0)
+
+	err := d.agentExtensionTable().Find(db.Cond{
+		"tenant_id": tenantId,
+		"plug_id":   pid,
+	}).All(&data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
+func (d *DB) AgentLinkListByPlug(tenantId, pid string) ([]*entities.AgentLink, error) {
+	data := make([]*entities.AgentLink, 0)
+
+	err := d.agentLinkTable().Find(db.Cond{
+		"tenant_id": tenantId,
+		"plug_id":   pid,
+	}).All(&data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
 // private
 
 func (d *DB) agentLinkTable() db.Collection {

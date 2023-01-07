@@ -3,7 +3,7 @@
   import { createEventDispatcher, onMount } from "svelte";
   import { tick } from "svelte/internal";
 
-  export let name;
+  export let name = "";
   export let top = Math.floor(Math.random() * 400);
   export let left = Math.floor(Math.random() * 400);
 

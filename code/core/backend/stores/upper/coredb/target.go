@@ -157,3 +157,37 @@ func (d *DB) ListTargetAppByUgroup(tenantId, ugroup string) ([]*entities.TargetA
 
 	return ws, nil
 }
+
+func (d *DB) ListTargetAppByPlug(tenantId, plug string) ([]*entities.TargetApp, error) {
+	ws := make([]*entities.TargetApp, 0)
+
+	err := d.targetAppTable().Find(
+		db.Cond{
+			"tenant_id": tenantId,
+			"plug_id":   plug,
+		},
+	).All(&ws)
+	if err != nil {
+		return nil, err
+	}
+
+	return ws, nil
+
+}
+
+func (d *DB) ListTargetHookByPlug(tenantId, plug string) ([]*entities.TargetHook, error) {
+	ws := make([]*entities.TargetHook, 0)
+
+	err := d.targetHookTable().Find(
+		db.Cond{
+			"tenant_id": tenantId,
+			"plug_id":   plug,
+		},
+	).All(&ws)
+	if err != nil {
+		return nil, err
+	}
+
+	return ws, nil
+
+}

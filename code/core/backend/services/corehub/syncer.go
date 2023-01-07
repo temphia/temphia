@@ -197,3 +197,19 @@ func (c *CoreHub) AgentResourceList(tenantId, pid, aid string) ([]*entities.Agen
 func (c *CoreHub) ResourceListByAgent(tenantId string, pid, aid string) ([]*entities.Resource, error) {
 	return c.coredb.ResourceListByAgent(tenantId, pid, aid)
 }
+
+func (c *CoreHub) ListTargetHookByPlug(tenantId, plug string) ([]*entities.TargetHook, error) {
+	return c.coredb.ListTargetHookByPlug(tenantId, plug)
+}
+
+func (c *CoreHub) AgentLinkListByPlug(tenantId, pid string) ([]*entities.AgentLink, error) {
+	return c.coredb.AgentLinkListByPlug(tenantId, pid)
+}
+
+func (c *CoreHub) ListTargetAppByPlug(tenantId, plug string) ([]*entities.TargetApp, error) {
+	return c.coredb.ListTargetAppByPlug(tenantId, plug)
+}
+
+func (c *CoreHub) AgentExtensionListByPlug(tenantId, pid string) ([]*entities.AgentExtension, error) {
+	return c.coredb.AgentExtensionListByPlug(tenantId, pid)
+}
