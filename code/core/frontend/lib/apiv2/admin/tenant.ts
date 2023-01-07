@@ -40,4 +40,21 @@ export class AdminTenantAPI {
   domain_adapter_reset(did: string) {
     return this.base.get(`/admin/tenant/domain/${did}/reset`);
   }
+
+  list_system_kv({ last, etype, prefix }) {
+    const u = new URLSearchParams();
+    u.set("last", last || "");
+    u.set("etype", etype || "");
+    u.set("prefix", prefix || "");
+
+    return this.base.get(`/admin/tenant/system/kv?${u.toString()}`);
+  }
+
+  list_system_event({ last, etype }) {
+    const u = new URLSearchParams();
+    u.set("last", last || "");
+    u.set("etype", etype || "");
+
+    return this.base.get(`/admin/tenant/system/event?${u.toString()}`);
+  }
 }

@@ -65,7 +65,7 @@ func (ah *AHandle) KvRemove(key string) error {
 }
 
 func (ah *AHandle) KvList(prefix string) ([]string, error) {
-	resps, err := ah.corehub.ListSystemKV(ah.tenantId, ah.keyTypeKey, prefix)
+	resps, err := ah.corehub.ListSystemKV(ah.tenantId, ah.keyTypeKey, prefix, 0)
 	if err != nil {
 		return nil, err
 	}

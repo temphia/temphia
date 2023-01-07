@@ -21,6 +21,8 @@ func (a *ApiAdmin) tenantAPI(rg *gin.RouterGroup) {
 	rg.GET("/domain/:id/issue/adapter_editor", a.X(a.domainIssueAdapterEditor))
 	rg.GET("/domain/:id/reset", a.X(a.domainAdapterReset))
 
+	rg.GET("/system/kv", a.X(a.systemKvList))
+	rg.GET("/system/event", a.X(a.systemEventList))
 }
 
 func (r *ApiAdmin) UpdateTenant(ctx httpx.Request) {
@@ -101,6 +103,8 @@ func (r *ApiAdmin) RemoveTenantDomain(ctx httpx.Request) {
 	r.rutil.WriteFinal(ctx.Http, err)
 }
 
+// domain/adapter
+
 func (a *ApiAdmin) domainIssueAdapterEditor(ctx httpx.Request) {
 	resp, err := a.cAdmin.DomainAdapterEditorIssue(ctx.Session, ctx.MustParamInt("id"))
 
@@ -109,4 +113,22 @@ func (a *ApiAdmin) domainIssueAdapterEditor(ctx httpx.Request) {
 
 func (a *ApiAdmin) domainAdapterReset(ctx httpx.Request) {
 	a.notz.Reset(ctx.Session.TenentId, ctx.MustParamInt("id"))
+}
+
+// system kv
+
+func (a *ApiAdmin) systemKvList(ctx httpx.Request) {
+	last, _ := strconv.ParseInt(ctx.Http.Query("last"), 10, 64)
+	resp, err := a.cAdmin.ListSystemKV(ctx.Session, ctx.Http.Query("ktype"), ctx.Http.Query("prefix"), last)
+	a.rutil.WriteJSON(ctx.Http, resp, err)
+}
+
+// system event
+
+func (a *ApiAdmin) systemEventList(ctx httpx.Request) {
+	last, _ := strconv.ParseInt(ctx.Http.Query("last"), 10, 64)
+
+	resp, err := a.cAdmin.ListSystemEvent(ctx.Session, ctx.Http.Query("etype"), last)
+	a.rutil.WriteJSON(ctx.Http, resp, err)
+
 }

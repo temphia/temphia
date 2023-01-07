@@ -30,6 +30,6 @@ func (c *CoreHub) RemoveSystemKV(tenantId, key, ktype string) error {
 	return c.coredb.RemoveSystemKV(tenantId, key, ktype)
 }
 
-func (c *CoreHub) ListSystemKV(tenantId, ktype, prefix string) ([]*entities.SystemKV, error) {
-	return c.coredb.ListSystemKV(tenantId, ktype, prefix)
+func (c *CoreHub) ListSystemKV(tenantId, ktype, prefix string, last int64) ([]*entities.SystemKV, error) {
+	return c.coredb.ListSystemKV(tenantId, ktype, prefix, last)
 }

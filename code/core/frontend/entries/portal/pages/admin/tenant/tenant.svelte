@@ -119,7 +119,7 @@
                 Name: "Reset",
                 drop: true,
                 icon: "refresh",
-                Action: async (id) => {
+                Action: (id) => {
                   tapi.domain_adapter_reset(id);
                 },
               },

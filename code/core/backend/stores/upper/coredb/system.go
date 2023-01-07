@@ -85,7 +85,7 @@ func (d *DB) RemoveSystemKV(tenantId, key, ktype string) error {
 	return d.systemKVTable().Find(cond).Delete()
 }
 
-func (d *DB) ListSystemKV(tenantId, ktype, prefix string) ([]*entities.SystemKV, error) {
+func (d *DB) ListSystemKV(tenantId, ktype, prefix string, last int64) ([]*entities.SystemKV, error) {
 
 	resp := make([]*entities.SystemKV, 0)
 
@@ -98,7 +98,11 @@ func (d *DB) ListSystemKV(tenantId, ktype, prefix string) ([]*entities.SystemKV,
 		cond["key LIKE"] = prefix + "%"
 	}
 
-	err := d.systemKVTable().Find(cond).All(&resp)
+	if last != 0 {
+		cond["id >"] = last
+	}
+
+	err := d.systemKVTable().Find(cond).OrderBy("id").All(&resp)
 	if err != nil {
 		return nil, err
 	}
