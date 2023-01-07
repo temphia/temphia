@@ -14,6 +14,7 @@ window.addEventListener("load", async (ev) => {
       loaderOpts["tenant_id"],
       loaderOpts["adapter_editor_token"]
     ),
+    domain_name: loaderOpts["domain_name"],
   });
 
   console.log("@adapter_editor_loader", loaderOpts, env, registry);

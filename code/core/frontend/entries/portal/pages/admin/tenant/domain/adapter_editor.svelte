@@ -24,6 +24,7 @@
     source = GenerateSRC({
       adapter_editor_token: resp.data["token"],
       adapter_type: resp.data["adapter_type"],
+      domain_name: resp.data["domain_name"],
       base_url: app.api_manager.api_base_url,
       did: did,
       tenant_id: app.api_manager.tenant_id,

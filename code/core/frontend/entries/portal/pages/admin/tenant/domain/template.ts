@@ -3,6 +3,7 @@ export const GenerateSRC = ({
   did,
   adapter_type,
   adapter_editor_token,
+  domain_name,
   base_url,
 }) => {
   const opt = JSON.stringify({
@@ -10,6 +11,7 @@ export const GenerateSRC = ({
     base_url,
     adapter_type,
     tenant_id,
+    domain_name,
   });
 
   return `<html lang="en">

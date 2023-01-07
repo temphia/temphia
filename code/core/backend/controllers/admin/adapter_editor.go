@@ -58,6 +58,7 @@ func (c *Controller) AdapterDeleteHook(aclaim *claim.AdapterEditor, id int64) er
 type DomainAdapterEditorIssueResp struct {
 	AdapterType string `json:"adapter_type,omitempty"`
 	Token       string `json:"token,omitempty"`
+	DomainName  string `json:"domain_name,omitempty"`
 }
 
 func (c *Controller) DomainAdapterEditorIssue(uclaim *claim.Session, did int64) (*DomainAdapterEditorIssueResp, error) {
@@ -84,6 +85,7 @@ func (c *Controller) DomainAdapterEditorIssue(uclaim *claim.Session, did int64) 
 	return &DomainAdapterEditorIssueResp{
 		AdapterType: tdomain.AdapterType,
 		Token:       tok,
+		DomainName:  tdomain.Name,
 	}, nil
 
 }
