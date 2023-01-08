@@ -9,7 +9,6 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints/instancer"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/instance"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
@@ -43,7 +42,7 @@ func (di *dtabeInstancer) Instance(opts instancer.Options) (any, error) {
 		return nil, err
 	}
 
-	dopts := &instance.DataGroupRequest{}
+	dopts := &DataGroupRequest{}
 	err = json.Unmarshal(opts.Data, dopts)
 	if err != nil {
 		return nil, err
@@ -52,7 +51,7 @@ func (di *dtabeInstancer) Instance(opts instancer.Options) (any, error) {
 	return di.instance(opts.TenantId, opts.File, dopts, schemaData)
 }
 
-func (di *dtabeInstancer) instance(tenantId, file string, opts *instance.DataGroupRequest, schema *bprints.NewTableGroup) (*instance.DataGroupResponse, error) {
+func (di *dtabeInstancer) instance(tenantId, file string, opts *DataGroupRequest, schema *bprints.NewTableGroup) (*DataGroupResponse, error) {
 
 	var dhub store.DynSource
 
@@ -104,7 +103,7 @@ func (di *dtabeInstancer) instance(tenantId, file string, opts *instance.DataGro
 		return nil, err
 	}
 
-	resp := &instance.DataGroupResponse{
+	resp := &DataGroupResponse{
 		Source:     dhub.Name(),
 		GroupSlug:  opts.GroupSlug,
 		GroupName:  opts.GroupName,

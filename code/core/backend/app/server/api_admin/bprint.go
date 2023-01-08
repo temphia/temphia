@@ -6,7 +6,6 @@ import (
 	"github.com/temphia/temphia/code/core/backend/controllers/admin"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/instance"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 )
 
@@ -119,7 +118,7 @@ func (r *ApiAdmin) BprintDelFile(ctx httpx.Request) {
 // instance
 
 func (r *ApiAdmin) BprintInstance(ctx httpx.Request) {
-	opts := &instance.RepoOptions{}
+	opts := &repox.InstanceOptions{}
 	err := ctx.Http.BindJSON(opts)
 	if err != nil {
 		r.rutil.WriteErr(ctx.Http, err.Error())

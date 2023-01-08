@@ -1,9 +1,10 @@
 package repox
 
 import (
+	"encoding/json"
+
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/instance"
 )
 
 type Hub interface {
@@ -42,17 +43,18 @@ type RepoBprintOps interface {
 
 	BprintGetBlob(tenantid, bid, file string) ([]byte, error)
 	BprintDeleteBlob(tenantid, bid, file string) error
-	Instance(tenantId string, opts *instance.RepoOptions) (any, error)
+	Instance(tenantId string, opts *InstanceOptions) (any, error)
 
 	ParseInstanceFile(tenantId, bid, file string, target any) error
 }
 
 type InstanceOptions struct {
-	TenantId       string
-	RepoId         string
-	BprintId       string
-	UserConfigData []byte
-	UserSession    *claim.Session
+	BprintId       string          `json:"bprint_id,omitempty"`
+	RepoId         string          `json:"repo_id,omitempty"`
+	InstancerType  string          `json:"instancer_type,omitempty"`
+	File           string          `json:"file,omitempty"`
+	UserConfigData json.RawMessage `json:"data,omitempty"`
+	UserSession    *claim.Session  `json:"-"`
 }
 
 type InstanceOps interface {

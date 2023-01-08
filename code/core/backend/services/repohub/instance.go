@@ -7,11 +7,11 @@ import (
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints/instancer"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/instance"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 	"gopkg.in/yaml.v2"
 )
 
-func (p *PacMan) Instance(tenantId string, opts *instance.RepoOptions) (any, error) {
+func (p *PacMan) Instance(tenantId string, opts *repox.InstanceOptions) (any, error) {
 
 	bprint, err := p.corehub.BprintGet(tenantId, opts.BprintId)
 	if err != nil {
@@ -34,8 +34,8 @@ func (p *PacMan) Instance(tenantId string, opts *instance.RepoOptions) (any, err
 		Bid:          opts.BprintId,
 		InstanceType: instanceType,
 		File:         opts.File,
-		UserId:       opts.UserId,
-		Data:         opts.Data,
+		UserId:       opts.UserSession.UserID,
+		Data:         opts.UserConfigData,
 	})
 
 }

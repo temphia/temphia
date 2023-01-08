@@ -4,7 +4,6 @@ import (
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/instance"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/vmodels"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 )
@@ -101,7 +100,7 @@ func (c *Controller) BprintInstall(uclaim *claim.Session, opts *vmodels.RepoInst
 	return nil, nil
 }
 
-func (c *Controller) BprintInstance(uclaim *claim.Session, opts *instance.RepoOptions) (any, error) {
-	opts.UserId = uclaim.UserID
+func (c *Controller) BprintInstance(uclaim *claim.Session, opts *repox.InstanceOptions) (any, error) {
+	opts.UserSession = uclaim
 	return c.pacman.Instance(uclaim.TenentId, opts)
 }

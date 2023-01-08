@@ -10,7 +10,6 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints/instancer"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/instance"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 	"github.com/ztrue/tracerr"
@@ -73,7 +72,7 @@ func (pi *PlugInstancer) instance(tenantId, bid string, opts instancer.Plug, sch
 		return nil, tracerr.Wrap(err)
 	}
 
-	resp := &instance.PlugResponse{
+	resp := &PlugResponse{
 		Agents:       make([]string, 0),
 		Resources:    make([]string, 0),
 		ErrAgents:    make(map[string]string),
