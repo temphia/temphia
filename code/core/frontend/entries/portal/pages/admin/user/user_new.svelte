@@ -1,15 +1,12 @@
 <script lang="ts">
   import { getContext } from "svelte";
+  import { validateEmail, validateSlug } from "../../../../../lib/utils";
   import { AutoForm, PortalService } from "../core";
 
   const app = getContext("__app__") as PortalService;
   const api = app.api_manager.get_admin_user_api();
 
   let message = "";
-
-  const validateEmail = (v: string) =>
-    /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
-  const validateSlug = (v: string) => /^[a-z](-?[a-z])*$/.test(v);
 
   const save = async (_data) => {
     if (!validateEmail(_data["email"])) {
