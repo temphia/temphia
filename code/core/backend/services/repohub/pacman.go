@@ -6,8 +6,8 @@ import (
 	"github.com/temphia/temphia/code/core/backend/app/registry"
 	"github.com/temphia/temphia/code/core/backend/services/repohub/instancers"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints/instancer"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xinstance"
 
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
@@ -22,7 +22,7 @@ type PacMan struct {
 	dynHub  store.DataHub
 	cabinet store.CabinetHub
 
-	instancers      map[string]instancer.Instancer
+	instancers      map[string]xinstance.Instancer
 	repoBuilders    map[string]repox.Builder
 	activeRepo      map[string]map[int64]repox.Repository
 	activeRepoMutex sync.Mutex

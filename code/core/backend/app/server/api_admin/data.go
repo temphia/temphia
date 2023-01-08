@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/core/backend/controllers/admin"
 	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
 )
 
 func (a *ApiAdmin) dataAPI(rg *gin.RouterGroup) {
@@ -46,7 +46,7 @@ func (a *ApiAdmin) dataAPI(rg *gin.RouterGroup) {
 // dyn_table_group
 
 func (a *ApiAdmin) NewGroup(ctx httpx.Request) {
-	tg := &bprints.NewTableGroup{}
+	tg := &xbprint.NewTableGroup{}
 
 	err := ctx.Http.BindJSON(tg)
 
@@ -93,7 +93,7 @@ func (a *ApiAdmin) DeleteGroup(ctx httpx.Request) {
 // dyn_table
 
 func (a *ApiAdmin) AddTable(ctx httpx.Request) {
-	t := &bprints.NewTable{}
+	t := &xbprint.NewTable{}
 	err := ctx.Http.BindJSON(t)
 	if err != nil {
 		a.rutil.WriteErr(ctx.Http, err.Error())
@@ -154,7 +154,7 @@ func (a *ApiAdmin) DeleteTable(ctx httpx.Request) {
 // dyn_table_column
 
 func (a *ApiAdmin) AddColumn(ctx httpx.Request) {
-	nc := &bprints.NewColumn{}
+	nc := &xbprint.NewColumn{}
 	err := ctx.Http.BindJSON(nc)
 	if err != nil {
 		a.rutil.WriteErr(ctx.Http, err.Error())

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/temphia/temphia/code/core/backend/stores/upper/dyndb/tns"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
@@ -14,12 +14,12 @@ type tzz struct {
 	allSiblings     []string
 	tns             tns.TNS
 	gzz             *zenerator
-	model           *bprints.NewTable
+	model           *xbprint.NewTable
 	tableSlug       string
 	referecedTables []string
 }
 
-func (g *zenerator) TZZ(tenantId, gslug string, model *bprints.NewTable, sibling []string) *tzz {
+func (g *zenerator) TZZ(tenantId, gslug string, model *xbprint.NewTable, sibling []string) *tzz {
 	return &tzz{
 		tenantId:        tenantId,
 		gslug:           gslug,
@@ -44,7 +44,8 @@ func (t *tzz) CreateTable() (string, error) {
 		wctx.Write(colstr)
 	}
 
-	wctx.CondWriteCol(t.model.DeletedAt, t.gzz._innerColumn("deleted_at", store.CtypeDateTime, false, ""))
+	// fixme => remove this
+	// wctx.CondWriteCol(t.model.DeletedAt, t.gzz._innerColumn("deleted_at", store.CtypeDateTime, false, ""))
 
 	// unique index
 	for _, idx := range t.model.UniqueIndexes {

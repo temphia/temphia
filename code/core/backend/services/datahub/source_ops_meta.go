@@ -3,8 +3,8 @@ package datahub
 import (
 	"github.com/k0kubun/pp"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 
 	seeder2 "github.com/temphia/temphia/code/core/backend/services/datahub/seeder2"
@@ -29,7 +29,7 @@ func (d *dynSource) Name() string {
 	return d.source
 }
 
-func (d *dynSource) NewGroup(model *bprints.NewTableGroup) error {
+func (d *dynSource) NewGroup(model *xbprint.NewTableGroup) error {
 	ddb := d.dynDB()
 	return ddb.NewGroup(d.tenantId, model)
 }
@@ -56,7 +56,7 @@ func (d *dynSource) DeleteGroup(gslug string) error {
 
 // table
 
-func (d *dynSource) AddTable(gslug string, model *bprints.NewTable) error {
+func (d *dynSource) AddTable(gslug string, model *xbprint.NewTable) error {
 	ddb := d.dynDB()
 	return ddb.AddTable(d.tenantId, gslug, model)
 }
@@ -96,7 +96,7 @@ func (d *dynSource) ReverseRefLoad(txid uint32, gslug string, req *store.RevRefL
 
 // column
 
-func (d *dynSource) AddColumn(gslug, tslug string, model *bprints.NewColumn) error {
+func (d *dynSource) AddColumn(gslug, tslug string, model *xbprint.NewColumn) error {
 	ddb := d.dynDB()
 	return ddb.AddColumn(d.tenantId, gslug, tslug, model)
 }

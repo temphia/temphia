@@ -6,12 +6,12 @@ import (
 	"github.com/temphia/temphia/code/core/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/stores/upper/ucore"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
 	"github.com/upper/db/v4"
 )
 
-func (d *DynDDL) AddColumn(tenantId, gslug, tslug string, model *bprints.NewColumn) error {
+func (d *DynDDL) AddColumn(tenantId, gslug, tslug string, model *xbprint.NewColumn) error {
 	qstr, err := d.dyngen.AddColumn(tenantId, gslug, tslug, model.Slug, model)
 	if err != nil {
 		return err

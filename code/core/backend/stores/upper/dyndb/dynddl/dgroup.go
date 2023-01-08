@@ -7,13 +7,13 @@ import (
 
 	"github.com/temphia/temphia/code/core/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/core/backend/stores/upper/ucore"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
 
 	"github.com/upper/db/v4"
 )
 
-func (d *DynDDL) NewGroup(tenantId string, model *bprints.NewTableGroup) error {
+func (d *DynDDL) NewGroup(tenantId string, model *xbprint.NewTableGroup) error {
 	qstr, err := d.dyngen.NewGroup(tenantId, model)
 	if err != nil {
 		return err
@@ -84,7 +84,7 @@ func (d *DynDDL) DeleteGroup(tenantId, gslug string) error {
 
 }
 
-func (d *DynDDL) newGroupRef(tenantId string, model *bprints.NewTableGroup) (err error) {
+func (d *DynDDL) newGroupRef(tenantId string, model *xbprint.NewTableGroup) (err error) {
 
 	clear := false
 	defer func() {

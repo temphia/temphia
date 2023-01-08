@@ -5,8 +5,8 @@ import (
 
 	"github.com/rs/xid"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
 
 	"github.com/thoas/go-funk"
 )
@@ -103,19 +103,19 @@ type DataHub interface {
 type DynSource interface {
 	Name() string
 
-	NewGroup(model *bprints.NewTableGroup) error
+	NewGroup(model *xbprint.NewTableGroup) error
 	EditGroup(gslug string, model *entities.TableGroupPartial) error
 	ListGroup() ([]*entities.TableGroup, error)
 	GetGroup(gslug string) (*entities.TableGroup, error)
 	DeleteGroup(gslug string) error
 
-	AddTable(gslug string, model *bprints.NewTable) error
+	AddTable(gslug string, model *xbprint.NewTable) error
 	EditTable(gslug, tslug string, model *entities.TablePartial) error
 	GetTable(gslug, tslug string) (*entities.Table, error)
 	ListTables(gslug string) ([]*entities.Table, error)
 	DeleteTable(gslug, tslug string) error
 
-	AddColumn(gslug, tslug string, model *bprints.NewColumn) error
+	AddColumn(gslug, tslug string, model *xbprint.NewColumn) error
 	EditColumn(gslug, tslug, cslug string, model *entities.ColumnPartial) error
 	GetColumn(gslug, tslug, cslug string) (*entities.Column, error)
 	ListColumns(gslug, tslug string) ([]*entities.Column, error)
@@ -155,19 +155,19 @@ type DynSource interface {
 }
 
 type DynDB interface {
-	NewGroup(tenantId string, model *bprints.NewTableGroup) error
+	NewGroup(tenantId string, model *xbprint.NewTableGroup) error
 	EditGroup(tenantId string, gslug string, model *entities.TableGroupPartial) error
 	ListGroup(tenantId string) ([]*entities.TableGroup, error)
 	GetGroup(tenantId, gslug string) (*entities.TableGroup, error)
 	DeleteGroup(tenantId, gslug string) error
 
-	AddTable(tenantId, gslug string, model *bprints.NewTable) error
+	AddTable(tenantId, gslug string, model *xbprint.NewTable) error
 	GetTable(tenantId, gslug, tslug string) (*entities.Table, error)
 	EditTable(tenantId, gslug, tslug string, model *entities.TablePartial) error
 	ListTables(tenantId, gslug string) ([]*entities.Table, error)
 	DeleteTable(tenantId, gslug, tslug string) error
 
-	AddColumn(tenantId, gslug, tslug string, model *bprints.NewColumn) error
+	AddColumn(tenantId, gslug, tslug string, model *xbprint.NewColumn) error
 	GetColumn(tenantId, gslug, tslug, cslug string) (*entities.Column, error)
 	EditColumn(tenantId, gslug, tslug, cslug string, model *entities.ColumnPartial) error
 	ListColumns(tenantId, group_slug, tslug string) ([]*entities.Column, error)
@@ -219,7 +219,7 @@ type DCache interface {
 	EvictColumns(tenantId, group, table string)
 }
 
-func ExtractColumns(m *bprints.NewTable, tenantId, gslug string) []*entities.Column {
+func ExtractColumns(m *xbprint.NewTable, tenantId, gslug string) []*entities.Column {
 	indexedCol := make(map[string]*entities.Column)
 
 	for _, nc := range m.Columns {

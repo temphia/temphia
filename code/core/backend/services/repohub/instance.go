@@ -5,9 +5,9 @@ import (
 	"strings"
 
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints/instancer"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xinstance"
 	"gopkg.in/yaml.v2"
 )
 
@@ -20,7 +20,7 @@ func (p *PacMan) Instance(tenantId string, opts *repox.InstanceOptions) (any, er
 
 	instanceType := bprint.Type
 
-	if bprint.Type == bprints.TypeAppBundle || bprint.Type == "bundle" {
+	if bprint.Type == xbprint.TypeBundle || bprint.Type == "bundle" {
 		instanceType = opts.InstancerType
 	}
 
@@ -29,15 +29,14 @@ func (p *PacMan) Instance(tenantId string, opts *repox.InstanceOptions) (any, er
 		return nil, easyerr.NotFound()
 	}
 
-	return is.Instance(instancer.Options{
-		TenantId:     tenantId,
-		Bid:          opts.BprintId,
-		InstanceType: instanceType,
+	return is.Instance(xinstance.Options{
+		TenantId:     opts.UserSession.TenentId,
+		BprintId:     opts.BprintId,
+		InstanceType: opts.InstancerType,
 		File:         opts.File,
 		UserId:       opts.UserSession.UserID,
-		Data:         opts.UserConfigData,
+		UserData:     opts.UserConfigData,
 	})
-
 }
 
 // private

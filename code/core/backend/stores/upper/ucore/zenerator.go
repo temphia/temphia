@@ -3,16 +3,16 @@ package ucore
 import (
 	"strings"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
 )
 
 type Zenerator interface {
-	NewGroup(tenantId string, model *bprints.NewTableGroup) (*DDLGroupStmt, error)
-	NewTable(tenantId, gslug string, model *bprints.NewTable, siblings []string) (*DDLStmt, error)
+	NewGroup(tenantId string, model *xbprint.NewTableGroup) (*DDLGroupStmt, error)
+	NewTable(tenantId, gslug string, model *xbprint.NewTable, siblings []string) (*DDLStmt, error)
 	DropTable(tenantId, gslug, tslug string) (string, error)
 
-	AddColumn(tenantId, gslug, tslug, cslug string, model *bprints.NewColumn) (string, error)
+	AddColumn(tenantId, gslug, tslug, cslug string, model *xbprint.NewColumn) (string, error)
 	DropColumn(tenantId, gslug, tslug, cslug string) (string, error)
 
 	AddIndex(tenantId, gslug, tslug, iname, itype string, spans []string) (string, error)

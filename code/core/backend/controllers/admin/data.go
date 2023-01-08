@@ -1,9 +1,9 @@
 package admin
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
@@ -12,7 +12,7 @@ func (c *Controller) ListSources(uclaim *claim.Session) ([]string, error) {
 }
 
 // dyn_table_group
-func (c *Controller) NewGroup(uclaim *claim.Session, source string, model *bprints.NewTableGroup) error {
+func (c *Controller) NewGroup(uclaim *claim.Session, source string, model *xbprint.NewTableGroup) error {
 	dynDB := c.dynHub.GetSource(source, uclaim.TenentId)
 
 	return dynDB.NewGroup(model)
@@ -40,7 +40,7 @@ func (c *Controller) DeleteGroup(uclaim *claim.Session, source, gslug string) er
 }
 
 // dyn_table
-func (c *Controller) AddTable(uclaim *claim.Session, source, group string, model *bprints.NewTable) error {
+func (c *Controller) AddTable(uclaim *claim.Session, source, group string, model *xbprint.NewTable) error {
 	dynDB := c.dynHub.GetSource(source, uclaim.TenentId)
 	return dynDB.AddTable(group, model)
 }
@@ -67,7 +67,7 @@ func (c *Controller) DeleteTable(uclaim *claim.Session, source, group, tslug str
 }
 
 // dyn_table_column
-func (c *Controller) AddColumn(uclaim *claim.Session, source, group, tslug string, model *bprints.NewColumn) error {
+func (c *Controller) AddColumn(uclaim *claim.Session, source, group, tslug string, model *xbprint.NewColumn) error {
 	dynDB := c.dynHub.GetSource(source, uclaim.TenentId)
 	return dynDB.AddColumn(group, tslug, model)
 }

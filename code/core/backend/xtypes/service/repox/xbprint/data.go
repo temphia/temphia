@@ -3,11 +3,13 @@ package xbprint
 import "github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 
 type NewTableGroup struct {
-	Name        string      `json:"name,omitempty" yaml:"name,omitempty"`
-	Slug        string      `json:"slug,omitempty" yaml:"slug,omitempty"`
-	Description string      `json:"description,omitempty" yaml:"description,omitempty"`
-	Tables      []*NewTable `json:"tables,omitempty" yaml:"tables,omitempty"`
-	ExecOrder   []string    `json:"exec_order,omitempty" yaml:"exec_order,omitempty"`
+	Name          string      `json:"name,omitempty" yaml:"name,omitempty"`
+	Slug          string      `json:"slug,omitempty" yaml:"slug,omitempty"`
+	Description   string      `json:"description,omitempty" yaml:"description,omitempty"`
+	Tables        []*NewTable `json:"tables,omitempty" yaml:"tables,omitempty"`
+	ExecOrder     []string    `json:"exec_order,omitempty" yaml:"exec_order,omitempty"`
+	CabinetSource string      `json:"-" yaml:"-"`
+	CabinetFolder string      `json:"-" yaml:"-"`
 }
 
 type NewTable struct {

@@ -6,10 +6,10 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/services/repohub/seeder"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints/instancer"
+
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
 
@@ -34,24 +34,26 @@ func New(app xtypes.App) *dtabeInstancer {
 	}
 }
 
-func (di *dtabeInstancer) Instance(opts instancer.Options) (any, error) {
+func (di *dtabeInstancer) Instance(opts repox.InstanceOptions) (any, error) {
 
-	schemaData := &bprints.NewTableGroup{}
-	err := di.pacman.ParseInstanceFile(opts.TenantId, opts.Bid, opts.File, schemaData)
+	tenantId := opts.UserSession.TenentId
+
+	schemaData := &xbprint.NewTableGroup{}
+	err := di.pacman.ParseInstanceFile(tenantId, opts.BprintId, opts.File, schemaData)
 	if err != nil {
 		return nil, err
 	}
 
 	dopts := &DataGroupRequest{}
-	err = json.Unmarshal(opts.Data, dopts)
+	err = json.Unmarshal(opts.UserConfigData, dopts)
 	if err != nil {
 		return nil, err
 	}
 
-	return di.instance(opts.TenantId, opts.File, dopts, schemaData)
+	return di.instance(tenantId, opts.File, dopts, schemaData)
 }
 
-func (di *dtabeInstancer) instance(tenantId, file string, opts *DataGroupRequest, schema *bprints.NewTableGroup) (*DataGroupResponse, error) {
+func (di *dtabeInstancer) instance(tenantId, file string, opts *DataGroupRequest, schema *xbprint.NewTableGroup) (*DataGroupResponse, error) {
 
 	var dhub store.DynSource
 

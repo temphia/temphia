@@ -1,21 +1,18 @@
 package instancers
 
 import (
-	"github.com/temphia/temphia/code/core/backend/services/repohub/instancers/dtable"
-	"github.com/temphia/temphia/code/core/backend/services/repohub/instancers/plug"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints/instancer"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xinstance"
 )
 
-func GetInstancers(app xtypes.App) map[string]instancer.Instancer {
+func GetInstancers(app xtypes.App) map[string]xinstance.Instancer {
 
-	dtable := dtable.New(app)
-	plug := plug.New(app)
+	// dtable := dtable.New(app)
+	// plug := plug.New(app)
 
-	return map[string]instancer.Instancer{
-		bprints.TypeDataGroup: dtable,
-		bprints.TypeTSchema:   dtable,
-		bprints.TypePlug:      plug,
+	return map[string]xinstance.Instancer{
+		// xbprint.TypeDataGroup: dtable,
+		// xbprint.TypeDataTable: dtable,
+		// xbprint.TypePlug:      plug,
 	}
 }

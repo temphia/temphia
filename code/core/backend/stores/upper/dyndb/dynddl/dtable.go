@@ -5,14 +5,14 @@ import (
 
 	"github.com/temphia/temphia/code/core/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/core/backend/stores/upper/ucore"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/bprints"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 
 	"github.com/upper/db/v4"
 )
 
-func (d *DynDDL) AddTable(tenantId, gslug string, model *bprints.NewTable) error {
+func (d *DynDDL) AddTable(tenantId, gslug string, model *xbprint.NewTable) error {
 	ddlstr, err := d.dyngen.NewTable(tenantId, gslug, model, []string{"fixme"})
 	if err != nil {
 		return err
@@ -59,7 +59,7 @@ func (d *DynDDL) DeleteTable(tenantId, gslug, tslug string) error {
 	}).Delete()
 }
 
-func (d *DynDDL) AddTableRef(tenantId, gslug string, model *bprints.NewTable) (err error) {
+func (d *DynDDL) AddTableRef(tenantId, gslug string, model *xbprint.NewTable) (err error) {
 	clear := false
 	defer func() {
 		if clear {
