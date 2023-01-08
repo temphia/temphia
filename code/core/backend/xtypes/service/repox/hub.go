@@ -1,6 +1,7 @@
 package repox
 
 import (
+	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/instance"
 )
@@ -44,4 +45,18 @@ type RepoBprintOps interface {
 	Instance(tenantId string, opts *instance.RepoOptions) (any, error)
 
 	ParseInstanceFile(tenantId, bid, file string, target any) error
+}
+
+type InstanceOptions struct {
+	TenantId       string
+	RepoId         string
+	BprintId       string
+	UserConfigData []byte
+	UserSession    *claim.Session
+}
+
+type InstanceOps interface {
+	Instance(opt InstanceOptions) (any, error)
+	InstanceBundle(opt InstanceOptions) (any, error)
+	InstanceBundleItem(opt InstanceOptions, item string) (any, error)
 }
