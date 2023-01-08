@@ -16,7 +16,7 @@ type Options struct {
 }
 
 type Response struct {
-	Ok      string `json:"ok,omitempty"`
+	Ok      bool   `json:"ok,omitempty"`
 	Message string `json:"message,omitempty"`
 	Slug    string `json:"slug,omitempty"`
 	Data    any    `json:"data,omitempty"`

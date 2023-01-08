@@ -10,8 +10,11 @@ import (
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xinstance"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
 )
+
+var _ xinstance.Instancer = (*dtabeInstancer)(nil)
 
 type dtabeInstancer struct {
 	app     xtypes.App
@@ -34,23 +37,35 @@ func New(app xtypes.App) *dtabeInstancer {
 	}
 }
 
-func (di *dtabeInstancer) Instance(opts repox.InstanceOptions) (any, error) {
-
-	tenantId := opts.UserSession.TenentId
+func (di *dtabeInstancer) Instance(opts xinstance.Options) (*xinstance.Response, error) {
 
 	schemaData := &xbprint.NewTableGroup{}
-	// err := di.pacman.ParseInstanceFile(tenantId, opts.BprintId, opts.File, schemaData)
-	// if err != nil {
-	// 	return nil, err
-	// }
 
-	dopts := &DataGroupRequest{}
-	err := json.Unmarshal(opts.UserConfigData, dopts)
+	err := opts.Handle.LoadFile(opts.File, schemaData)
 	if err != nil {
 		return nil, err
 	}
 
-	return di.instance(tenantId, opts.File, dopts, schemaData)
+	// fixme in automatic mode data could be nil
+
+	dopts := &DataGroupRequest{}
+	err = json.Unmarshal(opts.UserData, dopts)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := di.instance(opts.TenantId, opts.File, dopts, schemaData)
+	if err != nil {
+		return nil, err
+	}
+
+	return &xinstance.Response{
+		Ok:      true,
+		Message: "",
+		Slug:    resp.GroupSlug,
+		Data:    resp,
+	}, nil
+
 }
 
 func (di *dtabeInstancer) instance(tenantId, file string, opts *DataGroupRequest, schema *xbprint.NewTableGroup) (*DataGroupResponse, error) {
