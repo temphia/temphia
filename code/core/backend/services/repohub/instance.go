@@ -1,62 +1,51 @@
 package repohub
 
-import (
-	"encoding/json"
-	"strings"
+// func (p *PacMan) Instance(tenantId string, opts *repox.InstanceOptions) (any, error) {
 
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xinstance"
-	"gopkg.in/yaml.v2"
-)
+// 	bprint, err := p.corehub.BprintGet(tenantId, opts.BprintId)
+// 	if err != nil {
+// 		return nil, err
+// 	}
 
-func (p *PacMan) Instance(tenantId string, opts *repox.InstanceOptions) (any, error) {
+// 	instanceType := bprint.Type
 
-	bprint, err := p.corehub.BprintGet(tenantId, opts.BprintId)
-	if err != nil {
-		return nil, err
-	}
+// 	if bprint.Type == xbprint.TypeBundle || bprint.Type == "bundle" {
+// 		instanceType = opts.InstancerType
+// 	}
 
-	instanceType := bprint.Type
+// 	is, ok := p.instancers[instanceType]
+// 	if !ok {
+// 		return nil, easyerr.NotFound()
+// 	}
 
-	if bprint.Type == xbprint.TypeBundle || bprint.Type == "bundle" {
-		instanceType = opts.InstancerType
-	}
+// 	return is.Instance(xinstance.Options{
+// 		TenantId:     opts.UserSession.TenentId,
+// 		BprintId:     opts.BprintId,
+// 		InstanceType: opts.InstancerType,
+// 		File:         opts.File,
+// 		UserId:       opts.UserSession.UserID,
+// 		UserData:     opts.UserConfigData,
+// 	})
+// }
 
-	is, ok := p.instancers[instanceType]
-	if !ok {
-		return nil, easyerr.NotFound()
-	}
+// // private
 
-	return is.Instance(xinstance.Options{
-		TenantId:     opts.UserSession.TenentId,
-		BprintId:     opts.BprintId,
-		InstanceType: opts.InstancerType,
-		File:         opts.File,
-		UserId:       opts.UserSession.UserID,
-		UserData:     opts.UserConfigData,
-	})
-}
+// func (p *PacMan) ParseInstanceFile(tenantId, bid, file string, target any) error {
+// 	return p.readInstanceFile(tenantId, bid, file, target)
+// }
 
-// private
+// func (p *PacMan) readInstanceFile(tenantId, bprint, file string, target any) error {
 
-func (p *PacMan) ParseInstanceFile(tenantId, bid, file string, target any) error {
-	return p.readInstanceFile(tenantId, bid, file, target)
-}
+// 	out, err := p.BprintGetBlob(tenantId, bprint, file)
+// 	if err != nil {
+// 		return err
+// 	}
 
-func (p *PacMan) readInstanceFile(tenantId, bprint, file string, target any) error {
-
-	out, err := p.BprintGetBlob(tenantId, bprint, file)
-	if err != nil {
-		return err
-	}
-
-	if strings.HasSuffix(file, ".json") {
-		return json.Unmarshal(out, target)
-	} else if strings.HasSuffix(file, ".yaml") {
-		return yaml.Unmarshal(out, target)
-	} else {
-		panic("")
-	}
-}
+// 	if strings.HasSuffix(file, ".json") {
+// 		return json.Unmarshal(out, target)
+// 	} else if strings.HasSuffix(file, ".yaml") {
+// 		return yaml.Unmarshal(out, target)
+// 	} else {
+// 		panic("")
+// 	}
+// }

@@ -39,13 +39,13 @@ func (di *dtabeInstancer) Instance(opts repox.InstanceOptions) (any, error) {
 	tenantId := opts.UserSession.TenentId
 
 	schemaData := &xbprint.NewTableGroup{}
-	err := di.pacman.ParseInstanceFile(tenantId, opts.BprintId, opts.File, schemaData)
-	if err != nil {
-		return nil, err
-	}
+	// err := di.pacman.ParseInstanceFile(tenantId, opts.BprintId, opts.File, schemaData)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	dopts := &DataGroupRequest{}
-	err = json.Unmarshal(opts.UserConfigData, dopts)
+	err := json.Unmarshal(opts.UserConfigData, dopts)
 	if err != nil {
 		return nil, err
 	}
