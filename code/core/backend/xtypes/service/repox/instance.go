@@ -8,7 +8,7 @@ import (
 
 type InstanceOptions struct {
 	BprintId       string          `json:"bprint_id,omitempty"`
-	RepoId         string          `json:"repo_id,omitempty"`
+	RepoId         int64           `json:"repo_id,omitempty"`
 	InstancerType  string          `json:"instancer_type,omitempty"`
 	File           string          `json:"file,omitempty"`
 	UserConfigData json.RawMessage `json:"data,omitempty"`
