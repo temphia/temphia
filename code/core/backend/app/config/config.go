@@ -15,9 +15,12 @@ type Config struct {
 }
 
 type NodeOptions struct {
-	TenantId   string   `json:"tenant_id,omitempty"`
-	ServerPort string   `json:"http_port,omitempty"`
-	Tags       []string `json:"tags,omitempty"`
+	TenantId       string            `json:"tenant_id,omitempty"`
+	ServerPort     string            `json:"http_port,omitempty"`
+	StaticHosts    map[string]string `json:"static_hosts,omitempty"`
+	RootHost       string            `json:"root_host,omitempty"`
+	TenantHostBase string            `json:"tenant_host_base,omitempty"`
+	Tags           []string          `json:"tags,omitempty"`
 }
 
 type StoreSource struct {

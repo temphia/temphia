@@ -47,14 +47,19 @@ func (b *Builder) buildServer() error {
 		OperatorPassword: b.config.OperatorPassword,
 	})
 
+	staticHosts := b.config.NodeOptions.StaticHosts
+	if staticHosts == nil {
+		staticHosts = map[string]string{}
+	}
+
 	svc := server.New(server.Options{
 		App:               b.app,
 		GinEngine:         b.ginEngine,
-		StaticHosts:       make(map[string]string),
+		StaticHosts:       staticHosts,
 		ResolveHostTenant: nil,
-		RootHost:          "", // fixme => from config
-		TenantHostBase:    "",
-		Port:              ":4000",
+		RootHost:          b.config.NodeOptions.RootHost,
+		TenantHostBase:    b.config.NodeOptions.TenantHostBase,
+		Port:              b.config.NodeOptions.ServerPort,
 		RootController:    b.app.deps.croot,
 	})
 	svc.BuildRoutes()
