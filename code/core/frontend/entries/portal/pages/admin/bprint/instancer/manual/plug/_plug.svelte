@@ -8,16 +8,16 @@
     BetterTextInput,
     PrimaryButton,
     WizardLayout,
-  } from "../../../core";
+  } from "../../../../core";
 
-  import type { PlugRawSchema } from "../instance";
+  import type { PlugRawSchema } from "../../instance";
 
   // import ResourcesPicker from "../../plug/agent/_resources_picker.svelte";
   // import NewResource from "../../resource/_new_resource.svelte";
   
   
-  import { InstanceHelper } from "../instance";
-  import { generateId } from "../../../../../../../lib/utils";
+  import { InstanceHelper } from "../../instance";
+  import { generateId } from "../../../../../../../../lib/utils";
 
   export let data: PlugRawSchema;
   export let bid: string;

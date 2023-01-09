@@ -1,7 +1,7 @@
 <script lang="ts">
   import DataGroup from "./_data_group.svelte";
   import { getContext } from "svelte";
-  import { PortalService, LoadingSpinner } from "../../../core";
+  import { PortalService, LoadingSpinner } from "../../../../core";
   import { params } from "svelte-hash-router";
 
   export let bid = $params.bid;

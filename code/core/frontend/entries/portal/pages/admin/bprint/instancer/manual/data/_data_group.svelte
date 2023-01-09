@@ -5,9 +5,9 @@
     BetterTextInput,
     PortalService,
     PrimaryButton,
-  } from "../../../core";
-  import type { NewTableGroup } from "../instance";
-  import { InstanceHelper } from "../instance";
+  } from "../../../../core";
+  import type { NewTableGroup } from "../../instance";
+  import { InstanceHelper } from "../../instance";
   import DataTable from "./_data_table.svelte";
 
   export let data: NewTableGroup;
