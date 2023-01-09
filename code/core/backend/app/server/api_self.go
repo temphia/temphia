@@ -13,7 +13,6 @@ import (
 func (s *Server) selfAPI(rg *gin.RouterGroup) {
 
 	rg.GET("/load", s.X(s.selfGetInfo))
-	rg.GET("/session", s.X(s.selfListSession))
 	rg.POST("/email/change", s.X(s.selfChangeEmail))
 	rg.GET("/message", s.X(s.selfListMessages))
 	rg.POST("/message", s.X(s.selfModifyMessages))
@@ -79,10 +78,6 @@ func (s *Server) selfListMessages(ctx httpx.Request) {
 }
 
 // fixme => impl placeholder
-
-func (s *Server) selfListSession(ctx httpx.Request) {
-
-}
 
 func (s *Server) selfChangeEmail(ctx httpx.Request) {
 
