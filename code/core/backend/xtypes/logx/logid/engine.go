@@ -21,3 +21,10 @@ const (
 	EngineExecServeExecBuilderErr      = "engine_exec_serve_builder_err"
 	EngineExecAction                   = "engine_exec_action"
 )
+
+// controller
+
+const (
+	EngineStartupHookLoadErr    = "startup_hook_load_err"
+	EngineStartupHookExecuteErr = "startup_hook_execute_err"
+)

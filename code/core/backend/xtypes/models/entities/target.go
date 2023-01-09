@@ -24,6 +24,7 @@ const (
 
 const (
 	TargetHookTypeDataHook = "data_hook"
+	TargetHookTypeStartUp  = "startup"
 )
 
 /*

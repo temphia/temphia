@@ -7,6 +7,7 @@ import (
 	"github.com/bwmarrin/snowflake"
 	"github.com/gin-gonic/gin"
 	"github.com/k0kubun/pp"
+	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service"
 	"github.com/temphia/temphia/code/core/backend/xtypes/store"
@@ -17,6 +18,7 @@ type Controller struct {
 	signer  service.Signer
 	corehub store.CoreHub
 	idgen   *snowflake.Node
+	logger  *zerolog.Logger
 }
 
 func New(engine etypes.Engine, signer service.Signer, corehub store.CoreHub) *Controller {
@@ -31,7 +33,9 @@ func New(engine etypes.Engine, signer service.Signer, corehub store.CoreHub) *Co
 		signer:  signer,
 		corehub: corehub,
 		idgen:   idgen,
+		logger:  nil,
 	}
+
 }
 
 func (c *Controller) Execute(tenantId, action string, ctx *gin.Context) {
