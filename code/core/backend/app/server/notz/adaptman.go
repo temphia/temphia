@@ -81,7 +81,17 @@ func (am *AdapterManager) serveEditorFile(tenantId string, did int64, file strin
 		return nil, easyerr.NotFound()
 	}
 
-	return instance.serveEditorFile(file)
+	out, err := instance.serveEditorFile(file)
+	if err != nil {
+		am.applogger.Error().
+			Str("tenant_id", tenantId).
+			Int64("domain_id", did).
+			Msg(logid.NotzAdapterEditorFileServeEr)
+
+		return nil, err
+	}
+
+	return out, nil
 }
 
 func (am *AdapterManager) preformEditorAction(tenantId, name string, did int64, data []byte) (any, error) {
@@ -98,7 +108,17 @@ func (am *AdapterManager) preformEditorAction(tenantId, name string, did int64, 
 		return nil, easyerr.NotFound()
 	}
 
-	return instance.preformEditorAction(name, data)
+	resp, err := instance.preformEditorAction(name, data)
+	if err != nil {
+		am.applogger.Error().
+			Str("tenant_id", tenantId).
+			Int64("domain_id", did).
+			Msg(logid.NotzAdapterEditorActionErr)
+
+		return nil, err
+	}
+
+	return resp, nil
 }
 
 // serve not /z
