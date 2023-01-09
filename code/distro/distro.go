@@ -1,6 +1,8 @@
 package distro
 
 import (
+	"os"
+
 	"github.com/temphia/temphia/code/core/backend/app"
 	"github.com/temphia/temphia/code/core/backend/app/config"
 	"github.com/temphia/temphia/code/core/backend/app/log"
@@ -32,9 +34,18 @@ func New(conf *config.Config, dev, singleTenantMode bool) App {
 
 	lite := plane.NewLite(sbuilder.CoreHub())
 
+	logdSecret := os.Getenv("TEMPHIA_LOGD_SECRET")
+	logdPort := os.Getenv("TEMPHIA_PORT")
+
 	builder := app.NewBuilder()
 	builder.SetConfig(conf)
-	builder.SetLogger(log.Default(lite))
+	builder.SetLogger(log.New(log.LogOptions{
+		LogdSecret: logdSecret,
+		Folder:     conf.NodeOptions.LogFolder,
+		FilePrefix: conf.NodeOptions.LogFilePrefix,
+		LogdPort:   logdPort,
+		NodeId:     lite.GetNodeId(),
+	}))
 	builder.SetRegistry(reg)
 	builder.SetXplane(lite)
 	builder.SetStoreBuilder(sbuilder)

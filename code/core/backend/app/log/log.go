@@ -7,7 +7,6 @@ import (
 	"github.com/rs/xid"
 	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
 
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -29,16 +28,6 @@ type LogService struct {
 	siteLogger   zerolog.Logger
 
 	simpleProxy SimpleLogProxy
-}
-
-func Default(xplane xplane.ControlPlane) *LogService {
-	return New(LogOptions{
-		LogdSecret: "",
-		LogdPort:   "",
-		Folder:     "",
-		FilePrefix: "",
-		NodeId:     xplane.GetNodeId(),
-	})
 }
 
 func New(opts LogOptions) *LogService {

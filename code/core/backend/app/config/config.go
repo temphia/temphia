@@ -21,6 +21,8 @@ type NodeOptions struct {
 	RootHost       string            `json:"root_host,omitempty"`
 	TenantHostBase string            `json:"tenant_host_base,omitempty"`
 	Tags           []string          `json:"tags,omitempty"`
+	LogFolder      string            `json:"log_folder,omitempty"`
+	LogFilePrefix  string            `json:"log_file_prefix,omitempty"`
 }
 
 type StoreSource struct {

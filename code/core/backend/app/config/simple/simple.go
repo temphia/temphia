@@ -47,9 +47,12 @@ func (s *Config) AsConfig() *config.Config {
 			},
 		},
 		NodeOptions: &config.NodeOptions{
-			ServerPort: s.ServerPort,
-			Tags:       []string{},
+			ServerPort:    s.ServerPort,
+			Tags:          []string{},
+			LogFolder:     "tmp/logs",
+			LogFilePrefix: "temphia_log.log",
 		},
+
 		ExecutorOptions: s.ExecutorOptions,
 		ModulesOptions:  s.ModulesOptions,
 		Coredb:          "default",
