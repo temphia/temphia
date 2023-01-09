@@ -64,7 +64,9 @@ create table target_apps(
     agent_id text not null,
     extra_meta json not null default '{}',
     exec_meta json not null default '{}',
-    tenant_id text not null
+    tenant_id text not null,
+
+    unique(target_type, target, context_type, tenant_id)
 );
 
 create table target_hooks(
@@ -78,7 +80,9 @@ create table target_hooks(
     agent_id text not null default '',
     extra_meta json not null default '{}',
     exec_meta json not null default '{}',
-    tenant_id text not null
+    tenant_id text not null,
+    
+    unique(target_type, target, event_type, tenant_id)
 );
 
 
