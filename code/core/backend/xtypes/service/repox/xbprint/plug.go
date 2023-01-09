@@ -18,7 +18,11 @@ type NewAgent struct {
 	WebFiles  map[string]string `json:"web_files,omitempty"`
 
 	// secondary objects
-	Resources  map[string]string `json:"resources,omitempty"`
-	Links      map[string]string `json:"links,omitempty"`
-	Extensions map[string]string `json:"exts,omitempty"`
+	Resources map[string]NewAgentResource `json:"resources,omitempty"`
+}
+
+type NewAgentResource struct {
+	Name      string       `json:"name,omitempty"`
+	BundleRef bool         `json:"bundle_ref,omitempty"`
+	Ref       *NewResource `json:"ref,omitempty"`
 }

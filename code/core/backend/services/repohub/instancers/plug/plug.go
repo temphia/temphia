@@ -1,147 +1,146 @@
 package plug
 
-// type PlugInstancer struct {
-// 	app    xtypes.App
-// 	pacman repox.Hub
-// 	syncer store.SyncDB
-// }
+import (
+	"encoding/json"
 
-// func New(app xtypes.App) instancer.Instancer {
+	"github.com/k0kubun/pp"
+	"github.com/rs/xid"
+	"github.com/temphia/temphia/code/core/backend/xtypes"
 
-// 	deps := app.GetDeps()
+	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xinstance"
+	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/ztrue/tracerr"
+)
 
-// 	return &PlugInstancer{
-// 		app:    app,
-// 		pacman: deps.RepoHub().(repox.Hub),
-// 		syncer: deps.CoreHub().(store.CoreHub),
-// 	}
-// }
+type PlugInstancer struct {
+	app    xtypes.App
+	pacman repox.Hub
+	syncer store.SyncDB
+}
 
-// func (pi *PlugInstancer) Instance(opts instancer.Options) (any, error) {
+func New(app xtypes.App) xinstance.Instancer {
 
-// 	popts := instancer.Plug{}
-// 	err := json.Unmarshal(opts.Data, &popts)
-// 	if err != nil {
-// 		return nil, err
-// 	}
+	deps := app.GetDeps()
 
-// 	schemaData := &bprints.PlugNew{}
-// 	err = pi.pacman.ParseInstanceFile(opts.TenantId, opts.Bid, opts.File, schemaData)
-// 	if err != nil {
-// 		return nil, err
-// 	}
+	return &PlugInstancer{
+		app:    app,
+		pacman: deps.RepoHub().(repox.Hub),
+		syncer: deps.CoreHub().(store.CoreHub),
+	}
+}
 
-// 	if popts.NewPlugId == "" {
-// 		popts.NewPlugId = xid.New().String()
-// 	}
+func (pi *PlugInstancer) Instance(opts xinstance.Options) (*xinstance.Response, error) {
 
-// 	return pi.instance(opts.TenantId, opts.Bid, popts, schemaData)
-// }
+	schemaData := &xbprint.NewPlug{}
+	err := opts.Handle.LoadFile(opts.File, schemaData)
+	if err != nil {
+		return nil, err
+	}
 
-// func (pi *PlugInstancer) instance(tenantId, bid string, opts instancer.Plug, schema *bprints.PlugNew) (any, error) {
+	uopts := PlugOptions{}
+	if opts.UserData != nil {
+		json.Unmarshal(opts.UserData, &uopts)
+	}
 
-// 	plug := &entities.Plug{
-// 		Id:           opts.NewPlugId,
-// 		TenantId:     tenantId,
-// 		Name:         opts.NewPlugName,
-// 		Live:         true,
-// 		Dev:          true,
-// 		ExtraMeta:    nil,
-// 		Owner:        "",
-// 		InvokePolicy: "",
-// 		BprintId:     bid,
-// 	}
+	if uopts.Id == "" {
+		uopts.Id = xid.New().String()
+	}
 
-// 	err := pi.syncer.PlugNew(tenantId, plug)
-// 	if err != nil {
-// 		return nil, tracerr.Wrap(err)
-// 	}
+	resp, err := pi.instance(uopts.Id, opts, schemaData)
+	if err != nil {
+		return nil, err
+	}
 
-// 	resp := &PlugResponse{
-// 		Agents:       make([]string, 0),
-// 		Resources:    make([]string, 0),
-// 		ErrAgents:    make(map[string]string),
-// 		ErrResources: make(map[string]string),
-// 	}
+	return &xinstance.Response{
+		Ok:      true,
+		Message: "",
+		Slug:    uopts.Id,
+		Data:    resp,
+	}, nil
 
-// 	for aname, aopts := range opts.AgentOptions {
+}
 
-// 		ahint, ok := schema.AgentHints[aname]
-// 		if !ok {
-// 			return nil, easyerr.NotFound()
-// 		}
+func (pi *PlugInstancer) instance(pid string, opts xinstance.Options, schema *xbprint.NewPlug) (*PlugResponse, error) {
 
-// 		agent := &entities.Agent{
-// 			Id:        aname,
-// 			Name:      aopts.Name,
-// 			Type:      ahint.Type,
-// 			Executor:  ahint.Executor,
-// 			IfaceFile: ahint.IfaceFile,
-// 			WebEntry:  ahint.WebEntry,
-// 			WebScript: ahint.WebScript,
-// 			WebStyle:  ahint.WebStyle,
-// 			WebLoader: ahint.WebLoader,
-// 			WebFiles:  ahint.WebFiles,
-// 			EnvVars:   entities.JsonStrMap{},
-// 			PlugId:    opts.NewPlugId,
-// 			ExtraMeta: entities.JsonStrMap{},
-// 			TenantId:  tenantId,
-// 		}
+	plug := &entities.Plug{
+		Id:           pid,
+		TenantId:     opts.TenantId,
+		Name:         schema.Name,
+		Live:         true,
+		Dev:          true,
+		ExtraMeta:    nil,
+		Owner:        "",
+		InvokePolicy: "",
+		BprintId:     opts.BprintId,
+	}
 
-// 		err := pi.syncer.AgentNew(tenantId, agent)
-// 		if err != nil {
-// 			pp.Println(err)
-// 			resp.ErrAgents[aname] = err.Error()
-// 			continue
-// 		}
+	err := pi.syncer.PlugNew(opts.TenantId, plug)
+	if err != nil {
+		return nil, tracerr.Wrap(err)
+	}
 
-// 		resp.Agents = append(resp.Agents, aname)
-// 	}
+	resp := &PlugResponse{
+		Agents:    make([]string, 0),
+		Resources: make([]string, 0),
+		ErrAgents: make(map[string]string),
+	}
 
-// 	for _, res := range opts.Resources {
+	for _, na := range schema.Agents {
+		agent := &entities.Agent{
+			Id:        na.Name,
+			Name:      na.Name,
+			Type:      na.Type,
+			Executor:  na.Executor,
+			IfaceFile: na.IfaceFile,
+			WebEntry:  na.WebEntry,
+			WebScript: na.WebScript,
+			WebStyle:  na.WebStyle,
+			WebLoader: na.WebLoader,
+			WebFiles:  na.WebFiles,
+			EnvVars:   entities.JsonStrMap{},
+			PlugId:    pid,
+			ExtraMeta: entities.JsonStrMap{},
+			TenantId:  opts.TenantId,
+		}
 
-// 		if res.Id == "" {
-// 			res.Id = xid.New().String()
-// 		}
+		err := pi.syncer.AgentNew(opts.TenantId, agent)
+		if err != nil {
+			resp.AddAgentErr(agent.Name, err)
+			continue
+		}
 
-// 		resource := &entities.Resource{
-// 			Name:      res.Name,
-// 			TenantId:  tenantId,
-// 			Type:      res.Type,
-// 			SubType:   res.SubType,
-// 			Payload:   res.Payload,
-// 			Policy:    res.Policy,
-// 			PlugId:    opts.NewPlugId,
-// 			Id:        res.Id,
-// 			ExtraMeta: nil,
-// 		}
+		for rkey, rdata := range na.Resources {
+			if rdata.BundleRef {
+				pobj := opts.Handle.GetPrevObject(rkey)
+				if pobj == nil {
+					continue
+				}
 
-// 		err := pi.syncer.ResourceNew(tenantId, resource)
-// 		if err != nil {
-// 			resp.ErrResources[res.Name] = err.Error()
-// 			continue
-// 		}
+				err := pi.syncer.AgentResourceNew(opts.TenantId, &entities.AgentResource{
+					Id:         0,
+					Name:       rkey,
+					PlugId:     pid,
+					AgentId:    agent.Name,
+					ResourceId: pobj.Slug,
+					Actions:    "",
+					Policy:     "",
+					TenantId:   opts.TenantId,
+				})
 
-// 		resp.Resources = append(resp.Resources, res.Id)
-// 	}
+				if err != nil {
+					resp.AddResourceErr(agent.Id, rkey, err)
+					pp.Println("@error_creating_agent_resource", err)
+					continue
+				}
+			}
 
-// 	for aname, aopts := range opts.AgentOptions {
-// 		for resKey, resId := range aopts.Resources {
+		}
 
-// 			err = pi.syncer.AgentResourceNew(tenantId, &entities.AgentResource{
-// 				Id:         0,
-// 				Name:       resKey,
-// 				PlugId:     opts.NewPlugId,
-// 				AgentId:    aname,
-// 				ResourceId: resId,
-// 				Actions:    "",
-// 				Policy:     "",
-// 				TenantId:   tenantId,
-// 			})
+		resp.Agents = append(resp.Agents, agent.Id)
+	}
 
-// 			pp.Println(err)
-// 		}
-// 	}
-
-// 	return resp, nil
-// }
+	return resp, nil
+}
