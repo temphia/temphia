@@ -29,7 +29,7 @@ func (d *DB) ListSystemEvent(tenantId, etype string, last int64) ([]*entities.Sy
 		cond["id >"] = last
 	}
 
-	err := d.systemKVTable().Find(cond).All(resp)
+	err := d.systemKVTable().Find(cond).All(&resp)
 	if err != nil {
 		return nil, err
 	}

@@ -211,7 +211,7 @@ func (d *DB) ResourceListByAgent(tenantId string, pid, aid string) ([]*entities.
 	err = d.resTable().Find(db.Cond{
 		"tenant_id": tenantId,
 		"id IN":     rids,
-	}).All(ress)
+	}).All(&ress)
 	if err != nil {
 		return nil, err
 	}
