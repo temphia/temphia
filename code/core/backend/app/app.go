@@ -73,5 +73,8 @@ func (a *App) run() error {
 		return err
 	}
 
+	// ectrl := a.deps.croot.EngineController()
+	// ectrl.RunStartupHooks(a.tenantIds, time.Minute*2)
+
 	return a.deps.server.Listen()
 }

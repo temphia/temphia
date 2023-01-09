@@ -5162,20 +5162,20 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			span = element("span");
-    			t0 = text(", returning ");
+    			t0 = text(", Redirecting ");
     			a = element("a");
-    			t1 = text("back to previous page in ");
+    			t1 = text("in ");
     			t2 = text(/*seconds*/ ctx[8]);
     			t3 = text(" seconds");
     			t4 = space();
     			button = element("button");
     			button.textContent = "Cancel";
     			attr_dev(a, "href", /*return_url*/ ctx[6]);
-    			add_location(a, file$2, 43, 25, 1190);
+    			add_location(a, file$2, 43, 27, 1192);
     			attr_dev(span, "class", "text-md");
     			add_location(span, file$2, 42, 10, 1143);
     			attr_dev(button, "class", "text-blue-600");
-    			add_location(button, file$2, 47, 10, 1314);
+    			add_location(button, file$2, 47, 10, 1295);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -5230,7 +5230,7 @@ var app = (function () {
     			button = element("button");
     			button.textContent = "Go Back";
     			attr_dev(button, "class", "p-2 bg-blue-400 hover:bg-blue-600 text-white font-semibold rounded");
-    			add_location(button, file$2, 84, 10, 2530);
+    			add_location(button, file$2, 84, 10, 2511);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -5364,37 +5364,37 @@ var app = (function () {
     			attr_dev(img, "class", "h-auto w-12 mx-auto rounded-full border");
     			if (!src_url_equal(img.src, img_src_value = `${apiURL(/*tenant_id*/ ctx[1])}/user_profile_image/${/*user_id*/ ctx[2]}`)) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "");
-    			add_location(img, file$2, 52, 8, 1456);
+    			add_location(img, file$2, 52, 8, 1437);
     			attr_dev(div1, "class", "image overflow-hidden");
-    			add_location(div1, file$2, 51, 6, 1412);
+    			add_location(div1, file$2, 51, 6, 1393);
     			attr_dev(h1, "class", "text-gray-900 font-bold text-xl leading-8 my-1");
-    			add_location(h1, file$2, 58, 6, 1635);
+    			add_location(h1, file$2, 58, 6, 1616);
     			attr_dev(h3, "class", "text-gray-600 font-lg text-semibold leading-6");
-    			add_location(h3, file$2, 61, 6, 1733);
+    			add_location(h3, file$2, 61, 6, 1714);
     			attr_dev(p, "class", "text-sm text-gray-500 hover:text-gray-600 leading-6");
-    			add_location(p, file$2, 64, 6, 1831);
-    			add_location(span0, file$2, 71, 10, 2109);
+    			add_location(p, file$2, 64, 6, 1812);
+    			add_location(span0, file$2, 71, 10, 2090);
     			attr_dev(span1, "class", "ml-auto bg-gray-300 rounded p-1");
-    			add_location(span1, file$2, 72, 10, 2140);
+    			add_location(span1, file$2, 72, 10, 2121);
     			attr_dev(li0, "class", "flex items-center py-3");
-    			add_location(li0, file$2, 70, 8, 2063);
-    			add_location(span2, file$2, 75, 10, 2271);
+    			add_location(li0, file$2, 70, 8, 2044);
+    			add_location(span2, file$2, 75, 10, 2252);
     			attr_dev(span3, "class", "ml-auto bg-gray-300 rounded p-1");
-    			add_location(span3, file$2, 76, 10, 2307);
+    			add_location(span3, file$2, 76, 10, 2288);
     			attr_dev(li1, "class", "flex items-center py-3");
-    			add_location(li1, file$2, 74, 8, 2225);
+    			add_location(li1, file$2, 74, 8, 2206);
     			attr_dev(ul, "class", "bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm");
-    			add_location(ul, file$2, 67, 6, 1926);
+    			add_location(ul, file$2, 67, 6, 1907);
     			attr_dev(button0, "class", "p-2 bg-blue-400 hover:bg-green-600 text-white font-semibold rounded");
-    			add_location(button0, file$2, 93, 8, 2806);
+    			add_location(button0, file$2, 93, 8, 2787);
     			attr_dev(div2, "class", "flex flex-col gap-1 mt-1");
-    			add_location(div2, file$2, 82, 6, 2456);
+    			add_location(div2, file$2, 82, 6, 2437);
     			attr_dev(button1, "class", "p-2 bg-blue-400 hover:bg-blue-600 text-white font-semibold rounded");
-    			add_location(button1, file$2, 104, 8, 3162);
+    			add_location(button1, file$2, 104, 8, 3143);
     			attr_dev(button2, "class", "p-2 bg-red-400 hover:bg-red-600 text-white font-semibold rounded");
-    			add_location(button2, file$2, 113, 8, 3406);
+    			add_location(button2, file$2, 113, 8, 3387);
     			attr_dev(div3, "class", "flex gap-1 mt-1 justify-between justify-items-stretch");
-    			add_location(div3, file$2, 103, 6, 3086);
+    			add_location(div3, file$2, 103, 6, 3067);
     			attr_dev(div4, "class", "bg-white border rounded p-4");
     			add_location(div4, file$2, 37, 4, 969);
     			attr_dev(div5, "class", "my-5 mx-auto border");
@@ -6165,11 +6165,22 @@ var app = (function () {
                 headers: this.headers,
             });
             if (resp.ok) {
-                return Promise.resolve({
-                    ok: true,
-                    data: await resp.json(),
-                    status: resp.status,
-                });
+                const text = await resp.text();
+                try {
+                    const data = JSON.parse(text);
+                    return Promise.resolve({
+                        ok: true,
+                        data,
+                        status: resp.status,
+                    });
+                }
+                catch (error) {
+                    return Promise.resolve({
+                        ok: true,
+                        data: text,
+                        status: resp.status,
+                    });
+                }
             }
             return Promise.resolve({
                 ok: false,
@@ -6208,6 +6219,13 @@ var app = (function () {
         async postForm(path, auth, data) {
             return await fetch(`${this.baseURL}${path}`, {
                 method: "POST",
+                headers: auth ? { Authorization: this.headers["Authorization"] } : {},
+                body: data,
+            });
+        }
+        async patchForm(path, auth, data) {
+            return await fetch(`${this.baseURL}${path}`, {
+                method: "PATCH",
                 headers: auth ? { Authorization: this.headers["Authorization"] } : {},
                 body: data,
             });

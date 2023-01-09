@@ -1,7 +1,207 @@
-/******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
-/******/ 	// The require scope
-/******/ 	var __nccwpck_require__ = {};
+var __dirname = ''; var module = {}; module['exports']={};/******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
+
+/***/ 973:
+/***/ (function(__unused_webpack_module, exports) {
+
+(function (global, factory) {
+     true ? factory(exports) :
+    0;
+}(this, (function (exports) { 'use strict';
+
+    var default_sort = function (item, needle) { return item - needle; };
+    function binarySearch(array, search, fn) {
+        if (fn === void 0) { fn = default_sort; }
+        var low = 0;
+        var high = array.length - 1;
+        var sort = fn.length === 1
+            ? function (item, needle) { return fn(item) - search; }
+            : fn;
+        while (low <= high) {
+            var i = (high + low) >> 1;
+            var d = sort(array[i], search);
+            if (d < 0) {
+                low = i + 1;
+            }
+            else if (d > 0) {
+                high = i - 1;
+            }
+            else {
+                return i;
+            }
+        }
+        return -low - 1;
+    }
+
+    function pickRandom(array) {
+        var i = ~~(Math.random() * array.length);
+        return array[i];
+    }
+
+    // http://bost.ocks.org/mike/shuffle/
+    function shuffle(array) {
+        var m = array.length;
+        // While there remain elements to shuffle…
+        while (m > 0) {
+            // Pick a remaining element…
+            var i = Math.floor(Math.random() * m--);
+            // And swap it with the current element.
+            var t = array[m];
+            array[m] = array[i];
+            array[i] = t;
+        }
+        return array;
+    }
+
+    function queue(max) {
+        if (max === void 0) { max = 4; }
+        var items = []; // TODO
+        var pending = 0;
+        var closed = false;
+        var fulfil_closed;
+        function dequeue() {
+            if (pending === 0 && items.length === 0) {
+                if (fulfil_closed)
+                    fulfil_closed();
+            }
+            if (pending >= max)
+                return;
+            if (items.length === 0)
+                return;
+            pending += 1;
+            var _a = items.shift(), fn = _a.fn, fulfil = _a.fulfil, reject = _a.reject;
+            var promise = fn();
+            try {
+                promise.then(fulfil, reject).then(function () {
+                    pending -= 1;
+                    dequeue();
+                });
+            }
+            catch (err) {
+                reject(err);
+                pending -= 1;
+                dequeue();
+            }
+            dequeue();
+        }
+        return {
+            add: function (fn) {
+                if (closed) {
+                    throw new Error("Cannot add to a closed queue");
+                }
+                return new Promise(function (fulfil, reject) {
+                    items.push({ fn: fn, fulfil: fulfil, reject: reject });
+                    dequeue();
+                });
+            },
+            close: function () {
+                closed = true;
+                return new Promise(function (fulfil, reject) {
+                    if (pending === 0) {
+                        fulfil();
+                    }
+                    else {
+                        fulfil_closed = fulfil;
+                    }
+                });
+            }
+        };
+    }
+
+    function sleep(ms) {
+        return new Promise(function (fulfil) {
+            setTimeout(fulfil, ms);
+        });
+    }
+
+    function createSprite(width, height, fn) {
+        var canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        var ctx = canvas.getContext('2d');
+        fn(ctx, canvas);
+        return canvas;
+    }
+
+    function clamp(num, min, max) {
+        return num < min ? min : num > max ? max : num;
+    }
+
+    function random(a, b) {
+        if (b === undefined)
+            return Math.random() * a;
+        return a + Math.random() * (b - a);
+    }
+
+    function linear(domain, range) {
+        var d0 = domain[0];
+        var r0 = range[0];
+        var m = (range[1] - r0) / (domain[1] - d0);
+        return Object.assign(function (num) {
+            return r0 + (num - d0) * m;
+        }, {
+            inverse: function () { return linear(range, domain); }
+        });
+    }
+
+    // https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
+    function commas(num) {
+        var parts = String(num).split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return parts.join('.');
+    }
+
+    // array
+
+    exports.binarySearch = binarySearch;
+    exports.pickRandom = pickRandom;
+    exports.shuffle = shuffle;
+    exports.queue = queue;
+    exports.sleep = sleep;
+    exports.createSprite = createSprite;
+    exports.clamp = clamp;
+    exports.random = random;
+    exports.linearScale = linear;
+    exports.commas = commas;
+
+    Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
+
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __nccwpck_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		var threw = true;
+/******/ 		try {
+/******/ 			__webpack_modules__[moduleId].call(module.exports, module, module.exports, __nccwpck_require__);
+/******/ 			threw = false;
+/******/ 		} finally {
+/******/ 			if(threw) delete __webpack_module_cache__[moduleId];
+/******/ 		}
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/make namespace object */
@@ -21,9 +221,14 @@
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+(() => {
+"use strict";
 // ESM COMPAT FLAG
 __nccwpck_require__.r(__webpack_exports__);
 
+// EXTERNAL MODULE: ./node_modules/yootils/yootils.umd.js
+var yootils_umd = __nccwpck_require__(973);
 ;// CONCATENATED MODULE: ./lib/registry/registry.ts
 class Registry {
     constructor() {
@@ -131,9 +336,9 @@ const initRegistry = () => {
             registry: opts.registry,
         });
     });
-    console.log("GLOBAL_REGISTRY =>", r);
     window["__registry__"] = r;
     window["__register_factory__"] = r.RegisterFactory;
+    window["RegisterFactory"] = r.RegisterFactory;
 };
 // it will find appoprate loader and call loader
 // then its loader responsibility to start registered factories
@@ -209,11 +414,22 @@ class Http {
             headers: this.headers,
         });
         if (resp.ok) {
-            return Promise.resolve({
-                ok: true,
-                data: await resp.json(),
-                status: resp.status,
-            });
+            const text = await resp.text();
+            try {
+                const data = JSON.parse(text);
+                return Promise.resolve({
+                    ok: true,
+                    data,
+                    status: resp.status,
+                });
+            }
+            catch (error) {
+                return Promise.resolve({
+                    ok: true,
+                    data: text,
+                    status: resp.status,
+                });
+            }
         }
         return Promise.resolve({
             ok: false,
@@ -252,6 +468,13 @@ class Http {
     async postForm(path, auth, data) {
         return await fetch(`${this.baseURL}${path}`, {
             method: "POST",
+            headers: auth ? { Authorization: this.headers["Authorization"] } : {},
+            body: data,
+        });
+    }
+    async patchForm(path, auth, data) {
+        return await fetch(`${this.baseURL}${path}`, {
+            method: "PATCH",
             headers: auth ? { Authorization: this.headers["Authorization"] } : {},
             body: data,
         });
@@ -310,7 +533,7 @@ class Env {
         this.init = async () => { };
         // public
         this.PreformAction = async (name, data) => {
-            return null;
+            return this._exec_api.preform_action(name, data);
         };
         this.startup_payload = () => {
             return this._startup_payload;
@@ -347,7 +570,7 @@ class Env {
         this._opts = opts;
         this._startup_payload = opts.startup_payload;
         this.set_up_pipe(opts.pipe);
-        this._exec_api = new ExecAPI(opts.base_url, opts.token);
+        this._exec_api = new ExecAPI(opts.base_url.replace("v2/", "v2"), opts.token);
     }
     set_up_pipe(pipe) {
         this._pipe = pipe;
@@ -387,8 +610,11 @@ class IFramePipe {
         this.handlers = new Set();
         this.port = port;
         window.addEventListener("message", (ev) => {
-            const decoded = JSON.parse(ev.data);
-            this.handlers.forEach((fn) => fn(decoded.xid, decoded.action, decoded.data));
+            try {
+                const decoded = JSON.parse(ev.data);
+                this.handlers.forEach((fn) => fn(decoded.xid, decoded.action, decoded.data));
+            }
+            catch (error) { }
         });
     }
 }
@@ -398,13 +624,20 @@ class IFramePipe {
 
 
 
+
 /* harmony default export */ const start = (() => {
     console.log("Iframe Exec start..");
     initRegistry();
     let transfered_port;
     const handle_port_transfer = (ev) => {
+        if (ev.data !== "port_transfer") {
+            console.log("wrong event listener", ev);
+            return;
+        }
         transfered_port = ev.ports[0];
+        console.log("@received_port_@guest", transfered_port);
         window.removeEventListener("message", handle_port_transfer);
+        env_init(null);
     };
     const env_init = async (ev) => {
         const opts = window["__loader_options__"];
@@ -436,12 +669,13 @@ class IFramePipe {
         });
     };
     window.addEventListener("message", handle_port_transfer, false);
-    window.addEventListener("load", env_init, false);
 });
 
-;// CONCATENATED MODULE: ./entries/portal/launcher/guestentry/iframe/index.ts
+;// CONCATENATED MODULE: ./entries/execute_iframe_loader/index.ts
 
 start();
+
+})();
 
 module.exports = __webpack_exports__;
 /******/ })()
