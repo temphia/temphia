@@ -46,6 +46,12 @@ func Main() error {
 		if err != nil {
 			return err
 		}
+
+		err = dapp.SeedWildcardDomain(xtypes.DefaultTenant)
+		if err != nil {
+			return err
+		}
+
 	}
 
 	err = dapp.Run()

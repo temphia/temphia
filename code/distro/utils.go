@@ -7,6 +7,7 @@ import (
 	"github.com/temphia/temphia/code/core/backend/controllers/operator/opmodels"
 	"github.com/temphia/temphia/code/core/backend/controllers/operator/opsutils"
 	"github.com/temphia/temphia/code/core/backend/xtypes"
+	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/upper/db/v4"
 )
 
@@ -50,6 +51,32 @@ func (da *App) TenantSeed(tenantId string) error {
 		Slug:          xtypes.DefaultTenant,
 		SuperPassword: superPass,
 		SuperEmail:    superEmail,
+	})
+
+}
+
+func (da *App) IsDomainSeeded(tenantId string) (bool, error) {
+	tds, err := da.CoreHub.ListDomain(tenantId)
+	if err != nil {
+		return false, err
+	}
+	return (len(tds) > 0), nil
+}
+
+func (da *App) SeedWildcardDomain(tenantId string) error {
+	return da.CoreHub.AddDomain(&entities.TenantDomain{
+		Name:                   "*",
+		About:                  "",
+		DefaultUgroup:          "",
+		CORSPolicy:             "",
+		AdapterPolicy:          "",
+		AdapterType:            "",
+		AdapterOptions:         entities.JsonStrMap{},
+		AdapterCabSource:       "",
+		AdapterCabFolder:       "",
+		AdapterTemplateBprints: "",
+		TenantId:               tenantId,
+		ExtraMeta:              entities.JsonStrMap{},
 	})
 
 }
