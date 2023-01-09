@@ -19,6 +19,11 @@ type TargetApp struct {
 const (
 	TargetAppTypeUserGroupApp  = "user_group_app"
 	TargetAppTypeUserGroupAuth = "user_group_auth"
+	TargetAppTypeDataWidget    = "data_widget"
+)
+
+const (
+	TargetHookTypeDataHook = "data_hook"
 )
 
 /*
