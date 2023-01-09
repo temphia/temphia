@@ -21,7 +21,7 @@ require (
 	github.com/hashicorp/golang-lru v0.5.4
 	github.com/jellydator/ttlcache/v3 v3.0.0
 	github.com/k0kubun/pp v3.0.1+incompatible
-	github.com/lib/pq v1.10.6
+	github.com/lib/pq v1.10.7
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 	github.com/rs/xid v1.4.0
 	github.com/rs/zerolog v1.27.0

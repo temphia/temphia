@@ -20,6 +20,6 @@ func lazyInit() {
 	defaultDataBox = &DataBox{
 		dataOverlay:        "",
 		buildAssetsOverlay: frontendBuild,
-		fs:                 dataDir,
+		fs:                 DataDir,
 	}
 }
