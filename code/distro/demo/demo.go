@@ -5,6 +5,7 @@ import (
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/data"
+	"github.com/temphia/temphia/code/core/backend/xtypes"
 	"github.com/temphia/temphia/code/distro"
 	"github.com/temphia/temphia/code/distro/embedpg"
 )
@@ -35,6 +36,18 @@ func Main() error {
 	}
 
 	dapp := distro.New(Conf.AsConfig(), true, true)
+
+	ok, err := dapp.IsTenantSeeded(xtypes.DefaultTenant)
+	if err != nil {
+		return err
+	}
+	if !ok {
+		err = dapp.TenantSeed(xtypes.DefaultTenant)
+		if err != nil {
+			return err
+		}
+	}
+
 	err = dapp.Run()
 	if err != nil {
 		return err
