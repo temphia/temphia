@@ -24,4 +24,5 @@ var conf = simple.Config{
 	ExecutorOptions: make(map[string]any),
 	ModulesOptions:  make(map[string]any),
 	FilesFolder:     "./tmp/files",
+	LogFolder:       "./tmp/logs",
 }

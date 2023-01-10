@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/k0kubun/pp"
@@ -10,9 +11,9 @@ import (
 )
 
 func main() {
-	pp.Println("Hello wold @ demo")
-	os.Chdir("cmd/demo/")
 
+	fmt.Println("Starting temphia demo")
+	os.Chdir("cmd/demo/")
 	xutils.CreateIfNotExits("temphia-data/files")
 	xutils.CreateIfNotExits("temphia-data/logs")
 	xutils.CreateIfNotExits("temphia-data/pgdata")

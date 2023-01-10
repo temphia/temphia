@@ -12,6 +12,7 @@ type Config struct {
 	ExecutorOptions  map[string]any  `json:"executors,omitempty"`
 	ModulesOptions   map[string]any  `json:"modules,omitempty"`
 	FilesFolder      string          `json:"files_folder,omitempty"`
+	LogFolder        string          `json:"log_folder,omitempty"`
 }
 
 type DatabaseOptions struct {
@@ -49,7 +50,7 @@ func (s *Config) AsConfig() *config.Config {
 		NodeOptions: &config.NodeOptions{
 			ServerPort:    s.ServerPort,
 			Tags:          []string{},
-			LogFolder:     "tmp/logs",
+			LogFolder:     s.LogFolder,
 			LogFilePrefix: "temphia_log.log",
 		},
 

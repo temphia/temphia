@@ -12,7 +12,7 @@ import (
 
 func Main() error {
 
-	dpg := embedpg.New("tmp/pgdata")
+	dpg := embedpg.New("temphia-data/pgdata")
 
 	Conf.Database.Port = fmt.Sprintf("%d", dpg.GetPort())
 
