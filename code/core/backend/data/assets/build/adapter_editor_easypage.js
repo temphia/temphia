@@ -5020,8 +5020,18 @@
     	});
 
     	const func = id => {
+    		let domain_name = service.env.domain_name;
+
+    		if (domain_name === "*") {
+    			domain_name = location.host;
+    		} else if (domain_name.includes("*")) {
+    			domain_name = domain_name.replace("*", "test");
+    		}
+
+    		const port = location.port || "80";
+
     		service.modal.small_open(Link, {
-    			domain: "http://test.temphia.local:4000", // fixme => replace this
+    			domain: `http://${domain_name}:${port}`,
     			slug: id,
     			service
     		});
