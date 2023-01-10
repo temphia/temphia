@@ -10,8 +10,11 @@
   $: _show_button =
     !_needs_subdomain_fill || (_needs_subdomain_fill && subdomain_fill);
 
-  const openLink = () =>
-    window.open(`${domain}/${slug}`.replace("*", subdomain_fill), "_blank");
+  const openLink = () => {
+    const link = `${domain}/${slug}`.replace("*", subdomain_fill);
+    console.log("@opening_link", link)
+    window.open(link, "_blank");
+  };
 
   if (!_needs_subdomain_fill) {
     openLink();

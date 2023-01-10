@@ -25,6 +25,8 @@
     loading = false;
   };
 
+  console.log("@SERVICE", service);
+
   load();
 </script>
 
@@ -53,16 +55,19 @@
           Name: "Visit",
           Action: (id) => {
             let domain_name = service.env.domain_name;
-            if (domain_name === "*") {
+            if (!domain_name || domain_name === "*") {
               domain_name = location.host;
-            } else if (domain_name.includes("*")) {
-              domain_name = domain_name.replace("*", "test");
             }
 
-            const port = location.port || "80";
+            if (!domain_name) {
+              const u = new URL(service.api.base.base_url || "");
+              domain_name = u.host;
+            }
+
+            console.log("@domain_name", domain_name);
 
             service.modal.small_open(Link, {
-              domain: `http://${domain_name}:${port}`,
+              domain: `http://${domain_name}`,
               slug: id,
               service,
             });
