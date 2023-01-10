@@ -13,9 +13,9 @@ func main() {
 	pp.Println("Hello wold @ demo")
 	os.Chdir("cmd/demo/")
 
-	xutils.CreateIfNotExits("tmp/files")
-	xutils.CreateIfNotExits("tmp/logs")
-	xutils.CreateIfNotExits("tmp/pgdata")
+	xutils.CreateIfNotExits("temphia-data/files")
+	xutils.CreateIfNotExits("temphia-data/logs")
+	xutils.CreateIfNotExits("temphia-data/pgdata")
 
 	pp.Println(demo.Main())
 
