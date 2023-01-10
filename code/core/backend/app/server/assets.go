@@ -13,7 +13,7 @@ func (s *Server) assets(rg *gin.RouterGroup) {
 
 	rg.GET("/static/:file", s.serveStaticAssets())
 	rg.GET("/build/:file", s.serveBuildAssets())
-	rg.GET("/lib/:file", s.serveLibAssets())
+	rg.GET("/lib/*file", s.serveLibAssets())
 	rg.GET("/public/:file", s.servePublicAssets())
 	rg.GET("/system/:tenant_id/:otype/:name", s.serveSystemAssets())
 }
