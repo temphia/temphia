@@ -78,11 +78,11 @@ func RunDemo() error {
 }
 
 func Reset() error {
-	return nil
+	return os.Remove("temphia-data")
 }
 
 func ClearLock() error {
-	return nil
+	return os.Remove("temphia-data/pgdata/data/postmaster.pid")
 }
 
 // private
