@@ -18,6 +18,16 @@ func main() {
 	xutils.CreateIfNotExits("temphia-data/logs")
 	xutils.CreateIfNotExits("temphia-data/pgdata")
 
-	pp.Println(demo.Main())
+	democli := demo.NewCLI()
+
+	if xutils.FileExists("temphia-data/pgdata/data", "postmaster.pid") {
+		fmt.Println("looks like another demo instance is running or last one did not close you might have to clear lock with 'temphia-demo clear-lock'")
+	}
+
+	pp.Println(democli.Execute())
+
+	if xutils.FileExists("temphia-data/pgdata/data", "postmaster.pid") {
+		fmt.Println("Looks like db did not close properly, might need to clear lock 'temphia-demo clear-lock'")
+	}
 
 }

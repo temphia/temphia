@@ -2,6 +2,9 @@ package demo
 
 import (
 	"fmt"
+	"net"
+	"os"
+	"strconv"
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/core/backend/data"
@@ -10,18 +13,29 @@ import (
 	"github.com/temphia/temphia/code/distro/embedpg"
 )
 
-func Main() error {
+func RunDemo() error {
 
-	dpg := embedpg.New("temphia-data/pgdata")
+	port, err := getPort()
+	if err != nil {
+		return nil
+	}
+
+	dpg := embedpg.New("temphia-data/pgdata", port)
 
 	Conf.Database.Port = fmt.Sprintf("%d", dpg.GetPort())
 
-	pp.Println("PORT ", dpg.GetPort())
+	pp.Println("PORT ", int(dpg.GetPort()))
 
-	err := dpg.Start()
+	err = dpg.Start()
 	if err != nil {
 		return err
 	}
+
+	pp.Println("POSTGRES STARTED")
+
+	defer func() {
+		pp.Println("STOPPING POSTGRES", dpg.Stop())
+	}()
 
 	pp.Println("database started port ", int(dpg.GetPort()))
 
@@ -42,6 +56,7 @@ func Main() error {
 		return err
 	}
 	if !ok {
+		pp.Println("Looks like new fresh run lets seed tenant and user ")
 		err = dapp.TenantSeed(xtypes.DefaultTenant)
 		if err != nil {
 			return err
@@ -60,4 +75,43 @@ func Main() error {
 	}
 
 	return nil
+}
+
+func Reset() error {
+	return nil
+}
+
+func ClearLock() error {
+	return nil
+}
+
+// private
+
+func getPort() (int, error) {
+	port := os.Getenv("TEMPHIA_DEMO_PG_PORT")
+	if port == "" {
+		// fixme check postgres file
+		return getFreePort()
+	}
+
+	pport, err := strconv.ParseInt(port, 10, 64)
+	if err != nil {
+		return 0, err
+	}
+
+	return int(pport), nil
+}
+
+func getFreePort() (int, error) {
+	addr, err := net.ResolveTCPAddr("tcp", "localhost:0")
+	if err != nil {
+		return 0, err
+	}
+
+	l, err := net.ListenTCP("tcp", addr)
+	if err != nil {
+		return 0, err
+	}
+	defer l.Close()
+	return l.Addr().(*net.TCPAddr).Port, nil
 }

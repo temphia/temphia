@@ -4,10 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"net"
+	"path"
 	"time"
 
 	epg "github.com/fergusstrange/embedded-postgres"
+	"github.com/k0kubun/pp"
 	"github.com/upper/db/v4/adapter/postgresql"
 )
 
@@ -18,11 +19,7 @@ type EmbedPg struct {
 	port   uint32
 }
 
-func New(folder string) *EmbedPg {
-	port, err := getFreePort()
-	if err != nil {
-		panic(err)
-	}
+func New(folder string, port int) *EmbedPg {
 
 	uconf, err := postgresql.ParseURL(fmt.Sprintf("postgres://demo:demo123@localhost:%d/demo?sslmode=disable", port))
 	if err != nil {
@@ -34,7 +31,8 @@ func New(folder string) *EmbedPg {
 		Password(uconf.Password).
 		Database(uconf.Database).
 		Version(epg.V12).
-		RuntimePath(folder).
+		RuntimePath(path.Join(folder, "./runtime")).
+		DataPath(path.Join(folder, "./data")).
 		Port(uint32(port)).
 		StartTimeout(45 * time.Second))
 
@@ -71,9 +69,9 @@ func (d *EmbedPg) RunSchema(schema string) error {
 		return err
 	}
 
-	exist, _ := sess.Collection("users").Exists()
-
+	exist, _ := sess.Collection("tenants").Exists()
 	if exist {
+		pp.Println("Schema looks fine, skipping")
 		return nil
 	}
 
@@ -81,27 +79,18 @@ func (d *EmbedPg) RunSchema(schema string) error {
 
 	defer cFunc()
 
+	pp.Println("before Creating schema")
+	time.Sleep(time.Second)
+
 	sdriver := sess.Driver().(*sql.DB)
 	_, err = sdriver.ExecContext(ctx, schema)
 	if err != nil {
+		pp.Println("error occured while creating schema")
 		return err
 	}
+	pp.Println("after Creating schema, looks good")
 
 	return nil
 }
 
 // private
-
-func getFreePort() (int, error) {
-	addr, err := net.ResolveTCPAddr("tcp", "localhost:0")
-	if err != nil {
-		return 0, err
-	}
-
-	l, err := net.ListenTCP("tcp", addr)
-	if err != nil {
-		return 0, err
-	}
-	defer l.Close()
-	return l.Addr().(*net.TCPAddr).Port, nil
-}
