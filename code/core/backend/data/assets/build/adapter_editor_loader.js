@@ -26,8 +26,9 @@ __nccwpck_require__.r(__webpack_exports__);
 
 ;// CONCATENATED MODULE: ./lib/adapter/adapter.ts
 class AdapterEditorEnv {
-    constructor({ api }) {
+    constructor(api, domain_name) {
         this.api = api;
+        this.domain_name = domain_name;
     }
 }
 
@@ -394,9 +395,8 @@ initRegistry();
 window.addEventListener("load", async (ev) => {
     const registry = window["__registry__"];
     const loaderOpts = window["__loader_options__"] || {};
-    const env = new AdapterEditorEnv({
-        api: new AdapterEditorAPI(loaderOpts["base_url"], loaderOpts["tenant_id"], loaderOpts["adapter_editor_token"]),
-    });
+    const api = new AdapterEditorAPI(loaderOpts["base_url"], loaderOpts["tenant_id"], loaderOpts["adapter_editor_token"]);
+    const env = new AdapterEditorEnv(api, loaderOpts["domain_name"] || "");
     console.log("@adapter_editor_loader", loaderOpts, env, registry);
     const adapterType = loaderOpts["adapter_type"] || "";
     let factory = registry.Get("temphia.adapter_editor.loader", `${adapterType}.main`);

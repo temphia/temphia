@@ -77,13 +77,23 @@ func (e *EasyPage) updatePages(data []byte) error {
 }
 
 func (e *EasyPage) setPageData(data []byte) error {
+
 	pd := NewPage{}
 	err := json.Unmarshal(data, &pd)
 	if err != nil {
 		return err
 	}
 
-	return e.ahandle.KvUpdate(pageKey(pd.Slug), pd.Data)
+	err = e.ahandle.KvUpdate(pageKey(pd.Slug), pd.Data)
+	if err != nil {
+		return err
+	}
+
+	e.pLock.Lock()
+	delete(e.pageCache, pd.Slug)
+	e.pLock.Unlock()
+
+	return nil
 
 }
 
