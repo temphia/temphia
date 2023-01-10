@@ -5027,21 +5027,21 @@
     	});
 
     	const func = id => {
+    		const u = new URL(service.api.base.base_url || "");
     		let domain_name = service.env.domain_name;
 
     		if (!domain_name || domain_name === "*") {
-    			domain_name = location.host;
+    			domain_name = location.hostname;
     		}
 
     		if (!domain_name) {
-    			const u = new URL(service.api.base.base_url || "");
-    			domain_name = u.host;
+    			domain_name = u.hostname;
     		}
 
     		console.log("@domain_name", domain_name);
 
     		service.modal.small_open(Link, {
-    			domain: `http://${domain_name}`,
+    			domain: `http://${domain_name}:${u.port || "80"}`,
     			slug: id,
     			service
     		});
