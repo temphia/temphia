@@ -4,8 +4,16 @@
   import Layout from "../_layout.svelte";
   import Pick from "./_pick.svelte";
 
-  let message = "";
+ 
+  const app = getContext("__app__") as PortalService;
 
+
+  const api = app.api_manager.get_admin_resource_api();
+
+
+
+
+  let message = "";
   let slug = "";
 
   let source = "";
@@ -18,7 +26,7 @@
     folder = "example";
   };
 
-  const app = getContext("__app__") as PortalService;
+  
 </script>
 
 <Layout>
