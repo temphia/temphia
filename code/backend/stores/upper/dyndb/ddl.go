@@ -4,12 +4,12 @@ import (
 	"strings"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/core/backend/libx/dbutils"
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/stores/upper/dyndb/dynddl"
-	"github.com/temphia/temphia/code/core/backend/stores/upper/ucore"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/libx/dbutils"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dynddl"
+	"github.com/temphia/temphia/code/backend/stores/upper/ucore"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 
 	"github.com/upper/db/v4"
 )

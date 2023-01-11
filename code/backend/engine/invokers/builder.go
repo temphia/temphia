@@ -1,6 +1,6 @@
 package invokers
 
-import "github.com/temphia/temphia/code/core/backend/xtypes"
+import "github.com/temphia/temphia/code/backend/xtypes"
 
 type Module func(handle Handle, method string, data xtypes.LazyData) (xtypes.LazyData, error)
 

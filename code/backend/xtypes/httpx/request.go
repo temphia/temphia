@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 type Request struct {

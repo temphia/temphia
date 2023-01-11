@@ -3,8 +3,8 @@ package cabinet
 import (
 	"context"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 func (c *Controller) NewFolderTicket(uclaim *claim.Session, source, folder string) (string, error) {

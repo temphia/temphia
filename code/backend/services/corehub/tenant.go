@@ -1,8 +1,8 @@
 package corehub
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
 func (c *CoreHub) AddTenant(tenant *entities.Tenant) error {

@@ -5,7 +5,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 )
 
 func httpRaw(client *http.Client, request *bindx.HttpRequest) *bindx.HttpResponse {

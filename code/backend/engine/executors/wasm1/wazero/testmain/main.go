@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/temphia/temphia/code/core/backend/engine/executors/wasm1/wazero"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/event"
+	"github.com/temphia/temphia/code/backend/engine/executors/wasm1/wazero"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
 )
 
 func main() {

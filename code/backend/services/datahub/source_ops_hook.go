@@ -5,7 +5,7 @@ import (
 
 	"github.com/k0kubun/pp"
 	"github.com/rs/xid"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/job"
 )
 
 /*

@@ -1,6 +1,6 @@
 package xplane
 
-import "github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+import "github.com/temphia/temphia/code/backend/xtypes/models/entities"
 
 const (
 	EventCreateTenant string = "create_tenant"

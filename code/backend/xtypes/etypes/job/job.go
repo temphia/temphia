@@ -3,9 +3,9 @@ package job
 import (
 	"sync"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/event"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/invoker"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/invoker"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
 type Job struct {

@@ -1,8 +1,8 @@
 package coredb
 
 import (
-	"github.com/temphia/temphia/code/core/backend/libx/dbutils"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/libx/dbutils"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/upper/db/v4"
 )
 

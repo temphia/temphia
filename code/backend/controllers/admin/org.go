@@ -1,9 +1,9 @@
 package admin
 
 import (
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
 func (c *Controller) GetTenant(uclaim *claim.Session) (*entities.Tenant, error) {

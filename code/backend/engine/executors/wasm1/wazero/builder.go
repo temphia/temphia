@@ -3,8 +3,8 @@ package wazero
 import (
 	"context"
 
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/tetratelabs/wazero"
 	"github.com/tetratelabs/wazero/api"
 )

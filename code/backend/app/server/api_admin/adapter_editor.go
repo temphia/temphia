@@ -2,7 +2,7 @@ package apiadmin
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 func (a *ApiAdmin) adapterEditorAPI(rg *gin.RouterGroup) {

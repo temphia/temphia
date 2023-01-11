@@ -3,12 +3,12 @@ package authed
 import (
 	"github.com/bwmarrin/snowflake"
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
-	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
 type Controller struct {

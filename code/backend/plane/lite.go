@@ -1,11 +1,11 @@
 package plane
 
 import (
-	"github.com/temphia/temphia/code/core/backend/app/config"
-	"github.com/temphia/temphia/code/core/backend/plane/idservice"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
-	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
+	"github.com/temphia/temphia/code/backend/app/config"
+	"github.com/temphia/temphia/code/backend/plane/idservice"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/job"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
 var _ xplane.ControlPlane = (*PlaneLite)(nil)

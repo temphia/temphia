@@ -1,8 +1,8 @@
 package admin
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
 func (c *Controller) RepoNew(uclaim *claim.Session, data *entities.Repo) error {

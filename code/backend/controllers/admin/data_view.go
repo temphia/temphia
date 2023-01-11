@@ -1,8 +1,8 @@
 package admin
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
 func (c *Controller) NewView(uclaim *claim.Session, source, group, tslug string, model *entities.DataView) error {

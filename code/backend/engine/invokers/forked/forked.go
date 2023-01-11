@@ -1,9 +1,9 @@
 package forked
 
 import (
-	"github.com/temphia/temphia/code/core/backend/engine/invokers"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/invoker"
+	"github.com/temphia/temphia/code/backend/engine/invokers"
+	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/invoker"
 )
 
 type Forked struct {

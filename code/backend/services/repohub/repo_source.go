@@ -1,9 +1,9 @@
 package repohub
 
 import (
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 )
 
 func (p *PacMan) RepoSources(tenantid string) (map[int64]string, error) {

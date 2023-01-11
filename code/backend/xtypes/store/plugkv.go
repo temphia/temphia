@@ -1,6 +1,6 @@
 package store
 
-import "github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+import "github.com/temphia/temphia/code/backend/xtypes/models/entities"
 
 type PlugStateKV interface {
 	Set(txid uint32, tenantId, plugId, key, value string, opts *SetOptions) error

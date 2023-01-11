@@ -2,9 +2,9 @@ package apiadmin
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/core/backend/controllers/admin"
-	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
+	"github.com/temphia/temphia/code/backend/controllers/admin"
+	"github.com/temphia/temphia/code/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes/logx"
 )
 
 func (a *ApiAdmin) LensAPI(rg *gin.RouterGroup) {

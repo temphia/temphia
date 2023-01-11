@@ -1,8 +1,8 @@
 package admin
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/logx"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 type LogQuery struct {

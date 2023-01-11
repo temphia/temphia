@@ -6,10 +6,10 @@ import (
 
 	lru "github.com/hashicorp/golang-lru"
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/core/backend/app/server/notz/ahandle"
-	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/logx/logid"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/app/server/notz/ahandle"
+	"github.com/temphia/temphia/code/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
 func (am *AdapterManager) run() {

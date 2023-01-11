@@ -1,6 +1,6 @@
 package demo
 
-import "github.com/temphia/temphia/code/core/backend/app/config/simple"
+import "github.com/temphia/temphia/code/backend/app/config/simple"
 
 var Conf = simple.Config{
 	AppName:          "Demo App",

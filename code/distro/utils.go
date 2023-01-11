@@ -4,10 +4,10 @@ import (
 	"errors"
 	"os"
 
-	"github.com/temphia/temphia/code/core/backend/controllers/operator/opmodels"
-	"github.com/temphia/temphia/code/core/backend/controllers/operator/opsutils"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/controllers/operator/opmodels"
+	"github.com/temphia/temphia/code/backend/controllers/operator/opsutils"
+	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/upper/db/v4"
 )
 

@@ -3,7 +3,7 @@ package bprintfs
 import (
 	"io/fs"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 )
 
 var _ fs.FS = (*FS)(nil)

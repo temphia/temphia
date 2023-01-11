@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 type DataSyncer struct {

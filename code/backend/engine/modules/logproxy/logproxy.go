@@ -1,8 +1,8 @@
 package logproxy
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 )
 
 type LogProxy struct {

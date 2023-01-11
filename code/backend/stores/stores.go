@@ -4,14 +4,14 @@ import (
 	"fmt"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/core/backend/app/config"
-	"github.com/temphia/temphia/code/core/backend/app/registry"
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/services/cabhub"
-	"github.com/temphia/temphia/code/core/backend/services/corehub"
-	"github.com/temphia/temphia/code/core/backend/services/datahub"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/app/config"
+	"github.com/temphia/temphia/code/backend/app/registry"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/services/cabhub"
+	"github.com/temphia/temphia/code/backend/services/corehub"
+	"github.com/temphia/temphia/code/backend/services/datahub"
+	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 type Options struct {

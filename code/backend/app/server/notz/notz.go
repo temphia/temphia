@@ -6,10 +6,10 @@ import (
 	"io"
 
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/logx/logid"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 type NotzOptions struct {

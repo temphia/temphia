@@ -3,8 +3,8 @@ package runner
 import (
 	"fmt"
 
-	"github.com/temphia/temphia/code/core/backend/tests"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/tests"
+	"github.com/temphia/temphia/code/backend/xtypes"
 )
 
 type Runner struct {

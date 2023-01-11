@@ -1,9 +1,9 @@
 package registry
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 )
 
 var G *Registry

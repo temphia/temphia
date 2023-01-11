@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/event"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
 	"github.com/temphia/temphia/code/executors/backend/wizard/lifecycle"
 	"github.com/temphia/temphia/code/executors/backend/wizard/sloader"
 	"github.com/temphia/temphia/code/executors/backend/wizard/wmodels"

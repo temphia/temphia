@@ -3,13 +3,13 @@ package repohub
 import (
 	"sync"
 
-	"github.com/temphia/temphia/code/core/backend/app/registry"
-	"github.com/temphia/temphia/code/core/backend/services/repohub/instancers"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xinstance"
+	"github.com/temphia/temphia/code/backend/app/registry"
+	"github.com/temphia/temphia/code/backend/services/repohub/instancers"
+	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 var (

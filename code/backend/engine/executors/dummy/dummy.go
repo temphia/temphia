@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/event"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
 )
 
 var _ etypes.Executor = (*Dummy)(nil)

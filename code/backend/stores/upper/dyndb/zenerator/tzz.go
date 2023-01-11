@@ -3,9 +3,9 @@ package zenerator
 import (
 	"fmt"
 
-	"github.com/temphia/temphia/code/core/backend/stores/upper/dyndb/tns"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/tns"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 type tzz struct {

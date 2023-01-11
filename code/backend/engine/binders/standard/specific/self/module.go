@@ -3,9 +3,9 @@ package self
 import (
 	"errors"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities/resource"
+	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities/resource"
 )
 
 var (

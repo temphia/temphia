@@ -1,8 +1,8 @@
 package repohub
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xinstance"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
 )
 
 type Handle struct {

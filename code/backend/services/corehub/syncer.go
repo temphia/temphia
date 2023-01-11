@@ -1,6 +1,6 @@
 package corehub
 
-import "github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+import "github.com/temphia/temphia/code/backend/xtypes/models/entities"
 
 // repo
 

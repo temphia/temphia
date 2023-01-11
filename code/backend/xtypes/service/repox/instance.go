@@ -1,7 +1,7 @@
 package repox
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 type InstanceOptions struct {

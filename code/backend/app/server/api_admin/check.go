@@ -2,7 +2,7 @@ package apiadmin
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 )
 
 func (r *ApiAdmin) checkAPI(rg *gin.RouterGroup) {

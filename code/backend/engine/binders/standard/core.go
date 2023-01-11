@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/logx/logid"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 )
 
 func (b *Binder) Log(msg string) {

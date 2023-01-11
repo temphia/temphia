@@ -1,7 +1,7 @@
 package tasmsdk
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 )
 
 func SelfAddFile(file string, data []byte) error {

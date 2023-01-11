@@ -5,9 +5,9 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/libx/xutils/kosher"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/libx/xutils/kosher"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 )
 
 func (n *Binding) httpRawBatch(reqs []*bindx.HttpRequest) []*bindx.HttpResponse {

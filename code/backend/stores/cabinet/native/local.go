@@ -9,11 +9,11 @@ import (
 	"path/filepath"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/core/backend/app/config"
-	"github.com/temphia/temphia/code/core/backend/app/registry"
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/stores/cabinet"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/app/config"
+	"github.com/temphia/temphia/code/backend/app/registry"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/stores/cabinet"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 
 	"gitlab.com/mr_balloon/golib"
 )

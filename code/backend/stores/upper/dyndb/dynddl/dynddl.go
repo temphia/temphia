@@ -1,9 +1,9 @@
 package dynddl
 
 import (
-	"github.com/temphia/temphia/code/core/backend/stores/upper/dyndb/dyncore"
-	"github.com/temphia/temphia/code/core/backend/stores/upper/ucore"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dyncore"
+	"github.com/temphia/temphia/code/backend/stores/upper/ucore"
+	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/upper/db/v4"
 )
 

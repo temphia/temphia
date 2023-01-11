@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 func PlugKVSet(ctx context.Context, txid, keyPtr, keyLen, valPtr, valLen, optPtr, optLen, respOffset, respLen int32) int32 {

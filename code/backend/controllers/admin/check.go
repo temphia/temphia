@@ -3,8 +3,8 @@ package admin
 import (
 	"errors"
 
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/upper/db/v4"
 )
 

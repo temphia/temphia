@@ -4,14 +4,14 @@ import (
 	"encoding/json"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/core/backend/services/repohub/seeder"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/services/repohub/seeder"
+	"github.com/temphia/temphia/code/backend/xtypes"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xinstance"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 var _ xinstance.Instancer = (*dtabeInstancer)(nil)

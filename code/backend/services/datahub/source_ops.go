@@ -2,7 +2,7 @@ package datahub
 
 import (
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 func (d *dynSource) NewRow(txid uint32, req store.NewRowReq) (int64, error) {

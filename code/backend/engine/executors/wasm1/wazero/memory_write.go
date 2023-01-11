@@ -3,7 +3,7 @@ package wazero
 import (
 	"encoding/json"
 
-	"github.com/temphia/temphia/code/core/backend/libx/xutils/kosher"
+	"github.com/temphia/temphia/code/backend/libx/xutils/kosher"
 )
 
 func (e *Executor) writeFinal(respOffset, respLen int32, err error) int32 {

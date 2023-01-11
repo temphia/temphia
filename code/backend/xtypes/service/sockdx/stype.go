@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/rs/zerolog"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 var (

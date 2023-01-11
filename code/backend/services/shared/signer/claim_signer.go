@@ -6,9 +6,9 @@ import (
 
 	"github.com/hako/branca"
 	"github.com/rs/xid"
-	"github.com/temphia/temphia/code/core/backend/libx/xutils/kosher"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/backend/libx/xutils/kosher"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/service"
 
 	"golang.org/x/crypto/pbkdf2"
 )

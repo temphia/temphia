@@ -3,7 +3,7 @@ package wazero
 import (
 	"context"
 
-	"github.com/temphia/temphia/code/core/backend/libx/lazydata"
+	"github.com/temphia/temphia/code/backend/libx/lazydata"
 )
 
 func SelfListResources(ctx context.Context, respOffset, respLen int32) int32 {

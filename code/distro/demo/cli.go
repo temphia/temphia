@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/alecthomas/kong"
-	"github.com/temphia/temphia/code/core/backend/libx/xutils"
+	"github.com/temphia/temphia/code/backend/libx/xutils"
 )
 
 type CLI struct {

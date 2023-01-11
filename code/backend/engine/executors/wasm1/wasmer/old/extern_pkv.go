@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 
 	"github.com/wasmerio/wasmer-go/wasmer"
 )

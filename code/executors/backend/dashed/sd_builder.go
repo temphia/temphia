@@ -6,8 +6,8 @@ import (
 
 	"github.com/goccy/go-yaml"
 
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/executors/backend/dashed/dashmodels"
 
 	"github.com/ztrue/tracerr"

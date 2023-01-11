@@ -7,8 +7,8 @@ import (
 	"strconv"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/core/backend/data"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/data"
+	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/distro"
 	"github.com/temphia/temphia/code/distro/embedpg"
 )

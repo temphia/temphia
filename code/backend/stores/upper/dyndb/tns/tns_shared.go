@@ -3,7 +3,7 @@ package tns
 import (
 	"fmt"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/thoas/go-funk"
 )
 

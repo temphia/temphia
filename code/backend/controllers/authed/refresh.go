@@ -1,7 +1,7 @@
 package authed
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 type RefreshReq struct {

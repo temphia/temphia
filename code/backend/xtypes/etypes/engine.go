@@ -1,6 +1,6 @@
 package etypes
 
-import "github.com/temphia/temphia/code/core/backend/xtypes/etypes/invoker"
+import "github.com/temphia/temphia/code/backend/xtypes/etypes/invoker"
 
 type Execution struct {
 	TenantId string

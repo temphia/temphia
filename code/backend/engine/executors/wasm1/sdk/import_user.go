@@ -3,8 +3,8 @@ package tasmsdk
 import (
 	"encoding/json"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
 func ListUsers(group string) ([]string, error) {

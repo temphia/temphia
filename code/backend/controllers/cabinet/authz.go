@@ -1,8 +1,8 @@
 package cabinet
 
 import (
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 func (c *Controller) canAction(uclaim *claim.Session, target, action string) error {

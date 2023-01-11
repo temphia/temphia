@@ -2,8 +2,8 @@ package invoker
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 type User struct {

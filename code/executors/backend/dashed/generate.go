@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/event"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
 	"github.com/temphia/temphia/code/executors/backend/dashed/dashmodels"
 
 	"github.com/ztrue/tracerr"

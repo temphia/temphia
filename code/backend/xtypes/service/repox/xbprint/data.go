@@ -1,6 +1,6 @@
 package xbprint
 
-import "github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+import "github.com/temphia/temphia/code/backend/xtypes/models/entities"
 
 type NewTableGroup struct {
 	Name          string      `json:"name,omitempty" yaml:"name,omitempty"`

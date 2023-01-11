@@ -2,12 +2,12 @@ package resource
 
 import (
 	"github.com/rs/xid"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xinstance"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 type ResInstancer struct {

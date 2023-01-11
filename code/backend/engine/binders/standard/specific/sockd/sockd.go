@@ -1,8 +1,8 @@
 package sockd
 
 import (
-	"github.com/temphia/temphia/code/core/backend/engine/binders/standard/handle"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
+	"github.com/temphia/temphia/code/backend/engine/binders/standard/handle"
+	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 )
 
 type Binding struct {

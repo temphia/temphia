@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/dop251/goja"
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 )
 
 type Scripter struct {

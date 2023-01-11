@@ -5,9 +5,9 @@ import (
 	"runtime"
 
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/logx/logid"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 func (m *Middleware) LoggedX(fn func(ctx httpx.Request)) func(*gin.Context) {

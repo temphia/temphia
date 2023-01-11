@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"os"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
+	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/tidwall/gjson"
 )
 

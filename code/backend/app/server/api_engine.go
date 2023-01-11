@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/core/backend/controllers/engine"
-	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/backend/controllers/engine"
+	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 )
 
 func (s *Server) engineAPI(rg *gin.RouterGroup) {

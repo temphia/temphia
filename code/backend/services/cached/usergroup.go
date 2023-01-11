@@ -1,6 +1,6 @@
 package cached
 
-import "github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+import "github.com/temphia/temphia/code/backend/xtypes/models/entities"
 
 type UserGroupCache interface {
 	GetDatas() []*entities.UserGroupData

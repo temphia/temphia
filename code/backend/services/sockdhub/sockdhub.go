@@ -1,9 +1,9 @@
 package sockdhub
 
 import (
-	"github.com/temphia/temphia/code/core/backend/services/sockdhub/core"
-	"github.com/temphia/temphia/code/core/backend/services/sockdhub/syncer"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
+	"github.com/temphia/temphia/code/backend/services/sockdhub/core"
+	"github.com/temphia/temphia/code/backend/services/sockdhub/syncer"
+	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 )
 
 type SockdHub struct {

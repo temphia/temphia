@@ -1,7 +1,7 @@
 package cases
 
 import (
-	"github.com/temphia/temphia/code/core/backend/tests"
+	"github.com/temphia/temphia/code/backend/tests"
 )
 
 func init() {

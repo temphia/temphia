@@ -4,14 +4,14 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/rs/xid"
 
-	"github.com/temphia/temphia/code/core/backend/controllers/operator/opmodels"
-	"github.com/temphia/temphia/code/core/backend/controllers/operator/opsutils"
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/controllers/operator/opmodels"
+	"github.com/temphia/temphia/code/backend/controllers/operator/opsutils"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 type Controller struct {

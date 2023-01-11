@@ -1,6 +1,6 @@
 package tasmsdk
 
-import "github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
+import "github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 
 func HttpRaw(req *bindx.HttpRequest) (*bindx.HttpResponse, error) {
 

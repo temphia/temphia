@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/tidwall/gjson"
 )
 

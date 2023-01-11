@@ -3,8 +3,8 @@ package app
 import (
 	"os"
 
-	"github.com/temphia/temphia/code/core/backend/libx/xutils"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/libx/xutils"
+	"github.com/temphia/temphia/code/backend/xtypes"
 )
 
 type App struct {

@@ -1,6 +1,6 @@
 package sockd
 
-import "github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
+import "github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 
 type PlugConnOptions struct {
 	TenantId string

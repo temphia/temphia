@@ -3,7 +3,7 @@ package net
 import (
 	"net/http"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 )
 
 const (

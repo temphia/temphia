@@ -1,6 +1,6 @@
 package simple
 
-import "github.com/temphia/temphia/code/core/backend/app/config"
+import "github.com/temphia/temphia/code/backend/app/config"
 
 type Config struct {
 	AppName          string          `json:"app_name,omitempty"`

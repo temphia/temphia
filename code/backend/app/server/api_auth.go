@@ -4,8 +4,8 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/core/backend/controllers/authed"
-	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/backend/controllers/authed"
+	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 )
 
 func (s *Server) authAPI(rg *gin.RouterGroup) {

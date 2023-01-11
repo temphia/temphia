@@ -2,7 +2,7 @@ package goja
 
 import (
 	"github.com/dop251/goja"
-	sdkdist "github.com/temphia/temphia/code/core/backend/engine/executors/javascript1/sdk/dist"
+	sdkdist "github.com/temphia/temphia/code/backend/engine/executors/javascript1/sdk/dist"
 )
 
 var libesplug *goja.Program

@@ -1,7 +1,7 @@
 package bindx
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 // this is just for reference

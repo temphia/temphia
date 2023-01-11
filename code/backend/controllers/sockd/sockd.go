@@ -3,7 +3,7 @@ package sockd
 import (
 	"fmt"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
+	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 )
 
 type Controller struct {

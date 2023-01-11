@@ -3,8 +3,8 @@ package ncache
 import (
 	"fmt"
 
-	"github.com/temphia/temphia/code/core/backend/engine/binders/standard/handle"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/backend/engine/binders/standard/handle"
+	"github.com/temphia/temphia/code/backend/xtypes/service"
 )
 
 type Binding struct {

@@ -3,8 +3,8 @@ package data
 import (
 	"encoding/json"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 )
 
 type EmbedRepo struct {

@@ -1,9 +1,9 @@
 package web
 
 import (
-	"github.com/temphia/temphia/code/core/backend/engine/invokers"
-	"github.com/temphia/temphia/code/core/backend/libx/lazydata"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/engine/invokers"
+	"github.com/temphia/temphia/code/backend/libx/lazydata"
+	"github.com/temphia/temphia/code/backend/xtypes"
 )
 
 func (r *WebRequest) webHandle(method string, data xtypes.LazyData) (xtypes.LazyData, error) {

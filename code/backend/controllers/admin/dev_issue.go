@@ -3,8 +3,8 @@ package admin
 import (
 	"fmt"
 
-	"github.com/temphia/temphia/code/core/backend/controllers/admin/devtoken"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/controllers/admin/devtoken"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 type DevIssueReq struct {

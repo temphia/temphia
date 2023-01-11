@@ -2,7 +2,7 @@ package self
 
 import (
 	"github.com/rs/xid"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/job"
 )
 
 func (b *Binding) selfForkExec(method string, data []byte) error {

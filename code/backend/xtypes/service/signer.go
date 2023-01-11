@@ -1,6 +1,6 @@
 package service
 
-import "github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
+import "github.com/temphia/temphia/code/backend/xtypes/models/claim"
 
 type SignerCore interface {
 	GlobalSignRaw(payload string) (string, error)

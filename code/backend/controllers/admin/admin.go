@@ -1,11 +1,11 @@
 package admin
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
-	"github.com/temphia/temphia/code/core/backend/xtypes/xplane"
+	"github.com/temphia/temphia/code/backend/xtypes/logx"
+	"github.com/temphia/temphia/code/backend/xtypes/service"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
 type Controller struct {

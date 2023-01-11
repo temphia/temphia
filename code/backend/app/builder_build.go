@@ -1,16 +1,16 @@
 package app
 
 import (
-	"github.com/temphia/temphia/code/core/backend/app/server"
-	"github.com/temphia/temphia/code/core/backend/controllers"
-	"github.com/temphia/temphia/code/core/backend/engine"
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/services/courierhub/courier"
-	"github.com/temphia/temphia/code/core/backend/services/repohub"
-	"github.com/temphia/temphia/code/core/backend/services/shared/nodecache"
-	"github.com/temphia/temphia/code/core/backend/services/shared/signer"
-	"github.com/temphia/temphia/code/core/backend/services/sockdhub"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
+	"github.com/temphia/temphia/code/backend/app/server"
+	"github.com/temphia/temphia/code/backend/controllers"
+	"github.com/temphia/temphia/code/backend/engine"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/services/courierhub/courier"
+	"github.com/temphia/temphia/code/backend/services/repohub"
+	"github.com/temphia/temphia/code/backend/services/shared/nodecache"
+	"github.com/temphia/temphia/code/backend/services/shared/signer"
+	"github.com/temphia/temphia/code/backend/services/sockdhub"
+	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 )
 
 func (b *Builder) preCheck() error {

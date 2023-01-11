@@ -3,7 +3,7 @@ package wizard
 import (
 	"encoding/json"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/event"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
 	"github.com/temphia/temphia/code/executors/backend/wizard/wmodels"
 	"github.com/thoas/go-funk"
 )

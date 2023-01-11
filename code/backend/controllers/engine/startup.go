@@ -4,9 +4,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/logx/logid"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
 func (c *Controller) RunStartupHooks(tenants []string, minwait time.Duration) {

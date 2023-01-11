@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/core/backend/app/server/notz/dnstoken"
-	"github.com/temphia/temphia/code/core/backend/app/server/static"
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/app/server/notz/dnstoken"
+	"github.com/temphia/temphia/code/backend/app/server/static"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 )
 
 func (m *Notz) extract(c *gin.Context) (string, string, error) {

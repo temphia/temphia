@@ -1,6 +1,6 @@
 package authx
 
-import "github.com/temphia/temphia/code/core/backend/xtypes"
+import "github.com/temphia/temphia/code/backend/xtypes"
 
 type Context interface {
 	GetApp() xtypes.App

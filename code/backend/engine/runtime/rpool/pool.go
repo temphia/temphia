@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"sync"
 
-	"github.com/temphia/temphia/code/core/backend/engine/binders/standard"
+	"github.com/temphia/temphia/code/backend/engine/binders/standard"
 )
 
 type Pool struct {

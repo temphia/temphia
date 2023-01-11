@@ -1,7 +1,7 @@
 package repox
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
 type BuilderOptions struct {

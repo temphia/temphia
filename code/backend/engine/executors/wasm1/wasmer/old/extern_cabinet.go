@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 
-	"github.com/temphia/temphia/code/core/backend/libx/xutils/kosher"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/libx/xutils/kosher"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 
 	"github.com/wasmerio/wasmer-go/wasmer"
 )

@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
+	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 )
 
 func (s *Sockd) newConnection(opts sockdx.ConnOptions) error {

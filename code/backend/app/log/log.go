@@ -6,7 +6,7 @@ import (
 
 	"github.com/rs/xid"
 	"github.com/rs/zerolog"
-	"github.com/temphia/temphia/code/core/backend/xtypes/logx"
+	"github.com/temphia/temphia/code/backend/xtypes/logx"
 
 	"gopkg.in/natefinch/lumberjack.v2"
 )

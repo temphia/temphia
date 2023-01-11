@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 )
 
 type mb struct{}

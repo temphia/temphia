@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
+	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 )
 
 func SendDirect(ctx context.Context, cid, roomPtr, roomLen, dataPtr, dataLen, respOffset, respLen int32) int32 {

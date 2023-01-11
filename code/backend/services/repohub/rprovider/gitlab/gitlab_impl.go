@@ -7,7 +7,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
 // func (g *gitlab) getIndex() map[string]map[string]*entities.BPrint {

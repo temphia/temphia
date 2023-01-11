@@ -1,8 +1,8 @@
 package instancers
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xinstance"
+	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
 )
 
 func GetInstancers(app xtypes.App) map[string]xinstance.Instancer {

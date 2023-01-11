@@ -4,7 +4,7 @@ import (
 	"sync"
 
 	"github.com/hashicorp/golang-lru/simplelru"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
 type GetColumnsFunc func(tenantId, gslug, tslug string) ([]*entities.Column, error)

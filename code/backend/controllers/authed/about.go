@@ -1,6 +1,6 @@
 package authed
 
-import "github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
+import "github.com/temphia/temphia/code/backend/xtypes/models/claim"
 
 type About struct {
 	UserInfo User `json:"user_info,omitempty"`

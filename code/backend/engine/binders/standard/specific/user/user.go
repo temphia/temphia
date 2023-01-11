@@ -4,12 +4,12 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/temphia/temphia/code/core/backend/engine/binders/standard/handle"
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/invoker"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/engine/binders/standard/handle"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/invoker"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 var (

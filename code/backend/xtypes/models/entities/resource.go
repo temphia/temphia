@@ -3,9 +3,9 @@ package entities
 import (
 	"strings"
 
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities/resource"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities/resource"
 )
 
 type Resource struct {

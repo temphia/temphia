@@ -1,7 +1,7 @@
 package xinstance
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes"
 )
 
 type Options struct {

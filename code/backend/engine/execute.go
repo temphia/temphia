@@ -2,9 +2,9 @@ package engine
 
 import (
 	"github.com/rs/xid"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
-	"github.com/temphia/temphia/code/core/backend/xtypes/logx/logid"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/job"
+	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 )
 
 func (e *Engine) execute(opts etypes.Execution) ([]byte, error) {

@@ -3,15 +3,15 @@ package distro
 import (
 	"os"
 
-	"github.com/temphia/temphia/code/core/backend/app"
-	"github.com/temphia/temphia/code/core/backend/app/config"
-	"github.com/temphia/temphia/code/core/backend/app/log"
-	"github.com/temphia/temphia/code/core/backend/app/registry"
-	"github.com/temphia/temphia/code/core/backend/data"
-	"github.com/temphia/temphia/code/core/backend/plane"
-	"github.com/temphia/temphia/code/core/backend/stores"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/app"
+	"github.com/temphia/temphia/code/backend/app/config"
+	"github.com/temphia/temphia/code/backend/app/log"
+	"github.com/temphia/temphia/code/backend/app/registry"
+	"github.com/temphia/temphia/code/backend/data"
+	"github.com/temphia/temphia/code/backend/plane"
+	"github.com/temphia/temphia/code/backend/stores"
+	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 type App struct {

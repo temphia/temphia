@@ -1,9 +1,9 @@
 package engine
 
 import (
-	"github.com/temphia/temphia/code/core/backend/engine/invokers"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/vmodels"
+	"github.com/temphia/temphia/code/backend/engine/invokers"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/models/vmodels"
 )
 
 type TargetLaunchData struct {

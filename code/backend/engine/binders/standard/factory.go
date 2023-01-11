@@ -2,14 +2,14 @@ package standard
 
 import (
 	"github.com/rs/zerolog"
-	"github.com/temphia/temphia/code/core/backend/engine/binders/standard/deps"
-	"github.com/temphia/temphia/code/core/backend/engine/binders/standard/handle"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/engine/binders/standard/deps"
+	"github.com/temphia/temphia/code/backend/engine/binders/standard/handle"
+	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/service"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 type FactoryOptions struct {

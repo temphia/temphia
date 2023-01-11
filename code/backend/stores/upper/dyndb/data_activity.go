@@ -1,7 +1,7 @@
 package dyndb
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 
 	"github.com/upper/db/v4"
 )

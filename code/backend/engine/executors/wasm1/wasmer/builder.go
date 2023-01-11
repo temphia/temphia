@@ -5,7 +5,7 @@ import (
 	"sync"
 
 	"github.com/hashicorp/golang-lru/simplelru"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/wasmerio/wasmer-go/wasmer"
 )
 

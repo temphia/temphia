@@ -1,8 +1,8 @@
 package wasmer2
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/event"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
 
 	"github.com/wasmerio/wasmer-go/wasmer"
 )

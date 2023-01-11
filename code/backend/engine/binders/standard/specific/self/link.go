@@ -4,10 +4,10 @@ import (
 	"errors"
 
 	"github.com/rs/xid"
-	"github.com/temphia/temphia/code/core/backend/libx/lazydata"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
+	"github.com/temphia/temphia/code/backend/libx/lazydata"
+	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/job"
 )
 
 var (

@@ -3,11 +3,11 @@ package datahub
 import (
 	"github.com/k0kubun/pp"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 
-	seeder2 "github.com/temphia/temphia/code/core/backend/services/datahub/seeder2"
+	seeder2 "github.com/temphia/temphia/code/backend/services/datahub/seeder2"
 )
 
 // group

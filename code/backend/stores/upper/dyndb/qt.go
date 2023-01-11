@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/upper/db/v4"
 )
 

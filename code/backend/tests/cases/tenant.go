@@ -1,6 +1,6 @@
 package cases
 
-import "github.com/temphia/temphia/code/core/backend/tests"
+import "github.com/temphia/temphia/code/backend/tests"
 
 func RegisterTenant(h *tests.TestHandle) tests.TestGroup {
 

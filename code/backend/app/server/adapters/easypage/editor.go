@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 )
 
 func (e *EasyPage) serveEditorFile(file string) ([]byte, error) {

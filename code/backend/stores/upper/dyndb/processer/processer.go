@@ -1,6 +1,6 @@
 package processer
 
-import "github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+import "github.com/temphia/temphia/code/backend/xtypes/models/entities"
 
 type Processer interface {
 	FromRowsDBType(rows []map[string]interface{}) error

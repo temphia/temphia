@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/dop251/goja"
-	"github.com/temphia/temphia/code/core/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes"
 )
 
 var (

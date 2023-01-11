@@ -1,7 +1,7 @@
 package dev
 
 import (
-	"github.com/temphia/temphia/code/core/backend/app/config/simple"
+	"github.com/temphia/temphia/code/backend/app/config/simple"
 )
 
 var conf = simple.Config{

@@ -4,10 +4,10 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/core/backend/controllers/sockd"
-	"github.com/temphia/temphia/code/core/backend/services/sockdhub/transports"
-	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/controllers/sockd"
+	"github.com/temphia/temphia/code/backend/services/sockdhub/transports"
+	"github.com/temphia/temphia/code/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
 func (s *Server) selfAPI(rg *gin.RouterGroup) {

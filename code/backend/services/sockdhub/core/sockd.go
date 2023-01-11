@@ -4,7 +4,7 @@ import (
 	"sync"
 
 	"github.com/rs/zerolog"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
+	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 )
 
 var _ sockdx.SockdCore = (*Sockd)(nil)

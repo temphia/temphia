@@ -1,8 +1,8 @@
 package engine
 
 import (
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/core/backend/xtypes/logx/logid"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 )
 
 func (e *Engine) serveAgentFile(tenantId, plugId, agentId, file string) ([]byte, error) {

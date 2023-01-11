@@ -1,6 +1,6 @@
 package rfencer
 
-import "github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
+import "github.com/temphia/temphia/code/backend/xtypes/etypes/job"
 
 type Env struct {
 	Job *job.Job

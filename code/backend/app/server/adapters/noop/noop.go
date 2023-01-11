@@ -3,8 +3,8 @@ package noop
 import (
 	"fmt"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes"
-	"github.com/temphia/temphia/code/core/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 )
 
 type NoOp struct {

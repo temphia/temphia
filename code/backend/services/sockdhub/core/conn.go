@@ -4,8 +4,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/logx/logid"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service/sockdx"
+	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
+	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 )
 
 type Conn struct {

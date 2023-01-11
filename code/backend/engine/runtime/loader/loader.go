@@ -2,8 +2,8 @@ package loader
 
 import (
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/core/backend/xtypes/models/vmodels"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/models/vmodels"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 func Load(syncer store.SyncDB, tenantId, plugId, agentId string) (*vmodels.ExecutorData, error) {

@@ -1,6 +1,6 @@
 package standard
 
-import "github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
+import "github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 
 func (b *Binder) PlugKVBindingsGet() bindx.PlugKV   { return &b.plugKV }
 func (b *Binder) SockdBindingsGet() bindx.Sockd     { return &b.sockd }

@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/core/backend/xtypes/service"
+	"github.com/temphia/temphia/code/backend/xtypes/service"
 )
 
 type Courier struct{}

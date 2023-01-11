@@ -1,7 +1,7 @@
 package plane
 
 import (
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/job"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/job"
 )
 
 type Router struct {

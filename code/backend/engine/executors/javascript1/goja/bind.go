@@ -3,8 +3,8 @@ package goja
 import (
 	"github.com/dop251/goja"
 
-	"github.com/temphia/temphia/code/core/backend/xtypes/etypes/bindx"
-	"github.com/temphia/temphia/code/core/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 func (g *Goja) qbind(name string, fn any) {

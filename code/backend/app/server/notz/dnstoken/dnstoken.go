@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 )
 
 func DNSReverseResolve(cluster, host string) (string, error) {
