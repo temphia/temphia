@@ -1,10 +1,13 @@
 package admin
 
 import (
+	"encoding/json"
+
 	"github.com/temphia/temphia/code/core/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/core/backend/xtypes/service/repox/xbprint"
 )
 
 func (c *Controller) BprintList(uclaim *claim.Session, group string) ([]*entities.BPrint, error) {
@@ -93,11 +96,39 @@ func (c *Controller) BprintImport(uclaim *claim.Session, opts *repox.RepoImportO
 	return c.pacman.RepoSourceImport(uclaim.TenentId, opts)
 }
 
-func (c *Controller) BprintInstance(uclaim *claim.Session, opts *repox.InstanceOptions) (any, error) {
-	opts.UserSession = uclaim
+type InstanceOptions struct {
+	RepoId         int64           `json:"repo_id,omitempty"`
+	InstancerType  string          `json:"instancer_type,omitempty"`
+	File           string          `json:"file,omitempty"`
+	UserConfigData json.RawMessage `json:"data,omitempty"`
+	Auto           bool            `json:"auto,omitempty"`
+}
 
-	// fixme => use new instance thing here
-	// return c.pacman.Instance(uclaim.TenentId, opts)
+func (c *Controller) BprintInstance(uclaim *claim.Session, bid string, opts *InstanceOptions) (any, error) {
 
-	return nil, nil
+	instancer := c.pacman.GetInstanceHub()
+
+	fopt := repox.InstanceOptions{
+		BprintId:       bid,
+		RepoId:         opts.RepoId,
+		InstancerType:  opts.InstancerType,
+		File:           opts.File,
+		UserConfigData: opts.UserConfigData,
+		Auto:           opts.Auto,
+		UserSession:    uclaim,
+	}
+
+	switch opts.InstancerType {
+	case xbprint.TypeBundle:
+		if opts.Auto {
+			return instancer.AutomaticBundle(fopt)
+		}
+		return instancer.ManualBundleItem(fopt)
+
+	default:
+		if opts.Auto {
+			return instancer.AutomaticSingle(fopt)
+		}
+		return instancer.ManualSingle(fopt)
+	}
 }

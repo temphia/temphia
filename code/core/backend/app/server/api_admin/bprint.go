@@ -118,14 +118,14 @@ func (r *ApiAdmin) BprintDelFile(ctx httpx.Request) {
 // instance
 
 func (r *ApiAdmin) BprintInstance(ctx httpx.Request) {
-	opts := &repox.InstanceOptions{}
+	opts := &admin.InstanceOptions{}
 	err := ctx.Http.BindJSON(opts)
 	if err != nil {
 		r.rutil.WriteErr(ctx.Http, err.Error())
 		return
 	}
 
-	resp, err := r.cAdmin.BprintInstance(ctx.Session, opts)
+	resp, err := r.cAdmin.BprintInstance(ctx.Session, ctx.Http.Param("id"), opts)
 	r.rutil.WriteJSON(ctx.Http, resp, err)
 }
 

@@ -1,18 +1,17 @@
 package repox
 
 import (
-	"encoding/json"
-
 	"github.com/temphia/temphia/code/core/backend/xtypes/models/claim"
 )
 
 type InstanceOptions struct {
-	BprintId       string          `json:"bprint_id,omitempty"`
-	RepoId         int64           `json:"repo_id,omitempty"`
-	InstancerType  string          `json:"instancer_type,omitempty"`
-	File           string          `json:"file,omitempty"`
-	UserConfigData json.RawMessage `json:"data,omitempty"`
-	UserSession    *claim.Session  `json:"-"`
+	BprintId       string         `json:"bprint_id,omitempty"`
+	RepoId         int64          `json:"repo_id,omitempty"`
+	InstancerType  string         `json:"instancer_type,omitempty"`
+	File           string         `json:"file,omitempty"`
+	UserConfigData []byte         `json:"data,omitempty"`
+	Auto           bool           `json:"auto,omitempty"`
+	UserSession    *claim.Session `json:"-"`
 }
 
 type InstancHub interface {
