@@ -7,6 +7,15 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
+type BuilderOptions struct {
+	App      xtypes.App
+	TenantId string
+	Domain   *entities.TenantDomain
+	Handle   AdapterHandle
+}
+
+type Builder func(opts BuilderOptions) (Adapter, error)
+
 type Context struct {
 	Rid  int64
 	Http *gin.Context
@@ -18,6 +27,8 @@ type Adapter interface {
 
 	Handle(ctx Context)
 }
+
+// handle
 
 type AdapterHandle interface {
 
@@ -33,12 +44,3 @@ type AdapterHandle interface {
 	LogInfo(rid int64) *zerolog.Event
 	LogError(rid int64) *zerolog.Event
 }
-
-type BuilderOptions struct {
-	App      xtypes.App
-	TenantId string
-	Domain   *entities.TenantDomain
-	Handle   AdapterHandle
-}
-
-type Builder func(opts BuilderOptions) (Adapter, error)
