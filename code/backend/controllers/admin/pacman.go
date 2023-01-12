@@ -97,7 +97,6 @@ func (c *Controller) BprintImport(uclaim *claim.Session, opts *repox.RepoImportO
 }
 
 type InstanceOptions struct {
-	RepoId         int64           `json:"repo_id,omitempty"`
 	InstancerType  string          `json:"instancer_type,omitempty"`
 	File           string          `json:"file,omitempty"`
 	UserConfigData json.RawMessage `json:"data,omitempty"`

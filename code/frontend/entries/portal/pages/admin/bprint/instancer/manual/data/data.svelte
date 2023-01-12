@@ -13,7 +13,7 @@
   let data: any;
 
   const load = async () => {
-    const bapi = await app.api_manager.get_admin_bprint_api();
+    const bapi = app.api_manager.get_admin_bprint_api();
     const resp = await bapi.get_file(bid, file);
 
     if (resp.status !== 200) {

@@ -25,11 +25,10 @@
     instance_helper(app, bprint["type"], bprint, file, InstanceBundlePicker);
   };
 
-  const automatic = () =>  {
-
-    app.nav.admin_bprint_auto_instancer(id);
+  const automatic = () => {
     app.utils.small_modal_close();
-  } 
+    app.nav.admin_bprint_auto_instancer(id);
+  };
 </script>
 
 <div class="flex">

@@ -1,30 +1,5 @@
 import type { PortalService } from "../../core";
 
-export interface PlugRawSchema {
-  slug: string;
-  name: string;
-  resource_hints: { [_: string]: ResourceHint };
-  agent_hints: { [_: string]: AgentHint };
-}
-
-export interface AgentHint {
-  name: string;
-  type: string;
-  executor: string;
-  iface_file: string;
-  web_entry: string;
-  web_script: string;
-  web_style: string;
-  web_loader: string;
-  web_files: { [_: string]: string };
-  resources: { [_: string]: string };
-}
-
-export interface ResourceHint {
-  name: string;
-  type: string;
-  sub_type: string;
-}
 
 export interface NewTableGroup {
   name: string;
@@ -162,32 +137,3 @@ export const instance_helper = async (
       break;
   }
 };
-
-
-/*
-const sample_plug_schema = {
-  "slug": "example1",
-  "name": "Example",
-  "resource_hints": {},
-  "agent_hints": {
-      "default": {
-          "executor": "goja",
-          "name": "default",
-          "type": "web",
-          "invoke_policy": "",
-          "resources": {
-              "extslot": ""
-          },
-          "web_files": {
-              "client.js": "client.js",
-              "client.css": "client.css"
-          },
-          "web_entry": "todo.helloworld.main",
-          "web_script": "client.js",
-          "web_style": "client.css",
-          "web_loader": "std.loader"
-      }
-  }
-}
-
-*/
