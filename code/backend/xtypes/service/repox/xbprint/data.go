@@ -27,6 +27,9 @@ type NewTable struct {
 	ColumnRef     []*entities.ColumnFKRef `json:"column_refs,omitempty" yaml:"column_refs,omitempty"`
 	Views         []entities.View         `json:"views,omitempty" yaml:"views,omitempty"`
 	SeedData      SeedData                `json:"seed_data,omitempty" yaml:"seed_data,omitempty"`
+
+	// secondary objects
+	TargetApps []NewTargetApp `json:"target_apps,omitempty" yaml:"target_apps,omitempty"`
 }
 
 type NewColumn struct {
@@ -39,9 +42,6 @@ type NewColumn struct {
 	NotNullable   bool     `json:"not_nullable,omitempty" yaml:"not_nullable,omitempty"`
 	Pattern       string   `json:"pattern,omitempty" yaml:"pattern,omitempty"`
 	StrictPattern bool     `json:"strict_pattern,omitempty" yaml:"strict_pattern,omitempty"`
-
-	// secondary objects
-	TargetApps []NewTargetApp `json:"target_apps,omitempty" yaml:"target_apps,omitempty"`
 }
 
 type NewTargetApp struct {

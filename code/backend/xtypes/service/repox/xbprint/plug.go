@@ -11,6 +11,7 @@ type NewAgent struct {
 	Type      string            `json:"type,omitempty"`
 	Executor  string            `json:"executor,omitempty"`
 	IfaceFile string            `json:"iface_file,omitempty"`
+	EntryFile string            `json:"entry_file,omitempty"`
 	WebEntry  string            `json:"web_entry,omitempty"`
 	WebScript string            `json:"web_script,omitempty"`
 	WebStyle  string            `json:"web_style,omitempty"`
@@ -23,6 +24,7 @@ type NewAgent struct {
 
 type NewAgentResource struct {
 	Name      string       `json:"name,omitempty"`
+	Type      string       `json:"type,omitempty"`
 	BundleRef bool         `json:"bundle_ref,omitempty"`
 	Ref       *NewResource `json:"ref,omitempty"`
 }
