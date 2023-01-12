@@ -110,7 +110,6 @@ func (c *Controller) BprintInstance(uclaim *claim.Session, bid string, opts *Ins
 
 	fopt := repox.InstanceOptions{
 		BprintId:       bid,
-		RepoId:         opts.RepoId,
 		InstancerType:  opts.InstancerType,
 		File:           opts.File,
 		UserConfigData: opts.UserConfigData,

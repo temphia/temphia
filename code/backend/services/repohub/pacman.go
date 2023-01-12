@@ -26,13 +26,15 @@ type PacMan struct {
 	repoBuilders    map[string]repox.Builder
 	activeRepo      map[string]map[int64]repox.Repository
 	activeRepoMutex sync.Mutex
+
+	instancer InstancHub
 }
 
 func New(_app xtypes.App) *PacMan {
 
 	deps := _app.GetDeps()
 
-	return &PacMan{
+	pm := &PacMan{
 		app:             _app,
 		corehub:         deps.CoreHub().(store.CoreHub),
 		dynHub:          deps.DataHub().(store.DataHub),
@@ -42,6 +44,12 @@ func New(_app xtypes.App) *PacMan {
 		activeRepoMutex: sync.Mutex{},
 		activeRepo:      make(map[string]map[int64]repox.Repository),
 	}
+
+	pm.instancer = InstancHub{
+		pacman: pm,
+	}
+
+	return pm
 }
 
 func (p *PacMan) blobStore(tenantId string) store.CabinetSourced {

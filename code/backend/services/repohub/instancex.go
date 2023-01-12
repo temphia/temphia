@@ -3,6 +3,7 @@ package repohub
 import (
 	"encoding/json"
 
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
@@ -10,8 +11,7 @@ import (
 )
 
 func (p *PacMan) GetInstanceHub() repox.InstancHub {
-
-	return nil
+	return &p.instancer
 }
 
 type InstancHub struct {
@@ -30,20 +30,28 @@ type InstancHub struct {
 
 */
 
-func (i *InstancHub) ManualSingle(opt repox.InstanceOptions) (any, error) {
-	instancer, ok := i.pacman.instancers[opt.InstancerType]
+func (i *InstancHub) ManualSingle(opts repox.InstanceOptions) (any, error) {
+
+	pp.Println("INSTANCE OPTS |>", opts)
+
+	instancer, ok := i.pacman.instancers[opts.InstancerType]
 	if !ok {
 		return nil, easyerr.NotFound()
 	}
 
 	return instancer.Instance(xinstance.Options{
-		TenantId:     opt.UserSession.TenentId,
-		BprintId:     opt.BprintId,
-		InstanceType: opt.InstancerType,
-		File:         opt.File,
-		UserId:       opt.UserSession.UserID,
-		UserData:     opt.UserConfigData,
+		TenantId:     opts.UserSession.TenentId,
+		BprintId:     opts.BprintId,
+		InstanceType: opts.InstancerType,
+		File:         opts.File,
+		UserId:       opts.UserSession.UserID,
+		UserData:     opts.UserConfigData,
 		Automatic:    false,
+		Handle: &Handle{
+			instanced: make(map[string]*xinstance.Response),
+			opts:      opts,
+			pacman:    i.pacman,
+		},
 	})
 }
 
@@ -62,13 +70,18 @@ func (i *InstancHub) ManualBundleItem(opts repox.InstanceOptions) (any, error) {
 		UserId:       opts.UserSession.UserID,
 		UserData:     opts.UserConfigData,
 		Automatic:    false,
+		Handle: &Handle{
+			instanced: make(map[string]*xinstance.Response),
+			opts:      opts,
+			pacman:    i.pacman,
+		},
 	})
 
 }
 
 func (i *InstancHub) AutomaticBundle(opts repox.InstanceOptions) (any, error) {
 	bundle := xbprint.Bundle{}
-	err := i.pacman.loadFile(opts.UserSession.TenentId, opts.BprintId, opts.File, opts.RepoId, &bundle)
+	err := i.pacman.loadFile(opts.UserSession.TenentId, opts.BprintId, opts.File, &bundle)
 	if err != nil {
 		return nil, err
 	}
@@ -120,12 +133,17 @@ func (i *InstancHub) AutomaticSingle(opts repox.InstanceOptions) (any, error) {
 		UserId:       opts.UserSession.UserID,
 		UserData:     opts.UserConfigData,
 		Automatic:    true,
+		Handle: &Handle{
+			instanced: make(map[string]*xinstance.Response),
+			opts:      opts,
+			pacman:    i.pacman,
+		},
 	})
 }
 
-func (p *PacMan) loadFile(tenantId, bid string, file string, repoId int64, target any) error {
+func (p *PacMan) loadFile(tenantId, bid string, file string, target any) error {
 
-	out, err := p.RepoSourceGetBlob(tenantId, "", bid, repoId, file)
+	out, err := p.BprintGetBlob(tenantId, bid, file)
 	if err != nil {
 		return err
 	}
