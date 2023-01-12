@@ -10,7 +10,7 @@ var (
 )
 
 func lazyInit() {
-	var frontendBuild = "code/core/frontend/public"
+	var frontendBuild = "code/frontend/public"
 	if exits, _ := golib.FileExists(frontendBuild); !exits {
 		frontendBuild = ""
 	}
