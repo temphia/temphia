@@ -1,0 +1,20 @@
+{
+  "type": "bundle",
+  "items": [
+    {
+      "name": "room1",
+      "type": "resource",
+      "file": "room.schema.json"
+    },
+    {
+      "name": "data1",
+      "type": "data_group",
+      "file": "data.schema.json"
+    },
+    {
+      "name": "todo1",
+      "type": "plug",
+      "file": "plug.schema.json"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Todo Schema",
+  "slug": "todo",
+  "description": "this a data store for a todo app.",
+  "tables": [],
+  "exec_order": []
+}

@@ -1,0 +1,25 @@
+{
+  "slug": "todo",
+  "name": "Todo App",
+  "agents": [
+    {
+      "name": "default",
+      "type": "web",
+      "executor": "javascript1",
+      "iface_file": "todo_iface.json",
+      "web_entry": "todo.main",
+      "web_script": "todo_client.js",
+      "web_style": "todo_client.css",
+      "entry_file": "todo_server.js",
+      "web_loader": "std.loader",
+      "web_files": {},
+      "resources": [
+        {
+          "name": "broadcast_room",
+          "bundle_ref": true,
+          "ref": "room1"
+        }
+      ]
+    }
+  ]
+}
