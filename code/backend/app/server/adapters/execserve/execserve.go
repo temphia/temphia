@@ -27,7 +27,7 @@ func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 }
 
 func (e *ExecServe) ServeEditorFile(file string) ([]byte, error) {
-	return e.executor.ExecFile(file)
+	return nil, nil
 }
 
 func (e *ExecServe) PreformEditorAction(name string, data []byte) (any, error) {
