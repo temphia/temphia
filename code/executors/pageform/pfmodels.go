@@ -1,6 +1,7 @@
 package pageform
 
 type FormModel struct {
+	Name           string         `json:"name,omitempty"`
 	Items          []FormItem     `json:"items,omitempty"`
 	Data           map[string]any `json:"data,omitempty"`
 	Message        string         `json:"message,omitempty"`

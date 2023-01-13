@@ -2,6 +2,7 @@ package common
 
 import (
 	"github.com/temphia/temphia/code/backend/app/registry"
+	"github.com/temphia/temphia/code/executors/pageform"
 
 	// core executors
 	"github.com/temphia/temphia/code/backend/engine/executors/javascript1/goja"
@@ -30,5 +31,6 @@ func init() {
 	registry.SetExecutor("javascript1", goja.NewBuilder)
 	registry.SetExecutor("goja", goja.NewBuilder)
 	registry.SetExecutor("wasm1", wazero.NewBuilder)
+	registry.SetExecutor("pageform", pageform.NewBuilder)
 
 }
