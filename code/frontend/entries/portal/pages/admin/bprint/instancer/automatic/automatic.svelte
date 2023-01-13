@@ -26,8 +26,8 @@
   const instance = async () => {
     bapi.instance(bid, {
       auto: true,
-      "instancer_type": "bundle",
-      "file": "schema.json",
+      instancer_type: "bundle",
+      file: "schema.json",
     });
   };
 
@@ -49,10 +49,10 @@
         <h4 class="font-semibold text-lg text-slate-800">Instance Bundle</h4>
       </div>
 
-      <div class="space-y-2 mt-4">
+      <div class="space-y-2 mt-4 border">
         {#each bundle_objects["items"] || [] as item}
           <div
-            class="flex space-x-4 rounded-xl bg-white p-3 shadow-sm hover:border border-blue-500 cursor-pointer"
+            class="flex space-x-4 bg-white p-3 shadow-sm hover:border border-blue-500 cursor-pointer"
           >
             <Icon
               name={iconTypes[item["type"]] || "hashtag"}
@@ -70,11 +70,13 @@
       </div>
 
       <div class="flex justify-end py-2">
-        <ActionButton
-          name="Instance"
-          icon_name="lightning-bolt"
-          onClick={instance}
-        />
+        <button
+          class="p-1 text-white text-sm font-semibold flex self-center shadow rounded bg-green-400 hover:bg-green-600"
+        >
+          <Icon name="lightning-bolt" class="h-5 w-5" />
+
+          Start</button
+        >
       </div>
     </div>
   {/if}
