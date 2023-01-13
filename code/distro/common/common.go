@@ -27,6 +27,7 @@ import (
 
 func init() {
 
+	registry.SetExecutor("javascript1", goja.NewBuilder)
 	registry.SetExecutor("goja", goja.NewBuilder)
 	registry.SetExecutor("wasm1", wazero.NewBuilder)
 
