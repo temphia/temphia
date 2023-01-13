@@ -1,6 +1,7 @@
 package resource
 
 import (
+	"github.com/k0kubun/pp"
 	"github.com/rs/xid"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -36,6 +37,8 @@ func (pi *ResInstancer) Instance(opts xinstance.Options) (*xinstance.Response, e
 
 	id := xid.New().String()
 
+	pp.Println("@resource |>", res)
+
 	err = pi.syncer.ResourceNew(opts.TenantId, &entities.Resource{
 		Id:        id,
 		Name:      res.Name,
@@ -45,7 +48,7 @@ func (pi *ResInstancer) Instance(opts xinstance.Options) (*xinstance.Response, e
 		Payload:   res.Payload,
 		Policy:    res.Policy,
 		PlugId:    "",
-		ExtraMeta: entities.JsonStrMap{},
+		ExtraMeta: res.Meta,
 		TenantId:  opts.TenantId,
 	})
 

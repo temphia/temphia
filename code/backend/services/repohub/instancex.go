@@ -88,17 +88,22 @@ func (i *InstancHub) AutomaticBundle(opts repox.InstanceOptions) (any, error) {
 
 	iObjs := make(map[string]*xinstance.Response)
 
+	pp.Println("ALL BUNDLE ||>>", bundle)
+
 	for _, bitem := range bundle.Items {
+		pp.Println("INSTANCING BITEM", bitem)
+
 		instancer, ok := i.pacman.instancers[bitem.Type]
 		if !ok {
+			pp.Println("NOT FOUND", bitem.Type)
 			return nil, easyerr.NotFound()
 		}
 
 		resp, err := instancer.Instance(xinstance.Options{
 			TenantId:     opts.UserSession.TenentId,
 			BprintId:     opts.BprintId,
-			InstanceType: opts.InstancerType,
-			File:         opts.File,
+			InstanceType: bitem.Type,
+			File:         bitem.File,
 			UserId:       opts.UserSession.UserID,
 			UserData:     nil,
 			Automatic:    true,
@@ -109,7 +114,8 @@ func (i *InstancHub) AutomaticBundle(opts repox.InstanceOptions) (any, error) {
 			},
 		})
 		if err != nil {
-			return nil, err
+			pp.Println("ERR |||||>>>>>>", err)
+			continue
 		}
 
 		iObjs[bitem.Name] = resp

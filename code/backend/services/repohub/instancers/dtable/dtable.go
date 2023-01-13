@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/services/repohub/seeder"
 	"github.com/temphia/temphia/code/backend/xtypes"
 
@@ -46,10 +47,7 @@ func (di *dtabeInstancer) Instance(opts xinstance.Options) (*xinstance.Response,
 		return nil, err
 	}
 
-	// fixme in automatic mode data could be nil
-
-	dopts := &DataGroupRequest{}
-	err = json.Unmarshal(opts.UserData, dopts)
+	dopts, err := di.extractUserOptions(opts, schemaData)
 	if err != nil {
 		return nil, err
 	}
@@ -166,5 +164,44 @@ func (di *dtabeInstancer) instance(tenantId, file string, opts *DataGroupRequest
 	}
 
 	return resp, err
+
+}
+
+func (di *dtabeInstancer) extractUserOptions(opts xinstance.Options, schemaData *xbprint.NewTableGroup) (*DataGroupRequest, error) {
+	dopts := &DataGroupRequest{}
+	if !opts.Automatic {
+		err := json.Unmarshal(opts.UserData, dopts)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	grandom, _ := xutils.GenerateRandomString(5)
+
+	dsource := di.dynhub.DefaultSource(opts.TenantId)
+	dopts.DyndbSource = dsource.Name()
+
+	csource := di.cabhub.Default(opts.TenantId)
+	dopts.CabinetSource = csource.Name()
+	dopts.CabinetFolder = "data_assets"
+
+	dopts.GroupName = schemaData.Name
+	dopts.GroupSlug = schemaData.Slug + grandom
+	dopts.SeedType = store.DynSeedTypeAutogen
+
+	tblOpts := make(map[string]*DataTableOption, len(schemaData.Tables))
+	for _, nt := range schemaData.Tables {
+		tblOpts[nt.Slug] = &DataTableOption{
+			Name:         nt.Name,
+			Slug:         nt.Slug,
+			ActivityType: store.DynActivityTypeStrict,
+			SyncType:     store.DynSyncTypeEventAndData,
+			Seed:         true,
+		}
+	}
+
+	dopts.TableOptions = tblOpts
+
+	return dopts, nil
 
 }

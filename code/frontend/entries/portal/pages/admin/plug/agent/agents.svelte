@@ -40,9 +40,6 @@
   const action_delete = async (id: string) => {
     const api = app.api_manager.get_admin_plug_api();
     const resp = await api.delete_agent(pid, id);
-    if (!resp.ok) {
-      return;
-    }
     load();
   };
 

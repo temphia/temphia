@@ -15,6 +15,8 @@ type cabinetSourced struct {
 	provider store.CabinetSource
 }
 
+func (c *cabinetSourced) Name() string { return c.source }
+
 func (c *cabinetSourced) AddFolder(ctx context.Context, folder string) error {
 	if folder == "" {
 		return easyerr.NotFound()

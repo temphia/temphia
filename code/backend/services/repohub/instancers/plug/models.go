@@ -8,10 +8,18 @@ type PlugResponse struct {
 }
 
 func (pr *PlugResponse) AddAgentErr(agent string, err error) {
+	if pr.ErrAgents == nil {
+		pr.ErrAgents = make(map[string]string)
+	}
+
 	pr.ErrAgents[agent] = err.Error()
 }
 
 func (pr *PlugResponse) AddResourceErr(agent, res string, err error) {
+	if pr.ErrAgentResource == nil {
+		pr.ErrAgentResource = make(map[string]map[string]string)
+	}
+
 	ress, ok := pr.ErrAgentResource[agent]
 	if !ok {
 		ress = map[string]string{}

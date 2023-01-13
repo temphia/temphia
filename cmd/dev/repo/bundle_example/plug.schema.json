@@ -16,8 +16,7 @@
       "resources": [
         {
           "name": "broadcast_room",
-          "bundle_ref": true,
-          "ref": "room1"
+          "ref_name": "room1"
         }
       ]
     }

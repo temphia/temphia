@@ -2,6 +2,40 @@
   "name": "Todo Schema",
   "slug": "todo",
   "description": "this a data store for a todo app.",
-  "tables": [],
-  "exec_order": []
+  "tables": [
+    {
+      "name": "Todo Items",
+      "slug": "todoitems",
+      "main_column": "title",
+      "unique_indexes": [],
+      "views": [],
+      "column_refs": [],
+      "columns": [
+        {
+          "name": "Title",
+          "slug": "title",
+          "ctype": "shorttext",
+          "description": "Title of todo item",
+          "not_nullable": true
+        },
+
+        {
+          "name": "Contents",
+          "slug": "contents",
+          "ctype": "longtext",
+          "description": "Contents of todo item"
+        },
+
+        {
+          "name": "Done",
+          "slug": "done",
+          "ctype": "checkbox"
+        }
+      ],
+      "indexes": [],
+      "activity_type": "",
+      "sync_type": ""
+    }
+  ],
+  "exec_order": ["todoitems"]
 }

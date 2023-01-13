@@ -32,8 +32,7 @@ type Agent struct {
 }
 
 type AgentResource struct {
-	Id         int64  `json:"id,omitempty" db:"id,omitempty"`
-	Name       string `json:"name,omitempty" db:"name,omitempty"`
+	Slug       string `json:"slug,omitempty" db:"slug,omitempty"`
 	PlugId     string `json:"plug_id,omitempty" db:"plug_id,omitempty"`
 	AgentId    string `json:"agent_id,omitempty" db:"agent_id,omitempty"`
 	ResourceId string `json:"resource_id,omitempty" db:"resource_id,omitempty"`

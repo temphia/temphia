@@ -21,6 +21,6 @@ export class AdminResourceAPI {
     return this.base.post(`/admin/resource/${rid}`, data);
   }
   delete(rid: string) {
-    return this.base.get(`/admin/resource/${rid}`);
+    return this.base.delete(`/admin/resource/${rid}`);
   }
 }

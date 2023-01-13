@@ -27,6 +27,7 @@ type CabinetSourced interface {
 	ListFolder(Context context.Context, folder string) ([]*BlobInfo, error)
 	GetBlob(Context context.Context, folder, file string) ([]byte, error)
 	DeleteBlob(Context context.Context, folder, file string) error
+	Name() string
 }
 
 type CabinetSource interface {

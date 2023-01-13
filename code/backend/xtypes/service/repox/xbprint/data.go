@@ -45,10 +45,9 @@ type NewColumn struct {
 }
 
 type NewTargetApp struct {
-	Name  string `json:"name,omitempty" yaml:"name,omitempty"`
-	Type  string `json:"type,omitempty" yaml:"type,omitempty"`
-	Plug  string `json:"plug,omitempty" yaml:"plug,omitempty"`
-	Agent string `json:"agent,omitempty" yaml:"agent,omitempty"`
+	Name        string `json:"name,omitempty" yaml:"name,omitempty"`
+	Agent       string `json:"agent,omitempty" yaml:"agent,omitempty"`
+	ContextType string `json:"context_type,omitempty" yaml:"context_type,omitempty"`
 }
 
 type SeedData struct {

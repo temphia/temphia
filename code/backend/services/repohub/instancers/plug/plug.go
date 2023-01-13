@@ -42,7 +42,7 @@ func (pi *PlugInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 
 	uopts := PlugOptions{}
 	if opts.UserData != nil {
-		json.Unmarshal(opts.UserData, &uopts)
+		pp.Println("PARSING USER DATA", json.Unmarshal(opts.UserData, &uopts))
 	}
 
 	if uopts.Id == "" {
@@ -106,22 +106,25 @@ func (pi *PlugInstancer) instance(pid string, opts xinstance.Options, schema *xb
 			TenantId:  opts.TenantId,
 		}
 
+		pp.Println("@agents", agent)
+
 		err := pi.syncer.AgentNew(opts.TenantId, agent)
 		if err != nil {
 			resp.AddAgentErr(agent.Name, err)
 			continue
 		}
 
-		for rkey, rdata := range na.Resources {
-			if rdata.BundleRef {
-				pobj := opts.Handle.GetPrevObject(rkey)
+		for _, rdata := range na.Resources {
+			pp.Println("@agent_resources", rdata.Name, rdata)
+
+			if rdata.RefData == nil {
+				pobj := opts.Handle.GetPrevObject(rdata.RefName)
 				if pobj == nil {
 					continue
 				}
 
 				err := pi.syncer.AgentResourceNew(opts.TenantId, &entities.AgentResource{
-					Id:         0,
-					Name:       rkey,
+					Slug:       rdata.Name,
 					PlugId:     pid,
 					AgentId:    agent.Name,
 					ResourceId: pobj.Slug,
@@ -131,7 +134,7 @@ func (pi *PlugInstancer) instance(pid string, opts xinstance.Options, schema *xb
 				})
 
 				if err != nil {
-					resp.AddResourceErr(agent.Id, rkey, err)
+					resp.AddResourceErr(agent.Id, rdata.Name, err)
 					pp.Println("@error_creating_agent_resource", err)
 					continue
 				}
@@ -141,6 +144,8 @@ func (pi *PlugInstancer) instance(pid string, opts xinstance.Options, schema *xb
 
 		resp.Agents = append(resp.Agents, agent.Id)
 	}
+
+	pp.Println("@resp |>", resp)
 
 	return resp, nil
 }

@@ -3,6 +3,7 @@ package admin
 import (
 	"encoding/json"
 
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -104,6 +105,9 @@ type InstanceOptions struct {
 }
 
 func (c *Controller) BprintInstance(uclaim *claim.Session, bid string, opts *InstanceOptions) (any, error) {
+
+	pp.Println(" ||>>", opts)
+	pp.Println(" ||>>", string(opts.UserConfigData))
 
 	instancer := c.pacman.GetInstanceHub()
 
