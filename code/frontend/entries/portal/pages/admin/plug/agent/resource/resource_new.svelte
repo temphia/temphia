@@ -25,9 +25,9 @@
   schema={{
     fields: [
       {
-        name: "Name",
-        ftype: "TEXT",
-        key_name: "name",
+        name: "Slug",
+        ftype: "TEXT_SLUG",
+        key_name: "slug",
       },
 
       {

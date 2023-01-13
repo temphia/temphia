@@ -61,8 +61,7 @@
       },
     ]}
     key_names={[
-      ["name", "Name"],
-      ["id", "Id"],
+      ["slug", "Slug"],
       ["type", "Type"],
       ["schema", "Schema"],
     ]}

@@ -29,17 +29,20 @@
 
   // actions
 
+  const action_agent_edit = (id: string) => app.nav.admin_agent_edit(pid, id);
+
   const action_execute = (id: string) =>
     app.nav.admin_plug_dev_execute(pid, id);
   const action_agent_links = (id: string) => app.nav.admin_agent_links(pid, id);
   const action_agent_exts = (id: string) => app.nav.admin_agent_ext(pid, id);
-  const action_agent_resources = (id: string) => {};
+  const action_agent_resources = (id: string) =>
+    app.nav.admin_agent_res(pid, id);
   const action_dev_shell = (id: string) =>
     app.nav.admin_plug_dev_shell(pid, id);
   const action_dev_docs = (id: string) => app.nav.admin_plug_dev_docs(pid, id);
   const action_delete = async (id: string) => {
     const api = app.api_manager.get_admin_plug_api();
-    const resp = await api.delete_agent(pid, id);
+    await api.delete_agent(pid, id);
     load();
   };
 
@@ -61,7 +64,7 @@
       },
       {
         Name: "Edit",
-        Action: null, //async (aid) => app.navigator.goto_admin_agent_page(pid, aid),
+        Action: action_agent_edit,
         drop: true,
         icon: "pencil-alt",
       },

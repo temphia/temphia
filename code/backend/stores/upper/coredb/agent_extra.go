@@ -180,7 +180,7 @@ func (d *DB) AgentResourceList(tenantId, pid, aid string) ([]*entities.AgentReso
 	if err != nil {
 		return nil, err
 	}
-	return nil, err
+	return data, nil
 }
 
 type aresource struct {
