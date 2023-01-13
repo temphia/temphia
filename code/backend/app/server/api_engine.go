@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/controllers/engine"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 )
@@ -40,6 +41,7 @@ func (s *Server) agentServeFile(ctx *gin.Context) {
 
 	out, err := s.cEngine.ServeAgentFile(ctx.Param("tenant_id"), ctx.Param("pid"), ctx.Param("aid"), ctx.Param("file"))
 	if err != nil {
+		pp.Println("@err/server_agent", err)
 		return
 	}
 
@@ -49,6 +51,7 @@ func (s *Server) agentServeFile(ctx *gin.Context) {
 func (s *Server) executorFile(ctx *gin.Context) {
 	out, err := s.cEngine.ServeExecutorFile(ctx.Param("tenant_id"), ctx.Param("pid"), ctx.Param("aid"), ctx.Param("file"))
 	if err != nil {
+		pp.Println("@err/executor_file", err)
 		return
 	}
 	httpx.WriteFile(ctx.Param("file"), out, ctx)
