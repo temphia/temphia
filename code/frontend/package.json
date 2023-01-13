@@ -18,6 +18,7 @@
     "build:adapter_editor_loader": "node scripts/build_adapter_editor_loader.js",
     "build:adapter_editor:noop": "ENTRY_FILE=adapter_editor_noop rollup -c",
     "build:adapter_editor:easypage": "ENTRY_FILE=adapter_editor_easypage rollup -c",
+    "build:executor:pageform": "ENTRY_FILE=executor_pageform rollup -c",
     "copy:build_files": "node scripts/copy_build_files.js",
     "dev": "rollup -c -w",
     "start": "sirv public",

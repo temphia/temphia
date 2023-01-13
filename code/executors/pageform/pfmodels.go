@@ -14,6 +14,7 @@ type FormItem struct {
 	Name     string            `json:"name,omitempty"`
 	Info     string            `json:"info,omitempty"`
 	Type     string            `json:"type,omitempty"`
+	Options  []string          `json:"options,omitempty"`
 	Pattern  string            `json:"pattern,omitempty"`
 	HtmlAttr map[string]string `json:"html_attr,omitempty"`
 }
