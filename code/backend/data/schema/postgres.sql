@@ -149,7 +149,7 @@ create table user_devices(
     apn_token text not null default '',
     scopes text not null default '',
     last_data json not null default '{}', -- browser/ip/timestamp
-    expires_on timestampz not null,
+    expires_on timestamptz not null,
     pair_options json not null default '{}',
     extra_meta json not null default '{}',
     tenant_id text not null,
