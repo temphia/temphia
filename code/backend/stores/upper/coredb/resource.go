@@ -71,17 +71,6 @@ func (d *DB) ResourcesByTarget(tenantId string, target string) ([]*entities.Reso
 	return ress, nil
 }
 
-func (d *DB) ResourceListByPlug(tenantId string, plugId string) ([]*entities.Resource, error) {
-	ress := make([]*entities.Resource, 0)
-
-	err := d.resTable().Find(db.Cond{"tenant_id": tenantId, "plug_id": plugId}).All(&ress)
-	if err != nil {
-		return nil, err
-	}
-
-	return ress, nil
-}
-
 // private
 
 func (d *DB) resTable() db.Collection {

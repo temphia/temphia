@@ -121,10 +121,6 @@ func (c *CoreHub) ResourcesByTarget(tenantId string, target string) ([]*entities
 	return c.coredb.ResourcesByTarget(tenantId, target)
 }
 
-func (c *CoreHub) ResourceListByPlug(tenantId string, plugId string) ([]*entities.Resource, error) {
-	return c.coredb.ResourceListByPlug(tenantId, plugId)
-}
-
 // agent extra
 
 // link

@@ -184,7 +184,6 @@ type PlugOps interface {
 	ResourceList(tenantId string) ([]*entities.Resource, error)
 	ResourcesMulti(tenantId string, rids ...string) ([]*entities.Resource, error)
 	ResourcesByTarget(tenantId string, target string) ([]*entities.Resource, error)
-	ResourceListByPlug(tenantId string, plugId string) ([]*entities.Resource, error)
 }
 
 type AgentOps interface {

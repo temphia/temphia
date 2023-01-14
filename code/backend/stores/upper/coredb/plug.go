@@ -93,7 +93,6 @@ var agentFields = []string{
 	"web_style",
 	"web_loader",
 	"web_files",
-	"env_vars",
 	"extra_meta",
 }
 

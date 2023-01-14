@@ -82,10 +82,6 @@ func (c *Controller) ResourceList(uclaim *claim.Session) ([]*entities.Resource, 
 	return c.coredb.ResourceList(uclaim.TenentId)
 }
 
-func (c *Controller) ResourceListByPlug(uclaim *claim.Session, plugId string) ([]*entities.Resource, error) {
-	return c.coredb.ResourceListByPlug(uclaim.TenentId, plugId)
-}
-
 type FlowmapData struct {
 	Plug       *entities.Plug                      `json:"plug,omitempty"`
 	Agents     []*entities.Agent                   `json:"agents,omitempty"`
@@ -94,7 +90,6 @@ type FlowmapData struct {
 
 	TargetApps     []*entities.TargetApp         `json:"target_apps,omitempty"`
 	TargetHooks    []*entities.TargetHook        `json:"target_hooks,omitempty"`
-	Resources      []*entities.Resource          `json:"resources,omitempty"`
 	AgentResources map[string]*entities.Resource `json:"agent_resources,omitempty"`
 }
 
@@ -107,7 +102,6 @@ func (c *Controller) PlugFlowmap(uclaim *claim.Session, plugId string) (*Flowmap
 		AgentExts:      make(map[string]*entities.AgentExtension),
 		TargetApps:     nil,
 		TargetHooks:    nil,
-		Resources:      nil,
 		AgentResources: make(map[string]*entities.Resource),
 	}
 
@@ -165,13 +159,6 @@ func (c *Controller) PlugFlowmap(uclaim *claim.Session, plugId string) (*Flowmap
 		defer wg.Done()
 		apps, _ := c.coredb.ListTargetAppByPlug(uclaim.TenentId, plugId)
 		data.TargetApps = apps
-	}()
-
-	func() {
-		wg.Add(1)
-		defer wg.Done()
-		ress, _ := c.coredb.ResourceListByPlug(uclaim.TenentId, plugId)
-		data.Resources = ress
 	}()
 
 	func() {

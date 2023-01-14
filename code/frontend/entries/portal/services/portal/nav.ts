@@ -145,9 +145,6 @@ export class Navigator {
     this.set(`#/admin/plug/edit/${bid}`);
   };
 
-  admin_plug_resource = (pid: string) => {
-    this.set(`#/admin/plug/${pid}/resource`);
-  };
 
   // agents
 

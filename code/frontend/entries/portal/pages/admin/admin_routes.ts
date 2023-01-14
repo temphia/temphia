@@ -19,8 +19,6 @@ import AdminPlugStates from "./plug/state/states.svelte";
 import AdminPlugStateNew from "./plug/state/state_new.svelte";
 import AdminPlugStateEdit from "./plug/state/state_edit.svelte";
 
-import AdminPlugResources from "./plug/resources/resources.svelte";
-
 import AdminPlugDevDocs from "./plug/dev/docs/docs.svelte";
 import AdminPlugDevExec from "./plug/dev/execute/execute.svelte";
 import AdminPlugDevShell from "./plug/dev/shell/shell.svelte";
@@ -170,8 +168,6 @@ export default {
       "/new": AdminPlugStateNew,
       "/:skey/edit": AdminPlugStateEdit,
     },
-
-    "/:pid/resource": AdminPlugResources,
   },
 
   "/repo": {
