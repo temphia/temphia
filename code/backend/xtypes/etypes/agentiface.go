@@ -18,8 +18,8 @@ type Method struct {
 type ValueType struct {
 	Type         string      `json:"type,omitempty"`
 	Values       []ValueType `json:"values,omitempty"`
-	PropertyName string      `json:"property_name,omitempty"` // only applicable to object
-	Ref          string      `json:"ref,omitempty"`           // (type, valye, prop_name) ||  ref to schema key
+	PropertyName string      `json:"property,omitempty"` // only applicable to object
+	Ref          string      `json:"ref,omitempty"`      // (type, valye, prop_name) ||  ref to schema key
 }
 
 type EventType struct {
@@ -32,6 +32,7 @@ type EventType struct {
 /*
 
 # primitive types
+	- null
 	- bool
 	- integer
 	- string
