@@ -1,5 +1,7 @@
 package etypes
 
+// syncme => iface.ts
+
 type AgentIface struct {
 	Name        string                `json:"name,omitempty"`
 	Definations map[string]any        `json:"definations,omitempty"`
