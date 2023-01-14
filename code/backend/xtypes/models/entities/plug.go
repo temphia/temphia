@@ -24,7 +24,6 @@ type Agent struct {
 	WebStyle   string     `json:"web_style,omitempty" db:"web_style,omitempty"`
 	WebLoader  string     `json:"web_loader,omitempty" db:"web_loader,omitempty"`
 	WebFiles   JsonStrMap `json:"web_files,omitempty" db:"web_files,omitempty"`
-	EnvVars    JsonStrMap `json:"env_vars,omitempty" db:"env_vars,omitempty"`
 	ExtraMeta  JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
 	ModVersion int64      `json:"mod_version,omitempty" db:"mod_version,omitempty"`
 	PlugId     string     `json:"plug_id,omitempty" db:"plug_id,omitempty"`

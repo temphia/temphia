@@ -16,7 +16,7 @@ type Resource struct {
 	Target    string     `json:"target,omitempty" db:"target,omitempty"`
 	Payload   string     `json:"payload,omitempty" db:"payload,omitempty"`
 	Policy    string     `json:"policy,omitempty" db:"policy,omitempty"`
-	PlugId    string     `json:"plug_id,omitempty" db:"plug_id,omitempty"`
+	BprintId  string     `json:"bprint_id,omitempty" db:"bprint_id,omitempty"`
 	ExtraMeta JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
 	TenantId  string     `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`
 }

@@ -100,7 +100,6 @@ func (pi *PlugInstancer) instance(pid string, opts xinstance.Options, schema *xb
 			WebStyle:  na.WebStyle,
 			WebLoader: na.WebLoader,
 			WebFiles:  na.WebFiles,
-			EnvVars:   entities.JsonStrMap{},
 			PlugId:    pid,
 			ExtraMeta: entities.JsonStrMap{},
 			TenantId:  opts.TenantId,
