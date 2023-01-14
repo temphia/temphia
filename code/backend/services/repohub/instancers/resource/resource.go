@@ -47,7 +47,7 @@ func (pi *ResInstancer) Instance(opts xinstance.Options) (*xinstance.Response, e
 		Target:    "",
 		Payload:   res.Payload,
 		Policy:    res.Policy,
-		PlugId:    "",
+		BprintId:  opts.BprintId,
 		ExtraMeta: res.Meta,
 		TenantId:  opts.TenantId,
 	})
