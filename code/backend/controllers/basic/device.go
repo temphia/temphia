@@ -1,6 +1,8 @@
 package basic
 
 import (
+	"time"
+
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
@@ -18,15 +20,17 @@ func (c *Controller) AddUserDevice(uclaim *claim.Session, data *NewUserDevice) e
 	// fixme => return new id
 
 	return c.coredb.AddUserDevice(uclaim.TenentId, uclaim.UserID, &entities.UserDevice{
-		Id:         0,
-		Name:       data.Name,
-		UserId:     uclaim.UserID,
-		DeviceType: data.DeviceType,
-		LastAddr:   "",
-		APNToken:   data.APNToken,
-		Scopes:     data.Scopes,
-		ExtraMeta:  data.ExtraMeta,
-		TenantID:   uclaim.TenentId,
+		Id:          0,
+		Name:        data.Name,
+		UserId:      uclaim.UserID,
+		DeviceType:  data.DeviceType,
+		APNToken:    data.APNToken,
+		Scopes:      data.Scopes,
+		ExtraMeta:   data.ExtraMeta,
+		TenantID:    uclaim.TenentId,
+		LastData:    entities.JsonStrMap{},
+		PairOptions: entities.JsonStrMap{},
+		ExpiresOn:   time.Now().Add(time.Hour * 24 * 60),
 	})
 
 }

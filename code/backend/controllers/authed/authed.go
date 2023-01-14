@@ -1,6 +1,8 @@
 package authed
 
 import (
+	"time"
+
 	"github.com/bwmarrin/snowflake"
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
@@ -110,11 +112,15 @@ func (c *Controller) AuthFinish(opts AuthFinishRequest, deviceName, addr string)
 		Name:       deviceName,
 		UserId:     paclaim.UserID,
 		DeviceType: "login",
-		LastAddr:   addr,
-		APNToken:   "",
-		Scopes:     ugroup.Scopes,
-		ExtraMeta:  nil,
-		TenantID:   sclaim.TenentId,
+		LastData: entities.JsonStrMap{
+			"address": addr,
+		},
+		APNToken:    "",
+		Scopes:      ugroup.Scopes,
+		ExtraMeta:   entities.JsonStrMap{},
+		TenantID:    sclaim.TenentId,
+		PairOptions: entities.JsonStrMap{},
+		ExpiresOn:   time.Now().Add(time.Hour * 24 * 60),
 	}
 
 	err = c.coredb.AddUserDevice(sclaim.TenentId, paclaim.UserID, device)

@@ -106,14 +106,16 @@ func (c *Controller) AddUserDevice(uclaim *claim.Session, user string, data *New
 	// fixme => return id
 
 	return c.coredb.AddUserDevice(uclaim.TenentId, user, &entities.UserDevice{
-		Id:         0,
-		Name:       data.Name,
-		UserId:     user,
-		DeviceType: data.DeviceType,
-		LastAddr:   "",
-		APNToken:   "",
-		Scopes:     data.Scopes,
-		ExtraMeta:  data.ExtraMeta,
-		TenantID:   uclaim.TenentId,
+		Id:          0,
+		Name:        data.Name,
+		UserId:      user,
+		DeviceType:  data.DeviceType,
+		ExpiresOn:   time.Now().Add(time.Hour * 24 * 60),
+		APNToken:    "",
+		Scopes:      data.Scopes,
+		ExtraMeta:   data.ExtraMeta,
+		TenantID:    uclaim.TenentId,
+		LastData:    entities.JsonStrMap{},
+		PairOptions: entities.JsonStrMap{},
 	})
 }
