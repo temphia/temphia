@@ -87,7 +87,7 @@
   >
     <div class="p-1 flex justify-between h-14">
       <div class="p-2">
-        <label class="uppercase text-gray-700 font-semibold text-lg">
+        <label class="uppercase text-gray-700 font-semibold md:text-lg ">
           Method
 
           <input
@@ -97,24 +97,24 @@
           />
 
           <button class="border rounded">
-            <Icon name="chevron-down" class="h-5 w-5" />
+            <Icon name="chevron-down" class="h-4 w-4 md:h-5 md:w-5" />
           </button>
         </label>
       </div>
-      <div class="flex gap-2 items-center">
+      <div class="flex sm:gap-1 md:gap-2 items-center">
         <button
           on:click={set_invoker}
           class="p-1 rounded bg-gray-500 shadow hover:bg-gray-900 flex text-white"
         >
-          <Icon name="globe-alt" class="h-6 w-6" solid />
+          <Icon name="globe-alt" class="h-4 w-4 md:h-6 md:w-6" solid />
           {invoker}
         </button>
 
         <button
           on:click={submit}
-          class="p-1 rounded bg-green-500 shadow hover:bg-green-900 flex text-white"
+          class="p-1 rounded bg-green-500 shadow hover:bg-green-900 flex text-white text-sm sm:text-base"
         >
-          <Icon name="play" class="h-6 w-6" solid />
+          <Icon name="play" class="h-4 w-4 md:h-6 md:w-6" solid />
           SUBMIT
         </button>
 
@@ -122,7 +122,7 @@
           on:click={() => app.utils.big_modal_open(IfaceHelp, {})}
           class="p-1 rounded bg-blue-300 shadow hover:bg-blue-600 flex text-white"
         >
-          <Icon name="information-circle" class="h-6 w-6" solid />
+          <Icon name="information-circle" class="h-4 w-4 md:h-6 md:w-6" solid />
         </button>
       </div>
     </div>
