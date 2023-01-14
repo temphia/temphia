@@ -86,23 +86,6 @@ create table target_hooks(
 );
 
 
--- create table target_kv(
---     key text not null,
---     value text not null,
---     target_type text not null,
---     target text not null,
---     tenant_id text not null default '',
---     unique(key, target_type target, tenant_id)
--- );
-
--- create table target_event(
---     id serial primary key,
---     target_type text not null,
---     target text not null,
---     data text not null,
---     extra_meta json not null default '{}',
---     tenant_id text not null default ''
--- );
 
 
 create table tenant_repos(
@@ -163,14 +146,12 @@ create table user_devices(
     name text not null default '',
     user_id text not null,
     device_type text not null default 'device', --- device/login
-    last_addr text not null default '',
     apn_token text not null default '',
     scopes text not null default '',
+    last_data json not null default '{}', -- browser/ip/timestamp
+    expires_on timestampz not null,
+    pair_options json not null default '{}',
     extra_meta json not null default '{}',
-
-    -- expires_on timestampz not null,
-    -- last_logged_on timestampz,
-
     tenant_id text not null,
     foreign KEY(user_id, tenant_id) references users(user_id, tenant_id),
     primary key(id)
@@ -272,6 +253,7 @@ create table data_table_groups (
     description TEXT not null,
     source_db TEXT not null,
     tenant_id TEXT not null,
+    bprint_id text not null default '',
     cabinet_source TEXT not null default '',
     cabinet_folder TEXT not null default '',
     extra_meta json not null default '{}',
@@ -457,15 +439,12 @@ create table agents(
     type text not null,
     executor text not null,
     iface_file text not null default '',
-
-    -- mod_version integer not null default 0,
-
+    mod_version integer not null default 0,
     web_entry text not null default '',
     web_script text not null default '',
     web_style text not null default '',
     web_loader text not null default '',
     web_files json not null default '{}',
-    env_vars json not null default '{}',
     extra_meta json not null default '{}',
     tenant_id text not null,
     plug_id text not null,
@@ -481,7 +460,7 @@ create table resources(
     payload text not null default '',
     target text not null default '',
     policy text not null default '',
-    plug_id text not null default '',
+    bprint_id text not null default '',
     extra_meta json not null default '{}',
     tenant_id text not null,
     primary KEY(id, tenant_id)
