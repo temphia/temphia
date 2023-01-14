@@ -47,34 +47,4 @@
       <Agent data={agent} />
     {/each}
   </div>
-
-  {#if data.root_plug.resources}
-    <footer class="p-2 border-t border-gray-200">
-      <div class="border">
-        <header class="bg-gray-50 p-2 border-b">
-          <h3 class="inline-flex text-lg font-semibold text-gray-700">
-            <Oicon name="resource" />
-            &nbsp; Resources
-          </h3>
-        </header>
-
-        <div class="flex flex-col">
-          {#each data.root_plug.resources as resource}
-            <div class="flex justify-around">
-              Id
-              <span class="px-1 bg-green-300 text-green-50 rounded"
-                >{resource}</span
-              >
-              Type
-              <span class="px-1 bg-green-300 text-green-50 rounded"
-                >{""}</span
-              >
-            </div>
-          {/each}
-        </div>
-      </div>
-    </footer>
-  {/if}
-
-
 </div>
