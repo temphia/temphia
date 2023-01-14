@@ -1,6 +1,6 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import OpenRPC from "../docs/_openrpc.svelte";
+  import OpenRPC from "../docs/old/_openrpc.svelte";
 
   import { PortalService, CEditor } from "../../../core";
   import type { DevShellService } from "../../../../../services/engine/dev_shell";

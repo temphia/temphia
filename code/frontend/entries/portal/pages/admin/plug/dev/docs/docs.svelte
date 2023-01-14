@@ -1,5 +1,5 @@
 <script>
-  import Openrpc from "./_openrpc.svelte";
+  import Iface from "./_iface.svelte";
 </script>
 
-<Openrpc />
+<Iface />
