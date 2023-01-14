@@ -98,12 +98,6 @@
           ftype: "KEY_VALUE_TEXT",
           key_name: "web_files",
         },
-
-        {
-          name: "Env Vars",
-          ftype: "KEY_VALUE_TEXT",
-          key_name: "env_vars",
-        },
         {
           name: "Extra Meta",
           ftype: "KEY_VALUE_TEXT",
