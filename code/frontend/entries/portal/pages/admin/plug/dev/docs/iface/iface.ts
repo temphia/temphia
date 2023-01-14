@@ -12,7 +12,7 @@ export interface Method {
   info: string;
   arg: ValueType;
   return_type: ValueType;
-  error_type: { [_: string]: string };
+  error_types: { [_: string]: string };
 }
 
 export interface EventType {

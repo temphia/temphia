@@ -1,6 +1,6 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import OpenRPC from "../docs/old/_openrpc.svelte";
+  import IfaceHelp from "./_iface_help.svelte";
 
   import { PortalService, CEditor } from "../../../core";
   import type { DevShellService } from "../../../../../services/engine/dev_shell";
@@ -47,7 +47,7 @@
   let invoker = "";
   let invoker_options = {};
   const set_invoker = () => {
-    invoker = "test"
+    invoker = "test";
     app.utils.small_modal_open(SetInvoker, {});
   };
 
@@ -119,7 +119,7 @@
         </button>
 
         <button
-          on:click={() => app.utils.big_modal_open(OpenRPC, {})}
+          on:click={() => app.utils.big_modal_open(IfaceHelp, {})}
           class="p-1 rounded bg-blue-300 shadow hover:bg-blue-600 flex text-white"
         >
           <Icon name="information-circle" class="h-6 w-6" solid />
