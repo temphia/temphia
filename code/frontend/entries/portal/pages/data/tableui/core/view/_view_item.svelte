@@ -11,6 +11,8 @@
     value: string;
   }[] = [];
 
+  export let onModify  = (conds) => {}
+
   export let filter_modified = false;
   const colindexed = columns.reduce((acc, curr) => {
     acc[curr.slug] = curr;
@@ -31,7 +33,7 @@
   $: console.log("@new_column_type", _new_column_type);
   $: console.log("@new_filter_value", _new_column_type);
 
-  export let onAdd = () => {
+  let onAdd = () => {
     filter_conds = [
       ...filter_conds,
       {
@@ -46,8 +48,9 @@
     _new_column_cond = "";
     _new_filter_value = undefined;
     filter_modified = true;
+    onModify(filter_conds)
   };
-  export let onRemove = (ftcond) => {
+  let onRemove = (ftcond) => {
     const newf = filter_conds.filter(
       (c) =>
         c.column === ftcond.column &&
@@ -57,6 +60,7 @@
 
     filter_conds = [...newf];
     filter_modified = true;
+    onModify(filter_conds)
   };
 </script>
 

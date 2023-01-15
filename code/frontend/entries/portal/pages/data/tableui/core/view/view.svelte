@@ -36,7 +36,7 @@
   };
 
   setContext("__data_context__", {
-    modal: view_modal,
+    get_modal: () => view_modal,
     table_service: manager,
   });
 </script>

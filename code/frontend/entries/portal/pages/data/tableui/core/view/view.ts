@@ -6,6 +6,6 @@ export interface ViewModal {
 }
 
 export interface DataContext {
-  modal: ViewModal;
+  get_modal: () => ViewModal;
   table_service: TableService;
 }

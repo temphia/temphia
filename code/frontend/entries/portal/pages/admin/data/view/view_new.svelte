@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { getContext } from "svelte";
-  import { AutoForm, PortalService } from "../../core";
+  import { getContext, setContext } from "svelte";
+  import { LoadingSpinner, PortalService } from "../../core";
   import { params } from "svelte-hash-router";
+  import ValueInner from "./_value_inner.svelte";
 
   export let source = $params.source;
   export let group = $params.group;
@@ -11,8 +12,8 @@
   const api = app.api_manager.get_admin_data_api();
 
   let message = "";
-  let data = {};
-  
+  let loading = true;
+  let columns = [];
   const save = async (_data) => {
     const resp = await api.add_view(source, group, table, _data);
     if (!resp.ok) {
@@ -21,33 +22,39 @@
     }
     app.nav.admin_data_views(source, group, table);
   };
+
+  const load = async () => {
+    const dapi = app.api_manager.get_admin_data_api();
+    const resp = await dapi.list_column(source, group, table);
+    if (!resp.ok) {
+      message = resp.data;
+      loading = false;
+      return;
+    }
+    columns = resp.data;
+    loading = false;
+  };
+
+  load();
+
+  setContext("__data_context__", {
+    get_modal: () => ({
+      open: app.utils.small_modal_open,
+      close: app.utils.small_modal_close,
+    }),
+    table_service: null,
+  });
 </script>
 
-<AutoForm
-  {message}
-  schema={{
-    fields: [
-      {
-        name: "Name",
-        ftype: "TEXT",
-        key_name: "name",
-      },
-      {
-        name: "Slug",
-        ftype: "TEXT_SLUG",
-        key_name: "slug",
-        disabled: true,
-      },
+{#if loading}
+  <LoadingSpinner />
+{:else}
+  <div class="h-full w-full bg-indigo-100 p-10 overflow-auto">
+    <div class="p-5 bg-white w-full ">
+      <div class="text-2xl text-indigo-900">Add View</div>
+      <p class="text-red-500">{message || ""}</p>
 
-      {
-        name: "Extra Meta",
-        ftype: "KEY_VALUE_TEXT",
-        key_name: "extra_meta",
-      },
-    ],
-    name: "New View",
-    required_fields: [],
-  }}
-  onSave={save}
-  {data}
-/>
+      <ValueInner {columns} data={{}} onSave={(_data) => save(_data)} />
+    </div>
+  </div>
+{/if}
