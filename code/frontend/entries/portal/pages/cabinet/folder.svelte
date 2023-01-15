@@ -52,10 +52,19 @@
     const frags = name.split(".");
     return imageTypes.includes(frags[frags.length - 1]);
   };
+
+  let preview = false;
 </script>
 
 <Layout {sources} source={$params.source}>
   <svelte:fragment slot="actions_right">
+    <div class="p-2 bg-gray-50 font-sans font-thin">
+      <label>
+        <input type="checkbox" bind:checked={preview} />
+        Preview
+      </label>
+    </div>
+
     <button
       class="px-2 py-1 rounded bg-gray-50 hover:bg-gray-200"
       on:click={show_upload_panel}
