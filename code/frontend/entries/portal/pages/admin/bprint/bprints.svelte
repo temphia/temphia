@@ -45,6 +45,20 @@
     load();
   };
   const action_new = () => app.nav.repo_loader();
+
+  /*
+  
+  export as zip
+  import from zip
+
+  list bprint data
+  list bprint agents
+  list bprint resources
+  
+  
+  */
+
+
 </script>
 
 {#if loading}
