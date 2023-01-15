@@ -50,9 +50,9 @@
   export let onRemove = (ftcond) => {
     const newf = filter_conds.filter(
       (c) =>
-        c.column !== ftcond.column &&
-        c.cond !== ftcond.cond &&
-        c.value !== ftcond.value
+        c.column === ftcond.column &&
+        c.cond === ftcond.cond &&
+        c.value === ftcond.value
     );
 
     filter_conds = [...newf];
