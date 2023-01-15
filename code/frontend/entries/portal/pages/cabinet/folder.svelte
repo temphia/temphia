@@ -6,6 +6,7 @@
 
   import PanelUploadFile from "./panels/upload_file.svelte";
   import { LoadingSpinner } from "../admin/core";
+  import { humanizeBytes } from "../../../../lib/utils";
 
   const app: PortalService = getContext("__app__");
 
@@ -26,7 +27,7 @@
     const resp = await capi.listFolder($params.folder);
     files = resp.data;
     files_loaded = true;
-    ticket_loaded = true
+    ticket_loaded = true;
 
     // fapi = await app.get_folder_api(source, folder);
     // ticket_loaded = true;
@@ -138,7 +139,7 @@
               <td class="px-4 py-1 text-xs border">
                 <span
                   class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm"
-                  >{file.size || 0}</span
+                  >{humanizeBytes(file.size || 0)}</span
                 >
               </td>
               <td class="px-4 py-1 text-sm border"
