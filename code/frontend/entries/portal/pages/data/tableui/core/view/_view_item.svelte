@@ -1,8 +1,9 @@
 <script lang="ts">
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import type { Column } from "../../../../../services/data";
   import * as f from "../fields/field";
   import { CtypeFilterConds } from "./filters";
-
+  
   export let columns: Column[] = [];
   export let filter_conds: {
     column: string;
@@ -11,7 +12,6 @@
   }[] = [];
 
   export let filter_modified = false;
-
   const colindexed = columns.reduce((acc, curr) => {
     acc[curr.slug] = curr;
     return acc;
@@ -92,18 +92,7 @@
 
         <td class="py-3 px-6 text-center">
           <button on:click={() => onRemove(ft)}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                clip-rule="evenodd"
-              />
-            </svg>
+            <Icon name="x-circle" class="h-5 w-5" />
           </button>
         </td>
       </tr>
@@ -134,8 +123,6 @@
               bind:value={_new_filter_value}
               column={_current_column}
             />
-          <!-- {:else}
-            <div>Nil</div> -->
           {/if}
         {/key}
       </td>

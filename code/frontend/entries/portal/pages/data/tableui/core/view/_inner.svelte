@@ -1,7 +1,6 @@
 <script lang="ts">
   import { KvEditor } from "../../../../admin/core";
   import ViewItem from "./_view_item.svelte";
-
   export let columns;
   export let data;
 

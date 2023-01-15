@@ -1,6 +1,8 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-import type { TableService } from "../../../../../services/data";
+  import { setContext } from "svelte";
+  import type { TableService } from "../../../../../services/data";
+  import type { ViewModal } from "./view";
 
   import Inner from "./_inner.svelte";
 
@@ -10,6 +12,7 @@ import type { TableService } from "../../../../../services/data";
 
   export let manager: TableService;
   export let columns: object[];
+  export let view_modal: ViewModal;
 
   let rootstate = manager.state.data_store;
   let navstore = manager.state.nav_store;
@@ -31,6 +34,11 @@ import type { TableService } from "../../../../../services/data";
     _view = { ...v };
     view_name = v.name || "";
   };
+
+  setContext("__data_context__", {
+    modal: view_modal,
+    table_service: manager,
+  });
 </script>
 
 <Layout bind:show>
@@ -53,9 +61,8 @@ import type { TableService } from "../../../../../services/data";
       </select>
 
       <button class="p-1 rounded bg-gray-100">
-        <Icon name="cog" class="w-5 h-5" ></Icon>
+        <Icon name="cog" class="w-5 h-5" />
       </button>
-
     </div>
 
     <button
