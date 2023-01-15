@@ -5,7 +5,7 @@ import AdminBprintFile from "./bprint/files/file.svelte";
 import AdminBprintDataInstancer from "./bprint/instancer/manual/data/data.svelte";
 import AdminBprintPlugInstancer from "./bprint/instancer/manual/plug/plug.svelte";
 import AdminBprintEditor from "./bprint/editor/editor.svelte";
-import AdminBprintAutomaticInstancer from "./bprint/instancer/automatic/automatic.svelte"
+import AdminBprintAutomaticInstancer from "./bprint/instancer/automatic/automatic.svelte";
 
 // plug
 import AdminPlugs from "./plug/plugs.svelte";
@@ -183,10 +183,10 @@ export default {
 
     "/rtype/data_group/new": AdminResourceDatagroupNew,
     "/rtype/data_group/:rid/edit": AdminResourceDatagroupEdit,
-    "/rtype/room/new": AdminResourceFolderNew,
-    "/rtype/room/:rid/edit": AdminResourceFolderEdit,
-    "/rtype/folder/new": AdminResourceRoomNew,
-    "/rtype/folder/:rid/edit": AdminResourceRoomEdit,
+    "/rtype/room/new": AdminResourceRoomNew,
+    "/rtype/room/:rid/edit": AdminResourceRoomEdit,
+    "/rtype/folder/new": AdminResourceFolderNew,
+    "/rtype/folder/:rid/edit": AdminResourceFolderEdit,
   },
 
   "/data": {

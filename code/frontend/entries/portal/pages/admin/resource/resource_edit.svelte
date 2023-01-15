@@ -80,9 +80,9 @@
         },
 
         {
-          name: "Plug Id",
+          name: "Bprint Id",
           ftype: "TEXT",
-          key_name: "plug_id",
+          key_name: "bprint_id",
         },
 
         {
