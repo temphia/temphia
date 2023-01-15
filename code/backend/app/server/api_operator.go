@@ -29,7 +29,7 @@ func (s *Server) opsX(c *gin.Context) {
 	token := c.GetHeader("Authorization")
 	opclaim, err := s.signer.ParseOperator(token)
 	if err != nil {
-		httpx.WriteErr(c, err)
+		httpx.UnAuthorized(c)
 		return
 	}
 

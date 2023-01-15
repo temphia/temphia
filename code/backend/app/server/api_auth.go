@@ -192,7 +192,7 @@ func (s *Server) authRefresh(c *gin.Context) {
 
 	uclaim, err := s.signer.ParseUser(c.Param("tenant_id"), opts.UserToken)
 	if err != nil {
-		httpx.WriteErr(c, err)
+		httpx.UnAuthorized(c)
 		return
 	}
 	resp := s.cAuth.RefreshService(uclaim, opts)
@@ -202,7 +202,7 @@ func (s *Server) authRefresh(c *gin.Context) {
 func (s *Server) authAbout(c *gin.Context) {
 	uclaim, err := s.signer.ParseUser(c.Param("tenant_id"), c.GetHeader("Authorization"))
 	if err != nil {
-		httpx.WriteErr(c, err)
+		httpx.UnAuthorized(c)
 		return
 	}
 

@@ -24,6 +24,8 @@ func (m *Middleware) LoggedX(fn func(ctx httpx.Request)) func(*gin.Context) {
 				Err(err).
 				Str("tenant_id", tenantId).
 				Msg(logid.RoutesSessionParseErr)
+
+			httpx.UnAuthorized(c)
 			return
 		}
 
@@ -59,6 +61,7 @@ func (m *Middleware) DataX(fn func(uclaim *claim.Data, ctx *gin.Context)) func(c
 	return func(ctx *gin.Context) {
 		uclaim, err := m.Signer.ParseData(ctx.Param("tenant_id"), ctx.GetHeader("Authorization"))
 		if err != nil {
+			httpx.UnAuthorized(ctx)
 			return
 		}
 
@@ -70,6 +73,7 @@ func (m *Middleware) FolderX(fn func(uclaim *claim.Folder, ctx *gin.Context)) fu
 	return func(ctx *gin.Context) {
 		uclaim, err := m.Signer.ParseFolder(ctx.Param("tenant_id"), ctx.Param("ticket"))
 		if err != nil {
+			httpx.UnAuthorized(ctx)
 			return
 		}
 
@@ -82,6 +86,7 @@ func (m *Middleware) ExecutorX(fn func(uclaim *claim.Executor, ctx *gin.Context)
 	return func(ctx *gin.Context) {
 		uclaim, err := m.Signer.ParseExecutor(ctx.Param("tenant_id"), ctx.GetHeader("Authorization"))
 		if err != nil {
+			httpx.UnAuthorized(ctx)
 			return
 		}
 

@@ -214,7 +214,7 @@ func (s *Server) sockdDataWS(ctx *gin.Context) {
 
 	dclaim, err := s.signer.ParseData(ctx.Param("tenant_id"), ctx.Query("token"))
 	if err != nil {
-		httpx.WriteErr(ctx, err)
+		httpx.UnAuthorized(ctx)
 		return
 	}
 

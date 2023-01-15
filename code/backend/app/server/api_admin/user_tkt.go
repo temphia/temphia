@@ -2,6 +2,7 @@ package apiadmin
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
@@ -13,7 +14,10 @@ func (a *ApiAdmin) userTktAPI(rg *gin.RouterGroup) {
 	rg.DELETE("/:user_id", a.UgroupX(a.ugDeleteUser))
 }
 
-func (a *ApiAdmin) ugListUser(ctx UgCtx)   {}
+func (a *ApiAdmin) ugListUser(ctx UgCtx) {
+
+}
+
 func (a *ApiAdmin) ugAddUser(ctx UgCtx)    {}
 func (a *ApiAdmin) ugGetUser(ctx UgCtx)    {}
 func (a *ApiAdmin) ugUpdateUser(ctx UgCtx) {}
@@ -25,9 +29,17 @@ type UgCtx struct {
 }
 
 func (a *ApiAdmin) UgroupX(fn func(ctx UgCtx)) func(ctx *gin.Context) {
+
 	return func(ctx *gin.Context) {
+
+		umClaim, err := a.signer.ParseUserMgmtTkt(ctx.Param("tenant_id"), ctx.GetHeader("Authorization"))
+		if err != nil {
+			httpx.UnAuthorized(ctx)
+			return
+		}
+
 		fn(UgCtx{
-			uclaim: nil,
+			uclaim: umClaim,
 			http:   ctx,
 		})
 	}

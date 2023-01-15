@@ -143,11 +143,13 @@ func (s *Server) sockdUserWS(ctx *gin.Context) {
 
 	sclaim, err := s.signer.ParseSession(ctx.Param("tenant_id"), ctx.Query("token"))
 	if err != nil {
+		httpx.UnAuthorized(ctx)
 		return
 	}
 
 	conn, err := transports.NewConnWS(ctx, s.sockdConnIdGenerator.Generate().Int64())
 	if err != nil {
+		httpx.WriteErr(ctx, err)
 		return
 	}
 

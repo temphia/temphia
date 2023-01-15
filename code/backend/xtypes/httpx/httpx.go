@@ -8,8 +8,11 @@ import (
 )
 
 func NotFound(ctx *gin.Context) {
-	ctx.Writer.WriteHeader(http.StatusNotFound)
-	ctx.Writer.Write([]byte(`<h1>Not Found<h1>`))
+	ctx.Data(http.StatusNotFound, "text/html", []byte(`<h1>Not Found<h1>`))
+}
+
+func UnAuthorized(ctx *gin.Context) {
+	ctx.Data(http.StatusUnauthorized, "text/html", []byte(`<h1>Unauthorized<h1>`))
 }
 
 func WriteFile(file string, data []byte, ctx *gin.Context) {

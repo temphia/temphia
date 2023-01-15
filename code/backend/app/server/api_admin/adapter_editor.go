@@ -2,6 +2,7 @@ package apiadmin
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
@@ -52,6 +53,7 @@ func (a *ApiAdmin) adapterX(fn func(aclaim *claim.AdapterEditor, ctx *gin.Contex
 	return func(ctx *gin.Context) {
 		aclaim, err := a.signer.ParseAdapterEditor(ctx.Param("tenant_id"), ctx.GetHeader("Authorization"))
 		if err != nil {
+			httpx.UnAuthorized(ctx)
 			return
 		}
 

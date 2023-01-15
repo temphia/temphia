@@ -12,6 +12,8 @@ var (
 	DevPushMaxSize int64 = 100 << 20 // ~ 100 mb
 )
 
+// fixme => parse err should be 401
+
 func (s *Server) devAPI(rg *gin.RouterGroup) {
 
 	rg.GET("/bprint/file", s.DevBprintFileList)
