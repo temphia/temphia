@@ -20,7 +20,7 @@
 
   
   $: if (modified && onChange && !run) {
-    onChange(data);
+    onChange(_data);
     run = true;
   }
 </script>

@@ -26,22 +26,19 @@
 
   const get = (name) => data[name] || "";
   const set = (name) => (ev) => {
-    mod_data = { ...mod_data, [name]: ev.target.value };
-    modified = true;
+    setValue(name)(ev.target.value);
   };
 
   const setNumber = (name) => (ev) => {
-    mod_data = { ...mod_data, [name]: Number(ev.target.value) };
-    modified = true;
+    setValue(name)(Number(ev.target.value));
   };
 
   const setBool = (name) => (ev) => {
-    mod_data = { ...mod_data, [name]: ev.target.checked };
-    modified = true;
+    setValue(name)(Boolean(ev.target.checked));
   };
 
-  const setMeta = (name) => (_new_meta) => {
-    mod_data = { ...mod_data, [name]: _new_meta };
+  const setValue = (name: string) => (val: any) => {
+    mod_data = { ...mod_data, [name]: val };
     modified = true;
   };
 </script>
@@ -85,7 +82,10 @@
             class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200"
           />
         {:else if field.ftype === "MULTI_TEXT"}
-          <MultiText onChange={(_newval) => {}} value={get(field.key_name)} />
+          <MultiText
+            onChange={setValue(field.key_name)}
+            value={get(field.key_name)}
+          />
         {:else if field.ftype === "LONG_TEXT" || field.ftype === "TEXT_POLICY"}
           <textarea
             id={`field-${idx}`}
@@ -114,7 +114,7 @@
         {:else if field.ftype === "KEY_VALUE_TEXT"}
           <KvEditor
             data={data[field.key_name] || {}}
-            onChange={setMeta(field.key_name)}
+            onChange={setValue(field.key_name)}
           />
         {:else}
           <div>Not impl</div>

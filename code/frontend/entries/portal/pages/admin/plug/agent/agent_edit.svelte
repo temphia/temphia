@@ -104,7 +104,7 @@
           key_name: "extra_meta",
         },
       ],
-      name: "New Agent",
+      name: "Edit Agent",
       required_fields: [],
     }}
     onSave={save}
