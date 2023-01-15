@@ -39,6 +39,9 @@
     app.nav.admin_ugroup_users(id);
 
   const action_group_auths = (id: string) => app.nav.admin_ugroup_auths(id);
+
+  const action_group_datas = (id: string) => app.nav.admin_ugroup_datas(id);
+  const action_group_apps = (id: string) => app.nav.admin_ugroup_apps(id);
 </script>
 
 <TopActions
@@ -75,18 +78,17 @@
 
       {
         Name: "Apps",
-        Action: (id) => {},
+        Action: action_group_apps,
         icon: "view-grid-add",
         drop: true,
       },
 
       {
         Name: "Datas",
-        Action: (id) => {},
+        Action: action_group_datas,
         icon: "collection",
         drop: true,
       },
-      
 
       {
         Name: "Delete",
@@ -99,7 +101,7 @@
       ["name", "Name"],
       ["slug", "Slug"],
       ["scopes", "Scopes"],
-      ["mod_version", "Mod Version"]
+      ["mod_version", "Mod Version"],
     ]}
     color={[]}
     {datas}

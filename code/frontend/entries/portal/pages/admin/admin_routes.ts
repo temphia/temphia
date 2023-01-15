@@ -96,6 +96,14 @@ import AdminUgroupAuths from "./ugroup/auth/auths.svelte";
 import AdminUgroupAuthNew from "./ugroup/auth/auth_new.svelte";
 import AdminUgroupAuthEdit from "./ugroup/auth/auth_edit.svelte";
 
+import AdminUgroupDatas from "./ugroup/data/datas.svelte";
+import AdminUgroupDataNew from "./ugroup/data/data_new.svelte";
+import AdminUgroupDataEdit from "./ugroup/data/data_edit.svelte";
+
+import AdminUgroupApps from "./ugroup/app/apps.svelte";
+import AdminUgroupAppNew from "./ugroup/app/app_new.svelte";
+import AdminUgroupAppEdit from "./ugroup/app/app_edit.svelte";
+
 // lens
 import AdminLens from "./lens/log/lens.svelte";
 
@@ -221,6 +229,14 @@ export default {
     "/:ugroup/auth": AdminUgroupAuths,
     "/:ugroup/auth/edit/:id": AdminUgroupAuthEdit,
     "/:ugroup/auth/new": AdminUgroupAuthNew,
+
+    "/:ugroup/app": AdminUgroupApps,
+    "/:ugroup/app/edit/:id": AdminUgroupAppEdit,
+    "/:ugroup/app/new": AdminUgroupAppNew,
+
+    "/:ugroup/data": AdminUgroupDatas,
+    "/:ugroup/data/edit/:id": AdminUgroupDataEdit,
+    "/:ugroup/data/new": AdminUgroupDataNew,
   },
 
   "/user": {

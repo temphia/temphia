@@ -446,6 +446,33 @@ export class Navigator {
     this.set(`#/admin/ugroup/${ugroup}/auth/edit/${id}`);
   }
 
+
+  admin_ugroup_apps(ugroup: string) {
+    this.set(`#/admin/ugroup/${ugroup}/app`);
+  }
+
+  admin_ugroup_app_new(ugroup: string) {
+    this.set(`#/admin/ugroup/${ugroup}/app/new`);
+  }
+
+  admin_ugroup_app_edit(ugroup: string, id: string) {
+    this.set(`#/admin/ugroup/${ugroup}/app/edit/${id}`);
+  }
+
+  admin_ugroup_datas(ugroup: string) {
+    this.set(`#/admin/ugroup/${ugroup}/data`);
+  }
+
+  admin_ugroup_data_new(ugroup: string) {
+    this.set(`#/admin/ugroup/${ugroup}/data/new`);
+  }
+
+  admin_ugroup_data_edit(ugroup: string, id: string) {
+    this.set(`#/admin/ugroup/${ugroup}/data/edit/${id}`);
+  }
+
+
+
   admin_tenant() {
     this.set(`#/admin/tenant/`);
   }
