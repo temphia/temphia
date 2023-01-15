@@ -36,7 +36,6 @@
   const action_issue = (id: string) =>
     app.utils.small_modal_open(Issuer, { app, bid: id });
 
-  const action_file_edit = (id: string) => {};
   const action_goto_files = (id: string) => app.nav.admin_bprint_files(id);
 
   const action_delete = async (id: string) => {
@@ -94,13 +93,6 @@
         Action: action_issue,
         drop: true,
         icon: "terminal",
-      },
-
-      {
-        Name: "Open File Editor",
-        Action: action_file_edit,
-        drop: true,
-        icon: "beaker",
       },
 
       {
