@@ -51,8 +51,8 @@
   <div
     class="flex-shrink h-12 w-full flex justify-between gap-x-1 mt-2 pt-2 border-t"
   >
-    <div class="p-2">
-      <label for="">Views</label>
+    <div class="p-1 flex gap-2">
+      <label class="uppercase text-gray-700" for="">Views</label>
       <select class="p-1 rounded w-36">
         <option value="__index_0" />
         {#each $rootstate.views || [] as v}
@@ -60,7 +60,7 @@
         {/each}
       </select>
 
-      <button class="p-1 rounded bg-gray-100">
+      <button class="p-1 rounded bg-gray-50 hover:bg-gray-200">
         <Icon name="cog" class="w-5 h-5" />
       </button>
     </div>

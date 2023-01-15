@@ -15,7 +15,7 @@
   };
 </script>
 
-<div class="border p-2 shadow rounded">
+<div class="border p-2 rounded">
   <table class="w-full text-sm text-left text-gray-500">
     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
       <tr>

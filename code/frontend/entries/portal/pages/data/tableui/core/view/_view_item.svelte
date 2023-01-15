@@ -63,10 +63,10 @@
 <table class="w-full border">
   <thead>
     <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-      <th class="py-3 px-6 text-left">Column</th>
-      <th class="py-3 px-6 text-left">Condition</th>
-      <th class="py-3 px-6 text-center">Value</th>
-      <th class="py-3 px-6 text-center">Action</th>
+      <th class="py-1 px-2 text-left">Column</th>
+      <th class="py-1 px-2 text-left">Condition</th>
+      <th class="py-1 px-2 text-center">Value</th>
+      <th class="py-1 px-2 text-center">Action</th>
     </tr>
   </thead>
   <tbody class="text-gray-600 text-sm font-light">
