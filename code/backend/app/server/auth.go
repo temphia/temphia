@@ -55,7 +55,8 @@ func (s *Server) AuthIndex(ctx *gin.Context) {
 			window.__temphia_site_data__ = `))
 	buf.Write(tdata)
 	buf.Write([]byte(`</script>
-		<link rel="icon" type="image/png" href="/favicon.png" />
+
+		<link rel="icon" type="image/png" href="/z/assets/static/logo.png">
 		<link rel="stylesheet"  type="text/css" href="/z/assets/build/auth.css" />
 		<script defer src="/z/assets/build/auth.js"></script>
 		</head>
