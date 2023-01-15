@@ -1,5 +1,6 @@
 <script lang="ts">
-  import type { TableService } from "../../../../../services/data";
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
+import type { TableService } from "../../../../../services/data";
 
   import Inner from "./_inner.svelte";
 
@@ -44,12 +45,17 @@
   >
     <div class="p-2">
       <label for="">Views</label>
-      <select class="p-1 rounded">
+      <select class="p-1 rounded w-36">
         <option value="__index_0" />
         {#each $rootstate.views || [] as v}
           <option on:click={onViewChange(v)}>{v["name"] || ""}</option>
         {/each}
       </select>
+
+      <button class="p-1 rounded bg-gray-100">
+        <Icon name="cog" class="w-5 h-5" ></Icon>
+      </button>
+
     </div>
 
     <button
