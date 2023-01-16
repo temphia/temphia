@@ -15,7 +15,7 @@ func (s *Server) cabinetAPI(rg *gin.RouterGroup) {
 	rg.GET("/:source/:folder/file/:fname", s.X(s.getFile))
 	rg.POST("/:source/:folder/file/:fname", s.X(s.uploadFile))
 	rg.DELETE("/:source/:folder/file/:fname", s.X(s.deleteFile))
-	rg.GET("/:source/:folder/preview/:fname", s.X(s.getFilePreview))
+	rg.GET("/:source/:folder/preview/:fname", s.getFilePreview)
 }
 
 func (s *Server) newFolder(ctx httpx.Request) {
@@ -83,18 +83,23 @@ func (s *Server) deleteFile(ctx httpx.Request) {
 	httpx.WriteFinal(ctx.Http, err)
 }
 
-func (s *Server) getFilePreview(ctx httpx.Request) {
+func (s *Server) getFilePreview(ctx *gin.Context) {
 
-	bytes, err := s.cCabinet.GetBlob(
-		ctx.Session,
-		ctx.MustParam("source"),
-		ctx.MustParam("folder"),
-		ctx.MustParam("fname"))
+	uclaim, err := s.signer.ParseSession(ctx.Param("tenant_id"), ctx.Query("token"))
 	if err != nil {
-		httpx.WriteErr(ctx.Http, err)
+		httpx.UnAuthorized(ctx)
 		return
 	}
 
-	ctx.Http.Writer.WriteHeader(http.StatusOK)
-	ctx.Http.Writer.Write(bytes)
+	bytes, err := s.cCabinet.GetBlob(
+		uclaim,
+		ctx.Param("source"),
+		ctx.Param("folder"),
+		ctx.Param("fname"))
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	httpx.WriteBinary(ctx, bytes)
 }

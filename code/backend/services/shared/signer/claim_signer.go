@@ -114,6 +114,8 @@ func (cs *ClaimSigner) ParseSession(tenantId, payload string) (*claim.Session, e
 	if err != nil {
 		return nil, err
 	}
+	data.TenantId = tenantId
+
 	return data, nil
 }
 

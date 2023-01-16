@@ -25,12 +25,14 @@
 
   const load = async () => {
     const resp = await capi.listFolder($params.folder);
+    if (!resp.ok) {
+      console.log("Err", resp);
+      return;
+    }
+
     files = resp.data;
     files_loaded = true;
     ticket_loaded = true;
-
-    // fapi = await app.get_folder_api(source, folder);
-    // ticket_loaded = true;
   };
 
   load();
@@ -123,10 +125,10 @@
           {#each files as file}
             <tr class="text-gray-700 hover:bg-gray-200">
               <td class="px-2 py-1 border">
-                {#if isImage(file.name)}
+                {#if isImage(file.name) && preview}
                   <img
-                    src={"fapi.get_file_preview_link(file.name)"}
-                    alt=""
+                    src={capi.getFilePreview($params.folder, file.name)}
+                    alt={file.name}
                     class="h-10 w-10 p-1 border"
                   />
                 {:else}

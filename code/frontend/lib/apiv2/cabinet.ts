@@ -3,9 +3,9 @@ import { Http } from "./http";
 
 export class CabinetAPI {
   base: ApiBase;
-  source: string
+  source: string;
   constructor(source: string, base: ApiBase) {
-    this.source = source
+    this.source = source;
     this.base = base;
   }
 
@@ -13,11 +13,9 @@ export class CabinetAPI {
     return this.base.get(`/cabinet/${this.source}/`);
   }
 
-
   listFolder(folder: string) {
     return this.base.get(`/cabinet/${this.source}/${folder}`);
   }
-
 
   newFolder(folder: string) {
     return this.base.post(`/cabinet/${this.source}/${folder}`, {});
@@ -28,7 +26,11 @@ export class CabinetAPI {
   }
 
   uploadFile(folder: string, fname: string, data: any) {
-    return this.base.postForm(`/cabinet/${this.source}/${folder}/file/${fname}`, true, data);
+    return this.base.postForm(
+      `/cabinet/${this.source}/${folder}/file/${fname}`,
+      true,
+      data
+    );
   }
 
   deleteFile(folder: string, fname: string) {
@@ -36,14 +38,14 @@ export class CabinetAPI {
   }
 
   getFilePreview(folder: string, fname: string) {
-    return this.base.get(`/cabinet/${this.source}/${folder}/preview/${fname}`);
+    return `${this.base.base_url}/cabinet/${this.source}/${folder}/preview/${fname}?token=${this.base.user_token}`;
   }
 }
 
 export class FolderTktAPI {
   http: Http;
   ticket: string;
-  base_url: string
+  base_url: string;
   constructor(baseUrl: string, token: string) {
     this.http = new Http(baseUrl, {});
     this.ticket = token;
