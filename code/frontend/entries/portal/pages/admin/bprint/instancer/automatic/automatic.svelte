@@ -10,16 +10,44 @@
   const app = getContext("__app__") as PortalService;
   const bapi = app.api_manager.get_admin_bprint_api();
 
-  let bundle_objects;
+  let bundle_objects = {};
   let loading = true;
+  let instancer_type = "";
 
   const load = async () => {
-    const resp = await bapi.get_file(bid, "schema.json");
-    if (resp.status !== 200) {
+    const resp1 = await bapi.get(bid);
+    if (!resp1.ok) {
+      console.log("err", resp1);
       return;
     }
-    bundle_objects = resp.data;
-    loading = false;
+
+    if (resp1.data["type"] === "bundle") {
+      const resp = await bapi.get_file(bid, "schema.json");
+      if (!resp.ok) {
+        console.log("Err", resp);
+        return;
+      }
+
+      instancer_type = "bundle"
+      bundle_objects = resp.data;
+      loading = false;
+    } else {
+      let btype = resp1.data["type"];
+      if (btype === "tschema") {
+        btype = "data_group";
+      }
+      instancer_type = btype
+      bundle_objects = {
+        items: [
+          {
+            type: btype,
+            file: "schema.json",
+            name: resp1.data["name"],
+          },
+        ],
+      };
+      loading = false;
+    }
   };
 
   let instanceing = false;
@@ -31,7 +59,7 @@
     instanceing = true;
     const resp = await bapi.instance(bid, {
       auto: true,
-      instancer_type: "bundle",
+      instancer_type,
       file: "schema.json",
     });
 
