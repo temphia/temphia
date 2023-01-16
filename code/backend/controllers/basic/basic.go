@@ -19,12 +19,13 @@ type Controller struct {
 	signer  service.Signer
 }
 
-func New(coredb store.CoreHub, cabinet store.CabinetHub, dynHub store.DataHub, pacman repox.Hub) *Controller {
+func New(coredb store.CoreHub, cabinet store.CabinetHub, dynHub store.DataHub, pacman repox.Hub, sig service.Signer) *Controller {
 	ctrl := &Controller{
 		coredb:  coredb,
 		cabinet: cabinet,
 		dynHub:  dynHub,
 		pacman:  pacman,
+		signer:  sig,
 	}
 
 	return ctrl
@@ -134,4 +135,16 @@ func (c *Controller) ModifyMessages(uclaim *claim.Session, opts *entities.Modify
 	default:
 		panic("not impl")
 	}
+}
+
+func (c *Controller) IssueUgroup(uclaim *claim.Session, ugroup string) (string, error) {
+
+	return c.signer.SignUserMgmtTkt(uclaim.TenentId, &claim.UserMgmtTkt{
+		Type:        "",
+		Group:       ugroup,
+		Update:      true,
+		List:        true,
+		ListScope:   []string{},
+		UpdateScope: []string{},
+	})
 }

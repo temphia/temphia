@@ -54,6 +54,10 @@ export class SelfAPI {
     return this.base.post("/self/issue/folder", data);
   }
 
+  issue_ugroup(data: any) {
+    return this.base.post("/self/issue/ugroup", data);
+  }
+
   // system
 
   list_cabinet_sources() {

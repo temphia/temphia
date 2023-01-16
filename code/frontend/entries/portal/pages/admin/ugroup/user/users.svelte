@@ -8,16 +8,21 @@
   } from "../../core";
   import ChangeEmail from "../../user/actions/change_email.svelte";
   import ResetPassword from "../../user/actions/reset_password.svelte";
+  import { params } from "svelte-hash-router";
+
+  export let ugroup = $params.ugroup;
 
   const app = getContext("__app__") as PortalService;
 
   let datas = [];
   let loading = true;
 
-  // fixme => user pi tkt
-  const api = app.api_manager.get_admin_user_api();
-
   const load = async () => {
+    const api = await app.api_manager.get_ugroup_tkt_api(ugroup);
+    if (!api) {
+      return
+    }
+
     const resp = await api.list();
     if (!resp.ok) {
       return;
@@ -78,20 +83,6 @@
         drop: true,
       },
       {
-        Name: "Delete",
-        Action: action_delete,
-        icon: "trash",
-        drop: true,
-      },
-
-      {
-        Name: "Disable",
-        Action: (id) => {},
-        icon: "user-remove",
-        drop: true,
-      },
-
-      {
         Name: "Reset Password",
         Action: action_reset_password,
         icon: "lock-open",
@@ -102,6 +93,18 @@
         Name: "Change Email",
         Action: action_email_change,
         icon: "at-symbol",
+        drop: true,
+      },
+      {
+        Name: "Disable",
+        Action: (id) => {},
+        icon: "user-remove",
+        drop: true,
+      },
+      {
+        Name: "Delete",
+        Action: action_delete,
+        icon: "trash",
         drop: true,
       },
     ]}

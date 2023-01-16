@@ -67,7 +67,7 @@ func New(opts Options) *RootController {
 	return &RootController{
 		cAdmin:   admin.New(pacman, cplane, corehub, signer, dynhub, cab, pstate, logservice.GetLogProxy()),
 		cAuth:    authed.New(corehub, signer, seq),
-		cBasic:   basic.New(corehub, cab, dynhub, pacman),
+		cBasic:   basic.New(corehub, cab, dynhub, pacman, signer),
 		cCabinet: cabinet.New(cab, signer),
 		cDtable:  data.New(dynhub, cab, signer),
 		cRepo:    repo.New(pacman),

@@ -1,4 +1,10 @@
-import { CabinetAPI, DataAPI, FolderTktAPI, RepoAPI, SelfAPI } from "../../../../lib/apiv2";
+import {
+  CabinetAPI,
+  DataAPI,
+  FolderTktAPI,
+  RepoAPI,
+  SelfAPI,
+} from "../../../../lib/apiv2";
 import { AdminTargetAPI } from "../../../../lib/apiv2/admin/target";
 import { ApiBase } from "../../../../lib/apiv2/base";
 import type { SelfLoad } from "./stypes";
@@ -14,6 +20,7 @@ import {
   AdminTenantAPI,
   AdminUserAPI,
   AdminUserGroupAPI,
+  AdminUserTktAPI,
 } from "../../../../lib/apiv2/admin";
 import { PlugDevTktAPI } from "../../../../lib/apiv2/engine/plug_dev_tkt";
 import { EngineAPI } from "../../../../lib/apiv2/engine/engine";
@@ -172,6 +179,29 @@ export class ApiManager {
     return new AdminLensAPI(this.base);
   };
 
+  get_ugroup_tkt_api = async (ugroup: string) => {
+    let api = this.self_data.user_mgmt_tkt_api[ugroup];
+    if (api) {
+      return api;
+    }
+
+    const resp = await this.self_api.issue_ugroup({
+      ugroup,
+    });
+    if (!resp.ok) {
+      console.log("ERR RESP ", resp);
+      return;
+    }
+
+    api = new AdminUserTktAPI(
+      new ApiBase(this.api_base_url, this.tenant_id, resp.data["ugroup_token"])
+    );
+
+    this.self_data.user_mgmt_tkt_api[ugroup] = api;
+    
+    return api;
+  };
+
   get_dev_plug_tkt_api = (dev_ticket: string) => {
     return new PlugDevTktAPI(this.api_base_url, dev_ticket);
   };
@@ -181,12 +211,14 @@ export class SelfData {
   data_sources: string[];
   repo_sources: { [_: number]: string };
   user_apps: object[];
+  user_mgmt_tkt_api: { [_: string]: AdminUserTktAPI };
 
   api_manager: ApiManager;
 
   constructor(apm: ApiManager, data: SelfLoad) {
     this.api_manager = apm;
     this.user_apps = data.apps || [];
+    this.user_mgmt_tkt_api = {};
   }
 
   async get_repo_sources() {

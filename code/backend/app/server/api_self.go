@@ -1,6 +1,7 @@
 package server
 
 import (
+	"io"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -8,6 +9,7 @@ import (
 	"github.com/temphia/temphia/code/backend/services/sockdhub/transports"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/tidwall/gjson"
 )
 
 func (s *Server) selfAPI(rg *gin.RouterGroup) {
@@ -22,6 +24,7 @@ func (s *Server) selfAPI(rg *gin.RouterGroup) {
 	rg.POST("/user/:user_id", s.X(s.selfUserMessage))
 	rg.POST("/issue/folder", s.X(s.issueFolderTkt))
 	rg.POST("/issue/data", s.X(s.issueDataTkt))
+	rg.POST("/issue/ugroup", s.X(s.issueUgroup))
 	rg.GET("/self/ws", s.sockdUserWS)
 
 	s.selfSysAPI(rg.Group("/system"))
@@ -116,6 +119,19 @@ func (s *Server) issueDataTkt(ctx httpx.Request) {
 	)
 
 	httpx.WriteJSON(ctx.Http, gin.H{"data_token": resp}, err)
+}
+
+func (s *Server) issueUgroup(ctx httpx.Request) {
+
+	out, err := io.ReadAll(ctx.Http.Request.Body)
+	if err != nil {
+		httpx.WriteErr(ctx.Http, err)
+		return
+	}
+
+	tok, err := s.cBasic.IssueUgroup(ctx.Session, gjson.GetBytes(out, "ugroup").String())
+
+	httpx.WriteJSON(ctx.Http, gin.H{"ugroup_token": tok}, err)
 }
 
 func (s *Server) selfUserGet(ctx httpx.Request) {
