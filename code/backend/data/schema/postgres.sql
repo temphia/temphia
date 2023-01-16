@@ -426,7 +426,6 @@ create table plugs(
     name text not null default '',
     live boolean not null default false,
     dev boolean not null default false,
-    owner text not null default '',
     bprint_id text not null default '',
     invoke_policy text not null default '',
     extra_meta json not null default '{}',

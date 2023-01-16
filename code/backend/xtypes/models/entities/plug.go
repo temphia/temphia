@@ -5,7 +5,6 @@ type Plug struct {
 	Name         string     `json:"name,omitempty" db:"name,omitempty"`
 	Live         bool       `json:"live,omitempty" db:"live,omitempty"`
 	Dev          bool       `json:"dev,omitempty"  db:"dev,omitempty"`
-	Owner        string     `json:"owner,omitempty"  db:"owner,omitempty"`
 	BprintId     string     `json:"bprint_id,omitempty"  db:"bprint_id,omitempty"`
 	InvokePolicy string     `json:"invoke_policy,omitempty" db:"invoke_policy,omitempty"`
 	ExtraMeta    JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
