@@ -38,11 +38,25 @@
     load();
   };
 
+  // syncme => ../ugroup/users.svelte
+
   const action_reset_password = (id: string) => {
-    app.utils.small_modal_open(ResetPassword, { app, uid: id });
+    app.utils.small_modal_open(ResetPassword, {
+      uid: id,
+      onComplete: (opts) => {
+        console.log("RESET PASSWORD", opts);
+        app.utils.small_modal_close();
+      },
+    });
   };
   const action_email_change = (id: string) => {
-    app.utils.small_modal_open(ChangeEmail, { app, uid: id });
+    app.utils.small_modal_open(ChangeEmail, {
+      uid: id,
+      onComplete: (opts) => {
+        console.log("CHANGE EMAIL", opts);
+        app.utils.small_modal_close();
+      },
+    });
   };
 
   const action_roles = (id: string) => {};

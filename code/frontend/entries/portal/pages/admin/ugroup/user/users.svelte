@@ -6,6 +6,8 @@
     FloatingAdd,
     PortalService,
   } from "../../core";
+  import ChangeEmail from "../../user/actions/change_email.svelte";
+  import ResetPassword from "../../user/actions/reset_password.svelte";
 
   const app = getContext("__app__") as PortalService;
 
@@ -13,8 +15,7 @@
   let loading = true;
 
   // fixme => user pi tkt
-  const api = app.api_manager.get_admin_user_api()
-
+  const api = app.api_manager.get_admin_user_api();
 
   const load = async () => {
     const resp = await api.list();
@@ -34,6 +35,27 @@
   const action_profile = (id: string) => app.nav.user_profile(id);
   const action_delete = async (id: string) => {};
   const action_new = () => {};
+
+  // syncme => ../../user/users.svelte
+
+  const action_reset_password = (id: string) => {
+    app.utils.small_modal_open(ResetPassword, {
+      uid: id,
+      onComplete: (opts) => {
+        console.log("RESET PASSWORD", opts);
+        app.utils.small_modal_close();
+      },
+    });
+  };
+  const action_email_change = (id: string) => {
+    app.utils.small_modal_open(ChangeEmail, {
+      uid: id,
+      onComplete: (opts) => {
+        console.log("CHANGE EMAIL", opts);
+        app.utils.small_modal_close();
+      },
+    });
+  };
 </script>
 
 {#if loading}
@@ -41,6 +63,7 @@
 {:else}
   <AutoTable
     action_key="user_id"
+    show_drop={true}
     actions={[
       {
         Name: "Profile",
@@ -52,12 +75,34 @@
         Name: "Edit",
         Action: action_edit,
         icon: "pencil-alt",
+        drop: true,
       },
       {
         Name: "Delete",
-        Class: "bg-red-400",
         Action: action_delete,
         icon: "trash",
+        drop: true,
+      },
+
+      {
+        Name: "Disable",
+        Action: (id) => {},
+        icon: "user-remove",
+        drop: true,
+      },
+
+      {
+        Name: "Reset Password",
+        Action: action_reset_password,
+        icon: "lock-open",
+        drop: true,
+      },
+
+      {
+        Name: "Change Email",
+        Action: action_email_change,
+        icon: "at-symbol",
+        drop: true,
       },
     ]}
     key_names={[
