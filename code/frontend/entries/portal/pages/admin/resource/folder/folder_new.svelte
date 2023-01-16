@@ -4,14 +4,9 @@
   import Layout from "../_layout.svelte";
   import Pick from "./_pick.svelte";
 
- 
   const app = getContext("__app__") as PortalService;
 
-
-  const api = app.api_manager.get_admin_resource_api();
-
-
-
+  const rapi = app.api_manager.get_admin_resource_api();
 
   let message = "";
   let slug = "";
@@ -20,16 +15,30 @@
   let folder = "";
 
   const pick = () => {
-    app.utils.small_modal_open(Pick, {});
+    app.utils.small_modal_open(Pick, {
+      source,
+      folder,
+      onSelect: (_source: string, _folder: string) => {
+        source = _source;
+        folder = _folder;
 
-    source = "default";
-    folder = "example";
+        app.utils.small_modal_close();
+      },
+    });
   };
-
-  
 </script>
 
-<Layout>
+<Layout
+  onClick={async () => {
+    await rapi.new({
+      id: slug,
+      type: "cfolder",
+      target: `${source}/${folder}`,
+    });
+
+    app.nav.admin_resources();
+  }}
+>
   <p class="text-red-500">{message}</p>
 
   <div class="mb-4">
@@ -39,6 +48,7 @@
     <input
       class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
       id="slug"
+      bind:value={slug}
       type="text"
       placeholder="Slug"
     />
@@ -115,13 +125,5 @@
         </li>
       </ul>
     </div>
-  </div>
-
-  <div class="flex justify-end">
-    <button
-      class="p-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-    >
-      Create
-    </button>
   </div>
 </Layout>

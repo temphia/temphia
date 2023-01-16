@@ -1,4 +1,8 @@
-<div class="w-screen h-40 mt-14">
+<script>
+  export let classes = "w-screen";
+</script>
+
+<div class="h-40 mt-14 {classes}">
   <div class="p-10 flex justify-center">
     <div class="lds-ring">
       <div />
