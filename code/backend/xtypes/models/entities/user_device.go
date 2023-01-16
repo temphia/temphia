@@ -23,7 +23,7 @@ type UserDevice struct {
 
 func (ud *UserDevice) Derive(ugroup string) *claim.User {
 	return &claim.User{
-		TenentId:   ud.TenantID,
+		TenantId:   ud.TenantID,
 		UserID:     ud.UserId,
 		UserGroup:  ugroup,
 		Type:       ud.DeviceType,

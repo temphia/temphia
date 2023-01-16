@@ -40,7 +40,7 @@ func (i *InstancHub) ManualSingle(opts repox.InstanceOptions) (any, error) {
 	}
 
 	return instancer.Instance(xinstance.Options{
-		TenantId:     opts.UserSession.TenentId,
+		TenantId:     opts.UserSession.TenantId,
 		BprintId:     opts.BprintId,
 		InstanceType: opts.InstancerType,
 		File:         opts.File,
@@ -63,7 +63,7 @@ func (i *InstancHub) ManualBundleItem(opts repox.InstanceOptions) (any, error) {
 	}
 
 	return instancer.Instance(xinstance.Options{
-		TenantId:     opts.UserSession.TenentId,
+		TenantId:     opts.UserSession.TenantId,
 		BprintId:     opts.BprintId,
 		InstanceType: opts.InstancerType,
 		File:         opts.File,
@@ -81,7 +81,7 @@ func (i *InstancHub) ManualBundleItem(opts repox.InstanceOptions) (any, error) {
 
 func (i *InstancHub) AutomaticBundle(opts repox.InstanceOptions) (any, error) {
 	bundle := xbprint.Bundle{}
-	err := i.pacman.loadFile(opts.UserSession.TenentId, opts.BprintId, opts.File, &bundle)
+	err := i.pacman.loadFile(opts.UserSession.TenantId, opts.BprintId, opts.File, &bundle)
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +100,7 @@ func (i *InstancHub) AutomaticBundle(opts repox.InstanceOptions) (any, error) {
 		}
 
 		resp, err := instancer.Instance(xinstance.Options{
-			TenantId:     opts.UserSession.TenentId,
+			TenantId:     opts.UserSession.TenantId,
 			BprintId:     opts.BprintId,
 			InstanceType: bitem.Type,
 			File:         bitem.File,
@@ -132,7 +132,7 @@ func (i *InstancHub) AutomaticSingle(opts repox.InstanceOptions) (any, error) {
 	}
 
 	return instancer.Instance(xinstance.Options{
-		TenantId:     opts.UserSession.TenentId,
+		TenantId:     opts.UserSession.TenantId,
 		BprintId:     opts.BprintId,
 		InstanceType: opts.InstancerType,
 		File:         opts.File,

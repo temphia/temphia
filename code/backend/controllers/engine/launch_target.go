@@ -17,18 +17,18 @@ func (c *Controller) LaunchTarget(uclaim *claim.Session, data TargetLaunchData) 
 
 func (c *Controller) launchTarget(uclaim *claim.Session, data TargetLaunchData) (*vmodels.ExecInstanceOptions, error) {
 
-	target, err := c.corehub.GetTargetApp(uclaim.TenentId, data.TargetType, data.TargetId)
+	target, err := c.corehub.GetTargetApp(uclaim.TenantId, data.TargetType, data.TargetId)
 	if err != nil {
 		return nil, err
 	}
 
-	agent, err := c.corehub.AgentGet(uclaim.TenentId, target.PlugId, target.AgentId)
+	agent, err := c.corehub.AgentGet(uclaim.TenantId, target.PlugId, target.AgentId)
 	if err != nil {
 		return nil, err
 	}
 
-	token, err := c.signer.SignExecutor(uclaim.TenentId, &claim.Executor{
-		TenentId:   uclaim.TenentId,
+	token, err := c.signer.SignExecutor(uclaim.TenantId, &claim.Executor{
+		TenantId:   uclaim.TenantId,
 		UserId:     uclaim.UserID,
 		UserGroup:  uclaim.UserGroup,
 		DeviceId:   uclaim.DeviceId,

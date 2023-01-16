@@ -225,7 +225,7 @@ func (s *Server) sockdDataWS(ctx *gin.Context) {
 	}
 
 	err = s.cSockd.AddData(sockd.DataConnOptions{
-		TenantId:  dclaim.TenentId,
+		TenantId:  dclaim.TenantId,
 		UserId:    dclaim.UserID,
 		DynSource: dclaim.DataSource,
 		DynGroup:  dclaim.DataGroup,

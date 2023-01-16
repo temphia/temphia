@@ -21,12 +21,12 @@ func New(cabinet store.CabinetHub, signer service.Signer) *Controller {
 }
 
 func (c *Controller) ListRoot(uclaim *claim.Session, source string) ([]string, error) {
-	sourced := c.hub.GetSource(source, uclaim.TenentId)
+	sourced := c.hub.GetSource(source, uclaim.TenantId)
 	return sourced.ListRoot(context.TODO())
 }
 
 func (c *Controller) AddFolder(uclaim *claim.Session, source, folder string) error {
-	sourced := c.hub.GetSource(source, uclaim.TenentId)
+	sourced := c.hub.GetSource(source, uclaim.TenantId)
 	return sourced.AddFolder(context.TODO(), folder)
 }
 
@@ -35,7 +35,7 @@ func (c *Controller) AddBlob(uclaim *claim.Session, source, folder, file string,
 	if err != nil {
 		return err
 	}
-	sourced := c.hub.GetSource(source, uclaim.TenentId)
+	sourced := c.hub.GetSource(source, uclaim.TenantId)
 
 	return sourced.AddBlob(context.TODO(), folder, file, contents)
 }
@@ -46,7 +46,7 @@ func (c *Controller) ListFolder(uclaim *claim.Session, source, folder string) ([
 		return nil, err
 	}
 
-	sourced := c.hub.GetSource(source, uclaim.TenentId)
+	sourced := c.hub.GetSource(source, uclaim.TenantId)
 
 	return sourced.ListFolder(context.TODO(), folder)
 }
@@ -56,7 +56,7 @@ func (c *Controller) GetBlob(uclaim *claim.Session, source, folder, file string)
 	if err != nil {
 		return nil, err
 	}
-	sourced := c.hub.GetSource(source, uclaim.TenentId)
+	sourced := c.hub.GetSource(source, uclaim.TenantId)
 
 	return sourced.GetBlob(context.TODO(), folder, file)
 }
@@ -66,7 +66,7 @@ func (c *Controller) DeleteBlob(uclaim *claim.Session, source, folder, file stri
 	if err != nil {
 		return err
 	}
-	sourced := c.hub.GetSource(source, uclaim.TenentId)
+	sourced := c.hub.GetSource(source, uclaim.TenantId)
 
 	return sourced.DeleteBlob(context.TODO(), folder, file)
 }

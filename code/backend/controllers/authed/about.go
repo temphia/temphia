@@ -24,17 +24,17 @@ type User struct {
 
 func (c *Controller) About(uclaim *claim.User) (*About, error) {
 
-	user, err := c.coredb.GetUserByID(uclaim.TenentId, uclaim.UserID)
+	user, err := c.coredb.GetUserByID(uclaim.TenantId, uclaim.UserID)
 	if err != nil {
 		return nil, err
 	}
 
-	tenant, err := c.coredb.GetTenant(uclaim.TenentId)
+	tenant, err := c.coredb.GetTenant(uclaim.TenantId)
 	if err != nil {
 		return nil, err
 	}
 
-	group, err := c.coredb.GetUserGroup(uclaim.TenentId, uclaim.UserGroup)
+	group, err := c.coredb.GetUserGroup(uclaim.TenantId, uclaim.UserGroup)
 	if err != nil {
 		return nil, err
 	}

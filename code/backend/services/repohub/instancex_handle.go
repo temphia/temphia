@@ -12,11 +12,11 @@ type Handle struct {
 }
 
 func (h *Handle) GetFile(file string) ([]byte, error) {
-	return h.pacman.BprintGetBlob(h.opts.UserSession.TenentId, h.opts.BprintId, file)
+	return h.pacman.BprintGetBlob(h.opts.UserSession.TenantId, h.opts.BprintId, file)
 }
 
 func (h *Handle) LoadFile(file string, target any) error { // loads json/yaml
-	return h.pacman.loadFile(h.opts.UserSession.TenentId, h.opts.BprintId, file, target)
+	return h.pacman.loadFile(h.opts.UserSession.TenantId, h.opts.BprintId, file, target)
 }
 
 func (h *Handle) GetPrevObject(name string) *xinstance.Response {

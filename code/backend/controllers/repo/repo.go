@@ -17,17 +17,17 @@ func New(pacman repox.Hub) *Controller {
 }
 
 func (c *Controller) RepoSourceList(uclaim *claim.Session, group string, source int64, tags ...string) ([]entities.BPrint, error) {
-	return c.pacman.RepoSourceList(uclaim.TenentId, group, source, tags...)
+	return c.pacman.RepoSourceList(uclaim.TenantId, group, source, tags...)
 }
 
 func (c *Controller) RepoSourceGet(uclaim *claim.Session, group, slug string, source int64) (*entities.BPrint, error) {
-	return c.pacman.RepoSourceGet(uclaim.TenentId, group, slug, source)
+	return c.pacman.RepoSourceGet(uclaim.TenantId, group, slug, source)
 }
 
 func (c *Controller) RepoSourceGetBlob(uclaim *claim.Session, group, slug string, source int64, file string) ([]byte, error) {
-	return c.pacman.RepoSourceGetBlob(uclaim.TenentId, group, slug, source, file)
+	return c.pacman.RepoSourceGetBlob(uclaim.TenantId, group, slug, source, file)
 }
 
 func (c *Controller) RepoSourceImport(uclaim *claim.Session, data *repox.RepoImportOpts) (string, error) {
-	return c.pacman.RepoSourceImport(uclaim.TenentId, data)
+	return c.pacman.RepoSourceImport(uclaim.TenantId, data)
 }

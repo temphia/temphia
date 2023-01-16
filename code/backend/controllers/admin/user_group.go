@@ -19,7 +19,7 @@ func (c *Controller) ListUserGroup(uclaim *claim.Session) ([]*entities.UserGroup
 		return nil, easyerr.NotImpl()
 	}
 
-	return c.coredb.ListUserGroups(uclaim.TenentId)
+	return c.coredb.ListUserGroups(uclaim.TenantId)
 }
 
 func (c *Controller) GetUserGroup(uclaim *claim.Session, ugroup string) (*entities.UserGroup, error) {
@@ -27,7 +27,7 @@ func (c *Controller) GetUserGroup(uclaim *claim.Session, ugroup string) (*entiti
 		return nil, easyerr.NotImpl()
 	}
 
-	return c.coredb.GetUserGroup(uclaim.TenentId, ugroup)
+	return c.coredb.GetUserGroup(uclaim.TenantId, ugroup)
 }
 
 func (c *Controller) UpdateUserGroup(uclaim *claim.Session, id string, data map[string]any) error {
@@ -35,7 +35,7 @@ func (c *Controller) UpdateUserGroup(uclaim *claim.Session, id string, data map[
 		return easyerr.NotImpl()
 	}
 
-	return c.coredb.UpdateUserGroup(uclaim.TenentId, id, data)
+	return c.coredb.UpdateUserGroup(uclaim.TenantId, id, data)
 }
 
 func (c *Controller) RemoveUserGroup(uclaim *claim.Session, ugroup string) error {
@@ -43,5 +43,5 @@ func (c *Controller) RemoveUserGroup(uclaim *claim.Session, ugroup string) error
 		return easyerr.NotImpl()
 	}
 
-	return c.coredb.RemoveUserGroup(uclaim.TenentId, ugroup)
+	return c.coredb.RemoveUserGroup(uclaim.TenantId, ugroup)
 }

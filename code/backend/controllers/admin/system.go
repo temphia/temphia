@@ -6,9 +6,9 @@ import (
 )
 
 func (c *Controller) ListSystemEvent(uclaim *claim.Session, etype string, last int64) ([]*entities.SystemEvent, error) {
-	return c.coredb.ListSystemEvent(uclaim.TenentId, etype, last)
+	return c.coredb.ListSystemEvent(uclaim.TenantId, etype, last)
 }
 
 func (c *Controller) ListSystemKV(uclaim *claim.Session, ktype, prefix string, last int64) ([]*entities.SystemKV, error) {
-	return c.coredb.ListSystemKV(uclaim.TenentId, ktype, prefix, last)
+	return c.coredb.ListSystemKV(uclaim.TenantId, ktype, prefix, last)
 }

@@ -62,7 +62,7 @@ func (r *ApiAdmin) NewPlug(ctx httpx.Request) {
 		return
 	}
 
-	data.TenantId = ctx.Session.TenentId
+	data.TenantId = ctx.Session.TenantId
 
 	err = r.cAdmin.PlugNew(ctx.Session, data)
 	r.rutil.WriteJSON(ctx.Http, nil, err)
@@ -111,7 +111,7 @@ func (r *ApiAdmin) NewAgent(ctx httpx.Request) {
 		return
 	}
 
-	data.TenantId = ctx.Session.TenentId
+	data.TenantId = ctx.Session.TenantId
 
 	err = r.cAdmin.AgentNew(ctx.Session, data)
 	r.rutil.WriteFinal(ctx.Http, err)

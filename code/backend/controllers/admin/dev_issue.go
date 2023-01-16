@@ -32,7 +32,7 @@ func (c *Controller) DevIssueTkt(uclaim *claim.Session, host string, req DevIssu
 
 	// fixme => check perms
 
-	tok, err := c.signer.SignPlugDevTkt(uclaim.TenentId, &claim.PlugDevTkt{
+	tok, err := c.signer.SignPlugDevTkt(uclaim.TenantId, &claim.PlugDevTkt{
 		UserId:    uclaim.UserID,
 		UserGroup: uclaim.UserGroup,
 		BprintId:  req.BprintId,
@@ -46,7 +46,7 @@ func (c *Controller) DevIssueTkt(uclaim *claim.Session, host string, req DevIssu
 
 	return &devtoken.Plug{
 		HostAddrs: []string{fmt.Sprintf("http://%s", host)},
-		TenantId:  uclaim.TenentId,
+		TenantId:  uclaim.TenantId,
 		DevTicket: tok,
 	}, nil
 

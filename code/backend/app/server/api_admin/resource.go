@@ -25,7 +25,7 @@ func (r *ApiAdmin) ResourceCreate(ctx httpx.Request) {
 		return
 	}
 
-	res.TenantId = ctx.Session.TenentId
+	res.TenantId = ctx.Session.TenantId
 
 	err = r.cAdmin.ResourceNew(ctx.Session, res)
 	r.rutil.WriteFinal(ctx.Http, err)

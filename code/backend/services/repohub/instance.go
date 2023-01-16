@@ -19,7 +19,7 @@ package repohub
 // 	}
 
 // 	return is.Instance(xinstance.Options{
-// 		TenantId:     opts.UserSession.TenentId,
+// 		TenantId:     opts.UserSession.TenantId,
 // 		BprintId:     opts.BprintId,
 // 		InstanceType: opts.InstancerType,
 // 		File:         opts.File,

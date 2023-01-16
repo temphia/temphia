@@ -5,7 +5,7 @@ import (
 )
 
 type User struct {
-	TenentId   string            `json:"tenent_id,omitempty"`
+	TenantId   string            `json:"tenent_id,omitempty"`
 	UserID     string            `json:"user_id,omitempty"`
 	UserGroup  string            `json:"user_group,omitempty"`
 	Type       string            `json:"type,omitempty"`
@@ -16,7 +16,7 @@ type User struct {
 
 func NewUserDevice(tenantId, userId, groupId string, scopes []string) *User {
 	return &User{
-		TenentId:   tenantId,
+		TenantId:   tenantId,
 		Type:       "device",
 		UserID:     userId,
 		UserGroup:  groupId,
@@ -28,7 +28,7 @@ func NewUserDevice(tenantId, userId, groupId string, scopes []string) *User {
 
 func NewUserLogged(tenantId, userId, groupId string, device int64, scopes []string) *User {
 	return &User{
-		TenentId:   tenantId,
+		TenantId:   tenantId,
 		Type:       "logged",
 		UserID:     userId,
 		UserGroup:  groupId,
@@ -49,7 +49,7 @@ func (u *User) IsGuest() bool {
 func (u *User) DeriveSession(sid int64) *Session {
 
 	return &Session{
-		TenentId:   u.TenentId,
+		TenantId:   u.TenantId,
 		UserID:     u.UserID,
 		UserGroup:  u.UserGroup,
 		Type:       "session",
@@ -63,7 +63,7 @@ func (u *User) DeriveSession(sid int64) *Session {
 // session
 
 type Session struct {
-	TenentId   string            `json:"-"`
+	TenantId   string            `json:"-"`
 	UserID     string            `json:"user,omitempty"`
 	UserGroup  string            `json:"group,omitempty"`
 	Type       string            `json:"type,omitempty"`

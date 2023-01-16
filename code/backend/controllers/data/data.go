@@ -29,7 +29,7 @@ func getTarget(uclaim *claim.Data) (string, string) {
 func (d *Controller) IssueDataClaim(uclaim *claim.Session, source string, group string) (string, error) {
 
 	dc := claim.Data{
-		TenentId:   uclaim.TenentId,
+		TenantId:   uclaim.TenantId,
 		Type:       claim.CTypeData,
 		UserID:     uclaim.UserID,
 		UserGroup:  uclaim.UserGroup,
@@ -43,5 +43,5 @@ func (d *Controller) IssueDataClaim(uclaim *claim.Session, source string, group 
 
 	pp.Println("DATA_CLAIM =>", dc)
 
-	return d.signer.SignData(uclaim.TenentId, &dc)
+	return d.signer.SignData(uclaim.TenantId, &dc)
 }

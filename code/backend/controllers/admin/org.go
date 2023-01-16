@@ -10,7 +10,7 @@ func (c *Controller) GetTenant(uclaim *claim.Session) (*entities.Tenant, error) 
 	if !uclaim.IsSuperAdmin() {
 		return nil, easyerr.NotAuthorized()
 	}
-	return c.coredb.GetTenant(uclaim.TenentId)
+	return c.coredb.GetTenant(uclaim.TenantId)
 }
 
 func (c *Controller) UpdateTenant(uclaim *claim.Session, data map[string]any) error {
@@ -20,28 +20,28 @@ func (c *Controller) UpdateTenant(uclaim *claim.Session, data map[string]any) er
 
 	delete(data, "slug")
 
-	return c.coredb.UpdateTenant(uclaim.TenentId, data)
+	return c.coredb.UpdateTenant(uclaim.TenantId, data)
 }
 
 // domain
 
 func (c *Controller) AddDomain(uclaim *claim.Session, domain *entities.TenantDomain) error {
-	domain.TenantId = uclaim.TenentId
+	domain.TenantId = uclaim.TenantId
 	return c.coredb.AddDomain(domain)
 }
 
 func (c *Controller) UpdateDomain(uclaim *claim.Session, id int64, data map[string]any) error {
-	return c.coredb.UpdateDomain(uclaim.TenentId, id, data)
+	return c.coredb.UpdateDomain(uclaim.TenantId, id, data)
 }
 
 func (c *Controller) GetDomain(uclaim *claim.Session, id int64) (*entities.TenantDomain, error) {
-	return c.coredb.GetDomain(uclaim.TenentId, id)
+	return c.coredb.GetDomain(uclaim.TenantId, id)
 }
 
 func (c *Controller) RemoveDomain(uclaim *claim.Session, id int64) error {
-	return c.coredb.RemoveDomain(uclaim.TenentId, id)
+	return c.coredb.RemoveDomain(uclaim.TenantId, id)
 }
 
 func (c *Controller) ListDomain(uclaim *claim.Session) ([]*entities.TenantDomain, error) {
-	return c.coredb.ListDomain(uclaim.TenentId)
+	return c.coredb.ListDomain(uclaim.TenantId)
 }

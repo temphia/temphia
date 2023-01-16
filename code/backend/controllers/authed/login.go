@@ -19,9 +19,9 @@ func (c *Controller) loginNext(opts LoginNextRequest) (*LoginNextResponse, error
 	var user *entities.User
 
 	if strings.Contains(opts.UserIdent, "@") {
-		user, err = c.coredb.GetUserByEmail(site.TenentId, opts.UserIdent)
+		user, err = c.coredb.GetUserByEmail(site.TenantId, opts.UserIdent)
 	} else {
-		user, err = c.coredb.GetUserByID(site.TenentId, opts.UserIdent)
+		user, err = c.coredb.GetUserByID(site.TenantId, opts.UserIdent)
 	}
 	if err != nil {
 		return &LoginNextResponse{
@@ -29,12 +29,12 @@ func (c *Controller) loginNext(opts LoginNextRequest) (*LoginNextResponse, error
 		}, nil
 	}
 
-	data, err := c.coredb.GetUserData(site.TenentId, user.UserId)
+	data, err := c.coredb.GetUserData(site.TenantId, user.UserId)
 	if err != nil {
 		return nil, err
 	}
 
-	ugroup, err := c.coredb.GetUserGroup(site.TenentId, user.GroupID)
+	ugroup, err := c.coredb.GetUserGroup(site.TenantId, user.GroupID)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (c *Controller) loginNext(opts LoginNextRequest) (*LoginNextResponse, error
 		}, nil
 	}
 
-	tok, err := c.signer.SignAutheNext(site.TenentId, &claim.AuthNext{
+	tok, err := c.signer.SignAutheNext(site.TenantId, &claim.AuthNext{
 		UserId:      user.UserId,
 		UserGroup:   user.GroupID,
 		UserEmail:   user.Email,
@@ -79,12 +79,12 @@ func (c *Controller) loginSubmit(opts LoginSubmitRequest) (*LoginSubmitResponse,
 		return nil, err
 	}
 
-	nclaim, err := c.signer.ParseAutheNext(site.TenentId, opts.NextToken)
+	nclaim, err := c.signer.ParseAutheNext(site.TenantId, opts.NextToken)
 	if err != nil {
 		return nil, err
 	}
 
-	udata, err := c.coredb.GetUserData(site.TenentId, nclaim.UserId)
+	udata, err := c.coredb.GetUserData(site.TenantId, nclaim.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +101,7 @@ func (c *Controller) loginSubmit(opts LoginSubmitRequest) (*LoginSubmitResponse,
 		}
 	}
 
-	patok, err := c.signer.SignPreAuthed(site.TenentId, &claim.PreAuthed{
+	patok, err := c.signer.SignPreAuthed(site.TenantId, &claim.PreAuthed{
 		UserID:     nclaim.UserId,
 		UserGroup:  nclaim.UserGroup,
 		UserEmail:  nclaim.UserEmail,

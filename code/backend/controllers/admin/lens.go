@@ -12,13 +12,13 @@ type LogQuery struct {
 }
 
 func (c *Controller) LensQueryApp(uclaim *claim.Session, query LogQuery) ([]logx.Log, error) {
-	return c.log.QueryAppTenant(query.From, query.To, uclaim.TenentId, query.Filters)
+	return c.log.QueryAppTenant(query.From, query.To, uclaim.TenantId, query.Filters)
 }
 
 func (c *Controller) LensQueryEngine(uclaim *claim.Session, query LogQuery) ([]logx.Log, error) {
-	return c.log.QueryEngine(query.From, query.To, uclaim.TenentId, query.Filters)
+	return c.log.QueryEngine(query.From, query.To, uclaim.TenantId, query.Filters)
 }
 
 func (c *Controller) LensQuerySite(uclaim *claim.Session, query LogQuery) ([]logx.Log, error) {
-	return c.log.QuerySite(query.From, query.To, uclaim.TenentId, query.Filters)
+	return c.log.QuerySite(query.From, query.To, uclaim.TenantId, query.Filters)
 }

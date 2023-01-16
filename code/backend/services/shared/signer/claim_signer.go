@@ -129,7 +129,7 @@ func (cs *ClaimSigner) ParseExecutor(tenantId, payload string) (*claim.Executor,
 		return nil, err
 	}
 
-	data.TenentId = tenantId
+	data.TenantId = tenantId
 
 	return data, nil
 }
@@ -146,7 +146,7 @@ func (cs *ClaimSigner) ParseAdapterEditor(tenantId, payload string) (*claim.Adap
 		return nil, err
 	}
 
-	data.TenentId = tenantId
+	data.TenantId = tenantId
 
 	return data, nil
 }
@@ -217,7 +217,7 @@ func (cs *ClaimSigner) ParseData(tenantId, payload string) (*claim.Data, error) 
 		return nil, err
 	}
 
-	data.TenentId = tenantId
+	data.TenantId = tenantId
 
 	return data, nil
 }
@@ -233,7 +233,7 @@ func (cs *ClaimSigner) ParseFolder(tenantId, payload string) (*claim.Folder, err
 		return nil, err
 	}
 
-	data.TenentId = tenantId
+	data.TenantId = tenantId
 
 	return data, nil
 }
@@ -263,6 +263,7 @@ func (cs *ClaimSigner) ParseSockdTkt(tenantId, payload string) (*claim.SockdTkt,
 	if err != nil {
 		return nil, err
 	}
+
 	return data, nil
 }
 
@@ -276,6 +277,7 @@ func (cs *ClaimSigner) ParseUserMgmtTkt(tenantId, payload string) (*claim.UserMg
 	if err != nil {
 		return nil, err
 	}
+	data.TenantId = tenantId
 	return data, nil
 }
 

@@ -13,7 +13,7 @@ func (c *Controller) AddUser(uclaim *claim.Session, user *entities.User) error {
 		return easyerr.NotImpl()
 	}
 
-	user.TenantID = uclaim.TenentId
+	user.TenantID = uclaim.TenantId
 	user.CreatedAt = time.Now()
 
 	return c.coredb.AddUser(user, &entities.UserData{
@@ -24,7 +24,7 @@ func (c *Controller) AddUser(uclaim *claim.Session, user *entities.User) error {
 		PendingPassChange:  true,
 		PendingEmailVerify: false,
 		ExtraMeta:          nil,
-		TenantID:           uclaim.TenentId,
+		TenantID:           uclaim.TenantId,
 	})
 }
 
@@ -33,7 +33,7 @@ func (c *Controller) UpdateUser(uclaim *claim.Session, user map[string]any) erro
 		return easyerr.NotImpl()
 	}
 
-	return c.coredb.UpdateUser(uclaim.TenentId, uclaim.UserID, user)
+	return c.coredb.UpdateUser(uclaim.TenantId, uclaim.UserID, user)
 }
 
 func (c *Controller) RemoveUser(uclaim *claim.Session, username string) error {
@@ -41,7 +41,7 @@ func (c *Controller) RemoveUser(uclaim *claim.Session, username string) error {
 		return easyerr.NotImpl()
 	}
 
-	return c.coredb.RemoveUser(uclaim.TenentId, username)
+	return c.coredb.RemoveUser(uclaim.TenantId, username)
 }
 
 func (c *Controller) GetUserByID(uclaim *claim.Session, username string) (*entities.User, error) {
@@ -49,7 +49,7 @@ func (c *Controller) GetUserByID(uclaim *claim.Session, username string) (*entit
 		return nil, easyerr.NotImpl()
 	}
 
-	return c.coredb.GetUserByID(uclaim.TenentId, username)
+	return c.coredb.GetUserByID(uclaim.TenantId, username)
 }
 
 func (c *Controller) GetUserByEmail(uclaim *claim.Session, email string) (*entities.User, error) {
@@ -57,7 +57,7 @@ func (c *Controller) GetUserByEmail(uclaim *claim.Session, email string) (*entit
 		return nil, easyerr.NotImpl()
 	}
 
-	return c.coredb.GetUserByEmail(uclaim.TenentId, email)
+	return c.coredb.GetUserByEmail(uclaim.TenantId, email)
 }
 
 func (c *Controller) ListUsers(uclaim *claim.Session) ([]*entities.User, error) {
@@ -65,7 +65,7 @@ func (c *Controller) ListUsers(uclaim *claim.Session) ([]*entities.User, error) 
 		return nil, easyerr.NotImpl()
 	}
 
-	return c.coredb.ListUsers(uclaim.TenentId)
+	return c.coredb.ListUsers(uclaim.TenantId)
 }
 
 func (c *Controller) ListUsersByGroup(uclaim *claim.Session, group string) ([]*entities.User, error) {
@@ -73,23 +73,23 @@ func (c *Controller) ListUsersByGroup(uclaim *claim.Session, group string) ([]*e
 		return nil, easyerr.NotImpl()
 	}
 
-	return c.coredb.ListUsersByGroup(uclaim.TenentId, group)
+	return c.coredb.ListUsersByGroup(uclaim.TenantId, group)
 }
 
 func (c *Controller) UpdateUserDevice(uclaim *claim.Session, user string, id int64, data map[string]any) error {
-	return c.coredb.UpdateUserDevice(uclaim.TenentId, user, id, data)
+	return c.coredb.UpdateUserDevice(uclaim.TenantId, user, id, data)
 }
 
 func (c *Controller) GetUserDevice(uclaim *claim.Session, user string, id int64) (*entities.UserDevice, error) {
-	return c.coredb.GetUserDevice(uclaim.TenentId, user, id)
+	return c.coredb.GetUserDevice(uclaim.TenantId, user, id)
 }
 
 func (c *Controller) ListUserDevice(uclaim *claim.Session, user string) ([]*entities.UserDevice, error) {
-	return c.coredb.ListUserDevice(uclaim.TenentId, user)
+	return c.coredb.ListUserDevice(uclaim.TenantId, user)
 }
 
 func (c *Controller) RemoveUserDevice(uclaim *claim.Session, user string, id int64) error {
-	return c.coredb.RemoveUserDevice(uclaim.TenentId, user, id)
+	return c.coredb.RemoveUserDevice(uclaim.TenantId, user, id)
 }
 
 type NewUserDevice struct {
@@ -105,7 +105,7 @@ func (c *Controller) AddUserDevice(uclaim *claim.Session, user string, data *New
 	// fixme => more user device user paring options
 	// fixme => return id
 
-	return c.coredb.AddUserDevice(uclaim.TenentId, user, &entities.UserDevice{
+	return c.coredb.AddUserDevice(uclaim.TenantId, user, &entities.UserDevice{
 		Id:          0,
 		Name:        data.Name,
 		UserId:      user,
@@ -114,7 +114,7 @@ func (c *Controller) AddUserDevice(uclaim *claim.Session, user string, data *New
 		APNToken:    "",
 		Scopes:      data.Scopes,
 		ExtraMeta:   data.ExtraMeta,
-		TenantID:    uclaim.TenentId,
+		TenantID:    uclaim.TenantId,
 		LastData:    entities.JsonStrMap{},
 		PairOptions: entities.JsonStrMap{},
 	})

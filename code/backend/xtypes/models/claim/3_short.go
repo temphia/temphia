@@ -1,7 +1,7 @@
 package claim
 
 type Executor struct {
-	TenentId   string            `json:"-"`
+	TenantId   string            `json:"-"`
 	UserId     string            `json:"user_id,omitempty"`
 	UserGroup  string            `json:"group,omitempty"`
 	DeviceId   int64             `json:"device_id,omitempty"`
@@ -15,7 +15,7 @@ type Executor struct {
 }
 
 type Data struct {
-	TenentId   string   `json:"-"`
+	TenantId   string   `json:"-"`
 	Type       string   `json:"type,omitempty"`
 	UserID     string   `json:"user_id,omitempty"`
 	UserGroup  string   `json:"ugroup,omitempty"`
@@ -28,7 +28,7 @@ type Data struct {
 }
 
 type Folder struct {
-	TenentId  string `json:"-"`
+	TenantId  string `json:"-"`
 	UserId    string `json:"user_id,omitempty"`
 	SessionID int64  `json:"session_id,omitempty"`
 	DeviceId  string `json:"device_id,omitempty"`
@@ -39,7 +39,7 @@ type Folder struct {
 }
 
 type AdapterEditor struct {
-	TenentId   string `json:"-"`
+	TenantId   string `json:"-"`
 	AdapterId  int64  `json:"adapter_id,omitempty"`
 	DomainName string `json:"domain_name,omitempty"`
 	Type       string `json:"type,omitempty"`

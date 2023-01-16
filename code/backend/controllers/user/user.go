@@ -32,12 +32,12 @@ func (c *Controller) Message(uclaim *claim.Session, userId, message string) (int
 		WarnLevel:    1,
 		Encrypted:    false,
 		CreatedAt:    nil,
-		TenantId:     uclaim.TenentId,
+		TenantId:     uclaim.TenantId,
 	})
 }
 
 func (c *Controller) Get(uclaim *claim.Session, userId string) (*entities.UserInfo, error) {
-	usr, err := c.corehub.GetUserByID(uclaim.TenentId, userId)
+	usr, err := c.corehub.GetUserByID(uclaim.TenantId, userId)
 	if err != nil {
 		return nil, err
 	}

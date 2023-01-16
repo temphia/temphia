@@ -19,7 +19,7 @@ func (c *Controller) authGenerate(opts AuthGenerateRequest) (*AuthGenerateRespon
 		return nil, err
 	}
 
-	auth, err := c.coredb.GetUserGroupAuth(sclaim.TenentId, opts.UserGroup, opts.Id)
+	auth, err := c.coredb.GetUserGroupAuth(sclaim.TenantId, opts.UserGroup, opts.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -27,8 +27,8 @@ func (c *Controller) authGenerate(opts AuthGenerateRequest) (*AuthGenerateRespon
 	switch auth.Type {
 	case "oauth":
 
-		otok, err := c.signer.SignOauthState(sclaim.TenentId, &claim.OauthState{
-			TenantId:  sclaim.TenentId,
+		otok, err := c.signer.SignOauthState(sclaim.TenantId, &claim.OauthState{
+			TenantId:  sclaim.TenantId,
 			AuthId:    auth.Id,
 			UserGroup: opts.UserGroup,
 			DeviceId:  "",
@@ -56,7 +56,7 @@ func (c *Controller) authNextFirst(opts AuthNextFirstRequest) (*AuthNextFirstRes
 		return nil, err
 	}
 
-	auth, err := c.coredb.GetUserGroupAuth(sclaim.TenentId, opts.UserGroup, opts.Id)
+	auth, err := c.coredb.GetUserGroupAuth(sclaim.TenantId, opts.UserGroup, opts.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func (c *Controller) authNextSecond(opts AuthNextSecondRequest) (*AuthNextSecond
 		return nil, err
 	}
 
-	fnclaim, err := c.signer.ParseAutheFirst(sclaim.TenentId, opts.FirstToken)
+	fnclaim, err := c.signer.ParseAutheFirst(sclaim.TenantId, opts.FirstToken)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +90,7 @@ func (c *Controller) authNextSecond(opts AuthNextSecondRequest) (*AuthNextSecond
 			Bio:       opts.SignUpdata.Bio,
 			GroupID:   fnclaim.UserGroup,
 			Password:  "",
-			TenantID:  sclaim.TenentId,
+			TenantID:  sclaim.TenantId,
 			PublicKey: "",
 			CreatedAt: time.Now(),
 			Active:    true,
@@ -102,14 +102,14 @@ func (c *Controller) authNextSecond(opts AuthNextSecondRequest) (*AuthNextSecond
 			PendingPassChange:  false,
 			PendingEmailVerify: false,
 			ExtraMeta:          nil,
-			TenantID:           sclaim.TenentId,
+			TenantID:           sclaim.TenantId,
 		})
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	ntok, err := c.signer.SignAutheNext(sclaim.TenentId, &claim.AuthNext{
+	ntok, err := c.signer.SignAutheNext(sclaim.TenantId, &claim.AuthNext{
 		UserId:      fnclaim.UserID,
 		UserGroup:   fnclaim.UserGroup,
 		UserEmail:   fnclaim.UserEmail,
@@ -137,12 +137,12 @@ func (c *Controller) authSubmit(opts AuthSubmitRequest) (*AuthSubmitResponse, er
 		return nil, err
 	}
 
-	nclaim, err := c.signer.ParseAutheNext(sclaim.TenentId, opts.NextToken)
+	nclaim, err := c.signer.ParseAutheNext(sclaim.TenantId, opts.NextToken)
 	if err != nil {
 		return nil, err
 	}
 
-	data, err := c.coredb.GetUserData(sclaim.TenentId, nclaim.UserId)
+	data, err := c.coredb.GetUserData(sclaim.TenantId, nclaim.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +159,7 @@ func (c *Controller) authSubmit(opts AuthSubmitRequest) (*AuthSubmitResponse, er
 		}
 	}
 
-	patok, err := c.signer.SignPreAuthed(sclaim.TenentId, &claim.PreAuthed{
+	patok, err := c.signer.SignPreAuthed(sclaim.TenantId, &claim.PreAuthed{
 		UserID:     nclaim.UserId,
 		UserGroup:  nclaim.UserGroup,
 		UserEmail:  nclaim.UserEmail,
@@ -187,7 +187,7 @@ func (c *Controller) authSubmit(opts AuthSubmitRequest) (*AuthSubmitResponse, er
 
 func (c *Controller) oauthInNext(sclaim *claim.Site, opts AuthNextFirstRequest, auth *entities.UserGroupAuth) (*AuthNextFirstResponse, error) {
 
-	state, err := c.signer.ParseOauthState(sclaim.TenentId, opts.AuthState)
+	state, err := c.signer.ParseOauthState(sclaim.TenantId, opts.AuthState)
 	if err != nil {
 		return nil, err
 	}
@@ -203,7 +203,7 @@ func (c *Controller) oauthInNext(sclaim *claim.Site, opts AuthNextFirstRequest, 
 		return nil, err
 	}
 
-	usr, err := c.coredb.GetUserByEmail(sclaim.TenentId, data.email)
+	usr, err := c.coredb.GetUserByEmail(sclaim.TenantId, data.email)
 	if err != nil {
 		// if !auth.NewUserIfNotExist {
 		// 	return nil, err
@@ -226,7 +226,7 @@ func (c *Controller) oauthInNext(sclaim *claim.Site, opts AuthNextFirstRequest, 
 			return nil, err
 		}
 
-		idhints, err := c.deriveUserIds(sclaim.TenentId, data.email, data.userName)
+		idhints, err := c.deriveUserIds(sclaim.TenantId, data.email, data.userName)
 		if err != nil {
 			return nil, err
 		}

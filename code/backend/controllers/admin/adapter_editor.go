@@ -63,13 +63,13 @@ type DomainAdapterEditorIssueResp struct {
 
 func (c *Controller) DomainAdapterEditorIssue(uclaim *claim.Session, did int64) (*DomainAdapterEditorIssueResp, error) {
 
-	tdomain, err := c.coredb.GetDomain(uclaim.TenentId, did)
+	tdomain, err := c.coredb.GetDomain(uclaim.TenantId, did)
 	if err != nil {
 		return nil, err
 	}
 
-	tok, err := c.signer.SignAdapterEditor(uclaim.TenentId, &claim.AdapterEditor{
-		TenentId:   uclaim.TenentId,
+	tok, err := c.signer.SignAdapterEditor(uclaim.TenantId, &claim.AdapterEditor{
+		TenantId:   uclaim.TenantId,
 		AdapterId:  did,
 		DomainName: tdomain.Name,
 		Type:       "",

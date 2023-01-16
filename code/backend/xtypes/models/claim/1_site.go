@@ -5,7 +5,7 @@ import (
 )
 
 type Site struct {
-	TenentId        string            `json:"tenent_id,omitempty"`
+	TenantId        string            `json:"tenent_id,omitempty"`
 	Type            string            `json:"type,omitempty"`
 	XID             string            `json:"xid,omitempty"`
 	Host            string            `json:"host,omitempty"`
@@ -16,7 +16,7 @@ type Site struct {
 
 func NewSiteClaim(tenantId, host string, scopes ...string) *Site {
 	return &Site{
-		TenentId:   tenantId,
+		TenantId:   tenantId,
 		Type:       "site_claim",
 		XID:        xid.New().String(),
 		Attributes: make(map[string]string),

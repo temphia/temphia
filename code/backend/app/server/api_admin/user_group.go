@@ -39,7 +39,7 @@ func (r *ApiAdmin) AddUserGroup(ctx httpx.Request) {
 		return
 	}
 
-	group.TenantID = ctx.Session.TenentId
+	group.TenantID = ctx.Session.TenantId
 
 	r.rutil.WriteJSON(ctx.Http, nil, r.cAdmin.AddUserGroup(ctx.Session, group))
 }

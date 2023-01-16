@@ -32,15 +32,15 @@ func New(coredb store.CoreHub, cabinet store.CabinetHub, dynHub store.DataHub, p
 }
 
 func (c *Controller) ListRepoSources(uclaim *claim.Session) (map[int64]string, error) {
-	return c.pacman.RepoSources(uclaim.TenentId)
+	return c.pacman.RepoSources(uclaim.TenantId)
 }
 
 func (c *Controller) ListCabinetSources(uclaim *claim.Session) ([]string, error) {
-	return c.cabinet.ListSources(uclaim.TenentId)
+	return c.cabinet.ListSources(uclaim.TenantId)
 }
 
 func (c *Controller) ListDyndbSources(uclaim *claim.Session) ([]string, error) {
-	return c.dynHub.ListSources((uclaim.TenentId))
+	return c.dynHub.ListSources((uclaim.TenantId))
 }
 
 func (c *Controller) JoinNotification() error {
@@ -48,7 +48,7 @@ func (c *Controller) JoinNotification() error {
 }
 
 func (c *Controller) Self(uclaim *claim.Session) (*entities.User, error) {
-	return c.coredb.GetUserByID(uclaim.TenentId, uclaim.UserID)
+	return c.coredb.GetUserByID(uclaim.TenantId, uclaim.UserID)
 }
 
 func (c *Controller) SelfUpdate(uclaim *claim.Session) error {
@@ -57,20 +57,20 @@ func (c *Controller) SelfUpdate(uclaim *claim.Session) error {
 }
 
 func (c *Controller) GetSelfInfo(uclaim *claim.Session) (*entities.SelfLoad, error) {
-	usr, err := c.coredb.GetUserByID(uclaim.TenentId, uclaim.UserID)
+	usr, err := c.coredb.GetUserByID(uclaim.TenantId, uclaim.UserID)
 	if err != nil {
 		pp.Println("uclaim", uclaim)
 		pp.Println("@USER BY ID", err)
 		return nil, err
 	}
 
-	tenant, err := c.coredb.GetTenant(uclaim.TenentId)
+	tenant, err := c.coredb.GetTenant(uclaim.TenantId)
 	if err != nil {
 		pp.Println("@TENANT", err)
 		return nil, err
 	}
 
-	ugroup, err := c.coredb.GetUserGroup(uclaim.TenentId, uclaim.UserGroup)
+	ugroup, err := c.coredb.GetUserGroup(uclaim.TenantId, uclaim.UserGroup)
 	if err != nil {
 		pp.Println("@USER_GROUP ID", err)
 		return nil, err
@@ -81,7 +81,7 @@ func (c *Controller) GetSelfInfo(uclaim *claim.Session) (*entities.SelfLoad, err
 		scs = scopes.SuperScopes
 	}
 
-	apps, err := c.coredb.ListTargetAppByUgroup(uclaim.TenentId, uclaim.UserGroup)
+	apps, err := c.coredb.ListTargetAppByUgroup(uclaim.TenantId, uclaim.UserGroup)
 	papps := make([]entities.UserApp, 0, len(apps))
 	if err == nil {
 		for _, app := range apps {
@@ -106,7 +106,7 @@ func (c *Controller) GetSelfInfo(uclaim *claim.Session) (*entities.SelfLoad, err
 			GroupId:   uclaim.UserGroup,
 			GroupName: ugroup.Name},
 		TenantName: tenant.Name,
-		TenantId:   uclaim.TenentId,
+		TenantId:   uclaim.TenantId,
 		Scopes:     scs,
 		Apps:       papps,
 	}, nil
@@ -123,15 +123,15 @@ func (c *Controller) GetChangeAuth(uclaim *claim.Session) error {
 }
 
 func (c *Controller) ListMessages(uclaim *claim.Session, opts *entities.UserMessageReq) ([]*entities.UserMessage, error) {
-	return c.coredb.ListUserMessages(uclaim.TenentId, opts)
+	return c.coredb.ListUserMessages(uclaim.TenantId, opts)
 }
 
 func (c *Controller) ModifyMessages(uclaim *claim.Session, opts *entities.ModifyMessages) error {
 	switch opts.Operation {
 	case "delete":
-		return c.coredb.DeleteUserMessages(uclaim.TenentId, uclaim.UserID, opts.Ids)
+		return c.coredb.DeleteUserMessages(uclaim.TenantId, uclaim.UserID, opts.Ids)
 	case "read":
-		return c.coredb.ReadUserMessages(uclaim.TenentId, uclaim.UserID, opts.Ids)
+		return c.coredb.ReadUserMessages(uclaim.TenantId, uclaim.UserID, opts.Ids)
 	default:
 		panic("not impl")
 	}
@@ -139,7 +139,7 @@ func (c *Controller) ModifyMessages(uclaim *claim.Session, opts *entities.Modify
 
 func (c *Controller) IssueUgroup(uclaim *claim.Session, ugroup string) (string, error) {
 
-	return c.signer.SignUserMgmtTkt(uclaim.TenentId, &claim.UserMgmtTkt{
+	return c.signer.SignUserMgmtTkt(uclaim.TenantId, &claim.UserMgmtTkt{
 		Type:        "",
 		Group:       ugroup,
 		Update:      true,

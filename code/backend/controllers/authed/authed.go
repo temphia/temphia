@@ -55,7 +55,7 @@ func (c *Controller) AuthListMethods(sitetoken, ugroup string) (*ListAuthRespons
 		}, nil
 	}
 
-	auths, err := c.coredb.ListUserGroupAuth(site.TenentId, ugroup)
+	auths, err := c.coredb.ListUserGroupAuth(site.TenantId, ugroup)
 	if err != nil {
 		return nil, err
 	}
@@ -94,13 +94,13 @@ func (c *Controller) AuthFinish(opts AuthFinishRequest, deviceName, addr string)
 		return nil, err
 	}
 
-	paclaim, err := c.signer.ParsePreAuthed(sclaim.TenentId, opts.PreAuthedToken)
+	paclaim, err := c.signer.ParsePreAuthed(sclaim.TenantId, opts.PreAuthedToken)
 	if err != nil {
 		pp.Println(err)
 		return nil, err
 	}
 
-	ugroup, err := c.coredb.GetUserGroup(sclaim.TenentId, paclaim.UserGroup)
+	ugroup, err := c.coredb.GetUserGroup(sclaim.TenantId, paclaim.UserGroup)
 	if err != nil {
 		return nil, err
 	}
@@ -118,17 +118,17 @@ func (c *Controller) AuthFinish(opts AuthFinishRequest, deviceName, addr string)
 		APNToken:    "",
 		Scopes:      ugroup.Scopes,
 		ExtraMeta:   entities.JsonStrMap{},
-		TenantID:    sclaim.TenentId,
+		TenantID:    sclaim.TenantId,
 		PairOptions: entities.JsonStrMap{},
 		ExpiresOn:   time.Now().Add(time.Hour * 24 * 60),
 	}
 
-	err = c.coredb.AddUserDevice(sclaim.TenentId, paclaim.UserID, device)
+	err = c.coredb.AddUserDevice(sclaim.TenantId, paclaim.UserID, device)
 	if err != nil {
 		return nil, err
 	}
 
-	utok, err := c.signer.SignUser(sclaim.TenentId, device.Derive(paclaim.UserGroup))
+	utok, err := c.signer.SignUser(sclaim.TenantId, device.Derive(paclaim.UserGroup))
 	if err != nil {
 		return nil, err
 	}

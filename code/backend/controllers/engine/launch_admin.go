@@ -18,8 +18,8 @@ func (c *Controller) LaunchAdmin(uclaim *claim.Session, data AdminLaunchData) (*
 
 func (c *Controller) launchAdmin(uclaim *claim.Session, data AdminLaunchData) (*vmodels.ExecInstanceOptions, error) {
 
-	token, err := c.signer.SignExecutor(uclaim.TenentId, &claim.Executor{
-		TenentId:   uclaim.TenentId,
+	token, err := c.signer.SignExecutor(uclaim.TenantId, &claim.Executor{
+		TenantId:   uclaim.TenantId,
 		UserId:     uclaim.UserID,
 		UserGroup:  uclaim.UserGroup,
 		DeviceId:   uclaim.DeviceId,
@@ -35,7 +35,7 @@ func (c *Controller) launchAdmin(uclaim *claim.Session, data AdminLaunchData) (*
 		return nil, err
 	}
 
-	agent, err := c.corehub.AgentGet(uclaim.TenentId, data.PlugId, data.AgentId)
+	agent, err := c.corehub.AgentGet(uclaim.TenantId, data.PlugId, data.AgentId)
 	if err != nil {
 		return nil, err
 	}

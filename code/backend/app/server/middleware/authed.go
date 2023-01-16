@@ -37,7 +37,7 @@ func (m *Middleware) LoggedX(fn func(ctx httpx.Request)) func(*gin.Context) {
 				Msg(logid.RoutesWrongSessionClaim)
 		}
 
-		sclaim.TenentId = tenantId
+		sclaim.TenantId = tenantId
 
 		c.Header("X-Clacks-Overhead", "Aaron Swartz")
 

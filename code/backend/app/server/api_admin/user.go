@@ -48,7 +48,7 @@ func (r *ApiAdmin) AddUser(ctx httpx.Request) {
 		r.rutil.WriteErr(ctx.Http, err.Error())
 		return
 	}
-	usr.TenantID = ctx.Session.TenentId
+	usr.TenantID = ctx.Session.TenantId
 
 	r.rutil.WriteJSON(ctx.Http, nil, r.cAdmin.AddUser(ctx.Session, usr))
 }

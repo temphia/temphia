@@ -27,7 +27,7 @@ func (c *Controller) refreshService(uclaim *claim.User, opts RefreshReq) *Refres
 
 func (c *Controller) sessionClaim(uclaim *claim.User, opts RefreshReq) *RefreshResp {
 
-	_, err := c.coredb.GetUserDevice(uclaim.TenentId, uclaim.UserID, uclaim.DeviceId)
+	_, err := c.coredb.GetUserDevice(uclaim.TenantId, uclaim.UserID, uclaim.DeviceId)
 	if err != nil {
 		return &RefreshResp{
 			Token:    "",
@@ -39,7 +39,7 @@ func (c *Controller) sessionClaim(uclaim *claim.User, opts RefreshReq) *RefreshR
 	serviceId := c.sessionNode.Generate().Int64()
 
 	if opts.OldToken != "" {
-		sess, err := c.signer.ParseSession(uclaim.TenentId, opts.OldToken)
+		sess, err := c.signer.ParseSession(uclaim.TenantId, opts.OldToken)
 		if err != nil {
 			serviceId = sess.SessionID
 		}
@@ -47,7 +47,7 @@ func (c *Controller) sessionClaim(uclaim *claim.User, opts RefreshReq) *RefreshR
 
 	sclaim := uclaim.DeriveSession(serviceId)
 
-	token, err := c.signer.SignSession(uclaim.TenentId, sclaim)
+	token, err := c.signer.SignSession(uclaim.TenantId, sclaim)
 	if err != nil {
 		return &RefreshResp{
 			Token:    "",

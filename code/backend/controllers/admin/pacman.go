@@ -17,7 +17,7 @@ func (c *Controller) BprintList(uclaim *claim.Session, group string) ([]*entitie
 		return nil, easyerr.NotImpl()
 	}
 
-	return c.pacman.BprintList(uclaim.TenentId, group)
+	return c.pacman.BprintList(uclaim.TenantId, group)
 }
 
 func (c *Controller) BprintCreate(uclaim *claim.Session, bp *entities.BPrint) (string, error) {
@@ -25,7 +25,7 @@ func (c *Controller) BprintCreate(uclaim *claim.Session, bp *entities.BPrint) (s
 		return "", easyerr.NotImpl()
 	}
 
-	return c.pacman.BprintCreate(uclaim.TenentId, bp)
+	return c.pacman.BprintCreate(uclaim.TenantId, bp)
 }
 
 func (c *Controller) BprintUpdate(uclaim *claim.Session, bp *entities.BPrint) error {
@@ -33,7 +33,7 @@ func (c *Controller) BprintUpdate(uclaim *claim.Session, bp *entities.BPrint) er
 		return easyerr.NotImpl()
 	}
 
-	return c.pacman.BprintUpdate(uclaim.TenentId, bp)
+	return c.pacman.BprintUpdate(uclaim.TenantId, bp)
 }
 
 func (c *Controller) BprintGet(uclaim *claim.Session, bid string) (*entities.BPrint, error) {
@@ -41,7 +41,7 @@ func (c *Controller) BprintGet(uclaim *claim.Session, bid string) (*entities.BPr
 		return nil, easyerr.NotImpl()
 	}
 
-	return c.pacman.BprintGet(uclaim.TenentId, bid)
+	return c.pacman.BprintGet(uclaim.TenantId, bid)
 }
 
 func (c *Controller) BprintRemove(uclaim *claim.Session, bid string) error {
@@ -49,7 +49,7 @@ func (c *Controller) BprintRemove(uclaim *claim.Session, bid string) error {
 		return easyerr.NotImpl()
 	}
 
-	return c.pacman.BprintRemove(uclaim.TenentId, bid)
+	return c.pacman.BprintRemove(uclaim.TenantId, bid)
 }
 
 func (c *Controller) BprintListBlobs(uclaim *claim.Session, bid string) (any, error) {
@@ -57,7 +57,7 @@ func (c *Controller) BprintListBlobs(uclaim *claim.Session, bid string) (any, er
 		return nil, easyerr.NotImpl()
 	}
 
-	return c.pacman.BprintListBlobs(uclaim.TenentId, bid)
+	return c.pacman.BprintListBlobs(uclaim.TenantId, bid)
 }
 
 func (c *Controller) BprintNewBlob(uclaim *claim.Session, bid, file string, payload []byte) error {
@@ -65,14 +65,14 @@ func (c *Controller) BprintNewBlob(uclaim *claim.Session, bid, file string, payl
 		return easyerr.NotImpl()
 	}
 
-	return c.pacman.BprintNewBlob(uclaim.TenentId, bid, file, payload)
+	return c.pacman.BprintNewBlob(uclaim.TenantId, bid, file, payload)
 }
 
 func (c *Controller) BprintUpdateBlob(uclaim *claim.Session, bid, file string, payload []byte) error {
 	if !uclaim.IsSuperAdmin() {
 		return easyerr.NotImpl()
 	}
-	return c.pacman.BprintUpdateBlob(uclaim.TenentId, bid, file, payload)
+	return c.pacman.BprintUpdateBlob(uclaim.TenantId, bid, file, payload)
 }
 
 func (c *Controller) BprintGetBlob(uclaim *claim.Session, bid, file string) ([]byte, error) {
@@ -80,7 +80,7 @@ func (c *Controller) BprintGetBlob(uclaim *claim.Session, bid, file string) ([]b
 		return nil, easyerr.NotImpl()
 	}
 
-	return c.pacman.BprintGetBlob(uclaim.TenentId, bid, file)
+	return c.pacman.BprintGetBlob(uclaim.TenantId, bid, file)
 }
 
 func (c *Controller) BprintDeleteBlob(uclaim *claim.Session, bid, file string) error {
@@ -88,13 +88,13 @@ func (c *Controller) BprintDeleteBlob(uclaim *claim.Session, bid, file string) e
 		return easyerr.NotImpl()
 	}
 
-	return c.pacman.BprintDeleteBlob(uclaim.TenentId, bid, file)
+	return c.pacman.BprintDeleteBlob(uclaim.TenantId, bid, file)
 }
 
 // repo
 
 func (c *Controller) BprintImport(uclaim *claim.Session, opts *repox.RepoImportOpts) (string, error) {
-	return c.pacman.RepoSourceImport(uclaim.TenentId, opts)
+	return c.pacman.RepoSourceImport(uclaim.TenantId, opts)
 }
 
 type InstanceOptions struct {

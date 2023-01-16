@@ -9,7 +9,7 @@ import (
 )
 
 func (c *Controller) CheckBprint(uclaim *claim.Session, bid string) error {
-	_, err := c.coredb.BprintGet(uclaim.TenentId, bid)
+	_, err := c.coredb.BprintGet(uclaim.TenantId, bid)
 	if err == nil {
 		return easyerr.Error("Already Exists")
 	}
@@ -22,7 +22,7 @@ func (c *Controller) CheckBprint(uclaim *claim.Session, bid string) error {
 }
 
 func (c *Controller) CheckPlug(uclaim *claim.Session, pid string) error {
-	_, err := c.coredb.PlugGet(uclaim.TenentId, pid)
+	_, err := c.coredb.PlugGet(uclaim.TenantId, pid)
 	if err == nil {
 		return easyerr.Error("Already Exists")
 	}

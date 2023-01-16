@@ -19,7 +19,7 @@ func (c *Controller) AddUserDevice(uclaim *claim.Session, data *NewUserDevice) e
 	// fixme => more paring options
 	// fixme => return new id
 
-	return c.coredb.AddUserDevice(uclaim.TenentId, uclaim.UserID, &entities.UserDevice{
+	return c.coredb.AddUserDevice(uclaim.TenantId, uclaim.UserID, &entities.UserDevice{
 		Id:          0,
 		Name:        data.Name,
 		UserId:      uclaim.UserID,
@@ -27,7 +27,7 @@ func (c *Controller) AddUserDevice(uclaim *claim.Session, data *NewUserDevice) e
 		APNToken:    data.APNToken,
 		Scopes:      data.Scopes,
 		ExtraMeta:   data.ExtraMeta,
-		TenantID:    uclaim.TenentId,
+		TenantID:    uclaim.TenantId,
 		LastData:    entities.JsonStrMap{},
 		PairOptions: entities.JsonStrMap{},
 		ExpiresOn:   time.Now().Add(time.Hour * 24 * 60),
@@ -36,17 +36,17 @@ func (c *Controller) AddUserDevice(uclaim *claim.Session, data *NewUserDevice) e
 }
 
 func (c *Controller) UpdateUserDevice(uclaim *claim.Session, id int64, data map[string]any) error {
-	return c.coredb.UpdateUserDevice(uclaim.TenentId, uclaim.UserID, id, data)
+	return c.coredb.UpdateUserDevice(uclaim.TenantId, uclaim.UserID, id, data)
 }
 
 func (c *Controller) GetUserDevice(uclaim *claim.Session, id int64) (*entities.UserDevice, error) {
-	return c.coredb.GetUserDevice(uclaim.TenentId, uclaim.UserID, id)
+	return c.coredb.GetUserDevice(uclaim.TenantId, uclaim.UserID, id)
 }
 
 func (c *Controller) ListUserDevice(uclaim *claim.Session) ([]*entities.UserDevice, error) {
-	return c.coredb.ListUserDevice(uclaim.TenentId, uclaim.UserID)
+	return c.coredb.ListUserDevice(uclaim.TenantId, uclaim.UserID)
 }
 
 func (c *Controller) RemoveUserDevice(uclaim *claim.Session, id int64) error {
-	return c.coredb.RemoveUserDevice(uclaim.TenentId, uclaim.UserID, id)
+	return c.coredb.RemoveUserDevice(uclaim.TenantId, uclaim.UserID, id)
 }
