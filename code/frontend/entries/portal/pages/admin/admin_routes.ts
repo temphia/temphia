@@ -90,7 +90,8 @@ import AdminUgroups from "./ugroup/ugroups.svelte";
 import AdminUgroupNew from "./ugroup/ugroup_new.svelte";
 import AdminUgroupEdit from "./ugroup/ugroup_edit.svelte";
 import AdminUgroupUsers from "./ugroup/user/users.svelte";
-import AdminUgroupUser from "./ugroup/user/user.svelte";
+import AdminUgroupUserNew from "./ugroup/user/user_new.svelte";
+import AdminUgroupUserEdit from "./ugroup/user/user_edit.svelte";
 
 import AdminUgroupAuths from "./ugroup/auth/auths.svelte";
 import AdminUgroupAuthNew from "./ugroup/auth/auth_new.svelte";
@@ -223,7 +224,8 @@ export default {
     "/:ugroup/edit": AdminUgroupEdit,
     "/:ugroup/user": {
       "/": AdminUgroupUsers,
-      "/:userid/edit": AdminUgroupUser,
+      "/:userid/edit": AdminUgroupUserEdit,
+      "/new": AdminUgroupUserNew,
     },
 
     "/:ugroup/auth": AdminUgroupAuths,

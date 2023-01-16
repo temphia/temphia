@@ -1,10 +1,12 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import { validateEmail, validateSlug } from "../../../../../lib/utils";
-  import { AutoForm, PortalService } from "../core";
+  import { validateEmail, validateSlug } from "../../../../../../lib/utils";
+  import { AutoForm, PortalService } from "../../core";
+  import { params } from "svelte-hash-router";
 
   const app = getContext("__app__") as PortalService;
-  const api = app.api_manager.get_admin_user_api();
+
+  export let ugroup = $params.ugroup;
 
   let message = "";
 
@@ -21,14 +23,20 @@
     }
 
     message = "";
+    const api = await app.api_manager.get_ugroup_tkt_api(ugroup);
+    if (!api) {
+      console.log("ugroup tkt api not found");
+      return;
+    }
 
     const resp = await api.new(_data);
     if (!resp.ok) {
+      console.log("Err", resp);
       message = resp.data;
       return;
     }
 
-    app.nav.admin_users();
+    app.nav.admin_ugroup_users(ugroup);
   };
 </script>
 

@@ -20,7 +20,8 @@
   const load = async () => {
     const api = await app.api_manager.get_ugroup_tkt_api(ugroup);
     if (!api) {
-      return
+      console.log("ugroup tkt api not found");
+      return;
     }
 
     const resp = await api.list();
@@ -36,10 +37,18 @@
 
   // actions
 
-  const action_edit = (id: string) => {};
+  const action_edit = (id: string) => app.nav.admin_ugroup_user_edit(ugroup, id);
   const action_profile = (id: string) => app.nav.user_profile(id);
-  const action_delete = async (id: string) => {};
-  const action_new = () => {};
+  const action_delete = async (id: string) => {
+    const api = await app.api_manager.get_ugroup_tkt_api(ugroup);
+    if (!api) {
+      console.log("ugroup tkt api not found");
+      return;
+    }
+    await api.delete(id)
+    load()
+  };
+  const action_new = () => app.nav.admin_ugroup_user_new(ugroup);
 
   // syncme => ../../user/users.svelte
 
