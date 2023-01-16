@@ -25,6 +25,7 @@ type PlugDevTkt struct {
 }
 
 type UserMgmtTkt struct {
+	TenantId    string   `json:"-"`
 	Type        string   `json:"type"`
 	Group       string   `json:"group"`
 	Update      bool     `json:"update"`

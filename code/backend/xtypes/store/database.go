@@ -90,8 +90,8 @@ type UserOps interface {
 
 	AddUser(user *entities.User, data *entities.UserData) error
 	UpdateUser(tenantId, user string, data map[string]any) error
-	RemoveUser(tenantId string, username string) error
-	GetUserByID(tenantId string, username string) (*entities.User, error)
+	RemoveUser(tenantId string, userid string) error
+	GetUserByID(tenantId string, userid string) (*entities.User, error)
 	GetUserByEmail(tenantId string, email string) (*entities.User, error)
 	ListUsers(tenantId string) ([]*entities.User, error)
 	ListUsersByGroup(tenantId, group string) ([]*entities.User, error)
@@ -145,7 +145,7 @@ type UserGroupExtra interface {
 type UserMessageOps interface {
 	AddUserMessage(msg *entities.UserMessage) (int64, error)
 	UserMessageSetRead(tenantId, user string, id int64) error
-	RemoveUserMessage(tenantId string, username string, id int64) error
+	RemoveUserMessage(tenantId string, userid string, id int64) error
 	ListUserMessages(tenantId string, data *entities.UserMessageReq) ([]*entities.UserMessage, error)
 
 	ReadUserMessages(tenantId, userId string, id []int64) error
