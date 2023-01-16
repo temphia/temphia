@@ -38,10 +38,10 @@ export class AdminBprintAPI {
     return this.base.get(`/admin/bprint/${bid}/file/${file}`);
   }
 
-  add_file(bid: string, file: string, data: any) {    
+  add_file(bid: string, file: string, data: any) {
     return this.base.postForm(`/admin/bprint/${bid}/file/${file}`, true, data);
   }
-  
+
   update_file(bid: string, file: string, data: any) {
     return this.base.patchForm(`/admin/bprint/${bid}/file/${file}`, true, data);
   }
@@ -62,4 +62,7 @@ export class AdminBprintAPI {
     return this.base.post(`/admin/bprint/${bid}/issue/encoded`, data);
   }
 
+  list_plugs(bid: string) {
+    return this.base.get(`/admin/bprint/${bid}/plug`);
+  }
 }

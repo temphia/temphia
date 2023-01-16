@@ -27,6 +27,7 @@ func (a *ApiAdmin) bprintAPI(rg *gin.RouterGroup) {
 	rg.POST("/:id/instance", a.X(a.BprintInstance))
 	rg.POST("/:id/issue", a.X(a.DevIssueTkt))
 	rg.POST("/:id/issue/encoded", a.X(a.DevIssueTktEncoded))
+	rg.GET("/:id/plug", a.X(a.BprintPlugs))
 }
 
 func (r *ApiAdmin) BprintList(ctx httpx.Request) {
@@ -156,7 +157,7 @@ func (r *ApiAdmin) DevIssueTkt(ctx httpx.Request) {
 	}
 
 	rdata.BprintId = ctx.MustParam("id")
-	tkt, err := r.cAdmin.DevIssueTktEncoded(ctx.Session, ctx.Http.Request.Host, rdata)
+	tkt, err := r.cAdmin.DevIssueTkt(ctx.Session, ctx.Http.Request.Host, rdata)
 
 	r.rutil.WriteJSON(ctx.Http, tkt, err)
 }
@@ -174,4 +175,9 @@ func (r *ApiAdmin) DevIssueTktEncoded(ctx httpx.Request) {
 	tkt, err := r.cAdmin.DevIssueTktEncoded(ctx.Session, ctx.Http.Request.Host, rdata)
 
 	r.rutil.WriteJSON(ctx.Http, tkt, err)
+}
+
+func (r *ApiAdmin) BprintPlugs(ctx httpx.Request) {
+	resp, err := r.cAdmin.PlugListByBprint(ctx.Session, ctx.MustParam("id"))
+	r.rutil.WriteJSON(ctx.Http, resp, err)
 }

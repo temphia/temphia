@@ -71,8 +71,7 @@ func (pi *PlugInstancer) instance(pid string, opts xinstance.Options, schema *xb
 		Name:         schema.Name,
 		Live:         true,
 		Dev:          true,
-		ExtraMeta:    nil,
-		Owner:        "",
+		ExtraMeta:    entities.JsonStrMap{},
 		InvokePolicy: "",
 		BprintId:     opts.BprintId,
 	}

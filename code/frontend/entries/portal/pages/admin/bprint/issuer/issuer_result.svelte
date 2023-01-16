@@ -14,12 +14,12 @@
   </div>
   <div class="w-full p-4">
     <pre
-      class="overflow-scroll h-10 rounded bg-gray-200"
-      style="max-width: 95%; margin:auto;">{ticket}</pre>
+      class="overflow-scroll rounded bg-gray-200 h-full"
+      style="max-width: 95%; margin:auto; ">{JSON.stringify(ticket, null, 2)}</pre>
   </div>
   <button
     on:click={close}
-    class="mt-5  text-base leading-4 text-center text-white p-4 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 bg-gray-800 hover:bg-black"
+    class="mt-5 px-2 py-1 flex text-white font-semibold rounded bg-green-400 hover:bg-green-600"
     >OK</button
   >
 </div>

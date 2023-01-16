@@ -6,19 +6,22 @@
   export let bid: string;
   export let app: PortalService;
 
+  const bapi = app.api_manager.get_admin_bprint_api();
+
   let plugs = [];
   let all_plugs = false;
   let selected_plugs = [];
 
-  (async () => {
-    const papi = await app.api_manager.get_admin_plug_api();
+  const load = async () => {
+    const bapi = app.api_manager.get_admin_bprint_api();
+    const resp = await bapi.list_plugs(bid);
+    if (resp.status !== 200) {
+      return;
+    }
+    plugs = resp.data;
+  };
 
-    // const resp = await bapi.list_agent_bprint(bid);
-    // if (resp.status !== 200) {
-    //   return;
-    // }
-    // plugs = resp.data;
-  })();
+  load();
 </script>
 
 <h4 class="mb-3 block text-base font-medium uppercase text-gray-500">
@@ -119,17 +122,19 @@
     <button
       class="p-1 flex text-white font-semibold rounded bg-green-400 hover:bg-green-600"
       on:click={async () => {
-        const bapi = await app.api_manager.get_admin_bprint_api();
+        const resp = await bapi.issue(bid, {
+          all_plugs,
+          plug_ids: selected_plugs,
+        });
+        if (!resp.ok) {
+          console.log("Err", resp);
+          return;
+        }
 
-        // const resp = await bapi.issue_tkt(bid, all_plugs, true, selected_plugs);
-        // if (resp.status !== 200) {
-        //   return;
-        // }
-
-        // app.utils.small_modal_open(IssuerResult, {
-        //   ticket: resp.data,
-        //   close: app.utils.small_modal_close,
-        // });
+        app.utils.small_modal_open(IssuerResult, {
+          ticket: resp.data,
+          close: app.utils.small_modal_close,
+        });
       }}
     >
       <Icon name="terminal" class="h-5 w-5" />
