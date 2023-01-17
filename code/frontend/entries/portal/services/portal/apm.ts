@@ -120,7 +120,7 @@ export class ApiManager {
   };
 
   get_folder_api = async (source: string, folder: string) => {
-    const resp = await this.self_api.issue_data({
+    const resp = await this.self_api.issue_folder({
       source,
       folder,
     });
@@ -130,7 +130,7 @@ export class ApiManager {
       return;
     }
 
-    return new FolderTktAPI(this.api_base_url, resp.data);
+    return new FolderTktAPI(this.api_base_url, resp.data["folder_token"]);
   };
 
   // admin api
@@ -198,7 +198,7 @@ export class ApiManager {
     );
 
     this.self_data.user_mgmt_tkt_api[ugroup] = api;
-    
+
     return api;
   };
 

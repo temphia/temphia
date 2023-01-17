@@ -41,3 +41,9 @@ export const humanizeBytes = (x) => {
 
   return n.toFixed(n < 10 && l > 0 ? 1 : 0) + " " + units[l];
 };
+
+const imageTypes = ["png", "jpg", "jpeg"];
+export const isImage = (name) => {
+  const frags = name.split(".");
+  return imageTypes.includes(frags[frags.length - 1]);
+};

@@ -62,6 +62,10 @@ export class FolderTktAPI {
     return this.http.get(`/folder/${this.ticket}/${file}`);
   }
 
+  getFileUrl(file: string) {
+    return `${this.base_url}/folder/${this.ticket}/${file}`;
+  }
+
   getFilePreviewUrl(file: string) {
     return `${this.base_url}/folder/${this.ticket}/${file}/preview`;
   }

@@ -31,7 +31,7 @@ type Folder struct {
 	TenantId  string `json:"-"`
 	UserId    string `json:"user_id,omitempty"`
 	SessionID int64  `json:"session_id,omitempty"`
-	DeviceId  string `json:"device_id,omitempty"`
+	DeviceId  int64  `json:"device_id,omitempty"`
 	Type      string `json:"type,omitempty"`
 	Expiry    int64  `json:"expiry,omitempty"`
 	Source    string `json:"source,omitempty"`

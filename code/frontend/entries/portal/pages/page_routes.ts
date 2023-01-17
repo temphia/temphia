@@ -10,6 +10,7 @@ import DataTable from "./data/table.svelte";
 import CabLoader from "./cabinet/loader.svelte";
 import CabFolders from "./cabinet/folders.svelte";
 import CabFolder from "./cabinet/folder.svelte";
+import CabFile from "./cabinet/file.svelte";
 //repo
 import RepoLoader from "./repo/loader.svelte";
 import Repo from "./repo/repo.svelte";
@@ -44,7 +45,7 @@ export default {
     "/": CabLoader,
     "/:source": CabFolders,
     "/:source/:folder": CabFolder,
-    "/:source/:folder/:file": null,
+    "/:source/:folder/*": CabFile,
   },
   "/repo": {
     "/": RepoLoader,

@@ -97,10 +97,10 @@ func (s *Server) issueFolderTkt(ctx httpx.Request) {
 	resp, err := s.cCabinet.NewFolderTicket(
 		ctx.Session,
 		req.Source,
-		ctx.Http.Param("folder"),
+		req.Folder,
 	)
 
-	httpx.WriteJSON(ctx.Http, resp, err)
+	httpx.WriteJSON(ctx.Http, gin.H{"folder_token": resp}, err)
 }
 
 func (s *Server) issueDataTkt(ctx httpx.Request) {

@@ -16,6 +16,7 @@ export class CabinetService {
     this.apm = apm;
     this.source_apis = new Map();
     this.sources = null;
+    this.folder_apis = new Map()
   }
 
   get_source_api(src: string) {
@@ -53,5 +54,6 @@ export class CabinetService {
 
     fapi = await this.apm.get_folder_api(source, folder)
     this.folder_apis.set(key, fapi);
+    return fapi
   }
 }

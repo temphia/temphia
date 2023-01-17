@@ -6,17 +6,22 @@
 
   import PanelUploadFile from "./panels/upload_file.svelte";
   import { LoadingSpinner } from "../admin/core";
-  import { humanizeBytes } from "../../../../lib/utils";
+  import { humanizeBytes, isImage } from "../../../../lib/utils";
+  import type { FolderTktAPI } from "../../../../lib/apiv2";
 
   const app: PortalService = getContext("__app__");
+
+  const source = $params.source;
+  const folder = $params.folder;
 
   let files = [];
   let files_loaded = false;
   let ticket_loaded = false;
-  let fapi;
+  let preview = false;
+  let fapi: FolderTktAPI;
 
   const cabservice = app.get_cabinet_service();
-  const capi = cabservice.get_source_api($params.source);
+  const capi = cabservice.get_source_api(source);
 
   let sources = [];
   cabservice.get_cab_sources().then((sresp) => {
@@ -24,11 +29,12 @@
   });
 
   const load = async () => {
-    const resp = await capi.listFolder($params.folder);
+    const resp = await capi.listFolder(folder);
     if (!resp.ok) {
       console.log("Err", resp);
       return;
     }
+    fapi = await cabservice.get_folder_api(source, folder);
 
     files = resp.data;
     files_loaded = true;
@@ -38,7 +44,7 @@
   load();
 
   const finalUpload = async (file, data) => {
-    capi.uploadFile($params.folder, file, data);
+    capi.uploadFile(folder, file, data);
     load();
     app.utils.big_modal_close();
   };
@@ -48,17 +54,9 @@
   };
 
   $: _files_selected = false;
-
-  const imageTypes = ["png", "jpg", "jpeg"];
-  const isImage = (name) => {
-    const frags = name.split(".");
-    return imageTypes.includes(frags[frags.length - 1]);
-  };
-
-  let preview = false;
 </script>
 
-<Layout {sources} source={$params.source}>
+<Layout {sources} {source}>
   <svelte:fragment slot="actions_right">
     <div class="p-2 bg-gray-50 font-sans font-thin">
       <label>
@@ -125,11 +123,11 @@
           {#each files as file}
             <tr class="text-gray-700 hover:bg-gray-200">
               <td class="px-2 py-1 border">
-                {#if isImage(file.name) && preview}
+                {#if fapi && isImage(file.name) && preview}
                   <img
-                    src={capi.getFilePreview($params.folder, file.name)}
+                    src={fapi.getFilePreviewUrl(file.name)}
                     alt={file.name}
-                    class="h-10 w-10 p-1 border"
+                    class="h-10 border"
                   />
                 {:else}
                   <svg
@@ -158,14 +156,13 @@
               >
               <td class="px-4 py-1 text-sm border">
                 <button
-                  on:click={() =>
-                    app.nav.cab_file($params.source, $params.folder, file.name)}
+                  on:click={() => app.nav.cab_file(source, folder, file.name)}
                   class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded"
                   >Preview</button
                 >
                 <button
                   on:click={async () => {
-                    capi.deleteFile($params.folder, file.name);
+                    capi.deleteFile(folder, file.name);
                     load();
                   }}
                   class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded"
