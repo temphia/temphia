@@ -65,7 +65,7 @@ func (s *Controller) AddData(opts DataConnOptions) error {
 		NameSpace: opts.TenantId,
 		Conn:      opts.Conn,
 		Expiry:    0,
-		Room:      sockdx.ROOM_SYS_USERS,
+		Room:      sockdx.ROOM_SYS_DATA,
 		Tags: []string{
 			fmt.Sprint("sys.user_", opts.UserId),
 			fmt.Sprintf("dgroup.%s.%s", opts.DynSource, opts.DynGroup),
@@ -78,7 +78,7 @@ func (s *Controller) UpdateDynRoomTags(opts UpdateDynRoomTagsOptions) error {
 
 	return s.sockd.RoomUpdateTags(
 		opts.TenantId,
-		sockdx.ROOM_SYSTABLE,
+		sockdx.ROOM_SYS_DATA,
 		sockdx.UpdateTagOptions{
 			AddTags:    []string{fmt.Sprintf("dgroup.%s.%s", opts.DynSource, opts.DynGroup)},
 			ClearOld:   true,

@@ -2,7 +2,7 @@ package sockdx
 
 import "github.com/temphia/temphia/code/backend/xtypes/models/entities"
 
-const ROOM_SYSTABLE = "sys.dtable"
+const ROOM_SYS_DATA = "sys.data"
 const ROOM_SYS_USERS = "sys.users"
 const ROOM_PLUG_DEV = "plugs_dev"
 

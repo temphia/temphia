@@ -70,7 +70,7 @@ func (s *DataSyncer) pushRowMod(source, tenantId, groupId string, data *RowMod) 
 
 	return s.sockd.SendTagged(
 		tenantId,
-		sockdx.ROOM_SYSTABLE,
+		sockdx.ROOM_SYS_DATA,
 		[]string{fmt.Sprintf("dgroup.%s.%s", source, groupId)},
 		[]int64{},
 		out,
