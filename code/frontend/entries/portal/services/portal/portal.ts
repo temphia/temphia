@@ -95,6 +95,7 @@ export class PortalService {
 
   inject(utils: Utils) {
     this.utils = utils;
+    this.notifier.toast_open = utils.toast_success
   }
 
   get_sockd_service = () => {

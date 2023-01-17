@@ -13,10 +13,12 @@ export class Notifier {
   state: Writable<State>;
   is_pending_read: Readable<boolean>;
   sockd: ISockd;
+  toast_open: (msg) => void;
 
   constructor(self_api: SelfAPI) {
     this.self_api = self_api;
     this.state = writable({ messages: [], cursor: 0, loading: false });
+    this.toast_open = null;
 
     this.is_pending_read = derived([this.state], ([state]) => {
       let pending = false;
@@ -33,10 +35,15 @@ export class Notifier {
   handle_sockd = (data: SockdMessage) => {
     switch (data.payload["type"]) {
       case "new":
+        const mpayload = data.payload["data"];
+        if (this.toast_open) {
+          this.toast_open(mpayload["title"] + " " + mpayload["contents"]);
+        }
+
         this.state.update((old) => {
           return {
             ...old,
-            messages: [...old.messages, data.payload["data"]],
+            messages: [...old.messages, mpayload],
           };
         });
         break;

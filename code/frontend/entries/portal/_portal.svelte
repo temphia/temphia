@@ -6,6 +6,7 @@
   import NotificationModal from "./notification/modal.svelte";
   import type { PortalService } from "./services";
   import { onMount, setContext } from "svelte";
+  import { Toaster } from "../xcompo";
 
   routes.set(page_routes);
 
@@ -23,6 +24,8 @@
   let small_modal_close;
   let small_modal_open;
   let notification_toggle;
+  let toast_error;
+  let toast_success;
 
   onMount(() =>
     app.inject({
@@ -31,14 +34,17 @@
       small_modal_close,
       small_modal_open,
       notification_toggle,
-      toast_error: null,
-      toast_success: null,
+      toast_error,
+      toast_success,
     })
   );
+
+
 
   setContext("__app__", app);
 </script>
 
+<Toaster bind:error={toast_error} bind:success={toast_success} />
 <Modal
   bind:close_big={big_modal_close}
   bind:show_big={big_modal_open}
