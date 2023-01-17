@@ -5,6 +5,7 @@
   import MultiText from "./_multi_text.svelte";
   import Action from "./_action.svelte";
   import { generateId } from "../../../../../../lib/utils";
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
 
   export let schema: Schema;
   export let data = {};
@@ -13,6 +14,7 @@
   export let onSave: (data: any) => Promise<void>;
 
   let mod_data = {};
+  $: _open_selects = {};
 
   $: console.log(
     `FORM_DEBUG => ${schema.name}`,
@@ -67,9 +69,53 @@
 
           <datalist id="field-{idx}-datalist">
             {#each field.options || [] as opt}
-              <option value={opt} />
+              <option value={opt}>{opt}</option>
             {/each}
           </datalist>
+        {:else if field.ftype === "SELECT"}
+          <div class="flex justify-between w-full">
+            {#if _open_selects[idx]}
+              <input
+                id="field-{idx}"
+                type="text"
+                list="field-{idx}-datalist"
+                value={get(field.key_name)}
+                on:change={set(field.key_name)}
+                disabled={field.disabled}
+                class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200 w-full"
+              />
+
+              <datalist id="field-{idx}-datalist">
+                {#each field.options || [] as opt}
+                  <option value={opt}>{opt}</option>
+                {/each}
+              </datalist>
+            {:else}
+              <select
+                class="p-1 rounded border w-full"
+                id="field-{idx}"
+                value={get(field.key_name)}
+                on:change={set(field.key_name)}
+              >
+                {#each field.options || [] as opt}
+                <option value={opt}>{opt}</option>
+                {/each}
+              </select>
+            {/if}
+
+            <div class="w-10 p-1 text-gray-700">
+              <button
+                on:click={() => {
+                  _open_selects[idx] = !_open_selects[idx];
+                  _open_selects = _open_selects
+                }}
+                ><Icon
+                  name={_open_selects[idx] ? "lock-open" : "lock-closed"}
+                  class="w-6 h-6"
+                /></button
+              >
+            </div>
+          </div>
         {:else if field.ftype === "TEXT_SLUG"}
           <input
             id="field-{idx}"

@@ -53,9 +53,11 @@
 
         {
           name: "Adapter Type",
-          ftype: "TEXT",
+          ftype: "SELECT",
           key_name: "adapter_type",
+          options: ["easypage"]
         },
+
 
         {
           name: "Adapter Options",

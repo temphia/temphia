@@ -9,6 +9,7 @@ export interface Field {
   key_name: string;
   ftype:
     | "TEXT"
+    | "SELECT"
     | "TEXT_SLUG"
     | "MULTI_TEXT"
     | "LONG_TEXT"
@@ -23,6 +24,7 @@ export interface Field {
     | "AGENT"
     | "HANDLER"
     | "RESOURCE";
+
   linked_fields?: string[];
   disabled?: boolean;
   options?: string[];
