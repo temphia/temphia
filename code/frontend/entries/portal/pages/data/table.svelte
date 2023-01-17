@@ -33,6 +33,10 @@
     <TableUI
       layout={$params.layout}
       {table_service}
+      view_modal={{
+        open: app.utils.small_modal_open,
+        close: app.utils.small_modal_close,
+      }}
       on:on_change_to_card={(ev) =>
         app.nav.data_table(source, group, $params.dtable, "/card")}
       on:on_table_change={(ev) => app.nav.data_table(source, group, ev.detail)}

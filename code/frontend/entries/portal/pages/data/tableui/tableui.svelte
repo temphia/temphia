@@ -7,9 +7,11 @@
   import ViewPanel from "./core/view/view.svelte";
 
   import { createEventDispatcher } from "svelte";
+  import type { ViewModal } from "./core/view/view";
 
   export let table_service: TableService;
   export let layout: string;
+  export let view_modal: ViewModal;
 
   const row_service = table_service.get_row_service();
   const data_store = table_service.state.data_store;
@@ -127,6 +129,7 @@
     columns={Object.values($data_store.indexed_column)}
     manager={table_service}
     bind:show={show_view_panel}
+    {view_modal}
   />
 
   {#if layout === "card"}
