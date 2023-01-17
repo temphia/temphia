@@ -1,4 +1,6 @@
 import AdminBprint from "./bprint/bprint.svelte";
+import AdminBprintNew from "./bprint/bprint_new.svelte";
+import AdminBprintZip from "./bprint/bprint_zip.svelte";
 import AdminBprints from "./bprint/bprints.svelte";
 import AdminBprintFiles from "./bprint/files/files.svelte";
 import AdminBprintFile from "./bprint/files/file.svelte";
@@ -6,6 +8,7 @@ import AdminBprintDataInstancer from "./bprint/instancer/manual/data/data.svelte
 import AdminBprintPlugInstancer from "./bprint/instancer/manual/plug/plug.svelte";
 import AdminBprintEditor from "./bprint/editor/editor.svelte";
 import AdminBprintAutomaticInstancer from "./bprint/instancer/automatic/automatic.svelte";
+
 
 // plug
 import AdminPlugs from "./plug/plugs.svelte";
@@ -129,7 +132,10 @@ export default {
   $$component: Admin,
   "/bprint": {
     "/": AdminBprints,
-    "/:bid": AdminBprint,
+    "/:bid/edit": AdminBprint,
+    "/new": AdminBprintNew,
+    "/zip": AdminBprintZip,
+
     "/:bid/instance/data/*": AdminBprintDataInstancer,
     "/:bid/instance/plug/*": AdminBprintPlugInstancer,
     "/:bid/instance/automatic": AdminBprintAutomaticInstancer,

@@ -104,7 +104,15 @@ export class Navigator {
   };
 
   admin_bprint = (bid: string) => {
-    this.set(`#/admin/bprint/${bid}`);
+    this.set(`#/admin/bprint/${bid}/edit`);
+  };
+
+  admin_bprint_new = () => {
+    this.set(`#/admin/bprint/new`);
+  };
+
+  admin_bprint_zip = () => {
+    this.set(`#/admin/bprint/new`);
   };
 
   admin_bprint_files = (bid: string) => {
@@ -144,7 +152,6 @@ export class Navigator {
   admin_plug_edit = (bid: string) => {
     this.set(`#/admin/plug/edit/${bid}`);
   };
-
 
   // agents
 
@@ -450,7 +457,6 @@ export class Navigator {
     this.set(`#/admin/ugroup/${ugroup}/auth/edit/${id}`);
   }
 
-
   admin_ugroup_apps(ugroup: string) {
     this.set(`#/admin/ugroup/${ugroup}/app`);
   }
@@ -474,8 +480,6 @@ export class Navigator {
   admin_ugroup_data_edit(ugroup: string, id: string) {
     this.set(`#/admin/ugroup/${ugroup}/data/edit/${id}`);
   }
-
-
 
   admin_tenant() {
     this.set(`#/admin/tenant/`);

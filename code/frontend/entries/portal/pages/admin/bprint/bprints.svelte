@@ -8,6 +8,7 @@
     PortalService,
   } from "../core";
   import InstancerPick from "./instancer/instancer_pick.svelte";
+  import PickNewBprint from "./_pick_new_bprint.svelte";
 
   let datas = [];
   let loading = true;
@@ -29,8 +30,8 @@
   // actions
 
   const action_instance = async (id: string) => {
-    app.utils.small_modal_open(InstancerPick, {app, id} )
-   };
+    app.utils.small_modal_open(InstancerPick, { app, id });
+  };
 
   const action_edit = (id: string) => app.nav.admin_bprint(id);
   const action_issue = (id: string) =>
@@ -43,7 +44,9 @@
     await api.delete(id);
     load();
   };
-  const action_new = () => app.nav.repo_loader();
+  const action_new = () => {
+    app.utils.small_modal_open(PickNewBprint, { app });
+  };
 
   /*
   
@@ -55,8 +58,6 @@
   
   
   */
-
-
 </script>
 
 {#if loading}
