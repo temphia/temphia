@@ -8,7 +8,7 @@ import AdminBprintDataInstancer from "./bprint/instancer/manual/data/data.svelte
 import AdminBprintPlugInstancer from "./bprint/instancer/manual/plug/plug.svelte";
 import AdminBprintEditor from "./bprint/editor/editor.svelte";
 import AdminBprintAutomaticInstancer from "./bprint/instancer/automatic/automatic.svelte";
-
+import AdminBrpintZipit from "./bprint/zipit.svelte";
 
 // plug
 import AdminPlugs from "./plug/plugs.svelte";
@@ -133,8 +133,9 @@ export default {
   "/bprint": {
     "/": AdminBprints,
     "/:bid/edit": AdminBprint,
+    "/:bid/zipit": AdminBrpintZipit,
     "/new": AdminBprintNew,
-    "/zip": AdminBprintZip,
+    "/new/zip": AdminBprintZip,
 
     "/:bid/instance/data/*": AdminBprintDataInstancer,
     "/:bid/instance/plug/*": AdminBprintPlugInstancer,

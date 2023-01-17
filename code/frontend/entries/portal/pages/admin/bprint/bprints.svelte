@@ -48,6 +48,8 @@
     app.utils.small_modal_open(PickNewBprint, { app });
   };
 
+  const action_zipit = (id: string) => app.nav.admin_bprint_export_zip(id);
+
   /*
   
   export as zip
@@ -93,6 +95,13 @@
         Action: action_issue,
         drop: true,
         icon: "terminal",
+      },
+
+      {
+        Name: "Zip it",
+        Action: action_zipit,
+        drop: true,
+        icon: "archive",
       },
 
       {

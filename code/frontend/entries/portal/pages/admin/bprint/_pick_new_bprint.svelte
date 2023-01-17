@@ -14,7 +14,7 @@
       name: "From zip",
       icon: "archive",
       info: "Upload using bprint zip",
-      action: () => app.nav.admin_bprint_zip(),
+      action: () => app.nav.admin_bprint_new_zip(),
     },
     {
       name: "Empty",

@@ -107,12 +107,16 @@ export class Navigator {
     this.set(`#/admin/bprint/${bid}/edit`);
   };
 
+  admin_bprint_export_zip = (bid: string) => {
+    this.set(`#/admin/bprint/${bid}/zipit`);
+  };
+
   admin_bprint_new = () => {
     this.set(`#/admin/bprint/new`);
   };
 
-  admin_bprint_zip = () => {
-    this.set(`#/admin/bprint/new`);
+  admin_bprint_new_zip = () => {
+    this.set(`#/admin/bprint/new/zip`);
   };
 
   admin_bprint_files = (bid: string) => {
