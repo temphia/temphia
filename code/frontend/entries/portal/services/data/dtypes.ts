@@ -53,7 +53,7 @@ export interface Column {
   ref_object: string;
 }
 
-export interface Hook {
+export interface DataWidget {
   id: number;
   name: string;
   type: string;
@@ -63,6 +63,7 @@ export interface Hook {
   icon: string;
   payload: string;
 }
+
 
 export interface Action {
   name: string;

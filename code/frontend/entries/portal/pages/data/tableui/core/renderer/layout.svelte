@@ -6,6 +6,7 @@
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
 
   export let hooks: object[];
+  // data_widget
 
   export let all_tables: object[];
   export let active_table: string;
@@ -99,7 +100,7 @@
                   action={{
                     name: hook["name"],
                     action: _onHook(hook),
-                    icon: hook["icon"] ? DOMPurify.sanitize(hook["icon"]) : "",
+                    icon: hook["icon"] ? DOMPurify.sanitize(hook["icon"], null) : "",
                   }}
                   clx={"bg-green-50"}
                 />
