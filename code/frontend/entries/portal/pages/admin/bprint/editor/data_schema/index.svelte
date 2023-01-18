@@ -8,7 +8,7 @@
   export let etype: string;
   export let file: string;
 
-  let loading = false;
+  let loading = true;
   let data: b.State;
 
   const load = async () => {
@@ -20,6 +20,7 @@
     }
 
     data = resp.data;
+    loading = false;
   };
 
   load();

@@ -79,11 +79,11 @@
   <div class="bg-white rounded p-2 flex content-center justify-between mb-4">
     <div class="flex gap-2 items-center">
       <h1 class="font-medium text-xl text-gray-800 line-clamp-1">
-        {__schema.name}
+        {__schema.name || ""}
       </h1>
 
       <span class="px-1 bg-gray-400 text-gray-50 rounded font-semibold"
-        >{__schema.slug}</span
+        >{__schema.slug || ""}</span
       >
     </div>
 
@@ -137,9 +137,9 @@
                 </svg>
               </button>
 
-              <h1 class="text-gray-800">{table.name}</h1>
+              <h1 class="text-gray-800">{table.name || ""}</h1>
               <span class="px-1 bg-blue-400 text-blue-50 rounded font-semibold"
-                >{table.slug}</span
+                >{table.slug || ""}</span
               >
             </div>
             <div class="flex gap-1 p-2">
@@ -212,7 +212,7 @@
                       <td class="px-3 py-1">
                         <div class="p-1 rounded-lg inline-flex">
                           <Cicon ctype={col.ctype} />
-                          <span>{col.name}</span>
+                          <span>{col.name || ""}</span>
                         </div>
                       </td>
                       <td class="px-3 py-1"
