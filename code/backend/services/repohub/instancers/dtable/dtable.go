@@ -47,6 +47,11 @@ func (di *dtabeInstancer) Instance(opts xinstance.Options) (*xinstance.Response,
 		return nil, err
 	}
 
+	err = Validate(schemaData)
+	if err != nil {
+		return nil, err
+	}
+
 	dopts, err := di.extractUserOptions(opts, schemaData)
 	if err != nil {
 		return nil, err

@@ -36,6 +36,28 @@ const (
 	CtypeColor       = "color"
 )
 
+var AllColumns = map[string]struct{}{
+	CtypeShortText:   {},
+	CtypePhone:       {},
+	CtypeSelect:      {},
+	CtypeRFormula:    {},
+	CtypeFile:        {},
+	CtypeMultiFile:   {},
+	CtypeCheckBox:    {},
+	CtypeCurrency:    {},
+	CtypeNumber:      {},
+	CtypeLocation:    {},
+	CtypeDateTime:    {},
+	CtypeMultSelect:  {},
+	CtypeLongText:    {},
+	CtypeSingleUser:  {},
+	CtypeMultiUser:   {},
+	CtypeEmail:       {},
+	CtypeJSON:        {},
+	CtypeRangeNumber: {},
+	CtypeColor:       {},
+}
+
 const (
 	RefHardPriId = "hard_pri"
 	RefSoftPriId = "soft_pri"
