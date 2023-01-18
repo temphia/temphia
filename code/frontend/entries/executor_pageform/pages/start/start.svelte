@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Field from "./field.svelte";
-  import type * as f from "./field";
+  import Field from "../../field/field.svelte";
+  import type * as f from "../../field/field";
   export let data: typeof f.data;
 </script>
 

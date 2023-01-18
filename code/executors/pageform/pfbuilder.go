@@ -1,6 +1,8 @@
 package pageform
 
 import (
+	"os"
+
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
@@ -8,6 +10,14 @@ import (
 
 type PfBuilder struct {
 	app xtypes.App
+}
+
+var loaderJs []byte
+var loaderCss []byte
+
+func init() {
+	loaderJs, _ = os.ReadFile("code/frontend/public/build/executor_pageform.js")
+	loaderCss, _ = os.ReadFile("code/frontend/public/build/executor_pageform.css")
 }
 
 func NewBuilder(app any) (etypes.ExecutorBuilder, error) {
@@ -20,11 +30,23 @@ func NewBuilder(app any) (etypes.ExecutorBuilder, error) {
 func (pf *PfBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, error) {
 	return &Pageform{
 		builder: pf,
+		model: &FormModel{
+			Name:  "Test 1",
+			Items: []FormItem{},
+			Data:  make(map[string]any),
+		},
 	}, nil
 }
 
 func (pf *PfBuilder) ExecFile(file string) ([]byte, error) {
 	pp.Println("@file", file)
 
-	return nil, nil
+	switch file {
+	case "loader.css":
+		return loaderCss, nil
+	case "loader.js":
+		return loaderJs, nil
+	default:
+		return []byte(``), nil
+	}
 }

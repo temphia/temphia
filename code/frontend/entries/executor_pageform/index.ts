@@ -1,10 +1,13 @@
+import { registerExecLoaderFactory } from "../../lib/engine/register";
 import PageForm from "./index.svelte";
 
-const __svelte_app__ = new PageForm({
-  target: document.body,
-  props: {},
+registerExecLoaderFactory("pageform.loader", (opts) => {
+  console.log("@@pagefrom.loader", opts);
+
+  new PageForm({
+    target: opts.target,
+    props: {
+      env: opts.env,
+    },
+  });
 });
-
-console.log("@hello_from_pageform")
-
-export default __svelte_app__;

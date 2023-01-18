@@ -1,6 +1,9 @@
 <script lang="ts">
-  import PageForm from "./page_form.svelte";
-  import { data } from "./field";
+  import StartPage from "./pages/start/start.svelte";
+
+  import { data } from "./field/field";
+  import Tailwind from "../xcompo/common/_tailwind.svelte";
+  export let env: any;
 </script>
 
 <div class="h-full w-full p-4 bg-blue-50">
@@ -10,6 +13,8 @@
     >
       Form 1
     </h1>
-    <PageForm {data} />
+    <StartPage {data} />
   </div>
 </div>
+
+<Tailwind />

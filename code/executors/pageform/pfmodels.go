@@ -22,7 +22,7 @@ type FormItem struct {
 
 type LoadRequest struct {
 	DataContextType string         `json:"data_context_type,omitempty"`
-	Rows            int64          `json:"rows,omitempty"`
+	Rows            []int64        `json:"rows,omitempty"`
 	Options         map[string]any `json:"options,omitempty"`
 }
 
@@ -35,11 +35,11 @@ type LoadResponse struct {
 	OnSubmit string         `json:"onsubmit,omitempty"`
 }
 
-type Submit struct {
+type SubmitRequest struct {
 	Data map[string]any `json:"data,omitempty"`
 }
 
-type Result struct {
+type SubmitResponse struct {
 	Ok      bool         `json:"ok,omitempty"`
 	Message string       `json:"message,omitempty"`
 	Items   []ResultItem `json:"items,omitempty"`
