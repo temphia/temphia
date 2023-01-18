@@ -1,6 +1,5 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import { numHash } from "../../../../../../../lib/utils";
   import {
     ActionDeleteButton,
     ActionEditButton,
@@ -119,9 +118,7 @@
 
   <div class="flex flex-wrap gap-2">
     {#each __schema.tables || [] as table, idx}
-      {@const table_color = `border-color: hsl(${
-        numHash(table.slug) % 360
-      }, 100%, 80%)`}
+      
       {#if table !== null}
         <div class="p-2 border bg-white shadow w-90 rounded-lg">
           <div
@@ -198,7 +195,6 @@
 
               <table
                 class="table-auto border-collapse w-full border-2 rounded"
-                style={table_color}
               >
                 <thead
                   ><tr
@@ -312,9 +308,7 @@
                       <td class="px-3 py-1"
                         ><span
                           class="p-1 rounded-lg"
-                          style={`background: hsl(${
-                            numHash(cref.target) % 360
-                          }, 100%, 80%)`}>{cref.target}</span
+                          >{cref.target}</span
                         ></td
                       >
 

@@ -34,7 +34,6 @@
     <div class="flex-col flex py-3 relative">
       <label class="pb-2 text-gray-700 font-semibold">Info </label>
       <textarea
-        type="text"
         class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200"
         bind:value={info}
       />
