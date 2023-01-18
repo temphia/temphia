@@ -1,21 +1,36 @@
 <script lang="ts">
   import Builder from "./_builder.svelte";
-  import sample from "./sample/sample";
-  import { getContext } from "svelte";
-  import type { PortalService } from "../../../core";
-
+  import { LoadingSpinner, PortalService } from "../../../core";
   import * as b from "./builder";
 
-  let loaded = false;
-  let editor;
+  export let bid: string;
+  export let app: PortalService;
+  export let etype: string;
+  export let file: string;
 
-  let state = sample as b.State;
+  let loading = false;
+  let data: b.State;
 
-  const app: PortalService = getContext("__app__");
+  const load = async () => {
+    const bapi = app.api_manager.get_admin_bprint_api();
+    const resp = await bapi.get_file(bid, file);
+    if (!resp.ok) {
+      console.log("Err", resp.data);
+      return;
+    }
+
+    data = resp.data;
+  };
+
+  load();
 </script>
 
-<Builder
-  builder={b.Builder.from_batch(state)}
-  open_modal={(comp, opts) => app.utils.small_modal_open(comp, opts)}
-  close_modal={() => app.utils.small_modal_close()}
-/>
+{#if loading}
+  <LoadingSpinner />
+{:else}
+  <Builder
+    builder={b.Builder.from_batch(data)}
+    open_modal={(comp, opts) => app.utils.small_modal_open(comp, opts)}
+    close_modal={() => app.utils.small_modal_close()}
+  />
+{/if}
