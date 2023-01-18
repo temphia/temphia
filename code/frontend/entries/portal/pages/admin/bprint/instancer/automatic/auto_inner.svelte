@@ -53,7 +53,7 @@
   {:else if instanced_resp}
     <details>
       <summary>Response</summary>
-      <pre><code>{JSON.stringify(instancedData)}</code></pre>
+      <pre><code>{JSON.stringify(instancedData, null, 2)}</code></pre>
     </details>
   {:else}
     <div class="space-y-2 mt-4 border">

@@ -65,6 +65,7 @@ func (c *Controller) Execute(tenantId, action string, ctx *gin.Context) {
 
 	if err != nil {
 		pp.Println("@here_err_after", string(payload))
+		pp.Println(err)
 		ctx.AbortWithError(http.StatusBadRequest, err)
 		return
 	}

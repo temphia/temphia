@@ -437,6 +437,7 @@ create table agents(
     name text not null default '',
     type text not null,
     executor text not null,
+    entry_file text not null default '',
     iface_file text not null default '',
     mod_version integer not null default 0,
     web_entry text not null default '',

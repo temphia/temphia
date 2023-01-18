@@ -26,7 +26,8 @@ func NewBuilder(app any) (etypes.ExecutorBuilder, error) {
 }
 
 func newExecutor(opts etypes.ExecutorOption) (etypes.Executor, error) {
-	script, _, err := opts.Binder.GetFileWithMeta("server.js")
+
+	script, _, err := opts.Binder.GetFileWithMeta(opts.File)
 	if err != nil {
 		return nil, err
 	}

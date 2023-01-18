@@ -51,8 +51,8 @@ func (n *ns) getBinder(j *job.Job) (*standard.Binder, error) {
 		AgentId:  j.AgentId,
 		ExecType: j.Agent.Executor,
 		TenantId: j.Namespace,
-		EnvVars:  nil,
-		File:     "",
+		EnvVars:  make(map[string]any), // fixme => get this from target or env resource
+		File:     j.Agent.EntryFile,
 	})
 	if err != nil {
 		return nil, tracerr.Wrap(err)
