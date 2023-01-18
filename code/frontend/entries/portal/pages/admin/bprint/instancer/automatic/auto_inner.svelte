@@ -12,7 +12,7 @@
 
   let instanceing = false;
   let message = "";
-  let instanced = false;
+  let instanced_resp = false;
   let instancedData;
 
   const instance = async () => {
@@ -24,14 +24,14 @@
     });
 
     if (!resp.ok) {
-      console.log("err");
       message = resp.data;
+      instanced_resp = true;
       return;
     }
 
     instancedData = resp.data;
     instanceing = false;
-    instanced = false;
+    instanced_resp = true;
   };
 
   const iconTypes = {
@@ -50,7 +50,7 @@
 
   {#if instanceing}
     <LoadingSpinner />
-  {:else if instanced}
+  {:else if instanced_resp}
     <details>
       <summary>Response</summary>
       <pre><code>{JSON.stringify(instancedData)}</code></pre>

@@ -90,6 +90,8 @@ func (i *InstancHub) AutomaticBundle(opts repox.InstanceOptions) (any, error) {
 
 	pp.Println("ALL BUNDLE ||>>", bundle)
 
+	allok := true
+
 	for _, bitem := range bundle.Items {
 		pp.Println("INSTANCING BITEM", bitem)
 
@@ -114,14 +116,23 @@ func (i *InstancHub) AutomaticBundle(opts repox.InstanceOptions) (any, error) {
 			},
 		})
 		if err != nil {
-			pp.Println("ERR |||||>>>>>>", err)
+			allok = false
+
+			iObjs[bitem.Name] = &xinstance.Response{
+				Ok:      false,
+				Message: err.Error(),
+			}
+
 			continue
 		}
 
 		iObjs[bitem.Name] = resp
 	}
 
-	return nil, nil
+	return AutoResp{
+		AllOk:   allok,
+		Objects: iObjs,
+	}, nil
 }
 
 func (i *InstancHub) AutomaticSingle(opts repox.InstanceOptions) (any, error) {
@@ -131,7 +142,7 @@ func (i *InstancHub) AutomaticSingle(opts repox.InstanceOptions) (any, error) {
 		return nil, easyerr.NotFound()
 	}
 
-	return instancer.Instance(xinstance.Options{
+	iresp, err := instancer.Instance(xinstance.Options{
 		TenantId:     opts.UserSession.TenantId,
 		BprintId:     opts.BprintId,
 		InstanceType: opts.InstancerType,
@@ -145,6 +156,18 @@ func (i *InstancHub) AutomaticSingle(opts repox.InstanceOptions) (any, error) {
 			pacman:    i.pacman,
 		},
 	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return AutoResp{
+		AllOk: err == nil,
+		Objects: map[string]*xinstance.Response{
+			"default": iresp,
+		},
+	}, nil
+
 }
 
 func (p *PacMan) loadFile(tenantId, bid string, file string, target any) error {
@@ -154,4 +177,9 @@ func (p *PacMan) loadFile(tenantId, bid string, file string, target any) error {
 		return err
 	}
 	return json.Unmarshal(out, target)
+}
+
+type AutoResp struct {
+	AllOk   bool                           `json:"all_ok"`
+	Objects map[string]*xinstance.Response `json:"objects"`
 }
