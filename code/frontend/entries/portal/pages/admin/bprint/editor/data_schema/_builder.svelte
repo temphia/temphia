@@ -12,6 +12,7 @@
   import AddTable from "./panels/_add_table.svelte";
   import EditColumn from "./panels/_edit_column.svelte";
   import EditTable from "./panels/_edit_table.svelte";
+  import { Validate } from "./validator";
 
   export let open_modal: (compo: any, opts: any) => void;
   export let close_modal: () => void;
@@ -73,6 +74,11 @@
   const action_delete_column_ref = (table: string, refidx: number) => {
     // builder.delete_column_ref()
   };
+
+  let validation_message = "";
+  const action_validator = () => {
+    validation_message = Validate(__schema);
+  };
 </script>
 
 <div class="bg-blue-100 p-10 w-full h-full overflow-auto text-gray-800">
@@ -95,7 +101,20 @@
         <Icon name="plus" class="h-5 w-5" />
         Add
       </button>
+
+      <button
+        class="hover:bg-gray-300 rounded inline-flex border p-1"
+        on:click={action_validator}
+      >
+        <Icon name="check" class="h-5 w-5" />
+        Validate
+      </button>
+
     </div>
+  </div>
+
+  <div class="bg-white rounded">
+    <p class="text-red-500">{validation_message}</p>
   </div>
 
   <div class="flex flex-wrap gap-2">
