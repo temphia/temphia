@@ -7,6 +7,8 @@ import (
 	"github.com/thoas/go-funk"
 )
 
+const MaxSlug = 20
+
 type tnsShared struct{}
 
 func (t *tnsShared) Table(tenantId, groupId, tableId string) string {
@@ -22,7 +24,7 @@ func (t *tnsShared) MetaTable(tenantId string) string      { return "data_tables
 func (t *tnsShared) MetaColumn(tenantId string) string     { return "data_table_columns" }
 
 func (t *tnsShared) CheckGroupSlug(slug string) error {
-	if len(slug) > 10 {
+	if len(slug) > MaxSlug {
 		return ErrLongSlug
 	}
 
@@ -33,7 +35,7 @@ func (t *tnsShared) CheckGroupSlug(slug string) error {
 }
 
 func (t *tnsShared) CheckTableSlug(slug string) error {
-	if len(slug) > 10 {
+	if len(slug) > MaxSlug {
 		return ErrLongSlug
 	}
 
@@ -45,7 +47,7 @@ func (t *tnsShared) CheckTableSlug(slug string) error {
 }
 
 func (t *tnsShared) CheckColumnSlug(slug string) error {
-	if len(slug) > 10 {
+	if len(slug) > MaxSlug {
 		return ErrLongSlug
 	}
 	if !checkSlug(slug) {
