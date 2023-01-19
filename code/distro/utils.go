@@ -3,11 +3,16 @@ package distro
 import (
 	"errors"
 	"os"
+	"time"
 
 	"github.com/temphia/temphia/code/backend/controllers/operator/opmodels"
 	"github.com/temphia/temphia/code/backend/controllers/operator/opsutils"
 	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/upper/db/v4"
 )
 
@@ -65,18 +70,62 @@ func (da *App) IsDomainSeeded(tenantId string) (bool, error) {
 
 func (da *App) SeedWildcardDomain(tenantId string) error {
 	return da.CoreHub.AddDomain(&entities.TenantDomain{
-		Name:                   "*",
-		About:                  "",
-		DefaultUgroup:          "",
-		CORSPolicy:             "",
-		AdapterPolicy:          "",
-		AdapterType:            "",
-		AdapterOptions:         entities.JsonStrMap{},
-		AdapterCabSource:       "",
-		AdapterCabFolder:       "",
-		AdapterTemplateBprints: "",
-		TenantId:               tenantId,
-		ExtraMeta:              entities.JsonStrMap{},
+		Name:           "*",
+		About:          "Fallback Domain",
+		AdapterType:    "easypage",
+		AdapterOptions: entities.JsonStrMap{},
+		TenantId:       tenantId,
+		ExtraMeta:      entities.JsonStrMap{},
 	})
+}
+
+func (da *App) SeedRepo(tenantId, bprint, user string) error {
+	err := da.CoreHub.RepoNew(tenantId, &entities.Repo{
+		Id:       0,
+		Name:     "Embed",
+		Provider: "embed",
+		TenantId: tenantId,
+	})
+	if err != nil {
+		return err
+	}
+
+	deps := da.App.GetDeps()
+
+	rhub := deps.RepoHub().(repox.Hub)
+	instancer := rhub.GetInstanceHub()
+
+	_, err = instancer.AutomaticBundle(repox.InstanceOptions{
+		BprintId:       bprint,
+		InstancerType:  xbprint.TypeBundle,
+		File:           "schema.json",
+		UserConfigData: nil,
+		Auto:           true,
+		UserSession: &claim.Session{
+			TenantId:  tenantId,
+			UserID:    user,
+			UserGroup: xtypes.UserGroupSuperAdmin,
+		},
+	})
+
+	return err
+}
+
+func (da *App) SeedWelcomeMessage(tenantId, to string) error {
+	deps := da.App.GetDeps()
+	ch := deps.CoreHub().(store.CoreHub)
+
+	now := time.Now()
+
+	_, err := ch.AddUserMessage(&entities.UserMessage{
+		Title:     "Welcome User",
+		Contents:  "this is temphia interglactic information highway system connection portal blah blah",
+		TenantId:  tenantId,
+		UserId:    to,
+		Type:      "system_message",
+		CreatedAt: &now,
+	})
+
+	return err
 
 }
