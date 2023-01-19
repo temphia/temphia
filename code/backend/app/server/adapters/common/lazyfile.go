@@ -16,7 +16,7 @@ type File struct {
 }
 
 func (s *File) fileLoader() ([]byte, error) {
-	out, err := s.parent.handler(s.parent.tenantId, s.parent.folder, s.parent.prefix+s.name)
+	out, err := s.parent.handler(s.parent.tenantId, s.name)
 	if err != nil {
 		if errors.Is(err, fs.ErrNotExist) || strings.Contains(err.Error(), "not found") {
 			return nil, fs.ErrNotExist

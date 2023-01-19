@@ -5,25 +5,22 @@ import (
 )
 
 type LazyFSOptions struct {
-	Prefix  string
-	Folder  string
 	Tenant  string
-	Handler func(tenantId, folder, file string) ([]byte, error)
+	Handler func(tenantId, file string) ([]byte, error)
+	Files   map[string]struct{}
 }
 
 type LazyFS struct {
 	tenantId string
-	folder   string
-	prefix   string
-	handler  func(tenantId, folder, file string) ([]byte, error)
+	handler  func(tenantId, file string) ([]byte, error)
+	files    map[string]struct{}
 }
 
 func NewLazyFS(opts LazyFSOptions) *LazyFS {
 	return &LazyFS{
-		prefix:   opts.Prefix,
 		handler:  opts.Handler,
 		tenantId: opts.Tenant,
-		folder:   opts.Folder,
+		files:    opts.Files,
 	}
 }
 

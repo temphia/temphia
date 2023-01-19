@@ -2,7 +2,10 @@ package web2agent
 
 import (
 	"fmt"
+	"html/template"
 
+	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/backend/app/server/adapters/common"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -13,6 +16,7 @@ type WAState struct {
 	templates     map[string]string
 	templateFuncs map[string]string
 	routes        map[string]string
+	template      *template.Template
 }
 
 func (w *Web2Agent) init() {
@@ -56,8 +60,13 @@ func (w *Web2Agent) init() {
 
 	def := gjson.GetBytes(out, "definations.web2agent")
 
+	templateFiles := make([]string, 0)
+
 	for defkey, def := range def.Get("templates").Map() {
-		w.state.templates[defkey] = def.String()
+		tmplFile := def.String()
+
+		w.state.templates[defkey] = tmplFile
+		templateFiles = append(templateFiles, tmplFile)
 	}
 
 	for defkey, def := range def.Get("template_funcs").Map() {
@@ -68,4 +77,19 @@ func (w *Web2Agent) init() {
 		w.state.routes[defkey] = def.String()
 	}
 
+	fs := common.NewLazyFS(common.LazyFSOptions{
+		Tenant: w.tenantId,
+		Files:  make(map[string]struct{}),
+		Handler: func(tenantId, file string) ([]byte, error) {
+			return []byte(`<h1> </h1>`), nil
+		},
+	})
+
+	t, err := template.New("web2agent").ParseFS(fs, templateFiles...)
+	if err != nil {
+		pp.Println("@paring templates error")
+		return
+	}
+
+	w.state.template = t
 }
