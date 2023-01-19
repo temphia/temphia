@@ -10,6 +10,14 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
+const (
+	DefaultUserName = "Super User"
+	DefaultUser     = "superuser"
+
+	DefaultGroupName = "Super Admin"
+	DefaultGroup     = "super_admin"
+)
+
 func AddTenant(app xtypes.App, data *opmodels.NewTenant) error {
 
 	if app.SingleTenant() {
@@ -30,8 +38,8 @@ func AddTenant(app xtypes.App, data *opmodels.NewTenant) error {
 	}
 
 	err = coredb.AddUserGroup(&entities.UserGroup{
-		Name:     "Super Admin",
-		Slug:     "super_admin",
+		Name:     DefaultGroupName,
+		Slug:     DefaultGroup,
 		TenantID: data.Slug,
 	})
 
@@ -40,17 +48,17 @@ func AddTenant(app xtypes.App, data *opmodels.NewTenant) error {
 	}
 
 	return coredb.AddUser(&entities.User{
-		UserId:    "superuser",
-		FullName:  "Super User",
+		UserId:    DefaultUser,
+		FullName:  DefaultUserName,
 		Email:     data.SuperEmail,
-		GroupID:   "super_admin",
+		GroupID:   DefaultGroup,
 		Password:  data.SuperPassword,
 		TenantID:  data.Slug,
 		PublicKey: "",
 		CreatedAt: time.Now(),
 		Active:    true,
 	}, &entities.UserData{
-		UserId:             "superuser",
+		UserId:             DefaultUser,
 		MFAEnabled:         false,
 		MFAType:            "",
 		MFAData:            "",

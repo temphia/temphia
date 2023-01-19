@@ -8,10 +8,7 @@ import (
 	"github.com/temphia/temphia/code/backend/controllers/operator/opmodels"
 	"github.com/temphia/temphia/code/backend/controllers/operator/opsutils"
 	"github.com/temphia/temphia/code/backend/xtypes"
-	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/upper/db/v4"
 )
@@ -90,25 +87,27 @@ func (da *App) SeedRepo(tenantId, bprint, user string) error {
 		return err
 	}
 
-	deps := da.App.GetDeps()
+	return nil
 
-	rhub := deps.RepoHub().(repox.Hub)
-	instancer := rhub.GetInstanceHub()
+	// deps := da.App.GetDeps()
 
-	_, err = instancer.AutomaticBundle(repox.InstanceOptions{
-		BprintId:       bprint,
-		InstancerType:  xbprint.TypeBundle,
-		File:           "schema.json",
-		UserConfigData: nil,
-		Auto:           true,
-		UserSession: &claim.Session{
-			TenantId:  tenantId,
-			UserID:    user,
-			UserGroup: xtypes.UserGroupSuperAdmin,
-		},
-	})
+	// rhub := deps.RepoHub().(repox.Hub)
+	// instancer := rhub.GetInstanceHub()
 
-	return err
+	// _, err = instancer.AutomaticBundle(repox.InstanceOptions{
+	// 	BprintId:       bprint,
+	// 	InstancerType:  xbprint.TypeBundle,
+	// 	File:           "schema.json",
+	// 	UserConfigData: nil,
+	// 	Auto:           true,
+	// 	UserSession: &claim.Session{
+	// 		TenantId:  tenantId,
+	// 		UserID:    user,
+	// 		UserGroup: xtypes.UserGroupSuperAdmin,
+	// 	},
+	// })
+
+	// return err
 }
 
 func (da *App) SeedWelcomeMessage(tenantId, to string) error {

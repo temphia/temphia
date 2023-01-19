@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/backend/controllers/operator/opsutils"
 	"github.com/temphia/temphia/code/backend/data"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/distro"
@@ -63,6 +64,16 @@ func RunDemo() error {
 		}
 
 		err = dapp.SeedWildcardDomain(xtypes.DefaultTenant)
+		if err != nil {
+			return err
+		}
+
+		err = dapp.SeedRepo(xtypes.DefaultTenant, "example1", opsutils.DefaultUser)
+		if err != nil {
+			return err
+		}
+
+		err := dapp.SeedWelcomeMessage(xtypes.DefaultTenant, opsutils.DefaultUser)
 		if err != nil {
 			return err
 		}
