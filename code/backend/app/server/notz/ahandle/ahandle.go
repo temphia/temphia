@@ -14,10 +14,11 @@ var (
 )
 
 type Options struct {
-	Corehub  store.CoreHub
-	Logger   *zerolog.Logger
-	DomainId int64
-	TenantId string
+	Corehub     store.CoreHub
+	Logger      *zerolog.Logger
+	DomainId    int64
+	TenantId    string
+	ResetDomain func()
 }
 
 type AHandle struct {
@@ -25,6 +26,7 @@ type AHandle struct {
 	logger     *zerolog.Logger
 	tenantId   string
 	keyTypeKey string
+	resetFunc  func()
 }
 
 func New(opts Options) *AHandle {
@@ -33,6 +35,7 @@ func New(opts Options) *AHandle {
 		logger:     opts.Logger,
 		tenantId:   opts.TenantId,
 		keyTypeKey: fmt.Sprintf("adapter-%d", opts.DomainId),
+		resetFunc:  opts.ResetDomain,
 	}
 }
 
@@ -77,6 +80,10 @@ func (ah *AHandle) KvList(prefix string) ([]string, error) {
 	}
 
 	return final, nil
+}
+
+func (ah *AHandle) SelfReset() {
+	ah.resetFunc()
 }
 
 // log

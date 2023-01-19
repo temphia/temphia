@@ -39,6 +39,8 @@ type AdapterHandle interface {
 	KvRemove(key string) error
 	KvList(prefix string) ([]string, error)
 
+	SelfReset()
+
 	// log
 	GetLogger() *zerolog.Logger
 	LogInfo(rid int64) *zerolog.Event

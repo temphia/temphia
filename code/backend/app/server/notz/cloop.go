@@ -91,6 +91,17 @@ func (am *AdapterManager) buildTenant(tenantId string) error {
 	return nil
 }
 
+func (am *AdapterManager) resetDomain(tenantId string, domainId int64) {
+	// fixme => this will work only on single node
+	// send this to other node from msgbus
+
+	am.cReInstance <- DomainIdent{
+		tenantId: tenantId,
+		domainId: domainId,
+	}
+
+}
+
 func (am *AdapterManager) build(tenantId string, model *entities.TenantDomain) {
 
 	builder := am.adapterBuilders[model.AdapterType]
@@ -114,6 +125,9 @@ func (am *AdapterManager) build(tenantId string, model *entities.TenantDomain) {
 			Logger:   &logger,
 			DomainId: model.Id,
 			TenantId: tenantId,
+			ResetDomain: func() {
+				am.resetDomain(tenantId, model.Id)
+			},
 		}),
 	})
 	if err != nil {
