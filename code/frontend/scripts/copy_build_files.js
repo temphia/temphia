@@ -25,7 +25,22 @@ const FILES = [
     "adapter_editor_noop.js",
     "adapter_editor_easypage.js",
     "adapter_editor_easypage.css",
+    "executor_pageform.js",
+    "executor_pageform.css"
 ]
+
+fs_Extra.readdirSync(BUILD_FOLDER).forEach((file) => {
+    if (!FILES.includes(file)) {
+        console.log("@file not in copied list =>", file)
+    }
+})
+
+fs_Extra.readdirSync(BUILD_ASSETS_FOLDER).forEach((file) => {
+    if (!FILES.includes(file)) {
+        console.log("@file not from build folder =>", file)
+    }
+})
+
 
 
 FILES.forEach((file) => {
@@ -37,9 +52,10 @@ FILES.forEach((file) => {
 
     fs_Extra.copy(fromPath, toPath, function (error) {
         if (error) {
+            console.log(`@err [${file}] =>`, error)
             throw error;
         } else {
-            console.log("success!");
+            console.log("@success copy", file);
         }
     });
 })
