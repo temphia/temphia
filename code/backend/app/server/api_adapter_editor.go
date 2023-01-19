@@ -22,15 +22,4 @@ func (s *Server) adapterEditorAPI(rg *gin.RouterGroup) {
 		s.notz.ServeEditorFile(tenantId, file, did, ctx)
 	})
 
-	rg.GET("/perform/:name", func(ctx *gin.Context) {
-		tenantId := ctx.Param("tenant_id")
-		file := ctx.Param("file")
-		did, err := strconv.ParseInt(ctx.Param("did"), 10, 64)
-		if err != nil {
-			return
-		}
-
-		s.notz.PreformEditorAction(tenantId, file, did, ctx)
-	})
-
 }
