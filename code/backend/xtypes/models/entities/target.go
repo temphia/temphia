@@ -20,11 +20,13 @@ const (
 	TargetAppTypeUserGroupApp  = "user_group_app"
 	TargetAppTypeUserGroupAuth = "user_group_auth"
 	TargetAppTypeDataWidget    = "data_widget"
+	TargetAppTypeDomainWidget  = "domain_widget"
 )
 
 const (
-	TargetHookTypeDataHook = "data_hook"
-	TargetHookTypeStartUp  = "startup"
+	TargetHookTypeDataHook   = "data_hook"
+	TargetHookTypeDomainHook = "domain_hook"
+	TargetHookTypeStartUp    = "startup"
 )
 
 /*

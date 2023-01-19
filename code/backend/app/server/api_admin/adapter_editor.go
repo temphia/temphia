@@ -1,9 +1,13 @@
 package apiadmin
 
 import (
+	"strconv"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
 func (a *ApiAdmin) adapterEditorAPI(rg *gin.RouterGroup) {
@@ -27,20 +31,113 @@ func (a *ApiAdmin) adapterEditorAPI(rg *gin.RouterGroup) {
 
 }
 
-func (a *ApiAdmin) adapterSelfUpdate(aclaim *claim.AdapterEditor, ctx *gin.Context) {}
-func (a *ApiAdmin) adapterReset(aclaim *claim.AdapterEditor, ctx *gin.Context)      {}
+func (a *ApiAdmin) adapterSelfUpdate(aclaim *claim.AdapterEditor, ctx *gin.Context) {
+	data := make(map[string]any)
+	err := ctx.BindJSON(&data)
+	if err != nil {
+		a.rutil.WriteErr(ctx, err.Error())
+		return
+	}
 
-func (a *ApiAdmin) adapterListApps(aclaim *claim.AdapterEditor, ctx *gin.Context)  {}
-func (a *ApiAdmin) adapterNewApp(aclaim *claim.AdapterEditor, ctx *gin.Context)    {}
-func (a *ApiAdmin) adapterGetApp(aclaim *claim.AdapterEditor, ctx *gin.Context)    {}
-func (a *ApiAdmin) adapterUpdateApp(aclaim *claim.AdapterEditor, ctx *gin.Context) {}
-func (a *ApiAdmin) adapterDeleteApp(aclaim *claim.AdapterEditor, ctx *gin.Context) {}
+	err = a.cAdmin.AdapterSelfUpdate(aclaim, data)
+	a.rutil.WriteFinal(ctx, err)
+}
 
-func (a *ApiAdmin) adapterListHooks(aclaim *claim.AdapterEditor, ctx *gin.Context)  {}
-func (a *ApiAdmin) adapterNewHook(aclaim *claim.AdapterEditor, ctx *gin.Context)    {}
-func (a *ApiAdmin) adapterGetHook(aclaim *claim.AdapterEditor, ctx *gin.Context)    {}
-func (a *ApiAdmin) adapterUpdateHook(aclaim *claim.AdapterEditor, ctx *gin.Context) {}
-func (a *ApiAdmin) adapterDeleteHook(aclaim *claim.AdapterEditor, ctx *gin.Context) {}
+func (a *ApiAdmin) adapterReset(aclaim *claim.AdapterEditor, ctx *gin.Context) {
+	a.notz.Reset(aclaim.TenantId, aclaim.AdapterId)
+	time.Sleep(time.Second * 5)
+}
+
+func (a *ApiAdmin) adapterListApps(aclaim *claim.AdapterEditor, ctx *gin.Context) {
+	resp, err := a.cAdmin.AdapterListApps(aclaim)
+	a.rutil.WriteJSON(ctx, resp, err)
+}
+
+func (a *ApiAdmin) adapterNewApp(aclaim *claim.AdapterEditor, ctx *gin.Context) {
+	data := &entities.TargetApp{}
+	err := ctx.BindJSON(data)
+	if err != nil {
+		a.rutil.WriteErr(ctx, err.Error())
+		return
+	}
+
+	err = a.cAdmin.AdapterNewApp(aclaim, data)
+	a.rutil.WriteFinal(ctx, err)
+}
+
+func (a *ApiAdmin) adapterGetApp(aclaim *claim.AdapterEditor, ctx *gin.Context) {
+	id, _ := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	resp, err := a.cAdmin.AdapterGetApp(aclaim, id)
+	a.rutil.WriteJSON(ctx, resp, err)
+}
+
+func (a *ApiAdmin) adapterUpdateApp(aclaim *claim.AdapterEditor, ctx *gin.Context) {
+
+	data := make(map[string]any)
+	err := ctx.BindJSON(&data)
+	if err != nil {
+		a.rutil.WriteErr(ctx, err.Error())
+		return
+	}
+	id, _ := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	err = a.cAdmin.AdapterUpdateApp(aclaim, id, data)
+	a.rutil.WriteFinal(ctx, err)
+
+}
+
+func (a *ApiAdmin) adapterDeleteApp(aclaim *claim.AdapterEditor, ctx *gin.Context) {
+	id, _ := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	err := a.cAdmin.AdapterDeleteApp(aclaim, id)
+	a.rutil.WriteFinal(ctx, err)
+}
+
+func (a *ApiAdmin) adapterListHooks(aclaim *claim.AdapterEditor, ctx *gin.Context) {
+	data := &entities.TargetHook{}
+	err := ctx.BindJSON(data)
+	if err != nil {
+		a.rutil.WriteErr(ctx, err.Error())
+		return
+	}
+
+	err = a.cAdmin.AdapterNewHook(aclaim, data)
+	a.rutil.WriteFinal(ctx, err)
+}
+
+func (a *ApiAdmin) adapterNewHook(aclaim *claim.AdapterEditor, ctx *gin.Context) {
+	data := &entities.TargetHook{}
+	err := ctx.BindJSON(data)
+	if err != nil {
+		a.rutil.WriteErr(ctx, err.Error())
+		return
+	}
+
+	err = a.cAdmin.AdapterNewHook(aclaim, data)
+	a.rutil.WriteFinal(ctx, err)
+}
+
+func (a *ApiAdmin) adapterGetHook(aclaim *claim.AdapterEditor, ctx *gin.Context) {
+	id, _ := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	resp, err := a.cAdmin.AdapterGetHook(aclaim, id)
+	a.rutil.WriteJSON(ctx, resp, err)
+}
+
+func (a *ApiAdmin) adapterUpdateHook(aclaim *claim.AdapterEditor, ctx *gin.Context) {
+	data := make(map[string]any)
+	err := ctx.BindJSON(&data)
+	if err != nil {
+		a.rutil.WriteErr(ctx, err.Error())
+		return
+	}
+	id, _ := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	err = a.cAdmin.AdapterUpdateHook(aclaim, id, data)
+	a.rutil.WriteFinal(ctx, err)
+}
+
+func (a *ApiAdmin) adapterDeleteHook(aclaim *claim.AdapterEditor, ctx *gin.Context) {
+	id, _ := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	err := a.cAdmin.AdapterDeleteHook(aclaim, id)
+	a.rutil.WriteFinal(ctx, err)
+}
 
 func (a *ApiAdmin) adapterPreformAction(aclaim *claim.AdapterEditor, ctx *gin.Context) {
 	a.notz.PreformEditorAction(aclaim.TenantId, ctx.Param("name"), aclaim.AdapterId, ctx)

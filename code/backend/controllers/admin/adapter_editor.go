@@ -1,58 +1,123 @@
 package admin
 
 import (
+	"fmt"
+
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
-func (c *Controller) AdapterSelfUpdate(aclaim *claim.AdapterEditor, data map[string]any) {
-
+func (c *Controller) AdapterSelfUpdate(aclaim *claim.AdapterEditor, data map[string]any) error {
+	return c.coredb.UpdateDomain(aclaim.TenantId, aclaim.AdapterId, data)
 }
 
 // app
 
 func (c *Controller) AdapterListApps(aclaim *claim.AdapterEditor) ([]*entities.TargetApp, error) {
-	return nil, nil
+	return c.coredb.ListTargetAppByType(aclaim.TenantId, entities.TargetAppTypeDomainWidget, fmt.Sprintf("%d", aclaim.AdapterId))
 }
 
 func (c *Controller) AdapterNewApp(aclaim *claim.AdapterEditor, data *entities.TargetApp) error {
-	return nil
+
+	return c.coredb.AddTargetApp(&entities.TargetApp{
+		Id:          0,
+		Name:        data.Name,
+		Icon:        data.Icon,
+		Policy:      data.Policy,
+		TargetType:  entities.TargetAppTypeDomainWidget,
+		Target:      fmt.Sprintf("%d", aclaim.AdapterId),
+		ContextType: data.ContextType,
+		PlugId:      data.PlugId,
+		AgentId:     data.AgentId,
+		ExecDomain:  data.ExecDomain,
+		ExecMeta:    data.ExecMeta,
+		ExtraMeta:   data.ExtraMeta,
+		TenantId:    aclaim.TenantId,
+	})
+
 }
 
 func (c *Controller) AdapterGetApp(aclaim *claim.AdapterEditor, id int64) (*entities.TargetApp, error) {
-	return nil, nil
+	data, err := c.coredb.GetTargetApp(aclaim.TenantId, entities.TargetAppTypeDomainWidget, id)
+	if err != nil {
+		return nil, err
+	}
+
+	if data.Target != fmt.Sprintf("%d", aclaim.AdapterId) {
+		return nil, easyerr.NotAuthorized()
+	}
+	return data, nil
 }
 
 func (c *Controller) AdapterUpdateApp(aclaim *claim.AdapterEditor, id int64, data map[string]any) error {
+	if _, ok := data["target"]; ok {
+		return easyerr.NotAuthorized()
+	}
 
-	return nil
+	return c.coredb.UpdateTargetApp(aclaim.TenantId, entities.TargetAppTypeDomainWidget, id, data)
 }
 
 func (c *Controller) AdapterDeleteApp(aclaim *claim.AdapterEditor, id int64) error {
+	_, err := c.AdapterGetApp(aclaim, id)
+	if err != nil {
+		return err
+	}
 
-	return nil
+	return c.coredb.RemoveTargetApp(aclaim.TenantId, entities.TargetAppTypeDomainWidget, id)
 }
 
 // hook
 
 func (c *Controller) AdapterListHooks(aclaim *claim.AdapterEditor) ([]*entities.TargetHook, error) {
-	return nil, nil
+	return c.coredb.ListTargetHookByType(aclaim.TenantId, entities.TargetHookTypeDomainHook, fmt.Sprintf("%d", aclaim.AdapterId))
 }
 
 func (c *Controller) AdapterNewHook(aclaim *claim.AdapterEditor, data *entities.TargetHook) error {
-	return nil
+	return c.coredb.AddTargetHook(&entities.TargetHook{
+		Id:         0,
+		Name:       data.Name,
+		Policy:     data.Policy,
+		TargetType: entities.TargetHookTypeDomainHook,
+		Target:     fmt.Sprintf("%d", aclaim.AdapterId),
+		EventType:  data.EventType,
+		PlugId:     data.PlugId,
+		AgentId:    data.AgentId,
+		ExecMeta:   data.ExecMeta,
+		ExtraMeta:  data.ExtraMeta,
+		TenantId:   aclaim.TenantId,
+		Handler:    data.Handler,
+	})
 }
 
-func (c *Controller) AdapterGetHook(aclaim *claim.AdapterEditor, id int64) (*entities.TargetApp, error) {
-	return nil, nil
+func (c *Controller) AdapterGetHook(aclaim *claim.AdapterEditor, id int64) (*entities.TargetHook, error) {
+	data, err := c.coredb.GetTargetHook(aclaim.TenantId, entities.TargetHookTypeDomainHook, id)
+	if err != nil {
+		return nil, err
+	}
+
+	if data.Target != fmt.Sprintf("%d", aclaim.AdapterId) {
+		return nil, easyerr.NotAuthorized()
+	}
+	return data, nil
+
 }
 
 func (c *Controller) AdapterUpdateHook(aclaim *claim.AdapterEditor, id int64, data map[string]any) error {
-	return nil
+	if _, ok := data["target"]; ok {
+		return easyerr.NotAuthorized()
+	}
+
+	return c.coredb.UpdateTargetHook(aclaim.TenantId, entities.TargetHookTypeDomainHook, id, data)
 }
 
 func (c *Controller) AdapterDeleteHook(aclaim *claim.AdapterEditor, id int64) error {
-	return nil
+	_, err := c.AdapterGetHook(aclaim, id)
+	if err != nil {
+		return err
+	}
+
+	return c.coredb.RemoveTargetHook(aclaim.TenantId, entities.TargetAppTypeDomainWidget, id)
 }
 
 type DomainAdapterEditorIssueResp struct {
