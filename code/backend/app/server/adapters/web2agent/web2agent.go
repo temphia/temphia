@@ -2,6 +2,7 @@ package web2agent
 
 import (
 	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
@@ -11,27 +12,52 @@ type Web2Agent struct {
 	tenantId string
 	domain   *entities.TenantDomain
 	handle   httpx.AdapterHandle
+	engine   etypes.Engine
 
-	handlePlug      string
-	handleAgent     string
-	handleTemplates map[string]string
+	mainHook  *entities.TargetHook
+	databox   xtypes.DataBox
+	initError string
+	intOk     bool
+
+	state WAState
 }
 
 func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 
-	return &Web2Agent{
-		app:             opts.App,
-		tenantId:        opts.TenantId,
-		domain:          opts.Domain,
-		handle:          opts.Handle,
-		handlePlug:      "",
-		handleAgent:     "",
-		handleTemplates: make(map[string]string),
-	}, nil
+	deps := opts.App.GetDeps()
+
+	wa := &Web2Agent{
+		app:       opts.App,
+		tenantId:  opts.TenantId,
+		domain:    opts.Domain,
+		handle:    opts.Handle,
+		engine:    deps.Engine().(etypes.Engine),
+		databox:   opts.App.Data(),
+		intOk:     false,
+		initError: "Not initilized",
+		mainHook:  nil,
+		state: WAState{
+			templates:     make(map[string]string),
+			routes:        make(map[string]string),
+			templateFuncs: make(map[string]string),
+		},
+	}
+
+	wa.init()
+
+	return wa, nil
 }
 
 func (w *Web2Agent) ServeEditorFile(file string) ([]byte, error) {
-	return nil, nil
+
+	switch file {
+	case "main.js":
+		return w.databox.GetAsset("build", "adapter_editor_web2agent.js")
+	case "main.css":
+		return w.databox.GetAsset("build", "adapter_editor_web2agent.css")
+	}
+
+	return []byte(``), nil
 }
 
 func (w *Web2Agent) PreformEditorAction(name string, data []byte) (any, error) {
@@ -48,13 +74,3 @@ func (w *Web2Agent) Handle(ctx httpx.Context) {
 
 	target.handle()
 }
-
-/*
-
-expected web2agent iface
-	- action_handle_http
-	- action_accept_ws
-	- action_handle_ws
-	- action_template_func
-
-*/
