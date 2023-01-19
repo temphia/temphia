@@ -2,16 +2,17 @@ package web2agent
 
 import (
 	"encoding/json"
+	"text/template"
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 )
 
 type TemplateContext struct {
-	Rid        int64          `json:"rid,omitempty"`
-	Path       string         `json:"path,omitempty"`
-	DomainName string         `json:"domain_name,omitempty"`
-	Data       map[string]any `json:"data,omitempty"`
+	Rid        int64  `json:"rid,omitempty"`
+	Path       string `json:"path,omitempty"`
+	DomainName string `json:"domain_name,omitempty"`
+	Data       any    `json:"data,omitempty"`
 }
 
 type Request struct {
@@ -20,8 +21,7 @@ type Request struct {
 }
 
 func (w *WATarget) serveTemplate(file string) {
-	tpl := w.adapter.state.template
-	if tpl == nil {
+	if w.adapter.state.template == nil {
 		return
 	}
 
@@ -29,11 +29,33 @@ func (w *WATarget) serveTemplate(file string) {
 		Rid:        w.rid,
 		Path:       w.http.Request.URL.Path,
 		DomainName: w.adapter.domain.Name,
-		Data:       map[string]any{},
+		Data:       nil,
 	}
 
 	if action, ok := w.adapter.state.routes[file]; ok {
+		aresp, err := w.performAction(action)
+		if err != nil {
+			ctx.Data = aresp
+		}
+	}
 
+	tpl, err := w.adapter.state.template.Clone()
+	if err != nil {
+		pp.Println("err when cloning")
+		return
+	}
+
+	tpl.Funcs(template.FuncMap{
+		"action": w.performAction,
+	}).Execute(w.http.Writer, ctx)
+
+}
+
+func (w *WATarget) performAction(action string) (any, error) {
+
+	var data any
+
+	if action, ok := w.adapter.state.routes[action]; ok {
 		req := Request{
 			Rid:  w.rid,
 			Path: w.http.Request.URL.Path,
@@ -41,8 +63,7 @@ func (w *WATarget) serveTemplate(file string) {
 
 		rout, err := json.Marshal(&req)
 		if err != nil {
-			pp.Println("request unmarshel err", err.Error())
-			return
+			return nil, err
 		}
 
 		out, err := w.adapter.engine.Execute(etypes.Execution{
@@ -55,13 +76,15 @@ func (w *WATarget) serveTemplate(file string) {
 		})
 
 		if err != nil {
-			pp.Println("could not laod conext data from action", err.Error())
+			return nil, err
 		}
 
-		json.Unmarshal(out, &ctx.Data)
-
+		err = json.Unmarshal(out, &data)
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	tpl.Execute(w.http.Writer, ctx)
+	return data, nil
 
 }

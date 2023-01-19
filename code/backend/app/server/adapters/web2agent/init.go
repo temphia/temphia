@@ -81,11 +81,12 @@ func (w *Web2Agent) init() {
 		Tenant: w.tenantId,
 		Files:  make(map[string]struct{}),
 		Handler: func(tenantId, file string) ([]byte, error) {
-			return []byte(`<h1> </h1>`), nil
+			return []byte(`<h1>todo</h1>`), nil
 		},
 	})
 
-	t, err := template.New("web2agent").ParseFS(fs, templateFiles...)
+	t, err := template.New("web2agent").
+		ParseFS(fs, templateFiles...)
 	if err != nil {
 		pp.Println("@paring templates error")
 		return
