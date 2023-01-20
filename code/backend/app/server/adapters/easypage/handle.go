@@ -7,6 +7,7 @@ import (
 
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/tidwall/gjson"
+	"github.com/yuin/goldmark"
 )
 
 func (s *EasyPage) handle(ctx httpx.Context) {
@@ -56,6 +57,48 @@ func (s *EasyPage) fetch(path string) ([]byte, error) {
 		return nil, err
 	}
 
+	switch gjson.Get(val, "type").String() {
+	case "post":
+		return s.processPost(path, val)
+	default:
+		return s.processPage(path, val)
+	}
+
+}
+
+func (s *EasyPage) processPost(path, val string) ([]byte, error) {
+
+	md := (gjson.Get(val, "code").String())
+
+	var buf bytes.Buffer
+
+	buf.WriteString(`
+	<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/spcss@0.9.0">
+  </head>	
+	`)
+
+	if err := goldmark.Convert([]byte(md), &buf); err != nil {
+		return nil, err
+	}
+
+	buf.WriteString("</html>")
+
+	out := buf.Bytes()
+
+	s.pLock.Lock()
+	s.pageCache[path] = out
+	s.pLock.Unlock()
+
+	return nil, nil
+}
+
+func (s *EasyPage) processPage(path, val string) ([]byte, error) {
+
 	htmlArray := gjson.Get(val, "gen_html.0").String()
 
 	html := (gjson.Get(htmlArray, "html").String())
@@ -89,4 +132,5 @@ func (s *EasyPage) fetch(path string) ([]byte, error) {
 	s.pLock.Unlock()
 
 	return out, nil
+
 }

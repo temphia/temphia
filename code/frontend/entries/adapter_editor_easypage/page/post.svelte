@@ -73,7 +73,7 @@
           on:click={async () => {
             loading = true;
             code = editor.getValue();
-            await service.setPageData(pid, JSON.stringify({ code }));
+            await service.setPageData(pid, JSON.stringify({ code, type: "post" }));
             loading = false;
           }}
         >

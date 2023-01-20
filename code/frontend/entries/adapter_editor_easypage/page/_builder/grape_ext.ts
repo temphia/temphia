@@ -46,6 +46,7 @@ export const easyPageStore =
 
       async store(data, options = {}) {
         data["gen_html"] = extractHtml(editor);
+        data["type"] = "page"
 
         const resp = await service.setPageData(
           options["page_slug"],
