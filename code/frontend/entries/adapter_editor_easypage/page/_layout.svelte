@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import type { EasypageService } from "../service/easypage";
+  import Export from "./_panels/export.svelte";
   import NewPage from "./_panels/new_page.svelte";
 
   export let onSave;
@@ -10,6 +11,10 @@
 
   const addPage = () => {
     service.modal.small_open(NewPage, { onSave });
+  };
+
+  const exportSite = () => {
+    service.modal.small_open(Export, { service });
   };
 </script>
 
@@ -29,6 +34,12 @@
         on:click={addPage}
         class="bg-blue-200 hover:bg-blue-500 rounded  font-bold text-white text-sm px-2"
         >+</button
+      >
+
+      <button
+        on:click={exportSite}
+        class="bg-blue-200 hover:bg-blue-500 rounded  font-bold text-white text-sm px-2"
+        >>></button
       >
     </div>
   </div>
