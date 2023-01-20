@@ -12,53 +12,34 @@
 </div>
 
 <style>
-  :global(.marked-code) {
-    @font-face {
-      font-family: "Faster One";
-      font-style: normal;
-      font-weight: 400;
-      src: local("Faster One"), local("FasterOne-Regular"),
-        url(http://themes.googleusercontent.com/static/fonts/fasterone/v1/R45a6_a3GGq28ugU8uxGWb3hpw3pgy2gAi-Ip7WPMi0.woff)
-          format("woff");
-    }
-
-    @font-face {
-      font-family: "Oleo Script Swash Caps";
-      font-style: normal;
-      font-weight: 400;
-      src: local("Oleo Script Swash Caps"), local("OleoScriptSwashCaps-Regular"),
-        url(http://themes.googleusercontent.com/static/fonts/oleoscriptswashcaps/v1/vdWhGqsBUAP-FF3NOYTe4pakf2VKGDa1aHLWGf__tlnr7w4p9aSvGirXi6XmeXNA.woff)
-          format("woff");
-    }
-
-    @font-face {
-      font-family: "Noticia Text";
-      font-style: normal;
-      font-weight: 400;
-      src: local("Noticia Text"), local("NoticiaText-Regular"),
-        url(http://themes.googleusercontent.com/static/fonts/noticiatext/v3/wdyV6x3eKpdeUPQ7BJ5uUKRDOzjiPcYnFooOUGCOsRk.woff)
-          format("woff");
-    }
-  }
-
   .marked {
-    color: black;
-    font-size: 1.5em;
-    font-family: "Noticia Text", serif;
-    margin: 50px auto;
-    width: 850px;
+    color: #333;
+    font-family: helvetica, arial, sans-serif;
+    line-height: 1.5;
+    margin: 0 auto;
+    max-width: 40em;
+    padding: 0 1em;
   }
 
-  :global(.marked h1, h2, h3, h4) {
+  :global(.marked h1, .marked h2, .marked h3, .marked h4, .marked h5, .marked h6) {
+    margin: 1.25em 0 0.5em 0;
+    line-height: 1.2;
     font-weight: bold;
   }
 
   :global(.marked h1) {
     font-size: larger;
   }
-  
 
-  :global(.marked p + p) {
+  :global(.marked h2) {
+    font-size: large;
+  }
+
+  :global(.marked h3) {
+    font-size: medium;
+  }
+
+  :global(p + p) {
     text-indent: 1.5em;
   }
 
@@ -71,78 +52,139 @@
     border-radius: 2%;
   }
 
-  :global(a) {
-    color: #ca2cc3;
+  /* ************* */
+
+  :global(.marked a:link) {
+    color: #00e;
+  }
+  :global(.marked a:visited) {
+    color: #518;
+  }
+  :global(.marked a:focus, a:hover) {
+    color: #03f;
+  }
+  :global(a:active) {
+    color: #e00;
+  }
+  :global(
+      .marked h1 a:empty:before,
+      .marked h2 a:empty:before,
+      .marked h3 a:empty:before,
+      .marked h4 a:empty:before,
+      .marked h5 a:empty:before,
+      .marked h6 a:empty:before
+    ) {
+    content: "#";
   }
 
-  :global(a:hover) {
-    color: #880075;
+  :global(
+      .marked h1 a:empty,
+      .marked h2 a:empty,
+      .marked h3 a:empty,
+      .marked h4 a:empty,
+      .marked h5 a:empty,
+      .marked h6 a:empty
+    ) {
+    visibility: hidden;
+    padding-left: 0.25em;
   }
 
-  :global(a:visited) {
-    color: #880075;
+  :global(
+      .marked h1:hover a:empty,
+      .marked h2:hover a:empty,
+      .marked h3:hover a:empty,
+      .marked h4:hover a:empty,
+      .marked h5:hover a:empty,
+      .marked h6:hover a:empty
+    ) {
+    visibility: visible;
   }
-
-  :global(img) {
+  :global(.marked img) {
     max-width: 100%;
-    height: auto;
   }
-
-  :global(ul) {
-    list-style-type: square;
-  }
-
-  :global(li > ul) {
-    list-style-type: disc;
-  }
-
-  :global(li > ul > li > ul) {
-    list-style-type: circle;
-  }
-
-  :global(a.footnote) {
-    font-size: 50%;
-    vertical-align: super;
-  }
-
-  :global(hr) {
-    padding: 0;
-    margin: 0;
-    border: none;
+  :global(.marked figure) {
+    margin: 1em 0;
     text-align: center;
-    color: black;
+  }
+  :global(.marked figcaption) {
+    font-size: small;
   }
 
-  :global(hr:after) {
-    content: "\2724\a0 \2724\a0 \2724";
+  :global(.marked pre, .marked code, .marked samp, .marked kbd) {
+    font-family: monospace, monospace;
   }
 
-  :global(.poetry pre code) {
-    font-family: Georgia, Garamond, serif;
-    font-style: italic;
-    font-size: 110% !important;
-    line-height: 1.6em;
-    display: block;
-    margin-left: 1em;
+  :global(.marked pre, .marked code, .marked kbd) {
+    color: #050;
   }
 
-  :global(code, pre) {
+  :global(.marked samp) {
+    color: #730;
+  }
+  :global(.marked pre, .marked blockquote) {
+    background: #eee;
+    padding: 0.5em;
+  }
+
+  :global(.marked pre) {
     overflow: auto;
   }
 
-  :global(div.footnotes hr) {
+  :global(.marked blockquote) {
+    border-left: medium solid #ccc;
     margin: 1em 0;
-    width: 75%;
-    border-style: dashed;
-    border-width: 1px 0 0 0;
-    border-color: black;
+  }
+  :global(.marked blockquote :first-child) {
+    margin-top: 0;
+  }
+  :global(.marked blockquote :last-child) {
+    margin-bottom: 0;
+  }
+  :global(.marked table) {
+    border-collapse: collapse;
+  }
+  :global(.marked th, .marked td) {
+    border: thin solid #999;
+    padding: 0.3em 0.4em;
+    text-align: left;
   }
 
-  :global(div.footnotes hr:after) {
-    content: "";
-  }
+  /* ************* */
 
-  :global(div.footnotes p) {
-    display: inline;
+  @media (prefers-color-scheme: dark) {
+    .marked {
+      background: #111;
+      color: #bbb;
+    }
+    :global(.marked a:link) {
+      color: #9bf;
+    }
+
+    :global(.marked a:visited) {
+      color: #caf;
+    }
+
+    :global(.marked a:focus, .marked a:hover) {
+      color: #9cf;
+    }
+    :global(.marked a:active) {
+      color: #f99;
+    }
+    :global(.marked pre,.marked code,.marked kbd) {
+      color: #9c6;
+      font-family: monospace, monospace;
+    }
+    :global(.marked samp) {
+      color: #db0;
+    }
+    :global(.marked pre, .marked blockquote) {
+      background: #000;
+    }
+    :global(.marked blockquote) {
+      border-color: #333;
+    }
+    :global(.marked th, .marked td) {
+      border-color: #666;
+    }
   }
 </style>

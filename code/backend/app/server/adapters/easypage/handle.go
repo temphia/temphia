@@ -80,13 +80,18 @@ func (s *EasyPage) processPost(path, val string) ([]byte, error) {
     <meta name="viewport" content="width=device-width,initial-scale=1" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/spcss@0.9.0">
   </head>	
+  <body>
+  	<div class="marked">
 	`)
 
 	if err := goldmark.Convert([]byte(md), &buf); err != nil {
 		return nil, err
 	}
 
-	buf.WriteString("</html>")
+	buf.WriteString(`
+			</div>
+		<body>
+	</html>`)
 
 	out := buf.Bytes()
 

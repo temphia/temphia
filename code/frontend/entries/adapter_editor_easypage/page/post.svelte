@@ -5,7 +5,6 @@
   import type { EasypageService } from "../service/easypage";
   import Preview from "./_editor/preview.svelte";
   import { params } from "svelte-hash-router";
-  import { stringify } from "postcss";
 
   export let pid = $params.pid;
 
