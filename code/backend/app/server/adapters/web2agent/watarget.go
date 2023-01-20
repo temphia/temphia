@@ -9,15 +9,6 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/invoker"
 )
 
-/*
-
-expected web2agent iface
-	- action_handle_http
-	- action_accept_ws
-	- action_handle_ws
-
-*/
-
 type WATarget struct {
 	adapter *Web2Agent
 	rid     int64
