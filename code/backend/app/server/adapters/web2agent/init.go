@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 
+	"github.com/Masterminds/sprig/v3"
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/server/adapters/common"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -86,6 +87,7 @@ func (w *Web2Agent) init() {
 	})
 
 	t, err := template.New("web2agent").
+		Funcs(sprig.FuncMap()).
 		ParseFS(fs, templateFiles...)
 	if err != nil {
 		pp.Println("@paring templates error")
