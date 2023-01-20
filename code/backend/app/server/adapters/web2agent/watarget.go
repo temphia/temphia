@@ -66,11 +66,11 @@ func (w *WATarget) Type() string {
 }
 
 func (w *WATarget) ExecuteModule(module, action string, data xtypes.LazyData) (xtypes.LazyData, error) {
-	return nil, nil
+	return w.executeModule(module, action, data)
 }
 
 func (w *WATarget) ListModules() []string {
-	return []string{}
+	return []string{"web"}
 }
 
 func (w *WATarget) UserContext() *invoker.User {
