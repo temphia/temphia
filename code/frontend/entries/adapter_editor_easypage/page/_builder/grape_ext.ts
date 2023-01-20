@@ -32,7 +32,16 @@ export const easyPageStore =
           console.log("Err", resp);
           return {};
         }
-        return JSON.parse(resp.data || "{}");
+
+        const data = resp.data;
+
+        if (data === `{"pages":[]}`) {
+          return;
+        }
+
+        try {
+          return JSON.parse(data);
+        } catch (error) {}
       },
 
       async store(data, options = {}) {

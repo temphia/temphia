@@ -44,7 +44,7 @@
       pluginsOpts: {},
       storageManager: {
         type: "easypage-store",
-        stepsBeforeSave: 3,
+        stepsBeforeSave: 0,
         options: {
           "easypage-store": {
             page_slug,
