@@ -33,11 +33,11 @@
     <SvgMessage />
   </div>
 
-  {#if nmsg["type"] === "user_message"}
+  {#if nmsg["type"] === "user_message" || (nmsg["type"] === "system_message") }
     <div class="pl-3 w-full">
       <div class="flex items-center justify-between w-full">
         <p tabindex="0" class="focus:outline-none text-sm leading-none">
-          <span class="text-indigo-700">{nmsg["from_user"] || ""}</span>
+          <span class="text-indigo-700">{nmsg["from_user"] || (nmsg["type"] === "system_message" ? "system": "") }</span>
           messaged you:
           <span class="italic">{nmsg["contents"] || ""}</span>
         </p>
