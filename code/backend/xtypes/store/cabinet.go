@@ -5,6 +5,22 @@ import (
 	"io"
 )
 
+const (
+	DefaultDataAssetsFolder   = "data_common"
+	DefaultBprintFolder       = "bprints"
+	DefaultTenantPublicFolder = "public"
+	DefaultSystemIconsFolder  = "system_icons"
+)
+
+var (
+	DefaultFolders = []string{
+		DefaultDataAssetsFolder,
+		DefaultBprintFolder,
+		DefaultTenantPublicFolder,
+		DefaultSystemIconsFolder,
+	}
+)
+
 type BlobInfo struct {
 	Name         string `json:"name,omitempty"`
 	IsDir        bool   `json:"is_dir,omitempty"`

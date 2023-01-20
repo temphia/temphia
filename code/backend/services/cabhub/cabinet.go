@@ -14,8 +14,6 @@ type CabHub struct {
 	defName         string
 }
 
-var defaultFolders = []string{"bprints", "data_common", "public", "ns_assets"}
-
 func New(sources map[string]store.CabinetSource, defprovider string) *CabHub {
 	ch := &CabHub{
 		sources:         sources,
@@ -32,7 +30,7 @@ func (c *CabHub) Start(eventbus any) error {
 		go func() {
 			switch event {
 			case xplane.EventCreateTenant:
-				c.defaultProvider.InitilizeTenent(tenant, defaultFolders)
+				c.defaultProvider.InitilizeTenent(tenant, store.DefaultFolders)
 			default:
 				pp.Println("skipping event")
 			}
