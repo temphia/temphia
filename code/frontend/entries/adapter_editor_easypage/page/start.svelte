@@ -109,6 +109,7 @@
         },
       ]}
       {datas}
+      color={["type"]}
       key_names={[
         ["slug", "Slug"],
         ["type", "Type"],
