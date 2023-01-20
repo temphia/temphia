@@ -267,11 +267,13 @@ export default {
       "/": AdminTargetApps,
       "/new": AdminTargetAppNew,
       "/:ttype/:id/edit": AdminTargetAppEdit,
+//      "/:ttype/:target": null,
     },
     "/hook": {
       "/": AdminTargetHooks,
       "/new": AdminTargetHookNew,
       "/:ttype/:id/edit": AdminTargetHookEdit,
+//      "/:ttype/:target": null,
     },
   },
 

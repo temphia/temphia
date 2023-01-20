@@ -114,6 +114,20 @@
                 Action: (id) => app.nav.admin_tenant_domain_edit(id),
                 icon: "pencil",
               },
+                           
+              {
+                Name: "Hooks",
+                Action: (id) => {},
+                drop: true,
+                icon: "hashtag",
+              },
+
+              {                
+                Name: "Widgets",
+                Action: (id) => {},
+                drop: true,
+                icon: "hashtag",
+              },
 
               {
                 Name: "Reset",

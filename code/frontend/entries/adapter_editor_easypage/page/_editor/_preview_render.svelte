@@ -43,6 +43,10 @@
     text-indent: 1.5em;
   }
 
+  :global(.marked li) {
+    list-style: disc;
+  }
+
   :global(.marked blockquote) {
     background-color: #dadada;
   }
