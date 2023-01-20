@@ -6,6 +6,7 @@
   import "codemirror/mode/yaml/yaml";
   import "codemirror/mode/htmlmixed/htmlmixed";
   import "codemirror/mode/css/css";
+  import "codemirror/mode/markdown/markdown";
 
   const dispatch = createEventDispatcher();
 
@@ -31,6 +32,9 @@
     },
     yaml: {
       name: "yaml",
+    },
+    md: {
+      name: "markdown",
     },
   };
 
@@ -113,8 +117,10 @@
   :global(.CodeMirror-lines) {
     padding: 4px 0; /* Vertical padding around content */
   }
-  :global(.CodeMirror pre.CodeMirror-line, .CodeMirror
-      pre.CodeMirror-line-like) {
+  :global(
+      .CodeMirror pre.CodeMirror-line,
+      .CodeMirror pre.CodeMirror-line-like
+    ) {
     padding: 0 4px; /* Horizontal padding of content */
   }
 
@@ -273,8 +279,12 @@
   :global(.cm-s-default .cm-def) {
     color: #00f;
   }
-  :global(.cm-s-default .cm-variable, .cm-s-default
-      .cm-punctuation, .cm-s-default .cm-property, .cm-s-default .cm-operator) {
+  :global(
+      .cm-s-default .cm-variable,
+      .cm-s-default .cm-punctuation,
+      .cm-s-default .cm-property,
+      .cm-s-default .cm-operator
+    ) {
   }
   :global(.cm-s-default .cm-variable-2) {
     color: #05a;
@@ -371,7 +381,12 @@
   /* The fake, visible scrollbars. Used to force redraw during scrolling
        before actual scrolling happens, thus preventing shaking and
        flickering artifacts. */
-  :global(.CodeMirror-vscrollbar, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler) {
+  :global(
+      .CodeMirror-vscrollbar,
+      .CodeMirror-hscrollbar,
+      .CodeMirror-scrollbar-filler,
+      .CodeMirror-gutter-filler
+    ) {
     position: absolute;
     z-index: 6;
     display: none;
@@ -456,8 +471,10 @@
     cursor: text;
     min-height: 1px; /* prevents collapsing before first draw */
   }
-  :global(.CodeMirror pre.CodeMirror-line, .CodeMirror
-      pre.CodeMirror-line-like) {
+  :global(
+      .CodeMirror pre.CodeMirror-line,
+      .CodeMirror pre.CodeMirror-line-like
+    ) {
     /* Reset some styles that the rest of the page might have set */
     -moz-border-radius: 0;
     -webkit-border-radius: 0;
@@ -478,8 +495,10 @@
     -webkit-font-variant-ligatures: contextual;
     font-variant-ligatures: contextual;
   }
-  :global(.CodeMirror-wrap pre.CodeMirror-line, .CodeMirror-wrap
-      pre.CodeMirror-line-like) {
+  :global(
+      .CodeMirror-wrap pre.CodeMirror-line,
+      .CodeMirror-wrap pre.CodeMirror-line-like
+    ) {
     word-wrap: break-word;
     white-space: pre-wrap;
     word-break: normal;
@@ -512,7 +531,13 @@
   }
 
   /* Force content-box sizing for the elements where we expect it */
-  :global(.CodeMirror-scroll, .CodeMirror-sizer, .CodeMirror-gutter, .CodeMirror-gutters, .CodeMirror-linenumber) {
+  :global(
+      .CodeMirror-scroll,
+      .CodeMirror-sizer,
+      .CodeMirror-gutter,
+      .CodeMirror-gutters,
+      .CodeMirror-linenumber
+    ) {
     -moz-box-sizing: content-box;
     box-sizing: content-box;
   }
@@ -556,12 +581,18 @@
   :global(.CodeMirror-crosshair) {
     cursor: crosshair;
   }
-  :global(.CodeMirror-line::selection, .CodeMirror-line
-      > span::selection, .CodeMirror-line > span > span::selection) {
+  :global(
+      .CodeMirror-line::selection,
+      .CodeMirror-line > span::selection,
+      .CodeMirror-line > span > span::selection
+    ) {
     background: #d7d4f0;
   }
-  :global(.CodeMirror-line::-moz-selection, .CodeMirror-line
-      > span::-moz-selection, .CodeMirror-line > span > span::-moz-selection) {
+  :global(
+      .CodeMirror-line::-moz-selection,
+      .CodeMirror-line > span::-moz-selection,
+      .CodeMirror-line > span > span::-moz-selection
+    ) {
     background: #d7d4f0;
   }
 
