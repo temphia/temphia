@@ -109,7 +109,7 @@ func (e *EasyPage) getPageData(data []byte) (string, error) {
 		return value, nil
 	}
 
-	defval := "{pages:[]}"
+	defval := `{"pages":[]}`
 
 	err = e.ahandle.KvAdd(pageKey(pslug), defval)
 	if err != nil {

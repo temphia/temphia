@@ -25,6 +25,44 @@
     loading = false;
   };
 
+  const action_visit = (id: string) => {
+    const u = new URL(service.api.base.base_url || "");
+
+    let domain_name = service.env.domain_name;
+    if (!domain_name || domain_name === "*") {
+      domain_name = location.hostname;
+    }
+
+    if (!domain_name) {
+      domain_name = u.hostname;
+    }
+
+    console.log("@domain_name", domain_name);
+
+    service.modal.small_open(Link, {
+      domain: `http://${domain_name}:${u.port || "80"}`,
+      slug: id,
+      service,
+    });
+  };
+
+  const action_edit = (id: string, data: object) => {
+    if (data["type"] === "post") {
+      location.hash = `/post/${id}`;
+    } else {
+      location.hash = `/page/${id}`;
+    }
+  };
+
+  const action_delete = async (id: string) => {
+    loading = true;
+    const newDatas = datas.filter((v) => v["slug"] !== id);
+    await service.updatePages(newDatas);
+    await service.deletePageData(id);
+
+    load();
+  };
+
   console.log("@SERVICE", service);
 
   load();
@@ -53,55 +91,27 @@
       actions={[
         {
           Name: "Visit",
-          Action: (id) => {
-            const u = new URL(service.api.base.base_url || "");            
-
-            let domain_name = service.env.domain_name;
-            if (!domain_name || domain_name === "*") {
-              domain_name = location.hostname;
-            }
-
-            if (!domain_name) {
-              domain_name = u.hostname;
-            }
-
-            console.log("@domain_name", domain_name);
-
-            service.modal.small_open(Link, {
-              domain: `http://${domain_name}:${u.port || "80"}`,
-              slug: id,
-              service,
-            });
-          },
+          Action: action_visit,
           Class: "bg-green-400",
           icon: "link",
         },
 
         {
           Name: "Edit",
-          Action: (id) => {
-            location.hash = `/page/${id}`;
-          },
+          Action: action_edit,
           icon: "pencil-alt",
         },
         {
           Name: "Delete",
           Class: "bg-red-400",
-          Action: async (id) => {
-            loading = true;
-
-            const newDatas = datas.filter((v) => v["slug"] !== id);
-            await service.updatePages(newDatas);
-            await service.deletePageData(id);
-
-            load();
-          },
+          Action: action_delete,
           icon: "trash",
         },
       ]}
       {datas}
       key_names={[
         ["slug", "Slug"],
+        ["type", "Type"],
         ["name", "Name"],
       ]}
     />

@@ -1,19 +1,21 @@
 <script lang="ts">
   import { routes } from "svelte-hash-router";
   import Router from "svelte-hash-router";
-
-  import Start from "./page/start.svelte";
-  import Page from "./page/page.svelte";
   import Tailwind from "../xcompo/common/_tailwind.svelte";
   import { EasypageService } from "./service/easypage";
   import { onMount, setContext } from "svelte";
   import { Modal } from "./core";
+
+  import Start from "./page/start.svelte";
+  import Page from "./page/page.svelte";
+  import Post from "./page/post.svelte";
 
   export let env: any;
 
   routes.set({
     "/": Start,
     "/page/:pid": Page,
+    "/post/:pid": Post,
   });
 
   let big_open;

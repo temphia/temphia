@@ -3,6 +3,7 @@ package easypage
 type Page struct {
 	Name string `json:"name,omitempty"`
 	Slug string `json:"slug,omitempty"`
+	Type string `json:"type,omitempty"`
 }
 
 type LoadResponse struct {
