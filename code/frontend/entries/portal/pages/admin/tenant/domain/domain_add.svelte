@@ -1,98 +1,102 @@
 <script lang="ts">
-    import { getContext } from "svelte";
-    import { AutoForm, PortalService } from "../../core";
-  
-    const app = getContext("__app__") as PortalService;
-    const api = app.api_manager.get_admin_tenant_api()
-  
-    let message = "";
-  
-    const save = async (_data) => {
-      const resp = await api.new_domain(_data)
-      if (!resp.ok) {
-        message = resp.data;
-        return;
-      }
-      app.nav.admin_tenant()
-    };
-  </script>
-  
-  <AutoForm
-    {message}
-    schema={{
-      fields: [  
-        {
-          name: "Name",
-          ftype: "TEXT",
-          key_name: "name",
-        },
+  import { getContext } from "svelte";
+  import { AutoForm, PortalService } from "../../core";
 
-        {
-          name: "About",
-          ftype: "LONG_TEXT",
-          key_name: "about",
-        },
+  const app = getContext("__app__") as PortalService;
+  const api = app.api_manager.get_admin_tenant_api();
 
-        {
-          name: "Default User Group",
-          ftype: "TEXT",
-          key_name: "default_ugroup",
-        },
+  let message = "";
 
-        {
-          name: "CORS Policy",
-          ftype: "TEXT_POLICY",
-          key_name: "cors_policy",
-        },
+  let adapter_providers = [];
 
-        {
-          name: "Adapter Policy",
-          ftype: "TEXT_POLICY",
-          key_name: "adapter_policy",
-        },
+  app.api_manager.self_api.list_adapter_providers().then((resp) => {
+    adapter_providers = resp.data || [];
+  });
 
-        {
-          name: "Adapter Type",
-          ftype: "SELECT",
-          key_name: "adapter_type",
-          options: ["easypage"]
-        },
+  const save = async (_data) => {
+    const resp = await api.new_domain(_data);
+    if (!resp.ok) {
+      message = resp.data;
+      return;
+    }
+    app.nav.admin_tenant();
+  };
+</script>
 
+<AutoForm
+  {message}
+  schema={{
+    fields: [
+      {
+        name: "Name",
+        ftype: "TEXT",
+        key_name: "name",
+      },
 
-        {
-          name: "Adapter Options",
-          ftype: "KEY_VALUE_TEXT",
-          key_name: "adapter_opts",
-        },
+      {
+        name: "About",
+        ftype: "LONG_TEXT",
+        key_name: "about",
+      },
 
-        {
-          name: "Adapter Cabinet Source",
-          ftype: "TEXT",
-          key_name: "adapter_cab_source",
-        },
+      {
+        name: "Default User Group",
+        ftype: "TEXT",
+        key_name: "default_ugroup",
+      },
 
-        {
-          name: "Adapter Cabinet Folder",
-          ftype: "TEXT",
-          key_name: "adapter_cab_folder",
-        },
+      {
+        name: "CORS Policy",
+        ftype: "TEXT_POLICY",
+        key_name: "cors_policy",
+      },
 
-        {
-          name: "Adapter Template Blueprints",
-          ftype: "MULTI_TEXT",
-          key_name: "adapter_template_bprints",
-        },
-        
-        {
-          name: "Extra Meta",
-          ftype: "KEY_VALUE_TEXT",
-          key_name: "extra_meta",
-        },
-      ],
-      name: "New Domain",
-      required_fields: [],
-    }}
-    onSave={save}
-    data={{}}
-  />
-  
+      {
+        name: "Adapter Policy",
+        ftype: "TEXT_POLICY",
+        key_name: "adapter_policy",
+      },
+
+      {
+        name: "Adapter Type",
+        ftype: "SELECT",
+        key_name: "adapter_type",
+        options: adapter_providers,
+      },
+
+      {
+        name: "Adapter Options",
+        ftype: "KEY_VALUE_TEXT",
+        key_name: "adapter_opts",
+      },
+
+      {
+        name: "Adapter Cabinet Source",
+        ftype: "TEXT",
+        key_name: "adapter_cab_source",
+      },
+
+      {
+        name: "Adapter Cabinet Folder",
+        ftype: "TEXT",
+        key_name: "adapter_cab_folder",
+      },
+
+      {
+        name: "Adapter Template Blueprints",
+        ftype: "MULTI_TEXT",
+        key_name: "adapter_template_bprints",
+      },
+
+      {
+        name: "Extra Meta",
+        ftype: "KEY_VALUE_TEXT",
+        key_name: "extra_meta",
+      },
+    ],
+    name: "New Domain",
+    required_fields: [],
+  }}
+  onSave={save}
+  data={{}}
+/>

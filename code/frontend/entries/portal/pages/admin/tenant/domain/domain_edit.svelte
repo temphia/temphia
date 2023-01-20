@@ -12,6 +12,12 @@
   let data = {};
   let loading = true;
 
+  let adapter_providers = [];
+
+  app.api_manager.self_api.list_adapter_providers().then((resp) => {
+    adapter_providers = resp.data || [];
+  });
+
   const load = async () => {
     const resp = await api.get_domain(did);
     if (!resp.ok) {
@@ -75,7 +81,7 @@
           name: "Adapter Type",
           ftype: "SELECT",
           key_name: "adapter_type",
-          options: ["easypage"]
+          options: adapter_providers,
         },
 
         {
