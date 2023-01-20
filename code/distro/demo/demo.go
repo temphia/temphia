@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"os/signal"
 	"strconv"
+	"syscall"
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/controllers/operator/opsutils"
@@ -51,6 +53,22 @@ func RunDemo() error {
 	}
 
 	dapp := distro.New(Conf.AsConfig(), true, true)
+
+	go setUpHandler(func(signal os.Signal) {
+		if signal == syscall.SIGTERM {
+			fmt.Println("Got kill signal. ")
+			fmt.Println("Program will terminate now.")
+			fmt.Println(dpg.Stop())
+			os.Exit(0)
+		} else if signal == syscall.SIGINT {
+			fmt.Println("Got CTRL+C signal")
+			fmt.Println("Closing.")
+			fmt.Println(dpg.Stop())
+			os.Exit(0)
+		} else {
+			fmt.Println("Ignoring signal: ", signal)
+		}
+	})
 
 	ok, err := dapp.IsTenantSeeded(xtypes.DefaultTenant)
 	if err != nil {
@@ -125,4 +143,20 @@ func getFreePort() (int, error) {
 	}
 	defer l.Close()
 	return l.Addr().(*net.TCPAddr).Port, nil
+}
+
+func setUpHandler(fn func(signal os.Signal)) {
+	sigchnl := make(chan os.Signal, 1)
+	signal.Notify(sigchnl)
+	exitchnl := make(chan int)
+
+	go func() {
+		for {
+			s := <-sigchnl
+			fn(s)
+		}
+	}()
+
+	exitcode := <-exitchnl
+	os.Exit(exitcode)
 }
