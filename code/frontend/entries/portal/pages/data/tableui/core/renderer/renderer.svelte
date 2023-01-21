@@ -41,8 +41,6 @@
   let end;
 
   let heightClass = "h-12";
-
-  $: re_render = 0;
 </script>
 
 <!-- left start -->
@@ -117,7 +115,7 @@
     <!-- right start -->
     <div class="flex flex-col gap-1 h-full">
       <div
-        class="h-10 bg-gray-50 border-b border-gray-300 overflow-hidden w-full flex justify-between"
+        class="h-10 bg-gray-50 border-b border-gray-300 overflow-hidden w-full flex"
         bind:this={head_ref}
       >
         <!-- COLUMNS -->
@@ -127,6 +125,7 @@
             <div
               class="flex justify-center font-sans align-middle"
               style="min-width:{DEFAULT_WIDTH}em;  width:{$column_resize[col] || ""}em;"
+
             >
               <button
                 class="menu font-thin text-gray-800 focus:outline-none focus:shadow-solid inline-flex"
@@ -177,7 +176,7 @@
           )}-50"
           data-row={item || 0}
         >
-          <div class="flex justify-between">
+          <div class="flex">
             {#each columns as col}
               {#if main_column !== col}
                 <div
