@@ -22,4 +22,5 @@ type Deps struct {
 	Runtime        etypes.Runtime
 	ModuleBuilders map[string]etypes.ModuleBuilder
 	ExecBuilders   map[string]etypes.ExecutorBuilder
+	Signer         service.Signer
 }

@@ -27,6 +27,13 @@ type Core interface {
 	GetApp() any
 }
 
+type PlugStateTkt struct {
+	StateTag1 string `json:"state_tag1,omitempty"`
+	StateTag2 string `json:"state_tag2,omitempty"`
+	StateTag3 string `json:"state_tag3,omitempty"`
+	KeyPrefix string `json:"key_prefix,omitempty"`
+}
+
 type PlugKV interface {
 	Set(txid uint32, key, value string, opts *store.SetOptions) error
 	Update(txid uint32, key, value string, opts *store.UpdateOptions) error
@@ -38,6 +45,8 @@ type PlugKV interface {
 	NewTxn() (uint32, error)
 	RollBack(txid uint32) error
 	Commit(txid uint32) error
+
+	Ticket(opts *PlugStateTkt) (string, error)
 }
 
 type Cabinet interface {

@@ -41,6 +41,7 @@ func NewFactory(opts FactoryOptions) Factory {
 			ExecBuilders:   opts.ExecBuilders,
 			LoggerBase:     opts.Logger,
 			ModuleBuilders: opts.Modules,
+			Signer:         appdeps.Signer().(service.Signer),
 		},
 	}
 }

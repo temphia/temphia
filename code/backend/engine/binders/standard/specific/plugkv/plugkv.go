@@ -3,23 +3,30 @@ package plugkv
 import (
 	"github.com/temphia/temphia/code/backend/engine/binders/standard/handle"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/thoas/go-funk"
 )
 
 type Binding struct {
 	stateKv   store.PlugStateKV
+	signer    service.Signer
 	namespace string
 	plugId    string
+	agentid   string
 	txns      []uint32
 }
 
 func New(handle *handle.Handle) Binding {
 	return Binding{
+		signer:    handle.Deps.Signer,
 		stateKv:   handle.Deps.PlugKV,
 		namespace: handle.Namespace,
 		plugId:    handle.PlugId,
+		agentid:   handle.AgentId,
 		txns:      make([]uint32, 0, 1),
 	}
 }
@@ -108,4 +115,21 @@ func (pkv *Binding) Query(txid uint32, query *store.PkvQuery) ([]*entities.PlugK
 	}
 
 	return pkv.stateKv.Query(txid, pkv.namespace, pkv.plugId, query)
+}
+
+func (pkv *Binding) Ticket(opts *bindx.PlugStateTkt) (string, error) {
+	return pkv.signer.SignPlugState(pkv.namespace, &claim.PlugState{
+		TenantId:  pkv.namespace,
+		Type:      "",
+		DeviceId:  0,
+		SessionId: 0,
+		ExecId:    0,
+		PlugId:    pkv.plugId,
+		AgentId:   pkv.agentid,
+		StateTag1: opts.StateTag1,
+		StateTag2: opts.StateTag2,
+		StateTag3: opts.StateTag3,
+		KeyPrefix: opts.KeyPrefix,
+	})
+
 }
