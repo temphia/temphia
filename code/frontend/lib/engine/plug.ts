@@ -7,6 +7,7 @@ export interface LoaderOptions {
   base_url: string;
   parent_secret?: string;
   startup_payload?: any;
+  tenant_id: string
 }
 
 export interface FactoryOptions {

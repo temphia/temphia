@@ -1,8 +1,11 @@
 import { FolderTktAPI } from "../../../../lib/apiv2";
+import { AdminPlugStateTktAPI } from "../../../../lib/apiv2/admin/plug_state";
+import { ApiBase } from "../../../../lib/apiv2/base";
 import { ExecAPI } from "../../../../lib/apiv2/engine/exec";
 import type { Environment } from "../../../../lib/engine/env";
 import type { Pipe } from "../../../../lib/engine/pipe";
 import type { Registry } from "../../../../lib/registry/registry";
+import { Sockd } from "../../../../lib/sockd";
 import { generateId } from "../../../../lib/utils";
 
 export interface EnvOptions {
@@ -10,6 +13,7 @@ export interface EnvOptions {
   plug: string;
   agent: string;
   base_url: string;
+  tenant_id: string
   parent_secret?: string;
   pipe: Pipe;
   startup_payload?: any;
@@ -100,15 +104,14 @@ export class Env implements Environment {
   };
 
   GetRoomTktAPI = async (room: string, ticket?: string): Promise<any> => {
-    // const sroom  = new Sockd(`${this._sockd_url}?ticket=${ticket}`);
-    // return sroom
-    return null;
+    // fix url 
+    return new Sockd(`${this._opts.base_url}/engine/ws?ticket=${ticket}`);
   };
 
   GetDataTableTktAPI = (ticket: string): any => {
   };
 
   GetPlugStateTktAPI = (ticket: string): any => {
-    
+    return new AdminPlugStateTktAPI(new ApiBase(this._opts.base_url, this._opts.tenant_id, ticket))
   };
 }

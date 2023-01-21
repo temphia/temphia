@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import { iframeTemplateBuild } from "../../../../../lib/engine/template";
   import type { ExecInstanceOptions } from "../../../services/engine/exec_type";
 
   export let name: string;
   export let exec_data: ExecInstanceOptions;
   export let secret_id: string;
+  export let tenant_id: string;
 
   let iframe: HTMLIFrameElement | null;
   const channel = new MessageChannel();
@@ -22,6 +22,7 @@
     ext_scripts: exec_data["ext_scripts"] || {},
     parent_secret: secret_id,
     startup_payload: {},
+    tenant_id: tenant_id,
   });
 
   const onmessage = (ev) => {

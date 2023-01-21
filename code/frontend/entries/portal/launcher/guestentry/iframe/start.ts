@@ -43,6 +43,7 @@ export default () => {
       parent_secret: opts.parent_secret,
       pipe: pipe,
       registry: window["__registry__"],
+      tenant_id: opts.tenant_id,
     });
 
     await env.init();

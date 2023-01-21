@@ -12,6 +12,8 @@ export class ApiBase {
     this.tenant_id = tenant_id;
     this.user_token = token;
 
+    console.log("@api_base =>", this)
+
     this.http = new Http(base_url, {
       "Content-Type": "application/json",
       Authorization: token,

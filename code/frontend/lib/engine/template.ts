@@ -12,6 +12,7 @@ interface iframeBuildOptions {
   ext_scripts?: object;
   parent_secret: string;
   startup_payload?: any;
+  tenant_id: string
 }
 
 export const iframeTemplateBuild = (opts: iframeBuildOptions) => {
@@ -57,4 +58,5 @@ const derive = (opts: iframeBuildOptions): LoaderOptions => ({
   exec_loader: opts.exec_loader,
   parent_secret: opts.parent_secret,
   startup_payload: opts.startup_payload,
+  tenant_id: opts.tenant_id,
 });
