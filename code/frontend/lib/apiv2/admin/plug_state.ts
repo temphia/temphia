@@ -1,6 +1,6 @@
 import type { ApiBase } from "../base";
 
-export class AdminPlugStateAPI {
+export class AdminPlugStateTktAPI {
   base: ApiBase;
   constructor(base: ApiBase) {
     this.base = base;
