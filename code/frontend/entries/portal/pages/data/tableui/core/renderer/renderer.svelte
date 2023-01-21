@@ -2,8 +2,9 @@
   import { ColumnResize } from "./column_resize";
   import VirtualList from "./_virtual_list.svelte";
   import { createEventDispatcher } from "svelte";
-  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import Cicon from "../cicon/cicon.svelte";
+  import { CtypeCheckBox, CtypeFile, CtypeMultiFile } from "../fields/field";
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
 
   export let columns_index: { [_: string]: object };
   export let columns: string[];
@@ -24,7 +25,7 @@
   let head_ref;
 
   const flipCSS = (index) => (index % 2 === 1 ? "gray" : "");
-  const DEFAULT_WIDTH = 15;
+  let DEFAULT_WIDTH = columns.length > 3 ? 15 : 20;
   const column_resize = ColumnResize(DEFAULT_WIDTH);
 
   const scrollHandle = (sTop, sTopMax, sLeft) => {
@@ -115,22 +116,21 @@
     <!-- right start -->
     <div class="flex flex-col gap-1 h-full">
       <div
-        class="h-10 bg-gray-50 border-b border-gray-300 overflow-hidden w-full flex"
+        class="h-10 bg-gray-50 border-b border-gray-300 overflow-hidden w-min md:w-full flex"
         bind:this={head_ref}
       >
         <!-- COLUMNS -->
         {#each columns as col}
-        {@const coldata = columns_index[col]}
+          {@const coldata = columns_index[col]}
           {#if main_column !== col}
             <div
               class="flex justify-center font-sans align-middle"
               style="width:{$column_resize[col] || DEFAULT_WIDTH}em;"
-
             >
               <button
                 class="menu font-thin text-gray-800 focus:outline-none focus:shadow-solid inline-flex"
               >
-              <Cicon ctype={coldata["ctype"]} classes="h-5 w-5 pt-1" />
+                <Cicon ctype={coldata["ctype"]} classes="h-5 w-5 pt-1" />
                 {coldata["name"] || coldata["slug"] || ""}
               </button>
 
@@ -176,8 +176,11 @@
           )}-50"
           data-row={item || 0}
         >
-          <div class="flex">
+          <div class="flex w-min md:w-full">
             {#each columns as col}
+              {@const coldata = columns_index[col]}
+              {@const ctype = coldata["ctype"]}
+              {@const celldata = rows_index[item][col]}
               {#if main_column !== col}
                 <div
                   data-col={col}
@@ -191,7 +194,17 @@
                     <div
                       class="text-gray-700 truncate overflow-hidden text-sm p-1"
                     >
-                      {rows_index[item][col] || ""}
+                      {#if ctype === CtypeMultiFile || ctype === CtypeFile}
+                        {celldata || ""}
+                      {:else if ctype === CtypeCheckBox}
+                        {#if celldata === true}
+                          <Icon name="check" class="w-6 h-6 text-green-500" />
+                        {:else if celldata === false}
+                          <Icon name="x" class="w-6 h-6 text-red-500" />
+                        {/if}
+                      {:else}
+                        {rows_index[item][col] || ""}
+                      {/if}
                     </div>
                   </slot>
                 </div>
