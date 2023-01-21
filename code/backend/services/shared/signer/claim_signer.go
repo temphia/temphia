@@ -311,3 +311,18 @@ func (cs *ClaimSigner) ParsePlugDevTkt(tenantId, payload string) (*claim.PlugDev
 	data.TenantId = tenantId
 	return data, nil
 }
+
+func (cs *ClaimSigner) SignPlugState(tenantId string, data *claim.PlugState) (string, error) {
+	return cs.signer.Sign(tenantId, data)
+}
+
+func (cs *ClaimSigner) ParsePlugState(tenantId, payload string) (*claim.PlugState, error) {
+	data := &claim.PlugState{}
+	err := cs.signer.Parse(tenantId, payload, data)
+	if err != nil {
+		return nil, err
+	}
+
+	data.TenantId = tenantId
+	return data, nil
+}

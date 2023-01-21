@@ -34,6 +34,20 @@ type UserMgmtTkt struct {
 	UpdateScope []string `json:"update_scope"`
 }
 
+type PlugState struct {
+	TenantId  string `json:"-"`
+	Type      string `json:"type"`
+	DeviceId  int64  `json:"device_id,omitempty"`
+	SessionId int64  `json:"session_id,omitempty"`
+	ExecId    int64  `json:"exec_id,omitempty"`
+	PlugId    string `json:"plug_id,omitempty"`
+	AgentId   string `json:"agent_id,omitempty"`
+	StateTag1 string `json:"state_tag1,omitempty"`
+	StateTag2 string `json:"state_tag2,omitempty"`
+	StateTag3 string `json:"state_tag3,omitempty"`
+	KeyPrefix string `json:"key_prefix,omitempty"`
+}
+
 type AdviseryTkt struct {
 	Type   string `json:"type"`
 	XID    string `json:"xid"`

@@ -50,6 +50,7 @@ func (a *ApiAdmin) API(rg *gin.RouterGroup) {
 	a.TargetAPI(rg.Group("/target"))
 	a.LensAPI(rg.Group("/lens"))
 	a.adapterEditorAPI(rg.Group("/adapter_editor"))
+	a.plugStateTKT(rg.Group("/plug_state"))
 
 }
 
