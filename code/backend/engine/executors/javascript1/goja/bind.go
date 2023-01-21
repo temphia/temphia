@@ -85,6 +85,11 @@ func (g *Goja) bind() {
 		g.qbind("_pkv_commit", func(txid uint32) any {
 			return resp(pbind.Commit(txid))
 		})
+
+		g.qbind("_pkv_ticket", func(opts *bindx.PlugStateTkt) (any, any) {
+			return pbind.Ticket(opts)
+		})
+
 	}
 
 	/*
