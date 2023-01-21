@@ -1,11 +1,11 @@
 const MESSAGE_SERVER_DIRECT = "server_direct";
 const MESSAGE_SERVER_BROADCAST = "server_broadcast";
 const MESSAGE_SERVER_PUBLISH = "server_publish";
-const MESSAGE_CLIENT_DIRECT    = "client_direct"
-const MESSAGE_CLIENT_BROADCAST = "client_broadcast"
-const MESSAGE_CLIENT_PUBLISH   = "client_publish"
-const MESSAGE_CLIENT_SYSTEM = "client_system"
-const MESSAGE_SERVER_SYSTEM = "server_system"
+const MESSAGE_CLIENT_DIRECT = "client_direct";
+const MESSAGE_CLIENT_BROADCAST = "client_broadcast";
+const MESSAGE_CLIENT_PUBLISH = "client_publish";
+const MESSAGE_CLIENT_SYSTEM = "client_system";
+const MESSAGE_SERVER_SYSTEM = "server_system";
 
 export type SockdHandler = (message: SockdMessage) => void;
 
@@ -20,14 +20,6 @@ export interface SockdMessage {
   payload: any;
 }
 
-export interface ISockd {
-  SendDirect(data: any, target: number): void;
-  SendBroadcast(data: any): void;
-  SendTagged(data: any, targets?: string[]): void;
-  UpdateToken(token: string): void
-  Close(): void;
-}
-
 export {
   MESSAGE_SERVER_DIRECT,
   MESSAGE_SERVER_BROADCAST,
@@ -38,5 +30,3 @@ export {
   MESSAGE_CLIENT_SYSTEM,
   MESSAGE_SERVER_SYSTEM,
 };
-
-
