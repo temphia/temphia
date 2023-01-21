@@ -22,7 +22,7 @@ export class TableService {
   table_slug: string;
   group_slug: string;
   data_api: DataAPI;
-  foler_api: FolderTktAPI;
+  folder_api: FolderTktAPI;
   state: TableState;
 
   _open_modal: (compo: any, props: object) => void;
@@ -35,7 +35,7 @@ export class TableService {
     table_slug: string;
     group_slug: string;
     data_api: DataAPI;
-    foler_api: FolderTktAPI;
+    folder_api: FolderTktAPI;
     open_modal: (compo: any, props: object) => void;
     close_modal: () => void;
   }) {
@@ -43,7 +43,7 @@ export class TableService {
     this.table_slug = opts.table_slug;
     this.group_slug = opts.group_slug;
     this.data_api = opts.data_api;
-    this.foler_api = opts.foler_api;
+    this.folder_api = opts.folder_api;
     this._open_modal = opts.open_modal;
     this._close_modal = opts.close_modal;
 
@@ -447,7 +447,7 @@ export class RowService {
   }
 
   folder_api() {
-    return this.service.foler_api;
+    return this.service.folder_api;
   }
 }
 

@@ -5,6 +5,7 @@
   import Cicon from "../cicon/cicon.svelte";
   import { CtypeCheckBox, CtypeFile, CtypeMultiFile } from "../fields/field";
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
+  import type { FolderTktAPI } from "../../../../../../../lib/apiv2";
 
   export let columns_index: { [_: string]: object };
   export let columns: string[];
@@ -12,6 +13,7 @@
   export let rows_index: { [_: string]: object };
   export let main_column: string;
   export let selected_rows = [];
+  export let folder_api: FolderTktAPI;
 
   const dispatch = createEventDispatcher();
   const onPageButtom = () => dispatch("on_page_buttom");
@@ -26,6 +28,13 @@
 
   const flipCSS = (index) => (index % 2 === 1 ? "gray" : "");
   let DEFAULT_WIDTH = columns.length > 3 ? 15 : 20;
+  let width = "w-min md:w-full"
+  if (columns.length < 4) {
+    width = "w-min md:w-full justify-between"
+  } else if (columns.length > 7) {
+    width = "w-min"
+  }
+
   const column_resize = ColumnResize(DEFAULT_WIDTH);
 
   const scrollHandle = (sTop, sTopMax, sLeft) => {
@@ -49,7 +58,7 @@
   <div class="w-40 h-full border border-gray-300">
     <div class="flex flex-col gap-1 h-full block">
       <div
-        class="h-10 border-b border-gray-300 flex justify-center text-sm bg-gray-50"
+        class="h-10 border-b border-gray-300 flex justify-center text-sm bg-gray-50 "
       >
         {#if main_column}
           <div class="p-2">{main_column}</div>
@@ -116,7 +125,7 @@
     <!-- right start -->
     <div class="flex flex-col gap-1 h-full">
       <div
-        class="h-10 bg-gray-50 border-b border-gray-300 overflow-hidden w-min md:w-full flex"
+        class="h-10 bg-gray-50 border-b border-gray-300 overflow-hidden flex {width}"
         bind:this={head_ref}
       >
         <!-- COLUMNS -->
@@ -176,7 +185,7 @@
           )}-50"
           data-row={item || 0}
         >
-          <div class="flex w-min md:w-full">
+          <div class="flex {width}">
             {#each columns as col}
               {@const coldata = columns_index[col]}
               {@const ctype = coldata["ctype"]}
@@ -195,7 +204,9 @@
                       class="text-gray-700 truncate overflow-hidden text-sm p-1"
                     >
                       {#if ctype === CtypeMultiFile || ctype === CtypeFile}
-                        {celldata || ""}
+                        {#each (celldata || "").split(",") as cd}
+                          <img src={folder_api && folder_api.getFilePreviewUrl(cd)} alt="" />
+                        {/each}
                       {:else if ctype === CtypeCheckBox}
                         {#if celldata === true}
                           <Icon name="check" class="w-6 h-6 text-green-500" />
@@ -216,4 +227,8 @@
     </div>
   </div>
   <!-- end right  -->
+</div>
+
+<div class="hidden w-min md:w-full">
+
 </div>

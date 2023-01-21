@@ -74,7 +74,7 @@ export class GroupService {
         data_api: this.data_api,
         group_slug: this.name,
         table_slug: table,
-        foler_api: this.folder_api,
+        folder_api: this.folder_api,
         close_modal: this.close_modal,
         open_modal: this.open_modal,
       });

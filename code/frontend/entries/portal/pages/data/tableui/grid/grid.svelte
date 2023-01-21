@@ -30,6 +30,7 @@
   rows_loaded_no={_data.rows.length || 0}
 >
   <Renderer
+    folder_api={table_service.folder_api}
     columns={_data.column_order}
     columns_index={_data.indexed_column}
     main_column={_nav_store.active_view.main_column}
