@@ -26,7 +26,7 @@
   };
 
   const action_visit = (id: string) => {
-    const u = new URL(service.api.base.base_url || "");
+    const u = new URL(service.api.base.api_base_url || "");
 
     let domain_name = service.env.domain_name;
     if (!domain_name || domain_name === "*") {

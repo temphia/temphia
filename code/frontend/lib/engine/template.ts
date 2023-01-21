@@ -1,7 +1,7 @@
 import type { LoaderOptions } from "./plug";
 
 interface iframeBuildOptions {
-  base_url: string;
+  api_base_url: string;
   entry_name: string;
   plug: string;
   agent: string;
@@ -19,8 +19,8 @@ export const iframeTemplateBuild = (opts: iframeBuildOptions) => {
   let execscript = "";
   if (opts.exec_loader) {
     execscript = `
-            <script src="${opts.base_url}engine/plug/${opts.plug}/agent/${opts.agent}/executor/${opts.exec_loader}/loader.js"></script>
-            <link href="${opts.base_url}engine/plug/${opts.plug}/agent/${opts.agent}/executor/${opts.exec_loader}/loader.css" rel="stylesheet" ></link>
+            <script src="${opts.api_base_url}engine/plug/${opts.plug}/agent/${opts.agent}/executor/${opts.exec_loader}/loader.js"></script>
+            <link href="${opts.api_base_url}engine/plug/${opts.plug}/agent/${opts.agent}/executor/${opts.exec_loader}/loader.css" rel="stylesheet" ></link>
         `;
   }
 
@@ -35,12 +35,12 @@ export const iframeTemplateBuild = (opts: iframeBuildOptions) => {
           derive(opts)
         )}</script>
         
-        <script async="true" src="${opts.base_url}engine/plug/${opts.plug}/agent/${opts.agent}/launcher/engine_iframe_guest.js"></script> 
+        <script async="true" src="${opts.api_base_url}engine/plug/${opts.plug}/agent/${opts.agent}/launcher/engine_iframe_guest.js"></script> 
 
         ${execscript}
 
-        <script defer="true" src="${opts.base_url}engine/plug/${opts.plug}/agent/${opts.agent}/serve/${opts.js_plug_script}"></script>
-        <link href="${opts.base_url}engine/plug/${opts.plug}/agent/${opts.agent}/serve/${opts.style_file}" rel="stylesheet" ></link>
+        <script defer="true" src="${opts.api_base_url}engine/plug/${opts.plug}/agent/${opts.agent}/serve/${opts.js_plug_script}"></script>
+        <link href="${opts.api_base_url}engine/plug/${opts.plug}/agent/${opts.agent}/serve/${opts.style_file}" rel="stylesheet" ></link>
 
     </head>
     <body>
@@ -53,7 +53,7 @@ const derive = (opts: iframeBuildOptions): LoaderOptions => ({
   token: opts.token,
   plug: opts.plug,
   agent: opts.agent,
-  base_url: opts.base_url,
+  api_base_url: opts.api_base_url,
   entry: opts.entry_name,
   exec_loader: opts.exec_loader,
   parent_secret: opts.parent_secret,

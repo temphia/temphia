@@ -41,7 +41,6 @@ func (c *Controller) launchAdmin(uclaim *claim.Session, data AdminLaunchData) (*
 	}
 
 	return &vmodels.ExecInstanceOptions{
-		BaseURL:      "",
 		Token:        token,
 		EntryName:    agent.WebEntry,
 		ExecLoader:   agent.WebLoader,

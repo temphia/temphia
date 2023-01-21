@@ -3,24 +3,26 @@ import { Http } from "../http";
 
 export class ApiBase {
   http: Http;
-  base_url: string;
+  api_base_url: string;
   tenant_id: string;
   user_token: string;
 
-  constructor(base_url: string, tenant_id: string, token: string) {
-    this.base_url = base_url;
+  constructor(api_base_url: string, tenant_id: string, token: string) {
+    this.api_base_url = api_base_url;
     this.tenant_id = tenant_id;
     this.user_token = token;
 
     console.log("@api_base =>", this)
 
-    this.http = new Http(base_url, {
+    this.http = new Http(api_base_url, {
       "Content-Type": "application/json",
       Authorization: token,
     });
   }
 
   async init() {
+    // fixme => it should not create apiurl instead it should be passed 
+    // base_url or sth and build api_base_url from it
     const resp = await fetch(`${apiURL(this.tenant_id)}/auth/refresh`, {
       method: "POST",
       body: JSON.stringify({

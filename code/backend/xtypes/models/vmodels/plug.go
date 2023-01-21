@@ -36,7 +36,7 @@ type ResourceHint struct {
 type SubOriginData struct {
 	LoaderJS       string
 	LoaderOptsJSON string
-	BaseURL        string
+	ApiBaseURL     string
 	Token          string
 	Plug           string
 	Agent          string
@@ -49,7 +49,7 @@ type SubOriginData struct {
 
 func (s *SubOriginData) BuildJSONOpts() error {
 	opts := &ExecInstanceOptions{
-		BaseURL:      s.BaseURL,
+		ApiBaseURL:   s.ApiBaseURL,
 		Token:        s.Token,
 		EntryName:    s.EntryName,
 		ExecLoader:   s.ExecLoader,
@@ -69,7 +69,7 @@ func (s *SubOriginData) BuildJSONOpts() error {
 }
 
 type ExecInstanceOptions struct {
-	BaseURL      string            `json:"base_url,omitempty"`
+	ApiBaseURL   string            `json:"api_base_url,omitempty"`
 	Token        string            `json:"token,omitempty"`
 	EntryName    string            `json:"entry,omitempty"`
 	ExecLoader   string            `json:"exec_loader,omitempty"`

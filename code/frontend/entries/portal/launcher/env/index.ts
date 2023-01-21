@@ -12,7 +12,7 @@ export interface EnvOptions {
   token: string;
   plug: string;
   agent: string;
-  base_url: string;
+  api_base_url: string;
   tenant_id: string
   parent_secret?: string;
   pipe: Pipe;
@@ -43,7 +43,7 @@ export class Env implements Environment {
     this._startup_payload = opts.startup_payload;
     this.set_up_pipe(opts.pipe);
     this._exec_api = new ExecAPI(
-      opts.base_url.replace("v2/", "v2"),
+      opts.api_base_url.replace("v2/", "v2"),
       opts.token
     );
   }
@@ -100,18 +100,18 @@ export class Env implements Environment {
   };
 
   GetFolderTktAPI = (ticket: string): any => {
-    new FolderTktAPI(this._opts.base_url, ticket);
+    new FolderTktAPI(this._opts.api_base_url, ticket);
   };
 
   GetRoomTktAPI = async (room: string, ticket?: string): Promise<any> => {
     // fix url 
-    return new Sockd(`${this._opts.base_url}/engine/ws?ticket=${ticket}`);
+    return new Sockd(`${this._opts.api_base_url}/engine/ws?ticket=${ticket}`);
   };
 
   GetDataTableTktAPI = (ticket: string): any => {
   };
 
   GetPlugStateTktAPI = (ticket: string): any => {
-    return new AdminPlugStateTktAPI(new ApiBase(this._opts.base_url, this._opts.tenant_id, ticket))
+    return new AdminPlugStateTktAPI(new ApiBase(this._opts.api_base_url, this._opts.tenant_id, ticket))
   };
 }

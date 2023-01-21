@@ -1,5 +1,7 @@
+// syncme => vmodels/plug
+
 export interface ExecInstanceOptions {
-  base_url: string;
+  api_base_url: string;
   token: string;
   entry: string;
   exec_loader: string;

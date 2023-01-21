@@ -45,7 +45,6 @@ func (c *Controller) launchTarget(uclaim *claim.Session, data TargetLaunchData) 
 	}
 
 	return &vmodels.ExecInstanceOptions{
-		BaseURL:      "",
 		Token:        token,
 		EntryName:    agent.WebEntry,
 		ExecLoader:   agent.WebLoader,

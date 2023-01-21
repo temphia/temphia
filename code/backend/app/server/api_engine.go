@@ -75,7 +75,7 @@ func (s *Server) launchTarget(ctx httpx.Request) {
 		return
 	}
 
-	out.BaseURL = httpx.BaseURL(ctx.Http.Request.Host, ctx.Session.TenantId)
+	out.ApiBaseURL = httpx.ApiBaseURL(ctx.Http.Request.Host, ctx.Session.TenantId)
 	httpx.WriteJSON(ctx.Http, out, err)
 }
 
@@ -94,7 +94,7 @@ func (s *Server) launchAdmin(ctx httpx.Request) {
 		return
 	}
 
-	out.BaseURL = httpx.BaseURL(ctx.Http.Request.Host, ctx.Session.TenantId)
+	out.ApiBaseURL = httpx.ApiBaseURL(ctx.Http.Request.Host, ctx.Session.TenantId)
 	httpx.WriteJSON(ctx.Http, out, err)
 
 }

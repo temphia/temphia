@@ -38,7 +38,7 @@ export class CabinetAPI {
   }
 
   getFilePreview(folder: string, fname: string) {
-    return `${this.base.base_url}/cabinet/${this.source}/${folder}/preview/${fname}?token=${this.base.user_token}`;
+    return `${this.base.api_base_url}/cabinet/${this.source}/${folder}/preview/${fname}?token=${this.base.user_token}`;
   }
 }
 

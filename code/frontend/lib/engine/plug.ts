@@ -4,7 +4,7 @@ export interface LoaderOptions {
   exec_loader: string;
   plug: string;
   agent: string;
-  base_url: string;
+  api_base_url: string;
   parent_secret?: string;
   startup_payload?: any;
   tenant_id: string

@@ -1,6 +1,6 @@
 import { sleep } from "yootils";
 import { DataAPI, FolderTktAPI } from "../../../../lib/apiv2";
-import type { ISockd, SockdMessage } from "../../../../lib/sockd";
+import type { Sockd, SockdMessage } from "../../../../lib/sockd";
 import type { SockdService } from "../sockd/sockd";
 import { TableService } from "./table";
 
@@ -18,7 +18,7 @@ export class GroupService {
 
   // sockd
   sockd_builder: SockdService;
-  sockd_conn: ISockd;
+  sockd_conn: Sockd;
 
   constructor(opts: {
     source: string;

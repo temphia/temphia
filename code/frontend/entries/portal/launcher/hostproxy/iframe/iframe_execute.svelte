@@ -13,7 +13,7 @@
   const src = iframeTemplateBuild({
     plug: exec_data["plug"],
     agent: exec_data["agent"],
-    base_url: exec_data["base_url"],
+    api_base_url: exec_data["api_base_url"],
     entry_name: exec_data["entry"],
     exec_loader: exec_data["exec_loader"],
     js_plug_script: exec_data["js_plug_script"],

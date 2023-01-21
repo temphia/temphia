@@ -3,7 +3,7 @@
 const fs = require('fs');
 const { execSync } = require("child_process");
 
-const build = execSync(`ncc build entries/execute_iframe_loader/index.ts --out public/build/guest_iframe`);
+const build = execSync(`ncc build entries/execute_iframe_loader/index.ts --out public/build/guest_iframe -t`);
 
 console.log("BUILD OUTPUT", build.toString('utf-8'));
 

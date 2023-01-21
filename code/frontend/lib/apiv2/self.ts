@@ -15,7 +15,7 @@ export class SelfAPI {
   }
 
   self_ws_url() {
-    return `${this.base.base_url}/self/self/ws?token=${this.base.http.headers["Authorization"]}`;
+    return `${this.base.api_base_url}/self/self/ws?token=${this.base.http.headers["Authorization"]}`;
   }
 
   user_profile(userid: string) {

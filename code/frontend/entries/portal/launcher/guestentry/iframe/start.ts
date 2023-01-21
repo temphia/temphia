@@ -39,7 +39,7 @@ export default () => {
       agent: opts.agent,
       plug: opts.plug,
       token: opts.token,
-      base_url: opts.base_url,
+      api_base_url: opts.api_base_url,
       parent_secret: opts.parent_secret,
       pipe: pipe,
       registry: window["__registry__"],

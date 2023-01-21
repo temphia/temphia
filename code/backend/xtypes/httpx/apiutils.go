@@ -53,7 +53,7 @@ func WriteBinary(c *gin.Context, data []byte) {
 	w.Header().Add("Content-Type", "application/octet-stream")
 }
 
-func BaseURL(host, tenantId string) string {
+func ApiBaseURL(host, tenantId string) string {
 
 	return fmt.Sprintf("http://%s/z/api/%s/v2/", host, tenantId)
 }
