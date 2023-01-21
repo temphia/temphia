@@ -154,7 +154,7 @@ export class Navigator {
   };
 
   admin_plug_edit = (bid: string) => {
-    this.set(`#/admin/plug/edit/${bid}`);
+    this.set(`#/admin/plug/${bid}/edit`);
   };
 
   // agents
