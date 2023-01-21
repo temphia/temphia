@@ -6,23 +6,37 @@ export class AdminPlugStateAPI {
     this.base = base;
   }
 
-  list(pid: string) {
-    return this.base.get(`/admin/plug/${pid}/state/`);
+  list(qparms: { key_cursor?: string; page?: number, page_count?: number }) {
+    const u = new URLSearchParams();
+
+    u.set("page", String(qparms.page || 0));
+    u.set("page_count", String(qparms.page_count || 0));
+    u.set("key_cursor", qparms.key_cursor || "");
+
+    return this.base.get(`/admin/plug_state/`);
   }
 
-  new(pid: string, data: any) {
-    return this.base.post(`/admin/plug/${pid}/state/`, data);
+  add(key: string, value: string) {
+    return this.base.post(`/admin/plug_state/`, {
+      key,
+      value,
+    });
   }
 
-  get(pid: string, key: string) {
-    return this.base.get(`/admin/plug/${pid}/state/${key}`);
+  update(key: string, value: string) {
+    return this.base.post(`/admin/plug_state/${key}`, {
+      key,
+      value,
+    });
   }
 
-  update(pid: string, key: string, data: any) {
-    return this.base.post(`/admin/plug/${pid}/state/${key}`, data);
+  delete(key: string) {
+    return this.base.delete(`/admin/plug_state/${key}`, {
+      key,
+    });
   }
 
-  del(pid: string, key: string) {
-    return this.base.delete(`/admin/plug/${pid}/state/${key}`);
+  get(key: string) {
+    return this.base.delete(`/admin/plug_state/${key}`);
   }
 }

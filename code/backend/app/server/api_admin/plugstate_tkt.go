@@ -60,7 +60,7 @@ func (a *ApiAdmin) listPlugState(aclaim *claim.PlugState, ctx *gin.Context) {
 	page, _ := strconv.ParseInt(ctx.Param("page"), 10, 64)
 	pcount, _ := strconv.ParseInt(ctx.Param("page_count"), 10, 64)
 
-	resp, err := a.cAdmin.ListPlugState(aclaim, int(page), int(pcount), ctx.Query("keycursor"))
+	resp, err := a.cAdmin.ListPlugState(aclaim, int(page), int(pcount), ctx.Query("key_cursor"))
 	a.rutil.WriteJSON(ctx, resp, err)
 }
 
