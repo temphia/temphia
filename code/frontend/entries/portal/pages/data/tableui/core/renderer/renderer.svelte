@@ -124,7 +124,7 @@
           {#if main_column !== col}
             <div
               class="flex justify-center font-sans align-middle"
-              style="min-width:{DEFAULT_WIDTH}em;  width:{$column_resize[col] || ""}em;"
+              style="width:{$column_resize[col] || DEFAULT_WIDTH}em;"
 
             >
               <button
@@ -182,7 +182,7 @@
                 <div
                   data-col={col}
                   data-row={item.id || 0}
-                  style="min-width:{DEFAULT_WIDTH}em;  width:{$column_resize[col] || ""}em;"
+                  style="width:{$column_resize[col] || DEFAULT_WIDTH}em;"
                   class="{heightClass} overflow-hidden flex justify-center cursor-pointer bg-{flipCSS(
                     itemIndex
                   )}-50"
