@@ -1,3 +1,4 @@
+import { FolderTktAPI } from "../../../../lib/apiv2";
 import { ExecAPI } from "../../../../lib/apiv2/engine/exec";
 import type { Environment } from "../../../../lib/engine/env";
 import type { Pipe } from "../../../../lib/engine/pipe";
@@ -37,7 +38,10 @@ export class Env implements Environment {
     this._opts = opts;
     this._startup_payload = opts.startup_payload;
     this.set_up_pipe(opts.pipe);
-    this._exec_api = new ExecAPI(opts.base_url.replace("v2/", "v2"), opts.token);
+    this._exec_api = new ExecAPI(
+      opts.base_url.replace("v2/", "v2"),
+      opts.token
+    );
   }
 
   set_up_pipe(pipe: Pipe) {
@@ -92,8 +96,7 @@ export class Env implements Environment {
   };
 
   GetFolderTktAPI = (ticket: string): any => {
-    //return new FolderTktAPI(this._opts.base_url, ticket);
-    return null;
+    new FolderTktAPI(this._opts.base_url, ticket);
   };
 
   GetRoomTktAPI = async (room: string, ticket?: string): Promise<any> => {
@@ -102,5 +105,10 @@ export class Env implements Environment {
     return null;
   };
 
-  GetDataTableTktAPI = (ticket: string): any => {};
+  GetDataTableTktAPI = (ticket: string): any => {
+  };
+
+  GetPlugStateTktAPI = (ticket: string): any => {
+    
+  };
 }

@@ -4,9 +4,10 @@ export interface Environment {
   OnParentAction: (handler: (data: any) => {}) => void;
 
   GetRegistry: () => any;
+  GetRoomTktAPI: (room: string, ticket?: string) => any;
   GetFolderTktAPI: (ticket: string) => any;
-  GetRoomTktAPI: (room: string, ticket?: string) => Promise<any>;
   GetDataTableTktAPI: (ticket: string) => any;
+  GetPlugStateTktAPI: (ticket: string) => any;
 }
 
 //   PreformAction: (name: string, data: any) => Promise<Result<HttpResponse>>;
