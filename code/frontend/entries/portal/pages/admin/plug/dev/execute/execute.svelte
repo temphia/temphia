@@ -38,5 +38,5 @@
 {#if loading}
   <LoadingSpinner />
 {:else}
-  <IframeExecute exec_data={data} name="TODO" secret_id={sid} />
+  <IframeExecute exec_data={data} name="{$params.pid}/{$params.aid}" secret_id={sid} tenant_id={app.options.tenant_id} />
 {/if}
