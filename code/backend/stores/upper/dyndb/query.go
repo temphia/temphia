@@ -62,39 +62,12 @@ func (d *DynDB) simpleQuery(txid uint32, req store.SimpleQueryReq) (*store.Query
 	}
 
 	resp := &store.QueryResult{
-		Columns: cols,
-		Count:   req.Count,
-		Page:    req.Page,
-		Rows:    records,
+		Count: req.Count,
+		Page:  req.Page,
+		Rows:  records,
 	}
 
-	if req.LoadExtraMeta {
-
-		revRefs, err := d.ListReverseColumnRef(req.TenantId, req.Group, req.Table)
-		if err != nil {
-			return nil, err
-		}
-
-		// fixme => remove server_side hooks ?
-
-		// hooks, err := d.ListHook(req.TenantId, req.Group, req.Table)
-		// if err != nil {
-		// 	return nil, err
-		// }
-
-		views, err := d.ListView(req.TenantId, req.Group, req.Table)
-		if err != nil {
-			return nil, err
-		}
-
-		resp.ExtraMeta = &store.QueryMeta{
-			ReverseRefs: revRefs,
-			Hooks:       nil,
-			Views:       views,
-		}
-	}
-
-	return resp, err
+	return resp, nil
 }
 
 func (d *DynDB) processer(tenantId, group, table string) processer.Processer {
@@ -179,8 +152,7 @@ func (d *DynDB) RefResolve(txid uint32, tenantId, gslug string, req *store.RefRe
 	}
 
 	return &store.QueryResult{
-		Columns: cols,
-		Rows:    rows,
+		Rows: rows,
 	}, nil
 }
 
@@ -211,8 +183,7 @@ func (d *DynDB) refLoad(txid uint32, tenantId, gslug string, req *store.RefLoadR
 	}
 
 	return &store.QueryResult{
-		Columns: cols,
-		Rows:    rows,
+		Rows: rows,
 	}, nil
 }
 

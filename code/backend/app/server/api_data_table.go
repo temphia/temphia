@@ -19,6 +19,8 @@ func (s *Server) dataAPI(rg *gin.RouterGroup) {
 	rg.GET("/:tid/row/:id", s.dx(s.getRow))
 	rg.POST("/:tid/row/:id", s.dx(s.updateRow))
 	rg.DELETE("/:tid/row/:id", s.dx(s.deleteRow))
+
+	rg.POST("/:tid/load", s.dx(s.loadTable))
 	rg.POST("/:tid/simple_query", s.dx(s.simpleQuery))
 	rg.POST("/:tid/fts_query", s.dx(s.FTSQuery)) // fixme => remove this and consolidate this to simple_query ?
 	rg.POST("/:tid/ref_load", s.dx(s.refLoad))
@@ -93,6 +95,23 @@ func (s *Server) deleteRow(uclaim *claim.Data, ctx *gin.Context) {
 	}
 	err = s.cData.DeleteRow(uclaim, ctx.Param("tid"), id)
 	httpx.WriteFinal(ctx, err)
+}
+
+func (s *Server) loadTable(uclaim *claim.Data, ctx *gin.Context) {
+	req := store.LoadTableReq{}
+	err := ctx.BindJSON(&req)
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	resp, err := s.cData.LoadTable(uclaim, req, ctx.Param("tid"))
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	httpx.WriteJSON(ctx, resp, err)
 }
 
 func (s *Server) simpleQuery(uclaim *claim.Data, ctx *gin.Context) {

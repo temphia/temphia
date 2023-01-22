@@ -107,6 +107,25 @@ func (d *Controller) DeleteRow(uclaim *claim.Data, tslug string, id int64) error
 	})
 }
 
+func (c *Controller) LoadTable(uclaim *claim.Data, req store.LoadTableReq, tslug string) (*store.LoadTableResp, error) {
+
+	source, group := getTarget(uclaim)
+	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+
+	req.TenantId = uclaim.TenantId
+	req.Table = tslug
+	req.Group = group
+
+	resp, err := dynDB.LoadTable(0, req)
+	if err != nil {
+		return nil, err
+	}
+
+	// fixme => load user and folder tokens here
+
+	return resp, nil
+}
+
 func (d *Controller) SimpleQuery(uclaim *claim.Data, tslug string, query store.SimpleQueryReq) (*store.QueryResult, error) {
 	source, group := getTarget(uclaim)
 

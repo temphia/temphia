@@ -59,16 +59,32 @@ type DeleteRowReq struct {
 	ModCtx   ModCtx  `json:"mod_ctx,omitempty"`
 }
 
+type LoadTableReq struct {
+	TenantId string `json:"-"`
+	Table    string `json:"table,omitempty"`
+	Group    string `json:"group,omitempty"`
+	View     string `json:"view,omitempty"`
+}
+
+type LoadTableResp struct {
+	ReverseRefs   []*entities.Column    `json:"reverse_refs,omitempty"`
+	Views         []*entities.DataView  `json:"views,omitempty"`
+	DataWidgets   []*entities.TargetApp `json:"data_widgets,omitempty"`
+	ActiveView    string                `json:"active_view,omitempty"`
+	FolderTickets map[string]string     `json:"folder_tickets,omitempty"`
+	UserTickets   map[string]string     `json:"user_tickets,omitempty"`
+	QueryResponse *QueryResult          `json:"query_response,omitempty"`
+}
+
 type SimpleQueryReq struct {
-	TenantId      string        `json:"-"`
-	Table         string        `json:"table,omitempty"`
-	Group         string        `json:"group,omitempty"`
-	Count         int64         `json:"count,omitempty"`
-	FilterConds   []*FilterCond `json:"filter_conds,omitempty"`
-	Page          int64         `json:"page,omitempty"`
-	Selects       []string      `json:"selects,omitempty"`
-	SearchTerm    string        `json:"search_term,omitempty"`
-	LoadExtraMeta bool          `json:"load_extra_meta,omitempty"`
+	TenantId    string        `json:"-"`
+	Table       string        `json:"table,omitempty"`
+	Group       string        `json:"group,omitempty"`
+	Count       int64         `json:"count,omitempty"`
+	FilterConds []*FilterCond `json:"filter_conds,omitempty"`
+	Page        int64         `json:"page,omitempty"`
+	Selects     []string      `json:"selects,omitempty"`
+	SearchTerm  string        `json:"search_term,omitempty"`
 }
 
 type FTSQueryReq struct {
@@ -131,17 +147,10 @@ type SqlQueryResult struct {
 }
 
 type QueryResult struct {
-	Count     int64                       `json:"count,omitempty"`
-	Page      int64                       `json:"page,omitempty"`
-	Rows      []map[string]any            `json:"rows"`
-	Columns   map[string]*entities.Column `json:"columns,omitempty"`
-	ExtraMeta *QueryMeta                  `json:"extra_meta,omitempty"`
-}
-
-type QueryMeta struct {
-	ReverseRefs []*entities.Column    `json:"reverse_refs,omitempty"`
-	Hooks       []*entities.TargetApp `json:"hooks,omitempty"`
-	Views       []*entities.DataView  `json:"views,omitempty"`
+	Count   int64                       `json:"count,omitempty"`
+	Page    int64                       `json:"page,omitempty"`
+	Rows    []map[string]any            `json:"rows"`
+	Columns map[string]*entities.Column `json:"columns,omitempty"`
 }
 
 type LoadDgroupResp struct {

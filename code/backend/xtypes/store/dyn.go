@@ -165,6 +165,9 @@ type DynSource interface {
 	GetRow(txid uint32, req GetRowReq) (map[string]any, error)
 	UpdateRow(txid uint32, req UpdateRowReq) (map[string]any, error)
 	DeleteRows(txid uint32, req DeleteRowReq) error
+
+	LoadTable(txid uint32, req LoadTableReq) (*LoadTableResp, error)
+
 	SimpleQuery(txid uint32, req SimpleQueryReq) (*QueryResult, error)
 	FTSQuery(txid uint32, req FTSQueryReq) (*QueryResult, error)
 	RefResolve(txid uint32, gslug string, req *RefResolveReq) (*QueryResult, error)

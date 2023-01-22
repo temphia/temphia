@@ -1,7 +1,11 @@
 package datahub
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
@@ -63,6 +67,65 @@ func (d *dynSource) SimpleQuery(txid uint32, req store.SimpleQueryReq) (*store.Q
 	ddb := d.dynDB()
 
 	return ddb.SimpleQuery(txid, req)
+}
+
+func (d *dynSource) LoadTable(txid uint32, req store.LoadTableReq) (*store.LoadTableResp, error) {
+	ddb := d.dynDB()
+
+	views, err := ddb.ListView(req.TenantId, req.Group, req.Table)
+	if err != nil {
+		return nil, err
+	}
+
+	sqr := store.SimpleQueryReq{
+		TenantId:    req.TenantId,
+		Table:       req.Table,
+		Group:       req.Group,
+		Count:       0,
+		FilterConds: make([]*store.FilterCond, 0),
+		Page:        0,
+		Selects:     nil,
+		SearchTerm:  "",
+	}
+
+	finalResp := &store.LoadTableResp{
+		ReverseRefs:   nil,
+		Views:         views,
+		DataWidgets:   nil,
+		ActiveView:    "",
+		FolderTickets: make(map[string]string),
+		UserTickets:   make(map[string]string),
+		QueryResponse: nil,
+	}
+
+	if req.View != "" {
+		for _, view := range views {
+			if view.Name == req.View {
+				sqr.Count = view.Count
+				fconds, err := json.Marshal(view.FilterConds)
+				if err == nil {
+					json.Unmarshal(fconds, &sqr.FilterConds)
+				}
+				sqr.Selects = view.Selects
+				finalResp.ActiveView = view.Name
+				break
+			}
+		}
+	}
+
+	sqresp, err := d.SimpleQuery(txid, sqr)
+	if err != nil {
+		return nil, err
+	}
+	finalResp.QueryResponse = sqresp
+
+	apps, err := d.hub.corehub.ListTargetAppByType(req.TenantId, entities.TargetAppTypeDataWidget, fmt.Sprintf("%s/%s", req.Group, req.Table))
+	if err == nil {
+		finalResp.DataWidgets = apps
+	}
+
+	return finalResp, nil
+
 }
 
 func (d *dynSource) FTSQuery(txid uint32, req store.FTSQueryReq) (*store.QueryResult, error) {
