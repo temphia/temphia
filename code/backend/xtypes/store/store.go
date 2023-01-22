@@ -23,13 +23,4 @@ type Store interface {
 	StateDB() PlugStateKV
 	CabinetSource() CabinetSource
 	Name() string
-
-	/*
-		// ref
-
-		CheckMigrate() error
-		Migrate(comp string) error
-		EnsureTenant() error
-		CheckTenant() error
-	*/
 }
