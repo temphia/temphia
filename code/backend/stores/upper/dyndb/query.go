@@ -62,9 +62,10 @@ func (d *DynDB) simpleQuery(txid uint32, req store.SimpleQueryReq) (*store.Query
 	}
 
 	resp := &store.QueryResult{
-		Count: req.Count,
-		Page:  req.Page,
-		Rows:  records,
+		Count:   int64(len(records)),
+		Page:    req.Page,
+		Rows:    records,
+		Columns: cols,
 	}
 
 	return resp, nil

@@ -52,12 +52,29 @@ export class TableService {
   }
 
   init = async () => {
-    const data = await this.do_query({
-      ...defaultViewData(),
-      load_extra_meta: true,
-    });
+    this.state.set_loading();
 
-    this.state.set_rows_data(data, false);
+    const resp = await this.data_api.load_table(this.table_slug);
+    if (!resp.ok) {
+      console.log("Err", resp);
+      return;
+    }
+    const count = resp.data["count"] || 0;
+    let page = 0;
+    let selects = [];
+    let filter_conds = [];
+    let last_page = true;
+    if (resp.data["active_view"]) {
+      const views = resp.data["views"] || ([] as object[]);
+      const active = views.filter(
+        (v) => v["name"] !== resp.data["active_view"]
+      );
+      if (active.length !== 0) {
+        console.log("Apply view here =>", active, views);
+      }
+    }
+    this.state.set_ok_loading(count, selects, filter_conds, last_page, page);
+    this.state.set_rows_data(resp.data["query_response"] || {}, false);
   };
 
   apply_remote_changes = () => {};
@@ -72,7 +89,6 @@ export class TableService {
     const data = await this.do_query({
       ...defaultViewData(),
       ...view,
-      load_extra_meta: false,
     });
     if (!data) {
       console.warn("Could not fetch rows");
@@ -90,7 +106,6 @@ export class TableService {
     page: number;
     selects: string[];
     search_term: string;
-    load_extra_meta: boolean;
   }) => {
     this.state.set_loading();
 
@@ -139,7 +154,6 @@ export class TableService {
     const data = await this.do_query({
       ...navdata.active_view,
       page: navdata.active_page + 1,
-      load_extra_meta: false,
     });
     if (!data) {
       console.warn("Could not fetch rows");
@@ -278,14 +292,6 @@ export class TableState {
       let reverse_ref_column = old["reverse_ref_column"] || [];
       let views = old["views"] || [];
       let hooks = old["hooks"] || [];
-
-      const extra_meta = data["extra_meta"];
-
-      if (extra_meta) {
-        reverse_ref_column = extra_meta["reverse_refs"] || [];
-        views = extra_meta["views"] || [];
-        hooks = extra_meta["hooks"] || [];
-      }
 
       const _raw_rows = data["rows"]; //  [{ "__id": 1, xyz: "mno" }]
       const _rows = _raw_rows.map((row) => row["__id"]);

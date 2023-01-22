@@ -81,7 +81,7 @@ func (d *dynSource) LoadTable(txid uint32, req store.LoadTableReq) (*store.LoadT
 		TenantId:    req.TenantId,
 		Table:       req.Table,
 		Group:       req.Group,
-		Count:       0,
+		Count:       50,
 		FilterConds: make([]*store.FilterCond, 0),
 		Page:        0,
 		Selects:     nil,
@@ -95,7 +95,6 @@ func (d *dynSource) LoadTable(txid uint32, req store.LoadTableReq) (*store.LoadT
 		ActiveView:    "",
 		FolderTickets: make(map[string]string),
 		UserTickets:   make(map[string]string),
-		QueryResponse: nil,
 	}
 
 	if req.View != "" {
@@ -123,6 +122,8 @@ func (d *dynSource) LoadTable(txid uint32, req store.LoadTableReq) (*store.LoadT
 	if err == nil {
 		finalResp.DataWidgets = apps
 	}
+
+	pp.Println("@final_resp", finalResp)
 
 	return finalResp, nil
 

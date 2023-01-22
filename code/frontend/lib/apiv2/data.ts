@@ -3,7 +3,7 @@ import { Http } from "./http";
 export class DataAPI {
   http: Http;
   base_url: string;
-  token: string
+  token: string;
   constructor(base_url: string, token: string) {
     this.http = new Http(base_url, {
       "Content-Type": "application/json",
@@ -32,6 +32,12 @@ export class DataAPI {
 
   delete_row(tid: string, rid: string) {
     return this.http.delete(`/data/${tid}/row/${rid}`);
+  }
+
+  load_table(tid: string, view?: string) {
+    return this.http.post(`/data/${tid}/load`, {
+      view,
+    });
   }
 
   simple_query(tid: string, query: any) {
