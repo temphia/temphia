@@ -445,8 +445,8 @@ export class Navigator {
     this.set(`#/admin/ugroup/${ugroup}/user/${user_id}/edit`);
   }
 
-  admin_ugroup_user_new(ugroup: string) {
-    this.set(`#/admin/ugroup/${ugroup}/user/new`);
+  admin_ugroup_user_new(ugroup: string, opts?: any) {
+    this.set(`#/admin/ugroup/${ugroup}/user/new`, opts);
   }
 
   admin_ugroup_auths(ugroup: string) {

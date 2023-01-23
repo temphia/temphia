@@ -26,6 +26,8 @@ export const hslColor = (str) => {
 
 export const validateSlug = (v: string) => /^[a-z](-?[a-z])*$/.test(v);
 
+export const validateUserId = (v: string) => /^[a-z]+([a-z0-9_])+/.test(v)
+
 export const validateEmail = (v: string) =>
   /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
 

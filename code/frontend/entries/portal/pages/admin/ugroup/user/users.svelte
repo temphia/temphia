@@ -37,7 +37,8 @@
 
   // actions
 
-  const action_edit = (id: string) => app.nav.admin_ugroup_user_edit(ugroup, id);
+  const action_edit = (id: string) =>
+    app.nav.admin_ugroup_user_edit(ugroup, id);
   const action_profile = (id: string) => app.nav.user_profile(id);
   const action_delete = async (id: string) => {
     const api = await app.api_manager.get_ugroup_tkt_api(ugroup);
@@ -45,10 +46,13 @@
       console.log("ugroup tkt api not found");
       return;
     }
-    await api.delete(id)
-    load()
+    await api.delete(id);
+    load();
   };
-  const action_new = () => app.nav.admin_ugroup_user_new(ugroup);
+  const action_new = () =>
+    app.nav.admin_ugroup_user_new(ugroup, {
+      new_user_user_group: ugroup,
+    });
 
   // syncme => ../../user/users.svelte
 
