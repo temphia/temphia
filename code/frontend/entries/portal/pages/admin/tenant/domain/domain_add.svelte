@@ -9,9 +9,12 @@
 
   let adapter_providers = [];
 
-  app.api_manager.self_api.list_adapter_providers().then((resp) => {
-    adapter_providers = resp.data || [];
-  });
+  app.api_manager.self_api
+    .list_adapter_providers()
+    .then((resp) => {
+      adapter_providers = resp.data || [];
+    })
+    .catch(() => {});
 
   const save = async (_data) => {
     const resp = await api.new_domain(_data);

@@ -72,6 +72,15 @@ export class SelfAPI {
     return this.base.get("/self/system/adapter");
   }
 
+  list_executors() {
+    return this.base.get("/self/system/executor");
+  }
+
+  list_modules() {
+    return this.base.get("/self/system/module");
+  }
+
+
   list_repo_sources() {
     return this.base.get("/self/system/repo");
   }

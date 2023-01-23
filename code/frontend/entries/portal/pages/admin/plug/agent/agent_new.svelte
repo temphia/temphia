@@ -8,6 +8,15 @@
   const app = getContext("__app__") as PortalService;
   const api = app.api_manager.get_admin_plug_api();
 
+  let executors = [];
+  app.api_manager.self_api
+    .list_executors()
+    .then((resp) => {
+      executors = resp.data || [];
+    })
+    .catch(() => {});
+
+
   let message = "";
 
   const save = async (_data) => {
@@ -41,8 +50,9 @@
       },
       {
         name: "Executor",
-        ftype: "TEXT",
+        ftype: "SELECT",
         key_name: "executor",
+        options: executors,
       },
       {
         name: "Interface File",

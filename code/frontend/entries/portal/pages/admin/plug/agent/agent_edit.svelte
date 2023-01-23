@@ -13,6 +13,14 @@
   let data = {};
   let loading = true;
 
+  let executors = [];
+  app.api_manager.self_api
+    .list_executors()
+    .then((resp) => {
+      executors = resp.data || [];
+    })
+    .catch(() => {});
+
   const load = async () => {
     const resp = await api.get_agent(pid, aid);
     if (!resp.ok) {
@@ -60,8 +68,9 @@
         },
         {
           name: "Executor",
-          ftype: "TEXT",
+          ftype: "SELECT",
           key_name: "executor",
+          options: executors,
         },
         {
           name: "Interface File",

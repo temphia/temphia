@@ -22,20 +22,23 @@ type Engine struct {
 	signer  service.Signer
 	syncer  store.SyncDB
 
-	pacman   repox.Hub
-	logger   zerolog.Logger
-	builders map[string]etypes.ExecutorBuilder
+	pacman       repox.Hub
+	logger       zerolog.Logger
+	execbuilders map[string]etypes.ExecutorBuilder
+	modBuilders  map[string]etypes.ModuleBuilder
 }
 
 func New(_app xtypes.App, logger zerolog.Logger) *Engine {
 
 	return &Engine{
-		app:     _app,
-		runtime: nil,
-		signer:  nil,
-		syncer:  nil,
-		pacman:  nil,
-		logger:  logger,
+		app:          _app,
+		runtime:      nil,
+		signer:       nil,
+		syncer:       nil,
+		pacman:       nil,
+		execbuilders: nil,
+		modBuilders:  nil,
+		logger:       logger,
 	}
 
 }
@@ -60,6 +63,26 @@ func (e *Engine) ServeExecutorFile(tenantId, plugId, agentId, file string) ([]by
 	return e.serveExecutorFile(tenantId, plugId, agentId, file)
 }
 
+func (e *Engine) ListExecutors() []string {
+
+	keys := make([]string, 0, len(e.execbuilders))
+	for k := range e.execbuilders {
+		keys = append(keys, k)
+	}
+
+	return keys
+}
+
+func (e *Engine) ListModules() []string {
+
+	keys := make([]string, 0, len(e.modBuilders))
+	for k := range e.modBuilders {
+		keys = append(keys, k)
+	}
+
+	return keys
+}
+
 // private
 
 func (e *Engine) run() error {
@@ -73,7 +96,7 @@ func (e *Engine) run() error {
 	reg := deps.Registry().(*registry.Registry)
 
 	bfuncs := reg.GetExecutors()
-	e.builders = make(map[string]etypes.ExecutorBuilder)
+	e.execbuilders = make(map[string]etypes.ExecutorBuilder)
 
 	for k, ebf := range bfuncs {
 		bf, err := ebf(e.app)
@@ -81,19 +104,19 @@ func (e *Engine) run() error {
 			panic(err)
 		}
 
-		e.builders[k] = bf
+		e.execbuilders[k] = bf
 	}
 
 	mfuncs := reg.GetExecModules()
-	modules := make(map[string]etypes.ModuleBuilder)
+	e.modBuilders = make(map[string]etypes.ModuleBuilder)
 
 	for k, mbf := range mfuncs {
 		bf, err := mbf(e.app)
 		if err != nil {
 			panic(err)
 		}
-		modules[k] = bf
+		e.modBuilders[k] = bf
 	}
 
-	return e.runtime.Run(e.builders, modules)
+	return e.runtime.Run(e.execbuilders, e.modBuilders)
 }

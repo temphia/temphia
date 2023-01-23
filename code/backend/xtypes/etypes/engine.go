@@ -14,6 +14,8 @@ type Execution struct {
 type Engine interface {
 	Run() error
 	GetRuntime() Runtime
+	ListExecutors() []string
+	ListModules() []string
 
 	Execute(options Execution) ([]byte, error)
 

@@ -74,7 +74,7 @@ func (e *Engine) serveExecutorFile(tenantId, plugId, agentId, file string) ([]by
 
 	}
 
-	builder, ok := e.builders[agent.Executor]
+	builder, ok := e.execbuilders[agent.Executor]
 	if !ok {
 		e.logger.Debug().
 			Str("tenant_id", tenantId).

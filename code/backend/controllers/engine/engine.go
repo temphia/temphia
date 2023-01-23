@@ -9,6 +9,7 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
@@ -79,4 +80,17 @@ func (c *Controller) ServeAgentFile(tenantId, plugId, agentId, file string) ([]b
 
 func (c *Controller) ServeExecutorFile(tenantId, plugId, agentId, file string) ([]byte, error) {
 	return c.engine.ServeExecutorFile(tenantId, plugId, agentId, file)
+}
+
+func (c *Controller) ListExecutors(uclaim *claim.Session) ([]string, error) {
+	// fixme => check perm?
+	execs := c.engine.ListExecutors()
+	return execs, nil
+}
+
+func (c *Controller) ListModules(uclaim *claim.Session) ([]string, error) {
+	// fixme => check perm?
+
+	mods := c.engine.ListModules()
+	return mods, nil
 }

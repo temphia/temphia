@@ -39,10 +39,13 @@ func (s *Server) ListRepoSources(ctx httpx.Request) {
 }
 
 func (s *Server) ListExecutor(ctx httpx.Request) {
-
+	resp, err := s.cEngine.ListExecutors(ctx.Session)
+	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
 func (s *Server) ListModules(ctx httpx.Request) {
+	resp, err := s.cEngine.ListExecutors(ctx.Session)
+	httpx.WriteJSON(ctx.Http, resp, err)
 
 }
 

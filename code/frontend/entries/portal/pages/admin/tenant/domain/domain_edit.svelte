@@ -14,9 +14,12 @@
 
   let adapter_providers = [];
 
-  app.api_manager.self_api.list_adapter_providers().then((resp) => {
-    adapter_providers = resp.data || [];
-  });
+  app.api_manager.self_api
+    .list_adapter_providers()
+    .then((resp) => {
+      adapter_providers = resp.data || [];
+    })
+    .catch(() => {});
 
   const load = async () => {
     const resp = await api.get_domain(did);
