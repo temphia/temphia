@@ -3,7 +3,16 @@
   import VirtualList from "./_virtual_list.svelte";
   import { createEventDispatcher } from "svelte";
   import Cicon from "../cicon/cicon.svelte";
-  import { CtypeCheckBox, CtypeFile, CtypeMultiFile } from "../fields/field";
+  import {
+    CtypeCheckBox,
+    CtypeDateTime,
+    CtypeEmail,
+    CtypeFile,
+    CtypeMultiFile,
+    CtypeMultiUser,
+    CtypeSingleUser,
+    RefHardPriId,
+  } from "../fields/field";
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import type { FolderTktAPI } from "../../../../../../../lib/apiv2";
 
@@ -28,11 +37,11 @@
 
   const flipCSS = (index) => (index % 2 === 1 ? "gray" : "");
   let DEFAULT_WIDTH = columns.length > 3 ? 15 : 20;
-  let width = "w-min md:w-full"
+  let width = "w-min md:w-full";
   if (columns.length < 4) {
-    width = "w-min md:w-full justify-between"
+    width = "w-min md:w-full justify-between";
   } else if (columns.length > 7) {
-    width = "w-min"
+    width = "w-min";
   }
 
   const column_resize = ColumnResize(DEFAULT_WIDTH);
@@ -203,18 +212,56 @@
                     <div
                       class="text-gray-700 truncate overflow-hidden text-sm p-1"
                     >
-                      {#if ctype === CtypeMultiFile || ctype === CtypeFile}
+                      {#if coldata["ref_type"]}
+                        <!-- {#if coldata["ref_type"] === RefHardPriId}
+                        
+                      {/if} -->
+
+                        <div
+                          class="inline-flex bg-yellow-50 text-gray-600 rounded px-1"
+                        >
+                          <span>Test data</span>
+                          <span class="font-semibold text-xs text-gray-800 ml-1"
+                            >{celldata}</span
+                          >
+                        </div>
+                      {:else if ctype === CtypeMultiFile || ctype === CtypeFile}
                         {#each (celldata || "").split(",") as cd}
-                          <img src={folder_api && folder_api.getFilePreviewUrl(cd)} alt="" />
+                          <img
+                            class="h-8 w-auto"
+                            src={folder_api && folder_api.getFilePreviewUrl(cd)}
+                            alt=""
+                          />
                         {/each}
+                      {:else if ctype === CtypeDateTime && celldata}
+                        <span class="underline text-blue-700"
+                          >{new Date(celldata).toLocaleDateString()}</span
+                        >
                       {:else if ctype === CtypeCheckBox}
                         {#if celldata === true}
                           <Icon name="check" class="w-6 h-6 text-green-500" />
                         {:else if celldata === false}
                           <Icon name="x" class="w-6 h-6 text-red-500" />
                         {/if}
+                      {:else if (ctype === CtypeSingleUser || ctype === CtypeMultiUser) && celldata}
+                        <div class="inline-flex gap-1">
+                          {#each (celldata || "").split(",") as cd}
+                            <div class="flex">
+                              <img
+                                alt=""
+                                src="/z/assets/static/default_user_profile.png"
+                                class="w-6 h-6 p-1 rounded-full bg-green-50"
+                              />
+                              <!-- fixme => profile image -->
+                              <span
+                                class="underline text-green-800 bg-green-50 rounded"
+                                >{cd}</span
+                              >
+                            </div>
+                          {/each}
+                        </div>
                       {:else}
-                        {rows_index[item][col] || ""}
+                        {celldata || ""}
                       {/if}
                     </div>
                   </slot>
@@ -229,6 +276,4 @@
   <!-- end right  -->
 </div>
 
-<div class="hidden w-min md:w-full">
-
-</div>
+<div class="hidden w-min md:w-full" />
