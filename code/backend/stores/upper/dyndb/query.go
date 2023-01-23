@@ -153,7 +153,8 @@ func (d *DynDB) RefResolve(txid uint32, tenantId, gslug string, req *store.RefRe
 	}
 
 	return &store.QueryResult{
-		Rows: rows,
+		Rows:    rows,
+		Columns: cols,
 	}, nil
 }
 
@@ -184,7 +185,10 @@ func (d *DynDB) refLoad(txid uint32, tenantId, gslug string, req *store.RefLoadR
 	}
 
 	return &store.QueryResult{
-		Rows: rows,
+		Rows:    rows,
+		Count:   int64(len(rows)),
+		Page:    0,
+		Columns: cols,
 	}, nil
 }
 
