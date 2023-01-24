@@ -15,7 +15,7 @@
     ? 'bg-blue-400'
     : ''}"
 >
-<Icon name={icon} class="h-5 w-5 mt-1" />
+<Icon name={icon} class="h-5 w-5 mt-1 mr-1" />
 {name}
 
 

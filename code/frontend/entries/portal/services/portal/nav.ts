@@ -39,11 +39,15 @@ export class Navigator {
   };
 
   data_group(source: string, dgroup: string) {
-    this.set(`#/data/${source}/${dgroup}`);
+    this.set(`#/data/${source}/default/${dgroup}`);
+  }
+
+  data_group_with_renderer(source: string, dgroup: string, rtype: string) {
+    this.set(`#/data/${source}/${rtype}/${dgroup}`);
   }
 
   data_table(source: string, dgroup: string, table: string, layout = "") {
-    this.set(`#/data/${source}/${dgroup}/${table}${layout}`);
+    this.set(`#/data/${source}/default/${dgroup}/${table}${layout}`);
   }
 
   // cab

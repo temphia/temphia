@@ -36,9 +36,9 @@ export default {
   "/data": {
     "/": DataLoader,
     "/:source": DataGroups,
-    "/:source/:dgroup": DataGroup,
-    "/:source/:dgroup/:dtable": DataTable,
-    "/:source/:dgroup/:dtable/:layout": DataTable,
+    "/:source/:rtype/:dgroup": DataGroup,
+    "/:source/:rtype/:dgroup/:dtable": DataTable,
+    "/:source/:rtype/:dgroup/:dtable/:layout": DataTable,
   },
 
   "/cabinet": {
