@@ -33,16 +33,19 @@
     });
   };
 
-  $: __value = value;
+  $: _cached_row_id = "";
 </script>
 
 <div class="flex w-full">
-  <input
-    type="text"
-    disabled
-    value={__value}
-    class="p-2 shadow w-full rounded-lg bg-gray-100 outline-none focus:bg-gray-200 mr-1"
-  />
+  <div
+    class="p-2 w-full rounded-lg bg-gray-100 outline-none focus:bg-gray-200 mr-1"
+  >
+    <div class="inline-flex bg-yellow-50 text-gray-600 rounded px-1">
+      <span>{_cached_row_id}</span>
+      <span class="font-semibold text-gray-800 ml-1 mt-1">{value}</span>
+    </div>
+  </div>
+
   <button on:click={openPanel}>
     <Icon name="link" class="h-6 w-6" />
   </button>

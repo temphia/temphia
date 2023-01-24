@@ -7,10 +7,11 @@ import type { DirtyData, FilterItem, NavData, ViewData } from "./dtypes";
 export interface DataState {
   indexed_column: { [_: string]: Column };
   column_order: string[];
-  reverse_ref_column: object[];
 
   rows: number[];
   indexed_rows: { [_: string]: object };
+
+  ref_rows_cache: { [_: string]: { [_: string]: object } }; // <column <row_id|column_id, object>>
 
   sparse_rows: number[];
   remote_dirty: { [_: string]: true };
@@ -24,6 +25,9 @@ export class TableService {
   data_api: DataAPI;
   folder_api: FolderTktAPI;
   state: TableState;
+
+  data_widgets: object[];
+  rev_ref_columns: object[];
 
   _open_modal: (compo: any, props: object) => void;
   _close_modal: () => void;
@@ -73,6 +77,10 @@ export class TableService {
         console.log("Apply view here =>", active, views);
       }
     }
+
+    this.rev_ref_columns = resp.data["reverse_refs"] || [];
+    this.data_widgets = resp.data["data_widgets"] || [];
+
     this.state.set_ok_loading(count, selects, filter_conds, last_page, page);
     this.state.set_rows_data(resp.data["query_response"] || {}, false);
   };
@@ -218,6 +226,7 @@ export class TableState {
       sparse_rows: [],
       remote_dirty: {},
       views: [],
+      ref_rows_cache: {},
     });
 
     // debug
@@ -288,10 +297,7 @@ export class TableState {
 
       const old_rows = append ? old["rows"] || [] : [];
       const old_indexed = append ? old["indexed_rows"] || {} : {};
-
-      let reverse_ref_column = old["reverse_ref_column"] || [];
       let views = old["views"] || [];
-      let hooks = old["hooks"] || [];
 
       const _raw_rows = data["rows"]; //  [{ "__id": 1, xyz: "mno" }]
       const _rows = _raw_rows.map((row) => row["__id"]);
@@ -315,9 +321,7 @@ export class TableState {
         column_order,
         indexed_column,
         indexed_rows,
-        reverse_ref_column,
         rows,
-        hooks,
         views,
       };
     });

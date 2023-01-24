@@ -141,6 +141,7 @@ type DynSource interface {
 	EditColumn(gslug, tslug, cslug string, model *entities.ColumnPartial) error
 	GetColumn(gslug, tslug, cslug string) (*entities.Column, error)
 	ListColumns(gslug, tslug string) ([]*entities.Column, error)
+	ListReverseColumnRef(gslug, tslug string) ([]*entities.Column, error)
 	DeleteColumn(gslug, tslug, cslug string) error
 
 	AddIndex(gslug, tslug string, model *entities.Index) error
@@ -196,6 +197,7 @@ type DynDB interface {
 	GetColumn(tenantId, gslug, tslug, cslug string) (*entities.Column, error)
 	EditColumn(tenantId, gslug, tslug, cslug string, model *entities.ColumnPartial) error
 	ListColumns(tenantId, group_slug, tslug string) ([]*entities.Column, error)
+	ListReverseColumnRef(tenantId, gslug, tslug string) ([]*entities.Column, error)
 	DeleteColumn(tenantId, gslug, tslug, cslug string) error
 
 	AddIndex(tenantId, gslug, tslug string, model *entities.Index) error

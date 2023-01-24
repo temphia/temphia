@@ -123,6 +123,11 @@ func (d *dynSource) LoadTable(txid uint32, req store.LoadTableReq) (*store.LoadT
 		finalResp.DataWidgets = apps
 	}
 
+	refCols, err := d.ListReverseColumnRef(req.Group, req.Table)
+	if err == nil {
+		finalResp.ReverseRefs = refCols
+	}
+
 	pp.Println("@final_resp", finalResp)
 
 	return finalResp, nil

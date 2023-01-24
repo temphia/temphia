@@ -110,6 +110,12 @@ func (d *dynSource) EditColumn(gslug, tslug, cslug string, model *entities.Colum
 	ddb := d.dynDB()
 	return ddb.EditColumn(d.tenantId, gslug, tslug, cslug, model)
 }
+
+func (d *dynSource) ListReverseColumnRef(gslug, tslug string) ([]*entities.Column, error) {
+	ddb := d.dynDB()
+	return ddb.ListReverseColumnRef(d.tenantId, gslug, tslug)
+}
+
 func (d *dynSource) ListColumns(gslug, tslug string) ([]*entities.Column, error) {
 	ddb := d.dynDB()
 	return ddb.ListColumns(d.tenantId, gslug, tslug)

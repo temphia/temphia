@@ -118,7 +118,7 @@
     {table_service}
     columns={$data_store.column_order}
     columns_indexded={$data_store.indexed_column}
-    reverse_ref_column={$data_store.reverse_ref_column}
+    reverse_ref_column={table_service.rev_ref_columns}
     rows_indexed={$data_store.indexed_rows}
     onReverseFollow={(stable, scolumn, filter_opts) => {
       console.log("@reverseFollow", stable, scolumn, filter_opts);

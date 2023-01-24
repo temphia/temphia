@@ -204,7 +204,7 @@
                   data-col={col}
                   data-row={item.id || 0}
                   style="width:{$column_resize[col] || DEFAULT_WIDTH}em;"
-                  class="{heightClass} overflow-hidden flex justify-center cursor-pointer bg-{flipCSS(
+                  class="{heightClass} overflow-hidden flex justify-center border-r cursor-pointer bg-{flipCSS(
                     itemIndex
                   )}-50"
                 >
@@ -225,8 +225,8 @@
                             >{celldata}</span
                           >
                         </div>
-                      {:else if ctype === CtypeMultiFile || ctype === CtypeFile}
-                        {#each (celldata || "").split(",") as cd}
+                      {:else if (ctype === CtypeMultiFile || ctype === CtypeFile) && celldata }
+                        {#each celldata.split(",") as cd}
                           <img
                             class="h-8 w-auto"
                             src={folder_api && folder_api.getFilePreviewUrl(cd)}
@@ -245,7 +245,7 @@
                         {/if}
                       {:else if (ctype === CtypeSingleUser || ctype === CtypeMultiUser) && celldata}
                         <div class="inline-flex gap-1">
-                          {#each (celldata || "").split(",") as cd}
+                          {#each celldata .split(",") as cd}
                             <div class="flex">
                               <img
                                 alt=""
