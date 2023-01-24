@@ -9,7 +9,6 @@
   export let show_editor;
 
   export let data_widgets: object[];
-  export let actions: object[];
   export let selected_rows = [];
 
   const dispatch = createEventDispatcher();
@@ -41,7 +40,14 @@
 </script>
 
 <RendererLayout
-  {actions}
+  on:tb_clear
+  on:tb_clone
+  on:tb_delete
+  on:tb_execute_widget
+  on:tb_history
+  on:tb_share
+  on:tb_view
+  on:tb_goto_setting
   active_table={table_service.table_slug}
   all_tables={table_service.all_tables}
   loading={false}

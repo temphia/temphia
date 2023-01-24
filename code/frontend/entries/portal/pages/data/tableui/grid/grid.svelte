@@ -5,7 +5,6 @@
 
   export let table_service: TableService;
   export let data_widgets: object[];
-  export let actions: object[];
   export let selected_rows = [];
 
   const data_store = table_service.state.data_store;
@@ -16,12 +15,19 @@
 </script>
 
 <RendererLayout
-  {actions}
   active_table={table_service.table_slug}
   all_tables={table_service.all_tables}
   loading={_nav_store.loading}
   {selected_rows}
   {data_widgets}
+  on:tb_clear
+  on:tb_clone
+  on:tb_delete
+  on:tb_execute_widget
+  on:tb_history
+  on:tb_share
+  on:tb_view
+  on:tb_goto_setting
   on:on_change_to_card
   on:on_hook_click
   on:on_new_row

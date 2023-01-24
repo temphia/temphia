@@ -1,20 +1,18 @@
 <script lang="ts">
-  import ActionBtn from "./_action_button.svelte";
   import Loading from "./_loading.svelte";
-  import DOMPurify from "dompurify";
   import { createEventDispatcher } from "svelte";
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
+  import ToolbarAction from "./_toolbar_action.svelte";
 
   export let data_widgets: object[];
   export let all_tables: object[];
   export let active_table: string;
-  export let actions: object[];
   export let loading: boolean = false;
   export let selected_rows = [];
   export let layout: string = "grid";
 
   export let rows_loaded_no = 0;
-  export let rows_total_no = 0
+  export let rows_total_no = 0;
 
   const dispatch = createEventDispatcher();
   const onChangeDtable = (payload) => dispatch("on_table_change", payload);
@@ -74,37 +72,61 @@
       <!-- TOOLBAR  start -->
       <div class="flex flex-wrap p-1 pr-4 gap-x-1">
         {#key re_render}
-          {#each actions as action}
-            {#if action["type"] === "normal"}
-              <ActionBtn
-                {action}
-                clx={action["active"] ? "bg-blue-200" : "bg-gray-50"}
-              />
-            {:else if action["type"] === "contextual"}
-              {#if selected_rows.length > 0}
-                <ActionBtn
-                  {action}
-                  clx={action["active"] ? "bg-blue-200" : "bg-blue-50"}
-                />
-              {/if}
-            {/if}
-          {/each}
+          <ToolbarAction icon="refresh" name="Refresh" onClick={() => {}} />
+          <ToolbarAction
+            icon="cog"
+            name="Setting"
+            onClick={() => dispatch("tb_goto_setting")}
+          />
+          <ToolbarAction
+            icon="share"
+            name="Share"
+            onClick={() => dispatch("tb_share")}
+          />
+          <ToolbarAction
+            icon="filter"
+            name="View"
+            onClick={() => dispatch("tb_view")}
+          />
+          <ToolbarAction
+            icon="calendar"
+            name="History"
+            onClick={() => dispatch("tb_history")}
+          />
+          {#if selected_rows.length > 0}
+            <ToolbarAction
+              icon="duplicate"
+              name="Clone"
+              onClick={() => dispatch("tb_clone")}
+            />
+            <ToolbarAction
+              icon="refresh"
+              name="Delete"
+              onClick={() => dispatch("tb_delete")}
+            />
+            <ToolbarAction
+              icon="refresh"
+              name="Clear"
+              onClick={() => dispatch("tb_clear")}
+            />
+          {/if}
           <div class="h-full w-2" />
 
-          <!-- {#each data_widgets as hook}
-            {#if hook["type"] === "data_hook"}
-              {#if (hook["sub_type"] === "row" && selected_rows.length > 0) || hook["sub_type"] === "table"}
-                <ActionBtn
-                  action={{
-                    name: hook["name"],
-                    action: _onHook(hook),
-                    icon: hook["icon"] ? DOMPurify.sanitize(hook["icon"], null) : "",
-                  }}
-                  clx={"bg-green-50"}
-                />
-              {/if}
+          {#each data_widgets as widget}
+            {#if (widget["context_type"] || "").startsWith("global")}
+              <ToolbarAction
+                icon="lightning-bolt"
+                name={widget["name"] || "#hook"}
+                onClick={() => dispatch("tb_execute_widget", widget)}
+              />
+            {:else if (widget["context_type"] || "").startsWith("global") && selected_rows.length > 0}
+              <ToolbarAction
+                icon="lightning-bolt"
+                name={widget["name"] || "#hook"}
+                onClick={() => dispatch("tb_execute_widget", widget)}
+              />
             {/if}
-          {/each} -->
+          {/each}
         {/key}
       </div>
 
@@ -127,9 +149,15 @@
     <div class="w-full h-full overflow-hidden">
       <slot>Empty slot</slot>
 
-      <div class="flex justify-start p-0.5 text-sm gap-2 bg-slate-100 uppercase">
+      <div
+        class="flex justify-start p-0.5 text-sm gap-2 bg-slate-100 uppercase"
+      >
         <button>
-          <Icon name="chevron-double-right" solid class="h-5 w-5 text-slate-700" />
+          <Icon
+            name="chevron-double-right"
+            solid
+            class="h-5 w-5 text-slate-700"
+          />
         </button>
         <p class="text-slate-900">
           Rows <span class="text-slate-700 text-base"
