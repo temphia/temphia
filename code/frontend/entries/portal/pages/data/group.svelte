@@ -12,6 +12,7 @@
 
   let loading = true;
   let empty = false;
+  let ref;
 
   const load = async () => {
     const ds = await app.get_data_service();
@@ -19,12 +20,16 @@
 
     const table = gs.default_table();
     if (rtype && rtype !== "default") {
+      loading = false
       const render = app.registry.Get("temphia.data_renderer", rtype);
       render({
-        app,
-        source,
-        group,
-        rtype,
+        target: ref,
+        props: {
+          app,
+          source,
+          group,
+          rtype,
+        },
       });
       return;
     }
@@ -41,8 +46,10 @@
   load();
 </script>
 
-{#if loading}
-  <LoadingSpinner />
-{:else if empty}
-  <div>Empty Group</div>
-{/if}
+<div id="data_renderer_root" bind:this={ref}>
+  {#if loading}
+    <LoadingSpinner />
+  {:else if empty}
+    <div>Empty Group</div>
+  {/if}
+</div>
