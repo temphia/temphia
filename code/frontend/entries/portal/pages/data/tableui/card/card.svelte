@@ -8,7 +8,7 @@
   export let table_service: TableService;
   export let show_editor;
 
-  export let hooks: object[];
+  export let data_widgets: object[];
   export let actions: object[];
   export let selected_rows = [];
 
@@ -46,15 +46,13 @@
   all_tables={table_service.all_tables}
   loading={false}
   {selected_rows}
-  {hooks}
+  {data_widgets}
   on:on_hook_click
   on:on_new_row
   on:on_table_change
   on:on_change_to_grid
-  
   rows_total_no={0}
   rows_loaded_no={_data.rows.length || 0}
-
   layout={"card"}
 >
   <div class="flex w-full" style="height:calc(100vh - 7em);">

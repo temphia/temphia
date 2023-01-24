@@ -5,9 +5,7 @@
   import { createEventDispatcher } from "svelte";
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
 
-  export let hooks: object[];
-  // data_widget
-
+  export let data_widgets: object[];
   export let all_tables: object[];
   export let active_table: string;
   export let actions: object[];
@@ -93,7 +91,7 @@
           {/each}
           <div class="h-full w-2" />
 
-          {#each hooks as hook}
+          <!-- {#each data_widgets as hook}
             {#if hook["type"] === "data_hook"}
               {#if (hook["sub_type"] === "row" && selected_rows.length > 0) || hook["sub_type"] === "table"}
                 <ActionBtn
@@ -106,7 +104,7 @@
                 />
               {/if}
             {/if}
-          {/each}
+          {/each} -->
         {/key}
       </div>
 

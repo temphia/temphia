@@ -135,7 +135,7 @@
   {#if layout === "card"}
     <CardLayout
       {actions}
-      hooks={[]}
+      data_widgets={table_service.data_widgets}
       bind:show_editor
       {selected_rows}
       {table_service}
@@ -149,7 +149,7 @@
   {:else}
     <GridLayout
       {actions}
-      hooks={[]}
+      data_widgets={table_service.data_widgets}
       {selected_rows}
       {table_service}
       on:on_table_change

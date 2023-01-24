@@ -4,7 +4,7 @@
   import RendererLayout from "../core/renderer/layout.svelte";
 
   export let table_service: TableService;
-  export let hooks: object[];
+  export let data_widgets: object[];
   export let actions: object[];
   export let selected_rows = [];
 
@@ -21,7 +21,7 @@
   all_tables={table_service.all_tables}
   loading={_nav_store.loading}
   {selected_rows}
-  {hooks}
+  {data_widgets}
   on:on_change_to_card
   on:on_hook_click
   on:on_new_row
