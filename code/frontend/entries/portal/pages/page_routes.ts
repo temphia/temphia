@@ -6,6 +6,7 @@ import DataLoader from "./data/loader.svelte";
 import DataGroups from "./data/groups.svelte";
 import DataGroup from "./data/group.svelte";
 import DataTable from "./data/table.svelte";
+import DataSheet from "./data/sheet.svelte";
 // cabinet
 import CabLoader from "./cabinet/loader.svelte";
 import CabFolders from "./cabinet/folders.svelte";
@@ -36,9 +37,11 @@ export default {
   "/data": {
     "/": DataLoader,
     "/:source": DataGroups,
-    "/:source/:rtype/:dgroup": DataGroup,
-    "/:source/:rtype/:dgroup/:dtable": DataTable,
-    "/:source/:rtype/:dgroup/:dtable/:layout": DataTable,
+    "/:source/:dgroup": DataGroup,
+    "/:source/sheet/:dgroup/:dtable": DataSheet,
+    "/:source/sheet/:dgroup/:dtable/:layout": DataSheet,
+    "/:source/table/:dgroup/:dtable": DataTable,
+    "/:source/table/:dgroup/:dtable/:layout": DataTable,
   },
 
   "/cabinet": {

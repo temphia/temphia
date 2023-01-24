@@ -3,19 +3,11 @@
   import Portal from "./_portal.svelte";
   import build from "./services";
   import { onMount } from "svelte";
-  import Sheets from "./pages/data/sheets/sheets.svelte";
 
   let loading = true;
 
   const app = build();
   app.init().then(() => {
-    app.registry.RegisterFactory("temphia.data_renderer", "sheet", (opts) => {
-      new Sheets({
-        target: opts["target"],
-        props: opts["props"] || {},
-      });
-    });
-
     loading = false;
   });
 
