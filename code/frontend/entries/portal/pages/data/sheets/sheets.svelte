@@ -3,6 +3,11 @@
 </script>
 
 <Renderer
+  active_sheet={1}
+  sheets={[
+    { id: 1, name: "example 1" },
+    { id: 2, name: "example 2" },
+  ]}
   cells={{
     1: { 1: { value: "Ram" }, 2: { value: "This is some notes" } },
     2: { 1: { value: "Hari" }, 2: { value: "Something something" } },

@@ -1,15 +1,28 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import ToolbarAction from "../tableui/core/renderer/_toolbar_action.svelte";
-  import type { SheetCell, SheetColumn, SheetRow } from "./sheets";
+  import type { SheetCell, SheetColumn, SheetRow, Sheet } from "./sheets";
 
   export let columns: SheetColumn[];
   export let rows: SheetRow[];
   export let cells: { [_: number]: { [_: string]: SheetCell } };
+  export let sheets: Sheet[];
+  export let active_sheet: number;
 </script>
 
-<div class="flex flex-col p-2 ">
-  <div class="flex p-1 gap-1 rounded border">
+<div class="flex flex-col p-2 rounded">
+  <nav class="flex flex-row  border">
+    {#each sheets as sheet}
+      <button
+        class="text-gray-600 p-2 block hover:text-blue-500 focus:outline-none {sheet.id ===
+        active_sheet
+          ? 'text-blue-500 border-b-2 font-medium border-blue-500'
+          : ''}">{sheet.name}</button
+      >
+    {/each}
+  </nav>
+
+  <div class="flex p-1 gap-1">
     <ToolbarAction onClick={() => {}} icon="refresh" name="Refresh" />
     <ToolbarAction onClick={() => {}} icon="hashtag" name="Raw" />
     <ToolbarAction onClick={() => {}} icon="calendar" name="History" />
@@ -34,7 +47,7 @@
 
           <th class="w-10">
             <button
-              class="p-1 rounded bg-blue-500 text-white font-semibold hover:bg-blue-700"
+              class="p-1 rounded bg-blue-500 text-white hover:bg-blue-800"
             >
               <Icon name="plus" class="w-4 h-4" />
             </button>
@@ -69,7 +82,7 @@
 
         <tr>
           <td>
-            <button class="p-1 rounded bg-blue-600 text-white font-semibold">
+            <button class="p-1 rounded bg-blue-500 text-white hover:bg-blue-800">
               <Icon name="plus" class="w-4 h-4" />
             </button>
           </td>

@@ -1,7 +1,12 @@
+export interface Sheet {
+  id: number;
+  name: string;
+}
+
 export interface SheetColumn {
   id: number;
   name: string;
-  ctype: string;
+  ctype: "TEXT" | "LONGTEXT" | "INTEGER" | "FLOAT" | "DATE" | "BOOL" | "RATINGS" | "LOCATION" | "FILE";
   sheet_id: number;
   exta_options: {};
   color: string;
