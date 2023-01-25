@@ -1,0 +1,186 @@
+{
+  "name": "Sheets",
+  "slug": "sheets",
+  "description": "This is example datatable",
+  "exec_order": ["e1"],
+  "tables": [
+    {
+      "name": "Sheets",
+      "slug": "sheets",
+      "columns": [
+        {
+          "name": "Name",
+          "slug": "name",
+          "ctype": "shorttext",
+          "not_nullable": true
+        },
+        {
+          "name": "Options",
+          "slug": "opts",
+          "ctype": "shorttext",
+          "not_nullable": false
+        }
+      ]
+    },
+    {
+      "name": "Sheet Columns",
+      "slug": "scols",
+      "columns": [
+        {
+          "name": "Name",
+          "slug": "name",
+          "ctype": "shorttext",
+          "not_nullable": true
+        },
+        {
+          "name": "ctype",
+          "slug": "ctype",
+          "ctype": "shorttext",
+          "not_nullable": true,
+          "options": [
+            "shorttext",
+            "longtext",
+            "number",
+            "datetime",
+            "bool",
+            "ratings",
+            "location",
+            "file"
+          ]
+        },
+        {
+          "name": "Sheet Id",
+          "slug": "sheetid",
+          "ctype": "number",
+          "not_nullable": true
+        },
+        {
+          "name": "Options",
+          "slug": "opts",
+          "ctype": "shorttext"
+        },
+        {
+          "name": "Color",
+          "slug": "color",
+          "ctype": "color"
+        }
+      ],
+
+      "column_refs": [
+        {
+          "slug": "sheetref1",
+          "type": "hard_pri",
+          "target": "sheets",
+          "from_cols": ["sheetid"],
+          "to_cols": []
+        }
+      ]
+    },
+
+    {
+      "name": "Sheet Rows",
+      "slug": "srows",
+
+      "columns": [
+        {
+          "name": "Sheet Id",
+          "slug": "sheetid",
+          "ctype": "number",
+          "not_nullable": true
+        },
+        {
+          "name": "Options",
+          "slug": "opts",
+          "ctype": "shorttext"
+        },
+        {
+          "name": "Color",
+          "slug": "color",
+          "ctype": "color"
+        }
+      ],
+      "column_refs": [
+        {
+          "slug": "sheetref1",
+          "type": "hard_pri",
+          "target": "sheets",
+          "from_cols": ["sheetid"],
+          "to_cols": []
+        }
+      ]
+    },
+
+    {
+      "name": "Sheet Cells",
+      "slug": "scells",
+      "columns": [
+        {
+          "name": "Sheet Id",
+          "slug": "sheetid",
+          "ctype": "number",
+          "not_nullable": true
+        },
+        {
+          "name": "Row Id",
+          "slug": "rowid",
+          "ctype": "number",
+          "not_nullable": true
+        },
+        {
+          "name": "Column Id",
+          "slug": "colid",
+          "ctype": "number",
+          "not_nullable": true
+        },
+        {
+          "name": "Value",
+          "slug": "value",
+          "ctype": "shorttext"
+        },
+        {
+          "name": "Num Value",
+          "slug": "numval",
+          "ctype": "number"
+        },
+        {
+          "name": "Color",
+          "slug": "color",
+          "ctype": "color"
+        }
+      ],
+
+      "column_refs": [
+        {
+          "slug": "sheetref1",
+          "type": "hard_pri",
+          "target": "sheets",
+          "from_cols": ["sheetid"],
+          "to_cols": []
+        },
+
+        {
+          "slug": "rowref1",
+          "type": "hard_pri",
+          "target": "srows",
+          "from_cols": ["rowid"],
+          "to_cols": []
+        },
+
+        {
+          "slug": "columnref1",
+          "type": "hard_pri",
+          "target": "scols",
+          "from_cols": ["colid"],
+          "to_cols": []
+        }
+      ],
+
+      "unique_indexes": [
+        {
+          "slug": "uqrowcol1",
+          "spans": ["scols", "srows"]
+        }
+      ]
+    }
+  ]
+}
