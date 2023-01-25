@@ -5,6 +5,6 @@
   export let columns: SheetColumn[];
 </script>
 
-<Layout title="Edit Row" onClick={() => {}}>
+<Layout title="Add Row" onClick={() => {}}>
   <Row {columns} />
 </Layout>

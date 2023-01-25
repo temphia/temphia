@@ -1,13 +1,29 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
+  import { createEventDispatcher, getContext } from "svelte";
+  import type { PortalService } from "../../../services";
+  import AddColumn from "./panels/_add_column.svelte";
   import ToolbarAction from "../table/core/renderer/_toolbar_action.svelte";
-  import type { SheetCell, SheetColumn, SheetRow, Sheet } from "./sheets";
+  import EditRow from "./panels/_edit_row.svelte";
+  import AddRow from "./panels/_add_row.svelte";
+  import {
+    SheetCell,
+    SheetColumn,
+    SheetRow,
+    Sheet,
+    SheetColTypeBoolean,
+    SheetColTypeDate,
+  } from "./sheets";
 
   export let columns: SheetColumn[];
   export let rows: SheetRow[];
   export let cells: { [_: number]: { [_: string]: SheetCell } };
   export let sheets: Sheet[];
   export let active_sheet: number;
+
+  const app: PortalService = getContext("__app__");
+
+  const dispatch = createEventDispatcher();
 </script>
 
 <div class="flex flex-col p-2 rounded">
@@ -47,6 +63,13 @@
 
           <th class="w-10">
             <button
+              on:click={() =>
+                app.utils.small_modal_open(AddColumn, {
+                  onAdd: (name, ctype, opts) => {
+                    dispatch("add_column", { name, ctype, opts });
+                    app.utils.small_modal_close();
+                  },
+                })}
               class="p-1 rounded bg-blue-500 text-white hover:bg-blue-800"
             >
               <Icon name="plus" class="w-4 h-4" />
@@ -69,20 +92,46 @@
             </td>
 
             {#each columns as col}
+              {@const celldata = cells[row.id][col.id]}
+
               <td class="border-dashed border-t border-gray-200">
-                <span class="text-gray-700 px-6 py-3 flex items-center"
-                  >{(cells[row.id][col.id] || {}).value || ""}</span
-                >
+                {#if celldata}
+                  <span class="text-gray-700 px-6 py-3 flex items-center">
+                    {#if col.ctype === SheetColTypeBoolean}
+                      {#if celldata["value"] === "true"}
+                        <Icon name="check" class="w-6 h-6 text-green-500" />
+                      {:else if celldata["value"] === "false"}
+                        <Icon name="x" class="w-6 h-6 text-red-500" />
+                      {/if}
+                    {:else if col.ctype === SheetColTypeDate}
+                      {new Date(celldata.value).toLocaleDateString()}
+                    {:else}
+                      {celldata["value"] || ""}
+                    {/if}
+                  </span>
+                {/if}
               </td>
             {/each}
 
-            <td> <button class="underline text-blue-600">Edit</button> </td>
+            <td>
+              <button
+                class="underline text-blue-600"
+                on:click={() => {
+                  app.utils.big_modal_open(EditRow, { columns });
+                }}>edit</button
+              >
+            </td>
           </tr>
         {/each}
 
         <tr>
           <td>
-            <button class="p-1 rounded bg-blue-500 text-white hover:bg-blue-800">
+            <button
+              on:click={() => {
+                app.utils.big_modal_open(AddRow, { columns });
+              }}
+              class="p-1 rounded bg-blue-500 text-white hover:bg-blue-800"
+            >
               <Icon name="plus" class="w-4 h-4" />
             </button>
           </td>
