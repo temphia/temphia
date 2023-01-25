@@ -254,6 +254,7 @@ create table data_table_groups (
     source_db TEXT not null,
     tenant_id TEXT not null,
     bprint_id text not null default '',
+    renderer text not null default '',
     cabinet_source TEXT not null default '',
     cabinet_folder TEXT not null default '',
     extra_meta json not null default '{}',
