@@ -80,7 +80,7 @@
               </p>
               <div class="flex p-5">
                 <button
-                  on:click={() => app.nav.data_group(source, group["slug"])}
+                  on:click={() => app.nav.data_render_table_loader(source, group["slug"])}
                   class="text-center text-sm bg-blue-500 rounded py-2 p-2 text-white mt-2 hover:bg-blue-700"
                 >
                   Explore
@@ -97,8 +97,7 @@
 <div class="relative">
   <button
     class="absolute bottom-2"
-    on:click={() =>
-      app.nav.data_group_with_renderer("testsource", "tgroup", "sheet")}
+    on:click={() => app.nav.data_render_sheet_loader("source1", "group1")}
   >
     Sheets
   </button>

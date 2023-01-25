@@ -1,8 +1,8 @@
 <script>
-  import Renderer from "./_renderer.svelte";
+  import SheetUI from "./_sheet_ui.svelte";
 </script>
 
-<Renderer
+<SheetUI
   active_sheet={1}
   sheets={[
     { id: 1, name: "example 1" },

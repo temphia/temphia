@@ -1,5 +1,5 @@
 <script lang="ts">
-  import * as f from "../../../../../data/tableui/core/fields/field";
+  import * as f from "../../../../../data/table/core/fields/field";
   import { ActionButton } from "../../../../core";
 
   const ctypes = [
@@ -141,7 +141,6 @@
     <div class="flex-col flex py-3">
       <label class="pb-2 text-gray-700 font-semibold">Info </label>
       <textarea
-        type="text"
         class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200"
         bind:value={description}
       />

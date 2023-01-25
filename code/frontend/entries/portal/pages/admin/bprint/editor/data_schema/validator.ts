@@ -1,4 +1,4 @@
-import { CtypeIcons } from "../../../../data/tableui/core/fields/field";
+import { CtypeIcons } from "../../../../data/table/core/fields/field";
 import type { Column, ColumnRef, State, Table } from "./builder";
 
 export const Validate = (group: State): string => {

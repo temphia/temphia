@@ -4,7 +4,7 @@
     ActionDeleteButton,
     ActionEditButton,
   } from "../../../../../../xcompo";
-  import Cicon from "../../../../data/tableui/core/cicon/cicon.svelte";
+  import Cicon from "../../../../data/table/core/cicon/cicon.svelte";
   import type { Builder } from "./builder";
 
   import AddColumn from "./panels/_add_column.svelte";

@@ -1,6 +1,6 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import ToolbarAction from "../tableui/core/renderer/_toolbar_action.svelte";
+  import ToolbarAction from "../table/core/renderer/_toolbar_action.svelte";
   import type { SheetCell, SheetColumn, SheetRow, Sheet } from "./sheets";
 
   export let columns: SheetColumn[];

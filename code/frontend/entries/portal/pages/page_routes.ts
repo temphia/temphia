@@ -5,8 +5,14 @@ import Start from "./start/start.svelte";
 import DataLoader from "./data/loader.svelte";
 import DataGroups from "./data/groups.svelte";
 import DataGroup from "./data/group.svelte";
-import DataTable from "./data/table.svelte";
-import DataSheet from "./data/sheet.svelte";
+
+import DataCustomLoader from "./data/custom/loader.svelte"
+import DataTableLoader from "./data/table/loader.svelte"
+import DataTable from "./data/table/table.svelte";
+import DataSheetLoader from "./data/sheet/loader.svelte";
+import DataSheet from "./data/sheet/sheet.svelte";
+
+
 // cabinet
 import CabLoader from "./cabinet/loader.svelte";
 import CabFolders from "./cabinet/folders.svelte";
@@ -38,10 +44,12 @@ export default {
     "/": DataLoader,
     "/:source": DataGroups,
     "/:source/:dgroup": DataGroup,
-    "/:source/sheet/:dgroup/:dtable": DataSheet,
-    "/:source/sheet/:dgroup/:dtable/:layout": DataSheet,
-    "/:source/table/:dgroup/:dtable": DataTable,
-    "/:source/table/:dgroup/:dtable/:layout": DataTable,
+    "/:source/:dgroup/custom": DataCustomLoader,
+    "/:source/:dgroup/sheet": DataSheetLoader, 
+    "/:source/:dgroup/sheet/:dtable": DataSheet,
+    "/:source/:dgroup/table": DataTableLoader,
+    "/:source/:dgroup/table/:dtable": DataTable,
+    "/:source/:dgroup/table/:dtable/:layout": DataTable,
   },
 
   "/cabinet": {

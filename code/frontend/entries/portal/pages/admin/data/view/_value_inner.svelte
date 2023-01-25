@@ -1,6 +1,6 @@
 <script lang="ts">
   import ActionSaveButton from "../../../../../xcompo/common/action_button/action_save_button.svelte";
-  import ViewItem from "../../../data/tableui/core/view/_view_item.svelte";
+  import ViewItem from "../../../data/table/core/view/_view_item.svelte";
   import { KvEditor } from "../../core";
 
   export let columns;

@@ -39,15 +39,27 @@ export class Navigator {
   };
 
   data_group(source: string, dgroup: string) {
-    this.set(`#/data/${source}/default/${dgroup}`);
+    this.set(`#/data/${source}/${dgroup}`);
   }
 
-  data_group_with_renderer(source: string, dgroup: string, rtype: string) {
-    this.set(`#/data/${source}/${rtype}/${dgroup}`);
+  data_render_custom_loader(source: string, dgroup: string) {
+    this.set(`#/data/${source}/${dgroup}/custom`);
   }
 
-  data_table(source: string, dgroup: string, table: string, layout = "") {
-    this.set(`#/data/${source}/default/${dgroup}/${table}${layout}`);
+  data_render_table(source: string, dgroup: string, table: string, layout = "") {
+    this.set(`#/data/${source}/${dgroup}/table/${table}${layout}`);
+  }
+
+  data_render_table_loader(source: string, dgroup: string) {
+    this.set(`#/data/${source}/${dgroup}/table`);
+  }
+
+  data_render_sheet(source: string, dgroup: string, table: string) {
+    this.set(`#/data/${source}/${dgroup}/sheet/${table}`);
+  }
+
+  data_render_sheet_loader(source: string, dgroup: string) {
+    this.set(`#/data/${source}/${dgroup}/sheet`);
   }
 
   // cab
