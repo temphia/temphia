@@ -1,0 +1,10 @@
+{
+    "name": "Sheets",
+    "slug": "sheets",
+    "type": "tschema",
+    "sub_type": "group",
+    "description": "This is sheets schema that defines as a datatable.",
+    "files": [
+        "schema.json"
+    ]
+}

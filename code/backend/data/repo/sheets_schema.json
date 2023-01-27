@@ -2,7 +2,7 @@
   "name": "Sheets",
   "slug": "sheets",
   "description": "This is example datatable",
-  "exec_order": ["e1"],
+  "exec_order": ["sheets", "scols", "srows", "scells"],
   "tables": [
     {
       "name": "Sheets",
@@ -178,7 +178,7 @@
       "unique_indexes": [
         {
           "slug": "uqrowcol1",
-          "spans": ["scols", "srows"]
+          "spans": ["rowid", "colid", "sheetid"]
         }
       ]
     }
