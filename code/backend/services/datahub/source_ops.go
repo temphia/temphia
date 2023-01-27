@@ -9,6 +9,10 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
+const (
+	DefaultRowCount = 100
+)
+
 func (d *dynSource) NewRow(txid uint32, req store.NewRowReq) (int64, error) {
 	ddb := d.dynDB()
 
@@ -66,6 +70,10 @@ func (d *dynSource) DeleteRows(txid uint32, req store.DeleteRowReq) error {
 func (d *dynSource) SimpleQuery(txid uint32, req store.SimpleQueryReq) (*store.QueryResult, error) {
 	ddb := d.dynDB()
 
+	if req.Count == 0 {
+		req.Count = DefaultRowCount
+	}
+
 	return ddb.SimpleQuery(txid, req)
 }
 
@@ -97,7 +105,9 @@ func (d *dynSource) LoadTable(txid uint32, req store.LoadTableReq) (*store.LoadT
 		UserTickets:   make(map[string]string),
 	}
 
-	if req.View != "" {
+	if req.ViewFilters != nil {
+		sqr.FilterConds = req.ViewFilters
+	} else if req.View != "" {
 		for _, view := range views {
 			if view.Name == req.View {
 				sqr.Count = view.Count

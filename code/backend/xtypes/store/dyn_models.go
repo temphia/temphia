@@ -60,10 +60,11 @@ type DeleteRowReq struct {
 }
 
 type LoadTableReq struct {
-	TenantId string `json:"-"`
-	Table    string `json:"table,omitempty"`
-	Group    string `json:"group,omitempty"`
-	View     string `json:"view,omitempty"`
+	TenantId    string        `json:"-"`
+	Table       string        `json:"table,omitempty"`
+	Group       string        `json:"group,omitempty"`
+	View        string        `json:"view,omitempty"`
+	ViewFilters []*FilterCond `json:"view_filters,omitempty"`
 }
 
 type LoadTableResp struct {
