@@ -9,10 +9,6 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
-const (
-	DefaultRowCount = 100
-)
-
 func (d *dynSource) NewRow(txid uint32, req store.NewRowReq) (int64, error) {
 	ddb := d.dynDB()
 
@@ -71,7 +67,7 @@ func (d *dynSource) SimpleQuery(txid uint32, req store.SimpleQueryReq) (*store.Q
 	ddb := d.dynDB()
 
 	if req.Count == 0 {
-		req.Count = DefaultRowCount
+		req.Count = store.DefaultQueryFetchCount
 	}
 
 	return ddb.SimpleQuery(txid, req)

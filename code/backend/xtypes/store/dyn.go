@@ -102,6 +102,11 @@ const (
 	DynSeedTypeAutogen = "autogen"
 )
 
+const (
+	DefaultSeedNo          = 10
+	DefaultQueryFetchCount = 100
+)
+
 var (
 	MetaRefKeys = []string{KeyForceVersion, KeySecondary, KeyErrorAfterUpdate}
 	MetaKeys    = []string{KeyPrimary, KeyVersion, KeyModSig}
