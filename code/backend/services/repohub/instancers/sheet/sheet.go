@@ -4,6 +4,7 @@ import (
 	_ "embed"
 	"encoding/json"
 
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/services/repohub/instancers/dtable"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
@@ -111,7 +112,7 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 				Data: map[string]any{
 					"name":          column.Name,
 					"ctype":         column.Ctype,
-					"sheet_id":      idx,
+					"sheetid":       idx,
 					"color":         column.Color,
 					"extra_options": column.ExtaOptions,
 				},
@@ -121,6 +122,68 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 			}
 
 			currColsIndx[column.Name] = cid
+
+		}
+
+	}
+
+	// seed data
+
+	for sidx := range schemaData.Sheets {
+		sheet := &schemaData.Sheets[sidx]
+
+		currColsIndx := colsIdx[sheet.Name]
+
+		for _, row := range sheet.SeedData {
+
+			rowid, err := source.NewRow(uint32(txnId), store.NewRowReq{
+				TenantId: opts.TenantId,
+				Group:    resp.GroupSlug,
+				Table:    "srows",
+				Data: map[string]any{
+					"sheetid": sheetsIdx[sheet.Name],
+				},
+			})
+
+			if err != nil {
+				return nil, err
+			}
+
+			for cidx := range sheet.Columns {
+				column := &sheet.Columns[cidx]
+
+				seedCellData, ok := row[column.Name]
+				if !ok {
+					continue
+				}
+
+				cellData := map[string]any{
+					"sheetid": sheetsIdx[sheet.Name],
+					"colid":   currColsIndx[column.Name],
+					"rowid":   rowid,
+				}
+
+				switch column.Ctype {
+				case xbprint.SheetColTypeNumber:
+					cellData["num_value"] = seedCellData
+				default:
+					cellData["value"] = seedCellData
+				}
+
+				cellid, err := source.NewRow(uint32(txnId), store.NewRowReq{
+					TenantId: opts.TenantId,
+					Group:    resp.GroupSlug,
+					Table:    "scells",
+					Data:     cellData,
+				})
+				if err != nil {
+					pp.Println("err creating cell", err)
+					continue
+				}
+
+				pp.Println("created cell %d", cellid)
+			}
+
 		}
 
 	}

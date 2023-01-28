@@ -45,7 +45,9 @@
             "bool",
             "ratings",
             "location",
-            "file"
+            "file",
+            "reference",
+            "remote"
           ]
         },
         {
