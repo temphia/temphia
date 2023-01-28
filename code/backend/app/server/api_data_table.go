@@ -28,6 +28,9 @@ func (s *Server) dataAPI(rg *gin.RouterGroup) {
 	rg.POST("/:tid/rev_ref_load", s.dx(s.reverseRefLoad))
 	rg.GET("/:tid/activity/:row_id", s.dx(s.listActivity))
 	rg.POST("/:tid/activity/:row_id", s.dx(s.commentRow))
+
+	rg.POST("/sheet/list", s.dx(s.listSheets))
+	rg.POST("/sheet/:id/load", s.dx(s.loadSheet))
 }
 
 func (s *Server) loadGroup(uclaim *claim.Data, ctx *gin.Context) {
@@ -207,6 +210,26 @@ func (s *Server) commentRow(uclaim *claim.Data, ctx *gin.Context) {
 
 func (s *Server) dx(fn func(uclaim *claim.Data, ctx *gin.Context)) func(*gin.Context) {
 	return s.middleware.DataX(fn)
+}
+
+func (s *Server) listSheets(uclaim *claim.Data, ctx *gin.Context) {
+	resp, err := s.cData.ListSheets(uclaim)
+	httpx.WriteJSON(ctx, resp, err)
+}
+
+func (s *Server) loadSheet(uclaim *claim.Data, ctx *gin.Context) {
+	data := store.LoadSheetReq{}
+	err := ctx.BindJSON(&data)
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	id, _ := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	data.SheetId = id
+
+	resp, err := s.cData.LoadSheet(uclaim, &data)
+	httpx.WriteJSON(ctx, resp, err)
 }
 
 // models

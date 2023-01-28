@@ -168,6 +168,31 @@ func (d *Controller) TemplateQuery(uclaim *claim.Data, tslug string, query any) 
 	return nil, nil
 }
 
+func (c *Controller) ListSheets(uclaim *claim.Data) (*store.ListSheetGroupResp, error) {
+
+	source, group := getTarget(uclaim)
+	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
+
+	return dynDb.ListSheetGroup(store.ListSheetGroupReq{
+		TenantId: uclaim.TenantId,
+		Group:    group,
+	})
+}
+
+func (c *Controller) LoadSheet(uclaim *claim.Data, data *store.LoadSheetReq) (*store.LoadSheetResp, error) {
+
+	source, group := getTarget(uclaim)
+	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
+
+	return dynDb.LoadSheet(store.LoadSheetReq{
+		TenantId:    uclaim.TenantId,
+		Group:       group,
+		SheetId:     data.SheetId,
+		View:        data.View,
+		FilterConds: data.FilterConds,
+	})
+}
+
 func (d *Controller) RefResolve(uclaim *claim.Data, req *store.RefResolveReq) (*store.QueryResult, error) {
 	source, group := getTarget(uclaim)
 	dynDb := d.dynHub.GetSource(source, uclaim.TenantId)

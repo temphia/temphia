@@ -66,4 +66,13 @@ export class DataAPI {
   sockd_url = () => {
     return `${this.base_url}/data_ws/?token=${this.token}`;
   };
+
+  list_sheets() {
+    return this.http.post(`/data/sheet/list`, {});
+  }
+
+  load_sheet(sheetid: string, options: any) {
+    return this.http.post(`/data/sheet/${sheetid}/load`, options);
+  }
+
 }

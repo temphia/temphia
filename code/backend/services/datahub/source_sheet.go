@@ -2,37 +2,63 @@ package datahub
 
 import "github.com/temphia/temphia/code/backend/xtypes/store"
 
-type ListSheetGroupReq struct {
-	TenantId string `json:"-"`
-	Table    string `json:"table,omitempty"`
-	Group    string `json:"group,omitempty"`
+func (d *dynSource) ListSheetGroup(opts store.ListSheetGroupReq) (*store.ListSheetGroupResp, error) {
+
+	ddb := d.dynDB()
+
+	sheetRows, err := ddb.SimpleQuery(0, store.SimpleQueryReq{
+		TenantId: opts.TenantId,
+		Group:    opts.Group,
+		Table:    "sheets",
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &store.ListSheetGroupResp{
+		Sheets: sheetRows.Rows,
+	}, nil
 }
 
-type ListSheetGroupResp struct {
-	Sheets []map[string]any `json:"sheets,omitempty"`
-}
+func (d *dynSource) LoadSheet(opts store.LoadSheetReq) (*store.LoadSheetResp, error) {
 
-type LoadSheetReq struct {
-	TenantId    string             `json:"-"`
-	Table       string             `json:"table,omitempty"`
-	Group       string             `json:"group,omitempty"`
-	SheetId     string             `json:"sheet_id,omitempty"`
-	View        string             `json:"view,omitempty"`
-	FilterConds []store.FilterCond `json:"filter_conds,omitempty"`
-}
+	ddb := d.dynDB()
 
-type LoadSheetResp struct {
-	Columns []map[string]any `json:"columns,omitempty"`
-	Rows    []map[string]any `json:"rows,omitempty"`
-	Cells   []map[string]any `json:"cells,omitempty"`
-}
+	columns, err := ddb.SimpleQuery(0, store.SimpleQueryReq{
+		TenantId: opts.TenantId,
+		Group:    opts.Group,
+		Table:    "scols",
+		FilterConds: []*store.FilterCond{
+			{
+				Column: "sheetid",
+				Cond:   "equal",
+				Value:  opts.SheetId,
+			},
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
 
-func (d *dynSource) ListSheetGroup(opts ListSheetGroupReq) (*ListSheetGroupResp, error) {
+	cells, err := ddb.SimpleQuery(0, store.SimpleQueryReq{
+		TenantId: opts.TenantId,
+		Group:    opts.Group,
+		Table:    "scells",
+		FilterConds: []*store.FilterCond{
+			{
+				Column: "sheetid",
+				Cond:   "equal",
+				Value:  opts.SheetId,
+			},
+		},
+	})
 
-	return nil, nil
-}
+	if err != nil {
+		return nil, err
+	}
 
-func (d *dynSource) LoadSheetGroup(opts LoadSheetReq) (*LoadSheetResp, error) {
-
-	return nil, nil
+	return &store.LoadSheetResp{
+		Columns: columns.Rows,
+		Cells:   cells.Rows,
+	}, nil
 }
