@@ -139,12 +139,3 @@
     </div>
   </div>
 {/if}
-
-<div class="relative">
-  <button
-    class="absolute bottom-2"
-    on:click={() => app.nav.data_render_sheet_loader("source1", "group1")}
-  >
-    Sheets
-  </button>
-</div>

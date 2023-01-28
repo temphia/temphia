@@ -16,7 +16,7 @@
   export let column: SheetColumn;
   export let open_column;
 
-  const id = `cell-${column.sheet_id}`;
+  const id = `cell-${column.sheetid}`;
 
   const toggle = () => {
     if (open_column === column.id) {
