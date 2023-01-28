@@ -8,7 +8,7 @@ type NewTableGroup struct {
 	Description   string      `json:"description,omitempty" yaml:"description,omitempty"`
 	Tables        []*NewTable `json:"tables,omitempty" yaml:"tables,omitempty"`
 	ExecOrder     []string    `json:"exec_order,omitempty" yaml:"exec_order,omitempty"`
-	Renderer      []string    `json:"renderer,omitempty" yaml:"renderer,omitempty"`
+	Renderer      string      `json:"renderer,omitempty" yaml:"renderer,omitempty"`
 	CabinetSource string      `json:"-" yaml:"-"`
 	CabinetFolder string      `json:"-" yaml:"-"`
 }

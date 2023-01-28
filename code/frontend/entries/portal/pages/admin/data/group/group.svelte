@@ -55,6 +55,14 @@
         },
 
         {
+          name: "Renderer",
+          ftype: "SELECT",
+          key_name: "renderer",
+          disabled: true,
+          options: ["", "default", "sheet"],
+        },
+
+        {
           name: "Description",
           ftype: "LONG_TEXT",
           key_name: "description",

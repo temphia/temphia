@@ -19,7 +19,7 @@ export class AdminDataAPI {
   }
 
   edit_group(source: string, gid: string, data: any) {
-    return this.base.post(`/admin/data/${source}/group/${gid}`, data);
+    return this.base.patch(`/admin/data/${source}/group/${gid}`, data);
   }
 
   delete_group(source: string, gid: string) {
@@ -41,7 +41,7 @@ export class AdminDataAPI {
   }
 
   edit_table(source: string, gid: string, tid: string, data: any) {
-    return this.base.post(
+    return this.base.patch(
       `/admin/data/${source}/group/${gid}/table/${tid}`,
       data
     );
@@ -79,7 +79,7 @@ export class AdminDataAPI {
     cid: string,
     data: any
   ) {
-    return this.base.post(
+    return this.base.patch(
       `/admin/data/${source}/group/${gid}/table/${tid}/column/${cid}`,
       data
     );

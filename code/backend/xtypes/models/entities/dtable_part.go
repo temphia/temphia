@@ -5,6 +5,7 @@ type TableGroupPartial struct {
 	Description   string  `json:"description,omitempty" db:"description,omitempty"`
 	CabinetSource string  `json:"cabinet_source,omitempty" db:"cabinet_source,omitempty"`
 	CabinetFolder string  `json:"cabinet_folder,omitempty" db:"cabinet_folder,omitempty"`
+	Renderer      string  `json:"renderer,omitempty" db:"renderer,omitempty"`
 	ExtraMeta     JsonMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
 }
 

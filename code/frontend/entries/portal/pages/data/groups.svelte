@@ -1,7 +1,9 @@
 <script lang="ts">
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import { getContext } from "svelte";
   import { params } from "svelte-hash-router";
   import { strHash } from "../../../../lib/utils";
+  import Dropdown from "../../../xcompo/autotable/_dropdown.svelte";
   import type { PortalService } from "../../services";
   import { LoadingSpinner } from "../admin/core";
 
@@ -29,6 +31,20 @@
   };
 
   load();
+
+  const do_explore = (group: object) => {
+    console.log("@group =>", group);
+    const slug = group["slug"];
+
+    switch (group["renderer"]) {
+      case "sheet":
+        app.nav.data_render_sheet_loader(source, slug);
+        break;
+      default:
+        app.nav.data_render_table_loader(source, slug);
+        break;
+    }
+  };
 </script>
 
 {#if loading}
@@ -67,24 +83,54 @@
                 )}d/800/400"
                 alt=""
               />
-              <h3
-                class="tracking-widest text-indigo-500 text-xs uppercase font-medium title-font"
-              >
-                {source}
-              </h3>
+
+              <div class="flex gap-1">
+                <h3
+                  class="tracking-widest text-indigo-500 text-xs uppercase font-medium title-font"
+                >
+                  {source}
+                </h3>
+
+                <h3
+                  class="tracking-widest text-blue-500 text-xs uppercase font-medium title-font"
+                >
+                  #{group["renderer"] || ""}
+                </h3>
+              </div>
+
               <h2 class="text-lg text-gray-900 font-medium title-font mb-4">
                 {group.name}
               </h2>
               <p class="leading-relaxed selection:bg-red-200 text-base">
                 {group.description}
               </p>
-              <div class="flex p-5">
+              <div class="flex p-5 gap-2">
                 <button
-                  on:click={() => app.nav.data_render_table_loader(source, group["slug"])}
-                  class="text-center text-sm bg-blue-500 rounded py-2 p-2 text-white mt-2 hover:bg-blue-700"
+                  on:click={() => do_explore(group)}
+                  class="text-center text-sm bg-blue-500 rounded py-2 p-2 text-white hover:bg-blue-700"
                 >
                   Explore
                 </button>
+
+                <Dropdown>
+                  <button
+                    on:click={() =>
+                      app.nav.data_render_table_loader(source, group["slug"])}
+                    class="flex justify-between rounded-sm px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white"
+                  >
+                    <Icon name="hashtag" class="h-5 w-5" />
+                    <span>Raw</span>
+                  </button>
+
+                  <button
+                    on:click={() =>
+                      app.nav.admin_data_group(source, group["slug"])}
+                    class="flex justify-between rounded-sm px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white"
+                  >
+                    <Icon name="cog" class="h-5 w-5" />
+                    <span>Setting</span>
+                  </button>
+                </Dropdown>
               </div>
             </div>
           </div>
