@@ -1,7 +1,7 @@
 {
     "name": "Example Schema",
     "slug": "example1",
-    "type": "tschema",
+    "type": "data_group",
     "sub_type": "group",
     "description": "This is example datatable",
     "files": [
