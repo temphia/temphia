@@ -69,6 +69,7 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 		return nil, err
 	}
 
+	dropts.SeedType = ""
 	dropts.GroupName = schemaData.Name
 	resp, err := s.dataInstancer.DirectInstance(opts.TenantId, dropts, &parsedSchema)
 	if err != nil {
@@ -105,16 +106,25 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 			column := &sheet.Columns[cidx]
 			// fixme => reference ctype reverse lookup here
 
+			extraopts := "{}"
+			if column.ExtaOptions != nil {
+				out, err := json.Marshal(column.ExtaOptions)
+				if err == nil {
+					extraopts = string(out)
+				}
+
+			}
+
 			cid, err := source.NewRow(txnId, store.NewRowReq{
 				TenantId: opts.TenantId,
 				Group:    resp.GroupSlug,
 				Table:    "scols",
 				Data: map[string]any{
-					"name":          column.Name,
-					"ctype":         column.Ctype,
-					"sheetid":       idx,
-					"color":         column.Color,
-					"extra_options": column.ExtaOptions,
+					"name":    column.Name,
+					"ctype":   column.Ctype,
+					"sheetid": idx,
+					"color":   column.Color,
+					"opts":    extraopts,
 				},
 			})
 			if err != nil {
