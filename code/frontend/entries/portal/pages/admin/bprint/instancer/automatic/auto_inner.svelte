@@ -38,6 +38,7 @@
     data_group: "collection",
     plug: "view-grid-add",
     resource: "cube",
+    sheet: "table",
   };
 </script>
 

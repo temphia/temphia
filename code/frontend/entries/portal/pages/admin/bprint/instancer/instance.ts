@@ -1,40 +1,5 @@
 import type { PortalService } from "../../core";
-
-
-export interface NewTableGroup {
-  name: string;
-  slug: string;
-  description: string;
-  tables: NewTable[];
-  exec_order: string[];
-}
-
-export interface DataGroupRequest {
-  dyndb_source: string;
-  group_name: string;
-  group_slug: string;
-  cabinet_source: string;
-  cabinet_folder: string;
-  seed_source: string; // autogen | data
-}
-
-export interface NewTable {
-  name: string;
-  slug: string;
-  description: string;
-  icon: string;
-  main_column?: string;
-  activity_type: string;
-  sync_type: string;
-  columns: object[];
-  indexes: object[];
-  unique_indexes: object[];
-  fts_index?: object;
-  column_refs: object[];
-  deleted_at: boolean;
-  views: object[];
-  seed_data?: object;
-}
+import type { DataGroupRequest } from "./xmodels/data";
 
 export interface PlugInstanceRequest {
   new_plug_id: string;
@@ -95,27 +60,15 @@ export const instance_helper = async (
   switch (btype) {
     case "tschema":
       console.log("@tschema");
-      app.nav.admin_bprint_data_instancer(
-        bprint["id"],
-        file,
-        bprint
-      );
+      app.nav.admin_bprint_data_instancer(bprint["id"], file, bprint);
       break;
     case "data_group":
       console.log("@data_group");
-      app.nav.admin_bprint_data_instancer(
-        bprint["id"],
-        file,
-        bprint
-      );
+      app.nav.admin_bprint_data_instancer(bprint["id"], file, bprint);
       break;
     case "data_table":
       console.log("@data_table");
-      app.nav.admin_bprint_data_instancer(
-        bprint["id"],
-        file,
-        bprint
-      );
+      app.nav.admin_bprint_data_instancer(bprint["id"], file, bprint);
       break;
     case "plug":
       console.log("@plug");
@@ -126,7 +79,6 @@ export const instance_helper = async (
       if (!bundle_compo) return;
 
       console.log("@app_bundle");
-
 
       app.utils.small_modal_open(bundle_compo, {
         app,

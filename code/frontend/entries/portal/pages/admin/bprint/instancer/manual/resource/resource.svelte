@@ -1,11 +1,11 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { params } from "svelte-hash-router";
-  import Plug from "./_plug.svelte";
+
   import type { PortalService } from "../../../../core";
 
   export let bid: string = $params.bid;
-  export let file: string = $params._;
+  export let file: string = $params._ || "schema.json"
 
   const app: PortalService = getContext("__app__");
 
@@ -28,5 +28,5 @@
 </script>
 
 {#if !loading}
-  <Plug {data} {app} {bid} {file} />
+  <div>Resource</div>
 {/if}

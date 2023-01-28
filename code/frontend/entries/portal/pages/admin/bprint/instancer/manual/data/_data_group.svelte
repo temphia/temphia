@@ -6,7 +6,7 @@
     PortalService,
     PrimaryButton,
   } from "../../../../core";
-  import type { NewTableGroup } from "../../instance";
+  import type { NewTableGroup } from "../../xmodels/data";
   import { InstanceHelper } from "../../instance";
   import DataTable from "./_data_table.svelte";
 

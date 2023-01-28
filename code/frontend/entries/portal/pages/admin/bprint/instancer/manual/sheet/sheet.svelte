@@ -1,20 +1,21 @@
 <script lang="ts">
+  import Sheet from "./_sheet.svelte";
   import { getContext } from "svelte";
+  import { PortalService, LoadingSpinner } from "../../../../core";
   import { params } from "svelte-hash-router";
-  import Plug from "./_plug.svelte";
-  import type { PortalService } from "../../../../core";
 
-  export let bid: string = $params.bid;
-  export let file: string = $params._;
+  export let bid = $params.bid;
+  export let file = $params._ || "schema.json";
 
   const app: PortalService = getContext("__app__");
 
   let loading = true;
-  let data: object;
+  let data: any;
 
   const load = async () => {
-    const bapi = await app.api_manager.get_admin_bprint_api();
+    const bapi = app.api_manager.get_admin_bprint_api();
     const resp = await bapi.get_file(bid, file);
+
     if (resp.status !== 200) {
       console.log(resp);
       return;
@@ -27,6 +28,8 @@
   load();
 </script>
 
-{#if !loading}
-  <Plug {data} {app} {bid} {file} />
+{#if loading}
+  <LoadingSpinner />
+{:else}
+  <Sheet {data} {bid} {file} {app} />
 {/if}

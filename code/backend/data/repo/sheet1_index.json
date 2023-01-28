@@ -1,0 +1,9 @@
+{
+    "name": "Example Sheet",
+    "slug": "sheet1",
+    "type": "sheet",
+    "description": "This is a sheet example.",
+    "files": [
+        "schema.json"
+    ]
+}

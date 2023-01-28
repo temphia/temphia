@@ -5,7 +5,7 @@
   import { params } from "svelte-hash-router";
 
   export let bid = $params.bid;
-  export let file = $params._;
+  export let file = $params._ || "schema.json";
 
   const app: PortalService = getContext("__app__");
 

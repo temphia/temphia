@@ -1,0 +1,26 @@
+{
+  "name": "Sheet group example 1",
+  "sheets": [
+    {
+      "name": "todo",
+      "columns": [
+        {
+          "name": "Name",
+          "ctype": "shorttext",
+          "color": "#cfdd",
+          "extra_options": {}
+        },
+        {
+          "name": "Info",
+          "ctype": "longtext"
+        }
+      ],
+      "seed_data": [
+        {
+          "Name": "water plant",
+          "Info": "water plants in garden with at noon."
+        }
+      ]
+    }
+  ]
+}
