@@ -89,7 +89,7 @@ export class SheetService {
         prev[cell.rowid] = row;
       }
 
-      row[cell.colid] = cell.value;
+      row[cell.colid] = cell;
 
       return prev;
     }, {});

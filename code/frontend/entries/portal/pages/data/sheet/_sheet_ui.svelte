@@ -79,6 +79,8 @@
       </thead>
       <tbody>
         {#each rows as row}
+          {@const rowdata = cells[row.__id] || {}}
+
           <tr>
             <td class="border-dashed border-t border-gray-200 px-3">
               <label
@@ -92,7 +94,7 @@
             </td>
 
             {#each columns as col}
-              {@const celldata = (cells[row.__id] || {}) [col.__id]}
+              {@const celldata = rowdata[col.__id]}
 
               <td class="border-dashed border-t border-gray-200">
                 {#if celldata}
