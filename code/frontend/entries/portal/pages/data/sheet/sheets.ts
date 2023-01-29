@@ -1,4 +1,3 @@
-
 // syncme => xbprint/sheet.go
 
 export const SheetColTypeText = "shorttext";
@@ -9,8 +8,8 @@ export const SheetColTypeBoolean = "bool";
 export const SheetColTypeRatings = "ratings";
 export const SheetColTypeLocation = "location";
 export const SheetColTypeFile = "file";
-export const SheetColTypeReference = "reference"
-export const SheetColTypeRemote    = "remote"
+export const SheetColTypeReference = "reference";
+export const SheetColTypeRemote = "remote";
 
 export const SheetColTypes = [
   SheetColTypeText,
@@ -22,7 +21,7 @@ export const SheetColTypes = [
   SheetColTypeLocation,
   SheetColTypeFile,
   SheetColTypeReference,
-  SheetColTypeRemote
+  SheetColTypeRemote,
 ];
 
 export interface Sheet {

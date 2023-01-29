@@ -1,11 +1,12 @@
 <script lang="ts">
   import { params } from "svelte-hash-router";
+  import { getContext } from "svelte";
+  import type { Writable } from "svelte/store";
 
   import { LoadingSpinner, PortalService } from "../../admin/core";
-  import { getContext } from "svelte";
-  import SheetUi from "./_sheet_ui.svelte";
   import type { SheetService, SheetState } from "../../../services/data/sheet";
-  import type { Writable } from "svelte/store";
+
+  import SheetUi from "./_sheet_ui.svelte";
 
   export let source = $params.source;
   export let group = $params.dgroup;
@@ -18,7 +19,6 @@
   let sheet_service: SheetService;
 
   let sheets;
-  let rows = []
 
   const load = async () => {
     const dsvc = await app.get_data_service();

@@ -71,7 +71,7 @@ export class SheetService {
       rows: [],
     });
 
-    this.state.subscribe((state) => console.log("@state", state))
+    this.state.subscribe((state) => console.log("@state", state));
   }
 
   init = async () => {
@@ -108,4 +108,18 @@ export class SheetService {
 
     return true;
   };
+
+  add_column = async () => {};
+
+  update_column = async () => {};
+
+  remove_column = async () => {};
+
+  add_row = async () => {};
+
+  update_row = async () => {};
+
+  remove_row = async () => {};
 }
+
+// huhhub
