@@ -2,6 +2,7 @@ import type { DataAPI, SelfAPI } from "../../../../lib/apiv2";
 import type { AdminDataAPI } from "../../../../lib/apiv2/admin";
 import type { SockdService } from "../sockd/sockd";
 import { GroupService } from "./group";
+import { SheetGroupService } from "./sheet";
 
 interface Apm {
   get_admin_data_api(): AdminDataAPI;
@@ -16,6 +17,8 @@ export class DataService {
   close_modal: any;
   open_modal: any;
   api_base_url: string;
+
+  current_sheet_group: SheetGroupService;
 
   constructor(opts: {
     sources: string[];
@@ -48,6 +51,29 @@ export class DataService {
     }
     await this.current_group.close();
     return this.create_group(source, group);
+  };
+
+  group_sheet = async (source: string, group: string) => {
+    if (!this.current_sheet_group) {
+      return this.create_group_sheet(source, group);
+    }
+
+    if (
+      this.current_sheet_group.source === source &&
+      this.current_sheet_group.group_slug
+    ) {
+      return this.current_sheet_group;
+    }
+
+    return this.create_group_sheet(source, group);
+  };
+
+  private create_group_sheet = async (source: string, group: string) => {
+    const dapi = await this.apm.get_data_api(source, group);
+    const sgs = new SheetGroupService(source, group, dapi);
+    await sgs.init();
+    this.current_sheet_group = sgs;
+    return sgs;
   };
 
   private create_group = async (source: string, group: string) => {

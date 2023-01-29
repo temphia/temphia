@@ -29,55 +29,55 @@ export const CreateStore = () => {
     columns: [
       {
         ctype: SheetColTypeText,
-        id: 1,
+        __id: 1,
         name: "name",
-        sheet_id: 1,
+        sheetid: 1,
       },
 
       {
         ctype: SheetColTypeLongText,
-        id: 2,
+        __id: 2,
         name: "notes",
-        sheet_id: 1,
+        sheetid: 1,
       },
       {
         ctype: SheetColTypeBoolean,
-        id: 3,
+        __id: 3,
         name: "Done",
-        sheet_id: 1,
+        sheetid: 1,
       },
       {
         ctype: SheetColTypeDate,
-        id: 4,
+        __id: 4,
         name: "Created At",
-        sheet_id: 1,
+        sheetid: 1,
       },
     ],
     rows: [
       {
-        id: 1,
-        sheet_id: 1,
+        __id: 1,
+        sheetid: 1,
       },
 
       {
-        id: 2,
-        sheet_id: 1,
+        __id: 2,
+        sheetid: 1,
       },
       {
-        id: 3,
-        sheet_id: 1,
+        __id: 3,
+        sheetid: 1,
       },
     ],
     sheets: [
-      { id: 1, name: "example 1" },
-      { id: 2, name: "example 2" },
+      { __id: 1, name: "example 1" },
+      { __id: 2, name: "example 2" },
     ],
   });
 
   const add_column = (name: string, ctype: string, opts: object) => {
     state.update((old) => {
       const colIndex = old.columns.reduce(
-        (prev, curr) => (curr.id > prev ? curr.id : prev),
+        (prev, curr) => (curr.__id > prev ? curr.__id : prev),
         0
       );
 
@@ -85,7 +85,7 @@ export const CreateStore = () => {
         ...old,
         columns: [
           ...old.columns,
-          { name, ctype, exta_options: opts, id: colIndex + 1, sheet_id: 1 },
+          { name, ctype, exta_options: opts, __id: colIndex + 1, sheetid: 1 },
         ],
       };
     });

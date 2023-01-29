@@ -46,7 +46,7 @@ export default {
     "/:source/:dgroup": DataGroup,
     "/:source/:dgroup/custom": DataCustomLoader,
     "/:source/:dgroup/sheet": DataSheetLoader, 
-    "/:source/:dgroup/sheet/:dtable": DataSheet,
+    "/:source/:dgroup/sheet/:sheet": DataSheet,
     "/:source/:dgroup/table": DataTableLoader,
     "/:source/:dgroup/table/:dtable": DataTable,
     "/:source/:dgroup/table/:dtable/:layout": DataTable,

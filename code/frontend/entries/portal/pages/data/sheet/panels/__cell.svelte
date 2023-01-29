@@ -18,11 +18,19 @@
 
   const id = `cell-${column.sheetid}`;
 
+  $: _is_open = open_column === column.__id;
+
   const toggle = () => {
-    if (open_column === column.id) {
+    if (_is_open) {
       open_column = null;
     } else {
-      open_column = column.id;
+      open_column = column.__id;
+    }
+  };
+
+  const close = () => {
+    if (_is_open) {
+      open_column = null;
     }
   };
 </script>
@@ -66,12 +74,8 @@
     </div>
 
     <div class="flex justify-end gap-1">
-      {#if open_column === column.id}
-        <button
-          on:click={() => {
-            open_column = null;
-          }}
-        >
+      {#if _is_open}
+        <button on:click={close}>
           <Icon
             class="w-6 h-6 p-0.5 rounded border hover:bg-yellow-100"
             name="x"
@@ -87,7 +91,7 @@
       {/if}
     </div>
 
-    {#if open_column === column.id}
+    {#if _is_open}
       <div
         class="p-1 border rounded shadow h-64 mt-2 border-green-500 overflow-auto"
       >
@@ -116,7 +120,7 @@
         </span>
       </div>
 
-      {#if open_column === column.id}
+      {#if _is_open}
         <div class="flex gap-1">
           <button>
             <Icon
@@ -124,11 +128,7 @@
               name="location-marker"
             />
           </button>
-          <button
-            on:click={() => {
-              open_column = null;
-            }}
-          >
+          <button on:click={close}>
             <Icon
               class="w-6 h-6 p-0.5 rounded border hover:bg-yellow-100"
               name="x"
@@ -138,7 +138,7 @@
       {/if}
     </div>
 
-    {#if open_column === column.id}
+    {#if _is_open}
       <div class="p-1 border rounded shadow h-64 mt-2 border-green-500">
         <MapPanel />
       </div>

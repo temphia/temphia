@@ -30,7 +30,7 @@
   <nav class="flex flex-row  border">
     {#each sheets as sheet}
       <button
-        class="text-gray-600 p-2 block hover:text-blue-500 focus:outline-none {sheet.id ===
+        class="text-gray-600 p-2 block hover:text-blue-500 focus:outline-none {sheet.__id ===
         active_sheet
           ? 'text-blue-500 border-b-2 font-medium border-blue-500'
           : ''}">{sheet.name}</button
@@ -92,7 +92,7 @@
             </td>
 
             {#each columns as col}
-              {@const celldata = cells[row.id][col.id]}
+              {@const celldata = (cells[row.__id] || {}) [col.__id]}
 
               <td class="border-dashed border-t border-gray-200">
                 {#if celldata}

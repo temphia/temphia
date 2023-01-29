@@ -26,12 +26,12 @@ export const SheetColTypes = [
 ];
 
 export interface Sheet {
-  id: number;
+  __id: number;
   name: string;
 }
 
 export interface SheetColumn {
-  id: number;
+  __id: number;
   name: string;
   ctype: string;
   sheetid: number;
@@ -40,13 +40,13 @@ export interface SheetColumn {
 }
 
 export interface SheetRow {
-  id: number;
+  __id: number;
   sheetid: number;
   color?: string;
 }
 
 export interface SheetCell {
-  id: number;
+  __id: number;
   value?: string;
   num_value?: number;
   sheetid: number;
