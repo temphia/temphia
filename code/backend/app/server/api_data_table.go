@@ -15,22 +15,22 @@ func (s *Server) dataAPI(rg *gin.RouterGroup) {
 
 	rg.GET("/", s.dx(s.loadGroup))
 
-	rg.POST("/:tid/row", s.dx(s.newRow))
-	rg.GET("/:tid/row/:id", s.dx(s.getRow))
-	rg.POST("/:tid/row/:id", s.dx(s.updateRow))
-	rg.DELETE("/:tid/row/:id", s.dx(s.deleteRow))
+	rg.POST("/table/:tid/row", s.dx(s.newRow))
+	rg.GET("/table/:tid/row/:id", s.dx(s.getRow))
+	rg.POST("/table/:tid/row/:id", s.dx(s.updateRow))
+	rg.DELETE("/table/:tid/row/:id", s.dx(s.deleteRow))
 
-	rg.POST("/:tid/load", s.dx(s.loadTable))
-	rg.POST("/:tid/simple_query", s.dx(s.simpleQuery))
-	rg.POST("/:tid/fts_query", s.dx(s.FTSQuery)) // fixme => remove this and consolidate this to simple_query ?
-	rg.POST("/:tid/ref_load", s.dx(s.refLoad))
-	rg.POST("/:tid/ref_resolve", s.dx(s.refResolve))
-	rg.POST("/:tid/rev_ref_load", s.dx(s.reverseRefLoad))
-	rg.GET("/:tid/activity/:row_id", s.dx(s.listActivity))
-	rg.POST("/:tid/activity/:row_id", s.dx(s.commentRow))
+	rg.POST("/table/:tid/load", s.dx(s.loadTable))
+	rg.POST("/table/:tid/simple_query", s.dx(s.simpleQuery))
+	rg.POST("/table/:tid/fts_query", s.dx(s.FTSQuery)) // fixme => remove this and consolidate this to simple_query ?
+	rg.POST("/table/:tid/ref_load", s.dx(s.refLoad))
+	rg.POST("/table/:tid/ref_resolve", s.dx(s.refResolve))
+	rg.POST("/table/:tid/rev_ref_load", s.dx(s.reverseRefLoad))
+	rg.GET("/table/:tid/activity/:row_id", s.dx(s.listActivity))
+	rg.POST("/table/:tid/activity/:row_id", s.dx(s.commentRow))
 
-	rg.POST("/sheet/list", s.dx(s.listSheets))
-	rg.POST("/sheet/:id/load", s.dx(s.loadSheet))
+	s.dataSheetAPI(rg.Group("/sheet"))
+
 }
 
 func (s *Server) loadGroup(uclaim *claim.Data, ctx *gin.Context) {
@@ -210,26 +210,6 @@ func (s *Server) commentRow(uclaim *claim.Data, ctx *gin.Context) {
 
 func (s *Server) dx(fn func(uclaim *claim.Data, ctx *gin.Context)) func(*gin.Context) {
 	return s.middleware.DataX(fn)
-}
-
-func (s *Server) listSheets(uclaim *claim.Data, ctx *gin.Context) {
-	resp, err := s.cData.ListSheets(uclaim)
-	httpx.WriteJSON(ctx, resp, err)
-}
-
-func (s *Server) loadSheet(uclaim *claim.Data, ctx *gin.Context) {
-	data := store.LoadSheetReq{}
-	err := ctx.BindJSON(&data)
-	if err != nil {
-		httpx.WriteErr(ctx, err)
-		return
-	}
-
-	id, _ := strconv.ParseInt(ctx.Param("id"), 10, 64)
-	data.SheetId = id
-
-	resp, err := s.cData.LoadSheet(uclaim, &data)
-	httpx.WriteJSON(ctx, resp, err)
 }
 
 // models

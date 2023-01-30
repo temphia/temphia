@@ -1,3 +1,4 @@
+import { DataSheetAPI } from "./data_sheet";
 import { Http } from "./http";
 
 export class DataAPI {
@@ -67,12 +68,7 @@ export class DataAPI {
     return `${this.base_url}/data_ws/?token=${this.token}`;
   };
 
-  list_sheets() {
-    return this.http.post(`/data/sheet/list`, {});
-  }
-
-  load_sheet(sheetid: string, options: any) {
-    return this.http.post(`/data/sheet/${sheetid}/load`, options);
-  }
-
+  sheet_api = () => {
+    return new DataSheetAPI(this.base_url, this.token);
+  };
 }

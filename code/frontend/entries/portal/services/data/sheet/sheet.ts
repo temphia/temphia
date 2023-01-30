@@ -1,5 +1,6 @@
 import { writable, Writable } from "svelte/store";
 import type { DataAPI, FolderTktAPI } from "../../../../../lib/apiv2";
+import type { DataSheetAPI } from "../../../../../lib/apiv2/data_sheet";
 import type {
   SheetCell,
   SheetColumn,
@@ -7,26 +8,28 @@ import type {
 } from "../../../pages/data/sheet/sheets";
 
 export class SheetGroupService {
-  data_api: DataAPI;
-
   source: string;
   group_slug: string;
   active_sheets: Map<string, SheetService>;
 
   sheets: object[];
+
   folder_api: FolderTktAPI;
+  data_api: DataAPI;
+  data_sheet_api: DataSheetAPI;
 
   constructor(source: string, group: string, api: DataAPI) {
-    this.data_api = api;
     this.source = source;
     this.group_slug = group;
     this.active_sheets = new Map();
     this.sheets = [];
     this.folder_api = null;
+    this.data_api = api;
+    this.data_sheet_api = api.sheet_api();
   }
 
   init = async () => {
-    const resp = await this.data_api.list_sheets();
+    const resp = await this.data_sheet_api.list_sheets();
     if (!resp.ok) {
       console.log("@err", resp);
       return;
@@ -75,7 +78,7 @@ export class SheetService {
   }
 
   init = async () => {
-    const resp = await this.group.data_api.load_sheet(this.sheetid, {});
+    const resp = await this.group.data_sheet_api.load_sheet(this.sheetid, {});
     if (!resp.ok) {
       return false;
     }
