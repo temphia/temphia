@@ -4,9 +4,9 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/backend/controllers/data"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 func (s *Server) dataSheetAPI(rg *gin.RouterGroup) {
@@ -25,21 +25,20 @@ func (s *Server) dataSheetAPI(rg *gin.RouterGroup) {
 	rg.POST("/sheet/:id/column/:cid", s.dx(s.updateSheetColumn))
 	rg.DELETE("/sheet/:id/column/:cid", s.dx(s.deleteSheetColumn))
 
-	rg.GET("/sheet/:id/row", s.dx(s.listSheetRow))
-	rg.POST("/sheet/:id/row", s.dx(s.newSheetRow))
-	rg.POST("/sheet/:id/row/:rid", s.dx(s.updateSheetRow))
-	rg.GET("/sheet/:id/row/:rid", s.dx(s.getSheetRow))
-	rg.DELETE("/sheet/:id/row/:rid", s.dx(s.deleteSheetRow))
+	rg.POST("/sheet/:id/row_cell", s.dx(s.NewRowWithCell))
+	rg.POST("/sheet/:id/row_cell/:rid", s.dx(s.UpdateRowWithCell))
+	rg.GET("/sheet/:id/row_cell/:rid", s.dx(s.GetRowWithCell))
+	rg.DELETE("/sheet/:id/row_cell/:rid", s.dx(s.DeleteRowWithCell))
 
 }
 
 func (s *Server) listSheetGroup(uclaim *claim.Data, ctx *gin.Context) {
-	resp, err := s.cData.ListSheets(uclaim)
+	resp, err := s.cData.ListSheetGroup(uclaim)
 	httpx.WriteJSON(ctx, resp, err)
 }
 
 func (s *Server) loadSheet(uclaim *claim.Data, ctx *gin.Context) {
-	data := store.LoadSheetReq{}
+	data := data.LoadSheetReq{}
 	err := ctx.BindJSON(&data)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
@@ -54,7 +53,8 @@ func (s *Server) loadSheet(uclaim *claim.Data, ctx *gin.Context) {
 }
 
 func (s *Server) listSheet(uclaim *claim.Data, ctx *gin.Context) {
-
+	resp, err := s.cData.ListSheet(uclaim)
+	httpx.WriteJSON(ctx, resp, err)
 }
 
 func (s *Server) newSheet(uclaim *claim.Data, ctx *gin.Context) {
@@ -95,24 +95,37 @@ func (s *Server) deleteSheetColumn(uclaim *claim.Data, ctx *gin.Context) {
 
 }
 
-// rows
+// cells
 
-func (s *Server) listSheetRow(uclaim *claim.Data, ctx *gin.Context) {
+func (s *Server) NewRowWithCell(uclaim *claim.Data, ctx *gin.Context) {
+	sid, _ := strconv.ParseInt(ctx.Param("id"), 10, 64)
+
+	data := make([]map[string]any, 0)
+
+	err := ctx.BindJSON(&data)
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	resp, err := s.cData.NewRowWithCell(uclaim, sid, data)
+	httpx.WriteJSON(ctx, resp, err)
+}
+
+func (s *Server) UpdateRowWithCell(uclaim *claim.Data, ctx *gin.Context) {
+	sid, _ := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	rid, _ := strconv.ParseInt(ctx.Param("rid"), 10, 64)
+
+	data := make(map[int64]map[string]any, 0)
+	resp, err := s.cData.UpdateRowWithCell(uclaim, sid, rid, data)
+	httpx.WriteJSON(ctx, resp, err)
 
 }
 
-func (s *Server) newSheetRow(uclaim *claim.Data, ctx *gin.Context) {
+func (s *Server) GetRowWithCell(uclaim *claim.Data, ctx *gin.Context) {
 
 }
 
-func (s *Server) getSheetRow(uclaim *claim.Data, ctx *gin.Context) {
-
-}
-
-func (s *Server) updateSheetRow(uclaim *claim.Data, ctx *gin.Context) {
-
-}
-
-func (s *Server) deleteSheetRow(uclaim *claim.Data, ctx *gin.Context) {
+func (s *Server) DeleteRowWithCell(uclaim *claim.Data, ctx *gin.Context) {
 
 }

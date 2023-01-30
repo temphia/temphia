@@ -180,9 +180,6 @@ type DynSource interface {
 	RefLoad(txid uint32, gslug string, req *RefLoadReq) (*QueryResult, error)
 	ReverseRefLoad(txid uint32, gslug string, req *RevRefLoadReq) (*QueryResult, error)
 
-	ListSheetGroup(opts ListSheetGroupReq) (*ListSheetGroupResp, error)
-	LoadSheet(opts LoadSheetReq) (*LoadSheetResp, error)
-
 	SqlQuery(txid uint32, req SqlQueryReq) (*SqlQueryResult, error)
 
 	LiveSeed(group, table, userId string, max int) error

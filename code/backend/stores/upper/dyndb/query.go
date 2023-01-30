@@ -6,6 +6,7 @@ import (
 	"github.com/k0kubun/pp"
 
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/filter"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/processer"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -24,7 +25,7 @@ func (d *DynDB) simpleQuery(txid uint32, req store.SimpleQueryReq) (*store.Query
 			selects = append(selects, s)
 		}
 
-		conds, err := transformFilters(req.FilterConds)
+		conds, err := filter.Transform(req.FilterConds)
 		if err != nil {
 			return err
 		}

@@ -90,7 +90,7 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 		idx, err := source.NewRow(uint32(txnId), store.NewRowReq{
 			TenantId: opts.TenantId,
 			Group:    resp.GroupSlug,
-			Table:    "sheets",
+			Table:    store.SheetTable,
 			Data: map[string]any{
 				"name": sheet.Name,
 			},
@@ -118,7 +118,7 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 			cid, err := source.NewRow(txnId, store.NewRowReq{
 				TenantId: opts.TenantId,
 				Group:    resp.GroupSlug,
-				Table:    "scols",
+				Table:    store.SheetColumnTable,
 				Data: map[string]any{
 					"name":    column.Name,
 					"ctype":   column.Ctype,
@@ -149,7 +149,7 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 			rowid, err := source.NewRow(uint32(txnId), store.NewRowReq{
 				TenantId: opts.TenantId,
 				Group:    resp.GroupSlug,
-				Table:    "srows",
+				Table:    store.SheetRowTable,
 				Data: map[string]any{
 					"sheetid": sheetsIdx[sheet.Name],
 				},
@@ -183,7 +183,7 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 				cellid, err := source.NewRow(uint32(txnId), store.NewRowReq{
 					TenantId: opts.TenantId,
 					Group:    resp.GroupSlug,
-					Table:    "scells",
+					Table:    store.SheetCellTable,
 					Data:     cellData,
 				})
 				if err != nil {

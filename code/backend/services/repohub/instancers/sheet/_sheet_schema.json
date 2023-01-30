@@ -89,16 +89,6 @@
           "slug": "sheetid",
           "ctype": "number",
           "not_nullable": true
-        },
-        {
-          "name": "Options",
-          "slug": "opts",
-          "ctype": "json"
-        },
-        {
-          "name": "Color",
-          "slug": "color",
-          "ctype": "color"
         }
       ],
       "column_refs": [

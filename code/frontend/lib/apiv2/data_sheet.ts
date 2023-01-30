@@ -66,25 +66,21 @@ export class DataSheetAPI {
     return this.http.get(`/data/sheet/${sid}/column/${cid}`);
   }
 
-  // rows
+  // row_cells
 
-  list_rows(sid: string) {
-    return this.http.get(`/data/sheet/${sid}/row`);
+  get_row_cell(sid: string, rid: string) {
+    return this.http.get(`/data/sheet/${sid}/row_cell/${rid}`);
   }
 
-  get_row(sid: string, rid: string) {
-    return this.http.get(`/data/sheet/${sid}/row/${rid}`);
+  new_row_cell(sid: string, rid: string) {
+    return this.http.get(`/data/sheet/${sid}/row_cell/${rid}`);
   }
 
-  new_row(sid: string, rid: string) {
-    return this.http.get(`/data/sheet/${sid}/row/${rid}`);
+  update_row_cell(sid: string, rid: string, data: any) {
+    return this.http.post(`/data/sheet/${sid}/row_cell/${rid}`, data);
   }
 
-  update_row(sid: string, rid: string, data: any) {
-    return this.http.post(`/data/sheet/${sid}/row/${rid}`, data);
-  }
-
-  delete_row(sid: string, rid: string) {
-    return this.http.get(`/data/sheet/${sid}/row/${rid}`);
+  delete_row_cell(sid: string, rid: string) {
+    return this.http.get(`/data/sheet/${sid}/row_cell/${rid}`);
   }
 }

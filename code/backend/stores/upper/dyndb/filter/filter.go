@@ -1,9 +1,7 @@
-package dyndb
+package filter
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
 
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/upper/db/v4"
@@ -50,7 +48,7 @@ var (
 	}
 )
 
-func transformFilters(fcs []*store.FilterCond) (interface{}, error) {
+func Transform(fcs []*store.FilterCond) (interface{}, error) {
 
 	conds := make(db.Cond)
 	resp := []interface{}{
@@ -80,28 +78,4 @@ func transformFilters(fcs []*store.FilterCond) (interface{}, error) {
 	}
 
 	return conds, nil
-}
-
-type LData struct {
-	lat      float32
-	long     float32
-	distance float32
-}
-
-func locationData(rawstr string) LData {
-	points := strings.Split(rawstr, " ")
-
-	return LData{
-		lat:      getFloat(points[0]),
-		long:     getFloat(points[1]),
-		distance: getFloat(points[2]),
-	}
-}
-
-func getFloat(fstr string) float32 {
-	f, err := strconv.ParseFloat(fstr, 32)
-	if err != nil {
-		panic(err)
-	}
-	return float32(f)
 }

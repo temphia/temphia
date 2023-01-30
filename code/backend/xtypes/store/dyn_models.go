@@ -88,6 +88,15 @@ type SimpleQueryReq struct {
 	SearchTerm  string        `json:"search_term,omitempty"`
 }
 
+type JoinReq struct {
+	Parent        string       `json:"parent,omitempty"`
+	Child         string       `json:"child,omitempty"`
+	OnParent      string       `json:"on_parent,omitempty"`
+	OnChild       string       `json:"on_child,omitempty"`
+	ParentFilters []FilterCond `json:"parent_ft,omitempty"`
+	ChildFilters  []FilterCond `json:"child_ft,omitempty"`
+}
+
 type FTSQueryReq struct {
 	TenantId   string `json:"-"`
 	Table      string `json:"table,omitempty"`
@@ -157,28 +166,4 @@ type QueryResult struct {
 type LoadDgroupResp struct {
 	Tables       []*entities.Table `json:"tables,omitempty"`
 	FolderTicket string            `json:"folder_ticket,omitempty"`
-}
-
-// sheet
-
-type ListSheetGroupReq struct {
-	TenantId string `json:"-"`
-	Group    string `json:"group,omitempty"`
-}
-
-type ListSheetGroupResp struct {
-	Sheets []map[string]any `json:"sheets,omitempty"`
-}
-
-type LoadSheetReq struct {
-	TenantId    string       `json:"-"`
-	Group       string       `json:"group,omitempty"`
-	SheetId     int64        `json:"sheet_id,omitempty"`
-	View        string       `json:"view,omitempty"`
-	FilterConds []FilterCond `json:"filter_conds,omitempty"`
-}
-
-type LoadSheetResp struct {
-	Columns []map[string]any `json:"columns,omitempty"`
-	Cells   []map[string]any `json:"cells,omitempty"`
 }
