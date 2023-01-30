@@ -1,7 +1,7 @@
 import { sleep } from "yootils";
-import { DataAPI, FolderTktAPI } from "../../../../lib/apiv2";
-import type { Sockd, SockdMessage } from "../../../../lib/sockd";
-import type { SockdService } from "../sockd/sockd";
+import { DataAPI, FolderTktAPI } from "../../../../../lib/apiv2";
+import type { Sockd, SockdMessage } from "../../../../../lib/sockd";
+import type { SockdService } from "../../sockd/sockd";
 import { TableService } from "./table";
 
 export class GroupService {

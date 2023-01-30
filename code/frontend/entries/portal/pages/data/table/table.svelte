@@ -2,7 +2,7 @@
   import { getContext } from "svelte";
   import { params } from "svelte-hash-router";
   import type { PortalService } from "../../../services";
-  import type { TableService } from "../../../services/data/table";
+  import type { TableService } from "../../../services/data";
   import { LoadingSpinner } from "../../admin/core";
   import TableUI from "./_tableui.svelte";
 

@@ -1,8 +1,8 @@
 import type { DataAPI, SelfAPI } from "../../../../lib/apiv2";
 import type { AdminDataAPI } from "../../../../lib/apiv2/admin";
 import type { SockdService } from "../sockd/sockd";
-import { GroupService } from "./group";
-import { SheetGroupService } from "./sheet";
+import { GroupService } from "./table/group";
+import { SheetGroupService } from "./sheet/sheet";
 
 interface Apm {
   get_admin_data_api(): AdminDataAPI;

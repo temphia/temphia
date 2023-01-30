@@ -4,7 +4,7 @@
   import type { Writable } from "svelte/store";
 
   import { LoadingSpinner, PortalService } from "../../admin/core";
-  import type { SheetService, SheetState } from "../../../services/data/sheet";
+  import type { SheetService, SheetState } from "../../../services/data";
 
   import SheetUi from "./_sheet_ui.svelte";
 

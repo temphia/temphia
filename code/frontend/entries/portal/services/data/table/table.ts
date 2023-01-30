@@ -1,5 +1,5 @@
 import { get, writable, Writable } from "svelte/store";
-import type { DataAPI, FolderTktAPI } from "../../../../lib/apiv2";
+import type { DataAPI, FolderTktAPI } from "../../../../../lib/apiv2";
 import { generate_column_order } from "./data_utils";
 import { Column, defaultViewData } from "./dtypes";
 import type { DirtyData, FilterItem, NavData, ViewData } from "./dtypes";

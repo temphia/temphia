@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
-  import type { TableService } from "../../../../services/data/table";
+  import type { TableService } from "../../../../services/data";
   import RendererLayout from "../core/renderer/layout.svelte";
   import CardItem from "./card_item.svelte";
   import { calculate_order } from "./order";

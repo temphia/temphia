@@ -1,8 +1,8 @@
 export * from "./data";
-export * from "./dtypes";
-export * from "./group";
-export * from "./table";
-
+export * from "./table/dtypes";
+export * from "./table/group";
+export * from "./table/table";
+export * from "./sheet/sheet"
 
 /*
 

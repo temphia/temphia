@@ -1,10 +1,10 @@
 import { writable, Writable } from "svelte/store";
-import type { DataAPI, FolderTktAPI } from "../../../../lib/apiv2";
+import type { DataAPI, FolderTktAPI } from "../../../../../lib/apiv2";
 import type {
   SheetCell,
   SheetColumn,
   SheetRow,
-} from "../../pages/data/sheet/sheets";
+} from "../../../pages/data/sheet/sheets";
 
 export class SheetGroupService {
   data_api: DataAPI;

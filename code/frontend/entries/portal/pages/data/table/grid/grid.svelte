@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { TableService } from "../../../../services/data/table";
+  import type { TableService } from "../../../../services/data";
   import Renderer from "../core/renderer/renderer.svelte";
   import RendererLayout from "../core/renderer/layout.svelte";
 
