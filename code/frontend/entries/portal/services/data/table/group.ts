@@ -9,7 +9,8 @@ export class GroupService {
   name: string;
   data_api: DataAPI;
   api_base_url: string;
-  active_tables: Map<string, TableService>;
+  tables_services: Map<string, TableService>;
+  active_table: string
 
   tables: object[];
   close_modal: any;
@@ -32,7 +33,7 @@ export class GroupService {
     this.source = opts.source;
     this.name = opts.name;
     this.data_api = opts.api;
-    this.active_tables = new Map();
+    this.tables_services = new Map();
     this.tables = [];
     this.api_base_url = opts.api_base_url;
 
@@ -67,7 +68,7 @@ export class GroupService {
   };
 
   table_service = async (table: string) => {
-    let tservice = this.active_tables.get(table);
+    let tservice = this.tables_services.get(table);
     if (!tservice) {
       tservice = new TableService({
         all_tables: this.tables,
@@ -80,9 +81,11 @@ export class GroupService {
       });
 
       await tservice.init();
-      this.active_tables.set(table, tservice);
+      this.tables_services.set(table, tservice);
     }
 
+    this.active_table = table
+    
     return tservice;
   };
 
@@ -95,7 +98,7 @@ export class GroupService {
   };
 
   close = async () => {
-    this.active_tables.forEach((tsvc) => {
+    this.tables_services.forEach((tsvc) => {
       tsvc.close();
     });
   };
