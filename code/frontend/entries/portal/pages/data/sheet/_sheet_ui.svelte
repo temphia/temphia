@@ -39,9 +39,21 @@
   </nav>
 
   <div class="flex p-1 gap-1">
-    <ToolbarAction onClick={() => dispatch("action_refresh")} icon="refresh" name="Refresh" />
-    <ToolbarAction onClick={() => dispatch("action_goto_rawtable")} icon="hashtag" name="Raw" />
-    <ToolbarAction onClick={() => dispatch("action_goto_history")} icon="calendar" name="History" />
+    <ToolbarAction
+      onClick={() => dispatch("action_refresh")}
+      icon="refresh"
+      name="Refresh"
+    />
+    <ToolbarAction
+      onClick={() => dispatch("action_goto_rawtable")}
+      icon="hashtag"
+      name="Raw"
+    />
+    <ToolbarAction
+      onClick={() => dispatch("action_goto_history")}
+      icon="calendar"
+      name="History"
+    />
   </div>
 
   <div
@@ -119,7 +131,7 @@
               <button
                 class="underline text-blue-600"
                 on:click={() => {
-                  app.utils.big_modal_open(EditRow, { columns });
+                  app.utils.big_modal_open(EditRow, { columns, row, cells });
                 }}>edit</button
               >
             </td>

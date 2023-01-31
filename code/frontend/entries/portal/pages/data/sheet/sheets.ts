@@ -41,7 +41,6 @@ export interface SheetColumn {
 export interface SheetRow {
   __id: number;
   sheetid: number;
-  color?: string;
 }
 
 export interface SheetCell {
