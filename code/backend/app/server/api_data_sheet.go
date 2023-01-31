@@ -10,25 +10,25 @@ import (
 )
 
 func (s *Server) dataSheetAPI(rg *gin.RouterGroup) {
-	rg.POST("/sheet/list", s.dx(s.listSheetGroup))
-	rg.POST("/sheet/:id/load", s.dx(s.loadSheet))
+	rg.POST("/list", s.dx(s.listSheetGroup))
+	rg.POST("/:id/load", s.dx(s.loadSheet))
 
-	rg.GET("/sheet", s.dx(s.listSheet))
-	rg.GET("/sheet/:id", s.dx(s.getSheet))
-	rg.POST("/sheet", s.dx(s.newSheet))
-	rg.POST("/sheet/:id", s.dx(s.updateSheet))
-	rg.DELETE("/sheet/:id", s.dx(s.deleteSheet))
+	rg.GET("/", s.dx(s.listSheet))
+	rg.GET("/:id", s.dx(s.getSheet))
+	rg.POST("/", s.dx(s.newSheet))
+	rg.POST("/:id", s.dx(s.updateSheet))
+	rg.DELETE("/:id", s.dx(s.deleteSheet))
 
-	rg.GET("/sheet/:id/column", s.dx(s.listSheetColumn))
-	rg.POST("/sheet/:id/column", s.dx(s.newSheetColumn))
-	rg.GET("/sheet/:id/column/:cid", s.dx(s.getSheetColumn))
-	rg.POST("/sheet/:id/column/:cid", s.dx(s.updateSheetColumn))
-	rg.DELETE("/sheet/:id/column/:cid", s.dx(s.deleteSheetColumn))
+	rg.GET("/:id/column", s.dx(s.listSheetColumn))
+	rg.POST("/:id/column", s.dx(s.newSheetColumn))
+	rg.GET("/:id/column/:cid", s.dx(s.getSheetColumn))
+	rg.POST("/:id/column/:cid", s.dx(s.updateSheetColumn))
+	rg.DELETE("/:id/column/:cid", s.dx(s.deleteSheetColumn))
 
-	rg.POST("/sheet/:id/row_cell", s.dx(s.NewRowWithCell))
-	rg.POST("/sheet/:id/row_cell/:rid", s.dx(s.UpdateRowWithCell))
-	rg.GET("/sheet/:id/row_cell/:rid", s.dx(s.GetRowWithCell))
-	rg.DELETE("/sheet/:id/row_cell/:rid", s.dx(s.DeleteRowWithCell))
+	rg.POST("/:id/row_cell", s.dx(s.NewRowWithCell))
+	rg.POST("/:id/row_cell/:rid", s.dx(s.UpdateRowWithCell))
+	rg.GET("/:id/row_cell/:rid", s.dx(s.GetRowWithCell))
+	rg.DELETE("/:id/row_cell/:rid", s.dx(s.DeleteRowWithCell))
 
 }
 
