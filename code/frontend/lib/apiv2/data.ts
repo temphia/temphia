@@ -20,48 +20,48 @@ export class DataAPI {
   }
 
   new_row(tid: string, data: any) {
-    return this.http.post(`/data/${tid}/row`, data);
+    return this.http.post(`/data/table/${tid}/row`, data);
   }
 
   get_row(tid: string, rid: string) {
-    return this.http.get(`/data/${tid}/row/${rid}`);
+    return this.http.get(`/data/table/${tid}/row/${rid}`);
   }
 
   update_row(tid: string, rid: string, data: any) {
-    return this.http.post(`/data/${tid}/row/${rid}`, data);
+    return this.http.post(`/data/table/${tid}/row/${rid}`, data);
   }
 
   delete_row(tid: string, rid: string) {
-    return this.http.delete(`/data/${tid}/row/${rid}`);
+    return this.http.delete(`/data/table/${tid}/row/${rid}`);
   }
 
   load_table(tid: string, view?: string) {
-    return this.http.post(`/data/${tid}/load`, {
+    return this.http.post(`/data/table/${tid}/load`, {
       view,
     });
   }
 
   simple_query(tid: string, query: any) {
-    return this.http.post(`/data/${tid}/simple_query`, query);
+    return this.http.post(`/data/table/${tid}/simple_query`, query);
   }
 
   ref_load(tid: string, data: any) {
-    return this.http.post(`/data/${tid}/ref_load`, data);
+    return this.http.post(`/data/table/${tid}/ref_load`, data);
   }
 
   ref_resolve(tid: string, data: any) {
-    return this.http.post(`/data/${tid}/ref_resolve`, data);
+    return this.http.post(`/data/table/${tid}/ref_resolve`, data);
   }
 
   reverse_ref_load(tid: string, data: any) {
-    return this.http.post(`/data/${tid}/rev_ref_load`, data);
+    return this.http.post(`/data/table/${tid}/rev_ref_load`, data);
   }
   list_activity(tid: string, rid: string) {
-    return this.http.get(`/data/${tid}/activity/${rid}`);
+    return this.http.get(`/data/table/${tid}/activity/${rid}`);
   }
 
   comment_row(tid: string, rid: string, data: any) {
-    return this.http.post(`/data/${tid}/activity/${rid}`, data);
+    return this.http.post(`/data/table/${tid}/activity/${rid}`, data);
   }
 
   sockd_url = () => {
