@@ -14,6 +14,7 @@
     SheetColTypeBoolean,
     SheetColTypeDate,
   } from "./sheets";
+  import AddSheet from "./panels/_add_sheet.svelte";
 
   export let columns: SheetColumn[];
   export let rows: SheetRow[];
@@ -36,6 +37,15 @@
           : ''}">{sheet.name}</button
       >
     {/each}
+
+    <button
+      on:click={() => {
+        app.utils.small_modal_open(AddSheet, {});
+      }}
+      class="m-2 p-1 rounded hover:bg-blue-200 border border-blue-200"
+    >
+      <Icon name="plus" class="w-4 h-4" />
+    </button>
   </nav>
 
   <div class="flex p-1 gap-1">
