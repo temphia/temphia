@@ -1,11 +1,8 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import { createEventDispatcher, getContext } from "svelte";
-  import type { PortalService } from "../../../services";
-  import AddColumn from "./panels/_add_column.svelte";
+  import { createEventDispatcher } from "svelte";
   import ToolbarAction from "../table/core/renderer/_toolbar_action.svelte";
-  import EditRow from "./panels/_edit_row.svelte";
-  import AddRow from "./panels/_add_row.svelte";
+
   import {
     SheetCell,
     SheetColumn,
@@ -14,15 +11,12 @@
     SheetColTypeBoolean,
     SheetColTypeDate,
   } from "./sheets";
-  import AddSheet from "./panels/_add_sheet.svelte";
 
   export let columns: SheetColumn[];
   export let rows: SheetRow[];
   export let cells: { [_: number]: { [_: string]: SheetCell } };
   export let sheets: Sheet[];
   export let active_sheet: number;
-
-  const app: PortalService = getContext("__app__");
 
   const dispatch = createEventDispatcher();
 </script>
@@ -39,9 +33,7 @@
     {/each}
 
     <button
-      on:click={() => {
-        app.utils.small_modal_open(AddSheet, {});
-      }}
+      on:click={() => dispatch("add_sheet")}
       class="m-2 p-1 rounded hover:bg-blue-200 border border-blue-200"
     >
       <Icon name="plus" class="w-4 h-4" />
@@ -85,13 +77,7 @@
 
           <th class="w-10">
             <button
-              on:click={() =>
-                app.utils.small_modal_open(AddColumn, {
-                  onAdd: (name, ctype, opts) => {
-                    dispatch("add_column", { name, ctype, opts });
-                    app.utils.small_modal_close();
-                  },
-                })}
+              on:click={() => dispatch("add_column")}
               class="p-1 rounded bg-blue-500 text-white hover:bg-blue-800"
             >
               <Icon name="plus" class="w-4 h-4" />
@@ -140,9 +126,7 @@
             <td>
               <button
                 class="underline text-blue-600"
-                on:click={() => {
-                  app.utils.big_modal_open(EditRow, { columns, row, cells });
-                }}>edit</button
+                on:click={() => dispatch("edit_row", row)}>edit</button
               >
             </td>
           </tr>
@@ -151,9 +135,7 @@
         <tr>
           <td>
             <button
-              on:click={() => {
-                app.utils.big_modal_open(AddRow, { columns });
-              }}
+              on:click={() => dispatch("add_row")}
               class="p-1 rounded bg-blue-500 text-white hover:bg-blue-800"
             >
               <Icon name="plus" class="w-4 h-4" />
