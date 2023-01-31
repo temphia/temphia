@@ -30,6 +30,11 @@ func (d *DynDB) simpleQuery(txid uint32, req store.SimpleQueryReq) (*store.Query
 			return err
 		}
 
+		orderBy := store.KeyPrimary
+		if req.OrderBy != "" {
+			orderBy = req.OrderBy
+		}
+
 		// tbl := sess.Collection(d.tns.Table(req.TenantId, req.Group, req.Table))
 
 		// fixme => search join
@@ -39,7 +44,7 @@ func (d *DynDB) simpleQuery(txid uint32, req store.SimpleQueryReq) (*store.Query
 			Select(selects...).
 			From(d.tns.Table(req.TenantId, req.Group, req.Table)).
 			Where(conds).
-			OrderBy(store.KeyPrimary).
+			OrderBy(orderBy).
 			Paginate(uint(req.Count)).
 			Page(uint(req.Page + 1)). // cz page starts from 1
 			All(&records)

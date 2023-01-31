@@ -58,6 +58,8 @@ func (c *Controller) LoadSheet(uclaim *claim.Data, data *LoadSheetReq) (*LoadShe
 				Value:  data.SheetId,
 			},
 		},
+
+		OrderBy: "rowid",
 	})
 
 	if err != nil {
