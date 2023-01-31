@@ -7,13 +7,13 @@
   export let row_service: RowService;
   export let onChange;
 
+  let __value = value;
+
   let editor;
 </script>
 
 <CEditor
   bind:editor
-  on:change={() => {
-    onChange(editor.getValue());
-  }}
-  code={value}
+  on:change={() => onChange(editor.getValue())}
+  code={__value}
 />

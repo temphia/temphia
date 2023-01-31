@@ -81,6 +81,15 @@ func (pg *PGCtypeProcesser) FromRowDBType(row map[string]interface{}) error {
 		case store.CtypeMultiUser:
 		case store.CtypeEmail:
 		case store.CtypeJSON:
+			switch vv := v.(type) {
+			case string:
+				row[k] = vv
+			case []uint8:
+				row[k] = string(vv)
+			default:
+				continue
+			}
+
 		case store.CtypeRangeNumber:
 		case store.CtypeColor:
 
