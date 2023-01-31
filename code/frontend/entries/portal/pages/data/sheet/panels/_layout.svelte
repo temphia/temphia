@@ -1,6 +1,8 @@
 <script>
   export let title;
   export let onClick;
+
+  let loading = false;
 </script>
 
 <div class="flex flex-col h-full">
@@ -16,9 +18,18 @@
 
   <div class="flex justify-end border-t">
     <button
-      on:click={onClick}
-      class="px-2 py-1 font-bold text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:shadow-outline rounded mt-1"
-      >Save</button
+      on:click={async () => {
+        loading = true;
+        const resp = onClick();
+        if (resp instanceof Promise) {
+          await resp;
+        }
+
+        loading = false;
+      }}
+      class="px-2 py-1 font-bold text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:shadow-outline rounded mt-1 {loading
+        ? 'animate-spin'
+        : ''} ">Save</button
     >
   </div>
 </div>

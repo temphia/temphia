@@ -46,7 +46,7 @@
   <label
     class="block mb-2 text-sm font-bold text-gray-700 uppercase relative"
     for={id}
-    >{column.name}
+    >{column.name || `Column ${column.__id}`}
 
     <div class="absolute right-0 bottom-1 cursor-pointer">
       <Icon name="color-swatch" class="h-4 w-4" />

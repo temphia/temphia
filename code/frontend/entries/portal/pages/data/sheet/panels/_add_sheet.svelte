@@ -2,7 +2,7 @@
   import Kveditor from "../../../../../xcompo/common/kveditor.svelte";
   import Layout from "./_layout.svelte";
 
-  export let onAdd = (name: string, opts: object) => {};
+  export let onAdd = async (name: string, opts: object) => {};
 
   let name = "";
 

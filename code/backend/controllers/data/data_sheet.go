@@ -47,6 +47,13 @@ func (c *Controller) LoadSheet(uclaim *claim.Data, data *LoadSheetReq) (*LoadShe
 		return nil, err
 	}
 
+	if len(columns.Rows) == 0 {
+		return &LoadSheetResp{
+			Columns: columns.Rows,
+			Cells:   []map[string]any{},
+		}, nil
+	}
+
 	colNo := len(columns.Rows)
 	count := int64((store.DefaultQueryFetchCount * colNo) + colNo)
 
@@ -67,6 +74,13 @@ func (c *Controller) LoadSheet(uclaim *claim.Data, data *LoadSheetReq) (*LoadShe
 	})
 	if err != nil {
 		return nil, err
+	}
+
+	if len(cells.Rows) == 0 {
+		return &LoadSheetResp{
+			Columns: columns.Rows,
+			Cells:   cells.Rows,
+		}, nil
 	}
 
 	rowCells := cells.Rows
@@ -210,6 +224,8 @@ func (c *Controller) NewSheetColumn(uclaim *claim.Data, sid int64, data map[stri
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
+	data["sheetid"] = sid
+
 	return dynDb.NewRow(0, store.NewRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
@@ -262,7 +278,7 @@ func (c *Controller) DeleteSheetColumn(uclaim *claim.Data, sid, cid int64) error
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	dynDb.DeleteRows(0, store.DeleteRowReq{
+	return dynDb.DeleteRows(0, store.DeleteRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    store.SheetColumnTable,
@@ -271,13 +287,11 @@ func (c *Controller) DeleteSheetColumn(uclaim *claim.Data, sid, cid int64) error
 			UserId: uclaim.UserID,
 		},
 	})
-
-	return nil
 }
 
 // row_cells
 
-func (c *Controller) NewRowWithCell(uclaim *claim.Data, sid int64, data []map[string]any) (map[int64]map[string]any, error) {
+func (c *Controller) NewRowWithCell(uclaim *claim.Data, sid int64, data map[int64]map[string]any) (map[int64]map[string]any, error) {
 
 	txid := uint32(0)
 
@@ -288,7 +302,9 @@ func (c *Controller) NewRowWithCell(uclaim *claim.Data, sid int64, data []map[st
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    store.SheetRowTable,
-		Data:     map[string]any{},
+		Data: map[string]any{
+			"sheetid": sid,
+		},
 		ModCtx: store.ModCtx{
 			UserId: uclaim.UserID,
 		},
@@ -299,8 +315,10 @@ func (c *Controller) NewRowWithCell(uclaim *claim.Data, sid int64, data []map[st
 
 	// fixme => batch support
 
-	for _, cellData := range data {
+	for cid, cellData := range data {
 		cellData["rowid"] = rid
+		cellData["sheetid"] = sid
+		cellData["colid"] = cid
 
 		cellid, err := dynDb.NewRow(txid, store.NewRowReq{
 			TenantId: uclaim.TenantId,

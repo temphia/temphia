@@ -5,6 +5,7 @@ import type {
   SheetCell,
   SheetColumn,
   SheetRow,
+  Sheet,
 } from "../../../pages/data/sheet/sheets";
 
 export class SheetGroupService {
@@ -12,7 +13,7 @@ export class SheetGroupService {
   group_slug: string;
   active_sheets: Map<string, SheetService>;
 
-  sheets: object[];
+  sheets: Sheet[];
 
   folder_api: FolderTktAPI;
   data_api: DataAPI;
@@ -29,7 +30,7 @@ export class SheetGroupService {
   }
 
   init = async () => {
-    const resp = await this.data_sheet_api.list_sheet_group()
+    const resp = await this.data_sheet_api.list_sheet_group();
     if (!resp.ok) {
       console.log("@err", resp);
       return;
@@ -51,29 +52,44 @@ export class SheetGroupService {
     this.active_sheets.set(sheetid, ssvc);
     return ssvc;
   };
+
+  refetch_sheets = async () => {
+    const resp = await this.data_sheet_api.list_sheets();
+    if (!resp.ok) {
+      return;
+    }
+    this.sheets = resp.data;
+  };
 }
 
 export interface SheetState {
   columns: SheetColumn[];
   cells: { [_: string]: { [_: string]: SheetCell } };
   rows: SheetRow[];
+  loading: boolean;
 }
 
 export class SheetService {
   group: SheetGroupService;
   sheetid: string;
   state: Writable<SheetState>;
+  api: DataSheetAPI;
+  force_render_index: Writable<number>;
 
   constructor(group: SheetGroupService, sheetid: string) {
     this.group = group;
     this.sheetid = sheetid;
 
+    this.api = group.data_sheet_api;
+
     this.state = writable({
       cells: {},
       columns: [],
       rows: [],
+      loading: true,
     });
 
+    this.force_render_index = writable(0);
     this.state.subscribe((state) => console.log("@state", state));
   }
 
@@ -104,25 +120,82 @@ export class SheetService {
       });
 
     this.state.set({
-      columns: resp.data["columns"],
+      columns: resp.data["columns"] || [],
       cells: pcells,
       rows,
+      loading: false,
     });
 
     return true;
   };
 
-  add_column = async () => {};
+  add_sheet = async (name: string, opts: any) => {
+    const resp = await this.api.new_sheet({
+      name,
+      opts,
+    });
+    if (!resp.ok) {
+      return;
+    }
 
-  update_column = async () => {};
+    await this.group.refetch_sheets();
 
-  remove_column = async () => {};
+    this.force_render_index.update((old) => old + 1);
+  };
 
-  add_row = async () => {};
+  add_column = async (name: string, ctype: string, opts: any) => {
+    const resp = await this.api.new_column(this.sheetid, {
+      name,
+      ctype,
+      opts,
+    });
+    if (!resp.ok) {
+      return;
+    }
+    await this.refetch_columns();
+  };
 
-  update_row = async () => {};
+  update_column = async (cid: string, data: any) => {
+    const resp = await this.api.update_column(this.sheetid, cid, data);
+    if (!resp.ok) {
+      return;
+    }
 
-  remove_row = async () => {};
+    await this.refetch_columns();
+  };
+
+  remove_column = async (cid: string) => {
+    const resp2 = await this.api.delete_column(this.sheetid, cid);
+    if (resp2.ok) {
+      return;
+    }
+
+    await this.refetch_columns();
+  };
+
+  add_row_cell = async (data: { [_: number]: { [_: string]: any } }) => {
+    await this.api.new_row_cell(this.sheetid, data);
+  };
+
+  update_row_cell = async (
+    rid: string,
+    data: { [_: number]: { [_: string]: any } }
+  ) => {
+    await this.api.update_row_cell(this.sheetid, rid, data);
+  };
+
+  remove_row_cell = async (rid: string) => {
+    await this.api.delete_row_cell(this.sheetid, rid);
+  };
+
+  private refetch_columns = async () => {
+    const resp = await this.api.list_columns(this.sheetid);
+    if (!resp.ok) {
+      return;
+    }
+
+    console.log("@refetch_column", resp.data);
+
+    this.state.update((old) => ({ ...old, columns: resp.data }));
+  };
 }
-
-// huhhub

@@ -17,19 +17,26 @@
   export let cells: { [_: number]: { [_: string]: SheetCell } };
   export let sheets: Sheet[];
   export let active_sheet: number;
+  export let selected_rows = [];
 
   const dispatch = createEventDispatcher();
 </script>
 
 <div class="flex flex-col p-2 rounded">
-  <nav class="flex flex-row  border">
+  <nav class="flex flex-row  border flex-nowrap overflow-auto">
     {#each sheets as sheet}
-      <button
-        class="text-gray-600 p-2 block hover:text-blue-500 focus:outline-none {sheet.__id ===
-        active_sheet
-          ? 'text-blue-500 border-b-2 font-medium border-blue-500'
-          : ''}">{sheet.name}</button
-      >
+      {#if sheet.__id === active_sheet}
+        <button
+          class="p-2 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500"
+          >{sheet.name}</button
+        >
+      {:else}
+        <button
+          on:click={() => dispatch("change_sheet", sheet.__id)}
+          class="text-gray-600 p-2 block hover:text-blue-500 focus:outline-none"
+          >{sheet.name}</button
+        >
+      {/if}
     {/each}
 
     <button
@@ -56,6 +63,14 @@
       icon="calendar"
       name="History"
     />
+
+    {#if selected_rows.length == 1}
+      <ToolbarAction
+        onClick={() => dispatch("action_delete_trash")}
+        icon="trash"
+        name="Delete"
+      />
+    {/if}
   </div>
 
   <div
@@ -71,7 +86,7 @@
           {#each columns as col}
             <th
               class=" sticky top-0 border-b  px-6 py-2 font-bold tracking-wider uppercase text-xs userId"
-              >{col.name}</th
+              >{col.name || `Column ${col.__id}`}</th
             >
           {/each}
 
@@ -96,6 +111,16 @@
               >
                 <input
                   type="checkbox"
+                  checked={selected_rows.includes(row.__id)}
+                  on:click={() => {
+                    if (selected_rows.includes(row.__id)) {
+                      selected_rows = selected_rows.filter(
+                        (r) => r.__id === row.__id
+                      );
+                    } else {
+                      selected_rows = [...selected_rows, row.__id];
+                    }
+                  }}
                   class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline"
                 />
               </label>
