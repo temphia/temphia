@@ -63,11 +63,24 @@
       columns: $state.columns,
       cells: $state.cells,
       row: ev.detail,
+      onSave: async (data) => {
+        await sheet_service.update_row_cell(ev.detail["__id"], data);
+        app.utils.small_modal_close();
+        await sheet_service.init();
+      },
     });
   };
 
   const doAddRow = () => {
-    app.utils.big_modal_open(AddRow, { columns: $state.columns });
+    app.utils.big_modal_open(AddRow, {
+      columns: $state.columns,
+      onSave: async (data) => {
+        await sheet_service.add_row_cell(data);
+
+        app.utils.small_modal_close();
+        await sheet_service.init();
+      },
+    });
   };
 </script>
 
