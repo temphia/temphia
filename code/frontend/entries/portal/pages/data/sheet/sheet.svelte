@@ -47,5 +47,10 @@
     rows={$state.rows}
     {sheets}
     on:add_column={(ev) => {}}
+    on:action_goto_history={() =>
+      app.nav.admin_data_activity(source, group, "sheets")}
+    on:action_goto_rawtable={() =>
+      app.nav.data_render_table_loader(source, group)}
+    on:add_column={() => {}}
   />
 {/if}
