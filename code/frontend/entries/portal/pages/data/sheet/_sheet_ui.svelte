@@ -39,9 +39,9 @@
   </nav>
 
   <div class="flex p-1 gap-1">
-    <ToolbarAction onClick={() => {}} icon="refresh" name="Refresh" />
-    <ToolbarAction onClick={() => {}} icon="hashtag" name="Raw" />
-    <ToolbarAction onClick={() => {}} icon="calendar" name="History" />
+    <ToolbarAction onClick={() => dispatch("action_refresh")} icon="refresh" name="Refresh" />
+    <ToolbarAction onClick={() => dispatch("action_goto_rawtable")} icon="hashtag" name="Raw" />
+    <ToolbarAction onClick={() => dispatch("action_goto_history")} icon="calendar" name="History" />
   </div>
 
   <div

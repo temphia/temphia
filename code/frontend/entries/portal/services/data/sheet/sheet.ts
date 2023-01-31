@@ -29,7 +29,7 @@ export class SheetGroupService {
   }
 
   init = async () => {
-    const resp = await this.data_sheet_api.list_sheets();
+    const resp = await this.data_sheet_api.list_sheet_group()
     if (!resp.ok) {
       console.log("@err", resp);
       return;

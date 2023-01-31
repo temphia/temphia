@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { SheetColumn } from "../sheets";
   import Layout from "./_layout.svelte";
-  import Cell from "./__cell.svelte";
+  import Cell from "../field/cell.svelte";
 
   export let columns: SheetColumn[];
   export let open_column;
