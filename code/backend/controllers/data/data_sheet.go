@@ -47,6 +47,9 @@ func (c *Controller) LoadSheet(uclaim *claim.Data, data *LoadSheetReq) (*LoadShe
 		return nil, err
 	}
 
+	colNo := len(columns.Rows)
+	count := int64((store.DefaultQueryFetchCount * colNo) + colNo)
+
 	cells, err := dynDb.SimpleQuery(0, store.SimpleQueryReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
@@ -59,16 +62,34 @@ func (c *Controller) LoadSheet(uclaim *claim.Data, data *LoadSheetReq) (*LoadShe
 			},
 		},
 
+		Count:   count,
 		OrderBy: "rowid",
 	})
-
 	if err != nil {
 		return nil, err
 	}
 
+	rowCells := cells.Rows
+
+	if len(cells.Rows) == int(count) {
+		// remove last incomplete cells of a row
+		lastrowId := cells.Rows[len(cells.Rows)-1]["rowid"].(int64)
+		offset := (len(cells.Rows) - 1) - colNo
+
+		for _, cr := range cells.Rows[:offset] {
+			crowId := cr["rowid"].(int64)
+			if crowId == lastrowId {
+				break
+			}
+			offset = offset + 1
+		}
+
+		rowCells = cells.Rows[:offset]
+	}
+
 	return &LoadSheetResp{
 		Columns: columns.Rows,
-		Cells:   cells.Rows,
+		Cells:   rowCells,
 	}, nil
 
 }
