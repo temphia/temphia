@@ -107,21 +107,31 @@
       class="p-1 rounded bg-gray-50 hover:border-blue-400 flex gap-1 flex-wrap"
       style="min-height: 2rem;"
     >
-      {#each "s4-bg.jpg".split(",") as cd}
-        <div class="relative">
-          <button
-            class="text-slate-700 -top-2 -right-2 absolute hover:text-red-600 border rounded-full bg-white"
-          >
-            <Icon solid name="x" class="w-4 h-4" />
-          </button>
+      {#if value}
+        {#each value.split(",") as cd}
+          <div class="relative">
+            <button
+              on:click={() => {
+                const valueArray = value.split(",");
+                value = valueArray.filter((v) => v !== cd).join();
 
-          <img
-            class="h-8 w-auto"
-            src={folder_api && folder_api.getFilePreviewUrl(cd)}
-            alt=""
-          />
-        </div>
-      {/each}
+                onCellChange({
+                  value,
+                });
+              }}
+              class="text-slate-700 -top-2 -right-2 absolute hover:text-red-600 border rounded-full bg-white"
+            >
+              <Icon solid name="x" class="w-4 h-4" />
+            </button>
+
+            <img
+              class="h-8 w-auto"
+              src={folder_api && folder_api.getFilePreviewUrl(cd)}
+              alt=""
+            />
+          </div>
+        {/each}
+      {/if}
     </div>
   {:else if column.ctype === SheetColTypeRatings}
     <div class="flex p-1 gap-1">
@@ -182,11 +192,32 @@
   />
 
   {#if _is_open}
-    <div class="p-1 border rounded shadow h-64 mt-2 border-green-500">
+    <div
+      class="p-1 border rounded shadow h-64 mt-2 border-green-500 overflow-auto"
+    >
       {#if column.ctype === SheetColTypeLocation}
         <MapPanel />
       {:else if column.ctype === SheetColTypeFile}
-        <FilePanel {folder_api} />
+        <FilePanel
+          {folder_api}
+          onFileAdd={(file) => {
+            console.log("@file", file);
+
+            let valueArray = value.split(",");
+            valueArray = valueArray.filter((v) => v !== "");
+            if (valueArray.includes(file)) {
+              return
+            }
+
+            valueArray.push(file);
+
+            value = valueArray.join();
+
+            onCellChange({
+              value,
+            });
+          }}
+        />
       {/if}
     </div>
   {/if}
