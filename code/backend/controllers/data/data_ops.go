@@ -15,26 +15,11 @@ func (c *Controller) LoadGroup(uclaim *claim.Data) (*store.LoadDgroupResp, error
 	}
 
 	tables, err := dynDB.ListTables(uclaim.DataGroup)
-
 	if err != nil {
 		return nil, err
 	}
 
-	if tg.CabinetSource == "" || tg.CabinetFolder == "" {
-		tg.CabinetSource = c.cabHub.DefaultName(uclaim.TenantId)
-		tg.CabinetFolder = store.DefaultDataAssetsFolder
-	}
-
-	fcalim := &claim.Folder{
-		Folder:    tg.CabinetFolder,
-		Source:    tg.CabinetSource,
-		Expiry:    0,
-		TenantId:  "",
-		UserId:    uclaim.UserID,
-		SessionID: uclaim.SessionID,
-	}
-
-	fclaim, err := c.signer.SignFolder(uclaim.TenantId, fcalim)
+	fclaim, err := c.folderTicket(tg, uclaim)
 	if err != nil {
 		return nil, err
 	}
@@ -204,4 +189,24 @@ func (d *Controller) CommentRow(uclaim *claim.Data, table, msg string, rowId int
 		UserId:    uclaim.UserID,
 		Payload:   msg,
 	})
+}
+
+func (c *Controller) folderTicket(group *entities.TableGroup, uclaim *claim.Data) (string, error) {
+
+	if group.CabinetSource == "" || group.CabinetFolder == "" {
+		group.CabinetSource = c.cabHub.DefaultName(uclaim.TenantId)
+		group.CabinetFolder = store.DefaultDataAssetsFolder
+	}
+
+	fcalim := &claim.Folder{
+		Folder:    group.CabinetFolder,
+		Source:    group.CabinetSource,
+		Expiry:    0,
+		TenantId:  uclaim.TenantId,
+		UserId:    uclaim.UserID,
+		SessionID: uclaim.SessionID,
+	}
+
+	return c.signer.SignFolder(uclaim.TenantId, fcalim)
+
 }

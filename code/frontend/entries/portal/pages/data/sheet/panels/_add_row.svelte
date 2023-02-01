@@ -5,6 +5,7 @@
 
   export let columns: SheetColumn[];
   export let onSave = async (data) => {};
+  export let folder_api;
 
   export let open_column;
 
@@ -14,6 +15,7 @@
 <Layout title="Add Row" onClick={async () => onSave(dirty_data)}>
   {#each columns as col}
     <Cell
+      {folder_api}
       column={col}
       bind:open_column
       celldata={dirty_data[col.__id]}

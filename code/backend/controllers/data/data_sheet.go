@@ -11,6 +11,16 @@ func (c *Controller) ListSheetGroup(uclaim *claim.Data) (*ListSheetGroupResp, er
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
+	tg, err := dynDb.GetGroup(uclaim.DataGroup)
+	if err != nil {
+		return nil, err
+	}
+
+	ftok, err := c.folderTicket(tg, uclaim)
+	if err != nil {
+		return nil, err
+	}
+
 	sheetRows, err := dynDb.SimpleQuery(0, store.SimpleQueryReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
@@ -21,9 +31,9 @@ func (c *Controller) ListSheetGroup(uclaim *claim.Data) (*ListSheetGroupResp, er
 	}
 
 	return &ListSheetGroupResp{
-		Sheets: sheetRows.Rows,
+		Sheets:       sheetRows.Rows,
+		FolderTicket: ftok,
 	}, nil
-
 }
 
 func (c *Controller) LoadSheet(uclaim *claim.Data, data *LoadSheetReq) (*LoadSheetResp, error) {
@@ -373,7 +383,8 @@ type ListSheetGroupReq struct {
 }
 
 type ListSheetGroupResp struct {
-	Sheets []map[string]any `json:"sheets,omitempty"`
+	Sheets       []map[string]any `json:"sheets,omitempty"`
+	FolderTicket string           `json:"folder_ticket,omitempty"`
 }
 
 type LoadSheetReq struct {

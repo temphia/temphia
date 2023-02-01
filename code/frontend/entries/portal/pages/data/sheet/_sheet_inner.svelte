@@ -21,6 +21,7 @@
   let state: Writable<SheetState>;
   let sheet_service: SheetService;
   let force_render_index;
+  let folder_api;
 
   let selected_rows = [];
 
@@ -35,7 +36,7 @@
     sheet_service = ssvc;
     state = ssvc.state;
     sheet_service.force_render_index;
-
+    folder_api = sheet_service.group.folder_api;
     loading = false;
   };
   load();
@@ -63,6 +64,7 @@
       columns: $state.columns,
       cells: $state.cells,
       row: ev.detail,
+      folder_api,
       onSave: async (data) => {
         await sheet_service.update_row_cell(ev.detail["__id"], data);
         app.utils.small_modal_close();
@@ -74,6 +76,7 @@
   const doAddRow = () => {
     app.utils.big_modal_open(AddRow, {
       columns: $state.columns,
+      folder_api,
       onSave: async (data) => {
         await sheet_service.add_row_cell(data);
 

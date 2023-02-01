@@ -1,5 +1,5 @@
 import { writable, Writable } from "svelte/store";
-import type { DataAPI, FolderTktAPI } from "../../../../../lib/apiv2";
+import { DataAPI, FolderTktAPI } from "../../../../../lib/apiv2";
 import type { DataSheetAPI } from "../../../../../lib/apiv2/data_sheet";
 import type {
   SheetCell,
@@ -24,7 +24,6 @@ export class SheetGroupService {
     this.group_slug = group;
     this.active_sheets = new Map();
     this.sheets = [];
-    this.folder_api = null;
     this.data_api = api;
     this.data_sheet_api = api.sheet_api();
   }
@@ -37,6 +36,8 @@ export class SheetGroupService {
     }
 
     this.sheets = resp.data["sheets"] || [];
+    const folder_ticket = resp.data["folder_ticket"] || "";
+    this.folder_api = new FolderTktAPI(this.data_api.base_url, folder_ticket);
   };
 
   get_sheet_service = async (sheetid: string) => {

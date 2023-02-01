@@ -7,6 +7,7 @@
   export let row: SheetRow;
   export let cells: { [_: number]: { [_: string]: SheetCell } };
   export let onSave = async (data) => {};
+  export let folder_api;
 
   let open_column;
 
@@ -16,6 +17,7 @@
 <Layout title="Edit Row" onClick={() => onSave(current_cells)}>
   {#each columns as col}
     <Cell
+      {folder_api}
       column={col}
       bind:open_column
       celldata={current_cells[col.__id]}
