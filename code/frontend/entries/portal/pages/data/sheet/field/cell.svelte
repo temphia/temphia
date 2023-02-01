@@ -186,7 +186,7 @@
       {#if column.ctype === SheetColTypeLocation}
         <MapPanel />
       {:else if column.ctype === SheetColTypeFile}
-        <FilePanel />
+        <FilePanel {folder_api} />
       {/if}
     </div>
   {/if}
