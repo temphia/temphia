@@ -12,11 +12,13 @@
     SheetColTypeNumber,
     SheetColTypeRatings,
     SheetColTypeReference,
+    SheetColTypeRemote,
     SheetColumn,
   } from "../sheets";
   import type { FolderTktAPI } from "../../../../../../lib/apiv2";
   import CellActions from "./_cell_actions.svelte";
   import Reference from "./_reference.svelte";
+  import Remote from "./_remote.svelte";
 
   export let column: SheetColumn;
   export let open_column;
@@ -49,6 +51,7 @@
     [SheetColTypeLocation]: "location-marker",
     [SheetColTypeFile]: "photograph",
     [SheetColTypeReference]: "paper-clip",
+    [SheetColTypeRemote]: "external-link",
   };
 </script>
 
@@ -169,6 +172,13 @@
         <strong class="font-semibold text-gray-700">{value_num}</strong>
       </span>
     </div>
+  {:else if column.ctype === SheetColTypeRemote}
+    <div class="flex gap-1">
+      <span class="bg-yellow-100 rounded p-0.5 text-gray-600">
+        Remote:
+        <strong class="font-semibold text-gray-700">{value}</strong>
+      </span>
+    </div>
   {:else if column.ctype === SheetColTypeLocation}
     <div class="flex gap-1">
       <span class="bg-yellow-100 rounded p-0.5 text-gray-600">
@@ -205,6 +215,8 @@
     >
       {#if column.ctype === SheetColTypeLocation}
         <MapPanel />
+      {:else if column.ctype === SheetColTypeRemote}
+        <Remote />
       {:else if column.ctype === SheetColTypeReference}
         <Reference />
       {:else if column.ctype === SheetColTypeFile}
