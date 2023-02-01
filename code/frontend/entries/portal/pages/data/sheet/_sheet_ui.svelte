@@ -64,7 +64,7 @@
       name="History"
     />
 
-    {#if selected_rows.length == 1}
+    {#if selected_rows.length === 1}
       <ToolbarAction
         onClick={() => dispatch("action_delete_trash")}
         icon="trash"
@@ -115,8 +115,10 @@
                   on:click={() => {
                     if (selected_rows.includes(row.__id)) {
                       selected_rows = selected_rows.filter(
-                        (r) => r.__id === row.__id
+                        (r) => r !== row.__id
                       );
+                      selected_rows = selected_rows
+
                     } else {
                       selected_rows = [...selected_rows, row.__id];
                     }
