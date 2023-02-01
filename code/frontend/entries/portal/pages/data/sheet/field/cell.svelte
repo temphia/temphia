@@ -11,10 +11,12 @@
     SheetColTypeLongText,
     SheetColTypeNumber,
     SheetColTypeRatings,
+    SheetColTypeReference,
     SheetColumn,
   } from "../sheets";
   import type { FolderTktAPI } from "../../../../../../lib/apiv2";
   import CellActions from "./_cell_actions.svelte";
+  import Reference from "./_reference.svelte";
 
   export let column: SheetColumn;
   export let open_column;
@@ -46,6 +48,7 @@
   const picker_icons = {
     [SheetColTypeLocation]: "location-marker",
     [SheetColTypeFile]: "photograph",
+    [SheetColTypeReference]: "paper-clip",
   };
 </script>
 
@@ -159,19 +162,24 @@
         </button>
       {/each}
     </div>
+  {:else if column.ctype === SheetColTypeReference}
+    <div class="flex gap-1">
+      <span class="bg-yellow-100 rounded p-0.5 text-gray-600">
+        Ref:
+        <strong class="font-semibold text-gray-700">{value_num}</strong>
+      </span>
+    </div>
   {:else if column.ctype === SheetColTypeLocation}
-    <div class="flex cursor-pointer justify-between">
-      <div class="flex gap-1" on:click={toggle}>
-        <span class="bg-yellow-100 rounded p-0.5 text-gray-600">
-          Lat
-          <strong class="font-semibold text-gray-700">{"13.4"}</strong>
-        </span>
+    <div class="flex gap-1">
+      <span class="bg-yellow-100 rounded p-0.5 text-gray-600">
+        Lat
+        <strong class="font-semibold text-gray-700">{"13.4"}</strong>
+      </span>
 
-        <span class="bg-yellow-100 rounded p-0.5 text-gray-600">
-          Long
-          <strong class="font-semibold text-gray-700">{"78.71"}</strong>
-        </span>
-      </div>
+      <span class="bg-yellow-100 rounded p-0.5 text-gray-600">
+        Long
+        <strong class="font-semibold text-gray-700">{"78.71"}</strong>
+      </span>
     </div>
   {:else}
     <input
@@ -197,6 +205,8 @@
     >
       {#if column.ctype === SheetColTypeLocation}
         <MapPanel />
+      {:else if column.ctype === SheetColTypeReference}
+        <Reference />
       {:else if column.ctype === SheetColTypeFile}
         <FilePanel
           {folder_api}
@@ -206,7 +216,7 @@
             let valueArray = value.split(",");
             valueArray = valueArray.filter((v) => v !== "");
             if (valueArray.includes(file)) {
-              return
+              return;
             }
 
             valueArray.push(file);
