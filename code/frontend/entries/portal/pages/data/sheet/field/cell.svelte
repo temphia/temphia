@@ -20,6 +20,7 @@
   import CellActions from "./_cell_actions.svelte";
   import Reference from "./_reference.svelte";
   import Remote from "./_remote.svelte";
+  import ColorPanel from "./_color_panel.svelte";
 
   export let column: SheetColumn;
   export let open_column;
@@ -31,6 +32,7 @@
   let value = celldata["value"] || "";
   let value_num = celldata["numval"] || 0;
   let color = celldata["color"];
+  let color_open = false;
 
   $: _is_open = open_column === column.__id;
 
@@ -39,6 +41,7 @@
       open_column = null;
     } else {
       open_column = column.__id;
+      color_open = false;
     }
   };
 
@@ -54,16 +57,27 @@
     [SheetColTypeReference]: "paper-clip",
     [SheetColTypeRemote]: "external-link",
   };
+
+  const onColorChange = (ev) => {
+    color = ev.target["value"];
+    onCellChange({
+      color,
+    });
+  };
 </script>
 
 <div
   class="py-2 border-b pl-2 border-l-4 border-l-white rounded   border-l-{color}-400"
+  style="border-left-color: {color};"
 >
   <label class="mb-2 text-sm font-bold text-gray-700 uppercase" for={id}>
     <span class="inline-flex">
-      <Icon name={SheetCtypeIcons[column.ctype]} class="h-5 w-5 mr-1 text-gray-500" solid />
+      <Icon
+        name={SheetCtypeIcons[column.ctype]}
+        class="h-5 w-5 mr-1 text-gray-500"
+        solid
+      />
       {column.name || `Column ${column.__id}`}
-
     </span>
   </label>
 
@@ -207,7 +221,10 @@
   {/if}
 
   <CellActions
-    onCellColor={() => {}}
+    onCellColor={() => {
+      open_column = null;
+      color_open = !color_open;
+    }}
     is_cell_open={_is_open}
     onCellClose={close}
     onPick={toggle}
@@ -247,5 +264,9 @@
         />
       {/if}
     </div>
+  {/if}
+
+  {#if !open_column && color_open}
+    <ColorPanel {onColorChange} {color} />
   {/if}
 </div>
