@@ -176,6 +176,12 @@ func (s *Server) UpdateRowWithCell(uclaim *claim.Data, ctx *gin.Context) {
 	rid, _ := strconv.ParseInt(ctx.Param("rid"), 10, 64)
 
 	data := make(map[int64]map[string]any, 0)
+	err := ctx.BindJSON(&data)
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
 	resp, err := s.cData.UpdateRowWithCell(uclaim, sid, rid, data)
 	httpx.WriteJSON(ctx, resp, err)
 

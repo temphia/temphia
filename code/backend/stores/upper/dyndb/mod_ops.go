@@ -11,6 +11,8 @@ import (
 func (d *DynDB) newRow(txid uint32, req store.NewRowReq) (int64, error) {
 	var id int64
 
+	req.Data[store.KeyVersion] = 1
+
 	req.ModCtx.TableName = d.tns.Table(req.TenantId, req.Group, req.Table)
 
 	modsig, err := req.ModCtx.JSON()

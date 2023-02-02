@@ -82,7 +82,7 @@
     >
       <thead class="text-gray-600 border-gray-200 bg-gray-100">
         <tr class="text-left">
-          <th class="py-2 px-3 sticky top-0 border-b "> # </th>
+          <th class="py-2 px-3 sticky top-0 border-b w-20"> # </th>
 
           {#each columns as col}
             <th
@@ -114,7 +114,7 @@
           {@const rowdata = cells[row.__id] || {}}
 
           <tr>
-            <td class="border-dashed border-t border-gray-200 px-3">
+            <td class="border-dashed border-t border-gray-200 px-2">
               <label
                 class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
               >
@@ -134,6 +134,7 @@
                   class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline"
                 />
               </label>
+              <span class="text-xs text-gray-500">{row.__id || ""}</span>
             </td>
 
             {#each columns as col}

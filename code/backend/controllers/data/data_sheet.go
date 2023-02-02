@@ -352,24 +352,60 @@ func (c *Controller) NewRowWithCell(uclaim *claim.Data, sid int64, data map[int6
 
 func (c *Controller) UpdateRowWithCell(uclaim *claim.Data, sid, rid int64, data map[int64]map[string]any) (map[int64]map[string]any, error) {
 
+	pp.Println("@update", data)
+
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	for cellId, cellData := range data {
+	for colid, cellData := range data {
 
-		_, err := dynDb.UpdateRow(0, store.UpdateRowReq{
-			TenantId: uclaim.TenantId,
-			Id:       cellId,
-			Group:    group,
-			Table:    store.SheetRowTable,
-			Data:     cellData,
-			ModCtx: store.ModCtx{
-				UserId: uclaim.UserID,
-			},
-		})
-		if err != nil {
-			return nil, err
+		pp.Println("@data", cellData)
+
+		cellId, cellOk := cellData[store.KeyPrimary].(float64)
+		version, _ := cellData[store.KeyVersion].(float64)
+		if !cellOk {
+			cellData["rowid"] = rid
+			cellData["sheetid"] = sid
+			cellData["colid"] = colid
+
+			_, err := dynDb.NewRow(0, store.NewRowReq{
+				TenantId: uclaim.TenantId,
+				Group:    group,
+				Table:    store.SheetCellTable,
+				Data:     cellData,
+				ModCtx: store.ModCtx{
+					UserId: uclaim.UserID,
+				},
+			})
+			if err != nil {
+				return nil, err
+			}
+
+		} else {
+
+			delete(cellData, store.KeyPrimary)
+			delete(cellData, store.KeyVersion)
+			delete(cellData, "rowid")
+			delete(cellData, "sheetid")
+			delete(cellData, "colid")
+
+			_, err := dynDb.UpdateRow(0, store.UpdateRowReq{
+				TenantId: uclaim.TenantId,
+				Id:       int64(cellId),
+				Group:    group,
+				Table:    store.SheetCellTable,
+				Data:     cellData,
+				Version:  int64(version),
+				ModCtx: store.ModCtx{
+					UserId: uclaim.UserID,
+				},
+			})
+			if err != nil {
+				return nil, err
+			}
+
 		}
+
 	}
 
 	return nil, nil
