@@ -115,7 +115,7 @@
       value={Number(value_num)}
       on:change={(ev) => {
         onCellChange({
-          value_num: Number(ev.target["value"]),
+          numval: Number(ev.target["value"]),
         });
       }}
       type="number"
@@ -170,7 +170,7 @@
             }
 
             onCellChange({
-              value_num,
+              numval:value_num,
             });
           }}
         >

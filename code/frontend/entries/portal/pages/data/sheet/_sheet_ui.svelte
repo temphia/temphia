@@ -13,6 +13,8 @@
     SheetColTypeDate,
     SheetCtypeIcons,
     SheetColTypeFile,
+    SheetColTypeRatings,
+    SheetColTypeNumber,
   } from "./sheets";
 
   export let columns: SheetColumn[];
@@ -148,25 +150,40 @@
             </td>
 
             {#each columns as col}
-              {@const celldata = rowdata[col.__id]}
-              {@const color = (celldata || {})["color"] || ""}
+              {@const hasCellData = !!rowdata[col.__id]}
+              {@const celldata = rowdata[col.__id] || {}}
+              {@const color = celldata["color"] || ""}
+              {@const value = celldata["value"] || ""}
+              {@const num_value = celldata["numval"] || 0}
               <td
                 class="border-dashed border-t border-gray-200 bg-{color}-400"
                 style="background-color: {color};"
               >
-                {#if celldata}
+                {#if hasCellData}
                   <span class="text-gray-700 px-6 py-3 flex items-center">
                     {#if col.ctype === SheetColTypeBoolean}
-                      {#if celldata["value"] === "true"}
+                      {#if value === "true"}
                         <Icon name="check" class="w-6 h-6 text-green-500" />
-                      {:else if celldata["value"] === "false"}
+                      {:else if value === "false"}
                         <Icon name="x" class="w-6 h-6 text-red-500" />
                       {/if}
                     {:else if col.ctype === SheetColTypeDate}
-                      {new Date(celldata.value).toLocaleDateString()}
+                      {new Date(value).toLocaleDateString()}
+                    {:else if col.ctype === SheetColTypeRatings}
+                      {#if num_value}
+                        {#each [1, 2, 3, 4, 5] as rt}
+                          {#if rt <= num_value}
+                            <Icon
+                              name="star"
+                              class="h-5 w-5 text-yellow-400 "
+                              solid={true}
+                            />
+                          {/if}
+                        {/each}
+                      {/if}
                     {:else if col.ctype === SheetColTypeFile}
-                      {#if celldata["value"]}
-                        {#each celldata["value"].split(",") as cd}
+                      {#if value}
+                        {#each value.split(",") as cd}
                           <div class="flex gap-1">
                             <img
                               class="h-8 w-auto border rounded"
@@ -177,8 +194,10 @@
                           </div>
                         {/each}
                       {/if}
+                    {:else if col.ctype === SheetColTypeNumber}
+                      {num_value}
                     {:else}
-                      {celldata["value"] || ""}
+                      {value}
                     {/if}
                   </span>
                 {/if}
