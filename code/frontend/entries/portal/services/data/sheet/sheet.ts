@@ -13,7 +13,7 @@ export class SheetGroupService {
   group_slug: string;
   active_sheets: Map<string, SheetService>;
 
-  sheets: Sheet[];
+  sheets: Writable<Sheet[]>;
 
   folder_api: FolderTktAPI;
   data_api: DataAPI;
@@ -23,7 +23,7 @@ export class SheetGroupService {
     this.source = source;
     this.group_slug = group;
     this.active_sheets = new Map();
-    this.sheets = [];
+    this.sheets = writable([]);
     this.data_api = api;
     this.data_sheet_api = api.sheet_api();
   }
@@ -35,7 +35,8 @@ export class SheetGroupService {
       return;
     }
 
-    this.sheets = resp.data["sheets"] || [];
+    this.sheets.set(resp.data["sheets"] || []);
+
     const folder_ticket = resp.data["folder_ticket"] || "";
     this.folder_api = new FolderTktAPI(this.data_api.base_url, folder_ticket);
   };
@@ -59,7 +60,8 @@ export class SheetGroupService {
     if (!resp.ok) {
       return;
     }
-    this.sheets = resp.data;
+
+    this.sheets.set(resp.data)
   };
 }
 
@@ -142,6 +144,12 @@ export class SheetService {
     await this.group.refetch_sheets();
 
     this.force_render_index.update((old) => old + 1);
+  };
+
+  remove_sheet = async () => {
+    await this.api.delete_sheet(this.sheetid);
+    this.group.active_sheets.delete(this.sheetid)
+    await this.group.refetch_sheets();
   };
 
   add_column = async (name: string, ctype: string, opts: any) => {

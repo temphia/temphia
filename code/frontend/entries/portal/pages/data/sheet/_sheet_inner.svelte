@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import type { Writable } from "svelte/store";
+  import { get, Writable } from "svelte/store";
 
   import { LoadingSpinner, PortalService } from "../../admin/core";
   import type { SheetService, SheetState } from "../../../services/data";
@@ -10,6 +10,7 @@
   import AddSheet from "./panels/_add_sheet.svelte";
   import EditRow from "./panels/_edit_row.svelte";
   import AddRow from "./panels/_add_row.svelte";
+  import RemoveSheetDialog from "./panels/_remove_sheet_dialog.svelte";
 
   export let source;
   export let group;
@@ -22,15 +23,18 @@
   let sheet_service: SheetService;
   let force_render_index;
   let folder_api;
+  let sheets;
 
   let selected_rows = [];
 
   const load = async () => {
     const dsvc = await app.get_data_service();
     const gsvc = await dsvc.group_sheet(source, group);
-    if (gsvc.sheets.length === 0) {
+    if (get(gsvc.sheets).length === 0) {
       return;
     }
+
+    sheets = gsvc.sheets;
 
     const ssvc = await gsvc.get_sheet_service(sheetid);
     sheet_service = ssvc;
@@ -47,6 +51,23 @@
         await sheet_service.add_sheet(name, opts);
         app.utils.small_modal_close();
       },
+    });
+  };
+
+  const doRemoveSheet = () => {
+    const sheet = get(sheet_service.group.sheets).filter(
+      (s) => s.__id === Number(sheetid)
+    )[0];
+
+    app.utils.small_modal_open(RemoveSheetDialog, {
+      name: sheet.name,
+      sheet_id: sheetid,
+      Confirm: async () => {
+        await sheet_service.remove_sheet();
+        app.utils.small_modal_close();
+        app.nav.data_render_sheet_loader(source, group);
+      },
+      Deny: () => app.utils.small_modal_close(),
     });
   };
 
@@ -69,7 +90,6 @@
         await sheet_service.update_row_cell(ev.detail["__id"], data);
         app.utils.big_modal_close();
         await sheet_service.init();
-
       },
     });
   };
@@ -80,7 +100,7 @@
       folder_api,
       onSave: async (data) => {
         await sheet_service.add_row_cell(data);
-        
+
         app.utils.big_modal_close();
         await sheet_service.init();
       },
@@ -99,7 +119,7 @@
       cells={$state.cells}
       columns={$state.columns}
       rows={$state.rows}
-      sheets={sheet_service.group.sheets}
+      sheets={$sheets}
       on:add_column={doAddColumn}
       on:action_goto_history={() =>
         app.nav.admin_data_activity(source, group, "sheets")}
@@ -112,6 +132,7 @@
       on:change_sheet={(ev) => {
         app.nav.data_render_sheet(source, group, ev.detail);
       }}
+      on:remove_sheet={doRemoveSheet}
     />
   {/key}
 {/if}

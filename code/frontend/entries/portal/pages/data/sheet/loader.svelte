@@ -3,6 +3,7 @@
 
   import { LoadingSpinner, PortalService } from "../../admin/core";
   import { getContext } from "svelte";
+  import { get } from "svelte/store";
 
   export let source = $params.source;
   export let group = $params.dgroup;
@@ -15,11 +16,13 @@
     const dsvc = await app.get_data_service();
     const gsvc = await dsvc.group_sheet(source, group);
 
-    if (gsvc.sheets.length === 0) {
+    const sheets = get(gsvc.sheets);
+
+    if (sheets.length === 0) {
       return;
     }
 
-    app.nav.data_render_sheet(source, group, gsvc.sheets[0]["__id"]);
+    app.nav.data_render_sheet(source, group, String(sheets[0]["__id"]));
   };
   load();
 </script>
