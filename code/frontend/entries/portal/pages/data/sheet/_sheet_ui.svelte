@@ -168,7 +168,7 @@
                         <Icon name="x" class="w-6 h-6 text-red-500" />
                       {/if}
                     {:else if col.ctype === SheetColTypeDate}
-                      {new Date(value).toLocaleDateString()}
+                      {value && new Date(value).toLocaleDateString()}
                     {:else if col.ctype === SheetColTypeRatings}
                       {#if num_value}
                         {#each [1, 2, 3, 4, 5] as rt}

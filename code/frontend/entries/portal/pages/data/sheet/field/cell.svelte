@@ -99,7 +99,7 @@
         checked={value == "true"}
         on:change={(ev) => {
           let v = "false";
-          if (value == ev.target["checked"]) {
+          if (ev.target["checked"]) {
             v = "true";
           }
           onCellChange({
@@ -125,6 +125,9 @@
       class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline hover:border-blue-400"
       {id}
       {value}
+      on:change={(ev) => {
+        console.log("@value", ev.target["value"]);
+      }}
       type="datetime-local"
     />
   {:else if column.ctype === SheetColTypeFile}
@@ -170,7 +173,7 @@
             }
 
             onCellChange({
-              numval:value_num,
+              numval: value_num,
             });
           }}
         >
