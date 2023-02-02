@@ -67,8 +67,9 @@
       folder_api,
       onSave: async (data) => {
         await sheet_service.update_row_cell(ev.detail["__id"], data);
-        app.utils.small_modal_close();
+        app.utils.big_modal_close();
         await sheet_service.init();
+
       },
     });
   };
@@ -79,8 +80,8 @@
       folder_api,
       onSave: async (data) => {
         await sheet_service.add_row_cell(data);
-
-        app.utils.small_modal_close();
+        
+        app.utils.big_modal_close();
         await sheet_service.init();
       },
     });
@@ -92,6 +93,7 @@
 {:else}
   {#key $force_render_index}
     <SheetUi
+      {folder_api}
       bind:selected_rows
       active_sheet={Number(sheetid)}
       cells={$state.cells}

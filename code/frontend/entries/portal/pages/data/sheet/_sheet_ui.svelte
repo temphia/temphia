@@ -1,6 +1,7 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import { createEventDispatcher } from "svelte";
+  import type { FolderTktAPI } from "../../../../../lib/apiv2";
   import ToolbarAction from "../table/core/renderer/_toolbar_action.svelte";
 
   import {
@@ -11,6 +12,7 @@
     SheetColTypeBoolean,
     SheetColTypeDate,
     SheetCtypeIcons,
+    SheetColTypeFile,
   } from "./sheets";
 
   export let columns: SheetColumn[];
@@ -19,6 +21,7 @@
   export let sheets: Sheet[];
   export let active_sheet: number;
   export let selected_rows = [];
+  export let folder_api: FolderTktAPI;
 
   const dispatch = createEventDispatcher();
 </script>
@@ -142,7 +145,7 @@
               {@const color = (celldata || {})["color"] || ""}
               <td
                 class="border-dashed border-t border-gray-200 bg-{color}-400"
-                style="border-left-color: {color};"
+                style="background-color: {color};"
               >
                 {#if celldata}
                   <span class="text-gray-700 px-6 py-3 flex items-center">
@@ -154,6 +157,19 @@
                       {/if}
                     {:else if col.ctype === SheetColTypeDate}
                       {new Date(celldata.value).toLocaleDateString()}
+                    {:else if col.ctype === SheetColTypeFile}
+                      {#if celldata["value"]}
+                        {#each celldata["value"].split(",") as cd}
+                          <div class="flex gap-1">
+                            <img
+                              class="h-8 w-auto border rounded"
+                              src={folder_api &&
+                                folder_api.getFilePreviewUrl(cd)}
+                              alt=""
+                            />
+                          </div>
+                        {/each}
+                      {/if}
                     {:else}
                       {celldata["value"] || ""}
                     {/if}
