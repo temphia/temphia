@@ -89,9 +89,12 @@
               class="sticky top-0 border-b  px-6 py-2 font-bold tracking-wider uppercase text-xs text-gray-700"
             >
               <span class="inline-flex">
-                <Icon name={SheetCtypeIcons[col.ctype]} class="h-5 w-5 mr-1 text-gray-500" solid />
+                <Icon
+                  name={SheetCtypeIcons[col.ctype]}
+                  class="h-5 w-5 mr-1 text-gray-500"
+                  solid
+                />
                 {col.name || `Column ${col.__id}`}
-
               </span>
             </th>
           {/each}
@@ -135,8 +138,11 @@
 
             {#each columns as col}
               {@const celldata = rowdata[col.__id]}
-
-              <td class="border-dashed border-t border-gray-200">
+              {@const color = (celldata || {})["color"] || ""}
+              <td
+                class="border-dashed border-t border-gray-200 bg-{color}-400"
+                style="border-left-color: {color};"
+              >
                 {#if celldata}
                   <span class="text-gray-700 px-6 py-3 flex items-center">
                     {#if col.ctype === SheetColTypeBoolean}

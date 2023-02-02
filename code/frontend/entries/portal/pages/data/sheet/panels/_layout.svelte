@@ -53,4 +53,25 @@
   <div class="border-l-purple-400" />
   <div class="border-l-fuchsia-400" />
   <div class="border-l-pink-400" />
+
+  <!--  -->
+
+  <div class="bg-red-400" />
+  <div class="bg-blue-400" />
+  <div class="bg-green-400" />
+  <div class="bg-gray-400" />
+  <div class="bg-yellow-400" />
+  <div class="bg-zinc-400" />
+  <div class="bg-emerald-400" />
+  <div class="bg-orange-400" />
+  <div class="bg-lime-400" />
+  <div class="bg-amber-400" />
+  <div class="bg-teal-400" />
+  <div class="bg-cyan-400" />
+  <div class="bg-sky-400" />
+  <div class="bg-indigo-400" />
+  <div class="bg-violet-400" />
+  <div class="bg-purple-400" />
+  <div class="bg-fuchsia-400" />
+  <div class="bg-pink-400" />
 </div>
