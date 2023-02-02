@@ -10,6 +10,7 @@
     Sheet,
     SheetColTypeBoolean,
     SheetColTypeDate,
+    SheetCtypeIcons,
   } from "./sheets";
 
   export let columns: SheetColumn[];
@@ -85,9 +86,14 @@
 
           {#each columns as col}
             <th
-              class=" sticky top-0 border-b  px-6 py-2 font-bold tracking-wider uppercase text-xs userId"
-              >{col.name || `Column ${col.__id}`}</th
+              class="sticky top-0 border-b  px-6 py-2 font-bold tracking-wider uppercase text-xs text-gray-700"
             >
+              <span class="inline-flex">
+                <Icon name={SheetCtypeIcons[col.ctype]} class="h-5 w-5 mr-1 text-gray-500" solid />
+                {col.name || `Column ${col.__id}`}
+
+              </span>
+            </th>
           {/each}
 
           <th class="w-10">
@@ -117,8 +123,7 @@
                       selected_rows = selected_rows.filter(
                         (r) => r !== row.__id
                       );
-                      selected_rows = selected_rows
-
+                      selected_rows = selected_rows;
                     } else {
                       selected_rows = [...selected_rows, row.__id];
                     }

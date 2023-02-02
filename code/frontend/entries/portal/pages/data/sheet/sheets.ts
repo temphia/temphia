@@ -24,6 +24,19 @@ export const SheetColTypes = [
   SheetColTypeRemote,
 ];
 
+export const SheetCtypeIcons = {
+  [SheetColTypeText]: "annotation",
+  [SheetColTypeLongText]: "document-text",
+  [SheetColTypeNumber]: "hashtag",
+  [SheetColTypeDate]: "calendar",
+  [SheetColTypeBoolean]: "check",
+  [SheetColTypeRatings]: "star",
+  [SheetColTypeLocation]: "map",
+  [SheetColTypeFile]: "document",
+  [SheetColTypeReference]: "paper-clip",
+  [SheetColTypeRemote]: "external-link",
+};
+
 export interface Sheet {
   __id: number;
   name: string;

@@ -14,6 +14,7 @@
     SheetColTypeReference,
     SheetColTypeRemote,
     SheetColumn,
+    SheetCtypeIcons,
   } from "../sheets";
   import type { FolderTktAPI } from "../../../../../../lib/apiv2";
   import CellActions from "./_cell_actions.svelte";
@@ -58,8 +59,12 @@
 <div
   class="py-2 border-b pl-2 border-l-4 border-l-white rounded   border-l-{color}-400"
 >
-  <label class="block mb-2 text-sm font-bold text-gray-700 uppercase" for={id}
-    >{column.name || `Column ${column.__id}`}
+  <label class="mb-2 text-sm font-bold text-gray-700 uppercase" for={id}>
+    <span class="inline-flex">
+      <Icon name={SheetCtypeIcons[column.ctype]} class="h-5 w-5 mr-1 text-gray-500" solid />
+      {column.name || `Column ${column.__id}`}
+
+    </span>
   </label>
 
   {#if column.ctype === SheetColTypeLongText}
@@ -167,14 +172,14 @@
     </div>
   {:else if column.ctype === SheetColTypeReference}
     <div class="flex gap-1">
-      <span class="bg-yellow-100 rounded p-0.5 text-gray-600">
+      <span class="bg-blue-100 rounded p-0.5 text-gray-600">
         Ref:
         <strong class="font-semibold text-gray-700">{value_num}</strong>
       </span>
     </div>
   {:else if column.ctype === SheetColTypeRemote}
     <div class="flex gap-1">
-      <span class="bg-yellow-100 rounded p-0.5 text-gray-600">
+      <span class="bg-green-100 rounded p-0.5 text-gray-600">
         Remote:
         <strong class="font-semibold text-gray-700">{value}</strong>
       </span>
