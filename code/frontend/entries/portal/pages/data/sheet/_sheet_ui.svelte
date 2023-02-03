@@ -221,7 +221,7 @@
 <div class="fixed bottom-4 z-5 right-14">
   <button
     on:click={() => dispatch("add_row")}
-    class="p-0 w-8 h-8 bg-blue-400 rounded-full hover:bg-blue-700 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
+    class="p-0 w-8 h-8 bg-blue-500 rounded-full hover:bg-blue-800 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
   >
     <Icon name="plus" class="w-6 h-6 inline-block text-white" />
   </button>
