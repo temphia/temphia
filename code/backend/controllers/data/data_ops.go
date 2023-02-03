@@ -80,16 +80,51 @@ func (d *Controller) UpdateRow(uclaim *claim.Data, tslug string, id, version int
 	})
 }
 
-func (d *Controller) DeleteRow(uclaim *claim.Data, tslug string, id int64) error {
+func (d *Controller) DeleteRowBatch(uclaim *claim.Data, tslug string, filterOpts []*store.FilterCond) error {
 	source, group := getTarget(uclaim)
-
 	dynDb := d.dynHub.GetSource(source, uclaim.TenantId)
-	return dynDb.DeleteRows(0, store.DeleteRowReq{
+
+	return dynDb.DeleteRowBatch(0, store.DeleteRowBatchReq{
+		TenantId:    uclaim.TenantId,
+		Group:       group,
+		Table:       tslug,
+		FilterConds: filterOpts,
+		ModCtx: store.ModCtx{
+			UserId: uclaim.UserID,
+		},
+	})
+}
+
+func (d *Controller) DeleteRowMulti(uclaim *claim.Data, tslug string, ids []int64) error {
+	source, group := getTarget(uclaim)
+	dynDb := d.dynHub.GetSource(source, uclaim.TenantId)
+
+	return dynDb.DeleteRowMulti(0, store.DeleteRowMultiReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    tslug,
-		Id:       []int64{id},
+		Ids:      ids,
+		ModCtx: store.ModCtx{
+			UserId: uclaim.UserID,
+		},
 	})
+
+}
+
+func (d *Controller) DeleteRow(uclaim *claim.Data, tslug string, id int64) error {
+	source, group := getTarget(uclaim)
+	dynDb := d.dynHub.GetSource(source, uclaim.TenantId)
+
+	return dynDb.DeleteRow(0, store.DeleteRowReq{
+		TenantId: uclaim.TenantId,
+		Group:    group,
+		Table:    tslug,
+		Id:       id,
+		ModCtx: store.ModCtx{
+			UserId: uclaim.UserID,
+		},
+	})
+
 }
 
 func (c *Controller) LoadTable(uclaim *claim.Data, req store.LoadTableReq, tslug string) (*store.LoadTableResp, error) {

@@ -170,7 +170,9 @@ type DynSource interface {
 	NewRow(txid uint32, req NewRowReq) (int64, error)
 	GetRow(txid uint32, req GetRowReq) (map[string]any, error)
 	UpdateRow(txid uint32, req UpdateRowReq) (map[string]any, error)
-	DeleteRows(txid uint32, req DeleteRowReq) error
+	DeleteRowBatch(txid uint32, req DeleteRowBatchReq) error
+	DeleteRowMulti(txid uint32, req DeleteRowMultiReq) error
+	DeleteRow(txid uint32, req DeleteRowReq) error
 
 	LoadTable(txid uint32, req LoadTableReq) (*LoadTableResp, error)
 
@@ -229,7 +231,9 @@ type DynDB interface {
 
 	GetRow(txid uint32, req GetRowReq) (map[string]any, error)
 	UpdateRow(txid uint32, req UpdateRowReq) (map[string]any, error)
-	DeleteRows(txid uint32, req DeleteRowReq) error
+	DeleteRowBatch(txid uint32, req DeleteRowBatchReq) error
+	DeleteRowMulti(txid uint32, req DeleteRowMultiReq) error
+	DeleteRow(txid uint32, req DeleteRowReq) error
 
 	SimpleQuery(txid uint32, req SimpleQueryReq) (*QueryResult, error)
 	FTSQuery(txid uint32, req FTSQueryReq) (*QueryResult, error)

@@ -56,11 +56,19 @@ func (d *dynSource) UpdateRow(txid uint32, req store.UpdateRowReq) (map[string]a
 	return data, nil
 }
 
-func (d *dynSource) DeleteRows(txid uint32, req store.DeleteRowReq) error {
+func (d *dynSource) DeleteRowBatch(txid uint32, req store.DeleteRowBatchReq) error {
 	ddb := d.dynDB()
-	// fixme => push to sockd chan
+	return ddb.DeleteRowBatch(txid, req)
+}
 
-	return ddb.DeleteRows(txid, req)
+func (d *dynSource) DeleteRowMulti(txid uint32, req store.DeleteRowMultiReq) error {
+	ddb := d.dynDB()
+	return ddb.DeleteRowMulti(txid, req)
+}
+
+func (d *dynSource) DeleteRow(txid uint32, req store.DeleteRowReq) error {
+	ddb := d.dynDB()
+	return ddb.DeleteRow(txid, req)
 }
 
 func (d *dynSource) SimpleQuery(txid uint32, req store.SimpleQueryReq) (*store.QueryResult, error) {

@@ -190,11 +190,11 @@ func (c *Controller) DeleteSheet(uclaim *claim.Data, id int64) error {
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	dynDb.DeleteRows(0, store.DeleteRowReq{
+	dynDb.DeleteRow(0, store.DeleteRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    store.SheetTable,
-		Id:       []int64{id},
+		Id:       id,
 		ModCtx: store.ModCtx{
 			UserId: uclaim.UserID,
 		},
@@ -288,11 +288,11 @@ func (c *Controller) DeleteSheetColumn(uclaim *claim.Data, sid, cid int64) error
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	return dynDb.DeleteRows(0, store.DeleteRowReq{
+	return dynDb.DeleteRow(0, store.DeleteRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    store.SheetColumnTable,
-		Id:       []int64{cid},
+		Id:       cid,
 		ModCtx: store.ModCtx{
 			UserId: uclaim.UserID,
 		},

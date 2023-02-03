@@ -53,11 +53,11 @@ func (d *DyndbModule) IPC(method string, path string, args xtypes.LazyData) (xty
 		}))
 
 	case "delete_rows":
-		return d.response(nil, d.dynsrc.DeleteRows(txid, store.DeleteRowReq{
+		return d.response(nil, d.dynsrc.DeleteRow(txid, store.DeleteRowReq{
 			TenantId: "",
 			Group:    d.group,
 			Table:    table,
-			Id:       []int64{rowid},
+			Id:       rowid,
 		}))
 	case "simple_query":
 		req := store.SimpleQueryReq{}

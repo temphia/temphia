@@ -52,11 +52,27 @@ type UpdateRowReq struct {
 }
 
 type DeleteRowReq struct {
+	TenantId string `json:"-"`
+	Group    string `json:"group,omitempty"`
+	Table    string `json:"table,omitempty"`
+	Id       int64  `json:"id,omitempty"`
+	ModCtx   ModCtx `json:"mod_ctx,omitempty"`
+}
+
+type DeleteRowMultiReq struct {
 	TenantId string  `json:"-"`
 	Group    string  `json:"group,omitempty"`
 	Table    string  `json:"table,omitempty"`
-	Id       []int64 `json:"id,omitempty"`
+	Ids      []int64 `json:"sid,omitempty"`
 	ModCtx   ModCtx  `json:"mod_ctx,omitempty"`
+}
+
+type DeleteRowBatchReq struct {
+	TenantId    string        `json:"-"`
+	Group       string        `json:"group,omitempty"`
+	Table       string        `json:"table,omitempty"`
+	FilterConds []*FilterCond `json:"filter_conds,omitempty"`
+	ModCtx      ModCtx        `json:"mod_ctx,omitempty"`
 }
 
 type LoadTableReq struct {

@@ -74,8 +74,16 @@ func (d *DynDB) UpdateRow(txid uint32, req store.UpdateRowReq) (map[string]inter
 	return d.updateRow(txid, req)
 }
 
-func (d *DynDB) DeleteRows(txid uint32, req store.DeleteRowReq) error {
-	return d.deleteRows(txid, req)
+func (d *DynDB) DeleteRowBatch(txid uint32, req store.DeleteRowBatchReq) error {
+	return d.deleteRowBatch(txid, req)
+}
+
+func (d *DynDB) DeleteRowMulti(txid uint32, req store.DeleteRowMultiReq) error {
+	return d.deleteRowMulti(txid, req)
+}
+
+func (d *DynDB) DeleteRow(txid uint32, req store.DeleteRowReq) error {
+	return d.deleteRow(txid, req)
 }
 
 func (d *DynDB) SimpleQuery(txid uint32, req store.SimpleQueryReq) (*store.QueryResult, error) {
