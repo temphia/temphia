@@ -100,6 +100,7 @@ func (m *Notz) ServeEditorFile(tenantId, file string, did int64, ctx *gin.Contex
 func (m *Notz) PreformEditorAction(tenantId, name string, did int64, ctx *gin.Context) {
 	out, err := io.ReadAll(ctx.Request.Body)
 	if err != nil {
+		httpx.WriteErr(ctx, err)
 		return
 	}
 
