@@ -190,6 +190,56 @@ func (c *Controller) DeleteSheet(uclaim *claim.Data, id int64) error {
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
+	err := dynDb.DeleteRowBatch(0, store.DeleteRowBatchReq{
+		TenantId: uclaim.TenantId,
+		Group:    group,
+		Table:    store.SheetCellTable,
+		FilterConds: []*store.FilterCond{
+			{
+				Column: "sheetid",
+				Cond:   "equal",
+				Value:  id,
+			},
+		},
+	})
+	if err != nil {
+		pp.Println("@err while clearing cells")
+	}
+
+	dynDb.DeleteRowBatch(0, store.DeleteRowBatchReq{
+		TenantId: uclaim.TenantId,
+		Group:    group,
+		Table:    store.SheetRowTable,
+		FilterConds: []*store.FilterCond{
+			{
+				Column: "sheetid",
+				Cond:   "equal",
+				Value:  id,
+			},
+		},
+	})
+
+	if err != nil {
+		pp.Println("@err while clearing rows")
+	}
+
+	dynDb.DeleteRowBatch(0, store.DeleteRowBatchReq{
+		TenantId: uclaim.TenantId,
+		Group:    group,
+		Table:    store.SheetColumnTable,
+		FilterConds: []*store.FilterCond{
+			{
+				Column: "sheetid",
+				Cond:   "equal",
+				Value:  id,
+			},
+		},
+	})
+
+	if err != nil {
+		pp.Println("@err while clearing columns")
+	}
+
 	dynDb.DeleteRow(0, store.DeleteRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
