@@ -11,6 +11,7 @@
   import EditRow from "./panels/_edit_row.svelte";
   import AddRow from "./panels/_add_row.svelte";
   import RemoveSheetDialog from "./panels/_remove_sheet_dialog.svelte";
+  import EditColumn from "./panels/_edit_column.svelte";
 
   export let source;
   export let group;
@@ -83,6 +84,10 @@
     });
   };
 
+  const doEditColumn = (ev) => {
+    app.utils.small_modal_open(EditColumn, { column: ev.detail });
+  };
+
   const doEditRow = (ev) => {
     app.utils.big_modal_open(EditRow, {
       columns: $state.columns,
@@ -136,6 +141,7 @@
         app.nav.data_render_sheet(source, group, ev.detail);
       }}
       on:remove_sheet={doRemoveSheet}
+      on:edit_column={doEditColumn}
     />
   {/key}
 {/if}

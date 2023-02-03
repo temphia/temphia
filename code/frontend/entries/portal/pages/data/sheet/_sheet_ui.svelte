@@ -99,16 +99,19 @@
 
           {#each columns as col}
             <th
-              class="sticky top-0 border-b  px-6 py-2 font-bold tracking-wider uppercase text-xs text-gray-700 bg-gray-100"
+              class="sticky top-0 border-b  px-6 py-2 font-bold tracking-wider uppercase text-base text-gray-700 bg-gray-100"
             >
-              <span class="inline-flex">
+              <button
+                class="inline-flex"
+                on:click={() => dispatch("edit_column", col)}
+              >
                 <Icon
                   name={SheetCtypeIcons[col.ctype]}
-                  class="h-5 w-5 mr-1 text-gray-500"
+                  class="h-5 w-5 mr-1 mt-1 text-gray-500"
                   solid
                 />
                 {col.name || `Column ${col.__id}`}
-              </span>
+              </button>
             </th>
           {/each}
 
