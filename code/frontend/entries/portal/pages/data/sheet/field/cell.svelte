@@ -21,6 +21,7 @@
   import Reference from "./_reference.svelte";
   import Remote from "./_remote.svelte";
   import ColorPanel from "./_color_panel.svelte";
+  import Point from "./_point.svelte";
 
   export let column: SheetColumn;
   export let open_column;
@@ -202,17 +203,9 @@
       </span>
     </div>
   {:else if column.ctype === SheetColTypeLocation}
-    <div class="flex gap-1">
-      <span class="bg-yellow-100 rounded p-0.5 text-gray-600">
-        Lat
-        <strong class="font-semibold text-gray-700">{"13.4"}</strong>
-      </span>
-
-      <span class="bg-yellow-100 rounded p-0.5 text-gray-600">
-        Long
-        <strong class="font-semibold text-gray-700">{"78.71"}</strong>
-      </span>
-    </div>
+    {#key value}
+      <Point {value} />
+    {/key}
   {:else}
     <input
       {id}
@@ -239,7 +232,14 @@
       class="p-1 border rounded shadow h-64 mt-2 border-green-500 overflow-auto"
     >
       {#if column.ctype === SheetColTypeLocation}
-        <MapPanel />
+        <MapPanel
+          onChange={(val) => {
+            console.log("@value changed", val);
+            value = val;
+            onCellChange({ value });
+          }}
+          {value}
+        />
       {:else if column.ctype === SheetColTypeRemote}
         <Remote />
       {:else if column.ctype === SheetColTypeReference}

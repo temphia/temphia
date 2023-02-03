@@ -1,7 +1,15 @@
 <script lang="ts">
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import { LeafletMap, Marker, Popup, TileLayer } from "svelte-leafletjs";
-  export let lat: number = 27.7116;
-  export let lng: number = 85.3124;
+  import {
+    toGeoJson,
+    fromGeoJsonOrFallback,
+  } from "../../../../../../lib/utils";
+
+  export let value = "{}";
+  export let onChange = (val) => {};
+
+  const [lat, lng] = fromGeoJsonOrFallback(value);
 
   const mapOptions = {
     center: [lat, lng],
@@ -16,6 +24,11 @@
   };
   const current = [lat, lng];
   const maybe = [...current];
+
+  function mark() {
+    current[0] = maybe[0];
+    current[1] = maybe[1];
+  }
 
   function updateCurrent(event) {
     const l = event.detail.latlng;
@@ -50,6 +63,18 @@
       <Marker latLng={current}>
         <Popup>Select a location</Popup>
       </Marker>
+
+      <div class="absolute right-0 top-0 p-1 flex gap-1" style="z-index: 999;">
+        <button
+          class="p-1 bg-blue-400 hover:bg-blue-700 inline-flex text-white rounded-full"
+          on:click={() => {
+            mark();
+            onChange(toGeoJson(maybe[0], maybe[1]));
+          }}
+        >
+          <Icon name="location-marker" class="h-4 w-4" />
+        </button>
+      </div>
     </LeafletMap>
   </div>
 </div>

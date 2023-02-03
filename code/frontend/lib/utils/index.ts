@@ -26,7 +26,7 @@ export const hslColor = (str) => {
 
 export const validateSlug = (v: string) => /^[a-z](-?[a-z])*$/.test(v);
 
-export const validateUserId = (v: string) => /^[a-z]+([a-z0-9_])+/.test(v)
+export const validateUserId = (v: string) => /^[a-z]+([a-z0-9_])+/.test(v);
 
 export const validateEmail = (v: string) =>
   /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
@@ -48,4 +48,31 @@ const imageTypes = ["png", "jpg", "jpeg"];
 export const isImage = (name) => {
   const frags = name.split(".");
   return imageTypes.includes(frags[frags.length - 1]);
+};
+
+export const fromGeoJsonOrFallback = (jstr) => {
+  const fallback = [27.7116, 85.3124];
+
+  try {
+    const jpoint = JSON.parse(jstr);
+    return jpoint["coordinates"] || fallback;
+  } catch (error) {
+    return fallback;
+  }
+};
+
+export const fromGeoJson = (jstr) => {
+  try {
+    const jpoint = JSON.parse(jstr);
+    return jpoint["coordinates"] || [0, 0];
+  } catch (error) {
+    return [0, 0];
+  }
+};
+
+export const toGeoJson = (_lat, _lon) => {
+  return JSON.stringify({
+    type: "Point",
+    coordinates: [_lat, _lon],
+  });
 };

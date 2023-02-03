@@ -15,7 +15,9 @@
     SheetColTypeFile,
     SheetColTypeRatings,
     SheetColTypeNumber,
+    SheetColTypeLocation,
   } from "./sheets";
+  import Point from "./field/_point.svelte";
 
   export let columns: SheetColumn[];
   export let rows: SheetRow[];
@@ -173,6 +175,8 @@
                       {/if}
                     {:else if col.ctype === SheetColTypeDate}
                       {value && new Date(value).toLocaleDateString()}
+                    {:else if col.ctype === SheetColTypeLocation}
+                      <Point {value} />
                     {:else if col.ctype === SheetColTypeRatings}
                       {#if num_value}
                         {#each [1, 2, 3, 4, 5] as rt}
