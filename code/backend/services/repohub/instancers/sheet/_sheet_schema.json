@@ -56,13 +56,6 @@
           "ctype": "number",
           "not_nullable": true
         },
-
-        {
-          "name": "Reference Type",
-          "ctype": "select",
-          "slug": "reftype",
-          "options": ["text", "number"]
-        },
         {
           "name": "Reference Sheet",
           "ctype": "number",

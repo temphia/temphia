@@ -3,16 +3,18 @@ package xbprint
 // syncme => data/sheets.ts
 
 const (
-	SheetColTypeText      = "shorttext"
-	SheetColTypeLongText  = "longtext"
-	SheetColTypeNumber    = "number"
-	SheetColTypeDate      = "datetime"
-	SheetColTypeBoolean   = "bool"
-	SheetColTypeRatings   = "ratings"
-	SheetColTypeLocation  = "location"
-	SheetColTypeFile      = "file"
-	SheetColTypeReference = "reference"
-	SheetColTypeRemote    = "remote"
+	SheetColTypeText          = "shorttext"
+	SheetColTypeLongText      = "longtext"
+	SheetColTypeNumber        = "number"
+	SheetColTypeDate          = "datetime"
+	SheetColTypeBoolean       = "bool"
+	SheetColTypeRatings       = "ratings"
+	SheetColTypeLocation      = "location"
+	SheetColTypeFile          = "file"
+	SheetColTypeReferenceNum  = "ref_text"
+	SheetColTypeReferenceText = "ref_number"
+	SheetColTypeRemoteText    = "remote_text"
+	SheetColTypeRemoteNum     = "remote_number"
 )
 
 type NewSheetGroup struct {

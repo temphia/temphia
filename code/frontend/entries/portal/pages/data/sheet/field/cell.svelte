@@ -11,8 +11,10 @@
     SheetColTypeLongText,
     SheetColTypeNumber,
     SheetColTypeRatings,
-    SheetColTypeReference,
-    SheetColTypeRemote,
+    SheetColTypeReferenceNum,
+    SheetColTypeReferenceText,
+    SheetColTypeRemoteNum,
+    SheetColTypeRemoteText,
     SheetColumn,
     SheetCtypeIcons,
   } from "../sheets";
@@ -55,8 +57,10 @@
   const picker_icons = {
     [SheetColTypeLocation]: "location-marker",
     [SheetColTypeFile]: "photograph",
-    [SheetColTypeReference]: "paper-clip",
-    [SheetColTypeRemote]: "external-link",
+    [SheetColTypeReferenceNum]: "paper-clip",
+    [SheetColTypeReferenceText]: "paper-clip",
+    [SheetColTypeRemoteNum]: "external-link",
+    [SheetColTypeRemoteText]: "external-link",
   };
 
   const onColorChange = (ev) => {
@@ -188,14 +192,28 @@
         </button>
       {/each}
     </div>
-  {:else if column.ctype === SheetColTypeReference}
+  {:else if column.ctype === SheetColTypeReferenceNum}
     <div class="flex gap-1">
       <span class="bg-blue-100 rounded p-0.5 text-gray-600">
         Ref:
         <strong class="font-semibold text-gray-700">{value_num}</strong>
       </span>
     </div>
-  {:else if column.ctype === SheetColTypeRemote}
+  {:else if column.ctype === SheetColTypeReferenceText}
+    <div class="flex gap-1">
+      <span class="bg-blue-100 rounded p-0.5 text-gray-600">
+        Ref:
+        <strong class="font-semibold text-gray-700">{value}</strong>
+      </span>
+    </div>
+  {:else if column.ctype === SheetColTypeRemoteNum}
+    <div class="flex gap-1">
+      <span class="bg-green-100 rounded p-0.5 text-gray-600">
+        Remote:
+        <strong class="font-semibold text-gray-700">{value_num}</strong>
+      </span>
+    </div>
+  {:else if column.ctype === SheetColTypeRemoteText}
     <div class="flex gap-1">
       <span class="bg-green-100 rounded p-0.5 text-gray-600">
         Remote:
@@ -240,9 +258,9 @@
           }}
           {value}
         />
-      {:else if column.ctype === SheetColTypeRemote}
+      {:else if column.ctype === SheetColTypeRemoteNum}
         <Remote />
-      {:else if column.ctype === SheetColTypeReference}
+      {:else if column.ctype === SheetColTypeReferenceNum}
         <Reference />
       {:else if column.ctype === SheetColTypeFile}
         <FilePanel

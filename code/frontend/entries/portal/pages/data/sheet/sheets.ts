@@ -8,8 +8,10 @@ export const SheetColTypeBoolean = "bool";
 export const SheetColTypeRatings = "ratings";
 export const SheetColTypeLocation = "location";
 export const SheetColTypeFile = "file";
-export const SheetColTypeReference = "reference";
-export const SheetColTypeRemote = "remote";
+export const SheetColTypeReferenceNum = "ref_text";
+export const SheetColTypeReferenceText = "ref_number";
+export const SheetColTypeRemoteText = "remote_text";
+export const SheetColTypeRemoteNum = "remote_number";
 
 export const SheetColTypes = [
   SheetColTypeText,
@@ -20,8 +22,10 @@ export const SheetColTypes = [
   SheetColTypeRatings,
   SheetColTypeLocation,
   SheetColTypeFile,
-  SheetColTypeReference,
-  SheetColTypeRemote,
+  SheetColTypeReferenceNum,
+  SheetColTypeReferenceText,
+  SheetColTypeRemoteNum,
+  SheetColTypeRemoteText,
 ];
 
 export const SheetCtypeIcons = {
@@ -33,8 +37,10 @@ export const SheetCtypeIcons = {
   [SheetColTypeRatings]: "star",
   [SheetColTypeLocation]: "map",
   [SheetColTypeFile]: "document",
-  [SheetColTypeReference]: "paper-clip",
-  [SheetColTypeRemote]: "external-link",
+  [SheetColTypeReferenceNum]: "paper-clip",
+  [SheetColTypeReferenceText]: "paper-clip",
+  [SheetColTypeRemoteNum]: "external-link",
+  [SheetColTypeRemoteText]: "external-link",
 };
 
 export interface Sheet {

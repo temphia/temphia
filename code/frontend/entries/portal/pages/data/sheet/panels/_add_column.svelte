@@ -4,7 +4,8 @@
 
   import {
     Sheet,
-    SheetColTypeReference,
+    SheetColTypeReferenceNum,
+    SheetColTypeReferenceText,
     SheetColTypes,
     SheetColTypeText,
   } from "../sheets";
@@ -81,22 +82,7 @@
     </select>
   </div>
 
-  {#if ctype === SheetColTypeReference}
-    <div class="mb-4">
-      <label class="block mb-2 text-sm font-bold text-gray-700" for="reftype"
-        >Ref Type</label
-      >
-
-      <select
-        id="reftype"
-        bind:value={reftype}
-        class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-      >
-        <option value="text">text</option>
-        <option value="number">number</option>
-      </select>
-    </div>
-
+  {#if ctype === SheetColTypeReferenceNum}
     <div class="mb-4">
       <label class="block mb-2 text-sm font-bold text-gray-700" for="refsheet"
         >Ref Sheet</label
