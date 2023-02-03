@@ -61,7 +61,7 @@ export class SheetGroupService {
       return;
     }
 
-    this.sheets.set(resp.data)
+    this.sheets.set(resp.data);
   };
 }
 
@@ -148,16 +148,12 @@ export class SheetService {
 
   remove_sheet = async () => {
     await this.api.delete_sheet(this.sheetid);
-    this.group.active_sheets.delete(this.sheetid)
+    this.group.active_sheets.delete(this.sheetid);
     await this.group.refetch_sheets();
   };
 
-  add_column = async (name: string, ctype: string, opts: any) => {
-    const resp = await this.api.new_column(this.sheetid, {
-      name,
-      ctype,
-      opts,
-    });
+  add_column = async (opts: any) => {
+    const resp = await this.api.new_column(this.sheetid, opts);
     if (!resp.ok) {
       return;
     }

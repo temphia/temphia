@@ -77,8 +77,8 @@
       sheets: $sheets,
       sheetid,
       service: sheet_service,
-      onAdd: async (name, ctype, opts) => {
-        await sheet_service.add_column(name, ctype, opts);
+      onAdd: async (opts) => {
+        await sheet_service.add_column(opts);
         app.utils.small_modal_close();
       },
     });

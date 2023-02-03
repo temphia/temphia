@@ -102,7 +102,7 @@
               class="sticky top-0 border-b  px-6 py-2 font-bold tracking-wider uppercase text-base text-gray-700 bg-gray-100"
             >
               <button
-                class="inline-flex"
+                class="inline-flex hover:bg-blue-200 rounded px-1"
                 on:click={() => dispatch("edit_column", col)}
               >
                 <Icon
