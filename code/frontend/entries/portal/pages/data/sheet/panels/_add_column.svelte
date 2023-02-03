@@ -1,16 +1,57 @@
 <script lang="ts">
   import Kveditor from "../../../../../xcompo/common/kveditor.svelte";
-  import { SheetColTypes, SheetColTypeText } from "../sheets";
+  import type { SheetService } from "../../../../services/data";
+
+  import {
+    Sheet,
+    SheetColTypeReference,
+    SheetColTypes,
+    SheetColTypeText,
+  } from "../sheets";
   import Layout from "./_layout.svelte";
 
-  export let onAdd = (name: string, ctype: string, opts: object) => {};
+  export let sheets: Sheet[];
+  export let sheetid;
+  export let onAdd = (opts: {
+    name: string;
+    ctype: string;
+    opts: object;
+  }) => {};
+
+  export let service: SheetService;
 
   let name = "";
   let ctype = SheetColTypeText;
   let options = {};
+
+  let reftype = "text";
+  let refsheet = "";
+  let refcolumn = "";
+  let remotehook = "";
+
+  let refcolumn_loading = false;
+  let refcols = [];
+  const loadRefColumns = async (_sid) => {
+    if (!_sid) {
+      return;
+    }
+
+    refcolumn_loading = true;
+    const resp = await service.api.list_columns(_sid);
+    if (!resp.ok) {
+      return;
+    }
+    refcols = resp.data;
+    refcolumn_loading = false;
+  };
+
+  const doOnAdd = async () => {
+    const data = { name, ctype, opts: options };
+    return onAdd(data);
+  };
 </script>
 
-<Layout title="New Column" onClick={() => onAdd(name, ctype, options)}>
+<Layout title="New Column" onClick={doOnAdd}>
   <div class="mb-4">
     <label class="block mb-2 text-sm font-bold text-gray-700" for="name"
       >Name</label
@@ -39,6 +80,66 @@
       {/each}
     </select>
   </div>
+
+  {#if ctype === SheetColTypeReference}
+    <div class="mb-4">
+      <label class="block mb-2 text-sm font-bold text-gray-700" for="reftype"
+        >Ref Type</label
+      >
+
+      <select
+        id="reftype"
+        bind:value={reftype}
+        class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+      >
+        <option value="text">text</option>
+        <option value="number">number</option>
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label class="block mb-2 text-sm font-bold text-gray-700" for="refsheet"
+        >Ref Sheet</label
+      >
+
+      <select
+        id="refsheet"
+        value={refsheet}
+        on:change={(ev) => {
+          refsheet = ev.target["value"];
+          refcolumn = "";
+          refcols = [];
+          loadRefColumns(refsheet);
+        }}
+        class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+      >
+        {#each sheets as sheet}
+          {#if sheetid != sheet.__id}
+            <option value={sheet.__id}>{sheet.name}</option>
+          {/if}
+        {/each}
+      </select>
+    </div>
+
+    {#if !refcolumn_loading}
+      <div class="mb-4">
+        <label
+          class="block mb-2 text-sm font-bold text-gray-700"
+          for="refcolumn">Ref Column</label
+        >
+
+        <select
+          id="refcolumn"
+          bind:value={refcolumn}
+          class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+        >
+          {#each refcols as rf}
+            <option value={rf.__id}>{rf.name}</option>
+          {/each}
+        </select>
+      </div>
+    {/if}
+  {/if}
 
   <div class="mb-4">
     <label class="block mb-2 text-sm font-bold text-gray-700" for="opts"

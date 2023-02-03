@@ -87,18 +87,19 @@
   </div>
 
   <div
-    class="overflow-x-auto bg-white border rounded overflow-y-auto relative p-1"
+    id="sheet-main"
+    class="overflow-x-auto bg-white border rounded overflow-y-auto relative"
   >
     <table
       class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative"
     >
       <thead class="text-gray-600 border-gray-200 bg-gray-100">
         <tr class="text-left">
-          <th class="py-2 px-3 sticky top-0 border-b w-20"> # </th>
+          <th class="py-2 px-3 sticky top-0 border-b w-20 bg-gray-100"> # </th>
 
           {#each columns as col}
             <th
-              class="sticky top-0 border-b  px-6 py-2 font-bold tracking-wider uppercase text-xs text-gray-700"
+              class="sticky top-0 border-b  px-6 py-2 font-bold tracking-wider uppercase text-xs text-gray-700 bg-gray-100"
             >
               <span class="inline-flex">
                 <Icon
@@ -111,7 +112,7 @@
             </th>
           {/each}
 
-          <th class="w-10">
+          <th class="w-10 sticky top-0 bg-gray-100">
             <button
               on:click={() => dispatch("add_column")}
               class="p-1 rounded bg-blue-500 text-white hover:bg-blue-800"
@@ -212,18 +213,26 @@
             </td>
           </tr>
         {/each}
-
-        <tr>
-          <td>
-            <button
-              on:click={() => dispatch("add_row")}
-              class="p-1 rounded bg-blue-500 text-white hover:bg-blue-800"
-            >
-              <Icon name="plus" class="w-4 h-4" />
-            </button>
-          </td>
-        </tr>
       </tbody>
     </table>
   </div>
 </div>
+
+<div class="fixed bottom-4 z-5 right-14">
+  <button
+    on:click={() => dispatch("add_row")}
+    class="p-0 w-8 h-8 bg-blue-400 rounded-full hover:bg-blue-700 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none"
+  >
+    <Icon name="plus" class="w-6 h-6 inline-block text-white" />
+  </button>
+</div>
+
+<style>
+  #sheet-main {
+    height: calc(-7rem + 100vh);
+  }
+
+  tr {
+    max-height: 50rem;
+  }
+</style>

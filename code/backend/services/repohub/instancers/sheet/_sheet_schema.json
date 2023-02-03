@@ -35,7 +35,7 @@
         {
           "name": "ctype",
           "slug": "ctype",
-          "ctype": "shorttext",
+          "ctype": "select",
           "not_nullable": true,
           "options": [
             "shorttext",
@@ -56,6 +56,30 @@
           "ctype": "number",
           "not_nullable": true
         },
+
+        {
+          "name": "Reference Type",
+          "ctype": "select",
+          "slug": "reftype",
+          "options": ["text", "number"]
+        },
+        {
+          "name": "Reference Sheet",
+          "ctype": "number",
+          "slug": "refsheet"
+        },
+        {
+          "name": "Reference Column",
+          "ctype": "number",
+          "slug": "refcolumn"
+        },
+
+        {
+          "name": "Remote Hook",
+          "ctype": "number",
+          "slug": "remotehook"
+        },
+
         {
           "name": "Options",
           "slug": "opts",
