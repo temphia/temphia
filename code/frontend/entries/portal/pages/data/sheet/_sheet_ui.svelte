@@ -97,11 +97,11 @@
     >
       <thead class="text-gray-600 border-gray-200 bg-gray-100">
         <tr class="text-left">
-          <th class="py-2 px-3 sticky top-0 border-b w-20 bg-gray-100"> # </th>
+          <th class="py-1 px-3 sticky top-0 border-b w-20 bg-gray-100"> # </th>
 
           {#each columns as col}
             <th
-              class="sticky top-0 border-b  px-6 py-2 font-bold tracking-wider uppercase text-base text-gray-700 bg-gray-100"
+              class="sticky top-0 border-b  px-6 py-1 font-bold tracking-wider uppercase text-base text-gray-700 bg-gray-100"
             >
               <button
                 class="inline-flex hover:bg-blue-200 rounded px-1"
