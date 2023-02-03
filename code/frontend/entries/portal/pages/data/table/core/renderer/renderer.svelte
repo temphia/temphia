@@ -213,19 +213,15 @@
                       class="text-gray-700 truncate overflow-hidden text-sm p-1"
                     >
                       {#if coldata["ref_type"]}
-                        <!-- {#if coldata["ref_type"] === RefHardPriId}
-                        
-                      {/if} -->
-
                         <div
                           class="inline-flex bg-yellow-50 text-gray-600 rounded px-1"
                         >
-                          <span>Test data</span>
+                          <span>Ref</span>
                           <span class="font-semibold text-xs text-gray-800 ml-1"
                             >{celldata}</span
                           >
                         </div>
-                      {:else if (ctype === CtypeMultiFile || ctype === CtypeFile) && celldata }
+                      {:else if (ctype === CtypeMultiFile || ctype === CtypeFile) && celldata}
                         {#each celldata.split(",") as cd}
                           <img
                             class="h-8 w-auto"
@@ -245,7 +241,7 @@
                         {/if}
                       {:else if (ctype === CtypeSingleUser || ctype === CtypeMultiUser) && celldata}
                         <div class="inline-flex gap-1">
-                          {#each celldata .split(",") as cd}
+                          {#each celldata.split(",") as cd}
                             <div class="flex">
                               <img
                                 alt=""

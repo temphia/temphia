@@ -6,7 +6,6 @@
     FloatingAdd,
     PortalService,
   } from "../../core";
-  import { params } from "svelte-hash-router";
   import NewPick from "./_new_pick.svelte";
 
   export let source;
@@ -40,11 +39,12 @@
 
   // actions
 
-  const action_edit = (id: string) =>
-    app.nav.admin_data_group(source, id);
-  const action_table = (id: string) =>
-    app.nav.admin_data_tables(source, id);
-  const action_delete = async (id: string) => {};
+  const action_edit = (id: string) => app.nav.admin_data_group(source, id);
+  const action_table = (id: string) => app.nav.admin_data_tables(source, id);
+  const action_delete = async (id: string) => {
+    await api.delete_group(source, id);
+    load(source);
+  };
   const action_new = () => {
     app.utils.small_modal_open(NewPick, { app });
   };

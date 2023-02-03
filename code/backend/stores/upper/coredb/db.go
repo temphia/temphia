@@ -29,10 +29,6 @@ func (d *DB) Execute(qstr string) error {
 	return dbutils.Execute(ucore.GetDriver(d.session), qstr)
 }
 
-func (d *DB) Migrate() error {
-	return nil
-}
-
 func (d *DB) GetInnerDriver() interface{} {
 	return d.session
 }
