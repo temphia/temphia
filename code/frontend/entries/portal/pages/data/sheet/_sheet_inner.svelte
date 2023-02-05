@@ -21,6 +21,7 @@
   export let cells: { [_: number]: { [_: string]: SheetCell } };
   export let selected_rows = [];
   export let folder_api: FolderTktAPI;
+  export let editable = true;
 
   const dispatch = createEventDispatcher();
 </script>
@@ -51,12 +52,14 @@
       {/each}
 
       <th class="w-10 sticky top-0 bg-gray-100">
-        <button
-          on:click={() => dispatch("add_column")}
-          class="p-1 rounded bg-blue-500 text-white hover:bg-blue-800"
-        >
-          <Icon name="plus" class="w-4 h-4" />
-        </button>
+        {#if editable}
+          <button
+            on:click={() => dispatch("add_column")}
+            class="p-1 rounded bg-blue-500 text-white hover:bg-blue-800"
+          >
+            <Icon name="plus" class="w-4 h-4" />
+          </button>
+        {/if}
       </th>
     </tr>
   </thead>
@@ -66,23 +69,25 @@
 
       <tr>
         <td class="border-dashed border-t border-gray-200 px-2">
-          <label
-            class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
-          >
-            <input
-              type="checkbox"
-              checked={selected_rows.includes(row.__id)}
-              on:click={() => {
-                if (selected_rows.includes(row.__id)) {
-                  selected_rows = selected_rows.filter((r) => r !== row.__id);
-                  selected_rows = selected_rows;
-                } else {
-                  selected_rows = [...selected_rows, row.__id];
-                }
-              }}
-              class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline"
-            />
-          </label>
+          {#if editable}
+            <label
+              class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
+            >
+              <input
+                type="checkbox"
+                checked={selected_rows.includes(row.__id)}
+                on:click={() => {
+                  if (selected_rows.includes(row.__id)) {
+                    selected_rows = selected_rows.filter((r) => r !== row.__id);
+                    selected_rows = selected_rows;
+                  } else {
+                    selected_rows = [...selected_rows, row.__id];
+                  }
+                }}
+                class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline"
+              />
+            </label>
+          {/if}
           <span class="text-xs text-gray-500">{row.__id || ""}</span>
         </td>
 
@@ -141,12 +146,18 @@
             {/if}
           </td>
         {/each}
-
         <td>
-          <button
-            class="underline text-blue-600"
-            on:click={() => dispatch("edit_row", row)}>edit</button
-          >
+          {#if editable}
+            <button
+              class="underline text-blue-600"
+              on:click={() => dispatch("edit_row", row)}>edit</button
+            >
+          {:else}
+            <button
+              class="underline text-blue-600"
+              on:click={() => dispatch("pick_row", row)}>pick</button
+            >
+          {/if}
         </td>
       </tr>
     {/each}

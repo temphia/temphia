@@ -9,7 +9,7 @@
 </script>
 
 <div class="flex gap-1 justify-end">
-  {#if pick_icon !== undefined}
+  {#if pick_icon !== undefined && !is_cell_open}
     <button on:click={() => onPick && onPick()}>
       <Icon
         class="w-6 h-6 p-0.5 rounded border hover:bg-yellow-100"

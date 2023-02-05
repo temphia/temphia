@@ -8,8 +8,8 @@ export const SheetColTypeBoolean = "bool";
 export const SheetColTypeRatings = "ratings";
 export const SheetColTypeLocation = "location";
 export const SheetColTypeFile = "file";
-export const SheetColTypeReferenceNum = "ref_text";
-export const SheetColTypeReferenceText = "ref_number";
+export const SheetColTypeReferenceNum = "ref_number";
+export const SheetColTypeReferenceText = "ref_text";
 export const SheetColTypeRemoteText = "remote_text";
 export const SheetColTypeRemoteNum = "remote_number";
 
@@ -27,6 +27,20 @@ export const SheetColTypes = [
   SheetColTypeRemoteNum,
   SheetColTypeRemoteText,
 ];
+
+export const SheetCtypeShapes = {
+  text: [
+    SheetColTypeText,
+    SheetColTypeLongText,
+    SheetColTypeReferenceText,
+    SheetColTypeRemoteText,
+  ],
+  number: [
+    SheetColTypeNumber,
+    SheetColTypeReferenceNum,
+    SheetColTypeRemoteNum,
+  ],
+};
 
 export const SheetCtypeIcons = {
   [SheetColTypeText]: "annotation",

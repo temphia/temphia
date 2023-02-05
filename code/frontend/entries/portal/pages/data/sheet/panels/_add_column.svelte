@@ -1,6 +1,8 @@
 <script lang="ts">
+  import { each } from "svelte/internal";
   import Kveditor from "../../../../../xcompo/common/kveditor.svelte";
   import type { SheetService } from "../../../../services/data";
+  import { LoadingSpinner } from "../../../admin/core";
 
   import {
     Sheet,
@@ -8,6 +10,7 @@
     SheetColTypeReferenceText,
     SheetColTypes,
     SheetColTypeText,
+    SheetCtypeShapes,
   } from "../sheets";
   import Layout from "./_layout.svelte";
 
@@ -25,7 +28,6 @@
   let ctype = SheetColTypeText;
   let options = {};
 
-  let reftype = "text";
   let refsheet = "";
   let refcolumn = "";
   let remotehook = "";
@@ -48,6 +50,14 @@
 
   const doOnAdd = async () => {
     const data = { name, ctype, opts: options };
+    if (
+      ctype === SheetColTypeReferenceNum ||
+      ctype === SheetColTypeReferenceText
+    ) {
+      data["refsheet"] = Number(refsheet);
+      data["refcolumn"] = Number(refcolumn);
+    }
+
     return onAdd(data);
   };
 </script>
@@ -82,7 +92,7 @@
     </select>
   </div>
 
-  {#if ctype === SheetColTypeReferenceNum}
+  {#if ctype === SheetColTypeReferenceNum || ctype === SheetColTypeReferenceText}
     <div class="mb-4">
       <label class="block mb-2 text-sm font-bold text-gray-700" for="refsheet"
         >Ref Sheet</label
@@ -90,12 +100,11 @@
 
       <select
         id="refsheet"
-        value={refsheet}
+        bind:value={refsheet}
         on:change={(ev) => {
-          refsheet = ev.target["value"];
           refcolumn = "";
           refcols = [];
-          loadRefColumns(refsheet);
+          loadRefColumns(ev.target["value"]);
         }}
         class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
       >
@@ -107,7 +116,9 @@
       </select>
     </div>
 
-    {#if !refcolumn_loading}
+    {#if refcolumn_loading}
+      <LoadingSpinner classes="" />
+    {:else}
       <div class="mb-4">
         <label
           class="block mb-2 text-sm font-bold text-gray-700"
@@ -119,9 +130,20 @@
           bind:value={refcolumn}
           class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
         >
-          {#each refcols as rf}
-            <option value={rf.__id}>{rf.name}</option>
-          {/each}
+          {#if ctype === SheetColTypeReferenceNum}
+            <option value="0">__id</option>
+            {#each refcols as rf}
+              {#if SheetCtypeShapes["number"].includes(ctype)}
+                <option value={rf.__id}>{rf.name}</option>
+              {/if}
+            {/each}
+          {:else if ctype === SheetColTypeReferenceText}
+            {#each refcols as rf}
+              {#if SheetCtypeShapes["text"].includes(ctype)}
+                <option value={rf.__id}>{rf.name}</option>
+              {/if}
+            {/each}
+          {/if}
         </select>
       </div>
     {/if}
