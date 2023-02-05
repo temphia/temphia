@@ -1,6 +1,6 @@
 <script lang="ts">
   import { params } from "svelte-hash-router";
-  import SheetInner from "./_sheet_inner.svelte";
+  import SheetInner from "./_sheet.svelte";
 </script>
 
 {#key $params.sheet}

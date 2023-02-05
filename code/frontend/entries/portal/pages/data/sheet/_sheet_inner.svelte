@@ -1,146 +1,154 @@
 <script lang="ts">
-  import { getContext } from "svelte";
-  import { get, Writable } from "svelte/store";
-  import { LoadingSpinner, PortalService } from "../../admin/core";
-  import type { SheetService, SheetState } from "../../../services/data";
-  import SheetUi from "./_sheet_ui.svelte";
-  import AddColumn from "./panels/_add_column.svelte";
-  import AddSheet from "./panels/_add_sheet.svelte";
-  import EditRow from "./panels/_edit_row.svelte";
-  import AddRow from "./panels/_add_row.svelte";
-  import RemoveSheetDialog from "./panels/_remove_sheet_dialog.svelte";
-  import EditColumn from "./panels/_edit_column.svelte";
+  import Icon from "@krowten/svelte-heroicons/Icon.svelte";
+  import { createEventDispatcher } from "svelte";
+  import type { FolderTktAPI } from "../../../../../lib/apiv2";
+  import Point from "./field/_point.svelte";
+  import {
+    SheetCell,
+    SheetColTypeBoolean,
+    SheetColTypeDate,
+    SheetColTypeFile,
+    SheetColTypeLocation,
+    SheetColTypeNumber,
+    SheetColTypeRatings,
+    SheetColumn,
+    SheetCtypeIcons,
+    SheetRow,
+  } from "./sheets";
 
-  export let source;
-  export let group;
-  export let sheetid;
+  export let columns: SheetColumn[];
+  export let rows: SheetRow[];
+  export let cells: { [_: number]: { [_: string]: SheetCell } };
+  export let selected_rows = [];
+  export let folder_api: FolderTktAPI;
 
-  const app: PortalService = getContext("__app__");
-
-  let loading = true;
-  let state: Writable<SheetState>;
-  let sheet_service: SheetService;
-  let force_render_index;
-  let folder_api;
-  let sheets;
-
-  let selected_rows = [];
-
-  const load = async () => {
-    const dsvc = await app.get_data_service();
-    const gsvc = await dsvc.group_sheet(source, group);
-    if (get(gsvc.sheets).length === 0) {
-      return;
-    }
-
-    sheets = gsvc.sheets;
-
-    const ssvc = await gsvc.get_sheet_service(sheetid);
-    sheet_service = ssvc;
-    state = ssvc.state;
-    sheet_service.force_render_index;
-    folder_api = sheet_service.group.folder_api;
-    loading = false;
-  };
-  load();
-
-  const doAddSheet = () => {
-    app.utils.small_modal_open(AddSheet, {
-      onAdd: async (name: string, opts: object) => {
-        await sheet_service.add_sheet(name, opts);
-        app.utils.small_modal_close();
-      },
-    });
-  };
-
-  const doRemoveSheet = () => {
-    const sheet = get(sheet_service.group.sheets).filter(
-      (s) => s.__id === Number(sheetid)
-    )[0];
-
-    app.utils.small_modal_open(RemoveSheetDialog, {
-      name: sheet.name,
-      sheet_id: sheetid,
-      Confirm: async () => {
-        await sheet_service.remove_sheet();
-        app.utils.small_modal_close();
-        app.nav.data_render_sheet_loader(source, group);
-      },
-      Deny: () => app.utils.small_modal_close(),
-    });
-  };
-
-  const doAddColumn = () => {
-    app.utils.small_modal_open(AddColumn, {
-      sheets: $sheets,
-      sheetid,
-      service: sheet_service,
-      onAdd: async (opts) => {
-        await sheet_service.add_column(opts);
-        app.utils.small_modal_close();
-      },
-    });
-  };
-
-  const doEditColumn = (ev) => {
-    app.utils.small_modal_open(EditColumn, { column: ev.detail });
-  };
-
-  const doEditRow = (ev) => {
-    app.utils.big_modal_open(EditRow, {
-      columns: $state.columns,
-      cells: $state.cells,
-      service: sheet_service,
-      row: ev.detail,
-      folder_api,
-      onSave: async (data) => {
-        await sheet_service.update_row_cell(ev.detail["__id"], data);
-        app.utils.big_modal_close();
-        await sheet_service.init();
-      },
-    });
-  };
-
-  const doAddRow = () => {
-    app.utils.big_modal_open(AddRow, {
-      columns: $state.columns,
-      service: sheet_service,
-      onSave: async (data) => {
-        await sheet_service.add_row_cell(data);
-
-        app.utils.big_modal_close();
-        await sheet_service.init();
-      },
-    });
-  };
+  const dispatch = createEventDispatcher();
 </script>
 
-{#if loading || $state.loading}
-  <LoadingSpinner />
-{:else}
-  {#key $force_render_index}
-    <SheetUi
-      {folder_api}
-      bind:selected_rows
-      active_sheet={Number(sheetid)}
-      cells={$state.cells}
-      columns={$state.columns}
-      rows={$state.rows}
-      sheets={$sheets}
-      on:add_column={doAddColumn}
-      on:action_goto_history={() =>
-        app.nav.admin_data_activity(source, group, "sheets")}
-      on:action_goto_rawtable={() =>
-        app.nav.data_render_table_loader(source, group)}
-      on:add_row={doAddRow}
-      on:edit_row={doEditRow}
-      on:action_refresh={() => sheet_service.init()}
-      on:add_sheet={doAddSheet}
-      on:change_sheet={(ev) => {
-        app.nav.data_render_sheet(source, group, ev.detail);
-      }}
-      on:remove_sheet={doRemoveSheet}
-      on:edit_column={doEditColumn}
-    />
-  {/key}
-{/if}
+<table
+  class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative"
+>
+  <thead class="text-gray-600 border-gray-200 bg-gray-100">
+    <tr class="text-left">
+      <th class="py-1 px-3 sticky top-0 border-b w-20 bg-gray-100"> # </th>
+
+      {#each columns as col}
+        <th
+          class="sticky top-0 border-b  px-6 py-1 font-bold tracking-wider uppercase text-base text-gray-700 bg-gray-100"
+        >
+          <button
+            class="inline-flex hover:bg-blue-200 rounded px-1"
+            on:click={() => dispatch("edit_column", col)}
+          >
+            <Icon
+              name={SheetCtypeIcons[col.ctype]}
+              class="h-5 w-5 mr-1 mt-1 text-gray-500"
+              solid
+            />
+            {col.name || `Column ${col.__id}`}
+          </button>
+        </th>
+      {/each}
+
+      <th class="w-10 sticky top-0 bg-gray-100">
+        <button
+          on:click={() => dispatch("add_column")}
+          class="p-1 rounded bg-blue-500 text-white hover:bg-blue-800"
+        >
+          <Icon name="plus" class="w-4 h-4" />
+        </button>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {#each rows as row}
+      {@const rowdata = cells[row.__id] || {}}
+
+      <tr>
+        <td class="border-dashed border-t border-gray-200 px-2">
+          <label
+            class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
+          >
+            <input
+              type="checkbox"
+              checked={selected_rows.includes(row.__id)}
+              on:click={() => {
+                if (selected_rows.includes(row.__id)) {
+                  selected_rows = selected_rows.filter((r) => r !== row.__id);
+                  selected_rows = selected_rows;
+                } else {
+                  selected_rows = [...selected_rows, row.__id];
+                }
+              }}
+              class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline"
+            />
+          </label>
+          <span class="text-xs text-gray-500">{row.__id || ""}</span>
+        </td>
+
+        {#each columns as col}
+          {@const hasCellData = !!rowdata[col.__id]}
+          {@const celldata = rowdata[col.__id] || {}}
+          {@const color = celldata["color"] || ""}
+          {@const value = celldata["value"] || ""}
+          {@const num_value = celldata["numval"] || 0}
+          <td
+            class="border-dashed border-t border-gray-200 bg-{color}-400"
+            style="background-color: {color};"
+          >
+            {#if hasCellData}
+              <span class="text-gray-700 px-6 py-3 flex items-center">
+                {#if col.ctype === SheetColTypeBoolean}
+                  {#if value === "true"}
+                    <Icon name="check" class="w-6 h-6 text-green-500" />
+                  {:else if value === "false"}
+                    <Icon name="x" class="w-6 h-6 text-red-500" />
+                  {/if}
+                {:else if col.ctype === SheetColTypeDate}
+                  {value && new Date(value).toLocaleDateString()}
+                {:else if col.ctype === SheetColTypeLocation}
+                  <Point {value} />
+                {:else if col.ctype === SheetColTypeRatings}
+                  {#if num_value}
+                    {#each [1, 2, 3, 4, 5] as rt}
+                      {#if rt <= num_value}
+                        <Icon
+                          name="star"
+                          class="h-5 w-5 text-yellow-400 "
+                          solid={true}
+                        />
+                      {/if}
+                    {/each}
+                  {/if}
+                {:else if col.ctype === SheetColTypeFile}
+                  {#if value}
+                    {#each value.split(",") as cd}
+                      <div class="flex gap-1">
+                        <img
+                          class="h-8 w-auto border rounded"
+                          src={folder_api && folder_api.getFilePreviewUrl(cd)}
+                          alt=""
+                        />
+                      </div>
+                    {/each}
+                  {/if}
+                {:else if col.ctype === SheetColTypeNumber}
+                  {num_value}
+                {:else}
+                  {value}
+                {/if}
+              </span>
+            {/if}
+          </td>
+        {/each}
+
+        <td>
+          <button
+            class="underline text-blue-600"
+            on:click={() => dispatch("edit_row", row)}>edit</button
+          >
+        </td>
+      </tr>
+    {/each}
+  </tbody>
+</table>
