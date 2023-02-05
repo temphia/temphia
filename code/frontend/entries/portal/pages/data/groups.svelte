@@ -92,7 +92,7 @@
                 </h3>
 
                 <h3
-                  class="tracking-widest text-blue-500 text-xs uppercase font-medium title-font"
+                  class="tracking-widest text-blue-500 text-xs uppercase font-medium title-font bg-yellow-200 rounded"
                 >
                   #{group["renderer"] || ""}
                 </h3>
