@@ -18,19 +18,20 @@
     SheetColumn,
     SheetCtypeIcons,
   } from "../sheets";
-  import type { FolderTktAPI } from "../../../../../../lib/apiv2";
   import CellActions from "./_cell_actions.svelte";
   import Reference from "./_reference.svelte";
   import Remote from "./_remote.svelte";
   import ColorPanel from "./_color_panel.svelte";
   import Point from "./_point.svelte";
+  import type { SheetService } from "../../../../services/data";
 
   export let column: SheetColumn;
   export let open_column;
   export let celldata = {};
   export let onCellChange = (data) => {};
-  export let folder_api: FolderTktAPI;
+  export let service: SheetService;
 
+  const folder_api = service.group.folder_api;
   const id = `cell-${column.sheetid}`;
   let value = celldata["value"] || "";
   let value_num = celldata["numval"] || 0;
@@ -261,7 +262,14 @@
       {:else if column.ctype === SheetColTypeRemoteNum}
         <Remote />
       {:else if column.ctype === SheetColTypeReferenceNum}
-        <Reference />
+        <Reference
+          {service}
+          {column}
+          current={value_num}
+          onSelect={(val) => {}}
+        />
+      {:else if column.ctype === SheetColTypeReferenceText}
+        <Reference {service} {column} current={value} onSelect={(val) => {}} />
       {:else if column.ctype === SheetColTypeFile}
         <FilePanel
           {folder_api}

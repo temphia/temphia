@@ -193,6 +193,10 @@ export class SheetService {
     await this.api.delete_row_cell(this.sheetid, rid);
   };
 
+  get_sibling_sheet = async (sheetid) => {
+    return await this.group.get_sheet_service(sheetid);
+  };
+
   private refetch_columns = async () => {
     const resp = await this.api.list_columns(this.sheetid);
     if (!resp.ok) {

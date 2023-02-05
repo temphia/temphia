@@ -2,10 +2,11 @@
   import type { SheetColumn } from "../sheets";
   import Layout from "./_layout.svelte";
   import Cell from "../field/cell.svelte";
+  import type { SheetService } from "../../../../services/data";
 
   export let columns: SheetColumn[];
   export let onSave = async (data) => {};
-  export let folder_api;
+  export let service: SheetService;
 
   export let open_column;
 
@@ -15,7 +16,7 @@
 <Layout title="Add Row" onClick={async () => onSave(dirty_data)}>
   {#each columns as col}
     <Cell
-      {folder_api}
+      {service}
       column={col}
       bind:open_column
       celldata={dirty_data[col.__id]}

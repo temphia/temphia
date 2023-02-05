@@ -1,10 +1,8 @@
 <script lang="ts">
   import { getContext } from "svelte";
   import { get, Writable } from "svelte/store";
-
   import { LoadingSpinner, PortalService } from "../../admin/core";
   import type { SheetService, SheetState } from "../../../services/data";
-
   import SheetUi from "./_sheet_ui.svelte";
   import AddColumn from "./panels/_add_column.svelte";
   import AddSheet from "./panels/_add_sheet.svelte";
@@ -92,6 +90,7 @@
     app.utils.big_modal_open(EditRow, {
       columns: $state.columns,
       cells: $state.cells,
+      service: sheet_service,
       row: ev.detail,
       folder_api,
       onSave: async (data) => {
@@ -105,7 +104,7 @@
   const doAddRow = () => {
     app.utils.big_modal_open(AddRow, {
       columns: $state.columns,
-      folder_api,
+      service: sheet_service,
       onSave: async (data) => {
         await sheet_service.add_row_cell(data);
 

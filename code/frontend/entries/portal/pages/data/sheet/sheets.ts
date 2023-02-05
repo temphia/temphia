@@ -55,6 +55,9 @@ export interface SheetColumn {
   sheetid: number;
   exta_options?: {};
   color?: string;
+  refsheet?: number;
+  refcolumn?: number;
+  remotehook?: number;
 }
 
 export interface SheetRow {
