@@ -10,6 +10,7 @@
   import AddRow from "./panels/_add_row.svelte";
   import RemoveSheetDialog from "./panels/_remove_sheet_dialog.svelte";
   import EditColumn from "./panels/_edit_column.svelte";
+  import SearchPanel from "./panels/_search_panel.svelte";
 
   export let source;
   export let group;
@@ -113,6 +114,10 @@
       },
     });
   };
+
+  const doSearch = () => {
+    app.utils.big_modal_open(SearchPanel, {});
+  };
 </script>
 
 {#if loading || $state.loading}
@@ -141,6 +146,7 @@
       }}
       on:remove_sheet={doRemoveSheet}
       on:edit_column={doEditColumn}
+      on:action_search={doSearch}
     />
   {/key}
 {/if}

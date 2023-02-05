@@ -22,10 +22,12 @@
   on:action_goto_history
   on:action_goto_rawtable
   on:action_refresh
+  on:action_search
   on:add_row
   on:add_sheet
   on:change_sheet
   on:remove_sheet
+
 >
   <SheetInner
     on:add_column

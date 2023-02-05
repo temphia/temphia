@@ -67,6 +67,12 @@
         name="Delete"
       />
     {/if}
+
+    <ToolbarAction
+      onClick={() => dispatch("action_search")}
+      icon="document-search"
+      name="Search"
+    />
   </div>
 
   <div
