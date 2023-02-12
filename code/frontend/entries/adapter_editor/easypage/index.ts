@@ -1,4 +1,4 @@
-import type { Registry } from "../../lib/registry/registry";
+import type { Registry } from "../../../lib/registry/registry";
 import AdapterEditorEasypage from "./index.svelte";
 
 const r = window["__registry__"] as Registry<any>;

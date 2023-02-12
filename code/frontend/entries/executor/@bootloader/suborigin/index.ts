@@ -1,8 +1,8 @@
-import { initRegistry, plugStart } from "../../lib/engine/putils";
-import { generateId } from "../../lib/utils";
-import { Env } from "../portal/launcher/env";
+import { initRegistry, plugStart } from "../../../../lib/engine/putils";
+import { generateId } from "../../../../lib/utils";
+import { Env } from "../../../portal/launcher/env";
 
-export const boot = () => {
+(() => {
   console.log("Iframe Exec start..");
 
   initRegistry();
@@ -69,4 +69,4 @@ export const boot = () => {
   };
 
   window.addEventListener("message", handle_port_transfer, false);
-};
+})();

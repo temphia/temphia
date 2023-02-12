@@ -1,4 +1,4 @@
-import { registerExecLoaderFactory } from "../../lib/engine/register";
+import { registerExecLoaderFactory } from "../../../lib/engine/register";
 import PageForm from "./index.svelte";
 
 registerExecLoaderFactory("pageform.loader", (opts) => {

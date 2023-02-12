@@ -1,7 +1,7 @@
-import { AdapterEditorEnv } from "../../lib/adapter/adapter";
-import { AdapterEditorAPI } from "../../lib/apiv2/admin/adapter_editor";
-import { initRegistry } from "../../lib/engine/putils";
-import type { Registry } from "../../lib/registry/registry";
+import { AdapterEditorEnv } from "../../../lib/adapter/adapter";
+import { AdapterEditorAPI } from "../../../lib/apiv2/admin/adapter_editor";
+import { initRegistry } from "../../../lib/engine/putils";
+import type { Registry } from "../../../lib/registry/registry";
 initRegistry();
 
 window.addEventListener("load", async (ev) => {

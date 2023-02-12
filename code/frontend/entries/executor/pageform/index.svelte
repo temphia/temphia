@@ -2,7 +2,7 @@
   import StartPage from "./pages/start/start.svelte";
 
   import { data } from "./field/field";
-  import Tailwind from "../xcompo/common/_tailwind.svelte";
+  import Tailwind from "../../xcompo/common/_tailwind.svelte";
   export let env: any;
 </script>
 
