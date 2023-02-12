@@ -20,6 +20,7 @@ type BootRenderOptions struct {
 }
 
 type BootData struct {
+	TenantId   string `json:"tenant_id,omitempty"`
 	ApiBaseURL string `json:"api_base_url,omitempty"`
 	PlugId     string `json:"plug_id,omitempty"`
 	AgentId    string `json:"agent_id,omitempty"`
