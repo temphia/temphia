@@ -17,8 +17,7 @@ func (s *Server) engineAPI(rg *gin.RouterGroup) {
 	rg.POST("/launch/target", s.X(s.launchTarget))
 	rg.POST("/launch/admin", s.X(s.launchAdmin))
 	rg.POST("/launch/auth", s.launchAuth)
-
-	rg.GET("/boot/:pid/:aid", s.bootAgent)
+	rg.GET("/boot/:pid/:aid", s.bootAgent())
 
 	// execute action
 	rg.POST("/execute/:action", s.execute)
@@ -127,34 +126,34 @@ func (s *Server) launchAuth(ctx *gin.Context) {
 //go:embed static/agent_boot.html
 var agentBootTemplate []byte
 
-func (s *Server) bootAgent(ctx *gin.Context) {
-	pp.Println("@lets_boot")
-
+func (s *Server) bootAgent() func(ctx *gin.Context) {
 	tpl, err := template.New("agent_boot").
 		Parse(string(agentBootTemplate))
 	if err != nil {
-		pp.Println("@parse_err", err)
-		return
+		panic(err)
 	}
 
-	data, err := s.cEngine.BootAgent(
-		ctx.Param("tenant_id"),
-		ctx.Request.Host,
-		ctx.Param("pid"),
-		ctx.Param("aid"),
-	)
-	if err != nil {
-		pp.Println("@boot_err", err)
-		return
+	return func(ctx *gin.Context) {
+		data, err := s.cEngine.BootAgent(
+			ctx.Param("tenant_id"),
+			ctx.Request.Host,
+			ctx.Param("pid"),
+			ctx.Param("aid"),
+		)
+		if err != nil {
+			pp.Println("@boot_err", err)
+			return
+		}
+
+		// fixme loader_script inline here
+
+		err = tpl.Execute(ctx.Writer, data)
+		if err != nil {
+			ctx.Error(err)
+			return
+		}
 	}
 
-	// fixme loader_script inline here
-
-	err = tpl.Execute(ctx.Writer, data)
-	if err != nil {
-		ctx.Error(err)
-		return
-	}
 }
 
 // engine/exec sockd

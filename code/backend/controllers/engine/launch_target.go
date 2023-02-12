@@ -3,7 +3,6 @@ package engine
 import (
 	"github.com/temphia/temphia/code/backend/engine/invokers"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/backend/xtypes/models/vmodels"
 )
 
 type TargetLaunchData struct {
@@ -11,11 +10,11 @@ type TargetLaunchData struct {
 	TargetType string `json:"target_type,omitempty"`
 }
 
-func (c *Controller) LaunchTarget(uclaim *claim.Session, data TargetLaunchData) (*vmodels.ExecInstanceOptions, error) {
+func (c *Controller) LaunchTarget(uclaim *claim.Session, data TargetLaunchData) (*ExecInstanceOptions, error) {
 	return c.launchTarget(uclaim, data)
 }
 
-func (c *Controller) launchTarget(uclaim *claim.Session, data TargetLaunchData) (*vmodels.ExecInstanceOptions, error) {
+func (c *Controller) launchTarget(uclaim *claim.Session, data TargetLaunchData) (*ExecInstanceOptions, error) {
 
 	target, err := c.corehub.GetTargetApp(uclaim.TenantId, data.TargetType, data.TargetId)
 	if err != nil {
@@ -44,7 +43,7 @@ func (c *Controller) launchTarget(uclaim *claim.Session, data TargetLaunchData) 
 		return nil, err
 	}
 
-	return &vmodels.ExecInstanceOptions{
+	return &ExecInstanceOptions{
 		Token:        token,
 		EntryName:    agent.WebEntry,
 		ExecLoader:   agent.WebLoader,

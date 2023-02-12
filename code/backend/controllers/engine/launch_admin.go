@@ -4,7 +4,6 @@ import (
 	"github.com/temphia/temphia/code/backend/engine/invokers"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/backend/xtypes/models/vmodels"
 )
 
 type AdminLaunchData struct {
@@ -12,11 +11,11 @@ type AdminLaunchData struct {
 	AgentId string `json:"agent_id,omitempty"`
 }
 
-func (c *Controller) LaunchAdmin(uclaim *claim.Session, data AdminLaunchData) (*vmodels.ExecInstanceOptions, error) {
+func (c *Controller) LaunchAdmin(uclaim *claim.Session, data AdminLaunchData) (*ExecInstanceOptions, error) {
 	return c.launchAdmin(uclaim, data)
 }
 
-func (c *Controller) launchAdmin(uclaim *claim.Session, data AdminLaunchData) (*vmodels.ExecInstanceOptions, error) {
+func (c *Controller) launchAdmin(uclaim *claim.Session, data AdminLaunchData) (*ExecInstanceOptions, error) {
 
 	token, err := c.signer.SignExecutor(uclaim.TenantId, &claim.Executor{
 		TenantId:   uclaim.TenantId,
@@ -40,7 +39,7 @@ func (c *Controller) launchAdmin(uclaim *claim.Session, data AdminLaunchData) (*
 		return nil, err
 	}
 
-	return &vmodels.ExecInstanceOptions{
+	return &ExecInstanceOptions{
 		Token:        token,
 		EntryName:    agent.WebEntry,
 		ExecLoader:   agent.WebLoader,
