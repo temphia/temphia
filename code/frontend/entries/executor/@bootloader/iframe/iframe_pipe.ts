@@ -2,7 +2,7 @@ import type {
   Pipe,
   PipeHandler,
   PipeMessage,
-} from "../../../../../lib/engine/pipe";
+} from "../../../../lib/engine/pipe";
 
 export class IFramePipe implements Pipe {
   secret: string;

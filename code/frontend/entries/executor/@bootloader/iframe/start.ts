@@ -1,8 +1,8 @@
 import { sleep } from "yootils";
-import type { LoaderOptions } from "../../../../../lib/engine/plug";
-import { initRegistry, plugStart } from "../../../../../lib/engine/putils";
-import { generateId } from "../../../../../lib/utils";
-import { Env } from "../../env";
+import type { LoaderOptions } from "../../../../lib/engine/plug";
+import { initRegistry, plugStart } from "../../../../lib/engine/putils";
+import { generateId } from "../../../../lib/utils";
+import { Env } from "../../../portal/launcher/env";
 import { IFramePipe } from "./iframe_pipe";
 
 export default () => {
@@ -14,12 +14,12 @@ export default () => {
 
   const handle_port_transfer = (ev) => {
     if (ev.data !== "port_transfer") {
-      console.log("wrong event listener", ev)
-      return 
+      console.log("wrong event listener", ev);
+      return;
     }
 
     transfered_port = ev.ports[0];
-    console.log("@received_port_@guest",  transfered_port)
+    console.log("@received_port_@guest", transfered_port);
     window.removeEventListener("message", handle_port_transfer);
     env_init(null);
   };
