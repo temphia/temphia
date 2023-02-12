@@ -23,7 +23,7 @@ export const GenerateSRC = ({
       window["__loader_options__"] = ${opt};
     </script>
     
-    <script src="/z/assets/build/adapter_editor_loader.js"></script>
+    <script src="/z/assets/build/adapter_editor_bootloader.js"></script>
     <script src="/z/api/${tenant_id}/v2/adapter_editor/serve/${did}/main.js"></script>
     <link href="/z/api/${tenant_id}/v2/adapter_editor/serve/${did}/main.css" rel="stylesheet" />
   </head>
