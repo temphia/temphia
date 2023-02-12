@@ -1,7 +1,7 @@
 <script lang="ts">
   import { routes } from "svelte-hash-router";
   import Router from "svelte-hash-router";
-  import Tailwind from "../xcompo/common/_tailwind.svelte";
+  import Tailwind from "../../xcompo/common/_tailwind.svelte";
   import { EasypageService } from "./service/easypage";
   import { onMount, setContext } from "svelte";
   import { Modal } from "./core";

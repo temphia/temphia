@@ -8,7 +8,6 @@ const BUILD_ASSETS_FOLDER = "../backend/data/assets/build/"
 
 
 const FILES = [
-    "engine_iframe_guest.js",
     "auth.css",
     "auth.js",
     "auth.js.map",
@@ -21,7 +20,10 @@ const FILES = [
     "start.css",
     "start.js",
     "start.js.map",
-    "adapter_editor_loader.js",
+
+    "adapter_editor_bootloader.js",
+    "executor_bootloader_iframe.js",
+    
     "adapter_editor_noop.js",
     "adapter_editor_easypage.js",
     "adapter_editor_easypage.css",

@@ -9,6 +9,7 @@ import alias from '@rollup/plugin-alias';
 
 const production = !!process.env.PRODUCTION;
 const entryFile = process.env.ENTRY_FILE;
+const outFile = process.env.OUT_FILE || entryFile
 
 const _config = (entryFile, prod) => ({
   input: `entries/${entryFile}/index.ts`,
@@ -16,7 +17,7 @@ const _config = (entryFile, prod) => ({
     sourcemap: true,
     format: "iife",
     name: "app",
-    file: `public/build/${entryFile}.js`,
+    file: `public/build/${outFile}.js`,
   },
   plugins: [
     alias({
@@ -35,7 +36,7 @@ const _config = (entryFile, prod) => ({
     }),
     // we'll extract any component CSS out into
     // a separate file - better for performance
-    css({ output: `${entryFile}.css` }),
+    css({ output: `${outFile}.css` }),
 
     // If you have external dependencies installed from
     // npm, you'll most likely need these plugins. In
