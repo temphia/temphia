@@ -12,7 +12,8 @@ interface iframeBuildOptions {
   ext_scripts?: object;
   parent_secret: string;
   startup_payload?: any;
-  tenant_id: string
+  tenant_id: string;
+  bootloader: string;
 }
 
 export const iframeTemplateBuild = (opts: iframeBuildOptions) => {
@@ -31,16 +32,21 @@ export const iframeTemplateBuild = (opts: iframeBuildOptions) => {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>${opts.plug}</title>
-        <script>window["__loader_options__"] = ${JSON.stringify(
-          derive(opts)
-        )}</script>
-        
-        <script async="true" src="${opts.api_base_url}engine/plug/${opts.plug}/agent/${opts.agent}/launcher/engine_iframe_guest.js"></script> 
-
+        <script>window["__loader_options__"] = ${JSON.stringify(derive(opts))}
+        </script>
+       
+        <script>
+        ${opts.bootloader}
+        </script>
+      
         ${execscript}
 
-        <script defer="true" src="${opts.api_base_url}engine/plug/${opts.plug}/agent/${opts.agent}/serve/${opts.js_plug_script}"></script>
-        <link href="${opts.api_base_url}engine/plug/${opts.plug}/agent/${opts.agent}/serve/${opts.style_file}" rel="stylesheet" ></link>
+        <script src="${opts.api_base_url}engine/plug/${opts.plug}/agent/${
+    opts.agent
+  }/serve/${opts.js_plug_script}"></script>
+        <link href="${opts.api_base_url}engine/plug/${opts.plug}/agent/${
+    opts.agent
+  }/serve/${opts.style_file}" rel="stylesheet" ></link>
 
     </head>
     <body>

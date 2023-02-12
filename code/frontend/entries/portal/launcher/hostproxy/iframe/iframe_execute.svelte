@@ -6,6 +6,7 @@
   export let exec_data: ExecInstanceOptions;
   export let secret_id: string;
   export let tenant_id: string;
+  export let bootloader: string;
 
   let iframe: HTMLIFrameElement | null;
   const channel = new MessageChannel();
@@ -23,6 +24,7 @@
     parent_secret: secret_id,
     startup_payload: {},
     tenant_id: tenant_id,
+    bootloader,
   });
 
   const onmessage = (ev) => {

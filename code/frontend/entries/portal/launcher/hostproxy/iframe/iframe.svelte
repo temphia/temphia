@@ -13,8 +13,11 @@
 
   let loading = true;
   let data: ExecInstanceOptions;
+  let bootloader = "";
 
   const load = async () => {
+    bootloader = await app.launcher.get_bootloader();
+
     const resp = await eapi.launch_target({
       target_id: Number(options.target_id),
       target_type: options.target_type,
@@ -33,5 +36,11 @@
 {#if loading}
   <LoadingSpinner />
 {:else}
-  <IframeInner exec_data={data} name={options.name} secret_id={options.id} tenant_id={app.options.tenant_id} />
+  <IframeInner
+    exec_data={data}
+    name={options.name}
+    secret_id={options.id}
+    tenant_id={app.options.tenant_id}
+    {bootloader}
+  />
 {/if}

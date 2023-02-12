@@ -12,11 +12,14 @@
   let data: ExecInstanceOptions;
   let sid = "";
   let loading = true;
+  let bootloader = "";
 
   const load = async (pid: string, aid: string) => {
     if (!pid || !aid) {
       return;
     }
+
+    bootloader = await app.launcher.get_bootloader();
 
     const resp = await eapi.launch_admin({
       plug_id: pid,
@@ -38,5 +41,11 @@
 {#if loading}
   <LoadingSpinner />
 {:else}
-  <IframeExecute exec_data={data} name="{$params.pid}/{$params.aid}" secret_id={sid} tenant_id={app.options.tenant_id} />
+  <IframeExecute
+    exec_data={data}
+    name="{$params.pid}/{$params.aid}"
+    secret_id={sid}
+    tenant_id={app.options.tenant_id}
+    {bootloader}
+  />
 {/if}

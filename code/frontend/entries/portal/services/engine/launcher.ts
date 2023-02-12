@@ -10,7 +10,7 @@ interface LauncherState {
 export interface Instance {
   id: string;
   target_id: string;
-  target_type: string
+  target_type: string;
   name: string;
   invoker?: {
     close_instance: (id: string) => void;
@@ -21,6 +21,7 @@ export interface Instance {
 
 export class Launcher {
   state: Writable<LauncherState>;
+  bootloader?: string;
 
   target_index: { [_: string]: string };
 
@@ -39,6 +40,16 @@ export class Launcher {
 
     this.state.subscribe((lstate) => console.log("@launcher_state", lstate));
   }
+
+  get_bootloader = async () => {
+    if (this.bootloader) {
+      return this.bootloader;
+    }
+
+    const resp = await fetch("/z/assets/build/executor_bootloader_iframe.js");
+    this.bootloader = await resp.text();
+    return this.bootloader;
+  };
 
   plane_hide() {
     this.state.update((old) => ({ ...old, display: "HIDDEN" }));
