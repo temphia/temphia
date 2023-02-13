@@ -17,16 +17,18 @@ type TargetApp struct {
 }
 
 const (
-	TargetAppTypeUserGroupApp  = "user_group_app"
-	TargetAppTypeUserGroupAuth = "user_group_auth"
-	TargetAppTypeDataWidget    = "data_widget"
-	TargetAppTypeDomainWidget  = "domain_widget"
+	TargetAppTypeUserGroupApp    = "user_group_app"
+	TargetAppTypeUserGroupAuth   = "user_group_auth"
+	TargetAppTypeDataTableWidget = "datatable_widget"
+	TargetAppTypeDataSheetWidget = "datasheet_widget"
+	TargetAppTypeDomainWidget    = "domain_widget"
 )
 
 const (
-	TargetHookTypeDataHook   = "data_hook"
-	TargetHookTypeDomainHook = "domain_hook"
-	TargetHookTypeStartUp    = "startup"
+	TargetHookTypeDataTableHook = "datatable_hook"
+	TargetHookTypeDataSheetHook = "datasheet_hook"
+	TargetHookTypeDomainHook    = "domain_hook"
+	TargetHookTypeStartUp       = "startup"
 )
 
 /*

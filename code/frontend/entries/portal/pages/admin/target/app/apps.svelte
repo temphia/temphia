@@ -7,11 +7,15 @@
     PortalService,
   } from "../../core";
   import TopActions from "../../core/top_actions.svelte";
+  import NewPicker from "./_new_picker.svelte";
   export let ttype = undefined;
   export let target = undefined;
-  export let action_new = () => app.nav.admin_target_app_new();
 
   const app = getContext("__app__") as PortalService;
+
+  export let action_new = () => {
+    app.utils.small_modal_open(NewPicker, { service: app });
+  };
 
   let datas = [];
   let loading = true;
