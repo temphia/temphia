@@ -7,7 +7,6 @@
     FloatingAdd,
     PortalService,
   } from "../core";
-  import InstancerPick from "./instancer/instancer_pick.svelte";
   import PickNewBprint from "./_pick_new_bprint.svelte";
 
   let datas = [];
@@ -30,8 +29,9 @@
   // actions
 
   const action_instance = async (id: string) => {
-    app.utils.small_modal_open(InstancerPick, { app, id });
+    app.nav.admin_bprint_auto_instancer(id);
   };
+
 
   const action_edit = (id: string) => app.nav.admin_bprint(id);
   const action_issue = (id: string) =>
