@@ -91,11 +91,13 @@
                   {source}
                 </h3>
 
-                <h3
-                  class="tracking-widest text-blue-500 text-xs uppercase font-medium title-font bg-yellow-200 rounded"
-                >
-                  #{group["renderer"] || ""}
-                </h3>
+                {#if group["renderer"]}
+                  <h3
+                    class="tracking-widest text-blue-500 text-xs uppercase font-medium title-font bg-yellow-400 rounded"
+                  >
+                    #{group["renderer"] || ""}
+                  </h3>
+                {/if}
               </div>
 
               <h2 class="text-lg text-gray-900 font-medium title-font mb-4">

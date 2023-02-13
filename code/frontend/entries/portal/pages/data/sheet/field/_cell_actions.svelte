@@ -8,7 +8,7 @@
   export let onCellColor;
 </script>
 
-<div class="flex gap-1 justify-end">
+<div class="flex gap-1 justify-end mt-1">
   {#if pick_icon !== undefined && !is_cell_open}
     <button on:click={() => onPick && onPick()}>
       <Icon
