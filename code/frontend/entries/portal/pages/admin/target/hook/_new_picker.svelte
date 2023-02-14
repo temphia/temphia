@@ -1,12 +1,17 @@
 <script lang="ts">
   import type { PortalService } from "../../core";
   import ActionPicker from "../../core/action_picker.svelte";
+  import {
+    TargetHookTypeDataTableHook,
+    TargetHookTypeDomainHook,
+    TargetHookTypeStartUp,
+  } from "../target";
   export let service: PortalService;
 
   const actions = [
     {
-      name: "datatable_hook",
-      icon: "hashtag",
+      name: TargetHookTypeDataTableHook,
+      icon: "table",
       info: "Datatable hook",
       action: () => {
         service.nav.admin_target_hook_new();
@@ -15,8 +20,8 @@
     },
 
     {
-      name: "domain_hook",
-      icon: "hashtag",
+      name: TargetHookTypeDomainHook,
+      icon: "globe-alt",
       info: "Domain hook",
       action: () => {
         service.nav.admin_target_hook_new();
@@ -25,8 +30,8 @@
     },
 
     {
-      name: "startup",
-      icon: "hashtag",
+      name: TargetHookTypeStartUp,
+      icon: "play",
       info: "Startup hook when node starts",
       action: () => {
         service.nav.admin_target_hook_new();
