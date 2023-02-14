@@ -132,7 +132,7 @@ func (d *dynSource) LoadTable(txid uint32, req store.LoadTableReq) (*store.LoadT
 	}
 	finalResp.QueryResponse = sqresp
 
-	apps, err := d.hub.corehub.ListTargetAppByType(req.TenantId, entities.TargetAppTypeDataWidget, fmt.Sprintf("%s/%s", req.Group, req.Table))
+	apps, err := d.hub.corehub.ListTargetAppByType(req.TenantId, entities.TargetAppTypeDataTableWidget, fmt.Sprintf("%s/%s", req.Group, req.Table))
 	if err == nil {
 		finalResp.DataWidgets = apps
 	}

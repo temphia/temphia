@@ -41,7 +41,7 @@ func (ta *TargetAppInstancer) Instance(opts xinstance.Options) (*xinstance.Respo
 	plugId := ""
 
 	switch tapp.TargetType {
-	case entities.TargetAppTypeDataWidget:
+	case entities.TargetAppTypeDataTableWidget:
 		tparts := strings.Split(tapp.Target, "/")
 		if len(tparts) != 2 {
 			return nil, easyerr.Error("target has invalid target value")

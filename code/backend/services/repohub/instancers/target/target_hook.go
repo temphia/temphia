@@ -40,7 +40,7 @@ func (th *TargetHookInstancer) Instance(opts xinstance.Options) (*xinstance.Resp
 	plugId := ""
 
 	switch thook.TargetType {
-	case entities.TargetHookTypeDataHook:
+	case entities.TargetHookTypeDataTableHook:
 		tparts := strings.Split(thook.Target, "/")
 		if len(tparts) != 2 {
 			return nil, easyerr.Error("target has invalid target value")
