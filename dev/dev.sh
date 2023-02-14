@@ -6,8 +6,8 @@ then
 fi
 
 
-tmux new "echo database; make backend_docker_run" ';'  \
-    split -h "echo server_backend; make backend_server_run" ';'  \
+tmux new "echo database; make docker_run" ';'  \
+    split -h "echo server_backend; make server_run" ';'  \
     split "cd ../code/frontend && bash" ';' \
     select-pane -L ';'  \
     split "bash" ';' \
