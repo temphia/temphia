@@ -11,6 +11,7 @@
   import RemoveSheetDialog from "./panels/_remove_sheet_dialog.svelte";
   import EditColumn from "./panels/_edit_column.svelte";
   import SearchPanel from "./panels/_search_panel.svelte";
+  import type { SheetWidget } from "./sheets";
 
   export let source;
   export let group;
@@ -118,6 +119,11 @@
   const doSearch = () => {
     app.utils.big_modal_open(SearchPanel, {});
   };
+
+  const doActionRunWidget = (ev) => {
+    const widget = ev.detail as SheetWidget;
+    console.log("@widget", widget);
+  };
 </script>
 
 {#if loading || $state.loading}
@@ -132,6 +138,7 @@
       columns={$state.columns}
       rows={$state.rows}
       sheets={$sheets}
+      widgets={$state.widgets}
       on:add_column={doAddColumn}
       on:action_goto_history={() =>
         app.nav.admin_data_activity(source, group, "sheets")}
@@ -147,6 +154,7 @@
       on:remove_sheet={doRemoveSheet}
       on:edit_column={doEditColumn}
       on:action_search={doSearch}
+      on:action_run_widget={doActionRunWidget}
     />
   {/key}
 {/if}

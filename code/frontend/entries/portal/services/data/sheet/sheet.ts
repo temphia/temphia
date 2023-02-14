@@ -6,6 +6,7 @@ import type {
   SheetColumn,
   SheetRow,
   Sheet,
+  SheetWidget,
 } from "../../../pages/data/sheet/sheets";
 
 export class SheetGroupService {
@@ -69,6 +70,7 @@ export interface SheetState {
   columns: SheetColumn[];
   cells: { [_: string]: { [_: string]: SheetCell } };
   rows: SheetRow[];
+  widgets: SheetWidget[];
   loading: boolean;
 }
 
@@ -89,6 +91,7 @@ export class SheetService {
       cells: {},
       columns: [],
       rows: [],
+      widgets: [],
       loading: true,
     });
 
@@ -127,6 +130,7 @@ export class SheetService {
       cells: pcells,
       rows,
       loading: false,
+      widgets: resp.data["widget_apps"] || [],
     });
 
     return true;

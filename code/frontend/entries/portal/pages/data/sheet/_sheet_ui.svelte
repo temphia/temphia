@@ -3,12 +3,19 @@
 
   import SheetLayout from "./_sheet_layout.svelte";
   import SheetInner from "./_sheet_inner.svelte";
-  import type { SheetColumn, SheetRow, Sheet, SheetCell } from "./sheets";
+  import type {
+    SheetColumn,
+    SheetRow,
+    Sheet,
+    SheetCell,
+    SheetWidget,
+  } from "./sheets";
 
   export let columns: SheetColumn[];
   export let rows: SheetRow[];
   export let cells: { [_: number]: { [_: string]: SheetCell } };
   export let sheets: Sheet[];
+  export let widgets: SheetWidget[];
   export let active_sheet: number;
   export let selected_rows = [];
   export let folder_api: FolderTktAPI;
@@ -18,6 +25,7 @@
   {sheets}
   {active_sheet}
   {selected_rows}
+  {widgets}
   on:action_delete_trash
   on:action_goto_history
   on:action_goto_rawtable
@@ -27,7 +35,7 @@
   on:add_sheet
   on:change_sheet
   on:remove_sheet
-
+  on:action_run_widget
 >
   <SheetInner
     on:add_column

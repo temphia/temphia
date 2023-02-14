@@ -41,11 +41,7 @@ export const SheetCtypeShapes = {
     SheetColTypeSelect,
     SheetColTypeMultiSelect,
   ],
-  number: [
-    SheetColTypeNumber,
-    SheetColTypeReferenceNum,
-    SheetColTypeRemoteNum,
-  ],
+  number: [SheetColTypeNumber, SheetColTypeReferenceNum, SheetColTypeRemoteNum],
 };
 
 export const SheetCtypeIcons = {
@@ -75,7 +71,7 @@ export interface SheetColumn {
   name: string;
   ctype: string;
   sheetid: number;
-  opts?: string
+  opts?: string;
   extraopts?: object;
   color?: string;
   refsheet?: number;
@@ -95,4 +91,11 @@ export interface SheetCell {
   sheetid: number;
   rowid: number;
   colid: number;
+}
+
+export interface SheetWidget {
+  id: number;
+  name: string;
+  icon?: string;
+  context: string;
 }

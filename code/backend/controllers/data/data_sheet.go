@@ -3,6 +3,7 @@ package data
 import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
@@ -114,6 +115,18 @@ func (c *Controller) LoadSheet(uclaim *claim.Data, data *LoadSheetReq) (*LoadShe
 	return &LoadSheetResp{
 		Columns: columns.Rows,
 		Cells:   rowCells,
+		WidgetApps: []*entities.TargetApp{{
+			Id:          1,
+			Name:        "test",
+			Icon:        "",
+			Policy:      "",
+			TargetType:  entities.TargetAppTypeDataSheetWidget,
+			Target:      "default/group/table",
+			ContextType: "todo.1",
+			PlugId:      "test1",
+			AgentId:     "default",
+			TenantId:    uclaim.TenantId,
+		}},
 	}, nil
 
 }
@@ -482,6 +495,7 @@ type LoadSheetReq struct {
 }
 
 type LoadSheetResp struct {
-	Columns []map[string]any `json:"columns,omitempty"`
-	Cells   []map[string]any `json:"cells,omitempty"`
+	Columns    []map[string]any      `json:"columns,omitempty"`
+	Cells      []map[string]any      `json:"cells,omitempty"`
+	WidgetApps []*entities.TargetApp `json:"widget_apps,omitempty"`
 }

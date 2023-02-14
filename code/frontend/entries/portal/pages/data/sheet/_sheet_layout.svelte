@@ -2,11 +2,12 @@
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import { createEventDispatcher } from "svelte";
   import ToolbarAction from "../table/core/renderer/_toolbar_action.svelte";
-  import type { Sheet } from "./sheets";
+  import type { Sheet, SheetWidget } from "./sheets";
 
   export let sheets: Sheet[];
   export let active_sheet: number;
   export let selected_rows = [];
+  export let widgets: SheetWidget[];
 
   const dispatch = createEventDispatcher();
 </script>
@@ -73,6 +74,16 @@
       icon="document-search"
       name="Search"
     />
+
+    <div class="h-full border mx-1"></div>
+
+    {#each widgets as widget}
+      <ToolbarAction
+        onClick={() => dispatch("action_run_widget", widget)}
+        icon="puzzle"
+        name={widget.name}
+      />
+    {/each}
   </div>
 
   <div
