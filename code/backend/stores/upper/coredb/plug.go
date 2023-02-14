@@ -1,6 +1,7 @@
 package coredb
 
 import (
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -35,17 +36,25 @@ func (d *DB) PlugGet(tenantId, pid string) (*entities.Plug, error) {
 }
 
 func (d *DB) PlugDel(tenantId, pid string) error {
-	d.agentTable().Find(
+
+	err := d.agentResourceTable().Find(
+		db.Cond{
+			"tenant_id": tenantId,
+			"plug_id":   pid,
+		}).Delete()
+	if err != nil {
+		pp.Println("@delete_plug_resources", err)
+	}
+
+	err = d.agentTable().Find(
 		db.Cond{
 			"tenant_id": tenantId,
 			"plug_id":   pid,
 		}).Delete()
 
-	d.resTable().Find(
-		db.Cond{
-			"tenant_id": tenantId,
-			"plug_id":   pid,
-		}).Delete()
+	if err != nil {
+		pp.Println("@delete_plug_agents", err)
+	}
 
 	return d.plugTable().Find(db.Cond{"id": pid, "tenant_id": tenantId}).Delete()
 }
