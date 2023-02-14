@@ -1,5 +1,7 @@
 package entities
 
+// syncme => target/target.ts
+
 type TargetApp struct {
 	Id          int64      `json:"id,omitempty" db:"id,omitempty"`
 	Name        string     `json:"name,omitempty" db:"name,omitempty"`

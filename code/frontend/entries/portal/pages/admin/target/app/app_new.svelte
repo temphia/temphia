@@ -17,6 +17,12 @@
   if (target) {
     data["target"] = target;
   }
+
+  const nav_options = app.nav.options;
+  if (nav_options) {
+    data = { ...nav_options };
+  }
+
   const save = async (_data) => {
     const resp = await api.newApp(_data["target_type"], _data);
     if (!resp.ok) {
