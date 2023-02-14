@@ -6,10 +6,10 @@ import (
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
-func (d *dynSource) NewRow(txid uint32, req store.NewRowReq) (int64, error) {
+func (d *dynSource) NewRow(txid uint32, req dyndb.NewRowReq) (int64, error) {
 	ddb := d.dynDB()
 
 	id, err := ddb.NewRow(txid, req)
@@ -17,7 +17,7 @@ func (d *dynSource) NewRow(txid uint32, req store.NewRowReq) (int64, error) {
 		return 0, err
 	}
 
-	req.Data[store.KeyPrimary] = id
+	req.Data[dyndb.KeyPrimary] = id
 
 	// fixme => when txid != 0
 	if txid == 0 {
@@ -30,7 +30,7 @@ func (d *dynSource) NewRow(txid uint32, req store.NewRowReq) (int64, error) {
 	return id, nil
 }
 
-func (d *dynSource) GetRow(txid uint32, req store.GetRowReq) (map[string]any, error) {
+func (d *dynSource) GetRow(txid uint32, req dyndb.GetRowReq) (map[string]any, error) {
 	ddb := d.dynDB()
 
 	if txid != 0 || req.SkipCache {
@@ -40,7 +40,7 @@ func (d *dynSource) GetRow(txid uint32, req store.GetRowReq) (map[string]any, er
 	return ddb.GetRow(txid, req)
 }
 
-func (d *dynSource) UpdateRow(txid uint32, req store.UpdateRowReq) (map[string]any, error) {
+func (d *dynSource) UpdateRow(txid uint32, req dyndb.UpdateRowReq) (map[string]any, error) {
 	ddb := d.dynDB()
 
 	data, err := ddb.UpdateRow(txid, req)
@@ -56,32 +56,32 @@ func (d *dynSource) UpdateRow(txid uint32, req store.UpdateRowReq) (map[string]a
 	return data, nil
 }
 
-func (d *dynSource) DeleteRowBatch(txid uint32, req store.DeleteRowBatchReq) error {
+func (d *dynSource) DeleteRowBatch(txid uint32, req dyndb.DeleteRowBatchReq) error {
 	ddb := d.dynDB()
 	return ddb.DeleteRowBatch(txid, req)
 }
 
-func (d *dynSource) DeleteRowMulti(txid uint32, req store.DeleteRowMultiReq) error {
+func (d *dynSource) DeleteRowMulti(txid uint32, req dyndb.DeleteRowMultiReq) error {
 	ddb := d.dynDB()
 	return ddb.DeleteRowMulti(txid, req)
 }
 
-func (d *dynSource) DeleteRow(txid uint32, req store.DeleteRowReq) error {
+func (d *dynSource) DeleteRow(txid uint32, req dyndb.DeleteRowReq) error {
 	ddb := d.dynDB()
 	return ddb.DeleteRow(txid, req)
 }
 
-func (d *dynSource) SimpleQuery(txid uint32, req store.SimpleQueryReq) (*store.QueryResult, error) {
+func (d *dynSource) SimpleQuery(txid uint32, req dyndb.SimpleQueryReq) (*dyndb.QueryResult, error) {
 	ddb := d.dynDB()
 
 	if req.Count == 0 {
-		req.Count = store.DefaultQueryFetchCount
+		req.Count = dyndb.DefaultQueryFetchCount
 	}
 
 	return ddb.SimpleQuery(txid, req)
 }
 
-func (d *dynSource) LoadTable(txid uint32, req store.LoadTableReq) (*store.LoadTableResp, error) {
+func (d *dynSource) LoadTable(txid uint32, req dyndb.LoadTableReq) (*dyndb.LoadTableResp, error) {
 	ddb := d.dynDB()
 
 	views, err := ddb.ListView(req.TenantId, req.Group, req.Table)
@@ -89,18 +89,18 @@ func (d *dynSource) LoadTable(txid uint32, req store.LoadTableReq) (*store.LoadT
 		return nil, err
 	}
 
-	sqr := store.SimpleQueryReq{
+	sqr := dyndb.SimpleQueryReq{
 		TenantId:    req.TenantId,
 		Table:       req.Table,
 		Group:       req.Group,
 		Count:       50,
-		FilterConds: make([]*store.FilterCond, 0),
+		FilterConds: make([]*dyndb.FilterCond, 0),
 		Page:        0,
 		Selects:     nil,
 		SearchTerm:  "",
 	}
 
-	finalResp := &store.LoadTableResp{
+	finalResp := &dyndb.LoadTableResp{
 		ReverseRefs:   nil,
 		Views:         views,
 		DataWidgets:   nil,
@@ -148,7 +148,7 @@ func (d *dynSource) LoadTable(txid uint32, req store.LoadTableReq) (*store.LoadT
 
 }
 
-func (d *dynSource) FTSQuery(txid uint32, req store.FTSQueryReq) (*store.QueryResult, error) {
+func (d *dynSource) FTSQuery(txid uint32, req dyndb.FTSQueryReq) (*dyndb.QueryResult, error) {
 	ddb := d.dynDB()
 	return ddb.FTSQuery(txid, req)
 }

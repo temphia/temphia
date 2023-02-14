@@ -9,11 +9,11 @@ import (
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/filter"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/processer"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/upper/db/v4"
 )
 
-func (d *DynDB) simpleQuery(txid uint32, req store.SimpleQueryReq) (*store.QueryResult, error) {
+func (d *DynDB) simpleQuery(txid uint32, req dyndb.SimpleQueryReq) (*dyndb.QueryResult, error) {
 	records := make([]map[string]interface{}, 0)
 	err := d.txOr(txid, func(sess db.Session) error {
 
@@ -30,7 +30,7 @@ func (d *DynDB) simpleQuery(txid uint32, req store.SimpleQueryReq) (*store.Query
 			return err
 		}
 
-		orderBy := store.KeyPrimary
+		orderBy := dyndb.KeyPrimary
 		if req.OrderBy != "" {
 			orderBy = req.OrderBy
 		}
@@ -67,7 +67,7 @@ func (d *DynDB) simpleQuery(txid uint32, req store.SimpleQueryReq) (*store.Query
 		return nil, err
 	}
 
-	resp := &store.QueryResult{
+	resp := &dyndb.QueryResult{
 		Count:   int64(len(records)),
 		Page:    req.Page,
 		Rows:    records,
@@ -85,11 +85,11 @@ func (d *DynDB) processer(tenantId, group, table string) processer.Processer {
 	return processer.New(d.vendor, cols)
 }
 
-func (d *DynDB) getRow(txid uint32, req store.GetRowReq) (map[string]interface{}, error) {
+func (d *DynDB) getRow(txid uint32, req dyndb.GetRowReq) (map[string]interface{}, error) {
 	data := make(map[string]interface{})
 	err := d.txOr(txid, func(sess db.Session) error {
 		tbl := sess.Collection(d.tns.Table(req.TenantId, req.Group, req.Table))
-		return tbl.Find(store.KeyPrimary, req.Id).One(&data)
+		return tbl.Find(dyndb.KeyPrimary, req.Id).One(&data)
 	})
 	if err != nil {
 		return nil, err
@@ -103,26 +103,26 @@ func (d *DynDB) getRow(txid uint32, req store.GetRowReq) (map[string]interface{}
 	return data, err
 }
 
-func (d *DynDB) _FTSQuery(txid uint32, req store.FTSQueryReq) (*store.QueryResult, error) {
+func (d *DynDB) _FTSQuery(txid uint32, req dyndb.FTSQueryReq) (*dyndb.QueryResult, error) {
 	return nil, nil
 }
 
-func (d *DynDB) sqlQuery(txid uint32, tenantId string, req store.SqlQueryReq) (*store.SqlQueryResult, error) {
+func (d *DynDB) sqlQuery(txid uint32, tenantId string, req dyndb.SqlQueryReq) (*dyndb.SqlQueryResult, error) {
 
 	pp.Println("@sqlquery", req)
 
-	return &store.SqlQueryResult{
+	return &dyndb.SqlQueryResult{
 		Records: nil,
 		Columns: make(map[string]*entities.Column),
 	}, nil
 
 }
 
-func (d *DynDB) templateQuery(txid uint32, req store.TemplateQueryReq) (*store.QueryResult, error) {
+func (d *DynDB) templateQuery(txid uint32, req dyndb.TemplateQueryReq) (*dyndb.QueryResult, error) {
 	return nil, nil
 }
 
-func (d *DynDB) RefResolve(txid uint32, tenantId, gslug string, req *store.RefResolveReq) (*store.QueryResult, error) {
+func (d *DynDB) RefResolve(txid uint32, tenantId, gslug string, req *dyndb.RefResolveReq) (*dyndb.QueryResult, error) {
 
 	rows := make([]map[string]interface{}, 0)
 
@@ -130,9 +130,9 @@ func (d *DynDB) RefResolve(txid uint32, tenantId, gslug string, req *store.RefRe
 		key := ""
 
 		switch req.Type {
-		case store.RefHardPriId, store.RefSoftPriId:
-			key = fmt.Sprintf("%s IN", store.KeyPrimary)
-		case store.RefSoftText:
+		case dyndb.RefHardPriId, dyndb.RefSoftPriId:
+			key = fmt.Sprintf("%s IN", dyndb.KeyPrimary)
+		case dyndb.RefSoftText:
 			key = fmt.Sprintf("%s IN", req.Object)
 		default:
 			return easyerr.NotImpl()
@@ -158,19 +158,19 @@ func (d *DynDB) RefResolve(txid uint32, tenantId, gslug string, req *store.RefRe
 		return nil, err
 	}
 
-	return &store.QueryResult{
+	return &dyndb.QueryResult{
 		Rows:    rows,
 		Columns: cols,
 	}, nil
 }
 
-func (d *DynDB) refLoad(txid uint32, tenantId, gslug string, req *store.RefLoadReq) (*store.QueryResult, error) {
+func (d *DynDB) refLoad(txid uint32, tenantId, gslug string, req *dyndb.RefLoadReq) (*dyndb.QueryResult, error) {
 	rows := make([]map[string]interface{}, 0)
 
 	err := d.txOr(txid, func(sess db.Session) error {
 		sess.Collection(d.tns.Table(tenantId, gslug, req.Target)).Find(
 			db.Cond{
-				fmt.Sprintf("%s >", store.KeyPrimary): req.CursorRowId,
+				fmt.Sprintf("%s >", dyndb.KeyPrimary): req.CursorRowId,
 			},
 		).All(&rows)
 		return nil
@@ -190,7 +190,7 @@ func (d *DynDB) refLoad(txid uint32, tenantId, gslug string, req *store.RefLoadR
 		return nil, err
 	}
 
-	return &store.QueryResult{
+	return &dyndb.QueryResult{
 		Rows:    rows,
 		Count:   int64(len(rows)),
 		Page:    0,
@@ -198,7 +198,7 @@ func (d *DynDB) refLoad(txid uint32, tenantId, gslug string, req *store.RefLoadR
 	}, nil
 }
 
-func (d *DynDB) reverseRefLoad(txid uint32, tenantId, gslug string, req *store.RevRefLoadReq) (*store.QueryResult, error) {
+func (d *DynDB) reverseRefLoad(txid uint32, tenantId, gslug string, req *dyndb.RevRefLoadReq) (*dyndb.QueryResult, error) {
 	rows := make([]map[string]interface{}, 0)
 
 	err := d.txOr(txid, func(sess db.Session) error {
@@ -223,7 +223,7 @@ func (d *DynDB) reverseRefLoad(txid uint32, tenantId, gslug string, req *store.R
 		return nil, err
 	}
 
-	return &store.QueryResult{
+	return &dyndb.QueryResult{
 		Columns: cols,
 		Rows:    rows,
 	}, nil

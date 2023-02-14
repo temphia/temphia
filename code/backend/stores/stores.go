@@ -12,6 +12,7 @@ import (
 	"github.com/temphia/temphia/code/backend/services/datahub"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 type Options struct {
@@ -30,7 +31,7 @@ type Builder struct {
 
 	cabhub  store.CabinetHub
 	coreHub store.CoreHub
-	dataHub store.DataHub
+	dataHub dyndb.DataHub
 }
 
 func NewBuilder(opts Options) *Builder {
@@ -94,7 +95,7 @@ func (b *Builder) Build() error {
 		return easyerr.Error(fmt.Sprintf("default cabinet not loaded %s", b.config.DefaultCabinet))
 	}
 
-	dyns := make(map[string]store.DynDB)
+	dyns := make(map[string]dyndb.DynDB)
 	for k, s := range b.stores {
 		if !s.Supports(store.TypeDynDB) {
 			continue
@@ -118,7 +119,7 @@ func (b *Builder) CoreHub() store.CoreHub {
 	return b.coreHub
 }
 
-func (b *Builder) DataHub() store.DataHub {
+func (b *Builder) DataHub() dyndb.DataHub {
 	return b.dataHub
 }
 

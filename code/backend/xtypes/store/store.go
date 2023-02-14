@@ -1,5 +1,7 @@
 package store
 
+import "github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
+
 type StoreType string
 
 const (
@@ -19,7 +21,7 @@ const (
 type Store interface {
 	Supports(StoreType) bool
 	CoreDB() CoreDB
-	DynDB() DynDB
+	DynDB() dyndb.DynDB
 	StateDB() PlugStateKV
 	CabinetSource() CabinetSource
 	Name() string

@@ -4,30 +4,30 @@ import (
 	"strings"
 
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 var (
 	pgCtypeMap map[string]string = map[string]string{
-		store.CtypeShortText:   "text",
-		store.CtypePhone:       "text",
-		store.CtypeSelect:      "text",
-		store.CtypeRFormula:    "text",
-		store.CtypeMultiFile:   "text",
-		store.CtypeFile:        "text",
-		store.CtypeCheckBox:    "boolean",
-		store.CtypeCurrency:    "decimal",
-		store.CtypeNumber:      "integer",
-		store.CtypeLocation:    "geography(point,4326)",
-		store.CtypeDateTime:    "timestamptz",
-		store.CtypeMultSelect:  "text",
-		store.CtypeLongText:    "text",
-		store.CtypeSingleUser:  "text",
-		store.CtypeMultiUser:   "text",
-		store.CtypeEmail:       "text",
-		store.CtypeJSON:        "json",
-		store.CtypeRangeNumber: "integer",
-		store.CtypeColor:       "text",
+		dyndb.CtypeShortText:   "text",
+		dyndb.CtypePhone:       "text",
+		dyndb.CtypeSelect:      "text",
+		dyndb.CtypeRFormula:    "text",
+		dyndb.CtypeMultiFile:   "text",
+		dyndb.CtypeFile:        "text",
+		dyndb.CtypeCheckBox:    "boolean",
+		dyndb.CtypeCurrency:    "decimal",
+		dyndb.CtypeNumber:      "integer",
+		dyndb.CtypeLocation:    "geography(point,4326)",
+		dyndb.CtypeDateTime:    "timestamptz",
+		dyndb.CtypeMultSelect:  "text",
+		dyndb.CtypeLongText:    "text",
+		dyndb.CtypeSingleUser:  "text",
+		dyndb.CtypeMultiUser:   "text",
+		dyndb.CtypeEmail:       "text",
+		dyndb.CtypeJSON:        "json",
+		dyndb.CtypeRangeNumber: "integer",
+		dyndb.CtypeColor:       "text",
 	}
 )
 
@@ -48,7 +48,7 @@ func (g *zenerator) innerColumnPg() func(cslug, ctype string, notnull bool, defv
 
 	return func(cslug, ctype string, notnull bool, defval string) string {
 
-		if ctype == store.CtypeDateTime && defval == "now" {
+		if ctype == dyndb.CtypeDateTime && defval == "now" {
 			defval = " default (now() at time zone 'utc')"
 		}
 		return fn(cslug, ctype, notnull, defval)

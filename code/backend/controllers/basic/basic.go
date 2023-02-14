@@ -9,17 +9,18 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 type Controller struct {
 	coredb  store.CoreHub
 	cabinet store.CabinetHub
-	dynHub  store.DataHub
+	dynHub  dyndb.DataHub
 	pacman  repox.Hub
 	signer  service.Signer
 }
 
-func New(coredb store.CoreHub, cabinet store.CabinetHub, dynHub store.DataHub, pacman repox.Hub, sig service.Signer) *Controller {
+func New(coredb store.CoreHub, cabinet store.CabinetHub, dynHub dyndb.DataHub, pacman repox.Hub, sig service.Signer) *Controller {
 	ctrl := &Controller{
 		coredb:  coredb,
 		cabinet: cabinet,

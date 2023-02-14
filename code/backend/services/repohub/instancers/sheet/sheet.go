@@ -11,6 +11,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 var _ xinstance.Instancer = (*SheetInstancer)(nil)
@@ -34,7 +35,7 @@ type SheetInstancer struct {
 	pacman  repox.Hub
 	cabhub  store.CabinetHub
 	coreHub store.CoreHub
-	dynhub  store.DataHub
+	dynhub  dyndb.DataHub
 
 	dataInstancer DataInstancer
 }
@@ -48,7 +49,7 @@ func New(app xtypes.App) *SheetInstancer {
 		pacman:        deps.RepoHub().(repox.Hub),
 		cabhub:        deps.Cabinet().(store.CabinetHub),
 		coreHub:       deps.CoreHub().(store.CoreHub),
-		dynhub:        deps.DataHub().(store.DataHub),
+		dynhub:        deps.DataHub().(dyndb.DataHub),
 		dataInstancer: dtable.New(app),
 	}
 
@@ -87,10 +88,10 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 
 	for sidx := range schemaData.Sheets {
 		sheet := &schemaData.Sheets[sidx]
-		idx, err := source.NewRow(uint32(txnId), store.NewRowReq{
+		idx, err := source.NewRow(uint32(txnId), dyndb.NewRowReq{
 			TenantId: opts.TenantId,
 			Group:    resp.GroupSlug,
-			Table:    store.SheetTable,
+			Table:    dyndb.SheetTable,
 			Data: map[string]any{
 				"name": sheet.Name,
 			},
@@ -115,10 +116,10 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 
 			}
 
-			cid, err := source.NewRow(txnId, store.NewRowReq{
+			cid, err := source.NewRow(txnId, dyndb.NewRowReq{
 				TenantId: opts.TenantId,
 				Group:    resp.GroupSlug,
-				Table:    store.SheetColumnTable,
+				Table:    dyndb.SheetColumnTable,
 				Data: map[string]any{
 					"name":      column.Name,
 					"ctype":     column.Ctype,
@@ -147,10 +148,10 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 
 		for _, row := range sheet.SeedData {
 
-			rowid, err := source.NewRow(uint32(txnId), store.NewRowReq{
+			rowid, err := source.NewRow(uint32(txnId), dyndb.NewRowReq{
 				TenantId: opts.TenantId,
 				Group:    resp.GroupSlug,
-				Table:    store.SheetRowTable,
+				Table:    dyndb.SheetRowTable,
 				Data: map[string]any{
 					"sheetid": sheetsIdx[sheet.Name],
 				},
@@ -181,10 +182,10 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 					cellData["value"] = seedCellData
 				}
 
-				cellid, err := source.NewRow(uint32(txnId), store.NewRowReq{
+				cellid, err := source.NewRow(uint32(txnId), dyndb.NewRowReq{
 					TenantId: opts.TenantId,
 					Group:    resp.GroupSlug,
-					Table:    store.SheetCellTable,
+					Table:    dyndb.SheetCellTable,
 					Data:     cellData,
 				})
 				if err != nil {

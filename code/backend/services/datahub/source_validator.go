@@ -8,7 +8,7 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 
 	"github.com/thoas/go-funk"
 )
@@ -32,7 +32,7 @@ func (v *Validator) ValidateRows(rows []map[string]any) error {
 func (v *Validator) ValidateRow(row map[string]any) error {
 
 	for key, cell := range row {
-		if store.IsMeta(key) {
+		if dyndb.IsMeta(key) {
 			continue
 		}
 		col := v.columns[key]
@@ -42,7 +42,7 @@ func (v *Validator) ValidateRow(row map[string]any) error {
 		}
 
 		switch col.Ctype {
-		case store.CtypeShortText:
+		case dyndb.CtypeShortText:
 			if !col.StrictPattern || col.Pattern == "" {
 				continue
 			}
@@ -55,8 +55,8 @@ func (v *Validator) ValidateRow(row map[string]any) error {
 			if err != nil {
 				return err
 			}
-		case store.CtypePhone:
-		case store.CtypeSelect:
+		case dyndb.CtypePhone:
+		case dyndb.CtypeSelect:
 			str, ok := cell.(string)
 			if !ok {
 				return easyerr.Error("bad type")
@@ -66,14 +66,14 @@ func (v *Validator) ValidateRow(row map[string]any) error {
 				return easyerr.Error("invalid select option")
 			}
 
-		case store.CtypeRFormula:
-		case store.CtypeFile:
-		case store.CtypeMultiFile:
-		case store.CtypeCheckBox:
-		case store.CtypeCurrency:
-		case store.CtypeNumber:
-		case store.CtypeLocation:
-		case store.CtypeDateTime:
+		case dyndb.CtypeRFormula:
+		case dyndb.CtypeFile:
+		case dyndb.CtypeMultiFile:
+		case dyndb.CtypeCheckBox:
+		case dyndb.CtypeCurrency:
+		case dyndb.CtypeNumber:
+		case dyndb.CtypeLocation:
+		case dyndb.CtypeDateTime:
 
 		default:
 			panic("not implemented")

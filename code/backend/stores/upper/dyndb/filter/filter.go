@@ -3,7 +3,7 @@ package filter
 import (
 	"fmt"
 
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/upper/db/v4"
 )
 
@@ -48,7 +48,7 @@ var (
 	}
 )
 
-func Transform(fcs []*store.FilterCond) (interface{}, error) {
+func Transform(fcs []*dyndb.FilterCond) (interface{}, error) {
 
 	conds := make(db.Cond)
 	resp := []interface{}{

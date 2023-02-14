@@ -5,15 +5,16 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 type Controller struct {
-	dynHub store.DataHub
+	dynHub dyndb.DataHub
 	cabHub store.CabinetHub
 	signer service.Signer
 }
 
-func New(dhub store.DataHub, cabHub store.CabinetHub, signer service.Signer) *Controller {
+func New(dhub dyndb.DataHub, cabHub store.CabinetHub, signer service.Signer) *Controller {
 	return &Controller{
 
 		dynHub: dhub,

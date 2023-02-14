@@ -5,14 +5,14 @@ import (
 
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 
 	seeder2 "github.com/temphia/temphia/code/backend/services/datahub/seeder2"
 )
 
 // group
 
-var _ store.DynSource = (*dynSource)(nil)
+var _ dyndb.DynSource = (*dynSource)(nil)
 
 type dynSource struct {
 	hub      *DataHub
@@ -20,7 +20,7 @@ type dynSource struct {
 	tenantId string
 }
 
-func (d *dynSource) dynDB() store.DynDB {
+func (d *dynSource) dynDB() dyndb.DynDB {
 	pp.Println("OPERATING ON source/tenant |> ", d.source, d.tenantId)
 	return d.hub.dyndbs[d.source]
 }
@@ -78,18 +78,18 @@ func (d *dynSource) GetTable(gslug, tslug string) (*entities.Table, error) {
 	return ddb.GetTable(d.tenantId, gslug, tslug)
 }
 
-func (d *dynSource) RefResolve(txid uint32, gslug string, req *store.RefResolveReq) (*store.QueryResult, error) {
+func (d *dynSource) RefResolve(txid uint32, gslug string, req *dyndb.RefResolveReq) (*dyndb.QueryResult, error) {
 	ddb := d.dynDB()
 	return ddb.RefResolve(txid, d.tenantId, gslug, req)
 }
 
-func (d *dynSource) RefLoad(txid uint32, gslug string, req *store.RefLoadReq) (*store.QueryResult, error) {
+func (d *dynSource) RefLoad(txid uint32, gslug string, req *dyndb.RefLoadReq) (*dyndb.QueryResult, error) {
 	ddb := d.dynDB()
 
 	return ddb.RefLoad(txid, d.tenantId, gslug, req)
 }
 
-func (d *dynSource) ReverseRefLoad(txid uint32, gslug string, req *store.RevRefLoadReq) (*store.QueryResult, error) {
+func (d *dynSource) ReverseRefLoad(txid uint32, gslug string, req *dyndb.RevRefLoadReq) (*dyndb.QueryResult, error) {
 	ddb := d.dynDB()
 	return ddb.ReverseRefLoad(txid, d.tenantId, gslug, req)
 }
@@ -207,7 +207,7 @@ func (d *dynSource) NewActivity(group, table string, record *entities.DynActivit
 	return err
 }
 
-func (d *dynSource) SqlQuery(txid uint32, req store.SqlQueryReq) (*store.SqlQueryResult, error) {
+func (d *dynSource) SqlQuery(txid uint32, req dyndb.SqlQueryReq) (*dyndb.SqlQueryResult, error) {
 	ddb := d.dynDB()
 	if !req.Raw {
 		return ddb.SqlQueryScopped(txid, d.tenantId, req.Group, req.QStr)

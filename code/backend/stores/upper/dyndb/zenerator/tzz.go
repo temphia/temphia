@@ -6,6 +6,7 @@ import (
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/tns"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 type tzz struct {
@@ -45,7 +46,7 @@ func (t *tzz) CreateTable() (string, error) {
 	}
 
 	// fixme => remove this
-	// wctx.CondWriteCol(t.model.DeletedAt, t.gzz._innerColumn("deleted_at", store.CtypeDateTime, false, ""))
+	// wctx.CondWriteCol(t.model.DeletedAt, t.gzz._innerColumn("deleted_at", dyndb.CtypeDateTime, false, ""))
 
 	// unique index
 	for _, idx := range t.model.UniqueIndexes {
@@ -56,11 +57,11 @@ func (t *tzz) CreateTable() (string, error) {
 	// foreign key
 	for _, fk := range t.model.ColumnRef {
 		if len(fk.ToCols) == 0 {
-			fk.ToCols = []string{store.KeyPrimary}
+			fk.ToCols = []string{dyndb.KeyPrimary}
 		}
 
 		switch fk.Type {
-		case store.RefHardPriId, store.RefHardText, store.RefHardMulti:
+		case dyndb.RefHardPriId, dyndb.RefHardText, dyndb.RefHardMulti:
 			t.referecedTables = append(t.referecedTables, fk.Target)
 			wctx.Seperator()
 			wctx.Write(
@@ -99,7 +100,7 @@ func (t *tzz) CreateTable() (string, error) {
 			),
 		)
 
-		if t.model.ActivityType == store.DynActivityTypeStrict {
+		if t.model.ActivityType == dyndb.DynActivityTypeStrict {
 			wctx.Write(fmt.Sprintf(`CREATE TRIGGER 
 			data_tg_%s AFTER INSERT OR UPDATE ON 
 			%s FOR EACH ROW EXECUTE 
@@ -116,7 +117,7 @@ func (t *tzz) GetIndexes() []string {
 
 	if t.model.FTSIndex != nil {
 		// primary fts index
-		istr, err := t.gzz.AddIndex(t.tenantId, t.gslug, t.model.Slug, "fts", store.IndexFTS, t.model.FTSIndex.ColumnSpans)
+		istr, err := t.gzz.AddIndex(t.tenantId, t.gslug, t.model.Slug, "fts", dyndb.IndexFTS, t.model.FTSIndex.ColumnSpans)
 		if err != nil {
 			panic(err.Error() + "fixme")
 		}
@@ -125,7 +126,7 @@ func (t *tzz) GetIndexes() []string {
 	}
 
 	for _, idx := range t.model.Indexes {
-		istr, err := t.gzz.AddIndex(t.tenantId, t.gslug, t.model.Slug, idx.Slug, store.IndexNormal, idx.Spans)
+		istr, err := t.gzz.AddIndex(t.tenantId, t.gslug, t.model.Slug, idx.Slug, dyndb.IndexNormal, idx.Spans)
 		if err != nil {
 			panic(err.Error() + "fixme")
 		}

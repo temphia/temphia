@@ -3,7 +3,7 @@ package dyndb
 import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 type DyndbBuilder struct {
@@ -20,7 +20,7 @@ func (DyndbBuilder) Init(app any) error {
 func New(opts etypes.ModuleOptions) *DyndbModule {
 	deps := opts.Binder.GetApp().(xtypes.App).GetDeps()
 
-	dynhub := deps.DataHub().(store.DataHub).GetSource("default", opts.Resource.TenantId) // fixme => get source from resource
+	dynhub := deps.DataHub().(dyndb.DataHub).GetSource("default", opts.Resource.TenantId) // fixme => get source from resource
 
 	return &DyndbModule{
 		binder: opts.Binder,

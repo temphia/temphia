@@ -10,7 +10,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/vmodels"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 
 	"github.com/goccy/go-yaml"
 )
@@ -20,14 +20,14 @@ type Seeder struct {
 	tg               *xbprint.NewTableGroup
 	model            *entities.BPrint
 	pacman           repox.Hub
-	source           store.DynSource
+	source           dyndb.DynSource
 	tenant           string
 	group            string
 	selectableImages []string
 	selectableUsers  []string
 }
 
-func New(schema *xbprint.NewTableGroup, pman repox.Hub, dsource store.DynSource, tenantId, dataGroup, userId string) *Seeder {
+func New(schema *xbprint.NewTableGroup, pman repox.Hub, dsource dyndb.DynSource, tenantId, dataGroup, userId string) *Seeder {
 	return &Seeder{
 		tg:               schema,
 		model:            nil,
@@ -97,7 +97,7 @@ func (s *Seeder) applySeed(data map[string][]map[string]any) error {
 			fmt.Println(rdata)
 
 			for _, ref := range tmodel.ColumnRef {
-				if ref.Type == store.RefHardPriId || ref.Type == store.RefSoftPriId {
+				if ref.Type == dyndb.RefHardPriId || ref.Type == dyndb.RefSoftPriId {
 					targetDoneTbl := doneRows[ref.Target]
 
 					pp.Println("REF =>>>>", ref)
@@ -115,16 +115,16 @@ func (s *Seeder) applySeed(data map[string][]map[string]any) error {
 				}
 			}
 
-			_possibleId := rdata[store.KeyPrimary]
+			_possibleId := rdata[dyndb.KeyPrimary]
 
-			delete(rdata, store.KeyPrimary)
+			delete(rdata, dyndb.KeyPrimary)
 
-			_rid, err := s.source.NewRow(0, store.NewRowReq{
+			_rid, err := s.source.NewRow(0, dyndb.NewRowReq{
 				TenantId: s.tenant,
 				Group:    s.group,
 				Table:    table,
 				Data:     rdata,
-				ModCtx: store.ModCtx{
+				ModCtx: dyndb.ModCtx{
 					UserId: s.userId,
 				},
 			})
@@ -162,7 +162,7 @@ func (s *Seeder) GeneratedSeed(no int) error {
 		tbl := s.getTable(etbl)
 		nullables := make(map[string]bool)
 
-		cols := store.ExtractColumns(tbl, s.tenant, s.group)
+		cols := dyndb.ExtractColumns(tbl, s.tenant, s.group)
 
 		for _, col := range tbl.Columns {
 			nullables[col.Slug] = !col.NotNullable
@@ -180,7 +180,7 @@ func (s *Seeder) generateTableSeed(no int, cols []*entities.Column, nullables ma
 
 	for i := 0; i <= no; i = i + 1 {
 		data := make(map[string]any)
-		data[store.KeyPrimary] = i + 1
+		data[dyndb.KeyPrimary] = i + 1
 
 	columnloop:
 		for _, c := range cols {
@@ -193,19 +193,19 @@ func (s *Seeder) generateTableSeed(no int, cols []*entities.Column, nullables ma
 
 			if c.RefType != "" {
 				switch c.RefType {
-				case store.RefHardPriId, store.RefSoftPriId:
+				case dyndb.RefHardPriId, dyndb.RefSoftPriId:
 					data[c.Slug] = gofakeit.Number(1, no)
 					continue columnloop
-				case store.RefHardText:
-				case store.RefSoftText:
-				case store.RefHardMulti:
+				case dyndb.RefHardText:
+				case dyndb.RefSoftText:
+				case dyndb.RefHardMulti:
 				default:
 				}
 
 			}
 
 			switch c.Ctype {
-			case store.CtypeShortText:
+			case dyndb.CtypeShortText:
 
 				switch c.Slug {
 				case "name":
@@ -216,40 +216,40 @@ func (s *Seeder) generateTableSeed(no int, cols []*entities.Column, nullables ma
 					data[c.Slug] = gofakeit.HipsterWord()
 				}
 
-			case store.CtypeLongText:
+			case dyndb.CtypeLongText:
 				data[c.Slug] = gofakeit.HipsterSentence(20)
-			case store.CtypePhone:
+			case dyndb.CtypePhone:
 				data[c.Slug] = gofakeit.Phone()
-			case store.CtypeSelect, store.CtypeMultSelect:
+			case dyndb.CtypeSelect, dyndb.CtypeMultSelect:
 				if c.Options != nil {
 					data[c.Slug] = gofakeit.RandomString(c.Options)
 				}
-			case store.CtypeRFormula:
+			case dyndb.CtypeRFormula:
 				if !nullables[c.Slug] {
 					data[c.Slug] = "1 + 1"
 				}
-			case store.CtypeFile, store.CtypeMultiFile:
+			case dyndb.CtypeFile, dyndb.CtypeMultiFile:
 				data[c.Slug] = gofakeit.RandomString(s.selectableImages)
-			case store.CtypeCheckBox:
+			case dyndb.CtypeCheckBox:
 				data[c.Slug] = gofakeit.Bool()
-			case store.CtypeCurrency:
+			case dyndb.CtypeCurrency:
 				data[c.Slug] = gofakeit.Price(10, 200)
-			case store.CtypeNumber:
+			case dyndb.CtypeNumber:
 
 				data[c.Slug] = gofakeit.Number(0, 400)
-			case store.CtypeLocation:
+			case dyndb.CtypeLocation:
 				data[c.Slug] = [2]float64{gofakeit.Latitude(), gofakeit.Longitude()}
-			case store.CtypeDateTime:
+			case dyndb.CtypeDateTime:
 				data[c.Slug] = gofakeit.Date().UTC()
-			case store.CtypeSingleUser, store.CtypeMultiUser:
+			case dyndb.CtypeSingleUser, dyndb.CtypeMultiUser:
 				data[c.Slug] = gofakeit.RandomString(s.selectableUsers)
-			case store.CtypeEmail:
+			case dyndb.CtypeEmail:
 				data[c.Slug] = gofakeit.Email()
-			case store.CtypeJSON:
+			case dyndb.CtypeJSON:
 				data[c.Slug] = "{}"
-			case store.CtypeRangeNumber:
+			case dyndb.CtypeRangeNumber:
 				data[c.Slug] = gofakeit.Price(40, 130)
-			case store.CtypeColor:
+			case dyndb.CtypeColor:
 				data[c.Slug] = gofakeit.HexColor()
 			default:
 				fmt.Println("skipping ", c)

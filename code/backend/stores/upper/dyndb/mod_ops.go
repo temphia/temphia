@@ -5,14 +5,14 @@ import (
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/filter"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/processer"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/upper/db/v4"
 )
 
-func (d *DynDB) newRow(txid uint32, req store.NewRowReq) (int64, error) {
+func (d *DynDB) newRow(txid uint32, req dyndb.NewRowReq) (int64, error) {
 	var id int64
 
-	req.Data[store.KeyVersion] = 1
+	req.Data[dyndb.KeyVersion] = 1
 
 	req.ModCtx.TableName = d.tns.Table(req.TenantId, req.Group, req.Table)
 
@@ -21,7 +21,7 @@ func (d *DynDB) newRow(txid uint32, req store.NewRowReq) (int64, error) {
 		return 0, err
 	}
 
-	req.Data[store.KeyModSig] = string(modsig)
+	req.Data[dyndb.KeyModSig] = string(modsig)
 
 	err = d.beforeDBRow(req.TenantId, req.Group, req.Table, req.Data)
 	if err != nil {
@@ -49,7 +49,7 @@ type Key struct {
 	ID int64 `db:"__id"`
 }
 
-func (d *DynDB) NewBatchRows(txid uint32, req store.NewBatchRowReq) ([]int64, error) {
+func (d *DynDB) NewBatchRows(txid uint32, req dyndb.NewBatchRowReq) ([]int64, error) {
 
 	keys := make(map[string]struct{})
 
@@ -96,14 +96,14 @@ func (d *DynDB) NewBatchRows(txid uint32, req store.NewBatchRowReq) ([]int64, er
 	return ids, nil
 }
 
-func (d *DynDB) deleteRow(txid uint32, req store.DeleteRowReq) error {
+func (d *DynDB) deleteRow(txid uint32, req dyndb.DeleteRowReq) error {
 	return d.txOr(txid, func(sess db.Session) error {
 		tbl := sess.Collection(d.tns.Table(req.TenantId, req.Group, req.Table))
-		return tbl.Find(store.KeyPrimary, req.Id).Delete()
+		return tbl.Find(dyndb.KeyPrimary, req.Id).Delete()
 	})
 }
 
-func (d *DynDB) deleteRowBatch(txid uint32, req store.DeleteRowBatchReq) error {
+func (d *DynDB) deleteRowBatch(txid uint32, req dyndb.DeleteRowBatchReq) error {
 	fcond, err := filter.Transform(req.FilterConds)
 	if err != nil {
 		return err
@@ -116,14 +116,14 @@ func (d *DynDB) deleteRowBatch(txid uint32, req store.DeleteRowBatchReq) error {
 
 }
 
-func (d *DynDB) deleteRowMulti(txid uint32, req store.DeleteRowMultiReq) error {
+func (d *DynDB) deleteRowMulti(txid uint32, req dyndb.DeleteRowMultiReq) error {
 	return d.txOr(txid, func(sess db.Session) error {
 		tbl := sess.Collection(d.tns.Table(req.TenantId, req.Group, req.Table))
-		return tbl.Find(store.KeyPrimary, req.Ids).Delete()
+		return tbl.Find(dyndb.KeyPrimary, req.Ids).Delete()
 	})
 }
 
-func (d *DynDB) updateRow(txid uint32, req store.UpdateRowReq) (map[string]interface{}, error) {
+func (d *DynDB) updateRow(txid uint32, req dyndb.UpdateRowReq) (map[string]interface{}, error) {
 	var data map[string]interface{}
 
 	req.ModCtx.TableName = d.tns.Table(req.TenantId, req.Group, req.Table)
@@ -131,7 +131,7 @@ func (d *DynDB) updateRow(txid uint32, req store.UpdateRowReq) (map[string]inter
 	if err != nil {
 		return nil, err
 	}
-	req.Data[store.KeyModSig] = string(modsig)
+	req.Data[dyndb.KeyModSig] = string(modsig)
 
 	err = d.beforeDBRow(req.TenantId, req.Group, req.Table, req.Data)
 	if err != nil {
@@ -153,7 +153,7 @@ func (d *DynDB) updateRow(txid uint32, req store.UpdateRowReq) (map[string]inter
 				})
 
 		} else {
-			req.Data[store.KeyVersion] = req.Version + 1
+			req.Data[dyndb.KeyVersion] = req.Version + 1
 			query = sess.SQL().
 				Update(d.tns.Table(req.TenantId, req.Group, req.Table)).
 				Where("__id = ?", req.Id).

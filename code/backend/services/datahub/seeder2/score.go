@@ -3,7 +3,7 @@ package seeder
 import (
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 type SeedType interface {
@@ -14,7 +14,7 @@ type SeedType interface {
 func NewRecord(c *entities.Column, stype SeedType) any {
 
 	switch c.Ctype {
-	case store.CtypeShortText:
+	case dyndb.CtypeShortText:
 
 		switch c.Slug {
 		case "name", "title":
@@ -25,47 +25,47 @@ func NewRecord(c *entities.Column, stype SeedType) any {
 			return gofakeit.HipsterWord()
 		}
 
-	case store.CtypeLongText:
+	case dyndb.CtypeLongText:
 		return gofakeit.HipsterSentence(20)
-	case store.CtypePhone:
+	case dyndb.CtypePhone:
 		return gofakeit.Phone()
-	case store.CtypeSelect, store.CtypeMultSelect:
+	case dyndb.CtypeSelect, dyndb.CtypeMultSelect:
 		if c.Options != nil {
 			return gofakeit.RandomString(c.Options)
 		}
 
-	case store.CtypeFile, store.CtypeMultiFile:
+	case dyndb.CtypeFile, dyndb.CtypeMultiFile:
 		opts := stype.Files(c.Slug)
 		if len(opts) > 0 {
 			return gofakeit.RandomString(stype.Files(c.Slug))
 		}
 
-	case store.CtypeCheckBox:
+	case dyndb.CtypeCheckBox:
 		return gofakeit.Bool()
-	case store.CtypeCurrency:
+	case dyndb.CtypeCurrency:
 		return gofakeit.Price(10, 200)
-	case store.CtypeNumber:
+	case dyndb.CtypeNumber:
 		return gofakeit.Number(0, 400)
-	case store.CtypeLocation:
+	case dyndb.CtypeLocation:
 		return [2]float64{gofakeit.Latitude(), gofakeit.Longitude()}
-	case store.CtypeDateTime:
+	case dyndb.CtypeDateTime:
 		return gofakeit.Date().UTC()
-	case store.CtypeSingleUser, store.CtypeMultiUser:
+	case dyndb.CtypeSingleUser, dyndb.CtypeMultiUser:
 		opts := stype.Users(c.Slug)
 		if len(opts) > 0 {
 			return gofakeit.RandomString(opts)
 		}
-	case store.CtypeEmail:
+	case dyndb.CtypeEmail:
 		return gofakeit.Email()
-	case store.CtypeJSON:
+	case dyndb.CtypeJSON:
 		return "{}"
-	case store.CtypeRangeNumber:
+	case dyndb.CtypeRangeNumber:
 		// fixme => get ranges from column
 		return gofakeit.Price(40, 130)
-	case store.CtypeColor:
+	case dyndb.CtypeColor:
 		return gofakeit.HexColor()
 	default:
-		//		case store.CtypeRFormula:
+		//		case dyndb.CtypeRFormula:
 		// if !nullables[c.Slug] {
 		// 	data[c.Slug] = "1 + 1"
 		// }

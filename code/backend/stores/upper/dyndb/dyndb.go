@@ -8,10 +8,11 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/upper/db/v4"
 )
 
-var _ store.DynDB = (*DynDB)(nil)
+var _ dyndb.DynDB = (*DynDB)(nil)
 
 type DynDB struct {
 	session    db.Session
@@ -20,7 +21,7 @@ type DynDB struct {
 	txn        dbutils.TxManager
 	tns        tns.TNS
 	vendor     string
-	cache      store.DCache
+	cache      dyndb.DCache
 }
 
 func New(opts ucore.DynDBOptions) *DynDB {
@@ -62,43 +63,43 @@ func (d *DynDB) hookTable() db.Collection {
 	return d.session.Collection("data_hooks")
 }
 
-func (d *DynDB) NewRow(txid uint32, req store.NewRowReq) (int64, error) {
+func (d *DynDB) NewRow(txid uint32, req dyndb.NewRowReq) (int64, error) {
 	return d.newRow(txid, req)
 }
 
-func (d *DynDB) GetRow(txid uint32, req store.GetRowReq) (map[string]interface{}, error) {
+func (d *DynDB) GetRow(txid uint32, req dyndb.GetRowReq) (map[string]interface{}, error) {
 	return d.getRow(txid, req)
 }
 
-func (d *DynDB) UpdateRow(txid uint32, req store.UpdateRowReq) (map[string]interface{}, error) {
+func (d *DynDB) UpdateRow(txid uint32, req dyndb.UpdateRowReq) (map[string]interface{}, error) {
 	return d.updateRow(txid, req)
 }
 
-func (d *DynDB) DeleteRowBatch(txid uint32, req store.DeleteRowBatchReq) error {
+func (d *DynDB) DeleteRowBatch(txid uint32, req dyndb.DeleteRowBatchReq) error {
 	return d.deleteRowBatch(txid, req)
 }
 
-func (d *DynDB) DeleteRowMulti(txid uint32, req store.DeleteRowMultiReq) error {
+func (d *DynDB) DeleteRowMulti(txid uint32, req dyndb.DeleteRowMultiReq) error {
 	return d.deleteRowMulti(txid, req)
 }
 
-func (d *DynDB) DeleteRow(txid uint32, req store.DeleteRowReq) error {
+func (d *DynDB) DeleteRow(txid uint32, req dyndb.DeleteRowReq) error {
 	return d.deleteRow(txid, req)
 }
 
-func (d *DynDB) SimpleQuery(txid uint32, req store.SimpleQueryReq) (*store.QueryResult, error) {
+func (d *DynDB) SimpleQuery(txid uint32, req dyndb.SimpleQueryReq) (*dyndb.QueryResult, error) {
 	return d.simpleQuery(txid, req)
 }
 
-func (d *DynDB) FTSQuery(txid uint32, req store.FTSQueryReq) (*store.QueryResult, error) {
+func (d *DynDB) FTSQuery(txid uint32, req dyndb.FTSQueryReq) (*dyndb.QueryResult, error) {
 	return d._FTSQuery(txid, req)
 }
 
-func (d *DynDB) TemplateQuery(txid uint32, req store.TemplateQueryReq) (*store.QueryResult, error) {
+func (d *DynDB) TemplateQuery(txid uint32, req dyndb.TemplateQueryReq) (*dyndb.QueryResult, error) {
 	return d.templateQuery(txid, req)
 }
 
-func (d *DynDB) SqlQueryRaw(txid uint32, tenantId, group, qstr string) (*store.SqlQueryResult, error) {
+func (d *DynDB) SqlQueryRaw(txid uint32, tenantId, group, qstr string) (*dyndb.SqlQueryResult, error) {
 	var rs []map[string]any
 
 	err := d.txOr(txid, func(sess db.Session) error {
@@ -115,25 +116,25 @@ func (d *DynDB) SqlQueryRaw(txid uint32, tenantId, group, qstr string) (*store.S
 		return nil, err
 	}
 
-	return &store.SqlQueryResult{
+	return &dyndb.SqlQueryResult{
 		Records: rs,
 		Columns: make(map[string]*entities.Column),
 	}, nil
 }
 
-func (d *DynDB) SqlQueryScopped(txid uint32, tenantId, group, qstr string) (*store.SqlQueryResult, error) {
+func (d *DynDB) SqlQueryScopped(txid uint32, tenantId, group, qstr string) (*dyndb.SqlQueryResult, error) {
 	return nil, nil
 }
 
-func (d *DynDB) RefLoad(txid uint32, tenantId, gslug string, req *store.RefLoadReq) (*store.QueryResult, error) {
+func (d *DynDB) RefLoad(txid uint32, tenantId, gslug string, req *dyndb.RefLoadReq) (*dyndb.QueryResult, error) {
 	return d.refLoad(txid, tenantId, gslug, req)
 }
 
-func (d *DynDB) ReverseRefLoad(txid uint32, tenantId, gslug string, req *store.RevRefLoadReq) (*store.QueryResult, error) {
+func (d *DynDB) ReverseRefLoad(txid uint32, tenantId, gslug string, req *dyndb.RevRefLoadReq) (*dyndb.QueryResult, error) {
 	return d.reverseRefLoad(txid, tenantId, gslug, req)
 }
 
-func (d *DynDB) GetCache() store.DCache {
+func (d *DynDB) GetCache() dyndb.DCache {
 
 	return nil
 }

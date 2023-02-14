@@ -4,7 +4,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 func (c *Controller) ListSources(uclaim *claim.Session) ([]string, error) {
@@ -144,7 +144,7 @@ type DataGroupQuery struct {
 }
 
 func (c *Controller) QueryDataGroup(uclaim *claim.Session, source, group string, query DataGroupQuery) (any, error) {
-	return c.dynHub.GetSource(source, uclaim.TenantId).SqlQuery(0, store.SqlQueryReq{
+	return c.dynHub.GetSource(source, uclaim.TenantId).SqlQuery(0, dyndb.SqlQueryReq{
 		NoTransform: false,
 		Raw:         query.Raw,
 		Group:       group,

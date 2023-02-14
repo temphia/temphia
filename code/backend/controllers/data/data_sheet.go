@@ -4,7 +4,7 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 func (c *Controller) ListSheetGroup(uclaim *claim.Data) (*ListSheetGroupResp, error) {
@@ -22,10 +22,10 @@ func (c *Controller) ListSheetGroup(uclaim *claim.Data) (*ListSheetGroupResp, er
 		return nil, err
 	}
 
-	sheetRows, err := dynDb.SimpleQuery(0, store.SimpleQueryReq{
+	sheetRows, err := dynDb.SimpleQuery(0, dyndb.SimpleQueryReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
-		Table:    store.SheetTable,
+		Table:    dyndb.SheetTable,
 	})
 	if err != nil {
 		return nil, err
@@ -42,11 +42,11 @@ func (c *Controller) LoadSheet(uclaim *claim.Data, data *LoadSheetReq) (*LoadShe
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	columns, err := dynDb.SimpleQuery(0, store.SimpleQueryReq{
+	columns, err := dynDb.SimpleQuery(0, dyndb.SimpleQueryReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
-		Table:    store.SheetColumnTable,
-		FilterConds: []*store.FilterCond{
+		Table:    dyndb.SheetColumnTable,
+		FilterConds: []*dyndb.FilterCond{
 			{
 				Column: "sheetid",
 				Cond:   "equal",
@@ -66,13 +66,13 @@ func (c *Controller) LoadSheet(uclaim *claim.Data, data *LoadSheetReq) (*LoadShe
 	}
 
 	colNo := len(columns.Rows)
-	count := int64((store.DefaultQueryFetchCount * colNo) + colNo)
+	count := int64((dyndb.DefaultQueryFetchCount * colNo) + colNo)
 
-	cells, err := dynDb.SimpleQuery(0, store.SimpleQueryReq{
+	cells, err := dynDb.SimpleQuery(0, dyndb.SimpleQueryReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
-		Table:    store.SheetCellTable,
-		FilterConds: []*store.FilterCond{
+		Table:    dyndb.SheetCellTable,
+		FilterConds: []*dyndb.FilterCond{
 			{
 				Column: "sheetid",
 				Cond:   "equal",
@@ -138,9 +138,9 @@ func (c *Controller) ListSheet(uclaim *claim.Data) ([]map[string]any, error) {
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	resp, err := dynDb.SimpleQuery(0, store.SimpleQueryReq{
+	resp, err := dynDb.SimpleQuery(0, dyndb.SimpleQueryReq{
 		TenantId: uclaim.TenantId,
-		Table:    store.SheetTable,
+		Table:    dyndb.SheetTable,
 		Group:    group,
 	})
 	if err != nil {
@@ -155,12 +155,12 @@ func (c *Controller) NewSheet(uclaim *claim.Data, data map[string]any) error {
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	_, err := dynDb.NewRow(0, store.NewRowReq{
+	_, err := dynDb.NewRow(0, dyndb.NewRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
-		Table:    store.SheetTable,
+		Table:    dyndb.SheetTable,
 		Data:     data,
-		ModCtx: store.ModCtx{
+		ModCtx: dyndb.ModCtx{
 			UserId: uclaim.UserID,
 		},
 	})
@@ -172,10 +172,10 @@ func (c *Controller) GetSheet(uclaim *claim.Data, id int64) (map[string]any, err
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	return dynDb.GetRow(0, store.GetRowReq{
+	return dynDb.GetRow(0, dyndb.GetRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
-		Table:    store.SheetTable,
+		Table:    dyndb.SheetTable,
 		Id:       id,
 	})
 
@@ -186,11 +186,11 @@ func (c *Controller) UpdateSheet(uclaim *claim.Data, id int64, data map[string]a
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	_, err := dynDb.UpdateRow(0, store.UpdateRowReq{
+	_, err := dynDb.UpdateRow(0, dyndb.UpdateRowReq{
 		TenantId: uclaim.TenantId,
 		Id:       id,
 		Group:    group,
-		Table:    store.SheetTable,
+		Table:    dyndb.SheetTable,
 		Data:     data,
 	})
 
@@ -203,11 +203,11 @@ func (c *Controller) DeleteSheet(uclaim *claim.Data, id int64) error {
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	err := dynDb.DeleteRowBatch(0, store.DeleteRowBatchReq{
+	err := dynDb.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
-		Table:    store.SheetCellTable,
-		FilterConds: []*store.FilterCond{
+		Table:    dyndb.SheetCellTable,
+		FilterConds: []*dyndb.FilterCond{
 			{
 				Column: "sheetid",
 				Cond:   "equal",
@@ -219,11 +219,11 @@ func (c *Controller) DeleteSheet(uclaim *claim.Data, id int64) error {
 		pp.Println("@err while clearing cells")
 	}
 
-	dynDb.DeleteRowBatch(0, store.DeleteRowBatchReq{
+	dynDb.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
-		Table:    store.SheetRowTable,
-		FilterConds: []*store.FilterCond{
+		Table:    dyndb.SheetRowTable,
+		FilterConds: []*dyndb.FilterCond{
 			{
 				Column: "sheetid",
 				Cond:   "equal",
@@ -236,11 +236,11 @@ func (c *Controller) DeleteSheet(uclaim *claim.Data, id int64) error {
 		pp.Println("@err while clearing rows")
 	}
 
-	dynDb.DeleteRowBatch(0, store.DeleteRowBatchReq{
+	dynDb.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
-		Table:    store.SheetColumnTable,
-		FilterConds: []*store.FilterCond{
+		Table:    dyndb.SheetColumnTable,
+		FilterConds: []*dyndb.FilterCond{
 			{
 				Column: "sheetid",
 				Cond:   "equal",
@@ -253,12 +253,12 @@ func (c *Controller) DeleteSheet(uclaim *claim.Data, id int64) error {
 		pp.Println("@err while clearing columns")
 	}
 
-	dynDb.DeleteRow(0, store.DeleteRowReq{
+	dynDb.DeleteRow(0, dyndb.DeleteRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
-		Table:    store.SheetTable,
+		Table:    dyndb.SheetTable,
 		Id:       id,
-		ModCtx: store.ModCtx{
+		ModCtx: dyndb.ModCtx{
 			UserId: uclaim.UserID,
 		},
 	})
@@ -273,11 +273,11 @@ func (c *Controller) ListSheetColumn(uclaim *claim.Data, sid int64) ([]map[strin
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	resp, err := dynDb.SimpleQuery(0, store.SimpleQueryReq{
+	resp, err := dynDb.SimpleQuery(0, dyndb.SimpleQueryReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
-		Table:    store.SheetColumnTable,
-		FilterConds: []*store.FilterCond{
+		Table:    dyndb.SheetColumnTable,
+		FilterConds: []*dyndb.FilterCond{
 			{
 				Column: "sheetid",
 				Cond:   "equal",
@@ -299,12 +299,12 @@ func (c *Controller) NewSheetColumn(uclaim *claim.Data, sid int64, data map[stri
 
 	data["sheetid"] = sid
 
-	return dynDb.NewRow(0, store.NewRowReq{
+	return dynDb.NewRow(0, dyndb.NewRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
-		Table:    store.SheetColumnTable,
+		Table:    dyndb.SheetColumnTable,
 		Data:     data,
-		ModCtx: store.ModCtx{
+		ModCtx: dyndb.ModCtx{
 			UserId: uclaim.UserID,
 		},
 	})
@@ -316,10 +316,10 @@ func (c *Controller) GetSheetColumn(uclaim *claim.Data, sid, cid int64) (map[str
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	dynDb.GetRow(0, store.GetRowReq{
+	dynDb.GetRow(0, dyndb.GetRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
-		Table:    store.SheetColumnTable,
+		Table:    dyndb.SheetColumnTable,
 		Id:       cid,
 	})
 
@@ -331,13 +331,13 @@ func (c *Controller) UpdateSheetColumn(uclaim *claim.Data, sid, cid int64, data 
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	dynDb.UpdateRow(0, store.UpdateRowReq{
+	dynDb.UpdateRow(0, dyndb.UpdateRowReq{
 		TenantId: uclaim.TenantId,
 		Id:       cid,
 		Group:    group,
-		Table:    store.SheetColumnTable,
+		Table:    dyndb.SheetColumnTable,
 		Data:     data,
-		ModCtx: store.ModCtx{
+		ModCtx: dyndb.ModCtx{
 			UserId: uclaim.UserID,
 		},
 	})
@@ -351,12 +351,12 @@ func (c *Controller) DeleteSheetColumn(uclaim *claim.Data, sid, cid int64) error
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	return dynDb.DeleteRow(0, store.DeleteRowReq{
+	return dynDb.DeleteRow(0, dyndb.DeleteRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
-		Table:    store.SheetColumnTable,
+		Table:    dyndb.SheetColumnTable,
 		Id:       cid,
-		ModCtx: store.ModCtx{
+		ModCtx: dyndb.ModCtx{
 			UserId: uclaim.UserID,
 		},
 	})
@@ -371,14 +371,14 @@ func (c *Controller) NewRowWithCell(uclaim *claim.Data, sid int64, data map[int6
 	source, group := getTarget(uclaim)
 	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	rid, err := dynDb.NewRow(txid, store.NewRowReq{
+	rid, err := dynDb.NewRow(txid, dyndb.NewRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
-		Table:    store.SheetRowTable,
+		Table:    dyndb.SheetRowTable,
 		Data: map[string]any{
 			"sheetid": sid,
 		},
-		ModCtx: store.ModCtx{
+		ModCtx: dyndb.ModCtx{
 			UserId: uclaim.UserID,
 		},
 	})
@@ -393,12 +393,12 @@ func (c *Controller) NewRowWithCell(uclaim *claim.Data, sid int64, data map[int6
 		cellData["sheetid"] = sid
 		cellData["colid"] = cid
 
-		cellid, err := dynDb.NewRow(txid, store.NewRowReq{
+		cellid, err := dynDb.NewRow(txid, dyndb.NewRowReq{
 			TenantId: uclaim.TenantId,
 			Group:    group,
-			Table:    store.SheetCellTable,
+			Table:    dyndb.SheetCellTable,
 			Data:     cellData,
-			ModCtx: store.ModCtx{
+			ModCtx: dyndb.ModCtx{
 				UserId: uclaim.UserID,
 			},
 		})
@@ -424,19 +424,19 @@ func (c *Controller) UpdateRowWithCell(uclaim *claim.Data, sid, rid int64, data 
 
 		pp.Println("@data", cellData)
 
-		cellId, cellOk := cellData[store.KeyPrimary].(float64)
-		version, _ := cellData[store.KeyVersion].(float64)
+		cellId, cellOk := cellData[dyndb.KeyPrimary].(float64)
+		version, _ := cellData[dyndb.KeyVersion].(float64)
 		if !cellOk {
 			cellData["rowid"] = rid
 			cellData["sheetid"] = sid
 			cellData["colid"] = colid
 
-			_, err := dynDb.NewRow(0, store.NewRowReq{
+			_, err := dynDb.NewRow(0, dyndb.NewRowReq{
 				TenantId: uclaim.TenantId,
 				Group:    group,
-				Table:    store.SheetCellTable,
+				Table:    dyndb.SheetCellTable,
 				Data:     cellData,
-				ModCtx: store.ModCtx{
+				ModCtx: dyndb.ModCtx{
 					UserId: uclaim.UserID,
 				},
 			})
@@ -446,20 +446,20 @@ func (c *Controller) UpdateRowWithCell(uclaim *claim.Data, sid, rid int64, data 
 
 		} else {
 
-			delete(cellData, store.KeyPrimary)
-			delete(cellData, store.KeyVersion)
+			delete(cellData, dyndb.KeyPrimary)
+			delete(cellData, dyndb.KeyVersion)
 			delete(cellData, "rowid")
 			delete(cellData, "sheetid")
 			delete(cellData, "colid")
 
-			_, err := dynDb.UpdateRow(0, store.UpdateRowReq{
+			_, err := dynDb.UpdateRow(0, dyndb.UpdateRowReq{
 				TenantId: uclaim.TenantId,
 				Id:       int64(cellId),
 				Group:    group,
-				Table:    store.SheetCellTable,
+				Table:    dyndb.SheetCellTable,
 				Data:     cellData,
 				Version:  int64(version),
-				ModCtx: store.ModCtx{
+				ModCtx: dyndb.ModCtx{
 					UserId: uclaim.UserID,
 				},
 			})
@@ -491,7 +491,7 @@ type LoadSheetReq struct {
 	Group       string             `json:"group,omitempty"`
 	SheetId     int64              `json:"sheet_id,omitempty"`
 	View        string             `json:"view,omitempty"`
-	FilterConds []store.FilterCond `json:"filter_conds,omitempty"`
+	FilterConds []dyndb.FilterCond `json:"filter_conds,omitempty"`
 }
 
 type LoadSheetResp struct {

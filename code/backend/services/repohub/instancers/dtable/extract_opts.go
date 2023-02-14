@@ -6,13 +6,14 @@ import (
 	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 func (di *dtabeInstancer) extractUserOptions(tenantId string, auto bool, userData []byte, schemaData *xbprint.NewTableGroup) (*DataGroupRequest, error) {
 	return ExtractUserOptions(di.cabhub, di.coreHub, di.dynhub)(tenantId, auto, userData, schemaData)
 }
 
-func ExtractUserOptions(cabhub store.CabinetHub, coreHub store.CoreHub, dynhub store.DataHub) func(tenantId string, auto bool, userData []byte, schemaData *xbprint.NewTableGroup) (*DataGroupRequest, error) {
+func ExtractUserOptions(cabhub store.CabinetHub, coreHub store.CoreHub, dynhub dyndb.DataHub) func(tenantId string, auto bool, userData []byte, schemaData *xbprint.NewTableGroup) (*DataGroupRequest, error) {
 
 	return func(tenantId string, auto bool, userData []byte, schemaData *xbprint.NewTableGroup) (*DataGroupRequest, error) {
 
@@ -35,15 +36,15 @@ func ExtractUserOptions(cabhub store.CabinetHub, coreHub store.CoreHub, dynhub s
 
 		dopts.GroupName = schemaData.Name
 		dopts.GroupSlug = schemaData.Slug + grandom
-		dopts.SeedType = store.DynSeedTypeAutogen
+		dopts.SeedType = dyndb.DynSeedTypeAutogen
 
 		tblOpts := make(map[string]*DataTableOption, len(schemaData.Tables))
 		for _, nt := range schemaData.Tables {
 			tblOpts[nt.Slug] = &DataTableOption{
 				Name:         nt.Name,
 				Slug:         nt.Slug,
-				ActivityType: store.DynActivityTypeStrict,
-				SyncType:     store.DynSyncTypeEventAndData,
+				ActivityType: dyndb.DynActivityTypeStrict,
+				SyncType:     dyndb.DynSyncTypeEventAndData,
 				Seed:         true,
 			}
 		}

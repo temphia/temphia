@@ -8,7 +8,7 @@ import (
 	"github.com/temphia/temphia/code/backend/services/sockdhub/transports"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 func (s *Server) dataAPI(rg *gin.RouterGroup) {
@@ -101,7 +101,7 @@ func (s *Server) deleteRow(uclaim *claim.Data, ctx *gin.Context) {
 }
 
 func (s *Server) loadTable(uclaim *claim.Data, ctx *gin.Context) {
-	req := store.LoadTableReq{}
+	req := dyndb.LoadTableReq{}
 	err := ctx.BindJSON(&req)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
@@ -118,7 +118,7 @@ func (s *Server) loadTable(uclaim *claim.Data, ctx *gin.Context) {
 }
 
 func (s *Server) simpleQuery(uclaim *claim.Data, ctx *gin.Context) {
-	query := store.SimpleQueryReq{}
+	query := dyndb.SimpleQueryReq{}
 	err := ctx.BindJSON(&query)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
@@ -130,7 +130,7 @@ func (s *Server) simpleQuery(uclaim *claim.Data, ctx *gin.Context) {
 }
 
 func (s *Server) FTSQuery(uclaim *claim.Data, ctx *gin.Context) {
-	query := store.FTSQueryReq{}
+	query := dyndb.FTSQueryReq{}
 	err := ctx.BindJSON(&query)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
@@ -142,7 +142,7 @@ func (s *Server) FTSQuery(uclaim *claim.Data, ctx *gin.Context) {
 }
 
 func (s *Server) refLoad(uclaim *claim.Data, ctx *gin.Context) {
-	query := &store.RefLoadReq{}
+	query := &dyndb.RefLoadReq{}
 	err := ctx.BindJSON(&query)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
@@ -154,7 +154,7 @@ func (s *Server) refLoad(uclaim *claim.Data, ctx *gin.Context) {
 }
 
 func (s *Server) refResolve(uclaim *claim.Data, ctx *gin.Context) {
-	query := &store.RefResolveReq{}
+	query := &dyndb.RefResolveReq{}
 	err := ctx.BindJSON(&query)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
@@ -166,7 +166,7 @@ func (s *Server) refResolve(uclaim *claim.Data, ctx *gin.Context) {
 }
 
 func (s *Server) reverseRefLoad(uclaim *claim.Data, ctx *gin.Context) {
-	query := &store.RevRefLoadReq{}
+	query := &dyndb.RevRefLoadReq{}
 
 	err := ctx.BindJSON(query)
 	if err != nil {

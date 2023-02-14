@@ -7,7 +7,7 @@ import (
 	"github.com/temphia/temphia/code/backend/stores/upper/ucore"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 
 	"github.com/upper/db/v4"
 )
@@ -73,7 +73,7 @@ func (d *DynDDL) AddTableRef(tenantId, gslug string, model *xbprint.NewTable) (e
 	}
 	clear = true
 
-	columns := store.ExtractColumns(model, tenantId, gslug)
+	columns := dyndb.ExtractColumns(model, tenantId, gslug)
 	for _, col := range columns {
 		err = d.AddColumnMeta(tenantId, gslug, model.Slug, col)
 		if err != nil {

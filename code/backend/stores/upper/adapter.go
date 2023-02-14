@@ -4,13 +4,15 @@ import (
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/stores/upper/coredb"
-	"github.com/temphia/temphia/code/backend/stores/upper/dyndb"
+	udyndb "github.com/temphia/temphia/code/backend/stores/upper/dyndb"
+
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dlock"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/tns"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/zenerator"
 	"github.com/temphia/temphia/code/backend/stores/upper/plugkv"
 	"github.com/temphia/temphia/code/backend/stores/upper/ucore"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/upper/db/v4"
 )
 
@@ -20,7 +22,7 @@ type Adapter struct {
 	uvendor      ucore.UpperVendor
 	innerCoreDB  store.CoreDB
 	innerStateDb store.PlugStateKV
-	innerDynDB   store.DynDB
+	innerDynDB   dyndb.DynDB
 }
 
 func NewAdapter(upvendor ucore.UpperVendor) func(conf *config.StoreSource) (store.Store, error) {
@@ -40,7 +42,7 @@ func NewAdapter(upvendor ucore.UpperVendor) func(conf *config.StoreSource) (stor
 			uvendor:      upvendor,
 			innerCoreDB:  coredb.New(sess, conf.Vendor),
 			innerStateDb: plugkv.New(sess, dbutils.NewTxMgr(upvendor.NewTx), conf.Vendor),
-			innerDynDB: dyndb.New(ucore.DynDBOptions{
+			innerDynDB: udyndb.New(ucore.DynDBOptions{
 				Session:    sess,
 				TxnManager: dbutils.NewTxMgr(upvendor.NewTx),
 				DynGen:     ztr,
@@ -85,7 +87,7 @@ func (u *Adapter) StateDB() store.PlugStateKV {
 	return u.innerStateDb
 }
 
-func (u *Adapter) DynDB() store.DynDB {
+func (u *Adapter) DynDB() dyndb.DynDB {
 	return u.innerDynDB
 }
 

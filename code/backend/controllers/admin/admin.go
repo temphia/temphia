@@ -5,6 +5,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
@@ -14,7 +15,7 @@ type Controller struct {
 	coredb store.CoreHub
 	signer service.Signer
 
-	dynHub store.DataHub
+	dynHub dyndb.DataHub
 	cabHub store.CabinetHub
 	log    logx.Proxy
 
@@ -26,7 +27,7 @@ func New(
 	cplane xplane.ControlPlane,
 	coredb store.CoreHub,
 	signer service.Signer,
-	dynHub store.DataHub,
+	dynHub dyndb.DataHub,
 	cabHub store.CabinetHub,
 	plugState store.PlugStateKV,
 	log logx.Proxy) *Controller {

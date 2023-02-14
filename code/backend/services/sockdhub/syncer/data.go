@@ -6,7 +6,7 @@ import (
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 type DataSyncer struct {
@@ -28,7 +28,7 @@ type RowMod struct {
 
 func (s *DataSyncer) PushNewRow(source, tenantId, groupId, table string, data map[string]any) error {
 
-	iid, ok := data[store.KeyPrimary]
+	iid, ok := data[dyndb.KeyPrimary]
 	if !ok {
 		pp.Println("row id not found ", data)
 		return nil

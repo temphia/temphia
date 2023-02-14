@@ -8,13 +8,13 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 type DyndbModule struct {
 	binder etypes.ExecutorBinder
 	res    *entities.Resource
-	dynsrc store.DynSource
+	dynsrc dyndb.DynSource
 	group  string
 	table  string
 }
@@ -25,7 +25,7 @@ func (d *DyndbModule) IPC(method string, path string, args xtypes.LazyData) (xty
 
 	switch method {
 	case "new_row":
-		return d.response(d.dynsrc.NewRow((txid), store.NewRowReq{
+		return d.response(d.dynsrc.NewRow((txid), dyndb.NewRowReq{
 			TenantId: "",
 			Group:    d.group,
 			Table:    table,
@@ -33,7 +33,7 @@ func (d *DyndbModule) IPC(method string, path string, args xtypes.LazyData) (xty
 		}))
 
 	case "get_row":
-		return d.response(d.dynsrc.GetRow(txid, store.GetRowReq{
+		return d.response(d.dynsrc.GetRow(txid, dyndb.GetRowReq{
 			TenantId:  "",
 			Group:     d.group,
 			Table:     table,
@@ -42,25 +42,25 @@ func (d *DyndbModule) IPC(method string, path string, args xtypes.LazyData) (xty
 		}))
 
 	case "update_row":
-		return d.response(d.dynsrc.UpdateRow(txid, store.UpdateRowReq{
+		return d.response(d.dynsrc.UpdateRow(txid, dyndb.UpdateRowReq{
 			TenantId: "",
 			Id:       rowid,
 			Version:  0,
 			Group:    d.group,
 			Table:    table,
 			Data:     nil,            // fixme
-			ModCtx:   store.ModCtx{}, // fixme
+			ModCtx:   dyndb.ModCtx{}, // fixme
 		}))
 
 	case "delete_rows":
-		return d.response(nil, d.dynsrc.DeleteRow(txid, store.DeleteRowReq{
+		return d.response(nil, d.dynsrc.DeleteRow(txid, dyndb.DeleteRowReq{
 			TenantId: "",
 			Group:    d.group,
 			Table:    table,
 			Id:       rowid,
 		}))
 	case "simple_query":
-		req := store.SimpleQueryReq{}
+		req := dyndb.SimpleQueryReq{}
 		err := args.AsObject(&req)
 		if err != nil {
 			return nil, err

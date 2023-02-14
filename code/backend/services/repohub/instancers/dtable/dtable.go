@@ -10,6 +10,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 var _ xinstance.Instancer = (*dtabeInstancer)(nil)
@@ -19,7 +20,7 @@ type dtabeInstancer struct {
 	pacman  repox.Hub
 	cabhub  store.CabinetHub
 	coreHub store.CoreHub
-	dynhub  store.DataHub
+	dynhub  dyndb.DataHub
 }
 
 func New(app xtypes.App) *dtabeInstancer {
@@ -31,7 +32,7 @@ func New(app xtypes.App) *dtabeInstancer {
 		pacman:  deps.RepoHub().(repox.Hub),
 		cabhub:  deps.Cabinet().(store.CabinetHub),
 		coreHub: deps.CoreHub().(store.CoreHub),
-		dynhub:  deps.DataHub().(store.DataHub),
+		dynhub:  deps.DataHub().(dyndb.DataHub),
 	}
 }
 
@@ -70,7 +71,7 @@ func (di *dtabeInstancer) Instance(opts xinstance.Options) (*xinstance.Response,
 
 func (di *dtabeInstancer) instance(tenantId string, opts *DataGroupRequest, schema *xbprint.NewTableGroup) (*DataGroupResponse, error) {
 
-	var dhub store.DynSource
+	var dhub dyndb.DynSource
 
 	if opts.DyndbSource == "" {
 		dhub = di.dynhub.DefaultSource(tenantId)
@@ -99,16 +100,16 @@ func (di *dtabeInstancer) instance(tenantId string, opts *DataGroupRequest, sche
 	for _, table := range schema.Tables {
 		tableOpts, ok := opts.TableOptions[table.Slug]
 		if !ok {
-			table.SyncType = store.DynSyncTypeEventAndData
-			table.ActivityType = store.DynActivityTypeStrict
+			table.SyncType = dyndb.DynSyncTypeEventAndData
+			table.ActivityType = dyndb.DynActivityTypeStrict
 			continue
 		}
 		if tableOpts.SyncType == "" {
-			tableOpts.SyncType = store.DynSyncTypeEventAndData
+			tableOpts.SyncType = dyndb.DynSyncTypeEventAndData
 		}
 
 		if tableOpts.ActivityType == "" {
-			tableOpts.ActivityType = store.DynActivityTypeStrict
+			tableOpts.ActivityType = dyndb.DynActivityTypeStrict
 		}
 
 		table.SyncType = tableOpts.SyncType
@@ -152,14 +153,14 @@ func (di *dtabeInstancer) instance(tenantId string, opts *DataGroupRequest, sche
 	seeder := seeder.New(schema, di.pacman, dhub, tenantId, opts.GroupSlug, opts.UserId)
 
 	switch opts.SeedType {
-	case store.DynSeedTypeData:
+	case dyndb.DynSeedTypeData:
 		err := seeder.DataSeed()
 		if err != nil {
 			resp.SeedError = err.Error()
 		}
 
-	case store.DynSeedTypeAutogen:
-		err = seeder.GeneratedSeed(store.DefaultSeedNo)
+	case dyndb.DynSeedTypeAutogen:
+		err = seeder.GeneratedSeed(dyndb.DefaultSeedNo)
 		if err != nil {
 			resp.SeedError = err.Error()
 		}

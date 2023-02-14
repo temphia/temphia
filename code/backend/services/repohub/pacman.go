@@ -8,6 +8,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
@@ -19,7 +20,7 @@ var (
 type PacMan struct {
 	app     xtypes.App
 	corehub store.CoreHub
-	dynHub  store.DataHub
+	dynHub  dyndb.DataHub
 	cabinet store.CabinetHub
 
 	instancers      map[string]xinstance.Instancer
@@ -37,7 +38,7 @@ func New(_app xtypes.App) *PacMan {
 	pm := &PacMan{
 		app:             _app,
 		corehub:         deps.CoreHub().(store.CoreHub),
-		dynHub:          deps.DataHub().(store.DataHub),
+		dynHub:          deps.DataHub().(dyndb.DataHub),
 		cabinet:         deps.Cabinet().(store.CabinetHub),
 		instancers:      nil,
 		repoBuilders:    nil,

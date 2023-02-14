@@ -2,7 +2,7 @@ package seeder
 
 import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 type LiveSeederOptions struct {
@@ -10,7 +10,7 @@ type LiveSeederOptions struct {
 	Group     string
 	Table     string
 	UserId    string
-	Source    store.DynSource
+	Source    dyndb.DynSource
 	MaxRecord int
 }
 
@@ -89,12 +89,12 @@ func (l *LiveSeeder) Seed() error {
 
 	for _, record := range seedRecords {
 
-		_, err := l.options.Source.NewRow(0, store.NewRowReq{
+		_, err := l.options.Source.NewRow(0, dyndb.NewRowReq{
 			TenantId: l.options.TenantId,
 			Group:    l.options.Group,
 			Table:    l.options.Table,
 			Data:     record,
-			ModCtx: store.ModCtx{
+			ModCtx: dyndb.ModCtx{
 				UserId: l.options.UserId,
 			},
 		})

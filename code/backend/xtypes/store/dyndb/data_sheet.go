@@ -1,4 +1,4 @@
-package store
+package dyndb
 
 const (
 	SheetTable       = "sheets"

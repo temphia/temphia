@@ -5,18 +5,19 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
 type DataHub struct {
-	dyndbs   map[string]store.DynDB
+	dyndbs   map[string]dyndb.DynDB
 	eventHub xplane.EventBus
 	sockdhub sockdx.DataSyncer
 	engine   etypes.Engine
 	corehub  store.CoreHub
 }
 
-func New(dyns map[string]store.DynDB) *DataHub {
+func New(dyns map[string]dyndb.DynDB) *DataHub {
 
 	return &DataHub{
 		dyndbs:   dyns,
@@ -38,7 +39,7 @@ func (s *DataHub) Inject(_app xtypes.App) {
 
 }
 
-func (s *DataHub) GetSource(source, tenant string) store.DynSource {
+func (s *DataHub) GetSource(source, tenant string) dyndb.DynSource {
 	return &dynSource{
 		hub:      s,
 		source:   source,
@@ -46,7 +47,7 @@ func (s *DataHub) GetSource(source, tenant string) store.DynSource {
 	}
 }
 
-func (s *DataHub) DefaultSource(tenant string) store.DynSource {
+func (s *DataHub) DefaultSource(tenant string) dyndb.DynSource {
 
 	// fixme => cache this
 

@@ -10,6 +10,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
@@ -26,7 +27,7 @@ type AppDeps struct {
 	coreHub    store.CoreHub
 	cabinetHub store.CabinetHub
 	plugKV     store.PlugStateKV
-	dataHub    store.DataHub
+	dataHub    dyndb.DataHub
 	repoHub    repox.Hub
 
 	courier   service.Courier

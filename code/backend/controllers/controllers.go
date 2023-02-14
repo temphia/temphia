@@ -19,6 +19,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
@@ -59,7 +60,7 @@ func New(opts Options) *RootController {
 	pacman := deps.RepoHub().(repox.Hub)
 	signer := deps.Signer().(service.Signer)
 	cab := deps.Cabinet().(store.CabinetHub)
-	dynhub := deps.DataHub().(store.DataHub)
+	dynhub := deps.DataHub().(dyndb.DataHub)
 	egine := deps.Engine().(etypes.Engine)
 	logservice := deps.LogService().(logx.Service)
 	pstate := deps.PlugKV().(store.PlugStateKV)

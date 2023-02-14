@@ -8,7 +8,7 @@ import (
 	"strconv"
 
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 type PGCtypeProcesser struct {
@@ -28,7 +28,7 @@ func (pg *PGCtypeProcesser) FromRowsDBType(rows []map[string]interface{}) error 
 
 func (pg *PGCtypeProcesser) FromRowDBType(row map[string]interface{}) error {
 
-	delete(row, store.KeyModSig)
+	delete(row, dyndb.KeyModSig)
 
 	for k, v := range row {
 
@@ -43,14 +43,14 @@ func (pg *PGCtypeProcesser) FromRowDBType(row map[string]interface{}) error {
 		}
 
 		switch col.Ctype {
-		case store.CtypeShortText:
-		case store.CtypePhone:
-		case store.CtypeSelect:
-		case store.CtypeRFormula:
-		case store.CtypeFile:
-		case store.CtypeMultiFile:
-		case store.CtypeCheckBox:
-		case store.CtypeCurrency:
+		case dyndb.CtypeShortText:
+		case dyndb.CtypePhone:
+		case dyndb.CtypeSelect:
+		case dyndb.CtypeRFormula:
+		case dyndb.CtypeFile:
+		case dyndb.CtypeMultiFile:
+		case dyndb.CtypeCheckBox:
+		case dyndb.CtypeCurrency:
 			fstr := ""
 
 			switch vv := v.(type) {
@@ -67,20 +67,20 @@ func (pg *PGCtypeProcesser) FromRowDBType(row map[string]interface{}) error {
 				return err
 			}
 			row[k] = s
-		case store.CtypeNumber:
-		case store.CtypeLocation:
+		case dyndb.CtypeNumber:
+		case dyndb.CtypeLocation:
 			point, err := PgLocationFromDBType(v)
 			if err != nil {
 				return err
 			}
 			row[k] = point
-		case store.CtypeDateTime:
-		case store.CtypeMultSelect:
-		case store.CtypeLongText:
-		case store.CtypeSingleUser:
-		case store.CtypeMultiUser:
-		case store.CtypeEmail:
-		case store.CtypeJSON:
+		case dyndb.CtypeDateTime:
+		case dyndb.CtypeMultSelect:
+		case dyndb.CtypeLongText:
+		case dyndb.CtypeSingleUser:
+		case dyndb.CtypeMultiUser:
+		case dyndb.CtypeEmail:
+		case dyndb.CtypeJSON:
 			switch vv := v.(type) {
 			case string:
 				row[k] = vv
@@ -90,8 +90,8 @@ func (pg *PGCtypeProcesser) FromRowDBType(row map[string]interface{}) error {
 				continue
 			}
 
-		case store.CtypeRangeNumber:
-		case store.CtypeColor:
+		case dyndb.CtypeRangeNumber:
+		case dyndb.CtypeColor:
 
 		default:
 			panic("not implemented")
@@ -116,7 +116,7 @@ func (pg *PGCtypeProcesser) ToRowsDBType(rows []map[string]interface{}) error {
 
 func (pg *PGCtypeProcesser) ToRowDBType(row map[string]interface{}) error {
 	for k, v := range row {
-		if store.IsMeta(k) {
+		if dyndb.IsMeta(k) {
 			continue
 		}
 
@@ -131,28 +131,28 @@ func (pg *PGCtypeProcesser) ToRowDBType(row map[string]interface{}) error {
 		}
 
 		switch col.Ctype {
-		case store.CtypeShortText:
-		case store.CtypePhone:
-		case store.CtypeSelect:
-		case store.CtypeRFormula:
-		case store.CtypeFile:
-		case store.CtypeMultiFile:
-		case store.CtypeCheckBox:
-		case store.CtypeCurrency:
+		case dyndb.CtypeShortText:
+		case dyndb.CtypePhone:
+		case dyndb.CtypeSelect:
+		case dyndb.CtypeRFormula:
+		case dyndb.CtypeFile:
+		case dyndb.CtypeMultiFile:
+		case dyndb.CtypeCheckBox:
+		case dyndb.CtypeCurrency:
 			//
-		case store.CtypeNumber:
-		case store.CtypeLocation:
+		case dyndb.CtypeNumber:
+		case dyndb.CtypeLocation:
 			row[k] = PgLocationToDBType(convertToFloat(v))
-		case store.CtypeDateTime:
+		case dyndb.CtypeDateTime:
 
-		case store.CtypeMultSelect:
-		case store.CtypeLongText:
-		case store.CtypeSingleUser:
-		case store.CtypeMultiUser:
-		case store.CtypeEmail:
-		case store.CtypeJSON:
-		case store.CtypeRangeNumber:
-		case store.CtypeColor:
+		case dyndb.CtypeMultSelect:
+		case dyndb.CtypeLongText:
+		case dyndb.CtypeSingleUser:
+		case dyndb.CtypeMultiUser:
+		case dyndb.CtypeEmail:
+		case dyndb.CtypeJSON:
+		case dyndb.CtypeRangeNumber:
+		case dyndb.CtypeColor:
 
 		default:
 			panic("not implemented")

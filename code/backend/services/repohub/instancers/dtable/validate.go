@@ -6,7 +6,7 @@ import (
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/tns"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 func Validate(schema *xbprint.NewTableGroup) error {
@@ -44,7 +44,7 @@ func Validate(schema *xbprint.NewTableGroup) error {
 				return err
 			}
 
-			_, ok := store.AllColumns[col.Ctype]
+			_, ok := dyndb.AllColumns[col.Ctype]
 			if !ok {
 				return easyerr.Error(fmt.Sprintf("%s has unknown column type %s", col.Name, col.Ctype))
 			}
