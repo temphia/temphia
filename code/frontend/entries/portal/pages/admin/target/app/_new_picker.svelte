@@ -7,6 +7,7 @@
     TargetAppTypeDomainWidget,
     TargetAppTypeUserGroupApp,
   } from "../target";
+  import NewUserGroupApp from "./_new_user_group_app.svelte";
 
   export let service: PortalService;
 
@@ -16,8 +17,7 @@
       icon: "user-group",
       info: "App for group of people",
       action: () => {
-        service.nav.admin_target_app_new();
-        service.utils.small_modal_close();
+        service.utils.small_modal_open(NewUserGroupApp, { service});
       },
     },
 

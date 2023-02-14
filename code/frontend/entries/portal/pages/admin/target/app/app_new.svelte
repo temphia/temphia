@@ -24,7 +24,11 @@
   }
 
   const save = async (_data) => {
-    const resp = await api.newApp(_data["target_type"], _data);
+    const __traget = _data["target_type"] || data["target_type"];
+    const resp = await api.newApp(__traget, {
+      ...data,
+      ..._data,
+    });
     if (!resp.ok) {
       message = resp.data;
       return;

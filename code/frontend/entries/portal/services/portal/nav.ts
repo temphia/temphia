@@ -397,8 +397,8 @@ export class Navigator {
     this.set(`#/admin/target/app/${ttype}/${id}/edit`);
   };
 
-  admin_target_app_new = () => {
-    this.set(`#/admin/target/app/new`);
+  admin_target_app_new = (opts?: any) => {
+    this.set(`#/admin/target/app/new`, opts);
   };
 
   // hooks

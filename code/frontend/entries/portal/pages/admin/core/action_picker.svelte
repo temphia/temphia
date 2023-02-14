@@ -5,7 +5,7 @@
     name: string;
     icon: string;
     info: string;
-    action: () => void;
+    action: (curr?) => void;
   }[];
 
   export let title: string;
@@ -18,7 +18,7 @@
   {#each actions as rt}
     <div
       on:click={() => {
-        rt.action();
+        rt.action(rt);
       }}
       class="flex space-x-4 rounded-xl bg-white p-3 shadow-sm hover:border border-blue-500 cursor-pointer"
     >
