@@ -2,6 +2,8 @@
 
 export const SheetColTypeText = "shorttext";
 export const SheetColTypeLongText = "longtext";
+export const SheetColTypeSelect = "select";
+export const SheetColTypeMultiSelect = "multi_select";
 export const SheetColTypeNumber = "number";
 export const SheetColTypeDate = "datetime";
 export const SheetColTypeBoolean = "bool";
@@ -15,6 +17,8 @@ export const SheetColTypeRemoteNum = "remote_number";
 
 export const SheetColTypes = [
   SheetColTypeText,
+  SheetColTypeSelect,
+  SheetColTypeMultiSelect,
   SheetColTypeLongText,
   SheetColTypeNumber,
   SheetColTypeDate,
@@ -34,6 +38,8 @@ export const SheetCtypeShapes = {
     SheetColTypeLongText,
     SheetColTypeReferenceText,
     SheetColTypeRemoteText,
+    SheetColTypeSelect,
+    SheetColTypeMultiSelect,
   ],
   number: [
     SheetColTypeNumber,
@@ -44,6 +50,8 @@ export const SheetCtypeShapes = {
 
 export const SheetCtypeIcons = {
   [SheetColTypeText]: "annotation",
+  [SheetColTypeSelect]: "menu-alt-4",
+  [SheetColTypeMultiSelect]: "menu-alt-4",
   [SheetColTypeLongText]: "document-text",
   [SheetColTypeNumber]: "hashtag",
   [SheetColTypeDate]: "calendar",
@@ -67,7 +75,8 @@ export interface SheetColumn {
   name: string;
   ctype: string;
   sheetid: number;
-  exta_options?: {};
+  opts?: string
+  extraopts?: object;
   color?: string;
   refsheet?: number;
   refcolumn?: number;

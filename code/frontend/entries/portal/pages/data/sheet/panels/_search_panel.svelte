@@ -30,13 +30,12 @@
 <div class="flex flex-wrap justify-between text-sm">
   <div class="flex flex-wrap text-sm p-1 gap-1">
     <label class="inline-flex items-center">
+      <span class="ml-2 text-gray-700">Count</span>
       <select class="font-medium rounded text-sm p-1">
         <option value="10">10</option>
         <option value="50">50</option>
         <option value="100">100</option>
       </select>
-
-      <span class="ml-2 text-gray-700">Count</span>
     </label>
   </div>
 </div>

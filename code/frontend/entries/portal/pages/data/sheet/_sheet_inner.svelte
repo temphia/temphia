@@ -9,8 +9,10 @@
     SheetColTypeDate,
     SheetColTypeFile,
     SheetColTypeLocation,
+    SheetColTypeMultiSelect,
     SheetColTypeNumber,
     SheetColTypeRatings,
+    SheetColTypeSelect,
     SheetColumn,
     SheetCtypeIcons,
     SheetRow,
@@ -136,6 +138,16 @@
                         />
                       </div>
                     {/each}
+                  {/if}
+                {:else if col.ctype === SheetColTypeSelect || col.ctype === SheetColTypeMultiSelect}
+                  {#if value}
+                    <div class="flex gap-1">
+                      {#each value.split(",") as cd}
+                        <span class="bg-gray-100  hover:bg-gray-200 rounded"
+                          >{cd}</span
+                        >
+                      {/each}
+                    </div>
                   {/if}
                 {:else if col.ctype === SheetColTypeNumber}
                   {num_value}

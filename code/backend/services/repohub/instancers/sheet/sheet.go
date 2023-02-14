@@ -120,11 +120,12 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 				Group:    resp.GroupSlug,
 				Table:    store.SheetColumnTable,
 				Data: map[string]any{
-					"name":    column.Name,
-					"ctype":   column.Ctype,
-					"sheetid": idx,
-					"color":   column.Color,
-					"opts":    extraopts,
+					"name":      column.Name,
+					"ctype":     column.Ctype,
+					"sheetid":   idx,
+					"color":     column.Color,
+					"extraopts": extraopts,
+					"opts":      column.Options,
 				},
 			})
 			if err != nil {

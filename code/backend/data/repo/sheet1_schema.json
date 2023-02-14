@@ -7,9 +7,21 @@
         {
           "name": "Name",
           "ctype": "shorttext",
-          "color": "#cfdd",
-          "extra_options": {}
+          "color": "#cfdd"
         },
+
+        {
+          "name": "Tags",
+          "ctype": "multi_select",
+          "opts": "home,garden,maybe,urgent"
+        },
+
+        {
+          "name": "Status",
+          "ctype": "select",
+          "opts": "todo,done,doing"
+        },
+
         {
           "name": "Info",
           "ctype": "longtext"

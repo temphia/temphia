@@ -2,13 +2,15 @@
   import { each } from "svelte/internal";
   import Kveditor from "../../../../../xcompo/common/kveditor.svelte";
   import type { SheetService } from "../../../../services/data";
-  import { LoadingSpinner } from "../../../admin/core";
+  import { LoadingSpinner, MultiText } from "../../../admin/core";
 
   import {
     Sheet,
+    SheetColTypeMultiSelect,
     SheetColTypeReferenceNum,
     SheetColTypeReferenceText,
     SheetColTypes,
+    SheetColTypeSelect,
     SheetColTypeText,
     SheetCtypeShapes,
   } from "../sheets";
@@ -19,14 +21,15 @@
   export let onAdd = (opts: {
     name: string;
     ctype: string;
-    opts: object;
+    extraopts: object;
   }) => {};
 
   export let service: SheetService;
 
   let name = "";
   let ctype = SheetColTypeText;
-  let options = {};
+  let extraopts = {};
+  let options_value = "";
 
   let refsheet = "";
   let refcolumn = "";
@@ -49,13 +52,17 @@
   };
 
   const doOnAdd = async () => {
-    const data = { name, ctype, opts: options };
+    const data = { name, ctype, extraopts };
     if (
       ctype === SheetColTypeReferenceNum ||
       ctype === SheetColTypeReferenceText
     ) {
       data["refsheet"] = Number(refsheet);
       data["refcolumn"] = Number(refcolumn);
+    }
+
+    if (options_value) {
+      data["opts"] = options_value;
     }
 
     return onAdd(data);
@@ -149,9 +156,18 @@
     {/if}
   {/if}
 
+  {#if ctype === SheetColTypeMultiSelect || ctype === SheetColTypeSelect}
+    <div class="mb-4">
+      <label class="block mb-2 text-sm font-bold text-gray-700" for="opts"
+        >Options</label
+      >
+      <MultiText bind:value={options_value} />
+    </div>
+  {/if}
+
   <div class="mb-4">
-    <label class="block mb-2 text-sm font-bold text-gray-700" for="opts"
-      >Options</label
+    <label class="block mb-2 text-sm font-bold text-gray-700" for="extraopts"
+      >Extra Options</label
     >
     <Kveditor />
   </div>

@@ -32,5 +32,6 @@ type NewSheetColumn struct {
 	Name        string            `json:"name,omitempty"`
 	Ctype       string            `json:"ctype,omitempty"`
 	Color       string            `json:"color,omitempty"`
+	Options     string            `json:"opts,omitempty"`
 	ExtaOptions map[string]string `json:"extra_options,omitempty"`
 }

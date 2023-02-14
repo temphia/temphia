@@ -46,8 +46,12 @@
             "ratings",
             "location",
             "file",
-            "reference",
-            "remote"
+            "select",
+            "multi_select",
+            "ref_number",
+            "ref_text",
+            "remote_text",
+            "remote_number"
           ]
         },
         {
@@ -76,8 +80,15 @@
         {
           "name": "Options",
           "slug": "opts",
+          "ctype": "shorttext"
+        },
+
+        {
+          "name": "Extra Options",
+          "slug": "extraopts",
           "ctype": "json"
         },
+
         {
           "name": "Color",
           "slug": "color",

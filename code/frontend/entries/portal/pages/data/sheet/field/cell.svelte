@@ -9,12 +9,14 @@
     SheetColTypeFile,
     SheetColTypeLocation,
     SheetColTypeLongText,
+    SheetColTypeMultiSelect,
     SheetColTypeNumber,
     SheetColTypeRatings,
     SheetColTypeReferenceNum,
     SheetColTypeReferenceText,
     SheetColTypeRemoteNum,
     SheetColTypeRemoteText,
+    SheetColTypeSelect,
     SheetColumn,
     SheetCtypeIcons,
   } from "../sheets";
@@ -24,6 +26,7 @@
   import ColorPanel from "./_color_panel.svelte";
   import Point from "./_point.svelte";
   import type { SheetService } from "../../../../services/data";
+  import Selectable from "./_selectable.svelte";
 
   export let column: SheetColumn;
   export let open_column;
@@ -225,6 +228,22 @@
     {#key value}
       <Point {value} />
     {/key}
+  {:else if column.ctype === SheetColTypeSelect}
+    <select
+      class="w-full border border-dashed rounded-lg bg-gray-50 p-1"
+      {value}
+      on:change={(ev) => onCellChange({ value: ev.target["value"] })}
+    >
+      {#each column.opts ? column.opts.split(",") : [] as opt}
+        <option value={opt}>{opt}</option>
+      {/each}
+    </select>
+  {:else if column.ctype === SheetColTypeMultiSelect}
+    <Selectable
+      onChange={(nval) => onCellChange({ value: nval })}
+      options={column.opts ? column.opts.split(",") : []}
+      {value}
+    />
   {:else}
     <input
       {id}
