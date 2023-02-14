@@ -94,23 +94,3 @@ func (a *ApiAdmin) DelView(ctx httpx.Request) {
 		id)
 	httpx.WriteFinal(ctx.Http, err)
 }
-
-func (a *ApiAdmin) AddIndex(ctx httpx.Request) {
-
-}
-
-func (a *ApiAdmin) AddUniqueIndex(ctx httpx.Request) {
-
-}
-func (a *ApiAdmin) AddFTSIndex(ctx httpx.Request) {
-
-}
-func (a *ApiAdmin) AddColumnFRef(ctx httpx.Request) {
-
-}
-func (a *ApiAdmin) ListIndex(ctx httpx.Request) {
-
-}
-func (a *ApiAdmin) RemoveIndex(ctx httpx.Request) {
-
-}

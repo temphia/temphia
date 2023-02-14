@@ -56,10 +56,6 @@ func (d *dynSource) DeleteGroup(gslug string) error {
 
 // table
 
-func (d *dynSource) AddTable(gslug string, model *xbprint.NewTable) error {
-	ddb := d.dynDB()
-	return ddb.AddTable(d.tenantId, gslug, model)
-}
 func (d *dynSource) EditTable(gslug, tslug string, model *entities.TablePartial) error {
 	ddb := d.dynDB()
 	return ddb.EditTable(d.tenantId, gslug, tslug, model)
@@ -96,11 +92,6 @@ func (d *dynSource) ReverseRefLoad(txid uint32, gslug string, req *dyndb.RevRefL
 
 // column
 
-func (d *dynSource) AddColumn(gslug, tslug string, model *xbprint.NewColumn) error {
-	ddb := d.dynDB()
-	return ddb.AddColumn(d.tenantId, gslug, tslug, model)
-}
-
 func (d *dynSource) GetColumn(gslug, tslug, cslug string) (*entities.Column, error) {
 	ddb := d.dynDB()
 	return ddb.GetColumn(d.tenantId, gslug, tslug, cslug)
@@ -123,39 +114,6 @@ func (d *dynSource) ListColumns(gslug, tslug string) ([]*entities.Column, error)
 func (d *dynSource) DeleteColumn(gslug, tslug, cslug string) error {
 	ddb := d.dynDB()
 	return ddb.DeleteColumn(d.tenantId, gslug, tslug, cslug)
-}
-
-// index
-
-func (d *dynSource) AddIndex(gslug, tslug string, model *entities.Index) error {
-	ddb := d.dynDB()
-	return ddb.AddIndex(d.tenantId, gslug, tslug, model)
-}
-
-func (d *dynSource) AddUniqueIndex(gslug, tslug string, model *entities.Index) error {
-	ddb := d.dynDB()
-	return ddb.AddUniqueIndex(d.tenantId, gslug, tslug, model)
-}
-
-func (d *dynSource) AddFTSIndex(gslug, tslug string, model *entities.FTSIndex) error {
-	ddb := d.dynDB()
-	return ddb.AddFTSIndex(d.tenantId, gslug, tslug, model)
-}
-func (d *dynSource) AddColumnFRef(gslug, tslug string, model *entities.ColumnFKRef) error {
-	ddb := d.dynDB()
-	return ddb.AddColumnFRef(d.tenantId, gslug, tslug, model)
-}
-func (d *dynSource) ListIndex(gslug, tslug string) ([]*entities.Index, error) {
-	ddb := d.dynDB()
-	return ddb.ListIndex(d.tenantId, gslug, tslug)
-}
-func (d *dynSource) ListColumnRef(gslug, tslug string) ([]*entities.ColumnFKRef, error) {
-	ddb := d.dynDB()
-	return ddb.ListColumnRef(d.tenantId, gslug, tslug)
-}
-func (d *dynSource) RemoveIndex(gslug, tslug, slug string) error {
-	ddb := d.dynDB()
-	return ddb.RemoveIndex(d.tenantId, gslug, tslug, slug)
 }
 
 // view

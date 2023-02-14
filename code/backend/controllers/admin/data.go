@@ -40,10 +40,6 @@ func (c *Controller) DeleteGroup(uclaim *claim.Session, source, gslug string) er
 }
 
 // dyn_table
-func (c *Controller) AddTable(uclaim *claim.Session, source, group string, model *xbprint.NewTable) error {
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
-	return dynDB.AddTable(group, model)
-}
 
 func (c *Controller) EditTable(uclaim *claim.Session, source, group, tslug string, model *entities.TablePartial) error {
 	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
@@ -67,10 +63,6 @@ func (c *Controller) DeleteTable(uclaim *claim.Session, source, group, tslug str
 }
 
 // dyn_table_column
-func (c *Controller) AddColumn(uclaim *claim.Session, source, group, tslug string, model *xbprint.NewColumn) error {
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
-	return dynDB.AddColumn(group, tslug, model)
-}
 
 func (c *Controller) GetColumn(uclaim *claim.Session, source, group, tslug string, cslug string) (*entities.Column, error) {
 	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
@@ -93,37 +85,6 @@ func (c *Controller) DeleteColumn(uclaim *claim.Session, source, group, tslug st
 	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
 
 	return dynDB.DeleteColumn(group, tslug, cslug)
-}
-
-func (c *Controller) AddIndex(uclaim *claim.Session, source, group, tslug string, model *entities.Index) error {
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
-	return dynDB.AddIndex(group, tslug, model)
-}
-
-// dyn_table_meta
-func (c *Controller) AddUniqueIndex(uclaim *claim.Session, source, group, tslug string, model *entities.Index) error {
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
-	return dynDB.AddUniqueIndex(group, tslug, model)
-}
-
-func (c *Controller) AddFTSIndex(uclaim *claim.Session, source, group, tslug string, model *entities.FTSIndex) error {
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
-	return dynDB.AddFTSIndex(group, tslug, model)
-}
-
-func (c *Controller) AddColumnFRef(uclaim *claim.Session, source, group, tslug string, model *entities.ColumnFKRef) error {
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
-	return dynDB.AddColumnFRef(group, tslug, model)
-}
-
-func (c *Controller) ListIndex(uclaim *claim.Session, source, group, tslug string) ([]*entities.Index, error) {
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
-	return dynDB.ListIndex(group, tslug)
-}
-
-func (c *Controller) RemoveIndex(uclaim *claim.Session, source, group, tslug, slug string) error {
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
-	return dynDB.RemoveIndex(group, tslug, slug)
 }
 
 func (c *Controller) DataActivityQuery(uclaim *claim.Session, source, group, tslug string, offset int64) ([]*entities.DynActivity, error) {

@@ -2,6 +2,7 @@ package dyndb
 
 import (
 	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 )
@@ -22,26 +23,16 @@ type DynSource interface {
 	GetGroup(gslug string) (*entities.TableGroup, error)
 	DeleteGroup(gslug string) error
 
-	AddTable(gslug string, model *xbprint.NewTable) error
 	EditTable(gslug, tslug string, model *entities.TablePartial) error
 	GetTable(gslug, tslug string) (*entities.Table, error)
 	ListTables(gslug string) ([]*entities.Table, error)
 	DeleteTable(gslug, tslug string) error
 
-	AddColumn(gslug, tslug string, model *xbprint.NewColumn) error
 	EditColumn(gslug, tslug, cslug string, model *entities.ColumnPartial) error
 	GetColumn(gslug, tslug, cslug string) (*entities.Column, error)
 	ListColumns(gslug, tslug string) ([]*entities.Column, error)
 	ListReverseColumnRef(gslug, tslug string) ([]*entities.Column, error)
 	DeleteColumn(gslug, tslug, cslug string) error
-
-	AddIndex(gslug, tslug string, model *entities.Index) error
-	AddUniqueIndex(gslug, tslug string, model *entities.Index) error
-	AddFTSIndex(gslug, tslug string, model *entities.FTSIndex) error
-	AddColumnFRef(gslug, tslug string, model *entities.ColumnFKRef) error
-	ListIndex(gslug, tslug string) ([]*entities.Index, error)
-	ListColumnRef(gslug, tslug string) ([]*entities.ColumnFKRef, error)
-	RemoveIndex(gslug, tslug, slug string) error
 
 	NewView(model *entities.DataView) error
 	GetView(gslug, tslug string, id int64) (*entities.DataView, error)
@@ -53,6 +44,10 @@ type DynSource interface {
 	ListActivity(group, table string, rowId int) ([]*entities.DynActivity, error)
 	NewActivity(group, table string, record *entities.DynActivity) error
 
+	DataTableOps
+}
+
+type DataTableOps interface {
 	NewRow(txid uint32, req NewRowReq) (int64, error)
 	GetRow(txid uint32, req GetRowReq) (map[string]any, error)
 	UpdateRow(txid uint32, req UpdateRowReq) (map[string]any, error)
@@ -73,6 +68,23 @@ type DynSource interface {
 	LiveSeed(group, table, userId string, max int) error
 }
 
+type DataSheetOps interface {
+	ListSheetGroup(uclaim *claim.Data) (*ListSheetGroupResp, error)
+	LoadSheet(uclaim *claim.Data, data *LoadSheetReq) (*LoadSheetResp, error)
+	ListSheet(uclaim *claim.Data) ([]map[string]any, error)
+	NewSheet(uclaim *claim.Data, data map[string]any) error
+	GetSheet(uclaim *claim.Data, id int64) (map[string]any, error)
+	UpdateSheet(uclaim *claim.Data, id int64, data map[string]any) error
+	DeleteSheet(uclaim *claim.Data, id int64) error
+	ListSheetColumn(uclaim *claim.Data, sid int64) ([]map[string]any, error)
+	NewSheetColumn(uclaim *claim.Data, sid int64, data map[string]any) (int64, error)
+	GetSheetColumn(uclaim *claim.Data, sid, cid int64) (map[string]any, error)
+	UpdateSheetColumn(uclaim *claim.Data, sid, cid int64, data map[string]any) error
+	DeleteSheetColumn(uclaim *claim.Data, sid, cid int64) error
+	NewRowWithCell(uclaim *claim.Data, sid int64, data map[int64]map[string]any) (map[int64]map[string]any, error)
+	UpdateRowWithCell(uclaim *claim.Data, sid, rid int64, data map[int64]map[string]any) (map[int64]map[string]any, error)
+}
+
 type DynDB interface {
 	NewGroup(tenantId string, model *xbprint.NewTableGroup) error
 	EditGroup(tenantId string, gslug string, model *entities.TableGroupPartial) error
@@ -80,26 +92,16 @@ type DynDB interface {
 	GetGroup(tenantId, gslug string) (*entities.TableGroup, error)
 	DeleteGroup(tenantId, gslug string) error
 
-	AddTable(tenantId, gslug string, model *xbprint.NewTable) error
 	GetTable(tenantId, gslug, tslug string) (*entities.Table, error)
 	EditTable(tenantId, gslug, tslug string, model *entities.TablePartial) error
 	ListTables(tenantId, gslug string) ([]*entities.Table, error)
 	DeleteTable(tenantId, gslug, tslug string) error
 
-	AddColumn(tenantId, gslug, tslug string, model *xbprint.NewColumn) error
 	GetColumn(tenantId, gslug, tslug, cslug string) (*entities.Column, error)
 	EditColumn(tenantId, gslug, tslug, cslug string, model *entities.ColumnPartial) error
 	ListColumns(tenantId, group_slug, tslug string) ([]*entities.Column, error)
 	ListReverseColumnRef(tenantId, gslug, tslug string) ([]*entities.Column, error)
 	DeleteColumn(tenantId, gslug, tslug, cslug string) error
-
-	AddIndex(tenantId, gslug, tslug string, model *entities.Index) error
-	AddUniqueIndex(tenantId, gslug, tslug string, model *entities.Index) error
-	AddFTSIndex(tenantId, gslug, tslug string, model *entities.FTSIndex) error
-	AddColumnFRef(tenantId, gslug, tslug string, model *entities.ColumnFKRef) error
-	ListIndex(tenantId, gslug, tslug string) ([]*entities.Index, error)
-	ListColumnRef(tenantId, gslug, tslug string) ([]*entities.ColumnFKRef, error)
-	RemoveIndex(tenantId, gslug, tslug, slug string) error
 
 	NewView(model *entities.DataView) error
 	GetView(tenantId, gslug, tslug string, id int64) (*entities.DataView, error)

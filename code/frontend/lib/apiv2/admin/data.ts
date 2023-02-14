@@ -32,9 +32,7 @@ export class AdminDataAPI {
     return this.base.get(`/admin/data/${source}/group/${gid}/table`);
   }
 
-  add_table(source: string, data: any, gid: string) {
-    return this.base.post(`/admin/data/${source}/group/${gid}/table`, data);
-  }
+
 
   get_table(source: string, gid: string, tid: string) {
     return this.base.get(`/admin/data/${source}/group/${gid}/table/${tid}`);
@@ -56,13 +54,6 @@ export class AdminDataAPI {
   list_column(source: string, gid: string, tid: string) {
     return this.base.get(
       `/admin/data/${source}/group/${gid}/table/${tid}/column`
-    );
-  }
-
-  add_column(source: string, data: any, gid: string, tid: string) {
-    return this.base.post(
-      `/admin/data/${source}/group/${gid}/table/${tid}/column`,
-      data
     );
   }
 

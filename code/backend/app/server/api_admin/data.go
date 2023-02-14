@@ -21,7 +21,6 @@ func (a *ApiAdmin) dataAPI(rg *gin.RouterGroup) {
 	rg.POST("/:source/group/:gid/query", a.X(a.query))
 
 	rg.GET("/:source/group/:gid/table", a.X(a.ListTables))
-	rg.POST("/:source/group/:gid/table", a.X(a.AddTable))
 	rg.GET("/:source/group/:gid/table/:tid", a.X(a.GetTable))
 	rg.PATCH("/:source/group/:gid/table/:tid", a.X(a.EditTable))
 	rg.DELETE("/:source/group/:gid/table/:tid", a.X(a.DeleteTable))
@@ -30,7 +29,6 @@ func (a *ApiAdmin) dataAPI(rg *gin.RouterGroup) {
 	rg.GET("/:source/group/:gid/table/:tid/seed", a.X(a.seed))
 
 	rg.GET("/:source/group/:gid/table/:tid/column", a.X(a.ListColumns))
-	rg.POST("/:source/group/:gid/table/:tid/column", a.X(a.AddColumn)) // fixme
 	rg.PATCH("/:source/group/:gid/table/:tid/column/:cid", a.X(a.EditColumn))
 	rg.GET("/:source/group/:gid/table/:tid/column/:cid", a.X(a.GetColumn))
 	rg.DELETE("/:source/group/:gid/table/:tid/column/:cid", a.X(a.DeleteColumn))
@@ -92,20 +90,6 @@ func (a *ApiAdmin) DeleteGroup(ctx httpx.Request) {
 
 // dyn_table
 
-func (a *ApiAdmin) AddTable(ctx httpx.Request) {
-	t := &xbprint.NewTable{}
-	err := ctx.Http.BindJSON(t)
-	if err != nil {
-		a.rutil.WriteErr(ctx.Http, err.Error())
-		return
-	}
-	err = a.cAdmin.AddTable(ctx.Session,
-		ctx.MustParam("source"),
-		ctx.MustParam("gid"),
-		t)
-	a.rutil.WriteFinal(ctx.Http, err)
-
-}
 func (a *ApiAdmin) EditTable(ctx httpx.Request) {
 	tp := &entities.TablePartial{}
 	err := ctx.Http.BindJSON(tp)
@@ -153,22 +137,6 @@ func (a *ApiAdmin) DeleteTable(ctx httpx.Request) {
 
 // dyn_table_column
 
-func (a *ApiAdmin) AddColumn(ctx httpx.Request) {
-	nc := &xbprint.NewColumn{}
-	err := ctx.Http.BindJSON(nc)
-	if err != nil {
-		a.rutil.WriteErr(ctx.Http, err.Error())
-		return
-	}
-
-	err = a.cAdmin.AddColumn(ctx.Session,
-		ctx.MustParam("source"),
-		ctx.MustParam("gid"),
-		ctx.MustParam("tid"),
-		nc)
-	a.rutil.WriteFinal(ctx.Http, err)
-
-}
 func (a *ApiAdmin) EditColumn(ctx httpx.Request) {
 	cp := &entities.ColumnPartial{}
 	err := ctx.Http.BindJSON(cp)
