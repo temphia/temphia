@@ -1,14 +1,20 @@
 package xbprint
 
-import "github.com/temphia/temphia/code/backend/xtypes/models/entities"
+import (
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+)
 
 func (m *NewTableGroup) To(tenantId string) *entities.TableGroup {
+
 	return &entities.TableGroup{
-		Name:        m.Name,
-		Slug:        m.Slug,
-		Description: m.Description,
-		TenantID:    tenantId,
-		Active:      false,
+		Name:          m.Name,
+		Slug:          m.Slug,
+		Description:   m.Description,
+		TenantID:      tenantId,
+		Active:        false,
+		CabinetSource: m.CabinetSource,
+		CabinetFolder: m.CabinetFolder,
+		Renderer:      m.Renderer,
 	}
 }
 

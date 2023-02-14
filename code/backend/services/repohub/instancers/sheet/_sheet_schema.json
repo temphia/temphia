@@ -194,7 +194,6 @@
           "to_cols": []
         }
       ],
-
       "unique_indexes": [
         {
           "slug": "uqrowcol1",
@@ -202,5 +201,6 @@
         }
       ]
     }
-  ]
+  ],
+  "renderer": "sheet"
 }
