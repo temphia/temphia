@@ -142,6 +142,18 @@ func (c *Controller) LoadTable(uclaim *claim.Data, req dyndb.LoadTableReq, tslug
 		return nil, err
 	}
 
+	resp.DataWidgets = []*entities.TargetApp{
+		{
+			Id:          1,
+			Name:        "test 1",
+			TargetType:  entities.TargetAppTypeDataTableWidget,
+			Target:      "xyz/mno",
+			PlugId:      "test1",
+			AgentId:     "default",
+			ContextType: "rowctx.1",
+		},
+	}
+
 	// fixme => load user and folder tokens here
 
 	return resp, nil
