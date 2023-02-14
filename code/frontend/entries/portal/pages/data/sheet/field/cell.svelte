@@ -35,7 +35,7 @@
   export let service: SheetService;
 
   const folder_api = service.group.folder_api;
-  const id = `cell-${column.sheetid}`;
+  const id = `cell-${column.__id}`;
   let value = celldata["value"] || "";
   let value_num = celldata["numval"] || 0;
   let color = celldata["color"];
