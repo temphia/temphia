@@ -1,5 +1,5 @@
 {
-  "name": "temphia-ui",
+  "name": "temphia-frontend",
   "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -7,12 +7,10 @@
     "/dist"
   ],
   "scripts": {
-    "build:play": "ENTRY_FILE=playground rollup -c",
     "build:portal": "ENTRY_FILE=portal rollup -c",
     "build:auth": "ENTRY_FILE=auth rollup -c",
     "build:operator": "ENTRY_FILE=operator rollup -c",
-    "build:start": "ENTRY_FILE=start rollup -c",
-    "build:all": "npm run build:operator && npm run build:portal && npm run build:auth && npm run build:start",
+    "build:all": "npm run build:operator && npm run build:portal && npm run build:auth",
     "build_ui_sdk_package": "tsc -p tsconfig.package.json ",
     "###": "#####",
     "build:executor:@iframe_bootloader": "node scripts/executor/build_iframe_bootloader.js",
@@ -26,8 +24,7 @@
     "copy:build_files": "node scripts/copy_build_files.js",
     "dev": "rollup -c -w",
     "start": "sirv public",
-    "validate": "svelte-check",
-    "start:play": "cd public && python3 -m http.server"
+    "validate": "svelte-check"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.9",
