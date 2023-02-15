@@ -1,5 +1,5 @@
-import type { AdapterEditorEnv } from "../../../lib/adapter/adapter";
-import type { AdapterEditorAPI } from "../../../lib/apiv2/admin/adapter_editor";
+import type { AdapterEditorEnv } from "../../../../lib/adapter/adapter";
+import type { AdapterEditorAPI } from "../../../../lib/apiv2/admin/adapter_editor";
 
 export class EasypageService {
   env: AdapterEditorEnv;
