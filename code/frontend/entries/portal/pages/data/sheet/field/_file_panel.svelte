@@ -21,7 +21,7 @@
 
 <div class="h-full w-full bg-gray-50">
   {#if loading}
-    <LoadingSpinner />
+    <LoadingSpinner classes="" />
   {:else}
     <div class="w-full flex gap-1 flex-wrap">
       {#each files as file}
