@@ -150,6 +150,6 @@ func (ds *DataSource) GetDataSheetHub(tenantId, group string) dyndb.DataSheetHub
 	ds.sheets[tenantId+group] = dh
 	ds.sLock.Unlock()
 
-	return nil
+	return dh
 
 }
