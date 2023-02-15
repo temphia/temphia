@@ -1,54 +1,59 @@
 package dyndb
 
 import (
-	"strings"
-
-	"github.com/thoas/go-funk"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 )
 
-const (
-	// meta keys
-	KeyPrimary = "__id"
-	KeyVersion = "__version"
-	KeyModSig  = "__mod_sig"
+type DynDB interface {
+	NewGroup(tenantId string, model *xbprint.NewTableGroup) error
+	EditGroup(tenantId string, gslug string, model *entities.TableGroupPartial) error
+	ListGroup(tenantId string) ([]*entities.TableGroup, error)
+	GetGroup(tenantId, gslug string) (*entities.TableGroup, error)
+	DeleteGroup(tenantId, gslug string) error
 
-	// meta reference keys
-	KeyForceVersion     = "__force_version__"
-	KeySecondary        = "__secondary_keys__"
-	KeyErrorAfterUpdate = "__error_after_update__"
-)
+	GetTable(tenantId, gslug, tslug string) (*entities.Table, error)
+	EditTable(tenantId, gslug, tslug string, model *entities.TablePartial) error
+	ListTables(tenantId, gslug string) ([]*entities.Table, error)
+	DeleteTable(tenantId, gslug, tslug string) error
 
-const (
-	DynActivityTypeNone   = "none"
-	DynActivityTypeStrict = "strict"
-	DynActivityTypeLazy   = "lazy"
-)
+	GetColumn(tenantId, gslug, tslug, cslug string) (*entities.Column, error)
+	EditColumn(tenantId, gslug, tslug, cslug string, model *entities.ColumnPartial) error
+	ListColumns(tenantId, group_slug, tslug string) ([]*entities.Column, error)
+	ListReverseColumnRef(tenantId, gslug, tslug string) ([]*entities.Column, error)
+	DeleteColumn(tenantId, gslug, tslug, cslug string) error
 
-const (
-	DynSyncTypeNone         = "none"
-	DynSyncTypeEventOnly    = "event_only"
-	DynSyncTypeEventAndData = "event_and_data"
-)
+	NewView(tenantId string, model *entities.DataView) error
+	GetView(tenantId, gslug, tslug string, id int64) (*entities.DataView, error)
+	ModifyView(tenantId, gslug, tslug string, id int64, data map[string]any) error
+	ListView(tenantId, gslug, tslug string) ([]*entities.DataView, error)
+	DelView(tenantId, gslug, tslug string, id int64) error
 
-const (
-	DynSeedTypeData    = "data"
-	DynSeedTypeAutogen = "autogen"
-)
+	QueryActivity(tenantId, group, table string, query *entities.ActivityQuery) ([]*entities.DynActivity, error)
+	ListActivity(tenantId, group, table string, rowId int) ([]*entities.DynActivity, error)
+	NewActivity(tenantId, group, table string, record *entities.DynActivity) (int64, error)
 
-const (
-	DefaultSeedNo          = 10
-	DefaultQueryFetchCount = 100
-)
+	// ops
+	NewRow(txid uint32, req NewRowReq) (int64, error)
+	NewBatchRows(txid uint32, req NewBatchRowReq) ([]int64, error)
 
-var (
-	MetaRefKeys = []string{KeyForceVersion, KeySecondary, KeyErrorAfterUpdate}
-	MetaKeys    = []string{KeyPrimary, KeyVersion, KeyModSig}
-)
+	GetRow(txid uint32, req GetRowReq) (map[string]any, error)
+	UpdateRow(txid uint32, req UpdateRowReq) (map[string]any, error)
+	DeleteRowBatch(txid uint32, req DeleteRowBatchReq) error
+	DeleteRowMulti(txid uint32, req DeleteRowMultiReq) error
+	DeleteRow(txid uint32, req DeleteRowReq) error
 
-func IsMeta(name string) bool {
-	if !strings.HasPrefix(name, "__") {
-		return false
-	}
+	SimpleQuery(txid uint32, req SimpleQueryReq) (*QueryResult, error)
+	FTSQuery(txid uint32, req FTSQueryReq) (*QueryResult, error)
 
-	return funk.ContainsString(MetaKeys, name)
+	RefResolve(txid uint32, tenantId, gslug string, req *RefResolveReq) (*QueryResult, error)
+	RefLoad(txid uint32, tenantId, gslug string, req *RefLoadReq) (*QueryResult, error)
+	ReverseRefLoad(txid uint32, tenantId, gslug string, req *RevRefLoadReq) (*QueryResult, error)
+
+	TemplateQuery(txid uint32, req TemplateQueryReq) (*QueryResult, error)
+
+	SqlQueryRaw(txid uint32, tenantId, group, qstr string) (*SqlQueryResult, error)
+	SqlQueryScopped(txid uint32, tenantId, group, qstr string) (*SqlQueryResult, error)
+
+	GetCache() DCache
 }
