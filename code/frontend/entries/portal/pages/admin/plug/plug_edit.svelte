@@ -26,7 +26,7 @@
   const save = async (_data) => {
     console.log("@@data", _data);
 
-    const resp = await api.new_plug(_data);
+    const resp = await api.update_plug(pid, _data);
     if (!resp.ok) {
       message = resp.data;
       return;
