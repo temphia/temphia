@@ -12,28 +12,28 @@ func (c *Controller) NewView(uclaim *claim.Session, source, group, tslug string,
 	model.TableID = tslug
 	model.TenantID = uclaim.TenantId
 
-	return dynDB.NewView(model)
+	return dynDB.NewView(uclaim.TenantId, model)
 }
 
 func (c *Controller) ModifyView(uclaim *claim.Session, source, group, tslug string, id int64, data map[string]interface{}) error {
 	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	return dynDB.ModifyView(group, tslug, id, data)
+	return dynDB.ModifyView(uclaim.TenantId, group, tslug, id, data)
 }
 
 func (c *Controller) ListView(uclaim *claim.Session, source, group, tslug string) ([]*entities.DataView, error) {
 	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	return dynDB.ListView(group, tslug)
+	return dynDB.ListView(uclaim.TenantId, group, tslug)
 }
 
 func (c *Controller) DelView(uclaim *claim.Session, source, group, tslug string, id int64) error {
 	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	return dynDB.DelView(group, tslug, id)
+	return dynDB.DelView(uclaim.TenantId, group, tslug, id)
 }
 
 func (c *Controller) GetView(uclaim *claim.Session, source, group, tslug string, id int64) (*entities.DataView, error) {
 	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
-	return dynDB.GetView(group, tslug, id)
+	return dynDB.GetView(uclaim.TenantId, group, tslug, id)
 }

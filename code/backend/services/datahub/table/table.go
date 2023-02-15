@@ -6,7 +6,7 @@ import (
 
 	"github.com/k0kubun/pp"
 
-	"github.com/temphia/temphia/code/backend/services/datahub2/handle"
+	"github.com/temphia/temphia/code/backend/services/datahub/handle"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )

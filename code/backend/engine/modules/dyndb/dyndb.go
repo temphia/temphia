@@ -12,20 +12,23 @@ import (
 )
 
 type DyndbModule struct {
-	binder etypes.ExecutorBinder
-	res    *entities.Resource
-	dynsrc dyndb.DynSource
-	group  string
-	table  string
+	binder   etypes.ExecutorBinder
+	res      *entities.Resource
+	dynsrc   dyndb.DynSource
+	tenantId string
+	group    string
+	table    string
 }
 
 func (d *DyndbModule) IPC(method string, path string, args xtypes.LazyData) (xtypes.LazyData, error) {
 
 	txid, table, rowid := d.extractPath(path)
 
+	dhub := d.dynsrc.GetDataTableHub(d.tenantId, d.group)
+
 	switch method {
 	case "new_row":
-		return d.response(d.dynsrc.NewRow((txid), dyndb.NewRowReq{
+		return d.response(dhub.NewRow((txid), dyndb.NewRowReq{
 			TenantId: "",
 			Group:    d.group,
 			Table:    table,
@@ -33,7 +36,7 @@ func (d *DyndbModule) IPC(method string, path string, args xtypes.LazyData) (xty
 		}))
 
 	case "get_row":
-		return d.response(d.dynsrc.GetRow(txid, dyndb.GetRowReq{
+		return d.response(dhub.GetRow(txid, dyndb.GetRowReq{
 			TenantId:  "",
 			Group:     d.group,
 			Table:     table,
@@ -42,7 +45,7 @@ func (d *DyndbModule) IPC(method string, path string, args xtypes.LazyData) (xty
 		}))
 
 	case "update_row":
-		return d.response(d.dynsrc.UpdateRow(txid, dyndb.UpdateRowReq{
+		return d.response(dhub.UpdateRow(txid, dyndb.UpdateRowReq{
 			TenantId: "",
 			Id:       rowid,
 			Version:  0,
@@ -53,7 +56,7 @@ func (d *DyndbModule) IPC(method string, path string, args xtypes.LazyData) (xty
 		}))
 
 	case "delete_rows":
-		return d.response(nil, d.dynsrc.DeleteRow(txid, dyndb.DeleteRowReq{
+		return d.response(nil, dhub.DeleteRow(txid, dyndb.DeleteRowReq{
 			TenantId: "",
 			Group:    d.group,
 			Table:    table,
@@ -65,7 +68,7 @@ func (d *DyndbModule) IPC(method string, path string, args xtypes.LazyData) (xty
 		if err != nil {
 			return nil, err
 		}
-		return d.response(d.dynsrc.SimpleQuery(txid, req))
+		return d.response(dhub.SimpleQuery(txid, req))
 	default:
 		return nil, easyerr.NotFound()
 	}

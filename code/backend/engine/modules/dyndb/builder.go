@@ -23,10 +23,11 @@ func New(opts etypes.ModuleOptions) *DyndbModule {
 	dynhub := deps.DataHub().(dyndb.DataHub).GetSource("default", opts.Resource.TenantId) // fixme => get source from resource
 
 	return &DyndbModule{
-		binder: opts.Binder,
-		res:    opts.Resource,
-		dynsrc: dynhub,
-		group:  "",
-		table:  "",
+		binder:   opts.Binder,
+		res:      opts.Resource,
+		dynsrc:   dynhub,
+		group:    "",
+		table:    "",
+		tenantId: opts.Resource.Target,
 	}
 }
