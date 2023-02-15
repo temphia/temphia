@@ -78,6 +78,7 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 	}
 
 	source := s.dynhub.GetSource(resp.Source, opts.TenantId)
+	dtable := source.GetDataTableHub(opts.TenantId, dropts.GroupSlug)
 
 	// fixme => inside same txn
 
@@ -88,7 +89,7 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 
 	for sidx := range schemaData.Sheets {
 		sheet := &schemaData.Sheets[sidx]
-		idx, err := source.NewRow(uint32(txnId), dyndb.NewRowReq{
+		idx, err := dtable.NewRow(uint32(txnId), dyndb.NewRowReq{
 			TenantId: opts.TenantId,
 			Group:    resp.GroupSlug,
 			Table:    dyndb.SheetTable,
@@ -116,7 +117,7 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 
 			}
 
-			cid, err := source.NewRow(txnId, dyndb.NewRowReq{
+			cid, err := dtable.NewRow(txnId, dyndb.NewRowReq{
 				TenantId: opts.TenantId,
 				Group:    resp.GroupSlug,
 				Table:    dyndb.SheetColumnTable,
@@ -148,7 +149,7 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 
 		for _, row := range sheet.SeedData {
 
-			rowid, err := source.NewRow(uint32(txnId), dyndb.NewRowReq{
+			rowid, err := dtable.NewRow(uint32(txnId), dyndb.NewRowReq{
 				TenantId: opts.TenantId,
 				Group:    resp.GroupSlug,
 				Table:    dyndb.SheetRowTable,
@@ -182,7 +183,7 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 					cellData["value"] = seedCellData
 				}
 
-				cellid, err := source.NewRow(uint32(txnId), dyndb.NewRowReq{
+				cellid, err := dtable.NewRow(uint32(txnId), dyndb.NewRowReq{
 					TenantId: opts.TenantId,
 					Group:    resp.GroupSlug,
 					Table:    dyndb.SheetCellTable,

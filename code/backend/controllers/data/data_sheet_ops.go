@@ -10,9 +10,10 @@ import (
 func (c *Controller) ListSheetGroup(uclaim *claim.Data) (*ListSheetGroupResp, error) {
 
 	source, group := getTarget(uclaim)
-	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	tg, err := dynDb.GetGroup(uclaim.DataGroup)
+	tg, err := ddb.GetGroup(uclaim.TenantId, uclaim.DataGroup)
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +23,7 @@ func (c *Controller) ListSheetGroup(uclaim *claim.Data) (*ListSheetGroupResp, er
 		return nil, err
 	}
 
-	sheetRows, err := dynDb.SimpleQuery(0, dyndb.SimpleQueryReq{
+	sheetRows, err := thub.SimpleQuery(0, dyndb.SimpleQueryReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    dyndb.SheetTable,
@@ -40,9 +41,10 @@ func (c *Controller) ListSheetGroup(uclaim *claim.Data) (*ListSheetGroupResp, er
 func (c *Controller) LoadSheet(uclaim *claim.Data, data *LoadSheetReq) (*LoadSheetResp, error) {
 
 	source, group := getTarget(uclaim)
-	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	columns, err := dynDb.SimpleQuery(0, dyndb.SimpleQueryReq{
+	columns, err := thub.SimpleQuery(0, dyndb.SimpleQueryReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    dyndb.SheetColumnTable,
@@ -68,7 +70,7 @@ func (c *Controller) LoadSheet(uclaim *claim.Data, data *LoadSheetReq) (*LoadShe
 	colNo := len(columns.Rows)
 	count := int64((dyndb.DefaultQueryFetchCount * colNo) + colNo)
 
-	cells, err := dynDb.SimpleQuery(0, dyndb.SimpleQueryReq{
+	cells, err := thub.SimpleQuery(0, dyndb.SimpleQueryReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    dyndb.SheetCellTable,
@@ -136,9 +138,10 @@ func (c *Controller) LoadSheet(uclaim *claim.Data, data *LoadSheetReq) (*LoadShe
 func (c *Controller) ListSheet(uclaim *claim.Data) ([]map[string]any, error) {
 
 	source, group := getTarget(uclaim)
-	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	resp, err := dynDb.SimpleQuery(0, dyndb.SimpleQueryReq{
+	resp, err := thub.SimpleQuery(0, dyndb.SimpleQueryReq{
 		TenantId: uclaim.TenantId,
 		Table:    dyndb.SheetTable,
 		Group:    group,
@@ -153,9 +156,10 @@ func (c *Controller) ListSheet(uclaim *claim.Data) ([]map[string]any, error) {
 func (c *Controller) NewSheet(uclaim *claim.Data, data map[string]any) error {
 
 	source, group := getTarget(uclaim)
-	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	_, err := dynDb.NewRow(0, dyndb.NewRowReq{
+	_, err := thub.NewRow(0, dyndb.NewRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    dyndb.SheetTable,
@@ -170,9 +174,10 @@ func (c *Controller) NewSheet(uclaim *claim.Data, data map[string]any) error {
 
 func (c *Controller) GetSheet(uclaim *claim.Data, id int64) (map[string]any, error) {
 	source, group := getTarget(uclaim)
-	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	return dynDb.GetRow(0, dyndb.GetRowReq{
+	return thub.GetRow(0, dyndb.GetRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    dyndb.SheetTable,
@@ -182,11 +187,11 @@ func (c *Controller) GetSheet(uclaim *claim.Data, id int64) (map[string]any, err
 }
 
 func (c *Controller) UpdateSheet(uclaim *claim.Data, id int64, data map[string]any) error {
-
 	source, group := getTarget(uclaim)
-	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	_, err := dynDb.UpdateRow(0, dyndb.UpdateRowReq{
+	_, err := thub.UpdateRow(0, dyndb.UpdateRowReq{
 		TenantId: uclaim.TenantId,
 		Id:       id,
 		Group:    group,
@@ -199,11 +204,11 @@ func (c *Controller) UpdateSheet(uclaim *claim.Data, id int64, data map[string]a
 }
 
 func (c *Controller) DeleteSheet(uclaim *claim.Data, id int64) error {
-
 	source, group := getTarget(uclaim)
-	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	err := dynDb.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
+	err := thub.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    dyndb.SheetCellTable,
@@ -219,7 +224,7 @@ func (c *Controller) DeleteSheet(uclaim *claim.Data, id int64) error {
 		pp.Println("@err while clearing cells")
 	}
 
-	dynDb.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
+	thub.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    dyndb.SheetRowTable,
@@ -236,7 +241,7 @@ func (c *Controller) DeleteSheet(uclaim *claim.Data, id int64) error {
 		pp.Println("@err while clearing rows")
 	}
 
-	dynDb.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
+	thub.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    dyndb.SheetColumnTable,
@@ -253,7 +258,7 @@ func (c *Controller) DeleteSheet(uclaim *claim.Data, id int64) error {
 		pp.Println("@err while clearing columns")
 	}
 
-	dynDb.DeleteRow(0, dyndb.DeleteRowReq{
+	return thub.DeleteRow(0, dyndb.DeleteRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    dyndb.SheetTable,
@@ -263,17 +268,16 @@ func (c *Controller) DeleteSheet(uclaim *claim.Data, id int64) error {
 		},
 	})
 
-	return nil
 }
 
 // columns
 
 func (c *Controller) ListSheetColumn(uclaim *claim.Data, sid int64) ([]map[string]any, error) {
-
 	source, group := getTarget(uclaim)
-	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	resp, err := dynDb.SimpleQuery(0, dyndb.SimpleQueryReq{
+	resp, err := thub.SimpleQuery(0, dyndb.SimpleQueryReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    dyndb.SheetColumnTable,
@@ -293,13 +297,13 @@ func (c *Controller) ListSheetColumn(uclaim *claim.Data, sid int64) ([]map[strin
 }
 
 func (c *Controller) NewSheetColumn(uclaim *claim.Data, sid int64, data map[string]any) (int64, error) {
-
 	source, group := getTarget(uclaim)
-	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
 	data["sheetid"] = sid
 
-	return dynDb.NewRow(0, dyndb.NewRowReq{
+	return thub.NewRow(0, dyndb.NewRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    dyndb.SheetColumnTable,
@@ -312,26 +316,26 @@ func (c *Controller) NewSheetColumn(uclaim *claim.Data, sid int64, data map[stri
 }
 
 func (c *Controller) GetSheetColumn(uclaim *claim.Data, sid, cid int64) (map[string]any, error) {
-
 	source, group := getTarget(uclaim)
-	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	dynDb.GetRow(0, dyndb.GetRowReq{
+	return thub.GetRow(0, dyndb.GetRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    dyndb.SheetColumnTable,
 		Id:       cid,
 	})
 
-	return nil, nil
 }
 
 func (c *Controller) UpdateSheetColumn(uclaim *claim.Data, sid, cid int64, data map[string]any) error {
 
 	source, group := getTarget(uclaim)
-	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	dynDb.UpdateRow(0, dyndb.UpdateRowReq{
+	_, err := thub.UpdateRow(0, dyndb.UpdateRowReq{
 		TenantId: uclaim.TenantId,
 		Id:       cid,
 		Group:    group,
@@ -342,16 +346,17 @@ func (c *Controller) UpdateSheetColumn(uclaim *claim.Data, sid, cid int64, data 
 		},
 	})
 
-	return nil
+	return err
 
 }
 
 func (c *Controller) DeleteSheetColumn(uclaim *claim.Data, sid, cid int64) error {
 
 	source, group := getTarget(uclaim)
-	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	return dynDb.DeleteRow(0, dyndb.DeleteRowReq{
+	return thub.DeleteRow(0, dyndb.DeleteRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    dyndb.SheetColumnTable,
@@ -369,9 +374,10 @@ func (c *Controller) NewRowWithCell(uclaim *claim.Data, sid int64, data map[int6
 	txid := uint32(0)
 
 	source, group := getTarget(uclaim)
-	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	rid, err := dynDb.NewRow(txid, dyndb.NewRowReq{
+	rid, err := thub.NewRow(txid, dyndb.NewRowReq{
 		TenantId: uclaim.TenantId,
 		Group:    group,
 		Table:    dyndb.SheetRowTable,
@@ -393,7 +399,7 @@ func (c *Controller) NewRowWithCell(uclaim *claim.Data, sid int64, data map[int6
 		cellData["sheetid"] = sid
 		cellData["colid"] = cid
 
-		cellid, err := dynDb.NewRow(txid, dyndb.NewRowReq{
+		cellid, err := thub.NewRow(txid, dyndb.NewRowReq{
 			TenantId: uclaim.TenantId,
 			Group:    group,
 			Table:    dyndb.SheetCellTable,
@@ -418,7 +424,8 @@ func (c *Controller) UpdateRowWithCell(uclaim *claim.Data, sid, rid int64, data 
 	pp.Println("@update", data)
 
 	source, group := getTarget(uclaim)
-	dynDb := c.dynHub.GetSource(source, uclaim.TenantId)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
 	for colid, cellData := range data {
 
@@ -431,7 +438,7 @@ func (c *Controller) UpdateRowWithCell(uclaim *claim.Data, sid, rid int64, data 
 			cellData["sheetid"] = sid
 			cellData["colid"] = colid
 
-			_, err := dynDb.NewRow(0, dyndb.NewRowReq{
+			_, err := thub.NewRow(0, dyndb.NewRowReq{
 				TenantId: uclaim.TenantId,
 				Group:    group,
 				Table:    dyndb.SheetCellTable,
@@ -452,7 +459,7 @@ func (c *Controller) UpdateRowWithCell(uclaim *claim.Data, sid, rid int64, data 
 			delete(cellData, "sheetid")
 			delete(cellData, "colid")
 
-			_, err := dynDb.UpdateRow(0, dyndb.UpdateRowReq{
+			_, err := thub.UpdateRow(0, dyndb.UpdateRowReq{
 				TenantId: uclaim.TenantId,
 				Id:       int64(cellId),
 				Group:    group,

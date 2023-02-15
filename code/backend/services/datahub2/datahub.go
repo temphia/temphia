@@ -11,6 +11,8 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
+var _ dyndb.DataHub = (*DataHub)(nil)
+
 type DataHub struct {
 	sources map[string]*DataSource
 	handle  *handle.Handle
@@ -47,7 +49,7 @@ func New(dyns map[string]dyndb.DynDB) *DataHub {
 	return dhub
 }
 
-func (d *DataHub) DefaultSource(tenant string) dyndb.DynSource2 {
+func (d *DataHub) DefaultSource(tenant string) dyndb.DynSource {
 	// fixme =>
 
 	tdata, err := d.handle.CoreHub.GetTenant(tenant)
@@ -64,7 +66,7 @@ func (d *DataHub) DefaultSource(tenant string) dyndb.DynSource2 {
 
 }
 
-func (d *DataHub) GetSource(source, tenant string) dyndb.DynSource2 {
+func (d *DataHub) GetSource(source, tenant string) dyndb.DynSource {
 	return d.sources[source]
 }
 

@@ -70,6 +70,8 @@ func (s *Seeder) DataSeed() error {
 
 func (s *Seeder) applySeed(data map[string][]map[string]any) error {
 
+	dtable := s.source.GetDataTableHub(s.tenant, s.group)
+
 	pp.Println("applying seed")
 
 	doneRows := make(map[string]map[int64]int64)
@@ -119,7 +121,7 @@ func (s *Seeder) applySeed(data map[string][]map[string]any) error {
 
 			delete(rdata, dyndb.KeyPrimary)
 
-			_rid, err := s.source.NewRow(0, dyndb.NewRowReq{
+			_rid, err := dtable.NewRow(0, dyndb.NewRowReq{
 				TenantId: s.tenant,
 				Group:    s.group,
 				Table:    table,

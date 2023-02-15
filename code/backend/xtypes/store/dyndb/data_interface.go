@@ -19,39 +19,6 @@ type DataHub interface {
 type DynSource interface {
 	Name() string
 
-	NewGroup(model *xbprint.NewTableGroup) error
-	EditGroup(gslug string, model *entities.TableGroupPartial) error
-	ListGroup() ([]*entities.TableGroup, error)
-	GetGroup(gslug string) (*entities.TableGroup, error)
-	DeleteGroup(gslug string) error
-
-	EditTable(gslug, tslug string, model *entities.TablePartial) error
-	GetTable(gslug, tslug string) (*entities.Table, error)
-	ListTables(gslug string) ([]*entities.Table, error)
-	DeleteTable(gslug, tslug string) error
-
-	EditColumn(gslug, tslug, cslug string, model *entities.ColumnPartial) error
-	GetColumn(gslug, tslug, cslug string) (*entities.Column, error)
-	ListColumns(gslug, tslug string) ([]*entities.Column, error)
-	ListReverseColumnRef(gslug, tslug string) ([]*entities.Column, error)
-	DeleteColumn(gslug, tslug, cslug string) error
-
-	NewView(model *entities.DataView) error
-	GetView(gslug, tslug string, id int64) (*entities.DataView, error)
-	ModifyView(gslug, tslug string, id int64, data map[string]any) error
-	ListView(gslug, tslug string) ([]*entities.DataView, error)
-	DelView(gslug, tslug string, id int64) error
-
-	QueryActivity(group, table string, query *entities.ActivityQuery) ([]*entities.DynActivity, error)
-	ListActivity(group, table string, rowId int) ([]*entities.DynActivity, error)
-	NewActivity(group, table string, record *entities.DynActivity) error
-
-	DataTableHub
-}
-
-type DynSource2 interface {
-	Name() string
-
 	NewGroup(tenantId string, model *xbprint.NewTableGroup) error
 	EditGroup(tenantId, gslug string, model *entities.TableGroupPartial) error
 	ListGroup(tenantId string) ([]*entities.TableGroup, error)

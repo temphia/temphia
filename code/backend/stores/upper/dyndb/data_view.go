@@ -5,7 +5,7 @@ import (
 	"github.com/upper/db/v4"
 )
 
-func (d *DynDB) NewView(model *entities.DataView) error {
+func (d *DynDB) NewView(tenantId string, model *entities.DataView) error {
 	_, err := d.viewTable().Insert(model)
 	return err
 }

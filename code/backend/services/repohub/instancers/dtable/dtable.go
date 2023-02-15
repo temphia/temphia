@@ -116,7 +116,7 @@ func (di *dtabeInstancer) instance(tenantId string, opts *DataGroupRequest, sche
 		table.ActivityType = tableOpts.ActivityType
 	}
 
-	err := dhub.NewGroup(schema)
+	err := dhub.NewGroup(tenantId, schema)
 	if err != nil {
 		return nil, err
 	}
@@ -131,7 +131,7 @@ func (di *dtabeInstancer) instance(tenantId string, opts *DataGroupRequest, sche
 	for _, tbl := range schema.Tables {
 		for _, view := range tbl.Views {
 
-			err = dhub.NewView(&entities.DataView{
+			err = dhub.NewView(tenantId, &entities.DataView{
 				Id:          0,
 				Name:        view.Name,
 				Count:       view.Count,
