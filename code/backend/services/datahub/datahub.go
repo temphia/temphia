@@ -3,7 +3,7 @@ package datahub
 import (
 	"sync"
 
-	"github.com/temphia/temphia/code/backend/services/datahub2/handle"
+	"github.com/temphia/temphia/code/backend/services/datahub/handle"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 	"github.com/temphia/temphia/code/backend/xtypes/store"

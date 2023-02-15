@@ -3,7 +3,7 @@ package datahub
 import (
 	"sync"
 
-	"github.com/temphia/temphia/code/backend/services/datahub2/handle"
+	"github.com/temphia/temphia/code/backend/services/datahub/handle"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
