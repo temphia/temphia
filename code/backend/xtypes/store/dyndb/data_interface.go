@@ -75,15 +75,15 @@ type DataSheetHub interface {
 	ListSheetGroup(txid uint32) (*ListSheetGroupResp, error)
 	LoadSheet(txid uint32, data *LoadSheetReq) (*LoadSheetResp, error)
 	ListSheet(txid uint32) ([]map[string]any, error)
-	NewSheet(txid uint32, data map[string]any) error
+	NewSheet(txid uint32, userId string, data map[string]any) error
 	GetSheet(txid uint32, id int64) (map[string]any, error)
-	UpdateSheet(txid uint32, id int64, data map[string]any) error
-	DeleteSheet(txid uint32, id int64) error
+	UpdateSheet(txid uint32, id int64, userId string, data map[string]any) error
+	DeleteSheet(txid uint32, id int64, userId string) error
 	ListSheetColumn(txid uint32, sid int64) ([]map[string]any, error)
-	NewSheetColumn(txid uint32, sid int64, data map[string]any) (int64, error)
+	NewSheetColumn(txid uint32, sid int64, userId string, data map[string]any) (int64, error)
 	GetSheetColumn(txid uint32, sid, cid int64) (map[string]any, error)
-	UpdateSheetColumn(txid uint32, sid, cid int64, data map[string]any) error
-	DeleteSheetColumn(txid uint32, sid, cid int64) error
-	NewRowWithCell(txid uint32, sid int64, data map[int64]map[string]any) (map[int64]map[string]any, error)
-	UpdateRowWithCell(txid uint32, sid, rid int64, data map[int64]map[string]any) (map[int64]map[string]any, error)
+	UpdateSheetColumn(txid uint32, sid, cid int64, userId string, data map[string]any) error
+	DeleteSheetColumn(txid uint32, sid, cid int64, userId string) error
+	NewRowWithCell(txid uint32, sid int64, userId string, data map[int64]map[string]any) (map[int64]map[string]any, error)
+	UpdateRowWithCell(txid uint32, sid, rid int64, userId string, data map[int64]map[string]any) (map[int64]map[string]any, error)
 }

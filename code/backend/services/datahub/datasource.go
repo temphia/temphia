@@ -4,6 +4,8 @@ import (
 	"sync"
 
 	"github.com/temphia/temphia/code/backend/services/datahub/handle"
+	"github.com/temphia/temphia/code/backend/services/datahub/table"
+
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
@@ -110,13 +112,41 @@ func (ds *DataSource) NewActivity(tenantId, group, table string, record *entitie
 }
 
 func (ds *DataSource) GetDataTableHub(tenantId, group string) dyndb.DataTableHub {
+
 	ds.gLock.RLock()
-	defer ds.gLock.RUnlock()
-	return ds.groups[tenantId+group]
+	dh := ds.groups[tenantId+group]
+	ds.gLock.RUnlock()
+
+	if dh != nil {
+		return dh
+	}
+
+	// fixme => we are creating hub without validating if group exists
+	dh = table.New(ds.name, tenantId, group, ds.inner, ds.handle)
+
+	ds.gLock.Lock()
+	ds.groups[tenantId+group] = dh
+	ds.gLock.Unlock()
+
+	return dh
 }
 
 func (ds *DataSource) GetDataSheetHub(tenantId, group string) dyndb.DataSheetHub {
 	ds.sLock.RLock()
-	defer ds.sLock.RUnlock()
-	return ds.sheets[tenantId+group]
+	dh := ds.sheets[tenantId+group]
+	ds.sLock.RUnlock()
+
+	if dh != nil {
+		return dh
+	}
+
+	// fixme => we are creating hub without validating if group exists
+	// dh = sheet.New(ds.inner, ds.handle, ds.name, tenantId, group)
+
+	// ds.sLock.Lock()
+	// ds.sheets[tenantId+group] = dh
+	// ds.sLock.Unlock()
+
+	return nil
+
 }
