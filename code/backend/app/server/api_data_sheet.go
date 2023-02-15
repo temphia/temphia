@@ -4,9 +4,9 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/backend/controllers/data"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 func (s *Server) dataSheetAPI(rg *gin.RouterGroup) {
@@ -38,7 +38,7 @@ func (s *Server) listSheetGroup(uclaim *claim.Data, ctx *gin.Context) {
 }
 
 func (s *Server) loadSheet(uclaim *claim.Data, ctx *gin.Context) {
-	data := data.LoadSheetReq{}
+	data := dyndb.LoadSheetReq{}
 	err := ctx.BindJSON(&data)
 	if err != nil {
 		httpx.WriteErr(ctx, err)

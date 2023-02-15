@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/temphia/temphia/code/backend/services/datahub/handle"
+	"github.com/temphia/temphia/code/backend/services/datahub/sheet"
 	"github.com/temphia/temphia/code/backend/services/datahub/table"
 
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -140,12 +141,14 @@ func (ds *DataSource) GetDataSheetHub(tenantId, group string) dyndb.DataSheetHub
 		return dh
 	}
 
-	// fixme => we are creating hub without validating if group exists
-	// dh = sheet.New(ds.inner, ds.handle, ds.name, tenantId, group)
+	dthub := ds.GetDataTableHub(tenantId, group)
 
-	// ds.sLock.Lock()
-	// ds.sheets[tenantId+group] = dh
-	// ds.sLock.Unlock()
+	// fixme => we are creating hub without validating if group exists
+	dh = sheet.New(dthub, ds.handle, ds.name, tenantId, group)
+
+	ds.sLock.Lock()
+	ds.sheets[tenantId+group] = dh
+	ds.sLock.Unlock()
 
 	return nil
 

@@ -10,27 +10,28 @@ import (
 var _ dyndb.DataSheetHub = (*Sheet)(nil)
 
 type Sheet struct {
-	inner    dyndb.DynDB
 	handle   *handle.Handle
 	source   string
 	tenantId string
 	group    string
+
+	tableHub dyndb.DataTableHub
 }
 
-func New(inner dyndb.DynDB, handle *handle.Handle, source string, tenantId string, group string) *Sheet {
+func New(tableHub dyndb.DataTableHub, handle *handle.Handle, source string, tenantId string, group string) *Sheet {
 	return &Sheet{
-		inner:    inner,
 		handle:   handle,
 		source:   source,
 		tenantId: tenantId,
 		group:    group,
+		tableHub: tableHub,
 	}
 
 }
 
 func (s *Sheet) ListSheetGroup(txid uint32) (*dyndb.ListSheetGroupResp, error) {
 
-	sheetRows, err := s.inner.SimpleQuery(txid, dyndb.SimpleQueryReq{
+	sheetRows, err := s.tableHub.SimpleQuery(txid, dyndb.SimpleQueryReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetTable,
@@ -46,7 +47,7 @@ func (s *Sheet) ListSheetGroup(txid uint32) (*dyndb.ListSheetGroupResp, error) {
 }
 
 func (s *Sheet) LoadSheet(txid uint32, data *dyndb.LoadSheetReq) (*dyndb.LoadSheetResp, error) {
-	columns, err := s.inner.SimpleQuery(txid, dyndb.SimpleQueryReq{
+	columns, err := s.tableHub.SimpleQuery(txid, dyndb.SimpleQueryReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetColumnTable,
@@ -72,7 +73,7 @@ func (s *Sheet) LoadSheet(txid uint32, data *dyndb.LoadSheetReq) (*dyndb.LoadShe
 	colNo := len(columns.Rows)
 	count := int64((dyndb.DefaultQueryFetchCount * colNo) + colNo)
 
-	cells, err := s.inner.SimpleQuery(0, dyndb.SimpleQueryReq{
+	cells, err := s.tableHub.SimpleQuery(0, dyndb.SimpleQueryReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetCellTable,
@@ -136,7 +137,7 @@ func (s *Sheet) LoadSheet(txid uint32, data *dyndb.LoadSheetReq) (*dyndb.LoadShe
 }
 
 func (s *Sheet) ListSheet(txid uint32) ([]map[string]any, error) {
-	resp, err := s.inner.SimpleQuery(txid, dyndb.SimpleQueryReq{
+	resp, err := s.tableHub.SimpleQuery(txid, dyndb.SimpleQueryReq{
 		TenantId: s.tenantId,
 		Table:    dyndb.SheetTable,
 		Group:    s.group,
@@ -150,7 +151,7 @@ func (s *Sheet) ListSheet(txid uint32) ([]map[string]any, error) {
 }
 
 func (s *Sheet) NewSheet(txid uint32, userId string, data map[string]any) error {
-	_, err := s.inner.NewRow(txid, dyndb.NewRowReq{
+	_, err := s.tableHub.NewRow(txid, dyndb.NewRowReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetTable,
@@ -163,7 +164,7 @@ func (s *Sheet) NewSheet(txid uint32, userId string, data map[string]any) error 
 }
 
 func (s *Sheet) GetSheet(txid uint32, id int64) (map[string]any, error) {
-	return s.inner.GetRow(txid, dyndb.GetRowReq{
+	return s.tableHub.GetRow(txid, dyndb.GetRowReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetTable,
@@ -172,7 +173,7 @@ func (s *Sheet) GetSheet(txid uint32, id int64) (map[string]any, error) {
 }
 
 func (s *Sheet) UpdateSheet(txid uint32, id int64, userId string, data map[string]any) error {
-	_, err := s.inner.UpdateRow(0, dyndb.UpdateRowReq{
+	_, err := s.tableHub.UpdateRow(0, dyndb.UpdateRowReq{
 		TenantId: s.tenantId,
 		Id:       id,
 		Group:    s.group,
@@ -188,7 +189,7 @@ func (s *Sheet) UpdateSheet(txid uint32, id int64, userId string, data map[strin
 }
 
 func (s *Sheet) DeleteSheet(txid uint32, id int64, userId string) error {
-	err := s.inner.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
+	err := s.tableHub.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetCellTable,
@@ -205,7 +206,7 @@ func (s *Sheet) DeleteSheet(txid uint32, id int64, userId string) error {
 		pp.Println("@err while clearing cells")
 	}
 
-	s.inner.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
+	s.tableHub.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetRowTable,
@@ -222,7 +223,7 @@ func (s *Sheet) DeleteSheet(txid uint32, id int64, userId string) error {
 		pp.Println("@err while clearing rows")
 	}
 
-	s.inner.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
+	s.tableHub.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetColumnTable,
@@ -239,7 +240,7 @@ func (s *Sheet) DeleteSheet(txid uint32, id int64, userId string) error {
 		pp.Println("@err while clearing columns")
 	}
 
-	return s.inner.DeleteRow(0, dyndb.DeleteRowReq{
+	return s.tableHub.DeleteRow(0, dyndb.DeleteRowReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetTable,
@@ -252,7 +253,7 @@ func (s *Sheet) DeleteSheet(txid uint32, id int64, userId string) error {
 
 func (s *Sheet) ListSheetColumn(txid uint32, sid int64) ([]map[string]any, error) {
 
-	resp, err := s.inner.SimpleQuery(0, dyndb.SimpleQueryReq{
+	resp, err := s.tableHub.SimpleQuery(0, dyndb.SimpleQueryReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetColumnTable,
@@ -274,7 +275,7 @@ func (s *Sheet) ListSheetColumn(txid uint32, sid int64) ([]map[string]any, error
 func (s *Sheet) NewSheetColumn(txid uint32, sid int64, userId string, data map[string]any) (int64, error) {
 	data["sheetid"] = sid
 
-	return s.inner.NewRow(0, dyndb.NewRowReq{
+	return s.tableHub.NewRow(0, dyndb.NewRowReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetColumnTable,
@@ -286,7 +287,7 @@ func (s *Sheet) NewSheetColumn(txid uint32, sid int64, userId string, data map[s
 }
 
 func (s *Sheet) GetSheetColumn(txid uint32, sid, cid int64) (map[string]any, error) {
-	return s.inner.GetRow(0, dyndb.GetRowReq{
+	return s.tableHub.GetRow(0, dyndb.GetRowReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetColumnTable,
@@ -296,7 +297,7 @@ func (s *Sheet) GetSheetColumn(txid uint32, sid, cid int64) (map[string]any, err
 
 func (s *Sheet) UpdateSheetColumn(txid uint32, sid, cid int64, userId string, data map[string]any) error {
 
-	_, err := s.inner.UpdateRow(txid, dyndb.UpdateRowReq{
+	_, err := s.tableHub.UpdateRow(txid, dyndb.UpdateRowReq{
 		TenantId: s.tenantId,
 		Id:       cid,
 		Group:    s.group,
@@ -312,7 +313,7 @@ func (s *Sheet) UpdateSheetColumn(txid uint32, sid, cid int64, userId string, da
 
 func (s *Sheet) DeleteSheetColumn(txid uint32, sid, cid int64, userId string) error {
 
-	err := s.inner.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
+	err := s.tableHub.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetCellTable,
@@ -334,7 +335,7 @@ func (s *Sheet) DeleteSheetColumn(txid uint32, sid, cid int64, userId string) er
 		pp.Println("@err while clearing cells")
 	}
 
-	return s.inner.DeleteRow(txid, dyndb.DeleteRowReq{
+	return s.tableHub.DeleteRow(txid, dyndb.DeleteRowReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetColumnTable,
@@ -347,7 +348,7 @@ func (s *Sheet) DeleteSheetColumn(txid uint32, sid, cid int64, userId string) er
 
 func (s *Sheet) NewRowWithCell(txid uint32, sid int64, userId string, data map[int64]map[string]any) (map[int64]map[string]any, error) {
 
-	rid, err := s.inner.NewRow(txid, dyndb.NewRowReq{
+	rid, err := s.tableHub.NewRow(txid, dyndb.NewRowReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetRowTable,
@@ -369,7 +370,7 @@ func (s *Sheet) NewRowWithCell(txid uint32, sid int64, userId string, data map[i
 		cellData["sheetid"] = sid
 		cellData["colid"] = cid
 
-		cellid, err := s.inner.NewRow(txid, dyndb.NewRowReq{
+		cellid, err := s.tableHub.NewRow(txid, dyndb.NewRowReq{
 			TenantId: s.tenantId,
 			Group:    s.group,
 			Table:    dyndb.SheetCellTable,
@@ -401,7 +402,7 @@ func (s *Sheet) UpdateRowWithCell(txid uint32, sid, rid int64, userId string, da
 			cellData["sheetid"] = sid
 			cellData["colid"] = colid
 
-			_, err := s.inner.NewRow(0, dyndb.NewRowReq{
+			_, err := s.tableHub.NewRow(0, dyndb.NewRowReq{
 				TenantId: s.tenantId,
 				Group:    s.group,
 				Table:    dyndb.SheetCellTable,
@@ -422,7 +423,7 @@ func (s *Sheet) UpdateRowWithCell(txid uint32, sid, rid int64, userId string, da
 			delete(cellData, "sheetid")
 			delete(cellData, "colid")
 
-			_, err := s.inner.UpdateRow(0, dyndb.UpdateRowReq{
+			_, err := s.tableHub.UpdateRow(0, dyndb.UpdateRowReq{
 				TenantId: s.tenantId,
 				Id:       int64(cellId),
 				Group:    s.group,
