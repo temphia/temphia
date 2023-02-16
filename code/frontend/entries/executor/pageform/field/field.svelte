@@ -16,10 +16,12 @@
   export let type: string;
   export let options: string[];
   export let html_attr: { [_: string]: string } = {};
-
+  export let onChange: (newValye) => void;
   export let value: any;
 
-  const change = (ev) => {};
+  const change = (ev) => {
+    onChange(ev.target["value"]);
+  };
 </script>
 
 <label for={name} class="pb-2 text-gray-700 flex uppercase"> {name}</label>
@@ -30,7 +32,7 @@
       type="text"
       id={name}
       on:change={change}
-      {value}
+      value={value || ""}
       class="p-2 border w-full rounded-lg bg-gray-50 outline-none focus:bg-gray-100 mr-1"
       {...html_attr}
     />
@@ -41,7 +43,7 @@
       type="tel"
       id={name}
       on:change={change}
-      {value}
+      value={value || ""}
       class="p-2 w-full rounded-lg bg-gray-50 outline-none focus:bg-gray-100 mr-1"
       {...html_attr}
     />
@@ -50,7 +52,7 @@
   <div class="flex w-full">
     <select
       class="w-full p-2 bg-gray-50 border"
-      {value}
+      value={value || ""}
       on:change={change}
       {...html_attr}
     >
@@ -76,7 +78,7 @@
       type="number"
       id={FieldNumber}
       on:change={() => {}}
-      {value}
+      value={value || ""}
       class="p-2 border w-full rounded-lg bg-gray-50 outline-none focus:bg-gray-100 mr-1"
       {...html_attr}
     />
@@ -86,7 +88,7 @@
     <textarea
       id={name}
       on:change={change}
-      {value}
+      value={value || ""}
       class="p-2 border w-full rounded-lg bg-gray-50 outline-none focus:bg-gray-100 mr-1"
       placeholder="write something..."
       {...html_attr}
@@ -98,7 +100,7 @@
       type="email"
       id={name}
       on:change={change}
-      {value}
+      value={value || ""}
       class="p-2 border w-full rounded-lg bg-gray-50 outline-none focus:bg-gray-100 mr-1"
       placeholder="mail@example.com"
       {...html_attr}
@@ -110,7 +112,7 @@
       type="range"
       id={name}
       on:change={change}
-      {value}
+      value={value || ""}
       class="p-2 border w-full rounded-lg bg-gray-50 outline-none focus:bg-gray-100 mr-1"
       {...html_attr}
     />
@@ -121,7 +123,7 @@
       type="color"
       id={name}
       on:change={change}
-      {value}
+      value={value || ""}
       class="p-2 border w-full rounded-lg bg-gray-50 outline-none focus:bg-gray-100 mr-1"
       {...html_attr}
     />
