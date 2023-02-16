@@ -1,32 +1,24 @@
 package pageform
 
 import (
-	"os"
-
-	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/executors/helper"
 	"gopkg.in/yaml.v2"
 )
 
 type PfBuilder struct {
-	app xtypes.App
-	dev bool
-}
-
-var loaderJs []byte
-var loaderCss []byte
-
-func init() {
-	loaderJs, _ = os.ReadFile("code/frontend/public/build/executor_pageform.js")
-	loaderCss, _ = os.ReadFile("code/frontend/public/build/executor_pageform.css")
+	app    xtypes.App
+	helper *helper.ExecutorHelper
 }
 
 func NewBuilder(app any) (etypes.ExecutorBuilder, error) {
 
+	h := helper.New("executor_pageform", true)
+
 	return &PfBuilder{
-		app: app.(xtypes.App),
-		dev: true,
+		app:    app.(xtypes.App),
+		helper: h,
 	}, nil
 }
 
@@ -50,26 +42,5 @@ func (pf *PfBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 }
 
 func (pf *PfBuilder) ExecFile(file string) ([]byte, error) {
-	pp.Println("@file", file)
-
-	switch file {
-	case "loader.css":
-		if pf.dev {
-			return os.ReadFile("code/frontend/public/build/executor_pageform.css")
-		}
-
-		return loaderCss, nil
-	case "loader.js":
-		if pf.dev {
-			return os.ReadFile("code/frontend/public/build/executor_pageform.js")
-		}
-
-		return loaderJs, nil
-
-	case "executor_pageform.js.map":
-		return os.ReadFile("code/frontend/public/build/executor_pageform.js.map")
-
-	default:
-		return []byte(``), nil
-	}
+	return pf.helper.Serve(file)
 }
