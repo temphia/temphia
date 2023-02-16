@@ -84,6 +84,7 @@
       ["id", "Id"],
       ["target_type", "Type"],
       ["target", "Target"],
+      ["context_type", "Context Type"]
     ]}
     color={["target_type"]}
     {datas}

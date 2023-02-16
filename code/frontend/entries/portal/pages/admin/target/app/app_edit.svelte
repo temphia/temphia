@@ -66,6 +66,12 @@
         },
 
         {
+          name: "Context Type",
+          ftype: "TEXT",
+          key_name: "context_type",
+        },
+
+        {
           name: "Policy",
           ftype: "TEXT_POLICY",
           key_name: "policy",
