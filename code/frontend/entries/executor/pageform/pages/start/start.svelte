@@ -1,7 +1,8 @@
 <script lang="ts">
   import Field from "../../field/field.svelte";
   import type * as f from "../../field/field";
-  export let data: typeof f.data;
+  import type { LoadResponse } from "../../service";
+  export let data: LoadResponse;
 </script>
 
 {#each data.items as item}
@@ -15,13 +16,15 @@
   />
 {/each}
 
-<div class="flex justify-end items-center p-1">
+<div class="grow" />
+
+<div class="flex justify-end items-center">
   <button
     class="p-1 rounded bg-green-500 shadow hover:bg-green-900 flex text-white"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      class="h-5 w-5"
+      class="h-6 w-6 mr-1"
       viewBox="0 0 20 20"
       fill="currentColor"
     >

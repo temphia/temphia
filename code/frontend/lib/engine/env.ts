@@ -3,7 +3,7 @@ import type { AdminPlugStateTktAPI } from "../apiv2/admin/plug_state";
 import type { Registry } from "../registry/registry";
 
 export interface Environment {
-  PreformAction: (name: string, data: any) => Promise<any>;
+  PreformAction: (name: string, data: any) => Promise<{data:any,ok:boolean,status:number}>;
   PreformParentAction: (name: string, data: any) => Promise<any>;
   OnParentAction: (handler: (data: any) => {}) => void;
 

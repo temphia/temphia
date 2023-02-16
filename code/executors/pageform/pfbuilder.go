@@ -10,6 +10,7 @@ import (
 
 type PfBuilder struct {
 	app xtypes.App
+	dev bool
 }
 
 var loaderJs []byte
@@ -24,6 +25,7 @@ func NewBuilder(app any) (etypes.ExecutorBuilder, error) {
 
 	return &PfBuilder{
 		app: app.(xtypes.App),
+		dev: true,
 	}, nil
 }
 
@@ -31,9 +33,20 @@ func (pf *PfBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 	return &Pageform{
 		builder: pf,
 		model: &FormModel{
-			Name:  "Test 1",
-			Items: []FormItem{},
-			Data:  make(map[string]any),
+			Name: "Test 1",
+			Items: []FormItem{
+				{
+					Name: "name",
+					Info: "Name of product",
+					Type: "shorttext",
+				},
+				{
+					Name: "Info",
+					Info: "Product information",
+					Type: "longtext",
+				},
+			},
+			Data: make(map[string]any),
 		},
 	}, nil
 }
@@ -43,8 +56,16 @@ func (pf *PfBuilder) ExecFile(file string) ([]byte, error) {
 
 	switch file {
 	case "loader.css":
+		if pf.dev {
+			return os.ReadFile("code/frontend/public/build/executor_pageform.css")
+		}
+
 		return loaderCss, nil
 	case "loader.js":
+		if pf.dev {
+			return os.ReadFile("code/frontend/public/build/executor_pageform.js")
+		}
+
 		return loaderJs, nil
 	default:
 		return []byte(``), nil

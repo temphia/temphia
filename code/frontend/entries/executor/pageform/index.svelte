@@ -1,20 +1,39 @@
 <script lang="ts">
   import StartPage from "./pages/start/start.svelte";
+  import Layout from "./pages/_layout.svelte";
+  import { LoadingSpinner } from "../../xcompo";
+  import { LoadResponse, PageFormService } from "./service";
 
-  import { data } from "./field/field";
-  import Tailwind from "../../xcompo/common/_tailwind.svelte";
   export let env: any;
+
+  let loading = true;
+  let service: PageFormService;
+  let data: LoadResponse;
+
+  const load = async () => {
+    service = new PageFormService(env);
+
+    const resp = await service.load({
+      data_context_type: "",
+      options: {},
+      rows: [],
+    });
+
+    if (!resp) {
+      return;
+    }
+
+    data = resp;
+    loading = false;
+  };
+
+  load();
 </script>
 
-<div class="h-full w-full p-4 bg-blue-50">
-  <div class="p-4 bg-white rounded">
-    <h1
-      class="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4"
-    >
-      Form 1
-    </h1>
+{#if loading}
+  <LoadingSpinner />
+{:else}
+  <Layout>
     <StartPage {data} />
-  </div>
-</div>
-
-<Tailwind />
+  </Layout>
+{/if}
