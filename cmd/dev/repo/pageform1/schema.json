@@ -1,0 +1,19 @@
+{
+  "slug": "pageform1",
+  "name": "Example Pageform",
+  "agents": [
+    {
+      "name": "default",
+      "type": "web",
+      "executor": "pageform",
+      "web_script": "client.js",
+      "web_style": "client.css",
+      "entry_file": "server.js",
+      "web_loader": "pageform.loader",
+      "web_files": {
+        "client.js": "client.js",
+        "client.css": "client.css"
+      }
+    }
+  ]
+}

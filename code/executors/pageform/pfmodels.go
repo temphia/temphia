@@ -9,7 +9,6 @@ type FormModel struct {
 	ServerOnSubmit string                `json:"server_onsubmit,omitempty"` // validate data -> side_effect -> maybe_modify_data -> set_next_stage
 	ClientOnLoad   string                `json:"client_onload,omitempty"`
 	ClientOnSubmit string                `json:"client_onsubmit,omitempty"`
-	Disabled       bool                  `json:"disabled,omitempty"`
 }
 
 type FormItem struct {
@@ -19,6 +18,7 @@ type FormItem struct {
 	Options  []string          `json:"options,omitempty"`
 	Pattern  string            `json:"pattern,omitempty"`
 	HtmlAttr map[string]string `json:"html_attr,omitempty"`
+	Disabled bool              `json:"disabled,omitempty"`
 }
 
 type LoadRequest struct {

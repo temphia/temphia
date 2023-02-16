@@ -1,0 +1,12 @@
+name: Form 1,
+items:
+  start:
+    - name: name
+      info: Name of product.
+      type: shorttext
+    - name: info
+      info: Product information.
+      type: shorttext
+    - name: metameta
+      info: this could include some meta info
+      type: longtext

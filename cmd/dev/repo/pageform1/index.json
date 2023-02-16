@@ -1,0 +1,13 @@
+{
+  "name": "Pageform Example",
+  "slug": "pageform1",
+  "type": "plug",
+  "description": "This is example pageform",
+  "files": [
+    "schema.json",
+    "client.css",
+    "client.js",
+    "server.js",
+    "form1.yaml"
+  ]
+}

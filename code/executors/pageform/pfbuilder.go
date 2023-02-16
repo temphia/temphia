@@ -6,6 +6,7 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"gopkg.in/yaml.v2"
 )
 
 type PfBuilder struct {
@@ -30,32 +31,21 @@ func NewBuilder(app any) (etypes.ExecutorBuilder, error) {
 }
 
 func (pf *PfBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, error) {
+
+	out, _, err := opts.Binder.GetFileWithMeta("form1.yaml") // fixme => get_this from somewhere
+	if err != nil {
+		return nil, err
+	}
+
+	form := &FormModel{}
+	err = yaml.Unmarshal(out, form)
+	if err != nil {
+		return nil, err
+	}
+
 	return &Pageform{
 		builder: pf,
-		model: &FormModel{
-			Name: "Test 1",
-			Items: map[string][]FormItem{
-				"start": {
-					{
-						Name: "name",
-						Info: "Name of product",
-						Type: "shorttext",
-					},
-					{
-						Name: "Info",
-						Info: "Product information",
-						Type: "longtext",
-					},
-
-					{
-						Name: "MetaMeta",
-						Type: "info",
-						Info: "this could include some meta info",
-					},
-				},
-			},
-			Data: make(map[string]any),
-		},
+		model:   form,
 	}, nil
 }
 
@@ -75,6 +65,10 @@ func (pf *PfBuilder) ExecFile(file string) ([]byte, error) {
 		}
 
 		return loaderJs, nil
+
+	case "executor_pageform.js.map":
+		return os.ReadFile("code/frontend/public/build/executor_pageform.js.map")
+
 	default:
 		return []byte(``), nil
 	}
