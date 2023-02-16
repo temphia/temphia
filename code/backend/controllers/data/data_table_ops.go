@@ -141,26 +141,8 @@ func (c *Controller) LoadTable(uclaim *claim.Data, req dyndb.LoadTableReq, tslug
 	req.Table = tslug
 	req.Group = group
 
-	resp, err := thub.LoadTable(0, req)
-	if err != nil {
-		return nil, err
-	}
+	return thub.LoadTable(0, req)
 
-	resp.DataWidgets = []*entities.TargetApp{
-		{
-			Id:          1,
-			Name:        "test 1",
-			TargetType:  entities.TargetAppTypeDataTableWidget,
-			Target:      "xyz/mno",
-			PlugId:      "test1",
-			AgentId:     "default",
-			ContextType: "rowctx.1",
-		},
-	}
-
-	// fixme => load user and folder tokens here
-
-	return resp, nil
 }
 
 func (c *Controller) SimpleQuery(uclaim *claim.Data, tslug string, query dyndb.SimpleQueryReq) (*dyndb.QueryResult, error) {
