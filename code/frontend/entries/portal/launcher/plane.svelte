@@ -36,7 +36,13 @@
 </script>
 
 {#if __active_instance}
-  <div class={__hidden ? "hidden" : __floating ? "floating" : "not-floating"}>
+  <div
+    class="bg-white {__hidden
+      ? 'hidden'
+      : __floating
+      ? 'floating'
+      : 'not-floating'}"
+  >
     <div class="flex justify-between border border-gray-100">
       <div class="grow h-10 flex flex-row flex-nowrap overflow-hidden">
         {#each __instances as instance}
@@ -66,17 +72,19 @@
         {/each}
       </div>
 
-      <div class="grow-0 h-8 w-8 p-1">
-        <button
-          on:click={() => {
-            app.utils.small_modal_open(LauncherOptions, { app });
-          }}
-        >
-          <Icon
-            name="menu"
-            class="w-6 h-6 rounded border hover:text-blue-500"
-          />
-        </button>
+      <div class="grow-0 h-8 w-8 p-1 flex">
+        {#if __floating}
+          <button
+            on:click={() => {
+              launcher.plane_hide();
+            }}
+          >
+            <Icon
+              name="eye-off"
+              class="w-6 h-6 rounded border hover:text-blue-500"
+            />
+          </button>
+        {/if}
       </div>
     </div>
 
@@ -109,7 +117,7 @@
   .floating {
     display: block;
     position: fixed;
-    width: 100%;
+    width:calc(100vw - 3em);
     height: 100%;
     z-index: 1000;
   }

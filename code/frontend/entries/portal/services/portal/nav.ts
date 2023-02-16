@@ -38,10 +38,6 @@ export class Navigator {
     this.set(`#/data/${source}`);
   };
 
-  data_group(source: string, dgroup: string) {
-    this.set(`#/data/${source}/${dgroup}`);
-  }
-
   data_render_custom_loader(source: string, dgroup: string) {
     this.set(`#/data/${source}/${dgroup}/custom`);
   }

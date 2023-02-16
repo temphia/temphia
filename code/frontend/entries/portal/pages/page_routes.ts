@@ -4,7 +4,6 @@ import Start from "./start/start.svelte";
 // data
 import DataLoader from "./data/loader.svelte";
 import DataGroups from "./data/groups.svelte";
-import DataGroup from "./data/group.svelte";
 
 import DataCustomLoader from "./data/custom/loader.svelte"
 import DataTableLoader from "./data/table/loader.svelte"
@@ -43,7 +42,6 @@ export default {
   "/data": {
     "/": DataLoader,
     "/:source": DataGroups,
-    "/:source/:dgroup": DataGroup,
     "/:source/:dgroup/custom": DataCustomLoader,
     "/:source/:dgroup/sheet": DataSheetLoader, 
     "/:source/:dgroup/sheet/:sheet": DataSheet,

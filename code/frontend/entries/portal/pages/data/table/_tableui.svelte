@@ -85,7 +85,7 @@
       }}
       on:tb_clone={() => {}}
       on:tb_delete={() => {}}
-      on:tb_execute_widget={() => {}}
+      on:tb_execute_widget
       on:tb_history={() => dispatch("goto_history")}
       on:tb_share={() => {}}
       on:tb_view={() => {
@@ -111,7 +111,7 @@
       }}
       on:tb_clone={() => {}}
       on:tb_delete={() => {}}
-      on:tb_execute_widget={() => {}}
+      on:tb_execute_widget
       on:tb_history={() => dispatch("goto_history")}
       on:tb_share={() => {}}
       on:tb_view={() => {

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getContext } from "svelte";
+  import { getContext, tick } from "svelte";
   import { params } from "svelte-hash-router";
   import type { PortalService } from "../../../services";
   import type { TableService } from "../../../services/data";
@@ -24,6 +24,24 @@
   };
 
   $: load($params.dtable);
+
+  const execute_widget = (ev) => {
+    console.log("@execute_widget", ev.detail);
+
+    const widget = ev.detail || {};
+
+    app.launcher.instance_by_target({
+      target_id: String(widget.id),
+      invoker_name: "data_table",
+      target_name: widget.name,
+      target_type: widget.target_type,
+      invoker: table_service, // fixme => wrap it
+    });
+
+    tick().then(() => {
+      app.launcher.plane_float();
+    });
+  };
 </script>
 
 {#if loading}
@@ -39,13 +57,15 @@
       }}
       on:on_change_to_card={(ev) =>
         app.nav.data_render_table(source, group, $params.dtable, "/card")}
-      on:on_table_change={(ev) => app.nav.data_render_table(source, group, ev.detail)}
+      on:on_table_change={(ev) =>
+        app.nav.data_render_table(source, group, ev.detail)}
       on:on_change_to_grid={() =>
         app.nav.data_render_table(source, group, $params.dtable)}
       on:admin_data_table={() =>
         app.nav.admin_data_table(source, group, $params.dtable)}
       on:goto_history={() =>
         app.nav.admin_data_activity(source, group, $params.dtable)}
+      on:tb_execute_widget={execute_widget}
     />
   {/key}
 {/if}

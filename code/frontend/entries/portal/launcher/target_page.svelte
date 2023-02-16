@@ -18,8 +18,9 @@
     } else {
       const name = $params._ ? window.atob($params._) : "";
       instance = launcher.instance_by_target({
+        invoker_name: "user_app",
         target_id: target,
-        name,
+        target_name: name,
         target_type: lopts["target_type"] || "",
       });
     }

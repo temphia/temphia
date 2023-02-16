@@ -1,4 +1,4 @@
-import { writable, Writable } from "svelte/store";
+import { get, writable, Writable } from "svelte/store";
 import { generateId } from "../../../../lib/utils";
 
 interface LauncherState {
@@ -17,6 +17,14 @@ export interface Instance {
     handle_message: (id: string, data: any) => void;
   };
   invoker_name: string;
+}
+
+export interface InvokerOptions {
+  invoker_name: string;
+  invoker?: any;
+  target_name?: string;
+  target_type?: string;
+  target_id: string;
 }
 
 export class Launcher {
@@ -63,7 +71,15 @@ export class Launcher {
     this.state.update((old) => ({ ...old, display: "SHOW" }));
   }
 
-  instance_by_target(topts: object): string {
+  instance_by_target(topts: InvokerOptions): string {
+    const instances = get(this.state).instances;
+    const old = instances.filter((v) => v.target_id === topts.target_id);
+
+    if (old.length > 0) {
+      this.instance_change(old[0].id);
+      return;
+    }
+
     const instance_id = generateId();
 
     this.state.update((old) => ({
@@ -73,10 +89,10 @@ export class Launcher {
         ...old.instances,
         {
           id: instance_id,
-          invoker_name: "fixme",
-          name: topts["name"] || "",
-          target_type: topts["target_type"] || "",
-          target_id: topts["target_id"],
+          invoker_name: topts.invoker_name || "",
+          name: topts.target_name || "",
+          target_type: topts.target_type || "",
+          target_id: topts.target_id,
         },
       ],
     }));
