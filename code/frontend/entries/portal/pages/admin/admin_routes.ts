@@ -23,6 +23,7 @@ import AdminPlugStateNew from "./plug/state/state_new.svelte";
 import AdminPlugStateEdit from "./plug/state/state_edit.svelte";
 
 import AdminPlugDevDocs from "./plug/dev/docs/docs.svelte";
+import AdminPlugDevLogs from "./plug/dev/logs/logs.svelte";
 import AdminPlugDevExec from "./plug/dev/execute/execute.svelte";
 import AdminPlugDevShell from "./plug/dev/shell/shell.svelte";
 import AdminPlugDevFlowmap from "./plug/dev/flowmap/flowmap.svelte";
@@ -153,6 +154,7 @@ export default {
       "/execute/:aid": AdminPlugDevExec,
       "/shell/:aid": AdminPlugDevShell,
       "/docs/:aid": AdminPlugDevDocs,
+      "/logs/:aid": AdminPlugDevLogs,
     },
 
     "/new": AdminPlugNew,

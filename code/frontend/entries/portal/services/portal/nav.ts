@@ -254,6 +254,10 @@ export class Navigator {
     this.set(`#/admin/plug/${pid}/dev/docs/${aid}`);
   };
 
+  admin_plug_dev_logs = (pid: string, aid: string) => {
+    this.set(`#/admin/plug/${pid}/dev/logs/${aid}`);
+  };
+
   // repo
 
   admin_repos = () => {
