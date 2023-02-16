@@ -1,6 +1,6 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, tick } from "svelte";
   import SvelteTooltip from "svelte-tooltip";
   import {
     AdminIcon,
@@ -54,6 +54,9 @@
           <SvelteTooltip tip={link[1]} right color="#7c3aed">
             <a
               href={link[2]}
+              on:click={() => {
+                launcher.plane_not_float();
+              }}
               class="h-12 px-4 flex justify-center items-center w-full text-gray-700 focus:text-orange-500"
             >
               <svelte:component this={link[0]} />
@@ -73,7 +76,10 @@
         </div>
 
         <div
-          on:click={() => dispatch("notification_toggle")}
+          on:click={() => {
+            launcher.plane_not_float();
+            dispatch("notification_toggle");
+          }}
           class="h-12 cursor-pointer mx-auto w-full flex justify-center items-center focus:text-orange-500 hover:bg-red-200 focus:outline-none relative"
         >
           {#if pending_notification}
@@ -91,7 +97,10 @@
         </div>
 
         <div
-          on:click={() => dispatch("self_profile")}
+          on:click={() => {
+            launcher.plane_not_float();
+            dispatch("self_profile");
+          }}
           class="h-12 cursor-pointer mx-auto flex justify-center items-center
               w-full focus:text-orange-500 hover:bg-red-200 focus:outline-none"
         >
@@ -99,7 +108,10 @@
         </div>
 
         <button
-          on:click={() => dispatch("logout")}
+          on:click={() => {
+            launcher.plane_not_float();
+            dispatch("logout");
+          }}
           class="h-12 cursor-pointer mx-auto flex justify-center items-center
                         w-full focus:text-orange-500 hover:bg-red-200 focus:outline-none"
         >
@@ -132,6 +144,7 @@
         class="navbar-burger self-center mr-12"
         href="#"
         on:click={() => {
+          launcher.plane_not_float();
           __open_menu = !__open_menu;
         }}
       >
@@ -162,7 +175,10 @@
 
     <div
       class="flex mr-6 items-center cursor-pointer"
-      on:click={() => dispatch("notification_toggle")}
+      on:click={() => {
+        launcher.plane_not_float();
+        dispatch("notification_toggle");
+      }}
     >
       <NotificationIcon />
 
@@ -178,7 +194,10 @@
 
     <div
       class="flex mr-6 items-center cursor-pointer"
-      on:click={() => dispatch("self_profile")}
+      on:click={() => {
+        launcher.plane_not_float();
+        dispatch("self_profile");
+      }}
     >
       <UserIcon />
     </div>

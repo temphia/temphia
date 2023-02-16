@@ -63,6 +63,13 @@ export class Launcher {
     this.state.update((old) => ({ ...old, display: "HIDDEN" }));
   }
 
+  plane_not_float() {
+    if (get(this.state).display === "FLOATING") {
+      this.state.update((old) => ({ ...old, display: "HIDDEN" }));
+    }
+    
+  }
+
   plane_float() {
     this.state.update((old) => ({ ...old, display: "FLOATING" }));
   }
