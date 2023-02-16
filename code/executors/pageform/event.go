@@ -1,11 +1,11 @@
 package pageform
 
-func (pf *Pageform) actionLoad(req LoadRequest) (*LoadResponse, error) {
+func (pf *Pageform) actionLoad(req LoadRequest) (*Response, error) {
 
-	return &LoadResponse{
+	return &Response{
 		Ok:       true,
 		Message:  "",
-		Items:    pf.model.Items,
+		Items:    pf.model.Items["start"],
 		Data:     map[string]any{},
 		OnLoad:   pf.model.ClientOnLoad,
 		OnSubmit: pf.model.ClientOnSubmit,
@@ -13,11 +13,11 @@ func (pf *Pageform) actionLoad(req LoadRequest) (*LoadResponse, error) {
 
 }
 
-func (pf *Pageform) actionSubmit(req SubmitRequest) (*SubmitResponse, error) {
+func (pf *Pageform) actionSubmit(req SubmitRequest) (*Response, error) {
 
-	return &SubmitResponse{
+	return &Response{
 		Ok:      true,
 		Message: "",
-		Items:   []ResultItem{},
+		Items:   pf.model.Items["aa"],
 	}, nil
 }

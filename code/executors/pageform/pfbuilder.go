@@ -34,22 +34,24 @@ func (pf *PfBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 		builder: pf,
 		model: &FormModel{
 			Name: "Test 1",
-			Items: []FormItem{
-				{
-					Name: "name",
-					Info: "Name of product",
-					Type: "shorttext",
-				},
-				{
-					Name: "Info",
-					Info: "Product information",
-					Type: "longtext",
-				},
+			Items: map[string][]FormItem{
+				"start": {
+					{
+						Name: "name",
+						Info: "Name of product",
+						Type: "shorttext",
+					},
+					{
+						Name: "Info",
+						Info: "Product information",
+						Type: "longtext",
+					},
 
-				{
-					Name: "MetaMeta",
-					Type: "info",
-					Info: "this could include some meta info",
+					{
+						Name: "MetaMeta",
+						Type: "info",
+						Info: "this could include some meta info",
+					},
 				},
 			},
 			Data: make(map[string]any),

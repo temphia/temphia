@@ -1,15 +1,15 @@
 package pageform
 
 type FormModel struct {
-	Name           string         `json:"name,omitempty"`
-	Items          []FormItem     `json:"items,omitempty"`
-	Data           map[string]any `json:"data,omitempty"`
-	Message        string         `json:"message,omitempty"`
-	ServerOnLoad   string         `json:"server_onload,omitempty"`
-	ServerOnSubmit string         `json:"server_onsubmit,omitempty"`
-	ClientOnLoad   string         `json:"client_onload,omitempty"`
-	ClientOnSubmit string         `json:"client_onsubmit,omitempty"`
-	Disabled       bool           `json:"disabled,omitempty"`
+	Name           string                `json:"name,omitempty"`
+	Items          map[string][]FormItem `json:"items,omitempty"`
+	Data           map[string]any        `json:"data,omitempty"`
+	Message        string                `json:"message,omitempty"`
+	ServerOnLoad   string                `json:"server_onload,omitempty"`   // load_fileds -> set_data
+	ServerOnSubmit string                `json:"server_onsubmit,omitempty"` // validate data -> side_effect -> maybe_modify_data -> set_next_stage
+	ClientOnLoad   string                `json:"client_onload,omitempty"`
+	ClientOnSubmit string                `json:"client_onsubmit,omitempty"`
+	Disabled       bool                  `json:"disabled,omitempty"`
 }
 
 type FormItem struct {
@@ -27,27 +27,17 @@ type LoadRequest struct {
 	Options         map[string]any `json:"options,omitempty"`
 }
 
-type LoadResponse struct {
+type SubmitRequest struct {
+	Data  map[string]any `json:"data,omitempty"`
+	Stage string         `json:"stage,omitempty"`
+}
+
+type Response struct {
 	Ok       bool           `json:"ok,omitempty"`
 	Message  string         `json:"message,omitempty"`
 	Items    []FormItem     `json:"items,omitempty"`
 	Data     map[string]any `json:"data,omitempty"`
 	OnLoad   string         `json:"onload,omitempty"`
 	OnSubmit string         `json:"onsubmit,omitempty"`
-}
-
-type SubmitRequest struct {
-	Data map[string]any `json:"data,omitempty"`
-}
-
-type SubmitResponse struct {
-	Ok      bool         `json:"ok,omitempty"`
-	Message string       `json:"message,omitempty"`
-	Items   []ResultItem `json:"items,omitempty"`
-}
-
-type ResultItem struct {
-	Type     string            `json:"type,omitempty"`
-	Data     any               `json:"data,omitempty"`
-	HtmlAttr map[string]string `json:"html_attr,omitempty"`
+	Stage    string         `json:"stage,omitempty"`
 }

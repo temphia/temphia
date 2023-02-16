@@ -25,6 +25,7 @@ func (pf *Pageform) Process(ev *event.Request) (*event.Response, error) {
 			return nil, err
 		}
 		resp, err = pf.actionLoad(req)
+
 	case "submit":
 		req := SubmitRequest{}
 		err = json.Unmarshal(ev.Data, &req)
