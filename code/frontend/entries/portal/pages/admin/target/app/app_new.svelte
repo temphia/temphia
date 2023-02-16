@@ -2,6 +2,12 @@
   import { getContext } from "svelte";
   import { AutoForm, PortalService } from "../../core";
   import { params } from "svelte-hash-router";
+  import {
+    TargetAppTypeDataSheetWidget,
+    TargetAppTypeDataTableWidget,
+    TargetAppTypeDomainWidget,
+    TargetAppTypeUserGroupAuth,
+  } from "../target";
   export let ttype = $params.ttype;
   export let target = undefined;
 
@@ -52,10 +58,10 @@
         key_name: "target_type",
         disabled: !!ttype,
         options: [
-          "user_app",
-          "auth_app",
-          "domain_widget_app",
-          "domain_editor_app",
+          TargetAppTypeUserGroupAuth,
+          TargetAppTypeDataSheetWidget,
+          TargetAppTypeDataTableWidget,
+          TargetAppTypeDomainWidget,
         ],
       },
       {

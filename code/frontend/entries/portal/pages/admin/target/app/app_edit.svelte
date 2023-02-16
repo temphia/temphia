@@ -2,6 +2,12 @@
   import { getContext } from "svelte";
   import { AutoForm, LoadingSpinner, PortalService } from "../../core";
   import { params } from "svelte-hash-router";
+  import {
+    TargetAppTypeDataSheetWidget,
+    TargetAppTypeDataTableWidget,
+    TargetAppTypeDomainWidget,
+    TargetAppTypeUserGroupAuth,
+  } from "../target";
 
   export let ttype = $params.ttype;
   export let id = $params.id;
@@ -52,6 +58,12 @@
           ftype: "TEXT",
           key_name: "target_type",
           disabled: true,
+          options: [
+            TargetAppTypeUserGroupAuth,
+            TargetAppTypeDataSheetWidget,
+            TargetAppTypeDataTableWidget,
+            TargetAppTypeDomainWidget,
+          ],
         },
         {
           name: "Icon",
@@ -107,7 +119,7 @@
           key_name: "extra_meta",
         },
       ],
-      name: "New Target App",
+      name: "Edit Target App",
       required_fields: [],
     }}
     onSave={save}

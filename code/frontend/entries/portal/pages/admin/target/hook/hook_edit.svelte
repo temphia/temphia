@@ -95,7 +95,7 @@
           key_name: "extra_meta",
         },
       ],
-      name: "New Target Hook",
+      name: "Edit Target Hook",
       required_fields: [],
     }}
     onSave={save}

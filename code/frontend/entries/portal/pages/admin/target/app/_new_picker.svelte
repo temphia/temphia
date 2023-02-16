@@ -7,6 +7,7 @@
     TargetAppTypeDomainWidget,
     TargetAppTypeUserGroupApp,
   } from "../target";
+  import NewDataTableWidget from "./_new_data_table_widget.svelte";
   import NewUserGroupApp from "./_new_user_group_app.svelte";
 
   export let service: PortalService;
@@ -16,30 +17,46 @@
       name: TargetAppTypeUserGroupApp,
       icon: "user-group",
       info: "App for group of people",
-      action: () => {
-        service.utils.small_modal_open(NewUserGroupApp, { service});
-      },
+      action: () =>
+        service.utils.small_modal_open(NewUserGroupApp, { service }),
     },
 
     {
       name: TargetAppTypeDataTableWidget,
       icon: "table",
       info: "Datatable widget",
-      action: () => {},
+      action: () =>
+        service.utils.small_modal_open(NewDataTableWidget, { service }),
     },
 
     {
       name: TargetAppTypeDataSheetWidget,
       icon: "table",
       info: "DataSheet widget",
-      action: () => {},
+      action: () => {
+        service.nav.admin_target_app_new({
+          target_type: TargetAppTypeDataSheetWidget,
+          context_type: "widget.1",
+        });
+
+        service.utils.small_modal_close()
+
+      },
     },
 
     {
       name: TargetAppTypeDomainWidget,
       icon: "globe-alt",
       info: "Domain widget",
-      action: () => {},
+      action: () => {
+        service.nav.admin_target_app_new({
+          target_type: TargetAppTypeDomainWidget,
+          context_type: "widget.1",
+        });
+
+        service.utils.small_modal_close()
+
+      },
     },
   ];
 </script>

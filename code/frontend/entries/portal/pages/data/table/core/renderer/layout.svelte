@@ -119,7 +119,7 @@
                 name={widget["name"] || "#hook"}
                 onClick={() => dispatch("tb_execute_widget", widget)}
               />
-            {:else if (widget["context_type"] || "").startsWith("global") && selected_rows.length > 0}
+            {:else if (widget["context_type"] || "").startsWith("row") && selected_rows.length > 0}
               <ToolbarAction
                 icon="lightning-bolt"
                 name={widget["name"] || "#hook"}
