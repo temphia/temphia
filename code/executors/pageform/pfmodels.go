@@ -9,6 +9,7 @@ type FormModel struct {
 	ServerOnSubmit string         `json:"server_onsubmit,omitempty"`
 	ClientOnLoad   string         `json:"client_onload,omitempty"`
 	ClientOnSubmit string         `json:"client_onsubmit,omitempty"`
+	Disabled       bool           `json:"disabled,omitempty"`
 }
 
 type FormItem struct {

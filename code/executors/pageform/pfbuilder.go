@@ -45,6 +45,12 @@ func (pf *PfBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 					Info: "Product information",
 					Type: "longtext",
 				},
+
+				{
+					Name: "MetaMeta",
+					Type: "info",
+					Info: "this could include some meta info",
+				},
 			},
 			Data: make(map[string]any),
 		},

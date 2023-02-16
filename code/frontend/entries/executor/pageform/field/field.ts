@@ -7,6 +7,7 @@ export const FieldSelect = "select";
 export const FieldNumber = "number";
 export const FieldRange = "range";
 export const FieldColor = "color";
+export const FieldInfo = "info";
 
 /*
 
