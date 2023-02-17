@@ -1,5 +1,5 @@
 <script lang="ts">
-  import WithScript from "../../../portal/pages/admin/plug/dev/flowmap/_with_script.svelte";
+  import WithScript from "../../../../portal/pages/admin/plug/dev/flowmap/_with_script.svelte";
   import PreviewRender from "./_preview_render.svelte";
 
   export let code = "";

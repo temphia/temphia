@@ -12,7 +12,7 @@
   import toolTipPlugin from "grapesjs-tooltip";
   import twPlugin from "grapesjs-tailwind";
 
-  import { onMount } from "svelte";
+  import { onMount, tick } from "svelte";
   import { easyPageStore } from "./grape_ext";
   import type { EasypageService } from "../../service/easypage";
 
@@ -22,7 +22,11 @@
   let rootElem;
   let editor: grapejs.Editor;
 
-  onMount(() => {
+  onMount(async () => {
+    if (!rootElem) {
+      await tick();
+    }
+
     editor = grapejs.init({
       container: rootElem,
       plugins: [

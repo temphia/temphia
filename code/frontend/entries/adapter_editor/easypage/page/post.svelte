@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import Ceditor from "../../xcompo/ceditor/ceditor.svelte";
+  import Ceditor from "../../../xcompo/ceditor/ceditor.svelte";
   import { LoadingSpinner } from "../core";
   import type { EasypageService } from "../service/easypage";
   import Preview from "./_editor/preview.svelte";
