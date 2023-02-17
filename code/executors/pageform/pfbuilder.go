@@ -1,6 +1,7 @@
 package pageform
 
 import (
+	"github.com/dop251/goja"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/executors/helper"
@@ -38,6 +39,7 @@ func (pf *PfBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 	return &Pageform{
 		builder: pf,
 		model:   form,
+		runtime: goja.New(),
 	}, nil
 }
 
