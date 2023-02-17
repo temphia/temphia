@@ -3,20 +3,25 @@ package easypage
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 )
 
 func (e *EasyPage) serveEditorFile(file string) ([]byte, error) {
+
+	pp.Println("@server_easypage", file)
 
 	switch file {
 	case "main.js":
 		return e.dataBox.GetAsset("build", "adapter_editor_easypage.js")
 	case "main.css":
 		return e.dataBox.GetAsset("build", "adapter_editor_easypage.css")
+	default:
+		return os.ReadFile(fmt.Sprintf("code/frontend/public/build/%s", file))
 	}
 
-	return []byte(``), nil
 }
 
 func (e *EasyPage) preformEditorAction(name string, data []byte) (any, error) {
