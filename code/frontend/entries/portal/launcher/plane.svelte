@@ -4,7 +4,6 @@
   import type { PortalService } from "../services";
 
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import LauncherOptions from "./options/options.svelte";
   import Instance from "./hostproxy/instance.svelte";
 
   const app = getContext("__app__") as PortalService;
