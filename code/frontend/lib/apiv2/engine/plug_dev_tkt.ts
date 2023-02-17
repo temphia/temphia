@@ -25,15 +25,15 @@ export class PlugDevTktAPI {
   }
 
   bprint_del_file(file: string) {
-    return this.http.delete(`/dev/bprint/file`, { files: [file] });
+    return this.http.delete(`/dev/bprint/file/${file}`);
   }
 
-  exec_watch_agents_url(pid: string, agent: string) {
-    return `${this.base_url}/dev/exec/watch/plug/${pid}?agents=${agent}`;
+  exec_watch_agents_url(pid: string, aid: string) {
+    return `${this.base_url}/dev/exec/watch/plug/${pid}/agent/${aid}`;
   }
 
-  exec_reset_plug(pid: string, data: any) {
-    return this.http.post(`/dev/exec/reset/plug/${pid}`, data);
+  exec_reset_plug(pid: string, aid: string, data: any) {
+    return this.http.post(`/dev/exec/reset/plug/${pid}/agent/${aid}`, data);
   }
 
   exec_run_agent_action(pid: string, aid: string, action: string, data: any) {
@@ -41,13 +41,5 @@ export class PlugDevTktAPI {
       `/dev/exec/run/plug/${pid}/agent/${aid}/${action}`,
       data
     );
-  }
-
-  exec_modify(data: any) {
-    return this.http.post(`/dev/exec/modify`, data);
-  }
-
-  exec_modify_agent(aid: string, data: any) {
-    return this.http.post(`/dev/exec/modify/agent/${aid}`, data);
   }
 }

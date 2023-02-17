@@ -4,6 +4,7 @@ import (
 	"io"
 
 	"github.com/gin-gonic/gin"
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/controllers/sockd"
 	"github.com/temphia/temphia/code/backend/services/sockdhub/transports"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
@@ -21,7 +22,7 @@ func (s *Server) devAPI(rg *gin.RouterGroup) {
 	rg.GET("/bprint/file/:file", s.devX(s.DevBprintFileGet))
 	rg.DELETE("/bprint/file/:file", s.devX(s.DevBprintFileDel))
 
-	rg.GET("/exec/watch/plug/:pid", s.devX(s.DevExecWatch))
+	rg.GET("/exec/watch/plug/:pid/agent/:aid", s.devX(s.DevExecWatch))
 	rg.POST("/exec/reset/plug/:pid/agent/:aid", s.devX(s.DevExecReset))
 	rg.POST("/exec/run/plug/:pid/agent/:aid/:action", s.devX(s.DevExecRun))
 
@@ -51,28 +52,40 @@ func (s *Server) DevBprintFileGet(dclaim *claim.PlugDevTkt, ctx *gin.Context) {
 }
 
 func (s *Server) DevBprintFilePush(dclaim *claim.PlugDevTkt, ctx *gin.Context) {
+	pp.Println("@1")
 
 	mreader, err := ctx.Request.MultipartReader()
 	if err != nil {
+		pp.Println(err)
 		httpx.WriteErr(ctx, err)
 		return
 	}
 
+	pp.Println("@2")
+
 	form, err := mreader.ReadForm(DevPushMaxSize)
 	if err != nil {
+		pp.Println("@2", err)
+		httpx.WriteErr(ctx, err)
 		return
 	}
 
 	files := make(map[string]io.Reader, len(form.File))
 
+	pp.Println(form.File)
+
 	for _, fv := range form.File["files"] {
 		file, err := fv.Open()
 		if err != nil {
+			pp.Println(err)
+			httpx.WriteErr(ctx, err)
 			return
 		}
 
 		files[fv.Filename] = file
 	}
+
+	pp.Println(files)
 
 	err = s.cDev.DevPushFiles(dclaim, files)
 	httpx.WriteFinal(ctx, err)
@@ -86,14 +99,11 @@ func (s *Server) DevExecWatch(dclaim *claim.PlugDevTkt, ctx *gin.Context) {
 		return
 	}
 
-	agents := ctx.QueryArray("aid")
-	plugId := ctx.Param("pid")
-
 	err = s.cSockd.AddDevConn(sockd.DevConnOptions{
 		TenantId: dclaim.TenantId,
 		UserId:   dclaim.UserId,
-		PlugId:   plugId,
-		AgentId:  agents[0],
+		PlugId:   ctx.Param("pid"),
+		AgentId:  ctx.Param("aid"),
 		Conn:     conn,
 	})
 
@@ -169,6 +179,7 @@ func (s *Server) devX(fn func(dclaim *claim.PlugDevTkt, ctx *gin.Context)) func(
 		dc, err := s.parseDevTkt(ctx)
 		if err != nil {
 			httpx.UnAuthorized(ctx)
+			pp.Println(err)
 			return
 		}
 

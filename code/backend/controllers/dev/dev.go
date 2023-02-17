@@ -72,7 +72,7 @@ func (c *Controller) DevPushFiles(tkt *claim.PlugDevTkt, files map[string]io.Rea
 	}
 
 	return c.corehub.BprintUpdate(tkt.TenantId, tkt.BprintId, map[string]any{
-		"files": bprint.Files,
+		"files": []string(bprint.Files),
 	})
 }
 
