@@ -4,12 +4,17 @@
   import { params } from "svelte-hash-router";
 
   export let pid = $params.pid;
-  export let aid = $params.pid;
+  export let aid = $params.aid;
 
   const app = getContext("__app__") as PortalService;
   const api = app.api_manager.get_admin_plug_api();
 
   let message = "";
+  let data = { from_agent_id: aid, from_plug_id: pid };
+
+  if (app.nav.options) {
+    data = { ...data, ...app.nav.options };
+  }
 
   const save = async (_data) => {
     const resp = await api.new_agent_link(pid, aid, _data);
@@ -69,5 +74,5 @@
     required_fields: [],
   }}
   onSave={save}
-  data={{ from_agent_id: aid, from_plug_id: pid }}
+  {data}
 />

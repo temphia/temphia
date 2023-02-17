@@ -201,8 +201,8 @@ export class Navigator {
     this.set(`#/admin/plug/${pid}/agent/${aid}/link/`);
   };
 
-  admin_agent_link_new = (pid: string, aid: string) => {
-    this.set(`#/admin/plug/${pid}/agent/${aid}/link/new`);
+  admin_agent_link_new = (pid: string, aid: string,opts?: any) => {
+    this.set(`#/admin/plug/${pid}/agent/${aid}/link/new`, opts);
   };
 
   admin_agent_link_edit = (pid: string, aid: string, lid: string) => {

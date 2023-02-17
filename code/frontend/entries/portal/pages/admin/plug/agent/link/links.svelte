@@ -7,6 +7,7 @@
     PortalService,
   } from "../../../core";
   import { params } from "svelte-hash-router";
+  import NewPicker from "./_new_picker.svelte";
 
   export let pid = $params.pid;
   export let aid = $params.pid;
@@ -37,7 +38,9 @@
     load();
   };
 
-  const action_new = () => app.nav.admin_agent_link_new(pid, aid);
+  const action_new = () => {
+    app.utils.small_modal_open(NewPicker, { service: app, pid, aid });
+  };
 </script>
 
 {#if loading}
