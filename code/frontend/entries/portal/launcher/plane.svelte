@@ -117,9 +117,16 @@
   .floating {
     display: block;
     position: fixed;
-    width:calc(100vw - 3em);
+    width: calc(100vw - 3em);
     height: 100%;
     z-index: 1000;
+  }
+
+  @media screen and (max-width: 768px) {
+    .floating {
+      width: 100vw;
+      /* height: calc(100vh - 3em); */
+    }
   }
 
   .not-floating {
