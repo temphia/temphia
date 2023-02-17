@@ -12,10 +12,8 @@
     SheetColTypeMultiSelect,
     SheetColTypeNumber,
     SheetColTypeRatings,
-    SheetColTypeReferenceNum,
-    SheetColTypeReferenceText,
-    SheetColTypeRemoteNum,
-    SheetColTypeRemoteText,
+    SheetColTypeReference,
+    SheetColTypeRemote,
     SheetColTypeSelect,
     SheetColumn,
     SheetCtypeIcons,
@@ -61,10 +59,8 @@
   const picker_icons = {
     [SheetColTypeLocation]: "location-marker",
     [SheetColTypeFile]: "photograph",
-    [SheetColTypeReferenceNum]: "paper-clip",
-    [SheetColTypeReferenceText]: "paper-clip",
-    [SheetColTypeRemoteNum]: "external-link",
-    [SheetColTypeRemoteText]: "external-link",
+    [SheetColTypeReference]: "paper-clip",
+    [SheetColTypeRemote]: "external-link",
   };
 
   const onColorChange = (ev) => {
@@ -196,28 +192,17 @@
         </button>
       {/each}
     </div>
-  {:else if column.ctype === SheetColTypeReferenceNum}
+  {:else if column.ctype === SheetColTypeReference}
     <div class="flex gap-1">
-      <span class="bg-blue-100 rounded p-0.5 text-gray-600">
-        Ref:
-        <strong class="font-semibold text-gray-700">{value_num}</strong>
-      </span>
+      {#if value_num}
+        <span class="bg-blue-100 rounded p-0.5 text-gray-600">
+          Ref:
+          {value_num}
+          <strong class="font-semibold text-gray-700">{value}</strong>
+        </span>
+      {/if}
     </div>
-  {:else if column.ctype === SheetColTypeReferenceText}
-    <div class="flex gap-1">
-      <span class="bg-blue-100 rounded p-0.5 text-gray-600">
-        Ref:
-        <strong class="font-semibold text-gray-700">{value}</strong>
-      </span>
-    </div>
-  {:else if column.ctype === SheetColTypeRemoteNum}
-    <div class="flex gap-1">
-      <span class="bg-green-100 rounded p-0.5 text-gray-600">
-        Remote:
-        <strong class="font-semibold text-gray-700">{value_num}</strong>
-      </span>
-    </div>
-  {:else if column.ctype === SheetColTypeRemoteText}
+  {:else if column.ctype === SheetColTypeRemote}
     <div class="flex gap-1">
       <span class="bg-green-100 rounded p-0.5 text-gray-600">
         Remote:
@@ -278,17 +263,15 @@
           }}
           {value}
         />
-      {:else if column.ctype === SheetColTypeRemoteNum}
+      {:else if column.ctype === SheetColTypeRemote}
         <Remote />
-      {:else if column.ctype === SheetColTypeReferenceNum}
+      {:else if column.ctype === SheetColTypeReference}
         <Reference
           {service}
           {column}
           current={value_num}
           onSelect={(val) => {}}
         />
-      {:else if column.ctype === SheetColTypeReferenceText}
-        <Reference {service} {column} current={value} onSelect={(val) => {}} />
       {:else if column.ctype === SheetColTypeFile}
         <FilePanel
           {folder_api}

@@ -7,8 +7,7 @@
   import {
     Sheet,
     SheetColTypeMultiSelect,
-    SheetColTypeReferenceNum,
-    SheetColTypeReferenceText,
+    SheetColTypeReference,
     SheetColTypes,
     SheetColTypeSelect,
     SheetColTypeText,
@@ -53,10 +52,7 @@
 
   const doOnAdd = async () => {
     const data = { name, ctype, extraopts };
-    if (
-      ctype === SheetColTypeReferenceNum ||
-      ctype === SheetColTypeReferenceText
-    ) {
+    if (ctype === SheetColTypeReference) {
       data["refsheet"] = Number(refsheet);
       data["refcolumn"] = Number(refcolumn);
     }
@@ -99,7 +95,7 @@
     </select>
   </div>
 
-  {#if ctype === SheetColTypeReferenceNum || ctype === SheetColTypeReferenceText}
+  {#if ctype === SheetColTypeReference}
     <div class="mb-4">
       <label class="block mb-2 text-sm font-bold text-gray-700" for="refsheet"
         >Ref Sheet</label
@@ -137,16 +133,9 @@
           bind:value={refcolumn}
           class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
         >
-          {#if ctype === SheetColTypeReferenceNum}
-            <option value="0">__id</option>
+          {#if ctype === SheetColTypeReference}
             {#each refcols as rf}
               {#if SheetCtypeShapes["number"].includes(ctype)}
-                <option value={rf.__id}>{rf.name}</option>
-              {/if}
-            {/each}
-          {:else if ctype === SheetColTypeReferenceText}
-            {#each refcols as rf}
-              {#if SheetCtypeShapes["text"].includes(ctype)}
                 <option value={rf.__id}>{rf.name}</option>
               {/if}
             {/each}
