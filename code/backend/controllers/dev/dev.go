@@ -23,6 +23,18 @@ func New(pacman repox.Hub, corehub store.CoreHub) *Controller {
 	}
 }
 
+func (c *Controller) DevBprintFileList(tkt *claim.PlugDevTkt) (map[string]string, error) {
+	return c.pacman.BprintListBlobs(tkt.TenantId, tkt.BprintId)
+}
+
+func (c *Controller) DevBprintFileDel(tkt *claim.PlugDevTkt, file string) error {
+	return c.pacman.BprintDeleteBlob(tkt.TenantId, tkt.BprintId, file)
+}
+
+func (c *Controller) DevBprintFileGet(tkt *claim.PlugDevTkt, file string) ([]byte, error) {
+	return c.pacman.BprintGetBlob(tkt.TenantId, tkt.BprintId, file)
+}
+
 func (c *Controller) DevPushFiles(tkt *claim.PlugDevTkt, files map[string]io.Reader) error {
 
 	bprint, err := c.pacman.BprintGet(tkt.TenantId, tkt.BprintId)

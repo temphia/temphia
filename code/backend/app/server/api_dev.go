@@ -4,6 +4,8 @@ import (
 	"io"
 
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/backend/controllers/sockd"
+	"github.com/temphia/temphia/code/backend/services/sockdhub/transports"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
@@ -12,33 +14,43 @@ var (
 	DevPushMaxSize int64 = 100 << 20 // ~ 100 mb
 )
 
-// fixme => parse err should be 401
-
 func (s *Server) devAPI(rg *gin.RouterGroup) {
 
-	rg.GET("/bprint/file", s.DevBprintFileList)
-	rg.POST("/bprint/file", s.DevBprintFilePush)
-	rg.GET("/bprint/file/:file", s.DevBprintFileGet)
-	rg.DELETE("/bprint/file", s.DevBprintFileDel)
+	rg.GET("/bprint/file", s.devX(s.DevBprintFileList))
+	rg.POST("/bprint/file", s.devX(s.DevBprintFilePush))
+	rg.GET("/bprint/file/:file", s.devX(s.DevBprintFileGet))
+	rg.DELETE("/bprint/file/:file", s.devX(s.DevBprintFileDel))
 
-	rg.GET("/exec/watch/plug/:pid", s.DevExecWatch)
-	rg.POST("/exec/reset/plug/:pid", s.DevExecReset)
-	rg.POST("/exec/run/plug/:pid/agent/:aid/:action", s.DevExecRun)
+	rg.GET("/exec/watch/plug/:pid", s.devX(s.DevExecWatch))
+	rg.POST("/exec/reset/plug/:pid/agent/:aid", s.devX(s.DevExecReset))
+	rg.POST("/exec/run/plug/:pid/agent/:aid/:action", s.devX(s.DevExecRun))
 
-	rg.POST("/modify", s.DevModifyPlug)
-	rg.POST("/modify/agent/:aid", s.DevModifyAgent)
+	rg.POST("/plug/:pid", s.devX(s.DevModifyPlug))
+	rg.POST("/plug/:pid/agent/:aid", s.devX(s.DevModifyAgent))
 
 }
 
-func (s *Server) DevBprintFileList(ctx *gin.Context) {}
-func (s *Server) DevBprintFileDel(ctx *gin.Context)  {}
-func (s *Server) DevBprintFileGet(ctx *gin.Context)  {}
-func (s *Server) DevBprintFilePush(ctx *gin.Context) {
-	dclaim, err := s.parseDevTkt(ctx)
+func (s *Server) DevBprintFileList(dclaim *claim.PlugDevTkt, ctx *gin.Context) {
+	resp, err := s.cDev.DevBprintFileList(dclaim)
+	httpx.WriteJSON(ctx, resp, err)
+}
+
+func (s *Server) DevBprintFileDel(dclaim *claim.PlugDevTkt, ctx *gin.Context) {
+	err := s.cDev.DevBprintFileDel(dclaim, ctx.Param("file"))
+	httpx.WriteJSON(ctx, nil, err)
+}
+
+func (s *Server) DevBprintFileGet(dclaim *claim.PlugDevTkt, ctx *gin.Context) {
+	out, err := s.cDev.DevBprintFileGet(dclaim, ctx.Param("file"))
 	if err != nil {
 		httpx.WriteErr(ctx, err)
 		return
 	}
+
+	httpx.WriteBinary(ctx, out)
+}
+
+func (s *Server) DevBprintFilePush(dclaim *claim.PlugDevTkt, ctx *gin.Context) {
 
 	mreader, err := ctx.Request.MultipartReader()
 	if err != nil {
@@ -66,50 +78,39 @@ func (s *Server) DevBprintFilePush(ctx *gin.Context) {
 	httpx.WriteFinal(ctx, err)
 }
 
-func (s *Server) DevExecWatch(ctx *gin.Context) {
+func (s *Server) DevExecWatch(dclaim *claim.PlugDevTkt, ctx *gin.Context) {
 
-	/*
-
-		conn, err := transports.NewConnWS(ctx, r.sessman.SessionId())
-		if err != nil {
-			httpx.WriteErr(ctx.Http, err)
-			return
-		}
-
-		tkt, err := r.parseDevTkt(ctx)
-		if err != nil {
-			httpx.WriteErr(ctx.Http, err)
-			return
-		}
-
-		agents := ctx.QueryArray("agents")
-		plugId := ctx.Param("pid")
-
-		err = r.sockdhub.AddDevConn(sockdhub.DevConnOptions{
-			TenantId: tkt.TenantId,
-			UserId:   tkt.UserId,
-			PlugId:   plugId,
-			AgentId:  agents[0],
-			Conn:     conn,
-		})
-		if err != nil {
-			httpx.WriteErr(ctx.Http, err)
-			return
-		}
-	*/
-
-}
-
-func (s *Server) DevExecReset(ctx *gin.Context) {
-
-}
-
-func (s *Server) DevExecRun(ctx *gin.Context) {
-	tkt, err := s.parseDevTkt(ctx)
+	conn, err := transports.NewConnWS(ctx, s.sockdConnIdGenerator.Generate().Int64())
 	if err != nil {
 		httpx.WriteErr(ctx, err)
 		return
 	}
+
+	agents := ctx.QueryArray("aid")
+	plugId := ctx.Param("pid")
+
+	err = s.cSockd.AddDevConn(sockd.DevConnOptions{
+		TenantId: dclaim.TenantId,
+		UserId:   dclaim.UserId,
+		PlugId:   plugId,
+		AgentId:  agents[0],
+		Conn:     conn,
+	})
+
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+}
+
+func (s *Server) DevExecReset(dclaim *claim.PlugDevTkt, ctx *gin.Context) {
+	//err := s.cDev.DevExecReset(dclaim, ctx.Param("pid"), ctx.Param("aid"))
+	// httpx.WriteJSON(ctx, nil, err)
+
+}
+
+func (s *Server) DevExecRun(dclaim *claim.PlugDevTkt, ctx *gin.Context) {
 
 	plugId := ctx.Param("pid")
 	agentId := ctx.Param("aid")
@@ -121,12 +122,7 @@ func (s *Server) DevExecRun(ctx *gin.Context) {
 		return
 	}
 
-	out, err := s.cEngine.ExecuteDev(tkt, plugId, agentId, action, data)
-	if err != nil {
-		httpx.WriteErr(ctx, err)
-		return
-	}
-
+	out, err := s.cEngine.ExecuteDev(dclaim, plugId, agentId, action, data)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
 		return
@@ -135,15 +131,51 @@ func (s *Server) DevExecRun(ctx *gin.Context) {
 	ctx.Writer.Write(out)
 }
 
-func (s *Server) DevModifyPlug(ctx *gin.Context) {
+func (s *Server) DevModifyPlug(dclaim *claim.PlugDevTkt, ctx *gin.Context) {
+
+	data := make(map[string]any)
+
+	err := ctx.BindJSON(&data)
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	err = s.cDev.DevModifyPlug(dclaim, ctx.Param("pid"), data)
+	httpx.WriteJSON(ctx, nil, err)
 
 }
 
-func (s *Server) DevModifyAgent(ctx *gin.Context) {
+func (s *Server) DevModifyAgent(dclaim *claim.PlugDevTkt, ctx *gin.Context) {
+	data := make(map[string]any)
+
+	err := ctx.BindJSON(&data)
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	err = s.cDev.DevModifyAgent(dclaim, ctx.Param("pid"), ctx.Param("aid"), data)
+	httpx.WriteJSON(ctx, nil, err)
 
 }
 
 // private
+
+func (s *Server) devX(fn func(dclaim *claim.PlugDevTkt, ctx *gin.Context)) func(ctx *gin.Context) {
+
+	return func(ctx *gin.Context) {
+
+		dc, err := s.parseDevTkt(ctx)
+		if err != nil {
+			httpx.UnAuthorized(ctx)
+			return
+		}
+
+		fn(dc, ctx)
+	}
+
+}
 
 func (s *Server) parseDevTkt(ctx *gin.Context) (*claim.PlugDevTkt, error) {
 
