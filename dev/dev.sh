@@ -8,6 +8,6 @@ fi
 
 tmux new "echo database; make docker_run" ';'  \
     split -h "echo server_backend; make server_run" ';'  \
-    split "cd ../code/frontend && bash" ';' \
+    split "cd ../code/frontend && nvm use 18 && bash" ';' \
     select-pane -L ';'  \
     split "bash" ';' \
