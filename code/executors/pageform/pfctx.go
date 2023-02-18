@@ -3,6 +3,7 @@ package pageform
 import (
 	"github.com/dop251/goja"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/thoas/go-funk"
 )
 
 type PfCtx struct {
@@ -15,10 +16,10 @@ type PfCtx struct {
 }
 
 func (pc *PfCtx) bind() {
-	pc.rt.Set("GetDataValue", pc.GetDataValue)
-	pc.rt.Set("GetData", pc.GetData)
-	pc.rt.Set("GetStageItem", pc.GetStageItem)
-	pc.rt.Set("GetStage", pc.GetStage)
+	pc.rt.Set("get_data_value", pc.GetDataValue)
+	pc.rt.Set("get_data", pc.GetData)
+	pc.rt.Set("get_stage_item", pc.GetStageItem)
+	pc.rt.Set("get_stage", pc.GetStage)
 }
 
 func (pc *PfCtx) execute(name, mode, stage string) error {
@@ -53,13 +54,49 @@ func (pc *PfCtx) GetData() any {
 	return pc.data
 }
 
-func (pc *PfCtx) GetStageItem() {
+func (pc *PfCtx) GetStageItem(stage, item string) any {
+
+	stg, ok := pc.model.Stages[stage]
+	if !ok {
+		return nil
+	}
+
+	for _, fi := range stg.Items {
+		return fi
+	}
+	return nil
+}
+
+func (pc *PfCtx) GetStage(stage string) any {
+	stg, ok := pc.model.Stages[stage]
+	if !ok {
+		return nil
+	}
+	return &stg
+}
+
+func (pc *PfCtx) SetError(msg string) {
+	pc.message = msg
+}
+
+func (pc *PfCtx) ClearData(except []string) {
+	if (except) == nil {
+		pc.data = map[string]any{}
+		return
+	}
+
+	for k := range pc.data {
+		if funk.ContainsString(except, k) {
+			continue
+		}
+		delete(pc.data, k)
+	}
 
 }
-func (pc *PfCtx) GetStage()                 {}
-func (pc *PfCtx) SetError(msg string)       {}
-func (pc *PfCtx) ClearData(except []string) {}
-func (pc *PfCtx) DeleteDataField(string)    {}
+
+func (pc *PfCtx) DeleteDataField(field string) {
+	delete(pc.data, field)
+}
 
 // helper
 
