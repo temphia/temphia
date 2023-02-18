@@ -14,18 +14,19 @@
 
   let message = "";
   let loading = true;
-  let interface_loaded = false;
-  let iface_data = {};
 
   let dev_shell_service = new DevShellService(app.api_manager, pid, aid);
 
-  dev_shell_service.init().then((val) => {
+  const load = async () => {
+    const val = dev_shell_service.init();
     if (typeof val === "string") {
       message = val;
     } else {
       loading = false;
     }
-  });
+  };
+
+  load();
 </script>
 
 {#if loading}
