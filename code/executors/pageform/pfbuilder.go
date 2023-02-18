@@ -2,6 +2,7 @@ package pageform
 
 import (
 	"github.com/dop251/goja"
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/executors/helper"
@@ -34,6 +35,8 @@ func (pf *PfBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 	if err != nil {
 		return nil, err
 	}
+
+	pp.Println("@form1", string(out))
 
 	form := &FormModel{}
 	err = yaml.Unmarshal(out, form)

@@ -1,16 +1,20 @@
 package pageform
 
 import (
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 )
 
 func (pf *Pageform) actionLoad(req LoadRequest) (*Response, error) {
 
+	pp.Println("@model", pf.model)
+
 	ctx := pf.pfCtx(map[string]any{
 		"__pf_exec_data__": req,
 	})
-
-	ctx.nextStage = pf.model.ExecHint[0]
+	if len(pf.model.ExecHint) != 0 {
+		ctx.nextStage = pf.model.ExecHint[0]
+	}
 
 	ctx.bind()
 	if pf.model.OnLoad != "" {
@@ -21,6 +25,7 @@ func (pf *Pageform) actionLoad(req LoadRequest) (*Response, error) {
 	}
 
 	if ctx.nextStage == "" {
+		//		ctx.nextStage = "start"
 		return nil, easyerr.NotFound()
 	}
 
@@ -79,6 +84,7 @@ func (pf *Pageform) pfCtx(data map[string]any) *PfCtx {
 		disabledFields: make([]string, 0),
 		message:        "",
 		nextStage:      "",
+		rt:             pf.runtime,
 	}
 
 }
