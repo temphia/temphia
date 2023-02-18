@@ -44,10 +44,21 @@ func (pf *PfBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 		return nil, err
 	}
 
+	rt := goja.New()
+
+	if opts.File != "" {
+		out, _, err := opts.Binder.GetFileWithMeta(opts.File)
+		if err != nil {
+			pp.Println("server.js not found")
+			return nil, err
+		}
+		pp.Println(rt.RunString(string(out)))
+	}
+
 	return &Pageform{
 		builder: pf,
 		model:   form,
-		runtime: goja.New(),
+		runtime: rt,
 		binder:  opts.Binder,
 	}, nil
 }

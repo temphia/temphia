@@ -23,7 +23,7 @@ func (pc *PfCtx) bind() {
 
 func (pc *PfCtx) execute(name, mode, stage string) error {
 	var fn func(mode, stage string) error
-	err := setEntry(pc.rt, name, &fn)
+	err := getEntry(pc.rt, name, &fn)
 	if err != nil {
 		return err
 	}
@@ -45,9 +45,17 @@ func (pc *PfCtx) applyData(data map[string]any) {
 
 // binds
 
-func (pc *PfCtx) GetDataValue()             {}
-func (pc *PfCtx) GetData()                  {}
-func (pc *PfCtx) GetStageItem()             {}
+func (pc *PfCtx) GetDataValue(field string) any {
+	return pc.data[field]
+}
+
+func (pc *PfCtx) GetData() any {
+	return pc.data
+}
+
+func (pc *PfCtx) GetStageItem() {
+
+}
 func (pc *PfCtx) GetStage()                 {}
 func (pc *PfCtx) SetError(msg string)       {}
 func (pc *PfCtx) ClearData(except []string) {}
@@ -55,7 +63,7 @@ func (pc *PfCtx) DeleteDataField(string)    {}
 
 // helper
 
-func setEntry(runtime *goja.Runtime, name string, entry interface{}) error {
+func getEntry(runtime *goja.Runtime, name string, entry interface{}) error {
 	rawentry := runtime.Get(name)
 	if rawentry == nil {
 		return easyerr.NotFound()

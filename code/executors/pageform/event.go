@@ -25,7 +25,6 @@ func (pf *Pageform) actionLoad(req LoadRequest) (*Response, error) {
 	}
 
 	if ctx.nextStage == "" {
-		//		ctx.nextStage = "start"
 		return nil, easyerr.NotFound()
 	}
 
@@ -41,7 +40,10 @@ func (pf *Pageform) actionSubmit(req SubmitRequest) (*Response, error) {
 
 	ctx := pf.pfCtx(req.Data)
 	if currStage.OnSubmit != "" {
-		ctx.execute(currStage.OnSubmit, "on_submit", req.Stage)
+		err := ctx.execute(currStage.OnSubmit, "on_submit", req.Stage)
+		if err != nil {
+			return nil, err
+		}
 	} else {
 		for idx, shint := range pf.model.ExecHint {
 			if shint == req.Stage {
@@ -64,7 +66,10 @@ func (pf *Pageform) generate(ctx *PfCtx) (*Response, error) {
 
 	ctx.applyData(stage.Data)
 	if stage.OnGenerate != "" {
-		ctx.execute(stage.OnGenerate, "on_generate", ctx.nextStage)
+		err := ctx.execute(stage.OnGenerate, "on_generate", ctx.nextStage)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return &Response{

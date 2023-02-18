@@ -2,7 +2,7 @@ name: Form 1
 stages:
   start:
     about: First stage
-    items: 
+    items:
       - name: name
         info: Name of product.
         type: shorttext
@@ -12,11 +12,12 @@ stages:
       - name: metameta
         info: this could include some meta info
         type: longtext
+    on_submit: actionOnStartSubmit
+    on_generate: actionOnStartGenerate
   second:
     about: Second stage
     items:
       - name: test2
         type: shorttext
-exec_hint:
-  - start
-  - second
+exec_hint: [start, second]
+on_load: actionOnLoadForm
