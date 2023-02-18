@@ -115,9 +115,8 @@ func (s *Server) DevExecWatch(dclaim *claim.PlugDevTkt, ctx *gin.Context) {
 }
 
 func (s *Server) DevExecReset(dclaim *claim.PlugDevTkt, ctx *gin.Context) {
-	//err := s.cDev.DevExecReset(dclaim, ctx.Param("pid"), ctx.Param("aid"))
-	// httpx.WriteJSON(ctx, nil, err)
-
+	err := s.cEngine.Reset(dclaim.TenantId, ctx.Param("pid"), ctx.Param("aid"))
+	httpx.WriteFinal(ctx, err)
 }
 
 func (s *Server) DevExecRun(dclaim *claim.PlugDevTkt, ctx *gin.Context) {

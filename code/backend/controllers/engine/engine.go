@@ -74,6 +74,11 @@ func (c *Controller) Execute(tenantId, action string, ctx *gin.Context) {
 	ctx.Writer.Write(out)
 }
 
+func (c *Controller) Reset(tenantId, plugId, agentId string) error {
+
+	return nil
+}
+
 func (c *Controller) ServeAgentFile(tenantId, plugId, agentId, file string) ([]byte, error) {
 	return c.engine.ServeAgentFile(tenantId, plugId, agentId, file)
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/dop251/goja"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
 )
 
@@ -12,9 +13,12 @@ type Pageform struct {
 	builder *PfBuilder
 	model   *FormModel
 	runtime *goja.Runtime
+	binder  bindx.Bindings
 }
 
 func (pf *Pageform) Process(ev *event.Request) (*event.Response, error) {
+
+	pf.binder.Log("@test someting someting")
 
 	var resp any
 	var err error

@@ -7,6 +7,7 @@ import (
 	"io"
 	"mime/multipart"
 	"net/http"
+	"strings"
 
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 )
@@ -78,12 +79,37 @@ func (d *DevAPI) BprintFileDel(file string) error {
 }
 
 func (d *DevAPI) ExecWatchURL(pid, aid string) string {
-	return fmt.Sprintf("%s/dev/exec/watch/plug/%s/agent/%s?token=%s", d.url, pid, aid, d.token)
+
+	_ubase := strings.Replace(d.url, "http://", "ws://", 1)
+	_ubase = strings.Replace(_ubase, "https://", "wss://", 1)
+
+	return fmt.Sprintf("%s/dev/exec/watch/plug/%s/agent/%s?token=%s", _ubase, pid, aid, d.token)
 }
 
-func (d *DevAPI) ExecReset(pid, aid string) error { return nil }
+func (d *DevAPI) ExecReset(pid, aid string) error {
+	_, err := d.httpPerform(http.MethodPost, fmt.Sprintf("/exec/reset/plug/%s/agent/%s", pid, aid), nil, "")
+	return err
+}
 
-func (d *DevAPI) ExecRun(pid, aid string, payload any) (any, error) { return nil, nil }
+func (d *DevAPI) ExecRun(pid, aid, action string, payload any) (any, error) {
+	outr, err := pack(payload)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := d.httpPerform(http.MethodPost, fmt.Sprintf("/exec/run/plug/%s/agent/%s/%s", pid, aid, action), outr, "")
+	if err != nil {
+		return nil, err
+	}
+
+	var a any
+	err = unpack(resp, &a)
+	if err != nil {
+		return nil, err
+	}
+
+	return a, nil
+}
 
 // func (d *DevAPI) ModifyPlug(pid, aid string, data map[string]any) error  { return nil }
 // func (d *DevAPI) ModifyAgent(pid, aid string, data map[string]any) error { return nil }

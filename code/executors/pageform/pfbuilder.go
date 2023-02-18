@@ -40,6 +40,7 @@ func (pf *PfBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 		builder: pf,
 		model:   form,
 		runtime: goja.New(),
+		binder:  opts.Binder,
 	}, nil
 }
 
