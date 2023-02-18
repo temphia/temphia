@@ -20,7 +20,7 @@ func ReadForm(ctx *gin.Context) ([]byte, error) {
 		return nil, err
 	}
 
-	file.Close()
+	defer file.Close()
 
 	return io.ReadAll(file)
 }

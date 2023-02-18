@@ -46,6 +46,7 @@
 
     const formdata = new FormData();
     formdata.append("file", editor.getValue());
+
     const resp = await api.update_file(bid, file, formdata);
     save_loading = false;
     if (resp.ok) {
@@ -75,7 +76,8 @@
           <div class="flex gap-1 p-1">
             <button
               class="hover:bg-gray-300 rounded inline-flex border p-1"
-              on:click={() => app.utils.small_modal_open(PickEditor, { app, bid, file })}
+              on:click={() =>
+                app.utils.small_modal_open(PickEditor, { app, bid, file })}
             >
               <Icon name="beaker" class="h-5 w-5" />
               Editor

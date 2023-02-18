@@ -87,14 +87,16 @@ func (r *ApiAdmin) BprintNewBlob(ctx httpx.Request) {
 func (r *ApiAdmin) BprintUpdateBlob(ctx httpx.Request) {
 	pp.Println("@@@@@")
 
-	bytes, err := httpx.ReadForm(ctx.Http)
+	form, err := ctx.Http.MultipartForm()
 	if err != nil {
-		pp.Println("aaaa", err)
 		r.rutil.WriteErr(ctx.Http, err.Error())
 		return
 	}
 
-	err = r.cAdmin.BprintUpdateBlob(ctx.Session, ctx.Http.Param("id"), ctx.Http.Param("file_id"), bytes)
+	pp.Println("@form", form)
+
+	file := ctx.Http.Param("file_id")
+	err = r.cAdmin.BprintUpdateBlob(ctx.Session, ctx.Http.Param("id"), file, []byte(form.Value["file"][0]))
 
 	pp.Println(err)
 

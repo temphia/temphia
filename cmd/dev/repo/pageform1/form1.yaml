@@ -10,3 +10,6 @@ items:
     - name: metameta
       info: this could include some meta info
       type: longtext
+  second:
+    - name: test2
+      type: shorttext
