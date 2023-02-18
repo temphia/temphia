@@ -21,14 +21,14 @@ func (pc *PfCtx) bind() {
 	pc.rt.Set("GetStage", pc.GetStage)
 }
 
-func (pc *PfCtx) execute(name, mode string) error {
-	var fn func(mode string) error
+func (pc *PfCtx) execute(name, mode, stage string) error {
+	var fn func(mode, stage string) error
 	err := setEntry(pc.rt, name, &fn)
 	if err != nil {
 		return err
 	}
 
-	return fn(mode)
+	return fn(mode, stage)
 }
 
 func (pc *PfCtx) applyData(data map[string]any) {
