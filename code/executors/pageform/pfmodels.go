@@ -1,14 +1,38 @@
 package pageform
 
+import "github.com/thoas/go-funk"
+
 type FormModel struct {
-	Name           string                `json:"name,omitempty"`
-	Items          map[string][]FormItem `json:"items,omitempty"`
-	Data           map[string]any        `json:"data,omitempty"`
-	Message        string                `json:"message,omitempty"`
-	ServerOnLoad   string                `json:"server_onload,omitempty"`   // load_fileds -> set_data
-	ServerOnSubmit string                `json:"server_onsubmit,omitempty"` // validate data -> side_effect -> maybe_modify_data -> set_next_stage
-	ClientOnLoad   string                `json:"client_onload,omitempty"`
-	ClientOnSubmit string                `json:"client_onsubmit,omitempty"`
+	Name     string               `json:"name,omitempty"`
+	Stages   map[string]FormStage `json:"stages,omitempty"`
+	ExecHint []string             `json:"exec_hint,omitempty"`
+	OnLoad   string               `json:"on_load,omitempty"`
+}
+
+type FormStage struct {
+	About      string         `json:"about,omitempty"`
+	Items      []FormItem     `json:"items,omitempty"`
+	OnSubmit   string         `json:"on_submit,omitempty"`   // validate data -> side_effect -> maybe_modify_data -> set_next_stage
+	OnGenerate string         `json:"on_generate,omitempty"` // load_fileds -> set_data
+	Data       map[string]any `json:"data,omitempty"`
+}
+
+func (fs *FormStage) GetItems(ignores []string) []FormItem {
+	if len(ignores) == 0 {
+		return fs.Items
+	}
+
+	items := make([]FormItem, 0)
+
+	for _, fi := range fs.Items {
+		if funk.ContainsString(ignores, fi.Name) {
+			continue
+		}
+		items = append(items, fi)
+	}
+
+	return items
+
 }
 
 type FormItem struct {
@@ -33,11 +57,9 @@ type SubmitRequest struct {
 }
 
 type Response struct {
-	Ok       bool           `json:"ok,omitempty"`
-	Message  string         `json:"message,omitempty"`
-	Items    []FormItem     `json:"items,omitempty"`
-	Data     map[string]any `json:"data,omitempty"`
-	OnLoad   string         `json:"onload,omitempty"`
-	OnSubmit string         `json:"onsubmit,omitempty"`
-	Stage    string         `json:"stage,omitempty"`
+	Ok      bool           `json:"ok,omitempty"`
+	Message string         `json:"message,omitempty"`
+	Items   []FormItem     `json:"items,omitempty"`
+	Data    map[string]any `json:"data,omitempty"`
+	Stage   string         `json:"stage,omitempty"`
 }
