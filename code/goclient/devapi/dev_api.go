@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 )
 
@@ -87,28 +88,22 @@ func (d *DevAPI) ExecWatchURL(pid, aid string) string {
 }
 
 func (d *DevAPI) ExecReset(pid, aid string) error {
-	_, err := d.httpPerform(http.MethodPost, fmt.Sprintf("/exec/reset/plug/%s/agent/%s", pid, aid), nil, "")
+	_, err := d.httpPerform(http.MethodPost, fmt.Sprintf("/dev/exec/reset/plug/%s/agent/%s", pid, aid), nil, "")
 	return err
 }
 
-func (d *DevAPI) ExecRun(pid, aid, action string, payload any) (any, error) {
+func (d *DevAPI) ExecRun(pid, aid, action string, payload any) ([]byte, error) {
 	outr, err := pack(payload)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := d.httpPerform(http.MethodPost, fmt.Sprintf("/exec/run/plug/%s/agent/%s/%s", pid, aid, action), outr, "")
+	resp, err := d.httpPerform(http.MethodPost, fmt.Sprintf("/dev/exec/run/plug/%s/agent/%s/%s", pid, aid, action), outr, "")
 	if err != nil {
 		return nil, err
 	}
 
-	var a any
-	err = unpack(resp, &a)
-	if err != nil {
-		return nil, err
-	}
-
-	return a, nil
+	return io.ReadAll(resp.Body)
 }
 
 // func (d *DevAPI) ModifyPlug(pid, aid string, data map[string]any) error  { return nil }
@@ -130,13 +125,16 @@ func (d *DevAPI) httpPerform(method, url string, pr io.Reader, ctype string) (*h
 		req.Header.Set("Content-Type", ctype)
 	}
 
+	pp.Println("Request |>", method, url)
+
 	resp, err := d.http.Do(req)
 	if err != nil {
 		return nil, err
 	}
 
 	if resp.StatusCode != 200 {
-		return nil, easyerr.Error(resp.Status)
+		bout, _ := io.ReadAll(resp.Body)
+		return nil, easyerr.Error(fmt.Sprintf("%s  => %s", resp.Status, bout))
 	}
 
 	return resp, nil

@@ -58,6 +58,6 @@ func (dc *DevClient) Reset(plug, agent string) error {
 	return dc.api.ExecReset(plug, agent)
 }
 
-func (dc *DevClient) ExecRun(pid, aid, action string, payload any) (any, error) {
+func (dc *DevClient) ExecRun(pid, aid, action string, payload any) ([]byte, error) {
 	return dc.api.ExecRun(pid, aid, action, payload)
 }
