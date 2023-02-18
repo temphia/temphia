@@ -19,5 +19,12 @@ stages:
     items:
       - name: test2
         type: shorttext
-exec_hint: [start, second]
+    on_generate: OnSecondGenerate
+  third:
+    about: Second stage
+    items:
+      - name: third1
+        type: shorttext
+    
+exec_hint: [start, second, third]
 on_load: OnLoadForm

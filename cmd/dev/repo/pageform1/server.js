@@ -10,3 +10,11 @@ function OnStartSubmit(mode, stage) {
 function OnStartGenerate(mode, stage) {
     core.log("start_generate " + mode + " " + stage)
 }
+
+
+function OnSecondGenerate(mode, stage) {
+    core.log("@second_generate")
+    set_message("This could be great", true)
+}
+
+ 

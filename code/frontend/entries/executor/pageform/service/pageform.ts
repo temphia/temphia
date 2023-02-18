@@ -8,6 +8,7 @@ export interface LoadRequest {
 
 export interface Response {
   ok: boolean;
+  final: boolean;
   message: string;
   items: {
     name: string;

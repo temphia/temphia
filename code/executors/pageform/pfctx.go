@@ -2,6 +2,7 @@ package pageform
 
 import (
 	"github.com/dop251/goja"
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/thoas/go-funk"
 )
@@ -11,15 +12,41 @@ type PfCtx struct {
 	model          *FormModel
 	disabledFields []string
 	message        string
+	ok             bool
+	final          bool
 	nextStage      string
 	rt             *goja.Runtime
+
+	currStage string
 }
 
 func (pc *PfCtx) bind() {
-	pc.rt.Set("get_data_value", pc.GetDataValue)
-	pc.rt.Set("get_data", pc.GetData)
-	pc.rt.Set("get_stage_item", pc.GetStageItem)
-	pc.rt.Set("get_stage", pc.GetStage)
+	pc.rt.Set("get_data_value", pc.getDataValue)
+	pc.rt.Set("get_data", pc.getData)
+	pc.rt.Set("get_stage_item", pc.getStageItem)
+	pc.rt.Set("get_stage", pc.getStage)
+	pc.rt.Set("set_message", pc.setMessage)
+	pc.rt.Set("set_final", pc.setFinal)
+	pc.rt.Set("clear_data", pc.clearData)
+	pc.rt.Set("delete_data_field", pc.deleteDataField)
+	pc.rt.Set("set_next_stage", pc.setNextStage)
+	pc.rt.Set("pick_next_stage", pc.pickNextStage)
+	pc.rt.Set("disable_field", pc.disableField)
+	pc.rt.Set("get_bind_funcs", func() any {
+		return []string{
+			"get_data_value",
+			"get_data",
+			"get_stage_item",
+			"get_stage",
+			"set_message",
+			"set_final",
+			"clear_data",
+			"delete_data_field",
+			"set_next_stage",
+			"pick_next_stage",
+			"disable_field",
+		}
+	})
 }
 
 func (pc *PfCtx) execute(name, mode, stage string) error {
@@ -28,6 +55,8 @@ func (pc *PfCtx) execute(name, mode, stage string) error {
 	if err != nil {
 		return err
 	}
+
+	pc.currStage = stage
 
 	return fn(mode, stage)
 }
@@ -46,15 +75,15 @@ func (pc *PfCtx) applyData(data map[string]any) {
 
 // binds
 
-func (pc *PfCtx) GetDataValue(field string) any {
+func (pc *PfCtx) getDataValue(field string) any {
 	return pc.data[field]
 }
 
-func (pc *PfCtx) GetData() any {
+func (pc *PfCtx) getData() any {
 	return pc.data
 }
 
-func (pc *PfCtx) GetStageItem(stage, item string) any {
+func (pc *PfCtx) getStageItem(stage, item string) any {
 
 	stg, ok := pc.model.Stages[stage]
 	if !ok {
@@ -67,7 +96,7 @@ func (pc *PfCtx) GetStageItem(stage, item string) any {
 	return nil
 }
 
-func (pc *PfCtx) GetStage(stage string) any {
+func (pc *PfCtx) getStage(stage string) any {
 	stg, ok := pc.model.Stages[stage]
 	if !ok {
 		return nil
@@ -75,11 +104,22 @@ func (pc *PfCtx) GetStage(stage string) any {
 	return &stg
 }
 
-func (pc *PfCtx) SetError(msg string) {
-	pc.message = msg
+func (pc *PfCtx) setMessage(msg string, ok bool) {
+
+	pp.Println("@set_message", msg)
+
+	pc.message = "@@@@@@@"
+	pc.ok = ok
+
+	pp.Println("@set_message_after_set", pc.message)
+
 }
 
-func (pc *PfCtx) ClearData(except []string) {
+func (pc *PfCtx) setFinal() {
+	pc.final = true
+}
+
+func (pc *PfCtx) clearData(except []string) {
 	if (except) == nil {
 		pc.data = map[string]any{}
 		return
@@ -94,8 +134,25 @@ func (pc *PfCtx) ClearData(except []string) {
 
 }
 
-func (pc *PfCtx) DeleteDataField(field string) {
+func (pc *PfCtx) deleteDataField(field string) {
 	delete(pc.data, field)
+}
+
+func (pc *PfCtx) pickNextStage() {
+	for idx, shint := range pc.model.ExecHint {
+		if shint == pc.currStage {
+			pc.nextStage = pc.model.ExecHint[idx+1]
+			break
+		}
+	}
+}
+
+func (pc *PfCtx) disableField(field string) {
+	pc.disabledFields = append(pc.disabledFields, field)
+}
+
+func (pc *PfCtx) setNextStage(stage string) {
+	pc.nextStage = stage
 }
 
 // helper

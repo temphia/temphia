@@ -44,11 +44,37 @@ func (pf *Pageform) actionSubmit(req SubmitRequest) (*Response, error) {
 		if err != nil {
 			return nil, err
 		}
-	} else {
+	}
+
+	if ctx.nextStage == "" {
+
+		max := len(pf.model.ExecHint)
+
 		for idx, shint := range pf.model.ExecHint {
+
 			if shint == req.Stage {
+				if max == (idx + 1) {
+					return &Response{
+						Ok:      true,
+						Final:   true,
+						Message: "Reached the final stage",
+						Items:   []FormItem{},
+					}, nil
+				}
+
 				ctx.nextStage = pf.model.ExecHint[idx+1]
+				break
 			}
+
+			if max == (idx + 1) {
+				return &Response{
+					Ok:      false,
+					Final:   true,
+					Message: "Reached the final stage",
+					Items:   []FormItem{},
+				}, nil
+			}
+
 		}
 	}
 
@@ -72,8 +98,11 @@ func (pf *Pageform) generate(ctx *PfCtx) (*Response, error) {
 		}
 	}
 
+	pp.Println("@ctx.message", ctx.message)
+
 	return &Response{
-		Ok:      ctx.message == "",
+		Ok:      ctx.ok,
+		Final:   ctx.final,
 		Message: ctx.message,
 		Items:   stage.GetItems(ctx.disabledFields),
 		Data:    ctx.data,
@@ -87,9 +116,8 @@ func (pf *Pageform) pfCtx(data map[string]any) *PfCtx {
 		data:           data,
 		model:          pf.model,
 		disabledFields: make([]string, 0),
-		message:        "",
-		nextStage:      "",
 		rt:             pf.runtime,
+		ok:             true,
 	}
 
 }

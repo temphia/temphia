@@ -58,6 +58,7 @@ type SubmitRequest struct {
 
 type Response struct {
 	Ok      bool           `json:"ok,omitempty" yaml:"ok,omitempty"`
+	Final   bool           `json:"final,omitempty" yaml:"final,omitempty"`
 	Message string         `json:"message,omitempty" yaml:"message,omitempty"`
 	Items   []FormItem     `json:"items,omitempty" yaml:"items,omitempty"`
 	Data    map[string]any `json:"data,omitempty" yaml:"data,omitempty"`
