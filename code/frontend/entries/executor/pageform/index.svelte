@@ -2,13 +2,13 @@
   import StartPage from "./pages/start/start.svelte";
   import Layout from "./pages/_layout.svelte";
   import { LoadingSpinner } from "../../xcompo";
-  import { LoadResponse, PageFormService } from "./service";
+  import { Response, PageFormService } from "./service";
 
   export let env: any;
 
   let loading = true;
   let service: PageFormService;
-  let data: LoadResponse;
+  let data: Response;
 
   const load = async () => {
     service = new PageFormService(env);
@@ -28,12 +28,23 @@
   };
 
   load();
+
+  const submit = async (ev) => {
+    console.log(ev.detail);
+    loading = true;
+    const resp = await service.submit(data.stage, ev.detail);
+    if (!resp) {
+      return;
+    }
+    data = resp;
+    loading = false;
+  };
 </script>
 
 {#if loading}
   <LoadingSpinner />
 {:else}
   <Layout>
-    <StartPage {data} />
+    <StartPage {data} on:submit={submit} />
   </Layout>
 {/if}

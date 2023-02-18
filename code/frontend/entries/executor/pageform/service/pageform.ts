@@ -6,7 +6,9 @@ export interface LoadRequest {
   options: { [_: string]: any };
 }
 
-export interface LoadResponse {
+export interface Response {
+  ok: boolean;
+  message: string;
   items: {
     name: string;
     type: string;
@@ -17,6 +19,7 @@ export interface LoadResponse {
   data: any;
   on_load: string;
   on_submit: string;
+  stage: string;
 }
 
 export class PageFormService {
@@ -33,8 +36,18 @@ export class PageFormService {
       return;
     }
 
-    return resp.data as LoadResponse;
+    return resp.data as Response;
   };
 
-  save = async () => {};
+  submit = async (stage: string, data: any) => {
+    const resp = await this.env.PreformAction("submit", {
+      stage,
+      data,
+    });
+    if (!resp.ok) {
+      console.log("@err", resp);
+      return;
+    }
+    return resp.data as Response;
+  };
 }
