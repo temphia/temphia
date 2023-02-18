@@ -18,11 +18,15 @@
   let dev_shell_service = new DevShellService(app.api_manager, pid, aid);
 
   const load = async () => {
-    const val = dev_shell_service.init();
-    if (typeof val === "string") {
-      message = val;
-    } else {
-      loading = false;
+    try {
+      const val = await dev_shell_service.init();
+      if (typeof val === "string") {
+        message = val;
+      } else {
+        loading = false;
+      }
+    } catch (error) {
+      console.log("@err", error)
     }
   };
 
