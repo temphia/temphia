@@ -31,7 +31,7 @@
       {...html_attr}
     />
 
-    <p class="text-sm italic mb-4">{info}</p>
+    <p class="text-sm italic mb-4">{info || ""}</p>
   {:else if type === f.FieldPhone}
     <input
       type="tel"
@@ -42,7 +42,7 @@
       {...html_attr}
     />
 
-    <p class="text-sm italic mb-4">{info}</p>
+    <p class="text-sm italic mb-4">{info || ""}</p>
   {:else if type === f.FieldSelect}
     <select
       class="w-full p-2 bg-gray-50 border"
@@ -55,7 +55,7 @@
       {/each}
     </select>
 
-    <p class="text-sm italic mb-4">{info}</p>
+    <p class="text-sm italic mb-4">{info || ""}</p>
   {:else if type === f.FieldCheckbox}
     <input
       type="checkbox"
@@ -65,7 +65,7 @@
       class="form-checkbox h-5 w-5 text-gray-600"
       {...html_attr}
     />
-    <p class="text-sm italic mb-4">{info}</p>
+    <p class="text-sm italic mb-4">{info || ""}</p>
   {:else if type === f.FieldNumber}
     <input
       type="number"
@@ -75,7 +75,7 @@
       class="p-2 border w-full rounded-lg bg-gray-50 outline-none focus:bg-gray-100 mr-1"
       {...html_attr}
     />
-    <p class="text-sm italic mb-4">{info}</p>
+    <p class="text-sm italic mb-4">{info || ""}</p>
   {:else if type === f.FieldLongText}
     <textarea
       id={name}
@@ -86,7 +86,7 @@
       {...html_attr}
     />
 
-    <p class="text-sm italic mb-4">{info}</p>
+    <p class="text-sm italic mb-4">{info || ""}</p>
   {:else if type === f.FieldEmail}
     <input
       type="email"
@@ -98,7 +98,7 @@
       {...html_attr}
     />
 
-    <p class="text-sm italic mb-4">{info}</p>
+    <p class="text-sm italic mb-4">{info || ""}</p>
   {:else if type === f.FieldRange}
     <input
       type="range"
@@ -108,7 +108,7 @@
       class="p-2 border w-full rounded-lg bg-gray-50 outline-none focus:bg-gray-100 mr-1"
       {...html_attr}
     />
-    <p class="text-sm italic mb-4">{info}</p>
+    <p class="text-sm italic mb-4">{info || ""}</p>
   {:else if type === f.FieldColor}
     <input
       type="color"
@@ -118,7 +118,7 @@
       class="p-2 border w-full rounded-lg bg-gray-50 outline-none focus:bg-gray-100 mr-1"
       {...html_attr}
     />
-    <p class="text-sm italic mb-4">{info}</p>
+    <p class="text-sm italic mb-4">{info || ""}</p>
   {:else if type === f.FieldColor}
     <input
       type="color"
@@ -129,7 +129,7 @@
       {...html_attr}
     />
 
-    <p class="text-sm italic mb-4">{info}</p>
+    <p class="text-sm italic mb-4">{info || ""}</p>
   {:else if type === f.FieldInfo}
     <div class="rounded bg-yellow-100 w-full p-2" {...html_attr}>
       <p>{value || info || ""}</p>
