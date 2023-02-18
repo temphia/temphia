@@ -38,7 +38,7 @@ func (n *ns) getBinder(j *job.Job) (*standard.Binder, error) {
 	bind := n.runtime.binderFactory.New(standard.BinderOptions{
 		Namespace: j.Namespace,
 		PlugId:    j.PlugId,
-		AgentId:   j.PlugId,
+		AgentId:   j.AgentId,
 		BprintId:  j.Plug.BprintId,
 		Epoch:     0,
 	})

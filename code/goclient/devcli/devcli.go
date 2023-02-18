@@ -22,6 +22,9 @@ type CLI struct {
 		Data   string `arg:"" help:"File name to push"`
 	} `cmd:"" help:"Execute action on agent."`
 
+	Watch struct {
+	} `cmd:"" help:"Watch agent."`
+
 	Reset struct {
 	} `cmd:"" help:"Reset agent."`
 
@@ -59,6 +62,8 @@ func (c *CLI) Process() error {
 		c.execute()
 	case "reset":
 		c.reset()
+	case "watch":
+		c.watch()
 	default:
 		panic("Command not found |> " + c.ctx.Command())
 	}
@@ -68,6 +73,10 @@ func (c *CLI) Process() error {
 
 func (c *CLI) reset() {
 	c.devClient.Reset(c.PlugId, c.AgentId)
+}
+
+func (c *CLI) watch() {
+	c.devClient.Watch(c.PlugId, c.AgentId)
 }
 
 func (c *CLI) push() {
