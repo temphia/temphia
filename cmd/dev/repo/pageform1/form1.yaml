@@ -12,12 +12,12 @@ stages:
       - name: metameta
         info: this could include some meta info
         type: longtext
-    on_submit: actionOnStartSubmit
-    on_generate: actionOnStartGenerate
+    on_submit: OnStartSubmit
+    on_generate: OnStartGenerate
   second:
     about: Second stage
     items:
       - name: test2
         type: shorttext
 exec_hint: [start, second]
-on_load: actionOnLoadForm
+on_load: OnLoadForm

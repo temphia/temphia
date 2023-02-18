@@ -63,6 +63,11 @@ func New(b bindx.Bindings, rt *goja.Runtime) (*Goja, error) {
 
 	g.bind()
 
+	_, err := rt.RunProgram(libesplug)
+	if err != nil {
+		return nil, err
+	}
+
 	return g, nil
 }
 

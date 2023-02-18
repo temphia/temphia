@@ -7,6 +7,8 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/executors/helper"
 	"gopkg.in/yaml.v2"
+
+	gojaExec "github.com/temphia/temphia/code/backend/engine/executors/javascript1/goja"
 )
 
 type PfBuilder struct {
@@ -52,6 +54,12 @@ func (pf *PfBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 			pp.Println("server.js not found")
 			return nil, err
 		}
+
+		_, err = gojaExec.New(opts.Binder, rt)
+		if err != nil {
+			return nil, err
+		}
+
 		pp.Println(rt.RunString(string(out)))
 	}
 
