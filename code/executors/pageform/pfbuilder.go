@@ -25,7 +25,12 @@ func NewBuilder(app any) (etypes.ExecutorBuilder, error) {
 
 func (pf *PfBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, error) {
 
-	out, _, err := opts.Binder.GetFileWithMeta("form1.yaml") // fixme => get_this from somewhere
+	ffile := opts.EnvVars["form_file"]
+	if ffile == "" {
+		ffile = "form1.yaml"
+	}
+
+	out, _, err := opts.Binder.GetFileWithMeta(ffile)
 	if err != nil {
 		return nil, err
 	}

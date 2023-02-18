@@ -18,7 +18,7 @@ func main() {
 		AgentId:  "agent1",
 		File:     "code.wasm",
 		ExecType: "wasm1",
-		EnvVars:  map[string]any{},
+		EnvVars:  map[string]string{},
 	})
 	handleErr(err)
 

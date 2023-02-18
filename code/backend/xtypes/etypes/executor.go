@@ -14,7 +14,7 @@ type ExecutorOption struct {
 	AgentId  string
 	File     string
 	ExecType string
-	EnvVars  map[string]any
+	EnvVars  map[string]string
 }
 
 type Executor interface {

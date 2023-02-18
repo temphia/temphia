@@ -51,7 +51,7 @@ func (n *ns) getBinder(j *job.Job) (*standard.Binder, error) {
 		AgentId:  j.AgentId,
 		ExecType: j.Agent.Executor,
 		TenantId: j.Namespace,
-		EnvVars:  make(map[string]any), // fixme => get this from target or env resource
+		EnvVars:  j.Agent.ExtraMeta, // fixme => overlay this from target env ?
 		File:     j.Agent.EntryFile,
 	})
 	if err != nil {
