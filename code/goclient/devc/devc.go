@@ -9,6 +9,7 @@ import (
 	"github.com/gobwas/ws/wsutil"
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/goclient/devapi"
+	"github.com/tidwall/gjson"
 	"github.com/tidwall/pretty"
 )
 
@@ -40,7 +41,10 @@ func (dc *DevClient) Watch(plug string, agent string) {
 			return
 		}
 
-		fmt.Print(string(pretty.Pretty(out)))
+		payload := gjson.GetBytes(out, "payload").String()
+		xid := gjson.GetBytes(out, "xid").String()
+
+		fmt.Printf("[ %s ]  => %s  \n", xid, pretty.Color(pretty.Pretty([]byte(payload)), nil))
 	}
 
 }
