@@ -1,3 +1,3 @@
-package repobuild
+package repo
 
 // moved => github.com/temphia/repo
