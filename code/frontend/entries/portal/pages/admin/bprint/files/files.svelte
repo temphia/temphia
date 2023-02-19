@@ -37,7 +37,10 @@
   const action_new = () => {
     app.utils.small_modal_open(FileNew, {
       app,
-      close_modal: app.utils.small_modal_close,
+      close_modal: () => {
+        app.utils.small_modal_close()
+        load()
+      },
       bid,
     });
   };

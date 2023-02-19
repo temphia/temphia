@@ -2,6 +2,7 @@ package repohub
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/rs/xid"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
@@ -65,6 +66,7 @@ func (c *PacMan) BprintListBlobs(tenantid, bid string) (map[string]string, error
 }
 
 func (c *PacMan) BprintNewBlob(tenantid, bid, file string, payload []byte) error {
+
 	bprint, err := c.BprintGet(tenantid, bid)
 	if err != nil {
 		return err
@@ -80,10 +82,14 @@ func (c *PacMan) BprintNewBlob(tenantid, bid, file string, payload []byte) error
 	}
 
 	bprint.Files = append(bprint.Files, file)
-	bprint.ID = bid
+
+	bfiles, err := json.Marshal(bprint.Files)
+	if err != nil {
+		return err
+	}
 
 	err = c.corehub.BprintUpdate(tenantid, bid, map[string]any{
-		"files": bprint.Files,
+		"files": bfiles,
 	})
 
 	if err != nil {

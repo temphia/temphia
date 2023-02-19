@@ -25,6 +25,7 @@ func (c *Controller) BprintCreate(uclaim *claim.Session, bp *entities.BPrint) (s
 		return "", easyerr.NotImpl()
 	}
 
+	bp.TenantID = uclaim.TenantId
 	return c.pacman.BprintCreate(uclaim.TenantId, bp)
 }
 
