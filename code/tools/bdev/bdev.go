@@ -63,6 +63,10 @@ func (c *CLI) preRun(bfile string) error {
 
 func (c *CLI) Run(uscope *UpperScope) error {
 
+	if uscope.BprintFile == "" {
+		panic(".bprint.yaml not specified")
+	}
+
 	c.ctx = uscope.Ctx
 	c.preRun(uscope.BprintFile)
 

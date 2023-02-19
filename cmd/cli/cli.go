@@ -16,10 +16,6 @@ func main() {
 	cli := &CLI{}
 	ctx := kong.Parse(cli)
 
-	if cli.BprintFile == "" {
-		panic(".bprint.yaml not specified")
-	}
-
 	pp.Println(ctx.Run(&bdev.UpperScope{
 		BprintFile: cli.BprintFile,
 		Ctx:        ctx,
