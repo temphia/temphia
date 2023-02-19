@@ -1,10 +1,11 @@
-package devcli
+package bdev
 
 import (
 	"encoding/json"
 	"fmt"
 
 	"github.com/alecthomas/kong"
+	"github.com/joho/godotenv"
 	"github.com/k0kubun/pp"
 	client "github.com/temphia/temphia/code/goclient"
 	"github.com/temphia/temphia/code/goclient/devc"
@@ -34,41 +35,52 @@ type CLI struct {
 	AgentId   string
 }
 
-func New() *CLI {
-	cli := &CLI{}
-	ctx := kong.Parse(cli)
-	cli.ctx = ctx
+type UpperScope struct {
+	BprintFile string
+	Ctx        *kong.Context
+}
+
+func (c *CLI) preRun(bfile string) error {
+
+	_, err := godotenv.Read(bfile)
+	if err != nil {
+		return err
+	}
 
 	cctx := client.ReadContext()
 
-	cli.devClient = devc.New(cctx.APIURL, cctx.Token)
-	if cli.AgentId == "" {
-		cli.AgentId = cctx.AgentId
+	c.devClient = devc.New(cctx.APIURL, cctx.Token)
+	if c.AgentId == "" {
+		c.AgentId = cctx.AgentId
 	}
 
-	if cli.PlugId == "" {
-		cli.PlugId = cctx.PlugId
+	if c.PlugId == "" {
+		c.PlugId = cctx.PlugId
 	}
 
-	return cli
+	return nil
 }
 
-func (c *CLI) Process() error {
+func (c *CLI) Run(uscope *UpperScope) error {
+
+	c.ctx = uscope.Ctx
+	c.preRun(uscope.BprintFile)
 
 	switch c.ctx.Command() {
-	case "push <name> <file>":
+	case "bdev push <name> <file>":
 		c.push()
-	case "execute <action> <data>":
+	case "bdev execute <action> <data>":
 		c.execute()
-	case "reset":
+	case "bdev  reset":
 		c.reset()
-	case "watch":
+	case "bdev watch":
 		c.watch()
 	default:
 		panic("Command not found |> " + c.ctx.Command())
 	}
 
 	return nil
+
 }
 
 func (c *CLI) reset() {
