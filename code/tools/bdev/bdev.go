@@ -60,7 +60,7 @@ func (c *CLI) preRun(bfile string) error {
 
 	c.bp = &bprint
 
-	_, err = godotenv.Read(bprint.EnvFile)
+	err = godotenv.Load(bprint.EnvFile)
 	if err != nil {
 		return easyerr.Wrap("env file load err", err)
 	}
@@ -121,7 +121,11 @@ func (c *CLI) watch() {
 }
 
 func (c *CLI) push() {
-	c.devClient.PushFile(c.Push.Name, c.bp.Files[c.Push.Name])
+
+	pp.Println(os.Environ())
+
+	pp.Println(c.devClient.PushFile(c.Push.Name, c.bp.Files[c.Push.Name]))
+
 }
 
 func (c *CLI) execute() {
