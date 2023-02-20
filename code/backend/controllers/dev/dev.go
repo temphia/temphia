@@ -1,6 +1,7 @@
 package dev
 
 import (
+	"encoding/json"
 	"io"
 
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
@@ -61,7 +62,7 @@ func (c *Controller) DevPushFiles(tkt *claim.PlugDevTkt, files map[string]io.Rea
 			return nil
 		}
 
-		err = c.pacman.BprintUpdateBlob(tkt.TenantId, tkt.BprintId, filekey, out)
+		err = c.pacman.BprintNewBlob(tkt.TenantId, tkt.BprintId, filekey, out)
 		if err != nil {
 			return err
 		}
@@ -71,9 +72,17 @@ func (c *Controller) DevPushFiles(tkt *claim.PlugDevTkt, files map[string]io.Rea
 		return nil
 	}
 
+	// fixme => i should be using pacman/repohub
+
+	outfiles, err := json.Marshal(bprint.Files)
+	if err != nil {
+		return err
+	}
+
 	return c.corehub.BprintUpdate(tkt.TenantId, tkt.BprintId, map[string]any{
-		"files": []string(bprint.Files),
+		"files": outfiles,
 	})
+
 }
 
 func (c *Controller) DevModifyPlug(tkt *claim.PlugDevTkt, pid string, data map[string]any) error {

@@ -121,9 +121,6 @@ func (c *CLI) watch() {
 }
 
 func (c *CLI) push() {
-
-	pp.Println(os.Environ())
-
 	pp.Println(c.devClient.PushFile(c.Push.Name, c.bp.Files[c.Push.Name]))
 
 }
