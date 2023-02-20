@@ -3,19 +3,22 @@ package bdev
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/alecthomas/kong"
 	"github.com/joho/godotenv"
 	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	client "github.com/temphia/temphia/code/goclient"
 	"github.com/temphia/temphia/code/goclient/devc"
 	"github.com/tidwall/pretty"
+	"gopkg.in/yaml.v2"
 )
 
 type CLI struct {
 	Push struct {
 		Name string `arg:"" help:"File name to push"`
-		File string `arg:"" help:"File to push"`
 	} `cmd:"" help:"Push File in bprint."`
 
 	Execute struct {
@@ -33,6 +36,8 @@ type CLI struct {
 	devClient *devc.DevClient
 	PlugId    string
 	AgentId   string
+
+	bp *xbprint.LocalBprint
 }
 
 type UpperScope struct {
@@ -42,9 +47,22 @@ type UpperScope struct {
 
 func (c *CLI) preRun(bfile string) error {
 
-	_, err := godotenv.Read(bfile)
+	out, err := os.ReadFile(bfile)
 	if err != nil {
-		return err
+		return easyerr.Wrap("bprint file not found", err)
+	}
+
+	bprint := xbprint.LocalBprint{}
+	err = yaml.Unmarshal(out, &bprint)
+	if err != nil {
+		return easyerr.Wrap("err unmarsheling .bprint file", err)
+	}
+
+	c.bp = &bprint
+
+	_, err = godotenv.Read(bprint.EnvFile)
+	if err != nil {
+		return easyerr.Wrap("env file load err", err)
 	}
 
 	cctx := client.ReadContext()
@@ -64,14 +82,21 @@ func (c *CLI) preRun(bfile string) error {
 func (c *CLI) Run(uscope *UpperScope) error {
 
 	if uscope.BprintFile == "" {
-		panic(".bprint.yaml not specified")
+		bconf := os.Getenv("TEMPHIA_BDEV_BPRINT_CONFIG")
+		if bconf == "" {
+			panic(".bprint.yaml not specified")
+		}
+		uscope.BprintFile = bconf
 	}
 
 	c.ctx = uscope.Ctx
-	c.preRun(uscope.BprintFile)
+	err := c.preRun(uscope.BprintFile)
+	if err != nil {
+		return err
+	}
 
 	switch c.ctx.Command() {
-	case "bdev push <name> <file>":
+	case "bdev push <name>":
 		c.push()
 	case "bdev execute <action> <data>":
 		c.execute()
@@ -96,7 +121,7 @@ func (c *CLI) watch() {
 }
 
 func (c *CLI) push() {
-	c.devClient.PushFile(c.Push.Name, c.Push.File)
+	c.devClient.PushFile(c.Push.Name, c.bp.Files[c.Push.Name])
 }
 
 func (c *CLI) execute() {
