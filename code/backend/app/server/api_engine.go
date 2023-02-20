@@ -21,6 +21,16 @@ func (s *Server) engineAPI(rg *gin.RouterGroup) {
 
 	// execute action
 	rg.POST("/execute/:action", s.execute)
+	rg.OPTIONS("/execute/:action", func(ctx *gin.Context) {
+		pp.Println("@iframe_cors")
+
+		ctx.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		ctx.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		ctx.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		ctx.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+
+		ctx.AbortWithStatus(204)
+	})
 
 	fs := http.FS(s.app.Data().AssetAdapter("build"))
 	rg.GET("/plug/:pid/agent/:aid/launcher/:file", func(ctx *gin.Context) {
@@ -37,6 +47,7 @@ func (s *Server) engineAPI(rg *gin.RouterGroup) {
 }
 
 func (s *Server) execute(ctx *gin.Context) {
+	ctx.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	s.cEngine.Execute(ctx.Param("tenant_id"), ctx.Param("action"), ctx)
 }
 

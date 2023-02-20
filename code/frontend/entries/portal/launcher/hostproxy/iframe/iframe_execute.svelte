@@ -44,4 +44,5 @@
   title={name}
   class="w-full h-full transition-all"
   srcdoc={src}
+  sandbox="allow-scripts"
 />

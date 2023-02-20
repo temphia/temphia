@@ -70,6 +70,7 @@ export class Http {
       method: method,
       headers: this.headers,
       body: JSON.stringify(data),
+      mode: "cors",
     });
 
     if (resp.ok) {

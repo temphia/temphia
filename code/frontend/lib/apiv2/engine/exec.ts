@@ -28,6 +28,11 @@ export class ExecAPI {
   }
 
   preform_action(method: string, data: any) {
+    this.http.headers = {
+      ...this.http.headers,
+      "Access-Control-Allow-Origin": "*",
+    };
+
     return this.http.post(`/engine/execute/${method}`, data);
   }
 }
