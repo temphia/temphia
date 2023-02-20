@@ -32,6 +32,10 @@ type CLI struct {
 	Reset struct {
 	} `cmd:"" help:"Reset agent."`
 
+	Zip struct {
+		OutFile string
+	} `cmd:"" help:"create zip from bprint.yaml"`
+
 	ctx       *kong.Context
 	devClient *devc.DevClient
 	PlugId    string
@@ -104,6 +108,8 @@ func (c *CLI) Run(uscope *UpperScope) error {
 		c.reset()
 	case "bdev watch":
 		c.watch()
+	case "bdev zip":
+		c.zipit()
 	default:
 		panic("Command not found |> " + c.ctx.Command())
 	}
@@ -118,6 +124,15 @@ func (c *CLI) reset() {
 
 func (c *CLI) watch() {
 	c.devClient.Watch(c.PlugId, c.AgentId)
+}
+
+func (c *CLI) zipit() {
+	if c.Zip.OutFile == "" {
+		c.Zip.OutFile = fmt.Sprintf("build/%s.zip", c.bp.Slug)
+	}
+
+	pp.Println(ZipIt(c.bp, c.Zip.OutFile))
+
 }
 
 func (c *CLI) push() {
