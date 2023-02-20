@@ -120,6 +120,9 @@ func (c *Controller) BprintCreateFromZip(uclaim *claim.Session, form *multipart.
 		return err
 	}
 
+	files := make([]string, 0)
+	bprint.Files = entities.JsonArray{}
+
 	bprint.TenantID = uclaim.TenantId
 	bid, err := c.pacman.BprintCreate(uclaim.TenantId, bprint)
 	if err != nil {
@@ -127,6 +130,10 @@ func (c *Controller) BprintCreateFromZip(uclaim *claim.Session, form *multipart.
 	}
 
 	for _, file := range reader.File {
+		if file.Name == "index.json" {
+			continue
+		}
+
 		rfile, err := file.Open()
 		if err != nil {
 			return err
@@ -142,10 +149,15 @@ func (c *Controller) BprintCreateFromZip(uclaim *claim.Session, form *multipart.
 			rfile.Close()
 			return err
 		}
+
+		files = append(files, file.Name)
+
 		rfile.Close()
 	}
 
-	return c.pacman.BprintUpdateFilesList(bprint.TenantID, bid, bprint.Files...)
+	pp.Println("@files", files)
+
+	return c.pacman.BprintUpdateFilesList(bprint.TenantID, bid, files...)
 }
 
 // repo

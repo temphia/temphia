@@ -89,7 +89,7 @@ func (c *PacMan) BprintUpdateFilesList(tenantid, bid string, files ...string) er
 		bprint.Files = entities.JsonArray{}
 	}
 
-	for _, v := range bprint.Files {
+	for _, v := range files {
 		if funk.ContainsString(bprint.Files, v) {
 			continue
 		}

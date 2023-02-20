@@ -13,7 +13,7 @@ func (a *ApiAdmin) bprintAPI(rg *gin.RouterGroup) {
 
 	rg.GET("/", a.X(a.BprintList))
 	rg.POST("/", a.X(a.BprintCreate))
-	rg.PUT("/", a.X(a.BprintCreateFromZip))
+	rg.PATCH("/", a.X(a.BprintCreateFromZip))
 	rg.PUT("/", a.X(a.BprintImport))
 
 	rg.GET("/:id", a.X(a.BprintGet))
