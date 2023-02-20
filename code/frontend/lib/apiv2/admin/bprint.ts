@@ -14,6 +14,10 @@ export class AdminBprintAPI {
     return this.base.post("/admin/bprint/", data);
   }
 
+  create_from_zip(data: any) {
+    return this.base.patchForm("/admin/bprint/", true, data);
+  }
+
   import(data: any) {
     return this.base.put("/admin/bprint/", data);
   }

@@ -1,6 +1,7 @@
 <script>
   import BackgroundImage from "./_bg_image.svelte";
   export let uploadFile;
+  export let placeholder = "file.txt";
 
   const imageTypes = ["jpg", "png", "jpeg"];
 
@@ -45,7 +46,7 @@
         class="text-base p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
         type="text"
         bind:value={filename}
-        placeholder="file.txt"
+        {placeholder}
       />
     </div>
     <div class="grid grid-cols-1 space-y-2">
@@ -59,7 +60,7 @@
           {#key file}
             {#if !file}
               <div
-                class="h-full w-full text-center flex flex-col items-center justify-center items-center  cursor-pointer"
+                class="h-full w-full text-center flex flex-col items-center justify-center  cursor-pointer"
               >
                 <div class="flex flex-auto max-h-48 w-2/5 mx-auto">
                   <div class="h-36 p-4">
@@ -113,11 +114,10 @@
     <p class="text-sm text-gray-300">
       <span>File type: any</span>
     </p>
-    <div>
+    <div class="flex justify-end">
       {#if file}
         <button
-
-          class="my-5 w-full flex justify-center bg-blue-500 text-gray-100 p-4  rounded-full tracking-wide font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-800 shadow-lg cursor-pointer transition ease-in duration-300"
+          class="my-5 flex justify-center bg-blue-500 text-gray-100 p-2  rounded tracking-wide font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-800 shadow cursor-pointer transition ease-in duration-300"
         >
           Upload
         </button>
