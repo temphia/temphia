@@ -1,7 +1,10 @@
 package admin
 
 import (
+	"archive/zip"
 	"encoding/json"
+	"io/ioutil"
+	"mime/multipart"
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
@@ -66,7 +69,7 @@ func (c *Controller) BprintNewBlob(uclaim *claim.Session, bid, file string, payl
 		return easyerr.NotImpl()
 	}
 
-	return c.pacman.BprintNewBlob(uclaim.TenantId, bid, file, payload)
+	return c.pacman.BprintNewBlob(uclaim.TenantId, bid, file, payload, true)
 }
 
 func (c *Controller) BprintUpdateBlob(uclaim *claim.Session, bid, file string, payload []byte) error {
@@ -90,6 +93,59 @@ func (c *Controller) BprintDeleteBlob(uclaim *claim.Session, bid, file string) e
 	}
 
 	return c.pacman.BprintDeleteBlob(uclaim.TenantId, bid, file)
+}
+
+func (c *Controller) BprintCreateFromZip(uclaim *claim.Session, form *multipart.Form) error {
+	zfile := form.File["file"][0]
+	zipfile, err := zfile.Open()
+	if err != nil {
+		return err
+	}
+
+	defer zipfile.Close()
+
+	reader, err := zip.NewReader(zipfile, zfile.Size)
+	if err != nil {
+		return err
+	}
+
+	ifile, err := reader.Open("index.json")
+	if err != nil {
+		return err
+	}
+
+	bprint := &entities.BPrint{}
+	err = json.NewDecoder(ifile).Decode(bprint)
+	if err != nil {
+		return err
+	}
+
+	bprint.TenantID = uclaim.TenantId
+	bid, err := c.pacman.BprintCreate(uclaim.TenantId, bprint)
+	if err != nil {
+		return err
+	}
+
+	for _, file := range reader.File {
+		rfile, err := file.Open()
+		if err != nil {
+			return err
+		}
+
+		out, err := ioutil.ReadAll(rfile)
+		if err != nil {
+			return err
+		}
+
+		err = c.pacman.BprintNewBlob(uclaim.TenantId, bid, file.Name, out, false)
+		if err != nil {
+			rfile.Close()
+			return err
+		}
+		rfile.Close()
+	}
+
+	return c.pacman.BprintUpdateFilesList(bprint.TenantID, bid, bprint.Files...)
 }
 
 // repo

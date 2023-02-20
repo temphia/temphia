@@ -10,7 +10,7 @@ func (b *Binding) selfGetFile(file string) ([]byte, error) {
 }
 
 func (b *Binding) selfAddFile(file string, data []byte) error {
-	return b.pacman.BprintNewBlob(b.handle.Namespace, b.handle.BprintId, file, data)
+	return b.pacman.BprintNewBlob(b.handle.Namespace, b.handle.BprintId, file, data, true)
 }
 
 func (b *Binding) selfUpdateFile(file string, data []byte) error {
@@ -19,7 +19,7 @@ func (b *Binding) selfUpdateFile(file string, data []byte) error {
 
 func (b *Binding) selfAddDataFile(file string, data []byte) error {
 
-	return b.pacman.BprintNewBlob(b.handle.Namespace, b.handle.BprintId, dataFile(file), data)
+	return b.pacman.BprintNewBlob(b.handle.Namespace, b.handle.BprintId, dataFile(file), data, true)
 
 }
 

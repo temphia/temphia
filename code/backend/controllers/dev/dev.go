@@ -1,7 +1,6 @@
 package dev
 
 import (
-	"encoding/json"
 	"io"
 
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
@@ -43,46 +42,33 @@ func (c *Controller) DevPushFiles(tkt *claim.PlugDevTkt, files map[string]io.Rea
 		return err
 	}
 
-	needsBprintUpdate := false
-
 	if bprint.Files == nil {
 		bprint.Files = make(entities.JsonArray, 0)
-		needsBprintUpdate = true
+
 	}
 
 	for filekey, filerc := range files {
-		if !funk.ContainsString(bprint.Files, filekey) {
-			needsBprintUpdate = true
-			bprint.Files = append(bprint.Files, filekey)
-		}
-
 		out, err := io.ReadAll(filerc)
-		if err != nil {
-			// fixme => wrap error
-			return nil
-		}
-
-		err = c.pacman.BprintNewBlob(tkt.TenantId, tkt.BprintId, filekey, out)
 		if err != nil {
 			return err
 		}
+
+		if !funk.ContainsString(bprint.Files, filekey) {
+			err = c.pacman.BprintNewBlob(tkt.TenantId, tkt.BprintId, filekey, out, true)
+			if err != nil {
+				return err
+			}
+			bprint.Files = append(bprint.Files, filekey)
+		} else {
+			err = c.pacman.BprintUpdateBlob(tkt.TenantId, tkt.BprintId, filekey, out)
+			if err != nil {
+				return err
+			}
+		}
+
 	}
 
-	if !needsBprintUpdate {
-		return nil
-	}
-
-	// fixme => i should be using pacman/repohub
-
-	outfiles, err := json.Marshal(bprint.Files)
-	if err != nil {
-		return err
-	}
-
-	return c.corehub.BprintUpdate(tkt.TenantId, tkt.BprintId, map[string]any{
-		"files": outfiles,
-	})
-
+	return c.pacman.BprintUpdateFilesList(tkt.TenantId, tkt.BprintId, bprint.Files...)
 }
 
 func (c *Controller) DevModifyPlug(tkt *claim.PlugDevTkt, pid string, data map[string]any) error {

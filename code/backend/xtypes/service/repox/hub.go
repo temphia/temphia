@@ -30,8 +30,9 @@ type RepoBprintOps interface {
 	BprintRemove(tenantid, bid string) error
 	BprintListBlobs(tenantid, bid string) (map[string]string, error)
 
-	BprintNewBlob(tenantid, bid, file string, payload []byte) error
+	BprintNewBlob(tenantid, bid, file string, payload []byte, updateList bool) error
 	BprintUpdateBlob(tenantid, bid, file string, payload []byte) error
+	BprintUpdateFilesList(tenantid, bid string, files ...string) error
 	BprintGetBlob(tenantid, bid, file string) ([]byte, error)
 	BprintDeleteBlob(tenantid, bid, file string) error
 }

@@ -65,38 +65,45 @@ func (c *PacMan) BprintListBlobs(tenantid, bid string) (map[string]string, error
 	return resp, nil
 }
 
-func (c *PacMan) BprintNewBlob(tenantid, bid, file string, payload []byte) error {
+func (c *PacMan) BprintNewBlob(tenantid, bid, file string, payload []byte, updateList bool) error {
+	err := c.blobStore(tenantid).AddBlob(context.TODO(), xtypes.BprintBlobFolder, ffile(bid, file), payload)
+	if err != nil {
+		return err
+	}
+
+	if !updateList {
+		return nil
+	}
+
+	return c.BprintUpdateFilesList(tenantid, bid, file)
+}
+
+func (c *PacMan) BprintUpdateFilesList(tenantid, bid string, files ...string) error {
 
 	bprint, err := c.BprintGet(tenantid, bid)
 	if err != nil {
 		return err
 	}
 
-	err = c.blobStore(tenantid).AddBlob(context.TODO(), xtypes.BprintBlobFolder, ffile(bid, file), payload)
-	if err != nil {
-		return err
+	if bprint.Files == nil {
+		bprint.Files = entities.JsonArray{}
 	}
 
-	if funk.ContainsString(bprint.Files, file) {
-		return nil
+	for _, v := range bprint.Files {
+		if funk.ContainsString(bprint.Files, v) {
+			continue
+		}
+		bprint.Files = append(bprint.Files, v)
 	}
-
-	bprint.Files = append(bprint.Files, file)
 
 	bfiles, err := json.Marshal(bprint.Files)
 	if err != nil {
 		return err
 	}
 
-	err = c.corehub.BprintUpdate(tenantid, bid, map[string]any{
+	return c.corehub.BprintUpdate(tenantid, bid, map[string]any{
 		"files": bfiles,
 	})
-
-	if err != nil {
-		c.BprintDeleteBlob(tenantid, bid, file)
-		return easyerr.Error("could not finish blob add")
-	}
-	return nil
 }
 
 func (c *PacMan) BprintUpdateBlob(tenantid, bid, file string, payload []byte) error {

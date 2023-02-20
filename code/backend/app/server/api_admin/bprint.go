@@ -13,6 +13,7 @@ func (a *ApiAdmin) bprintAPI(rg *gin.RouterGroup) {
 
 	rg.GET("/", a.X(a.BprintList))
 	rg.POST("/", a.X(a.BprintCreate))
+	rg.PUT("/", a.X(a.BprintCreateFromZip))
 	rg.PUT("/", a.X(a.BprintImport))
 
 	rg.GET("/:id", a.X(a.BprintGet))
@@ -119,6 +120,17 @@ func (r *ApiAdmin) BprintDelFile(ctx httpx.Request) {
 }
 
 // instance
+
+func (r *ApiAdmin) BprintCreateFromZip(ctx httpx.Request) {
+	form, err := ctx.Http.MultipartForm()
+	if err != nil {
+		r.rutil.WriteErr(ctx.Http, err.Error())
+		return
+	}
+
+	r.cAdmin.BprintCreateFromZip(ctx.Session, form)
+	r.rutil.WriteJSON(ctx.Http, nil, err)
+}
 
 func (r *ApiAdmin) BprintInstance(ctx httpx.Request) {
 	opts := &admin.InstanceOptions{}
