@@ -1,6 +1,11 @@
 {
   "name": "esplug-sdk",
   "version": "1.0.0",
+  "main": "dist/libesplug.js",
+  "types": "dist/libesplug.d.ts",
+  "files": [
+    "/dist"
+  ],
   "scripts": {
     "test": "go test -v",
     "build": "ncc build lib/index.ts -o dist/lib && go run ."
