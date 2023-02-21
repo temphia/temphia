@@ -7,6 +7,7 @@ declare function _pkv_batch_del(tx: number, keys: string[]): string;
 declare function _pkv_new_txn(): [number, string];
 declare function _pkv_rollback(tx: number): string;
 declare function _pkv_commit(tx: number): string;
+declare function _pkv_ticket(opts: TicketOptions ): [string, string];
 
 
 export interface PlugValue {
@@ -18,6 +19,12 @@ export interface PlugValue {
     tag2?: string
     tag3?: string
     ttl?: string
+}
+
+export interface TicketOptions {
+    state_tag1: string
+    state_tag2: string
+    state_tag3: string
 }
 
 export interface PlugQuery {
@@ -55,6 +62,10 @@ export class PlugKV {
     txid: number
     constructor(txid: number) {
         this.txid = txid
+    }
+
+    get_ticket = (opts:TicketOptions ) => {
+        return _pkv_ticket(opts)
     }
 
     quick_get = (key: string): [string, string] => {

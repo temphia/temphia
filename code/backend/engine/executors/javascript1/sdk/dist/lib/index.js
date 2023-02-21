@@ -69,6 +69,9 @@ var core = {
 var PlugKV = /** @class */ (function () {
     function PlugKV(txid) {
         var _this = this;
+        this.get_ticket = function (opts) {
+            return _pkv_ticket(opts);
+        };
         this.quick_get = function (key) {
             var _a = _pkv_get(_this.txid, key), val = _a[0], err = _a[1];
             if (err) {
