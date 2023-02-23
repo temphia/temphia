@@ -68,19 +68,19 @@ type DeleteRowMultiReq struct {
 }
 
 type DeleteRowBatchReq struct {
-	TenantId    string        `json:"-"`
-	Group       string        `json:"group,omitempty"`
-	Table       string        `json:"table,omitempty"`
-	FilterConds []*FilterCond `json:"filter_conds,omitempty"`
-	ModCtx      ModCtx        `json:"mod_ctx,omitempty"`
+	TenantId    string       `json:"-"`
+	Group       string       `json:"group,omitempty"`
+	Table       string       `json:"table,omitempty"`
+	FilterConds []FilterCond `json:"filter_conds,omitempty"`
+	ModCtx      ModCtx       `json:"mod_ctx,omitempty"`
 }
 
 type LoadTableReq struct {
-	TenantId    string        `json:"-"`
-	Table       string        `json:"table,omitempty"`
-	Group       string        `json:"group,omitempty"`
-	View        string        `json:"view,omitempty"`
-	ViewFilters []*FilterCond `json:"view_filters,omitempty"`
+	TenantId    string       `json:"-"`
+	Table       string       `json:"table,omitempty"`
+	Group       string       `json:"group,omitempty"`
+	View        string       `json:"view,omitempty"`
+	ViewFilters []FilterCond `json:"view_filters,omitempty"`
 }
 
 type LoadTableResp struct {
@@ -94,15 +94,15 @@ type LoadTableResp struct {
 }
 
 type SimpleQueryReq struct {
-	TenantId    string        `json:"-"`
-	Table       string        `json:"table,omitempty"`
-	Group       string        `json:"group,omitempty"`
-	Count       int64         `json:"count,omitempty"`
-	FilterConds []*FilterCond `json:"filter_conds,omitempty"`
-	Page        int64         `json:"page,omitempty"`
-	Selects     []string      `json:"selects,omitempty"`
-	SearchTerm  string        `json:"search_term,omitempty"`
-	OrderBy     string        `json:"order_by,omitempty"`
+	TenantId    string       `json:"-"`
+	Table       string       `json:"table,omitempty"`
+	Group       string       `json:"group,omitempty"`
+	Count       int64        `json:"count,omitempty"`
+	FilterConds []FilterCond `json:"filter_conds,omitempty"`
+	Page        int64        `json:"page,omitempty"`
+	Selects     []string     `json:"selects,omitempty"`
+	SearchTerm  string       `json:"search_term,omitempty"`
+	OrderBy     string       `json:"order_by,omitempty"`
 }
 
 type JoinReq struct {

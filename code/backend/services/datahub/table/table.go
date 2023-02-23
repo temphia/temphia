@@ -101,7 +101,7 @@ func (t *Table) LoadTable(txid uint32, req dyndb.LoadTableReq) (*dyndb.LoadTable
 		Table:       req.Table,
 		Group:       req.Group,
 		Count:       50,
-		FilterConds: make([]*dyndb.FilterCond, 0),
+		FilterConds: make([]dyndb.FilterCond, 0),
 		Page:        0,
 		Selects:     nil,
 		SearchTerm:  "",

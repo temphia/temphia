@@ -51,7 +51,7 @@ func (s *Sheet) LoadSheet(txid uint32, data *dyndb.LoadSheetReq) (*dyndb.LoadShe
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetColumnTable,
-		FilterConds: []*dyndb.FilterCond{
+		FilterConds: []dyndb.FilterCond{
 			{
 				Column: "sheetid",
 				Cond:   "equal",
@@ -77,7 +77,7 @@ func (s *Sheet) LoadSheet(txid uint32, data *dyndb.LoadSheetReq) (*dyndb.LoadShe
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetCellTable,
-		FilterConds: []*dyndb.FilterCond{
+		FilterConds: []dyndb.FilterCond{
 			{
 				Column: "sheetid",
 				Cond:   "equal",
@@ -193,7 +193,7 @@ func (s *Sheet) DeleteSheet(txid uint32, id int64, userId string) error {
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetCellTable,
-		FilterConds: []*dyndb.FilterCond{
+		FilterConds: []dyndb.FilterCond{
 			{
 				Column: "sheetid",
 				Cond:   "equal",
@@ -210,7 +210,7 @@ func (s *Sheet) DeleteSheet(txid uint32, id int64, userId string) error {
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetRowTable,
-		FilterConds: []*dyndb.FilterCond{
+		FilterConds: []dyndb.FilterCond{
 			{
 				Column: "sheetid",
 				Cond:   "equal",
@@ -227,7 +227,7 @@ func (s *Sheet) DeleteSheet(txid uint32, id int64, userId string) error {
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetColumnTable,
-		FilterConds: []*dyndb.FilterCond{
+		FilterConds: []dyndb.FilterCond{
 			{
 				Column: "sheetid",
 				Cond:   "equal",
@@ -257,7 +257,7 @@ func (s *Sheet) ListSheetColumn(txid uint32, sid int64) ([]map[string]any, error
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetColumnTable,
-		FilterConds: []*dyndb.FilterCond{
+		FilterConds: []dyndb.FilterCond{
 			{
 				Column: "sheetid",
 				Cond:   "equal",
@@ -317,7 +317,7 @@ func (s *Sheet) DeleteSheetColumn(txid uint32, sid, cid int64, userId string) er
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetCellTable,
-		FilterConds: []*dyndb.FilterCond{
+		FilterConds: []dyndb.FilterCond{
 			{
 				Column: "sheetid",
 				Cond:   "equal",

@@ -48,7 +48,7 @@ var (
 	}
 )
 
-func Transform(fcs []*dyndb.FilterCond) (interface{}, error) {
+func Transform(fcs []dyndb.FilterCond) (interface{}, error) {
 
 	conds := make(db.Cond)
 	resp := []interface{}{

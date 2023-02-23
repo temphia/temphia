@@ -82,7 +82,7 @@ func (c *Controller) UpdateRow(uclaim *claim.Data, tslug string, id, version int
 	})
 }
 
-func (c *Controller) DeleteRowBatch(uclaim *claim.Data, tslug string, filterOpts []*dyndb.FilterCond) error {
+func (c *Controller) DeleteRowBatch(uclaim *claim.Data, tslug string, filterOpts []dyndb.FilterCond) error {
 	source, group := getTarget(uclaim)
 	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
 	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
