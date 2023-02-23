@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { TableService } from "../../../../services/data";
-  import Renderer from "../core/renderer/renderer.svelte";
   import RendererLayout from "../core/renderer/layout.svelte";
+  import Rendererv2 from "../core/renderer/rendererv2.svelte";
 
   export let table_service: TableService;
   export let data_widgets: object[];
@@ -35,11 +35,27 @@
   rows_total_no={0}
   rows_loaded_no={_data.rows.length || 0}
 >
-  <Renderer
+  <!-- <Renderer
     folder_api={table_service.folder_api}
     columns={_data.column_order}
     columns_index={_data.indexed_column}
     main_column={_nav_store.active_view.main_column}
+    rows={_data.rows}
+    rows_index={_data.indexed_rows}
+    {selected_rows}
+    on:on_new_row
+    on:on_page_buttom
+    on:on_page_top
+    on:on_row_click
+    on:on_row_toggle_select
+    on:on_table_change
+    on:on_change_to_card
+  /> -->
+
+  <Rendererv2
+    folder_api={table_service.folder_api}
+    columns={_data.column_order}
+    columns_index={_data.indexed_column}
     rows={_data.rows}
     rows_index={_data.indexed_rows}
     {selected_rows}

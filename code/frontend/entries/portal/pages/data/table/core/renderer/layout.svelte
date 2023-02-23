@@ -146,7 +146,7 @@
       </div>
     </div>
 
-    <div class="w-full h-full overflow-hidden">
+    <div class="w-full h-full">
       <slot>Empty slot</slot>
 
       <div

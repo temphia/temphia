@@ -75,7 +75,7 @@
       name="Search"
     />
 
-    <div class="h-full border mx-1"></div>
+    <div class="h-full border mx-1" />
 
     {#each widgets as widget}
       <ToolbarAction
@@ -86,10 +86,7 @@
     {/each}
   </div>
 
-  <div
-    id="sheet-main"
-    class="overflow-x-auto bg-white border rounded overflow-y-auto relative"
-  >
+  <div id="sheet-main" class="bg-white border rounded overflow-auto relative">
     <slot />
   </div>
 </div>
