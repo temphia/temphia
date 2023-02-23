@@ -21,48 +21,27 @@
   const rowToggleSelect = (payload) =>
     dispatch("on_row_toggle_select", payload);
 
-  let left_ref;
-  let head_ref;
-
   const flipCSS = (index) => (index % 2 === 1 ? "gray" : "");
-  let DEFAULT_WIDTH = columns.length > 3 ? 15 : 20;
-  let width = "w-min md:w-full";
-  if (columns.length < 4) {
-    width = "w-min md:w-full justify-between";
-  } else if (columns.length > 7) {
-    width = "w-min";
-  }
 
-  const column_resize = ColumnResize(DEFAULT_WIDTH);
+  const scrollHandle = (ev) => {
+    const sTop = ev.target.scrollTop;
+    const sTopMax = ev.target.scrollTopMax;
 
-  const scrollHandle = (sTop, sTopMax, sLeft) => {
-    head_ref.scrollLeft = sLeft;
-    left_ref.scrollTop = sTop;
     if (sTopMax === sTop) {
       onPageButtom();
     } else if (sTop === 0) {
       onPageTop();
     }
   };
-
-  let start;
-  let end;
-
-  let heightClass = "h-12";
 </script>
 
 <!-- left start -->
 <div
   class="w-full overflow-scroll"
   style="height:calc(100vh - 7em);"
-  on:scroll={(ev) => {
-    console.log("@@@@", ev);
-  }}
+  on:scroll={scrollHandle}
 >
   <table
-    on:scroll={(ev) => {
-      console.log("@ev", ev);
-    }}
     class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative"
   >
     <thead class="text-gray-600 border-gray-200 bg-gray-100 h-12">
@@ -84,8 +63,8 @@
     </thead>
 
     <tbody>
-      {#each rows as item}
-        <tr class="text-left">
+      {#each rows as item, ridx}
+        <tr class="text-left {flipCSS(ridx)}">
           <td class="border-dashed border-t border-gray-200 px-2">
             <label
               class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
