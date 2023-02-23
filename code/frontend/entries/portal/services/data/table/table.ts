@@ -18,6 +18,16 @@ export interface DataState {
   views: object[];
 }
 
+/*
+view_filter todo
+
+view_filter_mode
+  - no_filter
+  - on_fly_filter
+  - static
+
+*/
+
 export class TableService {
   all_tables: object[];
   table_slug: string;
@@ -510,3 +520,8 @@ export class DirtyRowService {
     this.callbacks.forEach((val) => val());
   }
 }
+
+export const DataTableInvokerFactory =
+  (dt: TableService) => (widget: object) => {
+    return {};
+  };

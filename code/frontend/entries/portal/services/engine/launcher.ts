@@ -7,21 +7,25 @@ interface LauncherState {
   instances: Instance[];
 }
 
+export interface TargetInvoker {
+  handle(instance_id: string, msg_id: string, data: any);
+  close(instance_id: string);
+}
+
+export type InvokerFactory = (widget: object) => TargetInvoker;
+
 export interface Instance {
   id: string;
   target_id: string;
   target_type: string;
   name: string;
-  invoker?: {
-    close_instance: (id: string) => void;
-    handle_message: (id: string, data: any) => void;
-  };
+  invoker?: TargetInvoker;
   invoker_name: string;
 }
 
 export interface InvokerOptions {
   invoker_name: string;
-  invoker?: any;
+  invoker_factory?: InvokerFactory;
   target_name?: string;
   target_type?: string;
   target_id: string;
@@ -67,7 +71,6 @@ export class Launcher {
     if (get(this.state).display === "FLOATING") {
       this.state.update((old) => ({ ...old, display: "HIDDEN" }));
     }
-    
   }
 
   plane_float() {
@@ -89,6 +92,7 @@ export class Launcher {
 
     const instance_id = generateId();
 
+
     this.state.update((old) => ({
       ...old,
       active_instance: instance_id,
@@ -103,6 +107,7 @@ export class Launcher {
         },
       ],
     }));
+
 
     return instance_id;
   }

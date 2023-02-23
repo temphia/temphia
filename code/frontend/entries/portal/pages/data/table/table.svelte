@@ -35,7 +35,7 @@
       invoker_name: "data_table",
       target_name: widget.name,
       target_type: widget.target_type,
-      invoker: table_service, // fixme => wrap it
+      invoker_factory: null, //table_service, // fixme => wrap it
     });
 
     tick().then(() => {
