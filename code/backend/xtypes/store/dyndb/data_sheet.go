@@ -27,6 +27,18 @@ type LoadSheetReq struct {
 	FilterConds []FilterCond `json:"filter_conds,omitempty"`
 }
 
+type QuerySheetReq struct {
+	TenantId    string       `json:"-"`
+	Group       string       `json:"group,omitempty"`
+	SheetId     int64        `json:"sheet_id,omitempty"`
+	View        string       `json:"view,omitempty"`
+	FilterConds []FilterCond `json:"filter_conds,omitempty"`
+}
+
+type QuerySheetResp struct {
+	Cells []map[string]any `json:"cells,omitempty"`
+}
+
 type LoadSheetResp struct {
 	Columns    []map[string]any      `json:"columns,omitempty"`
 	Cells      []map[string]any      `json:"cells,omitempty"`

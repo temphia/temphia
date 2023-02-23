@@ -136,6 +136,13 @@ func (s *Sheet) LoadSheet(txid uint32, data *dyndb.LoadSheetReq) (*dyndb.LoadShe
 
 }
 
+func (s *Sheet) Query(txid uint32, data *dyndb.QuerySheetReq) (*dyndb.QuerySheetResp, error) {
+
+	// fixme => impl
+
+	return nil, nil
+}
+
 func (s *Sheet) ListSheet(txid uint32) ([]map[string]any, error) {
 	resp, err := s.tableHub.SimpleQuery(txid, dyndb.SimpleQueryReq{
 		TenantId: s.tenantId,
