@@ -34,14 +34,14 @@
   afterUpdate(fix_tab);
 </script>
 
-{#if __active_instance}
-  <div
-    class="bg-white {__hidden
-      ? 'hidden'
-      : __floating
-      ? 'floating'
-      : 'not-floating'}"
-  >
+<div
+  class="bg-white {__hidden
+    ? 'hidden'
+    : __floating
+    ? 'floating'
+    : 'not-floating'}"
+>
+  {#if __active_instance}
     <div class="flex justify-between border border-gray-100">
       <div class="grow h-10 flex flex-row flex-nowrap overflow-hidden">
         {#each __instances as instance}
@@ -101,10 +101,10 @@
         </div>
       {/each}
     </div>
-  </div>
-{:else if !__hidden}
-  <div>No Apps running</div>
-{/if}
+  {:else if !__hidden}
+    <div>No Apps running</div>
+  {/if}
+</div>
 
 <style>
   .hidden {
