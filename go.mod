@@ -12,6 +12,7 @@ require (
 	github.com/brianvoe/gofakeit/v6 v6.18.0
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dop251/goja v0.0.0-20220815083517-0c74f9139fd6
+	github.com/doug-martin/goqu/v9 v9.18.0
 	github.com/fergusstrange/embedded-postgres v1.19.0
 	github.com/gin-gonic/gin v1.8.1
 	github.com/gobwas/ws v1.1.0
