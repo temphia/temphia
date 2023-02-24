@@ -12,6 +12,13 @@ export default () => {
   try {
     if (!window["localStorage"]) {
       window["localStorage"] = fakeStorage();
+    } else {
+      // if we do not have sandbox and browser donot support
+      //   credentialless/anonymous iframes #hacky_as_hell
+      if (localStorage.getItem("_temphia_authed_key_")) {
+        delete window["localStorage"];
+        window["localStorage"] = fakeStorage();
+      }
     }
   } catch (error) {
     console.log("@execption", error);
