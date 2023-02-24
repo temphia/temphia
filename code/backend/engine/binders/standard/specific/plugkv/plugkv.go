@@ -126,9 +126,6 @@ func (pkv *Binding) Ticket(opts *bindx.PlugStateTkt) (string, error) {
 		ExecId:    0,
 		PlugId:    pkv.plugId,
 		AgentId:   pkv.agentid,
-		StateTag1: opts.StateTag1,
-		StateTag2: opts.StateTag2,
-		StateTag3: opts.StateTag3,
 		KeyPrefix: opts.KeyPrefix,
 	})
 

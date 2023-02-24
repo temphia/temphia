@@ -42,9 +42,6 @@ type PlugState struct {
 	ExecId    int64  `json:"exec_id,omitempty"`
 	PlugId    string `json:"plug_id,omitempty"`
 	AgentId   string `json:"agent_id,omitempty"`
-	StateTag1 string `json:"state_tag1,omitempty"`
-	StateTag2 string `json:"state_tag2,omitempty"`
-	StateTag3 string `json:"state_tag3,omitempty"`
 	KeyPrefix string `json:"key_prefix,omitempty"`
 }
 

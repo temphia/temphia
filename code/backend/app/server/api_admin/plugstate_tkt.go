@@ -1,27 +1,25 @@
 package apiadmin
 
 import (
-	"strconv"
-
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/backend/controllers/admin"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 func (a *ApiAdmin) plugStateTKT(rg *gin.RouterGroup) {
 
-	rg.GET("/", a.pstX(a.listPlugState))
-	rg.POST("/", a.pstX(a.addPlugState))
-	rg.GET("/:key", a.pstX(a.getPlugState))
-	rg.POST("/:key", a.pstX(a.updatePlugState))
-	rg.DELETE("/:key", a.pstX(a.deletePlugState))
+	rg.GET("/query", a.pstX(a.listPlugState))
+	rg.POST("/key", a.pstX(a.addPlugState))
+	rg.GET("/key/:key", a.pstX(a.getPlugState))
+	rg.POST("/key/:key", a.pstX(a.updatePlugState))
+	rg.DELETE("/key/:key", a.pstX(a.deletePlugState))
 
 }
 
 func (a *ApiAdmin) addPlugState(aclaim *claim.PlugState, ctx *gin.Context) {
-	data := entities.PlugKV{}
-
+	data := admin.AddPlugStateOptions{}
 	err := ctx.BindJSON(&data)
 	if err != nil {
 		a.rutil.WriteErr(ctx, err.Error())
@@ -38,15 +36,15 @@ func (a *ApiAdmin) getPlugState(aclaim *claim.PlugState, ctx *gin.Context) {
 }
 
 func (a *ApiAdmin) updatePlugState(aclaim *claim.PlugState, ctx *gin.Context) {
-	var value string
 
-	err := ctx.BindJSON(&value)
+	data := admin.UpdatePlugStateOptions{}
+	err := ctx.BindJSON(&data)
 	if err != nil {
 		a.rutil.WriteErr(ctx, err.Error())
 		return
 	}
 
-	err = a.cAdmin.UpdatePlugState(aclaim, ctx.Param("key"), value)
+	err = a.cAdmin.UpdatePlugState(aclaim, data)
 	a.rutil.WriteFinal(ctx, err)
 }
 
@@ -57,10 +55,14 @@ func (a *ApiAdmin) deletePlugState(aclaim *claim.PlugState, ctx *gin.Context) {
 
 func (a *ApiAdmin) listPlugState(aclaim *claim.PlugState, ctx *gin.Context) {
 
-	page, _ := strconv.ParseInt(ctx.Query("page"), 10, 64)
-	pcount, _ := strconv.ParseInt(ctx.Query("page_count"), 10, 64)
+	query := store.PkvQuery{}
+	err := ctx.BindJSON(&query)
+	if err != nil {
+		a.rutil.WriteErr(ctx, err.Error())
+		return
+	}
 
-	resp, err := a.cAdmin.ListPlugState(aclaim, int(page), int(pcount), ctx.Query("key_cursor"), ctx.Query("key_prefix"))
+	resp, err := a.cAdmin.ListPlugState(aclaim, &query)
 	a.rutil.WriteJSON(ctx, resp, err)
 }
 

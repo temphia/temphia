@@ -28,9 +28,6 @@ type Core interface {
 }
 
 type PlugStateTkt struct {
-	StateTag1 string `json:"state_tag1,omitempty"`
-	StateTag2 string `json:"state_tag2,omitempty"`
-	StateTag3 string `json:"state_tag3,omitempty"`
 	KeyPrefix string `json:"key_prefix,omitempty"`
 }
 
