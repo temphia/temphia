@@ -4,12 +4,18 @@ import { initRegistry, plugStart } from "../../../../lib/engine/putils";
 import { generateId } from "../../../../lib/utils";
 import { Env } from "../../../portal/launcher/env";
 import { IFramePipe } from "./iframe_pipe";
-import { fakeLocalStorage } from "./fakestorage";
+import { fakeStorage } from "./fakestorage";
 
 export default () => {
   console.log("Iframe Exec start..");
 
-  fakeLocalStorage(window);
+  try {
+    if (!window["localStorage"]) {
+      window["localStorage"] = fakeStorage();
+    }
+  } catch (error) {
+    console.log("@execption", error);
+  }
 
   initRegistry();
 
