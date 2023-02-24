@@ -65,10 +65,14 @@ func (c *Controller) DeletePlugState(aclaim *claim.PlugState, key string) error 
 	return c.plugState.Del(0, aclaim.TenantId, aclaim.PlugId, key)
 }
 
-func (c *Controller) ListPlugState(aclaim *claim.PlugState, page, pcount int, keycursor string) ([]*entities.PlugKV, error) {
+func (c *Controller) ListPlugState(aclaim *claim.PlugState, page, pcount int, keycursor, keyPrefix string) ([]*entities.PlugKV, error) {
+
+	if !strings.HasPrefix(keyPrefix, aclaim.KeyPrefix) {
+		keyPrefix = aclaim.KeyPrefix
+	}
 
 	kv := &store.PkvQuery{
-		KeyPrefix: aclaim.KeyPrefix,
+		KeyPrefix: keyPrefix,
 		LoadMeta:  true,
 		Tag1s:     nil,
 		Tag2s:     nil,

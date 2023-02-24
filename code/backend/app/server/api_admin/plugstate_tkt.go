@@ -57,10 +57,10 @@ func (a *ApiAdmin) deletePlugState(aclaim *claim.PlugState, ctx *gin.Context) {
 
 func (a *ApiAdmin) listPlugState(aclaim *claim.PlugState, ctx *gin.Context) {
 
-	page, _ := strconv.ParseInt(ctx.Param("page"), 10, 64)
-	pcount, _ := strconv.ParseInt(ctx.Param("page_count"), 10, 64)
+	page, _ := strconv.ParseInt(ctx.Query("page"), 10, 64)
+	pcount, _ := strconv.ParseInt(ctx.Query("page_count"), 10, 64)
 
-	resp, err := a.cAdmin.ListPlugState(aclaim, int(page), int(pcount), ctx.Query("key_cursor"))
+	resp, err := a.cAdmin.ListPlugState(aclaim, int(page), int(pcount), ctx.Query("key_cursor"), ctx.Query("key_prefix"))
 	a.rutil.WriteJSON(ctx, resp, err)
 }
 

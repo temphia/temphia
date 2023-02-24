@@ -6,12 +6,13 @@ export class AdminPlugStateTktAPI {
     this.base = base;
   }
 
-  list(qparms: { key_cursor?: string; page?: number, page_count?: number }) {
+  list(qparms: { key_cursor?: string; page?: number, page_count?: number, key_prefix?: string }) {
     const u = new URLSearchParams();
 
     u.set("page", String(qparms.page || 0));
     u.set("page_count", String(qparms.page_count || 0));
     u.set("key_cursor", qparms.key_cursor || "");
+    u.set("key_prefix", qparms.key_prefix || "");
 
     return this.base.get(`/admin/plug_state/`);
   }
