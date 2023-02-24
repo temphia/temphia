@@ -44,5 +44,13 @@
   title={name}
   class="w-full h-full transition-all"
   srcdoc={src}
-  sandbox="allow-scripts"
+  credentialless
+  anonymous
 />
+
+<!-- 
+    only latest chrome 110 support credentialless/anonymous
+    so fallback to sandbox ? in that case you cannot use localStorage
+    sandbox="allow-scripts"
+-->
+
