@@ -10,17 +10,19 @@ export class AdminPlugStateTktAPI {
     return this.base.post(`/admin/plug_state/query`, options);
   }
 
-  add(key: string, value: string) {
+  add(key: string, value: string, opts?: any) {
     return this.base.post(`/admin/plug_state/key`, {
       key,
       value,
+      options: opts,
     });
   }
 
-  update(key: string, value: string) {
+  update(key: string, value: string, opts?: any) {
     return this.base.post(`/admin/plug_state/key/${key}`, {
       key,
       value,
+      options: opts
     });
   }
 

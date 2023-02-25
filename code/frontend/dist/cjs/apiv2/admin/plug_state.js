@@ -8,16 +8,18 @@ class AdminPlugStateTktAPI {
     query(options) {
         return this.base.post(`/admin/plug_state/query`, options);
     }
-    add(key, value) {
+    add(key, value, opts) {
         return this.base.post(`/admin/plug_state/key`, {
             key,
             value,
+            options: opts,
         });
     }
-    update(key, value) {
+    update(key, value, opts) {
         return this.base.post(`/admin/plug_state/key/${key}`, {
             key,
             value,
+            options: opts
         });
     }
     delete(key) {
