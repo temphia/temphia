@@ -10,7 +10,7 @@ import (
 
 func (a *ApiAdmin) plugStateTKT(rg *gin.RouterGroup) {
 
-	rg.GET("/query", a.pstX(a.listPlugState))
+	rg.POST("/query", a.pstX(a.listPlugState))
 	rg.POST("/key", a.pstX(a.addPlugState))
 	rg.GET("/key/:key", a.pstX(a.getPlugState))
 	rg.POST("/key/:key", a.pstX(a.updatePlugState))
