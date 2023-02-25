@@ -44,6 +44,8 @@ export class PortalService {
   cabinet_service: CabinetService;
 
   constructor(opts: AppOptions) {
+    console.log("@portal_service", this)
+
     this.options = opts;
     this.nav = new Navigator();
     this.api_manager = new ApiManager(
