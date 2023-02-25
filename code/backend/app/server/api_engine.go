@@ -4,6 +4,7 @@ import (
 	_ "embed"
 	"html/template"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/k0kubun/pp"
@@ -38,8 +39,8 @@ func (s *Server) engineAPI(rg *gin.RouterGroup) {
 	})
 
 	// serve file
-	rg.GET("/plug/:pid/agent/:aid/serve/:file", s.agentServeFile)
-	rg.GET("/plug/:pid/agent/:aid/executor/:eid/:file", s.executorFile)
+	rg.GET("/plug/:pid/agent/:aid/serve/*file", s.agentServeFile)
+	rg.GET("/plug/:pid/agent/:aid/executor/:eid/*file", s.executorFile)
 
 	// engine sockd
 	rg.GET("/ws", func(ctx *gin.Context) {})
@@ -52,23 +53,26 @@ func (s *Server) execute(ctx *gin.Context) {
 }
 
 func (s *Server) agentServeFile(ctx *gin.Context) {
+	file := strings.TrimPrefix(ctx.Param("file"), "/")
 
-	out, err := s.cEngine.ServeAgentFile(ctx.Param("tenant_id"), ctx.Param("pid"), ctx.Param("aid"), ctx.Param("file"))
+	out, err := s.cEngine.ServeAgentFile(ctx.Param("tenant_id"), ctx.Param("pid"), ctx.Param("aid"), file)
 	if err != nil {
 		pp.Println("@err/server_agent", err)
 		return
 	}
 
-	httpx.WriteFile(ctx.Param("file"), out, ctx)
+	httpx.WriteFile(file, out, ctx)
 }
 
 func (s *Server) executorFile(ctx *gin.Context) {
-	out, err := s.cEngine.ServeExecutorFile(ctx.Param("tenant_id"), ctx.Param("pid"), ctx.Param("aid"), ctx.Param("file"))
+	file := strings.TrimPrefix(ctx.Param("file"), "/")
+
+	out, err := s.cEngine.ServeExecutorFile(ctx.Param("tenant_id"), ctx.Param("pid"), ctx.Param("aid"), file)
 	if err != nil {
 		pp.Println("@err/executor_file", err)
 		return
 	}
-	httpx.WriteFile(ctx.Param("file"), out, ctx)
+	httpx.WriteFile(file, out, ctx)
 }
 
 // launch
