@@ -7,7 +7,7 @@
   import ViewPanel from "./core/view/view.svelte";
 
   import { createEventDispatcher } from "svelte";
-  import type { ViewModal } from "./core/view/view";
+  import type { ViewModal } from "../table/core/view/view";
 
   export let table_service: TableService;
   export let layout: string;
