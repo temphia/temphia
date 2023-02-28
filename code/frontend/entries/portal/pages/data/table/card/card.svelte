@@ -5,7 +5,7 @@
     TableService,
   } from "../../../../services/data/table";
 
-  import RendererLayout from "../core/renderer/layout.svelte";
+  import RendererLayout from "../core/layout.svelte";
   import CardItem from "./_item.svelte";
 
   export let table_service: TableService;

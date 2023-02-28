@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
-  import Cicon from "../cicon/cicon.svelte";
+  import Cicon from "../core/cicon/cicon.svelte";
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import * as cf from "../../../../services/data/table/column";
   import type { FolderTktAPI } from "../../../../../../lib/apiv2";
@@ -63,7 +63,7 @@
 
     <tbody>
       {#each rows as item, ridx}
-        <tr class="text-left {flipCSS(ridx)}">
+        <tr class="text-left bg-{flipCSS(ridx)}-100">
           <td class="border-dashed border-t border-gray-200 px-2">
             <label
               class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"

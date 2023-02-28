@@ -2,7 +2,7 @@
   import Loading from "./_loading.svelte";
   import { createEventDispatcher } from "svelte";
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import ToolbarAction from "./_toolbar/_action.svelte";
+  import ToolbarAction from "./toolbar/_action.svelte";
 
   export let data_widgets: object[];
   export let all_tables: object[];

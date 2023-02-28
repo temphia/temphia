@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { TableService } from "../../../../services/data";
-  import TableLayout from "../core/renderer/layout.svelte";
-  import GridInner from "../core/renderer/rendererv2.svelte";
+  import TableLayout from "../core/layout.svelte";
+  import GridInner from "./grid_inner.svelte";
 
   export let table_service: TableService;
   export let data_widgets: object[];
