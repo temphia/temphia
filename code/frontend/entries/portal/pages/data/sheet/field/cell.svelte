@@ -270,7 +270,11 @@
           {service}
           {column}
           current={value_num}
-          onSelect={(val) => {}}
+          onSelect={(val) => {
+            value = val.ref_value;
+            value_num = val.__id;
+            onCellChange({ value, numval: value_num });
+          }}
         />
       {:else if column.ctype === SheetColTypeFile}
         <FilePanel

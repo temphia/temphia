@@ -6,7 +6,7 @@
   import SheetInner from "../_sheet_inner.svelte";
 
   export let current = undefined;
-  export let onSelect = (val) => {};
+  export let onSelect = (val: { __id: number; ref_value: string }) => {};
   export let service: SheetService;
   export let column: SheetColumn;
 
@@ -31,6 +31,14 @@
     console.log("@state", $state);
   };
 
+  const pick_row = (ev) => {
+    const rowid = ev.detail["__id"];
+    const colcells = $state.cells[rowid] || {};
+    const refcell = colcells[column.sheetid] || {};
+    const ref_value = String(refcell["value"] || refcell["num_value"] || "");
+    onSelect({ __id: rowid, ref_value });
+  };
+
   load();
 </script>
 
@@ -44,5 +52,6 @@
     rows={$state.rows}
     folder_api={null}
     selected_rows={[]}
+    on:pick_row={pick_row}
   />
 {/if}

@@ -12,6 +12,7 @@
     SheetColTypeMultiSelect,
     SheetColTypeNumber,
     SheetColTypeRatings,
+    SheetColTypeReference,
     SheetColTypeSelect,
     SheetColumn,
     SheetCtypeIcons,
@@ -113,6 +114,16 @@
                   {/if}
                 {:else if col.ctype === SheetColTypeDate}
                   {value && new Date(value).toLocaleDateString()}
+                {:else if col.ctype === SheetColTypeReference}
+                  {#if num_value}
+                    <span class="bg-blue-100 rounded p-0.5 text-gray-600">
+                      Ref:
+                      {num_value}
+                      <strong class="font-semibold text-gray-700"
+                        >{value}</strong
+                      >
+                    </span>
+                  {/if}
                 {:else if col.ctype === SheetColTypeLocation}
                   <Point {value} />
                 {:else if col.ctype === SheetColTypeRatings}
