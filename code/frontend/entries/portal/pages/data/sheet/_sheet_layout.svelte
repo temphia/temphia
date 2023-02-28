@@ -1,7 +1,7 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import { createEventDispatcher } from "svelte";
-  import ToolbarAction from "../table/core/renderer/_toolbar_action.svelte";
+  import { ActionNormal } from "../shared";
   import type { Sheet, SheetWidget } from "./sheets";
 
   export let sheets: Sheet[];
@@ -45,31 +45,31 @@
   </nav>
 
   <div class="flex p-1 gap-1">
-    <ToolbarAction
+    <ActionNormal
       onClick={() => dispatch("action_refresh")}
       icon="refresh"
       name="Refresh"
     />
-    <ToolbarAction
+    <ActionNormal
       onClick={() => dispatch("action_goto_rawtable")}
       icon="hashtag"
       name="Raw"
     />
-    <ToolbarAction
+    <ActionNormal
       onClick={() => dispatch("action_goto_history")}
       icon="calendar"
       name="History"
     />
 
     {#if selected_rows.length === 1}
-      <ToolbarAction
+      <ActionNormal
         onClick={() => dispatch("action_delete_trash")}
         icon="trash"
         name="Delete"
       />
     {/if}
 
-    <ToolbarAction
+    <ActionNormal
       onClick={() => dispatch("action_search")}
       icon="document-search"
       name="Search"
@@ -78,7 +78,7 @@
     <div class="h-full border mx-1" />
 
     {#each widgets as widget}
-      <ToolbarAction
+      <ActionNormal
         onClick={() => dispatch("action_run_widget", widget)}
         icon="puzzle"
         name={widget.name}

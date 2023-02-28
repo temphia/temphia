@@ -2,7 +2,8 @@
   import Loading from "./_loading.svelte";
   import { createEventDispatcher } from "svelte";
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import ToolbarAction from "./toolbar/_action.svelte";
+
+  import { ActionHook, ActionNormal} from "../../shared";
 
   export let data_widgets: object[];
   export let all_tables: object[];
@@ -68,39 +69,39 @@
       <!-- TOOLBAR  start -->
       <div class="flex flex-wrap p-1 pr-4 gap-x-1">
         {#key re_render}
-          <ToolbarAction icon="refresh" name="Refresh" onClick={() => {}} />
-          <ToolbarAction
+          <ActionNormal icon="refresh" name="Refresh" onClick={() => {}} />
+          <ActionNormal
             icon="cog"
             name="Setting"
             onClick={() => dispatch("tb_goto_setting")}
           />
-          <ToolbarAction
+          <ActionNormal
             icon="share"
             name="Share"
             onClick={() => dispatch("tb_share")}
           />
-          <ToolbarAction
+          <ActionNormal
             icon="filter"
             name="View"
             onClick={() => dispatch("tb_view")}
           />
-          <ToolbarAction
+          <ActionNormal
             icon="calendar"
             name="History"
             onClick={() => dispatch("tb_history")}
           />
           {#if selected_rows.length > 0}
-            <ToolbarAction
+            <ActionNormal
               icon="duplicate"
               name="Clone"
               onClick={() => dispatch("tb_clone")}
             />
-            <ToolbarAction
+            <ActionNormal
               icon="refresh"
               name="Delete"
               onClick={() => dispatch("tb_delete")}
             />
-            <ToolbarAction
+            <ActionNormal
               icon="refresh"
               name="Clear"
               onClick={() => dispatch("tb_clear")}
@@ -110,13 +111,13 @@
 
           {#each data_widgets as widget}
             {#if (widget["context_type"] || "").startsWith("global")}
-              <ToolbarAction
+              <ActionNormal
                 icon="lightning-bolt"
                 name={widget["name"] || "#hook"}
                 onClick={() => dispatch("tb_execute_widget", widget)}
               />
             {:else if (widget["context_type"] || "").startsWith("row") && selected_rows.length > 0}
-              <ToolbarAction
+              <ActionNormal
                 icon="lightning-bolt"
                 name={widget["name"] || "#hook"}
                 onClick={() => dispatch("tb_execute_widget", widget)}
