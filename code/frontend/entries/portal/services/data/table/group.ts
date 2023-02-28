@@ -1,8 +1,7 @@
-import { sleep } from "yootils";
 import { DataAPI, FolderTktAPI } from "../../../../../lib/apiv2";
 import type { Sockd, SockdMessage } from "../../../../../lib/sockd";
 import type { SockdService } from "../../sockd/sockd";
-import { TableService } from "./table";
+import { TableService } from "./table_service";
 
 export class GroupService {
   source: string;
@@ -10,7 +9,7 @@ export class GroupService {
   data_api: DataAPI;
   api_base_url: string;
   tables_services: Map<string, TableService>;
-  active_table: string
+  active_table: string;
 
   tables: object[];
   close_modal: any;
@@ -20,6 +19,7 @@ export class GroupService {
   // sockd
   sockd_builder: SockdService;
   sockd_conn: Sockd;
+  event_timer: number;
 
   constructor(opts: {
     source: string;
@@ -84,20 +84,22 @@ export class GroupService {
       this.tables_services.set(table, tservice);
     }
 
-    this.active_table = table
-    
+    this.active_table = table;
+
     return tservice;
   };
 
   run = async () => {
-    console.log("Starting event loop");
-    while (true) {
-      console.log("Sleeping");
-      await sleep(1000);
-    }
+    this.event_timer = setInterval(() => {
+      this.tables_services.forEach((tservice) => {
+        tservice.poll();
+      });
+    }, 10000);
   };
 
   close = async () => {
+    clearInterval(this.event_timer);
+
     this.tables_services.forEach((tsvc) => {
       tsvc.close();
     });
