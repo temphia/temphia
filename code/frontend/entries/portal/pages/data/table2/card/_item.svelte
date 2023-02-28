@@ -1,6 +1,6 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import type { Column } from "../../../../../services/data";
+  import type { Column } from "../../../../services/data";
   import Cicon from "../core/cicon/cicon.svelte";
 
   export let order: any; // Order;

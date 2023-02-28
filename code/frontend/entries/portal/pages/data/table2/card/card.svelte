@@ -3,7 +3,7 @@
   import {
     calculate_card_order,
     TableService,
-  } from "../../../../../services/data/table2";
+  } from "../../../../services/data/table2";
 
   import RendererLayout from "../core/renderer/layout.svelte";
   import CardItem from "./_item.svelte";
