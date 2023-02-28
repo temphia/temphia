@@ -124,7 +124,7 @@
                     {#each celldata.split(",") as cd}
                       <div class="flex">
                         <img
-                          alt=""
+                          alt="user"
                           src="/z/assets/static/default_user_profile.png"
                           class="w-6 h-6 p-1 rounded-full bg-green-50"
                         />
