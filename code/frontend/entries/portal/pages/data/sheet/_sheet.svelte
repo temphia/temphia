@@ -2,7 +2,7 @@
   import { getContext } from "svelte";
   import { get, Writable } from "svelte/store";
   import { LoadingSpinner, PortalService } from "../../admin/core";
-  import type { SheetService, SheetState } from "../../../services/data";
+  import type { SheetService, SheetState } from "../shared";
   import SheetUi from "./_sheet_ui.svelte";
   import AddColumn from "./panels/_add_column.svelte";
   import AddSheet from "./panels/_add_sheet.svelte";
