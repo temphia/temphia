@@ -2,7 +2,7 @@
   import { createEventDispatcher } from "svelte";
   import Cicon from "../cicon/cicon.svelte";
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import * as cf from "../../../../services/data/table2/column";
+  import * as cf from "../../../../services/data/table/column";
   import type { FolderTktAPI } from "../../../../../../lib/apiv2";
 
   export let columns_index: { [_: string]: object };
