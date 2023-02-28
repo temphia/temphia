@@ -8,7 +8,7 @@
 {#if show}
   <modal-wrapper>
     <modal-section>
-      <div
+      <button
         on:click={hide}
         class="modal-close absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50"
       >
@@ -22,7 +22,7 @@
             d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
           />
         </svg>
-      </div>
+      </button>
 
       <div class="h-full w-full flex flex-col">
         <div class="flex-shrink h-10 w-full pb-1 border-b flex justify-between">
