@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
@@ -11,6 +12,8 @@ func (c *Controller) NewView(uclaim *claim.Session, source, group, tslug string,
 	model.GroupID = group
 	model.TableID = tslug
 	model.TenantID = uclaim.TenantId
+
+	pp.Println(model)
 
 	return dynDB.NewView(uclaim.TenantId, model)
 }

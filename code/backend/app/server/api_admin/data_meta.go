@@ -22,6 +22,7 @@ func (a *ApiAdmin) NewView(ctx httpx.Request) {
 		ctx.MustParam("gid"),
 		ctx.MustParam("tid"),
 		&view)
+
 	httpx.WriteFinal(ctx.Http, err)
 }
 

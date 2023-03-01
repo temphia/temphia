@@ -29,13 +29,12 @@ type View struct {
 	SearchTerm  string      `json:"search_term,omitempty"`
 }
 
-type FilterConds []any
+type FilterConds []map[string]any
 
 func (j *FilterConds) Value() (driver.Value, error) {
 	if j == nil {
 		return nil, nil
 	}
-
 	out, err := json.Marshal(j)
 	if err != nil {
 		return nil, err
@@ -55,7 +54,7 @@ func (j *FilterConds) Scan(value any) error {
 		}
 		return json.Unmarshal([]byte(s), &j)
 	case []byte:
-		return json.Unmarshal(s, j)
+		return json.Unmarshal(s, &j)
 	}
 	return nil
 }

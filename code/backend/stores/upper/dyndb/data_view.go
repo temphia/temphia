@@ -17,7 +17,7 @@ func (d *DynDB) ModifyView(tenantId, gslug, tslug string, id int64, data map[str
 
 	fc, ok := data["filter_conds"]
 	if ok {
-		data["filter_conds"] = entities.FilterConds(fc.([]interface{}))
+		data["filter_conds"] = entities.FilterConds(fc.([]map[string]any))
 	}
 
 	return d.viewTable().Find(db.Cond{
