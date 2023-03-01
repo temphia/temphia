@@ -8,10 +8,10 @@
 
 <div class="w-full h-full flex flex-col">
   <div class="flex-grow flex flex-col h-32 p-2 space-y-1 overflow-y-auto">
-    {#if !loading}
-      <slot />
-    {:else}
+    {#if loading}
       <LoadingSpinner />
+    {:else}
+      <slot />
     {/if}
   </div>
 
