@@ -15,6 +15,11 @@
   let loading = true;
   let columns = [];
   const save = async (_data) => {
+
+    if (!_data["selects"]) {
+      _data["selects"] = columns.map((v) => v["slug"]);
+    }
+
     const resp = await api.add_view(source, group, table, _data);
     if (!resp.ok) {
       message = resp.data;
@@ -54,7 +59,7 @@
       <div class="text-2xl text-indigo-900">Add View</div>
       <p class="text-red-500">{message || ""}</p>
 
-      <ValueInner {columns} data={{}} onSave={(_data) => save(_data)} />
+      <ValueInner {columns} data={{}} onSave={save} />
     </div>
   </div>
 {/if}

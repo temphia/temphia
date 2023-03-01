@@ -90,7 +90,7 @@ export class AdminDataAPI {
     );
   }
 
-  add_view(source: string, data: any, gid: string, tid: string) {
+  add_view(source: string, gid: string, tid: string, data: any) {
     return this.base.post(
       `/admin/data/${source}/group/${gid}/table/${tid}/view`,
       data
