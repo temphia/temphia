@@ -18,11 +18,11 @@
   const onPageTop = () => dispatch("on_page_top");
   const rowClick = (payload) => dispatch("on_row_click", payload);
 
-  console.log("@table_service1", table_service);
   const data_store = table_service.state.data_store;
-  console.log("@table_service", table_service, data_store);
+  const nav_store = table_service.state.nav_store;
 
   $: _data = $data_store;
+  $: _nav = $nav_store;
   $: _order = calculate_card_order(_data.indexed_column, {});
 
   let container;
@@ -31,12 +31,8 @@
     const { scrollTop, scrollTopMax } = container;
     if (scrollTop == 0) {
       onPageTop();
-      return;
-    }
-
-    if (scrollTopMax === scrollTop) {
+    } else if (scrollTopMax === scrollTop) {
       onPageButtom();
-      return;
     }
   };
 </script>
@@ -55,6 +51,7 @@
   loading={false}
   {selected_rows}
   {data_widgets}
+  viewmode={_nav.view_mode}
   on:on_hook_click
   on:on_new_row
   on:on_table_change

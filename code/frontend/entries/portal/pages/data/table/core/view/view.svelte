@@ -16,6 +16,7 @@
 
   let rootstate = manager.state.data_store;
   let navstore = manager.state.nav_store;
+  let modified;
 
   let getViewData;
 
@@ -39,12 +40,22 @@
     get_modal: () => view_modal,
     table_service: manager,
   });
+
+  const apply_view = () => {
+    manager.apply_view(
+      view_name,
+      {
+        ...getViewData(),
+      },
+      modified
+    );
+  };
 </script>
 
 <Layout bind:show>
   <div class="flex-grow flex flex-col h-32 p-2 space-y-1 overflow-y-auto">
     {#key view_name}
-      <Inner {columns} data={_view} bind:getViewData />
+      <Inner {columns} data={_view} bind:getViewData bind:modified />
     {/key}
   </div>
 
@@ -66,10 +77,7 @@
     </div>
 
     <button
-      on:click={() =>
-        manager.apply_view(view_name, {
-          ...getViewData(),
-        })}
+      on:click={apply_view}
       class="bg-blue-400 hover:bg-blue-600 w-20 text-white text-sm rounded"
       >Apply</button
     >

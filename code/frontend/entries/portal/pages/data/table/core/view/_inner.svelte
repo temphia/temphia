@@ -4,6 +4,8 @@
   export let columns;
   export let data;
 
+  export let modified = false;
+
   let name = data["name"];
   let filter_conds = data["filter_conds"] || [];
   let search_term = data["search_term"] || "";
@@ -34,7 +36,13 @@
   <h2 class="inline-block text-lg  text-slate-800 mb-1">Filter Conditions</h2>
 
   <div class="w-full p-2">
-    <ViewItem {columns} bind:filter_conds />
+    <ViewItem
+      {columns}
+      bind:filter_conds
+      onModify={(_) => {
+        modified = true;
+      }}
+    />
   </div>
 </div>
 

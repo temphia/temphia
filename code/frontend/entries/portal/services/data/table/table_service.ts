@@ -7,6 +7,7 @@ import {
   NavData,
   ViewData,
   defaultViewData,
+  ViewModeType,
 } from "./state_types";
 import type { FilterItem } from "./table_types";
 
@@ -60,20 +61,22 @@ export class TableService {
     let selects = [];
     let filter_conds = [];
     let last_page = true;
+
+    let view_mode: ViewModeType = "NONE";
+    const views = resp.data["views"] || ([] as object[]);
+    const active_view = resp.data["active_view"];
+
     if (resp.data["active_view"]) {
-      const views = resp.data["views"] || ([] as object[]);
-      const active = views.filter(
-        (v) => v["name"] !== resp.data["active_view"]
-      );
-      if (active.length !== 0) {
-        console.log("Apply view here =>", active, views);
+      const active = views.filter((v) => v["name"] !== active_view)[0];
+      if (active) {
+        view_mode = "STATIC";
       }
     }
 
     this.rev_ref_columns = resp.data["reverse_refs"] || [];
     this.data_widgets = resp.data["data_widgets"] || [];
 
-    this.state.set_ok_loading(count, selects, filter_conds, last_page, page);
+    this.state.set_ok_loading(count, selects, filter_conds, last_page, page, view_mode);
     this.state.set_rows_data(resp.data["query_response"] || {}, false);
   };
 
@@ -85,7 +88,7 @@ export class TableService {
     return this.row_service;
   };
 
-  apply_view = async (name: string, view: ViewData) => {
+  apply_view = async (name: string, view: ViewData, modified: boolean) => {
     const data = await this.do_query({
       ...defaultViewData(),
       ...view,
@@ -94,6 +97,11 @@ export class TableService {
       console.warn("Could not fetch rows");
       return;
     }
+
+    this.state.nav_store.update((state) => ({
+      ...state,
+      view_mode: modified ? "MANUAL" : "STATIC",
+    }));
 
     this.state.set_rows_data(data, false);
   };
@@ -199,7 +207,7 @@ export class TableState {
     this.nav_store = writable({
       loading: true,
       lastTry: null,
-
+      view_mode: "NONE",
       loading_error: "",
       active_page: 0,
       last_page: false,
@@ -243,8 +251,10 @@ export class TableState {
     filter_conds: any,
     selects: string[],
     is_last_page: boolean,
-    current_page: number
+    current_page: number,
+    view_mode?: ViewModeType
   ) => {
+    view_mode = view_mode || "NONE";
     this.nav_store.update((old) => ({
       ...old,
       loading: false,
@@ -258,6 +268,7 @@ export class TableState {
       last_page: is_last_page,
       active_page: current_page,
       loading_error: "",
+      view_mode,
     }));
   };
 
@@ -335,10 +346,6 @@ export class RowService {
     this.service = service;
     this.state = state;
   }
-
-  get_dirty_service = () => {
-    return new DirtyRowService(this.state.dirty_store);
-  };
 
   ref_load = async (data: any) => {
     return this.service.data_api.ref_load(this.service.table_slug, data);
@@ -453,57 +460,57 @@ export class RowService {
   }
 }
 
-export class DirtyRowService {
-  dirtyStore: Writable<DirtyData>;
-  callbacks: Map<string, () => void>;
-  constructor(store: Writable<DirtyData>) {
-    this.dirtyStore = store;
-    this.callbacks = new Map();
-  }
+// export class DirtyRowService {
+//   dirtyStore: Writable<DirtyData>;
+//   callbacks: Map<string, () => void>;
+//   constructor(store: Writable<DirtyData>) {
+//     this.dirtyStore = store;
+//     this.callbacks = new Map();
+//   }
 
-  register_before_save(field: string, callback: () => void): void {
-    this.callbacks.set(field, callback);
-  }
+//   register_before_save(field: string, callback: () => void): void {
+//     this.callbacks.set(field, callback);
+//   }
 
-  on_ohange(_field: string, _value: any): void {
-    this.set_value(_field, _value);
-  }
+//   on_ohange(_field: string, _value: any): void {
+//     this.set_value(_field, _value);
+//   }
 
-  // row stuff
-  start_modify_row = (row: number) => {
-    this.callbacks.clear();
-    this.dirtyStore.set({ rowid: row, data: {} });
-  };
+//   // row stuff
+//   start_modify_row = (row: number) => {
+//     this.callbacks.clear();
+//     this.dirtyStore.set({ rowid: row, data: {} });
+//   };
 
-  start_new_row = () => {
-    this.callbacks.clear();
-    this.dirtyStore.set({ rowid: 0, data: {} });
-  };
+//   start_new_row = () => {
+//     this.callbacks.clear();
+//     this.dirtyStore.set({ rowid: 0, data: {} });
+//   };
 
-  set_value = (_filed: string, value: any) => {
-    this.dirtyStore.update((old) => ({
-      ...old,
-      data: { ...old.data, [_filed]: value },
-    }));
-  };
+//   set_value = (_filed: string, value: any) => {
+//     this.dirtyStore.update((old) => ({
+//       ...old,
+//       data: { ...old.data, [_filed]: value },
+//     }));
+//   };
 
-  clear_dirty_row = () => {
-    this.dirtyStore.set({ rowid: 0, data: {} });
-  };
+//   clear_dirty_row = () => {
+//     this.dirtyStore.set({ rowid: 0, data: {} });
+//   };
 
-  set_ref_copy(column: string, value: any) {
-    this.dirtyStore.update((old) => ({
-      ...old,
-      data: { ...old.data, [column]: value },
-    }));
-  }
+//   set_ref_copy(column: string, value: any) {
+//     this.dirtyStore.update((old) => ({
+//       ...old,
+//       data: { ...old.data, [column]: value },
+//     }));
+//   }
 
-  before_save() {
-    this.callbacks.forEach((val) => val());
-  }
-}
+//   before_save() {
+//     this.callbacks.forEach((val) => val());
+//   }
+// }
 
-export const DataTableInvokerFactory =
-  (dt: TableService) => (widget: object) => {
-    return {};
-  };
+// export const DataTableInvokerFactory =
+//   (dt: TableService) => (widget: object) => {
+//     return {};
+//   };

@@ -18,6 +18,7 @@
   active_table={table_service.table_slug}
   all_tables={table_service.all_tables}
   loading={_nav_store.loading}
+  viewmode={_nav_store.view_mode}
   {selected_rows}
   {data_widgets}
   on:tb_clear

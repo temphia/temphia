@@ -10,6 +10,8 @@ export interface ViewData {
   search_term: string;
 }
 
+export type ViewModeType = "NONE" | "MANUAL" | "STATIC";
+
 export interface NavData {
   loading: boolean;
   lastTry: Date;
@@ -17,8 +19,8 @@ export interface NavData {
   loading_error: string;
   last_page: boolean;
   active_page: number;
-
-  active_view: ViewData;
+  view_mode: ViewModeType;
+  active_view?: ViewData;
 }
 
 export interface DirtyData {

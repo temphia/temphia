@@ -3,7 +3,7 @@
   import { createEventDispatcher } from "svelte";
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
 
-  import { ActionHook, ActionNormal} from "../../shared";
+  import { ActionHook, ActionNormal } from "../../shared";
 
   export let data_widgets: object[];
   export let all_tables: object[];
@@ -11,6 +11,7 @@
   export let loading: boolean = false;
   export let selected_rows = [];
   export let layout: string = "grid";
+  export let viewmode: string;
 
   export let rows_loaded_no = 0;
   export let rows_total_no = 0;
@@ -147,7 +148,7 @@
       <slot>Empty slot</slot>
 
       <div
-        class="flex justify-start p-0.5 text-sm gap-2 bg-slate-100 uppercase"
+        class="flex justify-start p-0.5 text-sm gap-2 bg-slate-100 uppercase text-slate-900"
       >
         <button>
           <Icon
@@ -161,7 +162,14 @@
             >[ {`${rows_loaded_no}/${rows_total_no}`} ]</span
           >
         </p>
+
+        <div>
+          View Mode [<span class="text-slate-600 text-base">{viewmode}</span>]
+        </div>
+
       </div>
+
+
     </div>
     <!-- end right  -->
   </div>
