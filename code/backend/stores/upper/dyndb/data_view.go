@@ -1,6 +1,8 @@
 package dyndb
 
 import (
+	"encoding/json"
+
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/upper/db/v4"
@@ -16,12 +18,14 @@ func (d *DynDB) NewView(tenantId string, model *entities.DataView) error {
 func (d *DynDB) ModifyView(tenantId, gslug, tslug string, id int64, data map[string]interface{}) error {
 	// fixme => disallow certain fields
 
-	// fc, ok := data["filter_conds"]
-	// if ok {
-	// 	data["filter_conds"] = entities.FilterConds(fc.([]entities.FilterCond))
-	// }
-
-	// fixme => impl filter_conds
+	fc, ok := data["filter_conds"]
+	if ok {
+		fcc, err := convertFilterTypes(fc)
+		if err != nil {
+			return err
+		}
+		data["filter_conds"] = fcc
+	}
 
 	return d.viewTable().Find(db.Cond{
 		"tenant_id": tenantId,
@@ -68,5 +72,22 @@ func (d *DynDB) GetView(tenantId, gslug, tslug string, id int64) (*entities.Data
 		return nil, err
 	}
 	return resp, nil
+
+}
+
+func convertFilterTypes(fcraw any) (*entities.FilterConds, error) {
+	fc := make(entities.FilterConds, 0)
+
+	out, err := json.Marshal(fcraw)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(out, &fc)
+	if err != nil {
+		return nil, err
+	}
+
+	return &fc, nil
 
 }
