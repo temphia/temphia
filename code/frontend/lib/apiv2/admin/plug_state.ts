@@ -33,6 +33,6 @@ export class AdminPlugStateTktAPI {
   }
 
   get(key: string) {
-    return this.base.delete(`/admin/plug_state/key/${key}`);
+    return this.base.get(`/admin/plug_state/key/${key}`);
   }
 }
