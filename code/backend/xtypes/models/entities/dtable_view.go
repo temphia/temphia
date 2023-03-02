@@ -31,7 +31,7 @@ type View struct {
 
 type FilterConds []map[string]any
 
-func (j *FilterConds) Value() (driver.Value, error) {
+func (j FilterConds) Value() (driver.Value, error) {
 	if j == nil {
 		return nil, nil
 	}
@@ -42,7 +42,7 @@ func (j *FilterConds) Value() (driver.Value, error) {
 	return string(out), nil
 }
 
-func (j *FilterConds) Scan(value any) error {
+func (j FilterConds) Scan(value any) error {
 	if value == nil {
 		return nil
 	}
