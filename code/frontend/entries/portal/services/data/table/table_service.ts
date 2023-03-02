@@ -1,5 +1,6 @@
 import { get, writable, Writable } from "svelte/store";
 import type { DataAPI, FolderTktAPI } from "../../../../../lib/apiv2";
+import { DirtyRowService } from "./dirty_service";
 import { generate_column_order } from "./formatter";
 import {
   DataState,
@@ -76,7 +77,14 @@ export class TableService {
     this.rev_ref_columns = resp.data["reverse_refs"] || [];
     this.data_widgets = resp.data["data_widgets"] || [];
 
-    this.state.set_ok_loading(count, selects, filter_conds, last_page, page, view_mode);
+    this.state.set_ok_loading(
+      count,
+      selects,
+      filter_conds,
+      last_page,
+      page,
+      view_mode
+    );
     this.state.set_rows_data(resp.data["query_response"] || {}, false);
   };
 
@@ -347,6 +355,10 @@ export class RowService {
     this.state = state;
   }
 
+  get_dirty_service = () => {
+    return new DirtyRowService(this.state.dirty_store);
+  };
+
   ref_load = async (data: any) => {
     return this.service.data_api.ref_load(this.service.table_slug, data);
   };
@@ -459,58 +471,3 @@ export class RowService {
     return this.service.folder_api;
   }
 }
-
-// export class DirtyRowService {
-//   dirtyStore: Writable<DirtyData>;
-//   callbacks: Map<string, () => void>;
-//   constructor(store: Writable<DirtyData>) {
-//     this.dirtyStore = store;
-//     this.callbacks = new Map();
-//   }
-
-//   register_before_save(field: string, callback: () => void): void {
-//     this.callbacks.set(field, callback);
-//   }
-
-//   on_ohange(_field: string, _value: any): void {
-//     this.set_value(_field, _value);
-//   }
-
-//   // row stuff
-//   start_modify_row = (row: number) => {
-//     this.callbacks.clear();
-//     this.dirtyStore.set({ rowid: row, data: {} });
-//   };
-
-//   start_new_row = () => {
-//     this.callbacks.clear();
-//     this.dirtyStore.set({ rowid: 0, data: {} });
-//   };
-
-//   set_value = (_filed: string, value: any) => {
-//     this.dirtyStore.update((old) => ({
-//       ...old,
-//       data: { ...old.data, [_filed]: value },
-//     }));
-//   };
-
-//   clear_dirty_row = () => {
-//     this.dirtyStore.set({ rowid: 0, data: {} });
-//   };
-
-//   set_ref_copy(column: string, value: any) {
-//     this.dirtyStore.update((old) => ({
-//       ...old,
-//       data: { ...old.data, [column]: value },
-//     }));
-//   }
-
-//   before_save() {
-//     this.callbacks.forEach((val) => val());
-//   }
-// }
-
-// export const DataTableInvokerFactory =
-//   (dt: TableService) => (widget: object) => {
-//     return {};
-//   };
