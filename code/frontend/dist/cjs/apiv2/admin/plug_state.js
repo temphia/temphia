@@ -28,7 +28,7 @@ class AdminPlugStateTktAPI {
         });
     }
     get(key) {
-        return this.base.delete(`/admin/plug_state/key/${key}`);
+        return this.base.get(`/admin/plug_state/key/${key}`);
     }
 }
 exports.AdminPlugStateTktAPI = AdminPlugStateTktAPI;

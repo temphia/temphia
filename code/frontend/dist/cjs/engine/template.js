@@ -5,8 +5,8 @@ exports.iframeTemplateBuild = (opts) => {
     let execscript = "";
     if (opts.exec_loader) {
         execscript = `
-            <script src="${opts.api_base_url}engine/plug/${opts.plug}/agent/${opts.agent}/executor/${opts.exec_loader}/loader.js"></script>
-            <link href="${opts.api_base_url}engine/plug/${opts.plug}/agent/${opts.agent}/executor/${opts.exec_loader}/loader.css" rel="stylesheet" ></link>
+            <script src="${opts.api_base_url}/engine/plug/${opts.plug}/agent/${opts.agent}/executor/${opts.exec_loader}/loader.js"></script>
+            <link href="${opts.api_base_url}/engine/plug/${opts.plug}/agent/${opts.agent}/executor/${opts.exec_loader}/loader.css" rel="stylesheet" ></link>
         `;
     }
     return `<!DOCTYPE html>
@@ -25,8 +25,8 @@ exports.iframeTemplateBuild = (opts) => {
       
         ${execscript}
 
-        <script src="${opts.api_base_url}engine/plug/${opts.plug}/agent/${opts.agent}/serve/${opts.js_plug_script}"></script>
-        <link href="${opts.api_base_url}engine/plug/${opts.plug}/agent/${opts.agent}/serve/${opts.style_file}" rel="stylesheet" ></link>
+        <script src="${opts.api_base_url}/engine/plug/${opts.plug}/agent/${opts.agent}/serve/${opts.js_plug_script}"></script>
+        <link href="${opts.api_base_url}/engine/plug/${opts.plug}/agent/${opts.agent}/serve/${opts.style_file}" rel="stylesheet" ></link>
 
     </head>
     <body>

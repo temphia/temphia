@@ -16,7 +16,7 @@ export declare class AdminDataAPI {
     edit_column(source: string, gid: string, tid: string, cid: string, data: any): Promise<import("../http").HttpResponse>;
     delete_column(source: string, gid: string, tid: string, cid: string): Promise<import("../http").HttpResponse>;
     list_view(source: string, gid: string, tid: string): Promise<import("../http").HttpResponse>;
-    add_view(source: string, data: any, gid: string, tid: string): Promise<import("../http").HttpResponse>;
+    add_view(source: string, gid: string, tid: string, data: any): Promise<import("../http").HttpResponse>;
     get_view(source: string, gid: string, tid: string, id: string): Promise<import("../http").HttpResponse>;
     edit_view(source: string, gid: string, tid: string, id: string, data: any): Promise<import("../http").HttpResponse>;
     delete_view(source: string, gid: string, tid: string, id: string): Promise<import("../http").HttpResponse>;

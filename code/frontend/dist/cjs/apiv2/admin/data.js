@@ -59,7 +59,7 @@ class AdminDataAPI {
     list_view(source, gid, tid) {
         return this.base.get(`/admin/data/${source}/group/${gid}/table/${tid}/view`);
     }
-    add_view(source, data, gid, tid) {
+    add_view(source, gid, tid, data) {
         return this.base.post(`/admin/data/${source}/group/${gid}/table/${tid}/view`, data);
     }
     get_view(source, gid, tid, id) {
