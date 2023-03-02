@@ -1,4 +1,4 @@
-import type { Environment } from "../../../../lib/engine/env";
+import type { Environment } from "../../../../lib/engine/environment";
 
 export interface LoadRequest {
   data_context_type: string;

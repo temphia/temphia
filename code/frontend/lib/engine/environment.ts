@@ -8,10 +8,19 @@ export interface Environment {
   OnParentAction: (handler: (data: any) => {}) => void;
 
   GetRegistry: () => Registry<any>;
-  
+
   GetRoomTktAPI: (ticket: string) => any;
 
   GetFolderTktAPI: (ticket: string) => FolderTktAPI;
   GetDataTableTktAPI: (ticket: string) => AdminDataAPI;
   GetPlugStateTktAPI: (ticket: string) => AdminPlugStateTktAPI;
+
+  GetAssetManager(): EnvAssetManager;
+}
+
+export interface EnvAssetManager {
+  GetAgentAssetURL(name: string): string;
+  GetExecutorAssetURL(name: string): string;
+  ImportDyanmic(name: string): Promise<any>;
+  SheduleWorker(name: string): Worker;
 }
