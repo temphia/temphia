@@ -135,7 +135,7 @@ func (di *dtabeInstancer) instance(tenantId string, opts *DataGroupRequest, sche
 				Id:          0,
 				Name:        view.Name,
 				Count:       view.Count,
-				FilterConds: view.FilterConds,
+				FilterConds: &view.FilterConds,
 				Selects:     view.Selects,
 				MainColumn:  view.MainColumn,
 				SearchTerm:  view.SearchTerm,
