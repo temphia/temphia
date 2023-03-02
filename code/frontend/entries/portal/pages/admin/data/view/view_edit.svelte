@@ -67,7 +67,7 @@
       <div class="text-2xl text-indigo-900">Edit View</div>
       <p class="text-red-500">{message || ""}</p>
 
-      <ValueInner {columns} data={{}} onSave={(_data) => save(_data)} />
+      <ValueInner {columns} {data} onSave={(_data) => save(_data)} />
     </div>
   </div>
 {/if}
