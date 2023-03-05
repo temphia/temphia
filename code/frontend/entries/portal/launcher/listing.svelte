@@ -66,7 +66,7 @@
           </div>
         {/if}
 
-        <h2 class="text-lg text-gray-500 font-semibold font-mono">
+        <h2 class="text-xs text-gray-500 font-semibold font-mono">
           {uapp["name"]}
         </h2>
       </div>
