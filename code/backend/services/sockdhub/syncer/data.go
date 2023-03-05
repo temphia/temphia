@@ -63,6 +63,8 @@ func (s *DataSyncer) PushDeleteRow(source, tenantId, groupId, table string, id i
 }
 
 func (s *DataSyncer) pushRowMod(source, tenantId, groupId string, data *RowMod) error {
+	pp.Println("@syncer", data)
+
 	out, err := json.Marshal(data)
 	if err != nil {
 		return err

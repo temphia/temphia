@@ -6,11 +6,12 @@ import (
 
 	"github.com/alecthomas/kong"
 	"github.com/temphia/temphia/code/backend/libx/xutils"
+	"github.com/temphia/temphia/code/distro/sharedcli"
 )
 
 type CLI struct {
-	Run struct {
-	} `cmd:"" help:"Run server."`
+	Start struct {
+	} `cmd:"" help:"Start demo server."`
 
 	ClearLock struct {
 	} `cmd:"" help:"Clear Postgres Lock"`
@@ -29,10 +30,19 @@ func NewCLI() *CLI {
 	return cli
 }
 
+func (c *CLI) Run(scope *sharedcli.Context) error {
+	c.ctx = scope.KongContext
+	return c.doExecute("demo ")
+}
+
 func (c *CLI) Execute() error {
+	return c.doExecute("")
+}
+
+func (c *CLI) doExecute(prefix string) error {
 
 	switch c.ctx.Command() {
-	case "run":
+	case prefix + "start":
 
 		os.Chdir("cmd/demo/")
 		xutils.CreateIfNotExits("temphia-data/files")
@@ -51,9 +61,9 @@ func (c *CLI) Execute() error {
 
 		return err
 
-	case "clear-lock":
+	case prefix + "clear-lock":
 		return ClearLock()
-	case "reset":
+	case prefix + "reset":
 		return Reset()
 	default:
 		panic("Command not found" + c.ctx.Command())

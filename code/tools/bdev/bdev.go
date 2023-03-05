@@ -1,18 +1,15 @@
 package bdev
 
 import (
-	"encoding/json"
-	"fmt"
 	"os"
 
 	"github.com/alecthomas/kong"
 	"github.com/joho/godotenv"
-	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/distro/sharedcli"
 	client "github.com/temphia/temphia/code/goclient"
 	"github.com/temphia/temphia/code/goclient/devc"
-	"github.com/tidwall/pretty"
 	"gopkg.in/yaml.v2"
 )
 
@@ -21,7 +18,7 @@ type CLI struct {
 		Name string `arg:"" help:"File name to push"`
 	} `cmd:"" help:"Push File in bprint."`
 
-	Execute struct {
+	Exec struct {
 		Action string `arg:"" help:"File name to push"`
 		Data   string `arg:"" help:"File name to push"`
 	} `cmd:"" help:"Execute action on agent."`
@@ -42,11 +39,6 @@ type CLI struct {
 	AgentId   string
 
 	bp *xbprint.LocalBprint
-}
-
-type UpperScope struct {
-	BprintFile string
-	Ctx        *kong.Context
 }
 
 func (c *CLI) preRun(bfile string) error {
@@ -83,77 +75,45 @@ func (c *CLI) preRun(bfile string) error {
 	return nil
 }
 
-func (c *CLI) Run(uscope *UpperScope) error {
+func (c *CLI) Run(scope *sharedcli.Context) error {
 
-	if uscope.BprintFile == "" {
+	if scope.BprintFile == "" {
 		bconf := os.Getenv("TEMPHIA_BDEV_BPRINT_CONFIG")
 		if bconf == "" {
 			panic(".bprint.yaml not specified")
 		}
-		uscope.BprintFile = bconf
+		scope.BprintFile = bconf
 	}
 
-	c.ctx = uscope.Ctx
-	err := c.preRun(uscope.BprintFile)
+	c.ctx = scope.KongContext
+	err := c.preRun(scope.BprintFile)
 	if err != nil {
 		return err
 	}
 
+	return c.doExecute("bdev ")
+}
+
+func (c *CLI) Execute() error {
+	return c.doExecute("")
+}
+
+func (c *CLI) doExecute(prefix string) error {
+
 	switch c.ctx.Command() {
-	case "bdev push <name>":
-		c.push()
-	case "bdev execute <action> <data>":
-		c.execute()
-	case "bdev  reset":
-		c.reset()
-	case "bdev watch":
+	case prefix + "push <name>":
+		return c.push()
+	case prefix + "exec <action> <data>":
+		return c.execute()
+	case prefix + "reset":
+		return c.reset()
+	case prefix + "watch":
 		c.watch()
-	case "bdev zip":
-		c.zipit()
+	case prefix + "zip":
+		return c.zipit()
 	default:
 		panic("Command not found |> " + c.ctx.Command())
 	}
 
 	return nil
-
-}
-
-func (c *CLI) reset() {
-	c.devClient.Reset(c.PlugId, c.AgentId)
-}
-
-func (c *CLI) watch() {
-	c.devClient.Watch(c.PlugId, c.AgentId)
-}
-
-func (c *CLI) zipit() {
-	if c.Zip.OutFile == "" {
-		c.Zip.OutFile = fmt.Sprintf("build/%s.zip", c.bp.Slug)
-	}
-
-	pp.Println(ZipIt(c.bp, c.Zip.OutFile))
-
-}
-
-func (c *CLI) push() {
-	pp.Println(c.devClient.PushFile(c.Push.Name, c.bp.Files[c.Push.Name]))
-
-}
-
-func (c *CLI) execute() {
-	var data any
-	err := json.Unmarshal([]byte(c.Execute.Data), &data)
-	if err != nil {
-		pp.Println(err)
-		return
-	}
-
-	resp, err := c.devClient.ExecRun(c.PlugId, c.AgentId, c.Execute.Action, data)
-	if err != nil {
-		pp.Println(err)
-		return
-	}
-
-	fmt.Print(string(pretty.Color(pretty.Pretty(resp), nil)))
-
 }
