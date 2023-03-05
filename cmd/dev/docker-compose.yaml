@@ -14,11 +14,11 @@ services:
     ports:
       - 7032:5432
 
-  pgadmin4:
-    container_name: pgadmin_c
-    environment:
-      PGADMIN_DEFAULT_EMAIL: abc@xyz.com
-      PGADMIN_DEFAULT_PASSWORD: 123myjam
-    ports:
-      - 7033:80
-    image: dpage/pgadmin4
+  # pgadmin4:
+  #   container_name: pgadmin_c
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: abc@xyz.com
+  #     PGADMIN_DEFAULT_PASSWORD: 123myjam
+  #   ports:
+  #     - 7033:80
+  #   image: dpage/pgadmin4
