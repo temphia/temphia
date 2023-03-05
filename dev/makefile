@@ -8,4 +8,9 @@ docker_run:
 server_run:
 	cd .. && go run dev/dev.go
 
-.PHONY: check docker_run server_run
+build_install_cli:
+	cd .. && go build -o build/temphia-cli cmd/cli/cli.go && cp build/temphia-cli ~/.bin
+backup_cli:
+	cd .. && go build -o build/temphia-cli cmd/cli/cli.go && cp build/temphia-cli ~/Desktop/temphia_run
+
+.PHONY: check docker_run server_run build_install_cli backup_cli
