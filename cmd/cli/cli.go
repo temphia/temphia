@@ -6,6 +6,8 @@ import (
 	"github.com/temphia/temphia/code/distro/demo"
 	"github.com/temphia/temphia/code/distro/sharedcli"
 	"github.com/temphia/temphia/code/tools/bdev"
+
+	_ "github.com/temphia/temphia/code/distro/common"
 )
 
 type CLI struct {
