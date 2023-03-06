@@ -73,6 +73,28 @@
       color,
     });
   };
+
+  const onStrArrayChange = (newitem) => {
+    let valueArray = value.split(",");
+    valueArray = valueArray.filter((v) => v !== "");
+    if (valueArray.includes(newitem)) {
+      return;
+    }
+
+    valueArray.push(newitem);
+    value = valueArray.join();
+    onCellChange({
+      value,
+    });
+  };
+
+  const popStrArray = (item) => {
+    const valueArray = value.split(",");
+    value = valueArray.filter((v) => v !== item).join();
+    onCellChange({
+      value,
+    });
+  };
 </script>
 
 <div
@@ -148,14 +170,7 @@
         {#each value.split(",") as cd}
           <div class="relative">
             <button
-              on:click={() => {
-                const valueArray = value.split(",");
-                value = valueArray.filter((v) => v !== cd).join();
-
-                onCellChange({
-                  value,
-                });
-              }}
+              on:click={() => popStrArray(cd)}
               class="text-slate-700 -top-2 -right-2 absolute hover:text-red-600 border rounded-full bg-white"
             >
               <Icon solid name="x" class="w-4 h-4" />
@@ -235,9 +250,17 @@
     />
   {:else if column.ctype === SheetColTypeUser}
     <div class="flex gap-1">
-      {#each value.split(",") as cd}
-        <UserAvatar name={cd} />
-      {/each}
+      {#if value}
+        {#each value.split(",") as cd}
+          <div class="p-1 rounded bg-gray-50 flex border gap-1">
+            <UserAvatar name={cd} url={service.profile_genrator(cd)} />
+            <span>{cd}</span>
+            <button on:click={() => popStrArray(cd)}>
+              <Icon solid name="x" class="w-4 h-4 rounded-full border hover:bg-slate-500" />
+            </button>
+          </div>
+        {/each}
+      {/if}
     </div>
   {:else}
     <input
@@ -289,28 +312,9 @@
           }}
         />
       {:else if column.ctype === SheetColTypeUser}
-        <UserPanel {column} {service} />
+        <UserPanel {column} {service} onUserAdd={onStrArrayChange} />
       {:else if column.ctype === SheetColTypeFile}
-        <FilePanel
-          {folder_api}
-          onFileAdd={(file) => {
-            console.log("@file", file);
-
-            let valueArray = value.split(",");
-            valueArray = valueArray.filter((v) => v !== "");
-            if (valueArray.includes(file)) {
-              return;
-            }
-
-            valueArray.push(file);
-
-            value = valueArray.join();
-
-            onCellChange({
-              value,
-            });
-          }}
-        />
+        <FilePanel {folder_api} onFileAdd={onStrArrayChange} />
       {/if}
     </div>
   {/if}

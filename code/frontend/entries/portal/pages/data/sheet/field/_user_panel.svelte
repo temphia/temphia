@@ -5,6 +5,7 @@
 
   export let service: SheetService;
   export let column: SheetColumn;
+  export let onUserAdd = (user) => {};
 
   let users = [];
   let loading = true;
@@ -35,8 +36,12 @@
       <Avatar user={userid} url={service.profile_genrator(userid)} />
 
       <span class="text-gray-500">{usr["full_name"] || ""}</span>
-      <strong class="bg-gray-100 text-xs text-gray-500 flex-inline self-center rounded-lg p-0.5">{usr["group"] || ""}</strong>
+      <strong
+        class="bg-gray-100 text-xs text-gray-500 flex-inline self-center rounded-lg p-0.5"
+        >{usr["group"] || ""}</strong
+      >
       <button
+        on:click={() => onUserAdd(userid)}
         class="hover:bg-blue-500 w-10 rounded-full text-gray-600 hover:text-white  font-semibold text-xs bg-blue-100"
         >+</button
       >

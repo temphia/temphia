@@ -19,6 +19,7 @@
   export let active_sheet: number;
   export let selected_rows = [];
   export let folder_api: FolderTktAPI;
+  export let profile_genrator: (string) => string;
 </script>
 
 <SheetLayout
@@ -41,6 +42,7 @@
     on:add_column
     on:edit_column
     on:edit_row
+    {profile_genrator}
     {columns}
     {rows}
     {cells}

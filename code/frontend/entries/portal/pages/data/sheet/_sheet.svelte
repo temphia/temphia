@@ -138,7 +138,8 @@
       columns={$state.columns}
       rows={$state.rows}
       sheets={$sheets}
-      widgets={$state.widgets}
+      widgets={$state.widgets}      
+      profile_genrator={sheet_service.profile_genrator}
       on:add_column={doAddColumn}
       on:action_goto_history={() =>
         app.nav.admin_data_activity(source, group, "sheets")}

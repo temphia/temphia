@@ -27,6 +27,7 @@
   export let selected_rows = [];
   export let folder_api: FolderTktAPI;
   export let editable = true;
+  export let profile_genrator: (string) => string;
 
   const dispatch = createEventDispatcher();
 </script>
@@ -165,7 +166,10 @@
                 {:else if col.ctype === SheetColTypeUser}
                   <div class="flex gap-1">
                     {#each value.split(",") as cd}
-                      <UserAvatar />
+                      <div class="p-0.5 rounded bg-gray-50 flex border gap-0.5 text-xs items-center">
+                        <UserAvatar name={cd} url={profile_genrator(cd)} />
+                        <span>{cd}</span>
+                      </div>
                     {/each}
                   </div>
                 {:else if col.ctype === SheetColTypeNumber}
