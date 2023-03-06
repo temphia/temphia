@@ -46,6 +46,8 @@ type DynSource interface {
 	ListActivity(tenantId, group, table string, rowId int) ([]*entities.DynActivity, error)
 	NewActivity(tenantId, group, table string, record *entities.DynActivity) error
 
+	ListDataUsers(source, tenantId, group, ttype, target string) ([]entities.UserInfo, error)
+
 	GetDataTableHub(tenantId, group string) DataTableHub
 	GetDataSheetHub(tenantId, group string) DataSheetHub
 }

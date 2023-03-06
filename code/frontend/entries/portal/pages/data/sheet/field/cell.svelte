@@ -2,6 +2,7 @@
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import MapPanel from "./_map_panel.svelte";
   import FilePanel from "./_file_panel.svelte";
+  import UserAvatar from "./_user_avatar.svelte";
 
   import {
     SheetColTypeBoolean,
@@ -15,6 +16,7 @@
     SheetColTypeReference,
     SheetColTypeRemote,
     SheetColTypeSelect,
+    SheetColTypeUser,
     SheetColumn,
     SheetCtypeIcons,
   } from "../sheets";
@@ -25,6 +27,7 @@
   import Point from "./_point.svelte";
   import type { SheetService } from "../../../../services/data";
   import Selectable from "./_selectable.svelte";
+  import UserPanel from "./_user_panel.svelte";
 
   export let column: SheetColumn;
   export let open_column;
@@ -61,6 +64,7 @@
     [SheetColTypeFile]: "photograph",
     [SheetColTypeReference]: "paper-clip",
     [SheetColTypeRemote]: "external-link",
+    [SheetColTypeUser]: "users",
   };
 
   const onColorChange = (ev) => {
@@ -229,6 +233,12 @@
       options={column.opts ? column.opts.split(",") : []}
       {value}
     />
+  {:else if column.ctype === SheetColTypeUser}
+    <div class="flex gap-1">
+      {#each value.split(",") as cd}
+        <UserAvatar name={cd} />
+      {/each}
+    </div>
   {:else}
     <input
       {id}
@@ -249,6 +259,8 @@
     onPick={toggle}
     pick_icon={picker_icons[column.ctype]}
   />
+
+  <!-- PICKUP PANEL -->
 
   {#if _is_open}
     <div
@@ -276,6 +288,8 @@
             onCellChange({ value, numval: value_num });
           }}
         />
+      {:else if column.ctype === SheetColTypeUser}
+        <UserPanel {column} {service} />
       {:else if column.ctype === SheetColTypeFile}
         <FilePanel
           {folder_api}

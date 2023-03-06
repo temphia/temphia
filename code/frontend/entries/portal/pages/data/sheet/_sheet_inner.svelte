@@ -2,6 +2,7 @@
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import { createEventDispatcher } from "svelte";
   import type { FolderTktAPI } from "../../../../../lib/apiv2";
+  import UserAvatar from "./field/_user_avatar.svelte";
   import Point from "./field/_point.svelte";
   import {
     SheetCell,
@@ -14,6 +15,7 @@
     SheetColTypeRatings,
     SheetColTypeReference,
     SheetColTypeSelect,
+    SheetColTypeUser,
     SheetColumn,
     SheetCtypeIcons,
     SheetRow,
@@ -160,6 +162,12 @@
                       {/each}
                     </div>
                   {/if}
+                {:else if col.ctype === SheetColTypeUser}
+                  <div class="flex gap-1">
+                    {#each value.split(",") as cd}
+                      <UserAvatar />
+                    {/each}
+                  </div>
                 {:else if col.ctype === SheetColTypeNumber}
                   {num_value}
                 {:else}

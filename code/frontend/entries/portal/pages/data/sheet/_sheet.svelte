@@ -2,7 +2,6 @@
   import { getContext } from "svelte";
   import { get, Writable } from "svelte/store";
   import { LoadingSpinner, PortalService } from "../../admin/core";
-  import type { SheetService, SheetState } from "../shared";
   import SheetUi from "./_sheet_ui.svelte";
   import AddColumn from "./panels/_add_column.svelte";
   import AddSheet from "./panels/_add_sheet.svelte";
@@ -12,6 +11,7 @@
   import EditColumn from "./panels/_edit_column.svelte";
   import SearchPanel from "./panels/_search_panel.svelte";
   import type { SheetWidget } from "./sheets";
+  import type { SheetService, SheetState } from "../../../services/data";
 
   export let source;
   export let group;

@@ -25,6 +25,7 @@ export const SheetColTypes = [
   SheetColTypeRatings,
   SheetColTypeLocation,
   SheetColTypeFile,
+  SheetColTypeUser,
   SheetColTypeReference,
   SheetColTypeRemote,
 ];
@@ -53,6 +54,7 @@ export const SheetCtypeIcons = {
   [SheetColTypeLocation]: "map",
   [SheetColTypeFile]: "document",
   [SheetColTypeReference]: "paper-clip",
+  [SheetColTypeUser]: "users",
   [SheetColTypeRemote]: "external-link",
 };
 

@@ -19,6 +19,7 @@ export class DataService {
   api_base_url: string;
 
   current_sheet_group: SheetGroupService;
+  profile_genrator: (string) => string;
 
   constructor(opts: {
     sources: string[];
@@ -27,6 +28,7 @@ export class DataService {
     sockd_builder: SockdService;
     close_modal: any;
     open_modal: any;
+    profile_genrator: (string) => string;
   }) {
     this.sources = opts.sources;
     this.current_group = null;
@@ -35,6 +37,7 @@ export class DataService {
     this.close_modal = opts.close_modal;
     this.open_modal = opts.open_modal;
     this.sockd_builder = opts.sockd_builder;
+    this.profile_genrator = opts.profile_genrator;
   }
 
   group_service = async (source: string, group: string) => {
@@ -70,7 +73,12 @@ export class DataService {
 
   private create_group_sheet = async (source: string, group: string) => {
     const dapi = await this.apm.get_data_api(source, group);
-    const sgs = new SheetGroupService(source, group, dapi);
+    const sgs = new SheetGroupService(
+      source,
+      group,
+      dapi,
+      this.profile_genrator
+    );
     await sgs.init();
     this.current_sheet_group = sgs;
     return sgs;

@@ -250,3 +250,11 @@ func (c *Controller) folderTicket(group *entities.TableGroup, uclaim *claim.Data
 	return c.signer.SignFolder(uclaim.TenantId, fcalim)
 
 }
+
+func (c *Controller) ListDataUsers(uclaim *claim.Data, ttype, target string) ([]entities.UserInfo, error) {
+
+	source, group := getTarget(uclaim)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+
+	return ddb.ListDataUsers(source, uclaim.TenantId, group, ttype, target)
+}

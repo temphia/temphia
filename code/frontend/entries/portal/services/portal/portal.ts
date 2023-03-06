@@ -89,6 +89,7 @@ export class PortalService {
         open_modal: this.utils.big_modal_open,
         api_base_url: this.api_manager.api_base_url,
         sockd_builder: this.sockd_service,
+        profile_genrator: this.get_user_profile,
       });
     }
 

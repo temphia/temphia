@@ -83,4 +83,9 @@ export class DataSheetAPI {
   delete_row_cell(sid: string, rid: string) {
     return this.http.delete(`/data/sheet/${sid}/row_cell/${rid}`);
   }
+
+  list_users = (opts: any) => {
+    return this.http.post(`/data/utils/user`, opts);
+  };
+  
 }

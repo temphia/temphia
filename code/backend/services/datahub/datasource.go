@@ -112,6 +112,32 @@ func (ds *DataSource) NewActivity(tenantId, group, table string, record *entitie
 	return err
 }
 
+func (ds *DataSource) ListDataUsers(source, tenantId, group, ttype, target string) ([]entities.UserInfo, error) {
+
+	// fixme use ttype and target
+	// check if that column only have some user access
+
+	users, err := ds.handle.CoreHub.ListUsers(tenantId)
+	if err != nil {
+		return nil, err
+	}
+
+	iusers := make([]entities.UserInfo, 0, len(users))
+
+	for _, u := range users {
+		iusers = append(iusers, entities.UserInfo{
+			UserId:    u.UserId,
+			FullName:  u.FullName,
+			Bio:       u.Bio,
+			PublicKey: u.PublicKey,
+			Email:     u.Email,
+			GroupId:   u.GroupID,
+		})
+	}
+
+	return iusers, nil
+}
+
 func (ds *DataSource) GetDataTableHub(tenantId, group string) dyndb.DataTableHub {
 
 	ds.gLock.RLock()

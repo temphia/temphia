@@ -71,4 +71,8 @@ export class DataAPI {
   sheet_api = () => {
     return new DataSheetAPI(this.base_url, this.token);
   };
+
+  list_users = (opts: any) => {
+    return this.http.post(`/data/utils/user`, opts);
+  };
 }

@@ -19,14 +19,16 @@ export class SheetGroupService {
   folder_api: FolderTktAPI;
   data_api: DataAPI;
   data_sheet_api: DataSheetAPI;
+  profile_genrator : (string) => string
 
-  constructor(source: string, group: string, api: DataAPI) {
+  constructor(source: string, group: string, api: DataAPI, profile_genrator : (string) => string) {
     this.source = source;
     this.group_slug = group;
     this.active_sheets = new Map();
     this.sheets = writable([]);
     this.data_api = api;
     this.data_sheet_api = api.sheet_api();
+    this.profile_genrator = profile_genrator
   }
 
   init = async () => {
@@ -48,7 +50,7 @@ export class SheetGroupService {
       return ssvc;
     }
 
-    ssvc = new SheetService(this, sheetid);
+    ssvc = new SheetService(this, sheetid, this.profile_genrator);
 
     await ssvc.init();
 
@@ -80,10 +82,12 @@ export class SheetService {
   state: Writable<SheetState>;
   api: DataSheetAPI;
   force_render_index: Writable<number>;
+  profile_genrator : (string) => string
 
-  constructor(group: SheetGroupService, sheetid: string) {
+  constructor(group: SheetGroupService, sheetid: string, profile_genrator : (string) => string) {
     this.group = group;
     this.sheetid = sheetid;
+    this.profile_genrator = profile_genrator
 
     this.api = group.data_sheet_api;
 

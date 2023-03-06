@@ -31,6 +31,8 @@ func (s *Server) dataAPI(rg *gin.RouterGroup) {
 
 	s.dataSheetAPI(rg.Group("/sheet"))
 
+	rg.POST("/utils/user", s.dx(s.listDataUsers))
+
 }
 
 func (s *Server) loadGroup(uclaim *claim.Data, ctx *gin.Context) {
@@ -263,4 +265,23 @@ func (s *Server) sockdDataWS(ctx *gin.Context) {
 
 func (s *Server) sockdDataUpdateWS(ctx *gin.Context) {
 
+}
+
+// utils
+
+type DataUserReq struct {
+	TargetType string `json:"target_type,omitempty"` // sheet | data
+	Target     string `json:"target,omitempty"`      // column id/slug
+}
+
+func (s *Server) listDataUsers(uclaim *claim.Data, ctx *gin.Context) {
+	req := DataUserReq{}
+	err := ctx.BindJSON(&req)
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	resp, err := s.cData.ListDataUsers(uclaim, req.TargetType, req.Target)
+	httpx.WriteJSON(ctx, resp, err)
 }
