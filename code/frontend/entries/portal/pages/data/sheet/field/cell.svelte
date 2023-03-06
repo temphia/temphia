@@ -156,9 +156,7 @@
       class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline hover:border-blue-400"
       {id}
       {value}
-      on:change={(ev) => {
-        console.log("@value", ev.target["value"]);
-      }}
+      on:change={(ev) => onCellChange({ value: ev.target["value"] })}
       type="datetime-local"
     />
   {:else if column.ctype === SheetColTypeFile}
@@ -256,7 +254,11 @@
             <UserAvatar name={cd} url={service.profile_genrator(cd)} />
             <span>{cd}</span>
             <button on:click={() => popStrArray(cd)}>
-              <Icon solid name="x" class="w-4 h-4 rounded-full border hover:bg-slate-500" />
+              <Icon
+                solid
+                name="x"
+                class="w-4 h-4 rounded-full border hover:bg-slate-500"
+              />
             </button>
           </div>
         {/each}
