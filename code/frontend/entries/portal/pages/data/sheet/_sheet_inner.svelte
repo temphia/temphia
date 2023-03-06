@@ -167,7 +167,7 @@
                   <div class="flex gap-1">
                     {#each value.split(",") as cd}
                       <div class="p-0.5 rounded bg-gray-50 flex border gap-0.5 text-xs items-center">
-                        <UserAvatar name={cd} url={profile_genrator(cd)} />
+                        <UserAvatar name={cd} url={profile_genrator && profile_genrator(cd)} />
                         <span>{cd}</span>
                       </div>
                     {/each}
