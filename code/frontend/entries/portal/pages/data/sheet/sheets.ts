@@ -10,6 +10,7 @@ export const SheetColTypeBoolean = "bool";
 export const SheetColTypeRatings = "ratings";
 export const SheetColTypeLocation = "location";
 export const SheetColTypeFile = "file";
+export const SheetColTypeUser = "user";
 export const SheetColTypeReference = "reference";
 export const SheetColTypeRemote = "remote";
 
@@ -35,6 +36,7 @@ export const SheetCtypeShapes = {
     SheetColTypeRemote,
     SheetColTypeSelect,
     SheetColTypeMultiSelect,
+    SheetColTypeUser,
   ],
   number: [SheetColTypeNumber, SheetColTypeReference],
 };
