@@ -28,7 +28,7 @@
         loading = false;
       }}
       class="px-2 py-1 font-bold text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:shadow-outline rounded mt-1 {loading
-        ? 'animate-spin'
+        ? 'animate-bounce'
         : ''} ">Save</button
     >
   </div>
