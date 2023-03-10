@@ -44,7 +44,7 @@ func (s *Server) ListExecutor(ctx httpx.Request) {
 }
 
 func (s *Server) ListModules(ctx httpx.Request) {
-	resp, err := s.cEngine.ListExecutors(ctx.Session)
+	resp, err := s.cEngine.ListModules(ctx.Session)
 	httpx.WriteJSON(ctx.Http, resp, err)
 
 }
