@@ -1,8 +1,8 @@
 <script lang="ts">
   import { LoadingSpinner, PortalService } from "../../core";
   import { ResourceTypeModule } from "../../../../../../lib/entities";
-  import { generateId } from "../../../../../../dist/cjs/utils";
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
+  import { generateId } from "../../../../../../lib/utils";
 
   export let service: PortalService;
 
@@ -21,7 +21,7 @@
       name,
     });
 
-    service.utils.small_modal_close()
+    service.utils.small_modal_close();
   };
 
   const load = async () => {

@@ -6,6 +6,7 @@
     FloatingAdd,
     PortalService,
   } from "../core";
+  import AssignAgent from "./_assign_agent.svelte";
   import PickResourceType from "./_pick_resource_type.svelte";
 
   const app = getContext("__app__") as PortalService;
@@ -46,17 +47,31 @@
 {:else}
   <AutoTable
     action_key="id"
+    show_drop={true}
     actions={[
       {
         Name: "Edit",
         Action: action_edit,
         icon: "pencil-alt",
       },
+
+      {
+        Name: "Assign agent",
+        Action: (id, data) => {
+          app.utils.small_modal_open(AssignAgent, {
+            service: app,
+            rid: id,
+          });
+        },
+        icon: "link",
+        drop: true,
+      },
+
       {
         Name: "Delete",
-        Class: "bg-red-400",
         Action: action_delete,
         icon: "trash",
+        drop: true,
       },
     ]}
     key_names={[

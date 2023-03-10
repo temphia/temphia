@@ -232,8 +232,8 @@ export class Navigator {
     this.set(`#/admin/plug/${pid}/agent/${aid}/res/`);
   };
 
-  admin_agent_res_new = (pid: string, aid: string) => {
-    this.set(`#/admin/plug/${pid}/agent/${aid}/res/new`);
+  admin_agent_res_new = (pid: string, aid: string, opts?: any) => {
+    this.set(`#/admin/plug/${pid}/agent/${aid}/res/new`, opts);
   };
 
   admin_agent_res_edit = (pid: string, aid: string, rid: string) => {

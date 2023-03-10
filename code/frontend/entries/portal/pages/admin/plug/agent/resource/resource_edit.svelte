@@ -74,6 +74,12 @@
         },
 
         {
+          name: "Resource Id",
+          ftype: "TEXT",
+          key_name: "resource_id",
+        },
+
+        {
           name: "Actions",
           ftype: "MULTI_TEXT",
           key_name: "actions",

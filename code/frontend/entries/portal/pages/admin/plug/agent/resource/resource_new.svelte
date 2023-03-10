@@ -10,6 +10,10 @@
   let message = "";
   let data = { plug_id: $params.pid, agent_id: $params.aid };
 
+  if (app.nav.options) {
+    data = { ...data, ...app.nav.options };
+  }
+
   const save = async (_data) => {
     const resp = await api.new_agent_resource($params.pid, $params.aid, _data);
     if (!resp.ok) {
@@ -46,6 +50,12 @@
         name: "Agent Id",
         ftype: "TEXT",
         key_name: "agent_id",
+      },
+
+      {
+        name: "Resource Id",
+        ftype: "TEXT",
+        key_name: "resource_id",
       },
 
       {

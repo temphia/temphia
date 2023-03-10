@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { PortalService } from "../../core";
   import { ResourceTypeSockRoom } from "../../../../../../lib/entities";
-  import { generateId } from "../../../../../../dist/cjs/utils";
+  import { generateId } from "../../../../../../lib/utils";
 
   export let service: PortalService;
 
@@ -14,6 +14,8 @@
       slug,
       name,
     });
+
+    service.utils.small_modal_close();
   };
 </script>
 
