@@ -42,7 +42,12 @@ export class Navigator {
     this.set(`#/data/${source}/${dgroup}/custom`);
   }
 
-  data_render_table(source: string, dgroup: string, table: string, layout = "") {
+  data_render_table(
+    source: string,
+    dgroup: string,
+    table: string,
+    layout = ""
+  ) {
     this.set(`#/data/${source}/${dgroup}/table/${table}${layout}`);
   }
 
@@ -201,7 +206,7 @@ export class Navigator {
     this.set(`#/admin/plug/${pid}/agent/${aid}/link/`);
   };
 
-  admin_agent_link_new = (pid: string, aid: string,opts?: any) => {
+  admin_agent_link_new = (pid: string, aid: string, opts?: any) => {
     this.set(`#/admin/plug/${pid}/agent/${aid}/link/new`, opts);
   };
 
@@ -361,24 +366,10 @@ export class Navigator {
     this.set(`#/admin/resource/${rid}/edit`);
   };
 
-  admin_resource_new = (plug_id?: string) => {
-    this.set(`#/admin/resource/new`, plug_id ? { plug_id } : undefined);
+  admin_resource_new = (opts?: any) => {
+    this.set(`#/admin/resource/new`, opts);
   };
 
-  admin_resource_datagroup_new = () => {
-    this.set(`#/admin/resource/rtype/data_group/new`);
-  };
-  admin_resource_datagroup_edit = (rid: string) => {
-    this.set(`#/admin/resource/rtype/data_group/${rid}/edit`);
-  };
-
-  admin_resource_room_new = () => {
-    this.set(`#/admin/resource/rtype/room/new`);
-  };
-
-  admin_resource_room_edit = (rid: string) => {
-    this.set(`#/admin/resource/rtype/room/${rid}/edit`);
-  };
 
   admin_resource_folder_new = () => {
     this.set(`#/admin/resource/rtype/folder/new`);
