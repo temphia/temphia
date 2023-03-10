@@ -26,3 +26,21 @@ func NewWeb(http *gin.Context, app xtypes.App, eclaim *claim.Executor) invoker.I
 
 	return builder.Build()
 }
+
+func NewAdmin(dclaim *claim.PlugDevTkt) invoker.Invoker {
+
+	builder := NewBuilder(invokers.UserApp)
+
+	builder.SetUserContextProvider(func() *invoker.User {
+		return &invoker.User{
+			Id:        dclaim.UserId,
+			Group:     dclaim.UserGroup,
+			SessionId: 0,
+			DeviceId:  0,
+		}
+	})
+
+	// fixme => set modules bashed on eclaim.ExecType
+
+	return builder.Build()
+}

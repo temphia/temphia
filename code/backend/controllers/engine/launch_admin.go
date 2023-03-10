@@ -2,6 +2,7 @@ package engine
 
 import (
 	"github.com/temphia/temphia/code/backend/engine/invokers"
+	"github.com/temphia/temphia/code/backend/engine/invokers/bundled"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
@@ -64,6 +65,6 @@ func (c *Controller) ExecuteDev(dclaim *claim.PlugDevTkt, plug, agent, action st
 		AgentId:  agent,
 		Action:   action,
 		Payload:  body,
-		Invoker:  nil, //web.NewWeb(ctx, eclaim),
+		Invoker:  bundled.NewAdmin(dclaim),
 	})
 }

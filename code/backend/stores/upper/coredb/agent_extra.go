@@ -210,7 +210,7 @@ func (d *DB) ListResourcePairs(tenantId string, pid, aid string) ([]entities.Res
 		return nil, err
 	}
 
-	resp := make([]entities.ResourcePair, len(rrids))
+	resp := make([]entities.ResourcePair, 0, len(rrids))
 
 	for _, ar := range rrids {
 		var res *entities.Resource
