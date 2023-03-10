@@ -6,6 +6,8 @@ import (
 )
 
 func (c *Controller) AgentLinkNew(uclaim *claim.Session, data *entities.AgentLink) error {
+	data.TenantId = uclaim.TenantId
+
 	return c.coredb.AgentLinkNew(uclaim.TenantId, data)
 }
 
@@ -26,6 +28,8 @@ func (c *Controller) AgentLinkList(uclaim *claim.Session, pid, aid string) ([]*e
 }
 
 func (c *Controller) AgentExtensionNew(uclaim *claim.Session, data *entities.AgentExtension) error {
+	data.TenantId = uclaim.TenantId
+
 	return c.coredb.AgentExtensionNew(uclaim.TenantId, data)
 }
 
@@ -46,6 +50,8 @@ func (c *Controller) AgentExtensionList(uclaim *claim.Session, pid, aid string) 
 }
 
 func (c *Controller) AgentResourceNew(uclaim *claim.Session, data *entities.AgentResource) error {
+	data.TenantId = uclaim.TenantId
+
 	return c.coredb.AgentResourceNew(uclaim.TenantId, data)
 }
 

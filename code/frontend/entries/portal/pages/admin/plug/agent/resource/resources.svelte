@@ -29,7 +29,7 @@
 
   // actions
 
-  const action_edit = (id: string) => app.nav.admin_resource_edit(id);
+  const action_edit = (id: string) => app.nav.admin_agent_res_edit($params.pid, $params.aid, id);
   const action_delete = async (id: string) => {
     const resp = await api.delete_agent_resource($params.pid, $params.aid, id);
     if (!resp.ok) {
@@ -46,7 +46,7 @@
   <LoadingSpinner />
 {:else}
   <AutoTable
-    action_key="id"
+    action_key="slug"
     actions={[
       {
         Name: "Edit",
@@ -62,8 +62,9 @@
     ]}
     key_names={[
       ["slug", "Slug"],
-      ["type", "Type"],
-      ["schema", "Schema"],
+      ["resource_id", "Resource Id"],
+      ["plug_id", "Plug Id"],
+      ["agent_id", "Agent Id"],
     ]}
     color={["type"]}
     {datas}
