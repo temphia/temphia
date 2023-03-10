@@ -7,9 +7,11 @@
 
   let message = "";
   let data = {};
-  let plug_id = (app.nav.options || {})["plug_id"];
-  if (plug_id) {
-    data["plug_id"] = plug_id;
+  let modified = false;
+
+  if (app.nav.options) {
+    modified = true;
+    data = { ...app.nav.options };
   }
 
   const save = async (_data) => {
@@ -38,22 +40,15 @@
         key_name: "name",
       },
 
-      // {
-      //   name: "Payload",
-      //   ftype: "LONG_TEXT",
-      //   key_name: "payload",
-      // },
-
-      // {
-      //   name: "Sub Type",
-      //   ftype: "TEXT",
-      //   key_name: "sub_type",
-      // },
-
       {
         name: "Type",
         ftype: "TEXT",
         key_name: "type",
+      },
+      {
+        name: "Sub Type",
+        ftype: "TEXT",
+        key_name: "sub_type",
       },
 
       {
@@ -66,6 +61,11 @@
         name: "Policy",
         ftype: "TEXT_POLICY",
         key_name: "policy",
+      },
+      {
+        name: "Payload",
+        ftype: "LONG_TEXT",
+        key_name: "payload",
       },
 
       {
@@ -85,4 +85,5 @@
   }}
   onSave={save}
   {data}
+  {modified}
 />
