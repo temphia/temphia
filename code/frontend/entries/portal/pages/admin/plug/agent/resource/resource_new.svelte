@@ -15,7 +15,10 @@
   }
 
   const save = async (_data) => {
-    const resp = await api.new_agent_resource($params.pid, $params.aid, _data);
+    const resp = await api.new_agent_resource($params.pid, $params.aid, {
+      ...data,
+      ..._data,
+    });
     if (!resp.ok) {
       message = resp.data;
       return;
@@ -70,7 +73,7 @@
         key_name: "extra_meta",
       },
     ],
-    name: "New Agent Resource link",
+    name: "New Agent Resource",
     required_fields: [],
   }}
   onSave={save}

@@ -91,7 +91,7 @@
           key_name: "extra_meta",
         },
       ],
-      name: "Edit Agent Resource link",
+      name: "Edit Agent Resource",
       required_fields: [],
     }}
     onSave={save}

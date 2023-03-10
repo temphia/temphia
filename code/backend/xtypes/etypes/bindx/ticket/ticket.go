@@ -13,3 +13,7 @@ type CabinetFolder struct {
 type SockdRoom struct {
 	AllowBroadcast string `json:"allow_broadcast,omitempty"`
 }
+
+type DataGroup struct {
+	ReadOnly bool `json:"read_only,omitempty"`
+}
