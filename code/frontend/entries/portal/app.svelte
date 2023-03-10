@@ -3,6 +3,7 @@
   import Portal from "./_portal.svelte";
   import build from "./services";
   import { onMount } from "svelte";
+  import { LoadingSpinner } from "../xcompo";
 
   let loading = true;
 
@@ -22,7 +23,9 @@
   });
 </script>
 
-{#if !loading}
+{#if loading}
+  <LoadingSpinner />
+{:else}
   <Portal {app} />
 {/if}
 
