@@ -71,9 +71,6 @@ import AdminSeed from "./data/tools/seed/seed.svelte";
 import AdminResources from "./resource/resources.svelte";
 import AdminResourceEdit from "./resource/resource_edit.svelte";
 import AdminResourceNew from "./resource/resource_new.svelte";
-import AdminResourceFolderNew from "./resource/folder/folder_new.svelte";
-import AdminResourceFolderEdit from "./resource/folder/folder_edit.svelte";
-
 // user
 import AdminUsers from "./user/users.svelte";
 import AdminUserNew from "./user/user_new.svelte";
@@ -193,8 +190,6 @@ export default {
     "/": AdminResources,
     "/:rid/edit": AdminResourceEdit,
     "/new": AdminResourceNew,
-    "/rtype/folder/new": AdminResourceFolderNew,
-    "/rtype/folder/:rid/edit": AdminResourceFolderEdit,
   },
 
   "/data": {

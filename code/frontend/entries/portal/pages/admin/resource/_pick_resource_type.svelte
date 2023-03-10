@@ -1,8 +1,11 @@
 <script lang="ts">
   import type { PortalService } from "../core";
   import ActionPicker from "../core/action_picker.svelte";
+
   import DataPicker from "./pickers/datatable.svelte";
   import RoomPicker from "./pickers/room.svelte";
+  import ModulePicker from "./pickers/module.svelte";
+  import FolderPicker from "./pickers/folder.svelte";
 
   export let app: PortalService;
 
@@ -31,12 +34,20 @@
       name: "Folder",
       icon: "folder",
       info: "Create a Folder resource to store and retrive files",
-      action: () => app.nav.admin_resource_folder_new(),
+      action: () => {
+        app.utils.small_modal_open(FolderPicker, {
+          service: app,
+        });
+      },
     },
     {
       name: "Module",
       icon: "hashtag",
-      action: () => {},
+      action: () => {
+        app.utils.small_modal_open(ModulePicker, {
+          service: app,
+        });
+      },
       info: "Create a Module resource that can call native extended functionality",
     },
     {

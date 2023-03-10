@@ -370,15 +370,6 @@ export class Navigator {
     this.set(`#/admin/resource/new`, opts);
   };
 
-
-  admin_resource_folder_new = () => {
-    this.set(`#/admin/resource/rtype/folder/new`);
-  };
-
-  admin_resource_folder_edit = (rid: string) => {
-    this.set(`#/admin/resource/rtype/folder/${rid}/edit`);
-  };
-
   // apps
 
   admin_target_apps = () => {
