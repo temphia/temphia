@@ -1,5 +1,7 @@
 package resource
 
+// syncme => entities/consts/resources.ts
+
 const (
 	SockRoom   = "sroom"
 	Dtable     = "dtable"
