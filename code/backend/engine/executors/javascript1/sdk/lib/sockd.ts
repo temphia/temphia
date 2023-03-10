@@ -43,7 +43,7 @@ export class SockdRoom {
         return _sd_bann_conn(conn)
     }
 
-    ticket = (room: string, opts: any) => {
-        return _sd_ticket(room, opts)
+    ticket = (opts: any) => {
+        return _sd_ticket(this._room, opts)
     }
 }
