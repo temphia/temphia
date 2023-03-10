@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/k0kubun/pp"
 	"github.com/rs/zerolog"
+	"github.com/temphia/temphia/code/backend/engine/invokers/bundled"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
@@ -61,7 +62,7 @@ func (c *Controller) Execute(tenantId, action string, ctx *gin.Context) {
 		AgentId:  eclaim.AgentId,
 		Action:   action,
 		Payload:  payload,
-		Invoker:  nil, //web.NewWeb(ctx, eclaim),
+		Invoker:  bundled.NewWeb(ctx, nil, eclaim),
 	})
 
 	if err != nil {
