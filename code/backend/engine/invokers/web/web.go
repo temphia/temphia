@@ -43,6 +43,7 @@ func (r *WebRequest) User() *invoker.User {
 		Id:        r.claim.UserId,
 		Group:     r.claim.UserGroup,
 		SessionId: r.claim.SessionId,
+		DeviceId:  r.claim.DeviceId,
 	}
 
 }

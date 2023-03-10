@@ -21,7 +21,7 @@ func (f *Forked) Handle(method string, data xtypes.LazyData) (xtypes.LazyData, e
 }
 
 func (f *Forked) Name() string {
-	return invokers.TypeForked
+	return invokers.Forked
 }
 
 func (f *Forked) User() *invoker.User {

@@ -11,6 +11,7 @@ type Executor struct {
 	PlugId     string            `json:"plug_id,omitempty"`
 	AgentId    string            `json:"agent_id,omitempty"`
 	ExecType   string            `json:"exec_type,omitempty"`
+	TargetId   int64             `json:"target_id,omitempty"`
 	Attributes map[string]string `json:"attributes,omitempty"`
 }
 

@@ -7,10 +7,6 @@ import (
 
 func (r *WebRequest) dataHandle(method string, data xtypes.LazyData) (xtypes.LazyData, error) {
 
-	if r.claim.ExecType != invokers.TypeDtableServerHook && r.claim.ExecType != invokers.TypeDtableClientHook {
-		return nil, invokers.ErrInvokerActionNotAllowed
-	}
-
 	switch method {
 	case "data.simple_query":
 		return nil, nil

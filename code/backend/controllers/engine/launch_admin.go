@@ -27,7 +27,8 @@ func (c *Controller) launchAdmin(uclaim *claim.Session, data AdminLaunchData) (*
 		ExecId:     c.idgen.Generate().Int64(),
 		PlugId:     data.PlugId,
 		AgentId:    data.AgentId,
-		ExecType:   invokers.TypeWebAdmin,
+		ExecType:   invokers.Admin,
+		TargetId:   0,
 		Attributes: make(map[string]string),
 	})
 	if err != nil {

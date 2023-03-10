@@ -36,7 +36,8 @@ func (c *Controller) launchTarget(uclaim *claim.Session, data TargetLaunchData) 
 		ExecId:     c.idgen.Generate().Int64(),
 		PlugId:     target.PlugId,
 		AgentId:    target.AgentId,
-		ExecType:   invokers.TypeUserApp,
+		ExecType:   invokers.UserApp,
+		TargetId:   target.Id,
 		Attributes: map[string]string{},
 	})
 	if err != nil {

@@ -1,4 +1,4 @@
-package invokers
+package bundled
 
 import (
 	"github.com/temphia/temphia/code/backend/xtypes"
@@ -6,10 +6,11 @@ import (
 )
 
 type Invoker struct {
-	name    string
-	app     xtypes.App
-	modules map[string]Module
-	arrts   map[string]any
+	name             string
+	app              xtypes.App
+	modules          map[string]Module
+	arrts            map[string]any
+	get_user_context func() *invoker.User
 }
 
 func (i *Invoker) Type() string { return i.name }
@@ -34,7 +35,11 @@ func (i *Invoker) ListModules() []string {
 }
 
 func (i *Invoker) UserContext() *invoker.User {
-	return nil
+	if i.get_user_context == nil {
+		return nil
+	}
+
+	return i.get_user_context()
 }
 
 func (i *Invoker) GetAttr(name string) any {
@@ -47,4 +52,22 @@ func (i *Invoker) GetAttr(name string) any {
 
 func (i *Invoker) GetAttrs() map[string]any {
 	return i.arrts
+}
+
+// handle
+
+type Handle struct {
+	invoker *Invoker
+}
+
+func (h *Handle) ExecuteModule(module, action string, data xtypes.LazyData) (xtypes.LazyData, error) {
+	return h.invoker.ExecuteModule(module, action, data)
+}
+
+func (h *Handle) ListModule() []string {
+	return h.invoker.ListModules()
+}
+
+func (h *Handle) GetApp() interface{} {
+	return h.invoker.app
 }
