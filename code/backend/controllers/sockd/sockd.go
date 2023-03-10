@@ -21,7 +21,7 @@ func (s *Controller) AddPlugConn(opts PlugConnOptions) error {
 		NameSpace: opts.TenantId,
 		Conn:      opts.Conn,
 		Expiry:    0,
-		Room:      sockdx.ROOM_PLUG_DEV,
+		Room:      opts.Room,
 		Tags:      []string{fmt.Sprintf("plug_%s", opts.Plug)},
 	})
 }

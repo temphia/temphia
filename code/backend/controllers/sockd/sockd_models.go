@@ -6,9 +6,10 @@ type PlugConnOptions struct {
 	TenantId string
 	UserId   string
 	GroupId  string
-	DeviceId string
+	DeviceId int64
 	Plug     string
 	Conn     sockdx.Conn
+	Room     string
 }
 
 type UserConnOptions struct {

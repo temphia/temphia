@@ -105,8 +105,12 @@ export class Env implements Environment {
   };
 
   GetRoomTktAPI = async (room: string, ticket?: string): Promise<any> => {
-    // fix url
-    return new Sockd(`${this._opts.api_base_url}/engine/ws?ticket=${ticket}`);
+    const s = new Sockd(
+      `${this._opts.api_base_url}/engine/ws?ticket=${ticket}`
+    );
+    await s.Init();
+    
+    return s;
   };
 
   GetDataTableTktAPI = (ticket: string): any => {
@@ -122,6 +126,11 @@ export class Env implements Environment {
   };
 
   GetAssetManager = () => {
-    return new EnvAssetManager(this._opts.api_base_url, this._opts.plug, this._opts.agent, "FIXME");
+    return new EnvAssetManager(
+      this._opts.api_base_url,
+      this._opts.plug,
+      this._opts.agent,
+      "FIXME"
+    );
   };
 }

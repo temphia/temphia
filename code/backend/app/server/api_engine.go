@@ -9,6 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/controllers/engine"
+	"github.com/temphia/temphia/code/backend/controllers/sockd"
+	"github.com/temphia/temphia/code/backend/services/sockdhub/transports"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 )
 
@@ -43,7 +45,7 @@ func (s *Server) engineAPI(rg *gin.RouterGroup) {
 	rg.GET("/plug/:pid/agent/:aid/executor/:eid/*file", s.executorFile)
 
 	// engine sockd
-	rg.GET("/ws", func(ctx *gin.Context) {})
+	rg.GET("/ws", s.sockdRoomWS)
 	rg.POST("/ws/update", func(ctx *gin.Context) {})
 }
 
@@ -173,5 +175,39 @@ func (s *Server) bootAgent() func(ctx *gin.Context) {
 
 // engine/exec sockd
 
-// func (s *Server) sockdRoomWS(ctx *gin.Context) {}
-// func (s *Server) sockdRoomUpdateWS(ctx *gin.Context) {}
+func (s *Server) sockdRoomWS(ctx *gin.Context) {
+
+	if !ctx.IsWebsocket() {
+		return
+	}
+
+	tenantId := ctx.Param("tenant_id")
+
+	dclaim, err := s.signer.ParseSockdTkt(tenantId, ctx.Query("ticket"))
+	if err != nil {
+		httpx.UnAuthorized(ctx)
+		return
+	}
+
+	conn, err := transports.NewConnWS(ctx, s.sockdConnIdGenerator.Generate().Int64())
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	err = s.cSockd.AddPlugConn(sockd.PlugConnOptions{
+		TenantId: tenantId,
+		UserId:   dclaim.UserId,
+		GroupId:  "",
+		DeviceId: dclaim.DeviceId,
+		Plug:     "",
+		Conn:     conn,
+		Room:     dclaim.Room,
+	})
+
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+}
