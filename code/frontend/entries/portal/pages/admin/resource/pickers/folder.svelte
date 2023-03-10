@@ -42,7 +42,7 @@
   };
 
   const pick_group = async (sdata) => {
-    folder = sdata["folder"];
+    folder = sdata["data"];
 
     service.nav.admin_resource_new({
       type: ResourceTypeFolder,

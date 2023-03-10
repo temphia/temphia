@@ -43,6 +43,12 @@
     mod_data = { ...mod_data, [name]: val };
     modified = true;
   };
+
+  const newSlug = (field: string) => {
+    const s = generateId();
+    mod_data = { ...mod_data, [field]: s };
+    return s;
+  };
 </script>
 
 <div class="h-full w-full bg-indigo-100 p-10 overflow-auto">
@@ -98,7 +104,7 @@
                 on:change={set(field.key_name)}
               >
                 {#each field.options || [] as opt}
-                <option value={opt}>{opt}</option>
+                  <option value={opt}>{opt}</option>
                 {/each}
               </select>
             {/if}
@@ -107,7 +113,7 @@
               <button
                 on:click={() => {
                   _open_selects[idx] = !_open_selects[idx];
-                  _open_selects = _open_selects
+                  _open_selects = _open_selects;
                 }}
                 ><Icon
                   name={_open_selects[idx] ? "lock-open" : "lock-closed"}
@@ -122,7 +128,7 @@
             type="text"
             list="field-{idx}-datalist"
             value={get(field.key_name) ||
-              (field["slug_gen"] ? field.slug_gen() : generateId())}
+              (field["slug_gen"] ? field.slug_gen() : newSlug(field.key_name))}
             on:change={set(field.key_name)}
             disabled={field.disabled}
             class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200"
