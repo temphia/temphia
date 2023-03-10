@@ -92,6 +92,12 @@ func (g *Goja) bind() {
 
 	}
 
+	if sbind := g.binder.SockdBindingsGet(); sbind != nil {
+		g.qbind("_sd_ticket", func(room string, opts *ticket.SockdRoom) (any, any) {
+			return sbind.Ticket(room, opts)
+		})
+	}
+
 	/*
 
 		if sbind := g.binder.GetSockdBindings(); sbind != nil {

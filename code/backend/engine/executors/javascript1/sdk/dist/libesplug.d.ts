@@ -106,6 +106,7 @@ export declare class SockdRoom {
     kick_from_room: (conn: string) => string;
     list_room_conns: () => [object, string];
     bann_conn: (conn: string) => string;
+    ticket: (room: string, opts: any) => [string, string];
 }
 interface Response {
     payload: {

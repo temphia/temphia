@@ -5,6 +5,7 @@ declare function _sd_add_to_room(room: string, conn: string, tags: string[]): st
 declare function _sd_kick_from_room(room: string, conn: string): string
 declare function _sd_list_room_conns(room: string): [object, string]
 declare function _sd_bann_conn(conn: string): string
+declare function _sd_ticket(room: string, opts: any): [string, string]
 
 
 export class SockdRoom {
@@ -40,5 +41,9 @@ export class SockdRoom {
 
     bann_conn = (conn: string): string => {
         return _sd_bann_conn(conn)
+    }
+
+    ticket = (room: string, opts: any) => {
+        return _sd_ticket(room, opts)
     }
 }

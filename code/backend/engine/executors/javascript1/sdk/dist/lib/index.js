@@ -233,6 +233,9 @@ var SockdRoom = /** @class */ (function () {
         this.bann_conn = function (conn) {
             return _sd_bann_conn(conn);
         };
+        this.ticket = function (room, opts) {
+            return _sd_ticket(room, opts);
+        };
         this._room = room;
     }
     return SockdRoom;
