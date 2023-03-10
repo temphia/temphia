@@ -2,6 +2,7 @@ package bindx
 
 import (
 	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx/ticket"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -27,10 +28,6 @@ type Core interface {
 	GetApp() any
 }
 
-type PlugStateTkt struct {
-	KeyPrefix string `json:"key_prefix,omitempty"`
-}
-
 type PlugKV interface {
 	Set(txid uint32, key, value string, opts *store.SetOptions) error
 	Update(txid uint32, key, value string, opts *store.UpdateOptions) error
@@ -43,7 +40,7 @@ type PlugKV interface {
 	RollBack(txid uint32) error
 	Commit(txid uint32) error
 
-	Ticket(opts *PlugStateTkt) (string, error)
+	Ticket(opts *ticket.PlugState) (string, error)
 }
 
 type Cabinet interface {
@@ -52,7 +49,7 @@ type Cabinet interface {
 	GetFile(bucket string, file string) ([]byte, error)
 	DeleteFile(bucket string, file string) error
 
-	GenerateTicket(bucket string, ticket *CabTicket) (string, error)
+	Ticket(bucket string, opts *ticket.CabinetFolder) (string, error)
 }
 
 type Sockd interface {
@@ -61,6 +58,8 @@ type Sockd interface {
 	SendBroadcast(room string, ignores []int64, payload []byte) error
 	SendTagged(room string, tags []string, ignores []int64, payload []byte) error
 	RoomUpdateTags(room string, opts sockdx.UpdateTagOptions) error
+
+	Ticket(room string, opts *ticket.SockdRoom) (string, error)
 }
 
 type User interface {

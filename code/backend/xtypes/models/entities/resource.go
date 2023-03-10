@@ -21,7 +21,7 @@ type Resource struct {
 	TenantId  string     `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`
 }
 
-func (r *Resource) splitTarget(expected int) ([]string, error) {
+func (r *Resource) SplitTarget(expected int) ([]string, error) {
 	targets := strings.Split(r.Payload, "/")
 	if len(targets) != expected {
 		return nil, easyerr.Error("could not parse target")
@@ -52,7 +52,7 @@ type ResourceDtable struct {
 }
 
 func (r *Resource) Dtable() *ResourceDtable {
-	targets, err := r.splitTarget(3)
+	targets, err := r.SplitTarget(3)
 	if err != nil {
 		panic(err)
 	}
@@ -75,7 +75,7 @@ type ResourceDgroup struct {
 }
 
 func (r *Resource) Dgroup() *ResourceDgroup {
-	targets, err := r.splitTarget(2)
+	targets, err := r.SplitTarget(2)
 	if err != nil {
 		panic(err)
 	}
@@ -95,7 +95,7 @@ type ResourceFolder struct {
 }
 
 func (r *Resource) Folder() *ResourceFolder {
-	targets, err := r.splitTarget(2)
+	targets, err := r.SplitTarget(2)
 	if err != nil {
 		panic(err)
 	}
@@ -106,4 +106,10 @@ func (r *Resource) Folder() *ResourceFolder {
 		Policy: r.Policy,
 	}
 
+}
+
+// ResourcePair is container with resource and AgentResource
+type ResourcePair struct {
+	AgentResource *AgentResource
+	Resource      *Resource
 }

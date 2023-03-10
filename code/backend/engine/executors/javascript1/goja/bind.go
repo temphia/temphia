@@ -3,7 +3,7 @@ package goja
 import (
 	"github.com/dop251/goja"
 
-	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx/ticket"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
@@ -86,7 +86,7 @@ func (g *Goja) bind() {
 			return resp(pbind.Commit(txid))
 		})
 
-		g.qbind("_pkv_ticket", func(opts *bindx.PlugStateTkt) (any, any) {
+		g.qbind("_pkv_ticket", func(opts *ticket.PlugState) (any, any) {
 			return pbind.Ticket(opts)
 		})
 
@@ -167,8 +167,8 @@ func (g *Goja) bind() {
 			return resp(cbind.DeleteFile(folder, file))
 		})
 
-		g.qbind("_cab_generate_ticket", func(folder string, opts *bindx.CabTicket) (any, any) {
-			tok, err := cbind.GenerateTicket(folder, opts)
+		g.qbind("_cab_generate_ticket", func(folder string, opts *ticket.CabinetFolder) (any, any) {
+			tok, err := cbind.Ticket(folder, opts)
 			if err != nil {
 				return nil, err.Error()
 			}

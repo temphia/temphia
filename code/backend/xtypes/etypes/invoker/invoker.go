@@ -10,7 +10,7 @@ type User struct {
 	Id        string
 	Group     string
 	SessionId int64
-	DeviceId  string
+	DeviceId  int64
 }
 
 type Invoker interface {

@@ -210,7 +210,7 @@ type AgentOps interface {
 	AgentResourceDel(tenantId, pid, aid, slug string) error
 	AgentResourceList(tenantId, pid, aid string) ([]*entities.AgentResource, error)
 
-	ResourceListByAgent(tenantId string, pid, aid string) ([]*entities.Resource, error)
+	ListResourcePairs(tenantId string, pid, aid string) ([]entities.ResourcePair, error)
 }
 
 type RepoOps interface {

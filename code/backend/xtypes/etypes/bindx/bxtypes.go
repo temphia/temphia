@@ -21,12 +21,6 @@ type Link struct {
 	AgentId string `json:"agent_id,omitempty"`
 }
 
-type CabTicket struct {
-	Prefix      string   `json:"prefix,omitempty"`
-	PinnedFiles []string `json:"pinned_files,omitempty"`
-	Operations  []string `json:"ops,omitempty"`
-}
-
 type HttpRequest struct {
 	Method  string            `json:"method,omitempty"`
 	Path    string            `json:"path,omitempty"`

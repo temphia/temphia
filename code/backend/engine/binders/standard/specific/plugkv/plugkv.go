@@ -3,7 +3,8 @@ package plugkv
 import (
 	"github.com/temphia/temphia/code/backend/engine/binders/standard/handle"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx/ticket"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
@@ -18,6 +19,7 @@ type Binding struct {
 	plugId    string
 	agentid   string
 	txns      []uint32
+	handle    *handle.Handle
 }
 
 func New(handle *handle.Handle) Binding {
@@ -28,6 +30,7 @@ func New(handle *handle.Handle) Binding {
 		plugId:    handle.PlugId,
 		agentid:   handle.AgentId,
 		txns:      make([]uint32, 0, 1),
+		handle:    handle,
 	}
 }
 
@@ -117,12 +120,19 @@ func (pkv *Binding) Query(txid uint32, query *store.PkvQuery) ([]*entities.PlugK
 	return pkv.stateKv.Query(txid, pkv.namespace, pkv.plugId, query)
 }
 
-func (pkv *Binding) Ticket(opts *bindx.PlugStateTkt) (string, error) {
+func (pkv *Binding) Ticket(opts *ticket.PlugState) (string, error) {
+
+	uctx := pkv.handle.Job.Invoker.UserContext()
+	if uctx == nil {
+		return "", easyerr.Error(etypes.EmptyUserContext)
+	}
+
 	return pkv.signer.SignPlugState(pkv.namespace, &claim.PlugState{
 		TenantId:  pkv.namespace,
 		Type:      "",
-		DeviceId:  0,
-		SessionId: 0,
+		UserId:    uctx.Id,
+		DeviceId:  uctx.DeviceId,
+		SessionId: uctx.SessionId,
 		ExecId:    0,
 		PlugId:    pkv.plugId,
 		AgentId:   pkv.agentid,

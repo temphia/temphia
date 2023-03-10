@@ -4,12 +4,16 @@ import (
 	"context"
 
 	"github.com/temphia/temphia/code/backend/engine/binders/standard/handle"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx/ticket"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 type Binding struct {
 	chub     store.CabinetHub
+	handle   *handle.Handle
 	tenantId string
 }
 
@@ -22,9 +26,19 @@ func New(handle *handle.Handle) Binding {
 }
 
 func (b *Binding) resourceFolder(bucket string) (string, string) {
+	b.handle.LoadResources()
 
-	// FIXME =>
-	return "", ""
+	res := b.handle.Resources[bucket]
+	if res == nil {
+		panic("Could not laod resource folder")
+	}
+
+	targets, err := res.SplitTarget(2)
+	if err != nil {
+		panic("parse resource target err")
+	}
+
+	return targets[0], targets[1]
 }
 
 func (b *Binding) AddFile(bucket string, file string, contents []byte) error {
@@ -59,8 +73,24 @@ func (b *Binding) DeleteFile(bucket string, file string) error {
 	return source.DeleteBlob(context.TODO(), folder, file)
 }
 
-func (b *Binding) GenerateTicket(bucket string, ticket *bindx.CabTicket) (string, error) {
-	return "", nil
+func (b *Binding) Ticket(bucket string, opts *ticket.CabinetFolder) (string, error) {
+	source, folder := b.resourceFolder(bucket)
+	uctx := b.handle.Job.Invoker.UserContext()
+	if uctx == nil {
+		return "", easyerr.Error(etypes.EmptyUserContext)
+	}
+
+	return b.handle.Deps.Signer.SignFolder(b.tenantId, &claim.Folder{
+		TenantId:  b.tenantId,
+		UserId:    uctx.Id,
+		SessionID: uctx.SessionId,
+		DeviceId:  uctx.SessionId,
+		Type:      "",
+		Expiry:    0,
+		Source:    source,
+		Folder:    folder,
+	})
+
 }
 
 // private

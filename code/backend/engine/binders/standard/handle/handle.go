@@ -7,6 +7,7 @@ import (
 	"github.com/temphia/temphia/code/backend/engine/binders/standard/deps"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/job"
+	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
@@ -60,16 +61,28 @@ func (h *Handle) LoadResources() {
 		return
 	}
 
+	// fixme => sync.lock ?
+
+	h.Logger.Info().Msg(logid.EngineResourcesLoading)
+
 	corehub := h.Deps.App.GetDeps().CoreHub().(store.CoreHub)
-	ress, err := corehub.ResourceListByAgent(h.Namespace, h.PlugId, h.AgentId)
+	agentRes, err := corehub.ListResourcePairs(h.Namespace, h.PlugId, h.AgentId)
 	if err != nil {
 		panic(err)
 	}
 
-	h.Resources = make(map[string]*entities.Resource, len(ress))
-	for _, r := range ress {
-		h.Resources[r.Name] = r
+	rh := make(map[string]*entities.Resource)
+
+	for _, rp := range agentRes {
+		// fixme => overlay exta_meta|actions|policy etc form agentResource on top of resource
+		rh[rp.AgentResource.Slug] = rp.Resource
 	}
+
+	h.Resources = rh
+	h.Logger.Info().
+		Interface("resources", rh).
+		Msg(logid.EngineResourcesLoaded)
+
 }
 
 func (h *Handle) LoadLinks() {

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/temphia/temphia/code/backend/libx/xutils/kosher"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx/ticket"
 
 	"github.com/wasmerio/wasmer-go/wasmer"
 )
@@ -148,14 +148,14 @@ func (w *wasmer2) cabinetGenerateTicket(args []wasmer.Value) ([]wasmer.Value, er
 
 	raw := getByte(mem, ticketPtr, ticketLen)
 
-	opts := &bindx.CabTicket{}
+	opts := &ticket.CabinetFolder{}
 
 	err := json.Unmarshal(raw, opts)
 	if err != nil {
 		return w.wasmErr(err), nil
 	}
 
-	out, err := cab.GenerateTicket(
+	out, err := cab.Ticket(
 		getStr(mem, folderPtr, folderLen),
 		opts,
 	)

@@ -183,31 +183,25 @@ func (d *DB) AgentResourceList(tenantId, pid, aid string) ([]*entities.AgentReso
 	return data, nil
 }
 
-type aresource struct {
-	ResourceId string `db:"resource_id,omitempty"`
-}
+func (d *DB) ListResourcePairs(tenantId string, pid, aid string) ([]entities.ResourcePair, error) {
+	// fixme => use join ?
 
-func (d *DB) ResourceListByAgent(tenantId string, pid, aid string) ([]*entities.Resource, error) {
-	ress := make([]*entities.Resource, 0)
-
-	rrids := make([]*aresource, 0)
-
+	rrids := make([]*entities.AgentResource, 0)
 	err := d.agentResourceTable().Find(db.Cond{
 		"plug_id":   pid,
 		"agent_id":  aid,
 		"tenant_id": tenantId,
-	}).Select("resource_id").
-		All(&rrids)
+	}).All(&rrids)
 	if err != nil {
 		return nil, err
 	}
 
 	rids := make([]string, 0, len(rrids))
-
 	for _, r := range rrids {
 		rids = append(rids, r.ResourceId)
 	}
 
+	ress := make([]*entities.Resource, 0)
 	err = d.resTable().Find(db.Cond{
 		"tenant_id": tenantId,
 		"id IN":     rids,
@@ -216,7 +210,26 @@ func (d *DB) ResourceListByAgent(tenantId string, pid, aid string) ([]*entities.
 		return nil, err
 	}
 
-	return ress, nil
+	resp := make([]entities.ResourcePair, len(rrids))
+
+	for _, ar := range rrids {
+		var res *entities.Resource
+
+		for _, r := range ress {
+			if ar.ResourceId == r.Id {
+				res = r
+				break
+			}
+		}
+
+		resp = append(resp, entities.ResourcePair{
+			AgentResource: ar,
+			Resource:      res,
+		})
+	}
+
+	return resp, nil
+
 }
 
 func (d *DB) AgentExtensionListByPlug(tenantId, pid string) ([]*entities.AgentExtension, error) {

@@ -190,8 +190,8 @@ func (c *CoreHub) AgentResourceList(tenantId, pid, aid string) ([]*entities.Agen
 	return c.coredb.AgentResourceList(tenantId, pid, aid)
 }
 
-func (c *CoreHub) ResourceListByAgent(tenantId string, pid, aid string) ([]*entities.Resource, error) {
-	return c.coredb.ResourceListByAgent(tenantId, pid, aid)
+func (c *CoreHub) ListResourcePairs(tenantId string, pid, aid string) ([]entities.ResourcePair, error) {
+	return c.coredb.ListResourcePairs(tenantId, pid, aid)
 }
 
 func (c *CoreHub) ListTargetHookByPlug(tenantId, plug string) ([]*entities.TargetHook, error) {
