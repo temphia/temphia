@@ -11,14 +11,6 @@ type LogQuery struct {
 	Filters map[string]string `json:"filter,omitempty"`
 }
 
-func (c *Controller) LensQueryApp(uclaim *claim.Session, query LogQuery) ([]logx.Log, error) {
-	return c.log.QueryAppTenant(query.From, query.To, uclaim.TenantId, query.Filters)
-}
-
-func (c *Controller) LensQueryEngine(uclaim *claim.Session, query LogQuery) ([]logx.Log, error) {
-	return c.log.QueryEngine(query.From, query.To, uclaim.TenantId, query.Filters)
-}
-
-func (c *Controller) LensQuerySite(uclaim *claim.Session, query LogQuery) ([]logx.Log, error) {
-	return c.log.QuerySite(query.From, query.To, uclaim.TenantId, query.Filters)
+func (c *Controller) LensQuery(uclaim *claim.Session, query LogQuery) ([]logx.Log, error) {
+	return c.log.Query(query.From, query.To, uclaim.TenantId, query.Filters)
 }

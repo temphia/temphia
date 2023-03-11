@@ -3,6 +3,7 @@ package log
 import (
 	"bufio"
 	"os"
+	"strconv"
 
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/tidwall/gjson"
@@ -12,16 +13,8 @@ type SimpleLogProxy struct {
 	Path string
 }
 
-func (s *SimpleLogProxy) QueryAppTenant(from, to, tenantId string, filters map[string]string) ([]logx.Log, error) {
-	return s.query("app", from, to, tenantId, filters)
-}
-
-func (s *SimpleLogProxy) QueryEngine(from, to, tenantId string, filters map[string]string) ([]logx.Log, error) {
-	return s.query("engine", from, to, tenantId, filters)
-}
-
-func (s *SimpleLogProxy) QuerySite(from, to, tenantId string, filters map[string]string) ([]logx.Log, error) {
-	return s.query("site", from, to, tenantId, filters)
+func (s *SimpleLogProxy) Query(from, to, tenantId string, filters map[string]string) ([]logx.Log, error) {
+	return s.query("", from, to, tenantId, filters)
 }
 
 func (s *SimpleLogProxy) query(index, from, to, tenantId string, filters map[string]string) ([]logx.Log, error) {
@@ -36,12 +29,52 @@ func (s *SimpleLogProxy) query(index, from, to, tenantId string, filters map[str
 	const max = 1000
 
 	result := make([]logx.Log, 0, max)
+
+lineLoop:
 	for fileScanner.Scan() {
 		line := fileScanner.Bytes()
-		out := gjson.GetBytes(line, "index")
-		if out.String() != index {
-			continue
+
+	fiterLoop:
+		for filterKey, filterValue := range filters {
+			out := gjson.GetBytes(line, filterKey)
+
+			switch out.Type {
+			case gjson.Null:
+				continue lineLoop
+			case gjson.String:
+				if out.String() == filterValue {
+					continue fiterLoop
+				}
+
+				continue lineLoop
+
+			case gjson.True:
+				if filterValue == "true" {
+					continue fiterLoop
+				}
+
+				continue lineLoop
+			case gjson.False:
+				if filterValue == "true" {
+					continue fiterLoop
+				}
+				continue lineLoop
+			case gjson.Number:
+				fval, err := strconv.ParseFloat(filterValue, 64)
+				if err != nil {
+					continue lineLoop
+				}
+
+				if out.Float() == fval {
+					continue fiterLoop
+				}
+				continue lineLoop
+			default:
+				continue lineLoop
+			}
+
 		}
+
 		result = append(result, logx.Log(line))
 
 		if len(result) == max {

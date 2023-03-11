@@ -102,7 +102,7 @@ import AdminUgroupAppNew from "./ugroup/app/app_new.svelte";
 import AdminUgroupAppEdit from "./ugroup/app/app_edit.svelte";
 
 // lens
-import AdminLens from "./lens/log/lens.svelte";
+import AdminLensLogs from "./lens/log/log.svelte";
 
 // tenant
 import AdminTenant from "./tenant/tenant.svelte";
@@ -247,7 +247,7 @@ export default {
     "/role/new": AdminRoleNew,
   },
 
-  "/lens/:index": AdminLens,
+  "/lens/logs": AdminLensLogs,
 
   "/target": {
     "/app": {

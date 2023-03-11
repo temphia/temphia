@@ -5,8 +5,6 @@
   import Layout from "./_layout.svelte";
   import PrettyJson from "./_pretty_json.svelte";
 
-  export let index: string;
-
   const app = getContext("__app__") as PortalService;
   const lapi = app.api_manager.get_admin_lens_api();
 
@@ -22,7 +20,7 @@
       to: toDate,
     };
 
-    const resp = await lapi.query(index, queryOpts);
+    const resp = await lapi.query(queryOpts);
     if (!resp.ok) {
       console.log("@err", resp.data);
       return;
@@ -35,7 +33,7 @@
   $: __open_row_idx = null;
 </script>
 
-<Layout do_query={(qstr) => load()} {index} bind:fromDate bind:toDate>
+<Layout do_query={(qstr) => load()}  bind:fromDate bind:toDate>
   {#if loaded}
     <div class="p-2 w-full h-full bg-white rounded">
       <VirtualList items={datas} let:item let:idx>

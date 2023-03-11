@@ -511,7 +511,7 @@ export class Navigator {
     this.set(`#/admin/tenant/system/event`);
   }
 
-  admin_lens(idx: string) {
-    this.set(`#/admin/lens/${idx}`);
+  admin_lens_logs() {
+    this.set(`#/admin/lens/logs`);
   }
 }

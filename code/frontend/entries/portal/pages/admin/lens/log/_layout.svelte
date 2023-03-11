@@ -5,7 +5,6 @@
   import { getContext } from "svelte";
   import { CEditor, PortalService } from "../../core";
 
-  export let index;
   export let fromDate = null;
   export let toDate = null;
 
@@ -15,7 +14,7 @@
   export let do_query = (qstr) => {};
 </script>
 
-<div class="flex justify-end pt-2 pr-2">
+<!-- <div class="flex justify-end pt-2 pr-2">
   <select
     class="px-2 py-1 rounded-full bg-white hover:text-white hover:bg-slate-500 border border-slate-600"
     value={index}
@@ -25,7 +24,7 @@
     <option value="engine">Engine Index</option>
     <option value="app">App Index</option>
   </select>
-</div>
+</div> -->
 
 <div class="p-2 w-full h-full" style="min-height: 80vh;">
   <div class="rounded bg-white p-2">

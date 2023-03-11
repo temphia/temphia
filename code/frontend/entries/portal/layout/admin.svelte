@@ -53,7 +53,7 @@
       id: "lens",
       name: "lens",
       icon: SearchIcon,
-      path: "#/admin/lens/app",
+      path: "#/admin/lens/logs",
     },
 
     {

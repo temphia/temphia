@@ -6,7 +6,7 @@ export class AdminLensAPI {
     this.base = base;
   }
 
-  query(index: string, qopts: any) {
-    return this.base.post(`/admin/lens/${index}`, qopts);
+  query(qopts: any) {
+    return this.base.post(`/admin/lens/query`, qopts);
   }
 }

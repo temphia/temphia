@@ -4,11 +4,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/controllers/admin"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
-	"github.com/temphia/temphia/code/backend/xtypes/logx"
 )
 
 func (a *ApiAdmin) LensAPI(rg *gin.RouterGroup) {
-	rg.POST("/:index", a.X(a.LensQuery))
+	rg.POST("/query", a.X(a.LensQuery))
 }
 
 func (a *ApiAdmin) LensQuery(ctx httpx.Request) {
@@ -20,14 +19,6 @@ func (a *ApiAdmin) LensQuery(ctx httpx.Request) {
 		return
 	}
 
-	var resp []logx.Log
-
-	switch ctx.MustParam("index") {
-	case "app":
-		resp, err = a.cAdmin.LensQueryApp(ctx.Session, query)
-	default:
-		panic("Not implemented")
-	}
-
+	resp, err := a.cAdmin.LensQuery(ctx.Session, query)
 	a.rutil.WriteJSON(ctx.Http, resp, err)
 }
