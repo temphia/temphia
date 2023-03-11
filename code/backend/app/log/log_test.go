@@ -3,6 +3,8 @@ package log
 import (
 	"encoding/json"
 	"testing"
+
+	"github.com/temphia/temphia/code/backend/xtypes/logx"
 )
 
 type Log struct {
@@ -16,14 +18,19 @@ func TestSimpleLogProxy(t *testing.T) {
 		Path: "testdata.log",
 	}
 
-	sl.Query("", "", "", "", map[string]string{
-		"level": "debug",
+	sl.Query("", logx.QueryRequest{
+		Filters: map[string]string{
+			"level": "debug",
+		},
 	})
 
-	logs, err := sl.Query("", "", "", "", map[string]string{
-		"level":   "debug",
-		"meta_id": "42",
+	logs, err := sl.Query("", logx.QueryRequest{
+		Filters: map[string]string{
+			"level":   "debug",
+			"meta_id": "42",
+		},
 	})
+
 	if err != nil {
 		t.Error(err)
 	}

@@ -24,8 +24,8 @@ type SimpleLogProxy struct {
 	Path string
 }
 
-func (s *SimpleLogProxy) Query(from, to, cursor, tenantId string, filters map[string]string) ([]logx.Log, error) {
-	return s.query(from, to, "", tenantId, filters)
+func (s *SimpleLogProxy) Query(tenantId string, req logx.QueryRequest) ([]logx.Log, error) {
+	return s.query(req.From, req.To, req.Cursor, tenantId, req.Filters)
 }
 
 func (s *SimpleLogProxy) query(from, to, cursor, tenantId string, filters map[string]string) ([]logx.Log, error) {

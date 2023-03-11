@@ -9,8 +9,15 @@ type Provider interface {
 
 type Log string
 
+type QueryRequest struct {
+	From    string
+	To      string
+	Cursor  string
+	Filters map[string]string
+}
+
 type Proxy interface {
-	Query(from, to, cursor, tenantId string, filters map[string]string) ([]Log, error)
+	Query(tenantId string, req QueryRequest) ([]Log, error)
 }
 
 type Message struct {

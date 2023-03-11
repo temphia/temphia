@@ -13,5 +13,10 @@ type LogQuery struct {
 }
 
 func (c *Controller) LensQuery(uclaim *claim.Session, query LogQuery) ([]logx.Log, error) {
-	return c.log.Query(query.From, query.To, query.Cursor, uclaim.TenantId, query.Filters)
+	return c.log.Query(uclaim.TenantId, logx.QueryRequest{
+		From:    query.From,
+		To:      query.To,
+		Cursor:  query.Cursor,
+		Filters: query.Filters,
+	})
 }
