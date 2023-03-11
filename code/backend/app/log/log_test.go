@@ -16,11 +16,11 @@ func TestSimpleLogProxy(t *testing.T) {
 		Path: "testdata.log",
 	}
 
-	sl.Query("", "", "", map[string]string{
+	sl.Query("", "", "", "", map[string]string{
 		"level": "debug",
 	})
 
-	logs, err := sl.Query("", "", "", map[string]string{
+	logs, err := sl.Query("", "", "", "", map[string]string{
 		"level":   "debug",
 		"meta_id": "42",
 	})

@@ -17,7 +17,7 @@ func (l *LogProxy) IPC(method string, path string, args xtypes.LazyData) (xtypes
 	ls := l.app.GetDeps().LogService().(logx.Service)
 	lproxy := ls.GetLogProxy()
 
-	lproxy.Query("", "", "", map[string]string{})
+	lproxy.Query("", "", "", "", map[string]string{})
 
 	return nil, easyerr.NotImpl()
 }

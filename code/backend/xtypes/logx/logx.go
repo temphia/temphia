@@ -10,7 +10,7 @@ type Provider interface {
 type Log string
 
 type Proxy interface {
-	Query(from, to, tenantId string, filters map[string]string) ([]Log, error)
+	Query(from, to, cursor, tenantId string, filters map[string]string) ([]Log, error)
 }
 
 type Message struct {
