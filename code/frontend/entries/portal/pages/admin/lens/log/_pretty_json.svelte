@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { time_ago } from "../../../../../../lib/vendor/timeago";
+
   export let data: object;
   export let index: number;
   export let is_open: boolean;
@@ -18,6 +20,9 @@
 </span>
 
 {#if is_open}
+  <span class="px-1 bg-slate-100 rounded"
+    >{time_ago(new Date(data["time"]).toString())}</span
+  >:
   <pre class="bg-slate-100 rounded">
         {JSON.stringify(data, null, "\t")}
     </pre>

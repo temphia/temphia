@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/k0kubun/pp"
 	"github.com/rs/xid"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
@@ -29,15 +30,9 @@ func (s *SimpleLogProxy) query(from, to, cursor, tenantId string, filters map[st
 	fileScanner := bufio.NewScanner(readFile)
 	fileScanner.Split(bufio.ScanLines)
 
-	const max = 1000
+	const max = 20
 
-	// parse to,from time
-	var (
-		fromTime *time.Time
-		toTime   *time.Time
-	)
-
-	err = parseTime(from, to, fromTime, toTime)
+	fromTime, toTime, err := parseTime(from, to)
 	if err != nil {
 		return nil, err
 	}
@@ -72,20 +67,26 @@ lineLoop:
 
 		// to/from time check here
 		ltime := curXid.Time()
+
+		pp.Printf("@processing_current [%s]  To/FROM [%s/%s] \n", ltime, toTime, fromTime)
+
 		if fromTime != nil {
-			if fromTime.Before(ltime) {
+			if fromTime.After(ltime) {
+				pp.Println("@fromtime", fromTime, ltime)
 				continue
 			}
 		}
 
 		if toTime != nil {
-			if toTime.After(ltime) {
+			if toTime.Before(ltime) {
+				pp.Println("@totime", toTime, ltime)
 				break
 			}
 		}
 
 		if tenantId != "" {
 			if gjson.GetBytes(line, "tenant_id").String() != tenantId {
+				pp.Println("@skipping_due_tenant", tenantId)
 				continue
 			}
 		}
@@ -143,27 +144,28 @@ lineLoop:
 	return result, nil
 }
 
-func parseTime(from, to string, fromTime *time.Time, toTime *time.Time) error {
-	const layout = "Jan 2, 2006 at 3:04pm (MST)"
+func parseTime(from, to string) (*time.Time, *time.Time, error) {
+	const layout = "2006-01-02T15:04:05.000Z"
+
+	var pfrom, pto *time.Time
 
 	if from != "" {
 		_fttime, err := time.Parse(layout, from)
 		if err != nil {
-			return easyerr.Wrap("could not parse from time error", err)
+			return nil, nil, easyerr.Wrap("could not parse from time error", err)
 		}
 
-		*fromTime = _fttime
+		pfrom = &_fttime
 	}
 
 	if to != "" {
 		_ttime, err := time.Parse(layout, to)
 		if err != nil {
-			return easyerr.Wrap("could not parse error", err)
+			return nil, nil, easyerr.Wrap("could not parse error", err)
 		}
-
-		*toTime = _ttime
+		pto = &_ttime
 	}
 
-	return nil
+	return pfrom, pto, nil
 
 }

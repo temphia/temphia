@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { Router } from "svelte-hash-router";
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import LensHelp from "./_help.svelte";
   import { getContext } from "svelte";
@@ -7,24 +6,13 @@
 
   export let fromDate = null;
   export let toDate = null;
+  export let loading = false;
 
   const app = getContext("__app__") as PortalService;
   let editor;
 
   export let do_query = (qstr) => {};
 </script>
-
-<!-- <div class="flex justify-end pt-2 pr-2">
-  <select
-    class="px-2 py-1 rounded-full bg-white hover:text-white hover:bg-slate-500 border border-slate-600"
-    value={index}
-    on:change={(ev) => app.nav.admin_lens(ev.target["value"])}
-  >
-    <option value="site">Site Index</option>
-    <option value="engine">Engine Index</option>
-    <option value="app">App Index</option>
-  </select>
-</div> -->
 
 <div class="p-2 w-full h-full" style="min-height: 80vh;">
   <div class="rounded bg-white p-2">
@@ -46,16 +34,21 @@
           class="bg-green-100 p-1 rounded-lg flex space-x-1 flex-row items-center cursor-pointer"
         >
           <Icon name="chevron-left" class="h-4" />
-          <input type="datetime-local" class="text-xs bg-green-100" bind:value={toDate} />
-          <!-- <p class="text-xs">2021-01-15 [5:30]</p> -->
-
+          <input
+            type="datetime-local"
+            class="text-xs bg-green-100"
+            bind:value={fromDate}
+          />
         </div>
 
         <div
           class="bg-red-100 p-1 rounded-lg flex space-x-1 flex-row items-center cursor-pointer"
         >
-          <input type="datetime-local" class="text-xs bg-red-100" bind:value={fromDate} />
-          <!-- <p class="text-xs">2021-02-17 [7:30]</p> -->
+          <input
+            type="datetime-local"
+            class="text-xs bg-red-100"
+            bind:value={toDate}
+          />
           <Icon name="chevron-right" class="h-4" />
         </div>
 
@@ -80,12 +73,19 @@
       <div class="flex justify-end p-1 gap-1">
         <button
           on:click={() => do_query("")}
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-2"
-          >Search</button
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-2 flex"
         >
+          {#if loading}
+            <Icon name="globe" class="h-4 w-4 animate-bounce" solid />
+          {/if}
+
+          Search
+        </button>
 
         <button
-          on:click={() => {}}
+          on:click={() => {
+            app.utils.small_modal_open(LensHelp, {});
+          }}
           class="p-1 rounded bg-blue-300 shadow hover:bg-blue-600 flex text-white"
         >
           <Icon name="information-circle" class="h-6 w-6" solid />
