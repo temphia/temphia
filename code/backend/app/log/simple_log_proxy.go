@@ -13,6 +13,13 @@ import (
 	"github.com/tidwall/gjson"
 )
 
+// fixme => lazyly create index (pair<line_nuber, xid>) so we could jump to that line number without
+// access/unmarsheling json line by line in a way, instead use cursor|from and index xid
+// type cursorStore struct {
+// max uint
+// cursorIndex []struct{xid xid.Id; line uint }
+// }
+
 type SimpleLogProxy struct {
 	Path string
 }
