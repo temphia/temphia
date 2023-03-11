@@ -58,6 +58,8 @@
             </button>
           </th>
         {/each}
+
+        <th />
       </tr>
     </thead>
 
@@ -76,12 +78,7 @@
               />
             </label>
 
-            <button
-              class="underline text-blue-500 "
-              on:click={() => rowClick(item)}
-            >
-              <span class="text-xs text-gray-500">{item}</span>
-            </button>
+            <span class="text-xs text-gray-500">{item}</span>
           </td>
 
           {#each columns as col}
@@ -141,6 +138,13 @@
               </div>
             </td>
           {/each}
+
+          <button
+            class="underline text-blue-600"
+            on:click={() => rowClick(item)}
+          >
+            Edit
+          </button>
         </tr>{/each}
     </tbody>
   </table>
