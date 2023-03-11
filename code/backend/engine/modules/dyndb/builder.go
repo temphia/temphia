@@ -6,28 +6,31 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
-type DyndbBuilder struct {
+var _ etypes.ModuleBuilder = (*DyndbBuilder)(nil)
+
+func NewBuilder(app any) (etypes.ModuleBuilder, error) {
+	return &DyndbBuilder{}, nil
 }
+
+type DyndbBuilder struct{}
 
 func (DyndbBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, error) {
-	return New(opts), nil
-}
 
-func (DyndbBuilder) Init(app any) error {
-	return nil
-}
-
-func New(opts etypes.ModuleOptions) *DyndbModule {
 	deps := opts.Binder.GetApp().(xtypes.App).GetDeps()
 
-	dynhub := deps.DataHub().(dyndb.DataHub).GetSource("default", opts.Resource.TenantId) // fixme => get source from resource
+	target, err := opts.Resource.SplitTarget(2)
+	if err != nil {
+		return nil, err
+	}
+
+	dynhub := deps.DataHub().(dyndb.DataHub).GetSource(target[0], opts.Resource.TenantId)
 
 	return &DyndbModule{
 		binder:   opts.Binder,
 		res:      opts.Resource,
 		dynsrc:   dynhub,
-		group:    "",
-		table:    "",
+		group:    target[1],
 		tenantId: opts.Resource.Target,
-	}
+	}, nil
+
 }

@@ -134,6 +134,12 @@ func (ub *Binding) CurrentUser() (*entities.UserInfo, error) {
 	}, nil
 }
 
+func (ub *Binding) ContextUser() *invoker.User {
+	ub.loadInvokeUser()
+
+	return ub.iuserCache
+}
+
 // private
 
 func (ub *Binding) loadInvokeUser() {
@@ -141,6 +147,7 @@ func (ub *Binding) loadInvokeUser() {
 		return
 	}
 
-	// invoker := ub.handle.Job.Invoker
-	// ub.iuserCache = invoker.User()
+	if ub.handle.Job.Invoker != nil {
+		ub.iuserCache = ub.handle.Job.Invoker.UserContext()
+	}
 }

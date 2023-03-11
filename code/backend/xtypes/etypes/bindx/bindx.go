@@ -3,6 +3,7 @@ package bindx
 import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx/ticket"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/invoker"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -63,6 +64,7 @@ type Sockd interface {
 }
 
 type User interface {
+	ContextUser() *invoker.User
 	ListUser(group string) ([]string, error)
 	MessageUser(group, user string, opts *UserMessage) error
 	GetUser(group, user string) (*entities.UserInfo, error)
