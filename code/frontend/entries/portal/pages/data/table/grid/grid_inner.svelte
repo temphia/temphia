@@ -68,7 +68,7 @@
         <tr class="text-left bg-{flipCSS(ridx)}-100">
           <td class="border-dashed border-t border-gray-200 px-2">
             <label
-              class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
+              class="text-teal-500 inline-flex gap-1 justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
             >
               <input
                 type="checkbox"
@@ -76,9 +76,8 @@
                 on:click={() => rowToggleSelect(item)}
                 class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline"
               />
+              <span class="text-xs text-gray-500">{item}</span>
             </label>
-
-            <span class="text-xs text-gray-500">{item}</span>
           </td>
 
           {#each columns as col}
@@ -139,12 +138,14 @@
             </td>
           {/each}
 
-          <button
-            class="underline text-blue-600"
-            on:click={() => rowClick(item)}
-          >
-            Edit
-          </button>
+          <td>
+            <button
+              class="underline text-blue-600"
+              on:click={() => rowClick(item)}
+            >
+              edit
+            </button>
+          </td>
         </tr>{/each}
     </tbody>
   </table>

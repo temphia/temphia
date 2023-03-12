@@ -32,7 +32,6 @@
   };
 
   $: re_render = 0;
-
 </script>
 
 <div class="w-full h-full overflow-x-hidden">
@@ -81,9 +80,11 @@
             name="Share"
             onClick={() => dispatch("tb_share")}
           />
+
           <ActionNormal
             icon="filter"
             name="View"
+            active={viewmode == "MANUAL" || viewmode == "STATIC"}
             onClick={() => dispatch("tb_view")}
           />
           <ActionNormal
@@ -166,10 +167,7 @@
         <div>
           View Mode [<span class="text-slate-600 text-base">{viewmode}</span>]
         </div>
-
       </div>
-
-
     </div>
     <!-- end right  -->
   </div>
