@@ -2,6 +2,7 @@ package common
 
 import (
 	"github.com/temphia/temphia/code/backend/app/registry"
+	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/executors/noop"
 	"github.com/temphia/temphia/code/executors/pageform"
 
@@ -30,6 +31,8 @@ import (
 )
 
 func init() {
+
+	xtypes.PrintBuildInfo()
 
 	registry.SetExecutor("javascript1", goja.NewBuilder)
 	registry.SetExecutor("goja", goja.NewBuilder)

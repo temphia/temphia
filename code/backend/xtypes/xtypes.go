@@ -1,5 +1,25 @@
 package xtypes
 
+import (
+	"fmt"
+	"time"
+
+	"github.com/flosch/go-humanize"
+)
+
+var Version string = "dev"
+var Buildtime string = ""
+
+func PrintBuildInfo() {
+	fmt.Println("version ", Version)
+	fmt.Println("Build Time ", Buildtime)
+	if Buildtime != "" {
+		t, _ := time.Parse(time.RFC3339, Buildtime)
+		fmt.Println("Compiled ", humanize.Time(t))
+	}
+	fmt.Println("============")
+}
+
 type App interface {
 	Run() error
 
