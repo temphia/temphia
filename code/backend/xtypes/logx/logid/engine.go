@@ -9,6 +9,7 @@ const (
 	BinderEventProcessOK      = "binder_event_process_ok"
 	BinderExecutionLog        = "binder_execution_log"
 	BinderExecutionLogBatched = "binder_execution_log_batched"
+	BinderExecutionForked     = "binder_execution_self_fork"
 )
 
 const (
