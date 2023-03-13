@@ -1,4 +1,4 @@
-package self
+package binder
 
 import (
 	"errors"
@@ -14,7 +14,7 @@ var (
 	ErrLinkNotFound = errors.New("LINK NOT FOUND")
 )
 
-func (b *Binding) selfInLinks() ([]bindx.Link, error) {
+func (b *SelfBindings) selfInLinks() ([]bindx.Link, error) {
 	resp, err := b.db.AgentLinkListReverse(b.handle.Namespace, b.handle.PlugId, b.handle.AgentId)
 	if err != nil {
 		panic(err)
@@ -34,7 +34,7 @@ func (b *Binding) selfInLinks() ([]bindx.Link, error) {
 	return links, nil
 }
 
-func (b *Binding) selfOutLinks() ([]bindx.Link, error) {
+func (b *SelfBindings) selfOutLinks() ([]bindx.Link, error) {
 	b.handle.LoadLinks()
 
 	links := make([]bindx.Link, 0, len(b.handle.Links))
@@ -51,7 +51,7 @@ func (b *Binding) selfOutLinks() ([]bindx.Link, error) {
 	return links, nil
 }
 
-func (b *Binding) selfLinkExec(name, method string, data xtypes.LazyData, async, detached bool) (xtypes.LazyData, error) {
+func (b *SelfBindings) selfLinkExec(name, method string, data xtypes.LazyData, async, detached bool) (xtypes.LazyData, error) {
 
 	alink, ok := b.handle.Links[name]
 	if !ok {

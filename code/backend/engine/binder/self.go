@@ -1,4 +1,4 @@
-package self
+package binder
 
 import (
 	"github.com/temphia/temphia/code/backend/engine/binder/handle"
@@ -9,7 +9,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
-type Binding struct {
+type SelfBindings struct {
 	handle  *handle.Handle
 	pacman  repox.Hub
 	cabhub  store.CabinetHub
@@ -17,9 +17,9 @@ type Binding struct {
 	runtime etypes.Runtime
 }
 
-func New(handle *handle.Handle) Binding {
+func NewSelfBindings(handle *handle.Handle) SelfBindings {
 
-	return Binding{
+	return SelfBindings{
 		handle:  handle,
 		pacman:  handle.Deps.Pacman,
 		cabhub:  handle.Deps.CabinetHub,
@@ -28,54 +28,54 @@ func New(handle *handle.Handle) Binding {
 	}
 }
 
-func (b *Binding) SelfGetFile(file string) ([]byte, error) {
+func (b *SelfBindings) SelfGetFile(file string) ([]byte, error) {
 	return b.selfGetFile(file)
 }
 
-func (b *Binding) SelfAddFile(file string, data []byte) error {
+func (b *SelfBindings) SelfAddFile(file string, data []byte) error {
 	return b.selfAddFile(file, data)
 }
 
-func (b *Binding) SelfUpdateFile(file string, data []byte) error {
+func (b *SelfBindings) SelfUpdateFile(file string, data []byte) error {
 	return b.selfUpdateFile(file, data)
 }
 
-func (b *Binding) SelfAddDataFile(file string, data []byte) error {
+func (b *SelfBindings) SelfAddDataFile(file string, data []byte) error {
 	return b.selfAddDataFile(file, data)
 }
 
-func (b *Binding) SelfUpdateDataFile(file string, data []byte) error {
+func (b *SelfBindings) SelfUpdateDataFile(file string, data []byte) error {
 	return b.selfUpdateDataFile(file, data)
 }
 
-func (b *Binding) SelfGetDataFile(file string) ([]byte, error) {
+func (b *SelfBindings) SelfGetDataFile(file string) ([]byte, error) {
 	return b.selfGetDataFile(file)
 }
 
-func (b *Binding) SelfListDataFiles() (map[string]string, error) {
+func (b *SelfBindings) SelfListDataFiles() (map[string]string, error) {
 	return b.selfListDataFiles()
 }
 
-func (b *Binding) SelfDeleteDataFile(file string) error {
+func (b *SelfBindings) SelfDeleteDataFile(file string) error {
 	return b.selfDeleteDataFile(file)
 }
 
-func (b *Binding) SelfModuleExec(name, method, path string, data xtypes.LazyData) (xtypes.LazyData, error) {
+func (b *SelfBindings) SelfModuleExec(name, method, path string, data xtypes.LazyData) (xtypes.LazyData, error) {
 	return b.selfModuleExec(name, method, path, data)
 }
 
-func (b *Binding) SelfInLinks() ([]bindx.Link, error) {
+func (b *SelfBindings) SelfInLinks() ([]bindx.Link, error) {
 	return b.selfInLinks()
 }
 
-func (b *Binding) SelfOutLinks() ([]bindx.Link, error) {
+func (b *SelfBindings) SelfOutLinks() ([]bindx.Link, error) {
 	return b.selfOutLinks()
 }
 
-func (b *Binding) SelfLinkExec(name, method string, data xtypes.LazyData, async, detached bool) (xtypes.LazyData, error) {
+func (b *SelfBindings) SelfLinkExec(name, method string, data xtypes.LazyData, async, detached bool) (xtypes.LazyData, error) {
 	return b.selfLinkExec(name, method, data, async, detached)
 }
 
-func (b *Binding) SelfForkExec(method string, data []byte) error {
+func (b *SelfBindings) SelfForkExec(method string, data []byte) error {
 	return b.selfForkExec(method, data)
 }

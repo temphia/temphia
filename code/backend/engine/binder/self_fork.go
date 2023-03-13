@@ -1,11 +1,11 @@
-package self
+package binder
 
 import (
 	"github.com/rs/xid"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/job"
 )
 
-func (b *Binding) selfForkExec(method string, data []byte) error {
+func (b *SelfBindings) selfForkExec(method string, data []byte) error {
 
 	// fixme => log here
 

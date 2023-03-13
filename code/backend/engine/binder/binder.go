@@ -10,7 +10,6 @@ import (
 	"github.com/temphia/temphia/code/backend/engine/binder/specific/ncache"
 	"github.com/temphia/temphia/code/backend/engine/binder/specific/net"
 	"github.com/temphia/temphia/code/backend/engine/binder/specific/plugkv"
-	"github.com/temphia/temphia/code/backend/engine/binder/specific/self"
 	"github.com/temphia/temphia/code/backend/engine/binder/specific/sockd"
 	"github.com/temphia/temphia/code/backend/engine/binder/specific/user"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
@@ -39,7 +38,7 @@ type Binder struct {
 	net     net.Binding
 	ncache  ncache.Binding
 	user    user.Binding
-	self    self.Binding
+	self    SelfBindings
 }
 
 func (b *Binder) AttachJob(j *job.Job) {
@@ -57,7 +56,7 @@ func (b *Binder) AttachJob(j *job.Job) {
 	b.net = net.New()
 	b.ncache = ncache.New(b.Handle)
 	b.user = user.New(b.Handle)
-	b.self = self.New(b.Handle)
+	b.self = NewSelfBindings(b.Handle)
 }
 
 func (b *Binder) SetExec(exec etypes.Executor) {

@@ -1,4 +1,4 @@
-package self
+package binder
 
 import (
 	"errors"
@@ -10,7 +10,7 @@ var (
 	ErrResourceNotFound = errors.New("ERROR RESOURCE NOT FOUND")
 )
 
-func (b *Binding) SelfListResources() ([]*bindx.Resource, error) {
+func (b *SelfBindings) SelfListResources() ([]*bindx.Resource, error) {
 	b.handle.LoadResources()
 
 	ress := make([]*bindx.Resource, 0, len(b.handle.Resources))
@@ -26,7 +26,7 @@ func (b *Binding) SelfListResources() ([]*bindx.Resource, error) {
 	return ress, nil
 }
 
-func (b *Binding) SelfGetResource(name string) (*bindx.Resource, error) {
+func (b *SelfBindings) SelfGetResource(name string) (*bindx.Resource, error) {
 	b.handle.LoadResources()
 
 	res, ok := b.handle.Resources[name]

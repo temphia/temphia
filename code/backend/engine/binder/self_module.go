@@ -1,4 +1,4 @@
-package self
+package binder
 
 import (
 	"errors"
@@ -16,7 +16,7 @@ var (
 	ErrModuleResourceNotFound  = errors.New("MODULE RESOURCE NOT FOUND")
 )
 
-func (b *Binding) selfModuleExec(name, method, path string, data xtypes.LazyData) (xtypes.LazyData, error) {
+func (b *SelfBindings) selfModuleExec(name, method, path string, data xtypes.LazyData) (xtypes.LazyData, error) {
 	b.handle.LoadResources()
 
 	res, ok := b.handle.Resources[name]
@@ -40,7 +40,7 @@ func (b *Binding) selfModuleExec(name, method, path string, data xtypes.LazyData
 	}
 }
 
-func (b *Binding) execModule(method, path string, data xtypes.LazyData, res *entities.Resource) (xtypes.LazyData, error) {
+func (b *SelfBindings) execModule(method, path string, data xtypes.LazyData, res *entities.Resource) (xtypes.LazyData, error) {
 
 	mbuilder, ok := b.handle.Deps.ModuleBuilders[res.SubType]
 	if !ok {
