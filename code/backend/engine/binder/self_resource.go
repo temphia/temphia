@@ -1,13 +1,9 @@
 package binder
 
 import (
-	"errors"
-
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
-)
-
-var (
-	ErrResourceNotFound = errors.New("ERROR RESOURCE NOT FOUND")
 )
 
 func (b *SelfBindings) SelfListResources() ([]*bindx.Resource, error) {
@@ -31,7 +27,7 @@ func (b *SelfBindings) SelfGetResource(name string) (*bindx.Resource, error) {
 
 	res, ok := b.handle.Resources[name]
 	if !ok {
-		return nil, ErrResourceNotFound
+		return nil, easyerr.Error(etypes.ResourceNotFound)
 	}
 
 	return &bindx.Resource{

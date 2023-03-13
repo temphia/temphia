@@ -1,17 +1,13 @@
 package binder
 
 import (
-	"errors"
-
 	"github.com/rs/xid"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/libx/lazydata"
 	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/job"
-)
-
-var (
-	ErrLinkNotFound = errors.New("LINK NOT FOUND")
 )
 
 func (b *SelfBindings) selfInLinks() ([]bindx.Link, error) {
@@ -55,7 +51,7 @@ func (b *SelfBindings) selfLinkExec(name, method string, data xtypes.LazyData, a
 
 	alink, ok := b.handle.Links[name]
 	if !ok {
-		return nil, ErrLinkNotFound
+		return nil, easyerr.Error(etypes.LinkNotFound)
 	}
 
 	if async {

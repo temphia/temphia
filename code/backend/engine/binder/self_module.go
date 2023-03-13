@@ -1,8 +1,6 @@
 package binder
 
 import (
-	"errors"
-
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
@@ -10,29 +8,19 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities/resource"
 )
 
-var (
-	ErrModuleNotFound          = errors.New("MODULE NOT FOUND")
-	ErrModuleResourceWrongType = errors.New("MODULE RESOURCE WRONG TYPE")
-	ErrModuleResourceNotFound  = errors.New("MODULE RESOURCE NOT FOUND")
-)
-
 func (b *SelfBindings) selfModuleExec(name, method, path string, data xtypes.LazyData) (xtypes.LazyData, error) {
 	b.handle.LoadResources()
 
 	res, ok := b.handle.Resources[name]
 	if !ok {
-		return nil, ErrModuleResourceNotFound
-	}
-
-	if resource.Module != res.Type {
-		return nil, ErrModuleResourceWrongType
+		return nil, easyerr.Error(etypes.ResourceNotFound)
 	}
 
 	switch res.Type {
 	case resource.Module:
 		return b.execModule(res.SubType, method, path, data, res)
 	case resource.DataGroup:
-		return b.execModule("data_group", method, path, data, res)
+		return b.execModule(resource.DataGroup, method, path, data, res)
 	case resource.Folder:
 		return nil, easyerr.NotImpl()
 	default:
@@ -44,7 +32,7 @@ func (b *SelfBindings) execModule(name, method, path string, data xtypes.LazyDat
 
 	mbuilder, ok := b.handle.Deps.ModuleBuilders[name]
 	if !ok {
-		return nil, ErrModuleNotFound
+		return nil, easyerr.Error(etypes.ResourceModuleNotFound)
 	}
 
 	module, err := mbuilder.Instance(etypes.ModuleOptions{
