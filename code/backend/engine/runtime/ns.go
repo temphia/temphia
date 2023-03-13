@@ -3,7 +3,7 @@ package runtime
 import (
 	"sync"
 
-	"github.com/temphia/temphia/code/backend/engine/binders/standard"
+	"github.com/temphia/temphia/code/backend/engine/binder"
 	"github.com/temphia/temphia/code/backend/engine/rfencer"
 	"github.com/temphia/temphia/code/backend/engine/runtime/rpool"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
@@ -15,7 +15,7 @@ import (
 type ns struct {
 	runtime  *runtime
 	tenantId string
-	running  map[string]*standard.Binder
+	running  map[string]*binder.Binder
 	rlock    sync.Mutex // only using as pointer(no copy after first use) so its fine
 	pool     rpool.Pool
 	fencer   rfencer.RFencer
@@ -25,7 +25,7 @@ func (r *runtime) newNs(tenantId string) *ns {
 	n := &ns{
 		runtime:  r,
 		tenantId: tenantId,
-		running:  map[string]*standard.Binder{},
+		running:  map[string]*binder.Binder{},
 		rlock:    sync.Mutex{},
 		pool:     rpool.NewPool(),
 		fencer:   rfencer.New(tenantId, r.app.GetDeps().CoreHub().(store.CoreHub)),
@@ -63,14 +63,14 @@ func (n *ns) listRunning() []etypes.RunningExec {
 	return re
 }
 
-func (n *ns) countUp(b *standard.Binder) {
+func (n *ns) countUp(b *binder.Binder) {
 	n.rlock.Lock()
 	defer n.rlock.Unlock()
 
 	n.running[b.Handle.EventId] = b
 }
 
-func (n *ns) countDown(b *standard.Binder) {
+func (n *ns) countDown(b *binder.Binder) {
 	n.rlock.Lock()
 	defer n.rlock.Unlock()
 

@@ -3,7 +3,7 @@ package runtime
 import (
 	"github.com/k0kubun/pp"
 
-	"github.com/temphia/temphia/code/backend/engine/binders/standard"
+	"github.com/temphia/temphia/code/backend/engine/binder"
 	"github.com/temphia/temphia/code/backend/engine/runtime/loader"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
@@ -13,7 +13,7 @@ import (
 	"github.com/ztrue/tracerr"
 )
 
-func (n *ns) getBinder(j *job.Job) (*standard.Binder, error) {
+func (n *ns) getBinder(j *job.Job) (*binder.Binder, error) {
 	if !j.Loaded {
 		err := n.loadJob(j)
 		if err != nil {
@@ -35,7 +35,7 @@ func (n *ns) getBinder(j *job.Job) (*standard.Binder, error) {
 		return nil, easyerr.Error("Executor builder not found")
 	}
 
-	bind := n.runtime.binderFactory.New(standard.BinderOptions{
+	bind := n.runtime.binderFactory.New(binder.BinderOptions{
 		Namespace: j.Namespace,
 		PlugId:    j.PlugId,
 		AgentId:   j.AgentId,
@@ -62,7 +62,7 @@ func (n *ns) getBinder(j *job.Job) (*standard.Binder, error) {
 	return bind, nil
 }
 
-func (n *ns) setBinder(j *job.Job, bind *standard.Binder) {
+func (n *ns) setBinder(j *job.Job, bind *binder.Binder) {
 	n.pool.Return(bind)
 }
 

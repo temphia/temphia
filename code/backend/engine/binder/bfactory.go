@@ -1,9 +1,10 @@
-package standard
+package binder
 
 import (
 	"github.com/rs/zerolog"
-	"github.com/temphia/temphia/code/backend/engine/binders/standard/deps"
-	"github.com/temphia/temphia/code/backend/engine/binders/standard/handle"
+
+	"github.com/temphia/temphia/code/backend/engine/binder/deps"
+	"github.com/temphia/temphia/code/backend/engine/binder/handle"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service"

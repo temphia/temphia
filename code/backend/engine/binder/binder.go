@@ -1,17 +1,18 @@
-package standard
+package binder
 
 import (
 	"context"
 
 	"github.com/rs/zerolog"
-	"github.com/temphia/temphia/code/backend/engine/binders/standard/handle"
-	"github.com/temphia/temphia/code/backend/engine/binders/standard/specific/cab"
-	"github.com/temphia/temphia/code/backend/engine/binders/standard/specific/ncache"
-	"github.com/temphia/temphia/code/backend/engine/binders/standard/specific/net"
-	"github.com/temphia/temphia/code/backend/engine/binders/standard/specific/plugkv"
-	"github.com/temphia/temphia/code/backend/engine/binders/standard/specific/self"
-	"github.com/temphia/temphia/code/backend/engine/binders/standard/specific/sockd"
-	"github.com/temphia/temphia/code/backend/engine/binders/standard/specific/user"
+
+	"github.com/temphia/temphia/code/backend/engine/binder/handle"
+	"github.com/temphia/temphia/code/backend/engine/binder/specific/cab"
+	"github.com/temphia/temphia/code/backend/engine/binder/specific/ncache"
+	"github.com/temphia/temphia/code/backend/engine/binder/specific/net"
+	"github.com/temphia/temphia/code/backend/engine/binder/specific/plugkv"
+	"github.com/temphia/temphia/code/backend/engine/binder/specific/self"
+	"github.com/temphia/temphia/code/backend/engine/binder/specific/sockd"
+	"github.com/temphia/temphia/code/backend/engine/binder/specific/user"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"

@@ -4,11 +4,11 @@ import (
 	"math/rand"
 	"sync"
 
-	"github.com/temphia/temphia/code/backend/engine/binders/standard"
+	"github.com/temphia/temphia/code/backend/engine/binder"
 )
 
 type Pool struct {
-	binders    map[string]*standard.Binder
+	binders    map[string]*binder.Binder
 	plugIndex  map[string]*plugSet  // plug_id => []agent_id
 	agentIndex map[string]*agentSet // (plug_id + agent_id ) => []event_id
 	slock      sync.Mutex
@@ -21,7 +21,7 @@ type Pool struct {
 
 func NewPool() Pool {
 	return Pool{
-		binders:            make(map[string]*standard.Binder),
+		binders:            make(map[string]*binder.Binder),
 		plugIndex:          make(map[string]*plugSet),
 		agentIndex:         make(map[string]*agentSet),
 		slock:              sync.Mutex{},
@@ -32,7 +32,7 @@ func NewPool() Pool {
 	}
 }
 
-func (p *Pool) Borrow(plugId, agentId string) (*standard.Binder, int) {
+func (p *Pool) Borrow(plugId, agentId string) (*binder.Binder, int) {
 	p.slock.Lock()
 	defer p.slock.Unlock()
 
@@ -62,7 +62,7 @@ func (p *Pool) Borrow(plugId, agentId string) (*standard.Binder, int) {
 
 }
 
-func (p *Pool) Return(b *standard.Binder) {
+func (p *Pool) Return(b *binder.Binder) {
 	p.slock.Lock()
 	defer p.slock.Unlock()
 
@@ -131,7 +131,7 @@ func (p *Pool) SetEpoch(plug, agent string, e int64) {
 
 // private
 
-func (p *Pool) getRandom(currPlug, currAgent string) *standard.Binder {
+func (p *Pool) getRandom(currPlug, currAgent string) *binder.Binder {
 
 	elem := rand.Int31n(int32(len(p.binders)))
 	i := 0

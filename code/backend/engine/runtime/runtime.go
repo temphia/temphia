@@ -5,7 +5,7 @@ import (
 
 	"github.com/rs/zerolog"
 
-	"github.com/temphia/temphia/code/backend/engine/binders/standard"
+	"github.com/temphia/temphia/code/backend/engine/binder"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
@@ -25,7 +25,7 @@ type runtime struct {
 	router        etypes.Router
 	nodeTags      []string
 	app           xtypes.App
-	binderFactory standard.Factory
+	binderFactory binder.Factory
 
 	execBuilders map[string]etypes.ExecutorBuilder
 	ns           map[string]*ns
@@ -62,7 +62,7 @@ func New(_app xtypes.App, logger zerolog.Logger) *runtime {
 
 func (r *runtime) Run(builders map[string]etypes.ExecutorBuilder, modules map[string]etypes.ModuleBuilder) error {
 	r.execBuilders = builders
-	r.binderFactory = standard.NewFactory(standard.FactoryOptions{
+	r.binderFactory = binder.NewFactory(binder.FactoryOptions{
 		App:          r.app,
 		Logger:       r.logger,
 		Modules:      modules,
