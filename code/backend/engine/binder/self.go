@@ -15,11 +15,13 @@ type SelfBindings struct {
 	cabhub  store.CabinetHub
 	db      store.CoreHub
 	runtime etypes.Runtime
+	root    *Binder
 }
 
-func NewSelfBindings(handle *handle.Handle) SelfBindings {
+func NewSelfBindings(handle *handle.Handle, root *Binder) SelfBindings {
 
 	return SelfBindings{
+		root:    root,
 		handle:  handle,
 		pacman:  handle.Deps.Pacman,
 		cabhub:  handle.Deps.CabinetHub,

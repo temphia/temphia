@@ -56,7 +56,7 @@ func (b *Binder) AttachJob(j *job.Job) {
 	b.net = net.New()
 	b.ncache = ncache.New(b.Handle)
 	b.user = user.New(b.Handle)
-	b.self = NewSelfBindings(b.Handle)
+	b.self = NewSelfBindings(b.Handle, b)
 }
 
 func (b *Binder) SetExec(exec etypes.Executor) {

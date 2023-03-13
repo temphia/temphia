@@ -30,7 +30,7 @@ func (b *SelfBindings) selfModuleExec(name, method, path string, data xtypes.Laz
 
 	switch res.Type {
 	case resource.Module:
-		return b.execModule(method, path, data, res)
+		return b.execModule(res.SubType, method, path, data, res)
 	case resource.DataGroup:
 		return nil, easyerr.NotImpl()
 	case resource.Folder:
@@ -40,15 +40,15 @@ func (b *SelfBindings) selfModuleExec(name, method, path string, data xtypes.Laz
 	}
 }
 
-func (b *SelfBindings) execModule(method, path string, data xtypes.LazyData, res *entities.Resource) (xtypes.LazyData, error) {
+func (b *SelfBindings) execModule(name, method, path string, data xtypes.LazyData, res *entities.Resource) (xtypes.LazyData, error) {
 
-	mbuilder, ok := b.handle.Deps.ModuleBuilders[res.SubType]
+	mbuilder, ok := b.handle.Deps.ModuleBuilders[name]
 	if !ok {
 		return nil, ErrModuleNotFound
 	}
 
 	module, err := mbuilder.Instance(etypes.ModuleOptions{
-		Binder:   nil,
+		Binder:   b.root,
 		Resource: res,
 	})
 	if err != nil {
