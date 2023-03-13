@@ -128,7 +128,9 @@
                     </span>
                   {/if}
                 {:else if col.ctype === SheetColTypeLocation}
-                  <Point {value} />
+                  <div class="text-xs">
+                    <Point {value} />
+                  </div>
                 {:else if col.ctype === SheetColTypeRatings}
                   {#if num_value}
                     {#each [1, 2, 3, 4, 5] as rt}
@@ -166,8 +168,13 @@
                 {:else if col.ctype === SheetColTypeUser}
                   <div class="flex gap-1">
                     {#each value.split(",") as cd}
-                      <div class="p-0.5 rounded bg-gray-50 flex border gap-0.5 text-xs items-center">
-                        <UserAvatar name={cd} url={profile_genrator && profile_genrator(cd)} />
+                      <div
+                        class="p-0.5 rounded bg-gray-50 flex border gap-0.5 text-xs items-center"
+                      >
+                        <UserAvatar
+                          name={cd}
+                          url={profile_genrator && profile_genrator(cd)}
+                        />
                         <span>{cd}</span>
                       </div>
                     {/each}
