@@ -8,7 +8,9 @@ import (
 	"github.com/temphia/temphia/code/backend/libx/lazydata"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
@@ -18,6 +20,7 @@ const (
 	MethodUpdateRow   = "update_row"
 	MethodDeleteRows  = "delete_rows"
 	MethodSimpleQuery = "simple_query"
+	MethodTicket      = "ticket"
 )
 
 type DyndbModule struct {
@@ -110,9 +113,27 @@ func (d *DyndbModule) IPC(method string, path string, args xtypes.LazyData) (xty
 			return nil, err
 		}
 		return d.response(dhub.SimpleQuery(txid, req))
-	default:
-		return nil, easyerr.NotFound()
+	case MethodTicket:
+		app := d.binder.GetApp().(xtypes.App)
+		signer := app.GetDeps().Signer().(service.Signer)
+		uctx := d.binder.UserBindingsGet().ContextUser()
+
+		tok, err := signer.SignData(d.tenantId, &claim.Data{
+			TenantId:   d.tenantId,
+			UserID:     uctx.Id,
+			UserGroup:  uctx.Group,
+			SessionID:  uctx.SessionId,
+			DeviceId:   uctx.DeviceId,
+			DataSource: d.dynsrc.Name(),
+			DataGroup:  d.group,
+			DataTables: []string{"*"},
+			IsExec:     true,
+		})
+
+		return d.response(tok, err)
 	}
+
+	return nil, easyerr.NotFound()
 
 }
 
