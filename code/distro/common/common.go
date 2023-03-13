@@ -8,7 +8,7 @@ import (
 	// core executors
 	"github.com/temphia/temphia/code/backend/engine/executors/javascript1/goja"
 	"github.com/temphia/temphia/code/backend/engine/executors/wasm1/wazero"
-	"github.com/temphia/temphia/code/backend/engine/modules/dyndb"
+	"github.com/temphia/temphia/code/backend/engine/modules/datagroup"
 	"github.com/temphia/temphia/code/backend/engine/modules/logproxy"
 
 	// repo providers
@@ -37,7 +37,7 @@ func init() {
 	registry.SetExecutor("pageform", pageform.NewBuilder)
 	registry.SetExecutor("noop", noop.NewBuilder)
 
-	registry.SetExecModule("dyndb", dyndb.NewBuilder)
+	registry.SetExecModule("data_group", datagroup.NewBuilder)
 	registry.SetExecModule("logproxy", logproxy.NewBuilder)
 
 }

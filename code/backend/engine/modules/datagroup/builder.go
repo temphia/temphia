@@ -1,4 +1,4 @@
-package dyndb
+package datagroup
 
 import (
 	"github.com/k0kubun/pp"
@@ -7,15 +7,15 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
-var _ etypes.ModuleBuilder = (*DyndbBuilder)(nil)
+var _ etypes.ModuleBuilder = (*DGModuleBuilder)(nil)
 
 func NewBuilder(app any) (etypes.ModuleBuilder, error) {
-	return &DyndbBuilder{}, nil
+	return &DGModuleBuilder{}, nil
 }
 
-type DyndbBuilder struct{}
+type DGModuleBuilder struct{}
 
-func (d *DyndbBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, error) {
+func (d *DGModuleBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, error) {
 
 	deps := opts.Binder.GetApp().(xtypes.App).GetDeps()
 
@@ -28,7 +28,7 @@ func (d *DyndbBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, error
 
 	dynhub := deps.DataHub().(dyndb.DataHub).GetSource(target[0], opts.Resource.TenantId)
 
-	return &DyndbModule{
+	return &DGModule{
 		binder:   opts.Binder,
 		res:      opts.Resource,
 		dynsrc:   dynhub,

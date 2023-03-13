@@ -32,7 +32,7 @@ func (b *SelfBindings) selfModuleExec(name, method, path string, data xtypes.Laz
 	case resource.Module:
 		return b.execModule(res.SubType, method, path, data, res)
 	case resource.DataGroup:
-		return nil, easyerr.NotImpl()
+		return b.execModule("data_group", method, path, data, res)
 	case resource.Folder:
 		return nil, easyerr.NotImpl()
 	default:

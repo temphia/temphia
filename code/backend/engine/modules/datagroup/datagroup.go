@@ -1,4 +1,4 @@
-package dyndb
+package datagroup
 
 import (
 	"strconv"
@@ -23,7 +23,7 @@ const (
 	MethodTicket      = "ticket"
 )
 
-type DyndbModule struct {
+type DGModule struct {
 	binder   etypes.ExecutorBinder
 	res      *entities.Resource
 	dynsrc   dyndb.DynSource
@@ -31,7 +31,7 @@ type DyndbModule struct {
 	group    string
 }
 
-func (d *DyndbModule) IPC(method string, path string, args xtypes.LazyData) (xtypes.LazyData, error) {
+func (d *DGModule) IPC(method string, path string, args xtypes.LazyData) (xtypes.LazyData, error) {
 
 	txid, table, rowid := d.extractPath(path)
 
@@ -137,7 +137,7 @@ func (d *DyndbModule) IPC(method string, path string, args xtypes.LazyData) (xty
 
 }
 
-func (d *DyndbModule) Close() error {
+func (d *DGModule) Close() error {
 	d.dynsrc = nil
 	d.res = nil
 	return nil
@@ -145,7 +145,7 @@ func (d *DyndbModule) Close() error {
 
 // private
 
-func (d *DyndbModule) extractPath(path string) (uint32, string, int64) {
+func (d *DGModule) extractPath(path string) (uint32, string, int64) {
 
 	/*
 		<txid><table_slug><row_id>
@@ -180,7 +180,7 @@ func (d *DyndbModule) extractPath(path string) (uint32, string, int64) {
 	return txid, contents[1], rowid
 }
 
-func (d *DyndbModule) response(data any, err error) (xtypes.LazyData, error) {
+func (d *DGModule) response(data any, err error) (xtypes.LazyData, error) {
 	if err != nil {
 		return nil, err
 	}
