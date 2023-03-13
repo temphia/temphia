@@ -2,7 +2,7 @@
   import type { PortalService } from "../core";
   import ActionPicker from "../core/action_picker.svelte";
 
-  import DataPicker from "./pickers/datatable.svelte";
+  import DataPicker from "./pickers/datagroup.svelte";
   import RoomPicker from "./pickers/room.svelte";
   import ModulePicker from "./pickers/module.svelte";
   import FolderPicker from "./pickers/folder.svelte";
@@ -11,9 +11,9 @@
 
   const resourceTypes = [
     {
-      name: "Data Table",
+      name: "Data Group",
       icon: "collection",
-      info: "Create a data table resource to perform operations on data",
+      info: "Create a data group resource to perform operations on its tables",
       action: () => {
         app.utils.small_modal_open(DataPicker, {
           service: app,

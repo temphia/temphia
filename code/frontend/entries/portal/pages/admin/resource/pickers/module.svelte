@@ -1,6 +1,6 @@
 <script lang="ts">
   import { LoadingSpinner, PortalService } from "../../core";
-  import { ResourceTypeModule } from "../../../../../../lib/entities";
+  import { ResourceModule } from "../../../../../../lib/entities";
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import { generateId } from "../../../../../../lib/utils";
 
@@ -16,7 +16,7 @@
   const Next = async () => {
     service.nav.admin_resource_new({
       slug,
-      type: ResourceTypeModule,
+      type: ResourceModule,
       sub_type: module,
       name,
     });

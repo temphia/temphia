@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ResourceTypeDgroup } from "../../../../../../lib/entities";
+  import { ResourceDataGroup } from "../../../../../../lib/entities";
   import { LoadingSpinner } from "../../../../../adapter_editor/easypage/core";
   import type { DataService } from "../../../../services/data";
   import type { PortalService } from "../../core";
@@ -47,7 +47,7 @@
     data_group = sdata["data"]["slug"];
 
     service.nav.admin_resource_new({
-      type: ResourceTypeDgroup,
+      type: ResourceDataGroup,
       target: `${data_source}/${data_group}`,
     });
     

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ResourceTypeFolder } from "../../../../../../lib/entities";
+  import { ResourceFolder } from "../../../../../../lib/entities";
   import { LoadingSpinner } from "../../../../../adapter_editor/easypage/core";
   import type { CabinetService } from "../../../../services/cabinet/cabinet";
   import type { PortalService } from "../../core";
@@ -45,7 +45,7 @@
     folder = sdata["data"];
 
     service.nav.admin_resource_new({
-      type: ResourceTypeFolder,
+      type: ResourceFolder,
       target: `${source}/${folder}`,
     });
 

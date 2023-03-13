@@ -1,13 +1,7 @@
-
 // syncme => entities/resource/resource.go
 
-export const ResourceTypeSockRoom = "sroom";
-export const ResourceTypeDtable = "dtable";
-export const ResourceTypeDgroup = "dgroup";
-export const ResourceTypeFolder = "cfolder";
-export const ResourceTypeUserGroup = "ugroup";
-export const ResourceTypeModule = "module";
-export const ResourceTypeRepo = "repo";
-export const ResourceTypeBprintType = "bgroup";
-export const ResourceTypeLock = "lock";
-export const ResourceTypeEnvMapper = "envmapper";
+export const ResourceSockRoom = "room";
+export const ResourceDataGroup = "data_group";
+export const ResourceFolder = "folder";
+export const ResourceUserGroup = "user_group";
+export const ResourceModule = "module";

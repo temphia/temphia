@@ -43,30 +43,6 @@ func (r *Resource) SockRoom() *ResourceSockRoom {
 	}
 }
 
-type ResourceDtable struct {
-	Type   string `json:"type,omitempty"`
-	Source string `json:"source,omitempty"`
-	Group  string `json:"group,omitempty"`
-	Table  string `json:"table,omitempty"`
-	Policy string `json:"policy,omitempty"`
-}
-
-func (r *Resource) Dtable() *ResourceDtable {
-	targets, err := r.SplitTarget(3)
-	if err != nil {
-		panic(err)
-	}
-
-	return &ResourceDtable{
-		Type:   resource.Dtable,
-		Source: targets[0],
-		Group:  targets[1],
-		Table:  targets[2],
-		Policy: r.Policy,
-	}
-
-}
-
 type ResourceDgroup struct {
 	Type   string `json:"type,omitempty"`
 	Source string `json:"source,omitempty"`
@@ -80,7 +56,7 @@ func (r *Resource) Dgroup() *ResourceDgroup {
 		panic(err)
 	}
 	return &ResourceDgroup{
-		Type:   resource.Dgroup,
+		Type:   resource.DataGroup,
 		Source: targets[0],
 		Group:  targets[1],
 		Policy: r.Policy,

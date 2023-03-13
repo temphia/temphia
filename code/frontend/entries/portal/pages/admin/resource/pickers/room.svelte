@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { PortalService } from "../../core";
-  import { ResourceTypeSockRoom } from "../../../../../../lib/entities";
+  import { ResourceSockRoom } from "../../../../../../lib/entities";
   import { generateId } from "../../../../../../lib/utils";
 
   export let service: PortalService;
@@ -10,7 +10,7 @@
 
   const save = async () => {
     service.nav.admin_resource_new({
-      type: ResourceTypeSockRoom,
+      type: ResourceSockRoom,
       slug,
       name,
     });
