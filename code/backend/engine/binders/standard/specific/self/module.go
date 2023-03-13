@@ -3,8 +3,10 @@ package self
 import (
 	"errors"
 
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities/resource"
 )
 
@@ -26,7 +28,21 @@ func (b *Binding) selfModuleExec(name, method, path string, data xtypes.LazyData
 		return nil, ErrModuleResourceWrongType
 	}
 
-	mbuilder, ok := b.handle.Deps.ModuleBuilders[res.Target]
+	switch res.Type {
+	case resource.Module:
+		return b.execModule(method, path, data, res)
+	case resource.DataGroup:
+		return nil, easyerr.NotImpl()
+	case resource.Folder:
+		return nil, easyerr.NotImpl()
+	default:
+		panic("Not impl")
+	}
+}
+
+func (b *Binding) execModule(method, path string, data xtypes.LazyData, res *entities.Resource) (xtypes.LazyData, error) {
+
+	mbuilder, ok := b.handle.Deps.ModuleBuilders[res.SubType]
 	if !ok {
 		return nil, ErrModuleNotFound
 	}

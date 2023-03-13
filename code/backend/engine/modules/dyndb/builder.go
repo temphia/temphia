@@ -1,6 +1,7 @@
 package dyndb
 
 import (
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
@@ -14,7 +15,7 @@ func NewBuilder(app any) (etypes.ModuleBuilder, error) {
 
 type DyndbBuilder struct{}
 
-func (DyndbBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, error) {
+func (d *DyndbBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, error) {
 
 	deps := opts.Binder.GetApp().(xtypes.App).GetDeps()
 
@@ -22,6 +23,8 @@ func (DyndbBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	pp.Println("@resource", opts.Resource)
 
 	dynhub := deps.DataHub().(dyndb.DataHub).GetSource(target[0], opts.Resource.TenantId)
 
