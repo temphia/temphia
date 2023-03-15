@@ -3,16 +3,16 @@ import { Http } from "./http";
 
 export class DataAPI {
   http: Http;
-  base_url: string;
+  api_base_url: string;
   token: string;
-  constructor(base_url: string, token: string) {
-    this.http = new Http(base_url, {
+  constructor(api_base_url: string, token: string) {
+    this.http = new Http(api_base_url, {
       "Content-Type": "application/json",
       Authorization: token,
     });
 
     this.token = token;
-    this.base_url = base_url;
+    this.api_base_url = api_base_url;
   }
 
   load() {
@@ -65,11 +65,11 @@ export class DataAPI {
   }
 
   sockd_url = () => {
-    return `${this.base_url}/data_ws/?token=${this.token}`;
+    return `${this.api_base_url}/data_ws/?token=${this.token}`;
   };
 
   sheet_api = () => {
-    return new DataSheetAPI(this.base_url, this.token);
+    return new DataSheetAPI(this.api_base_url, this.token);
   };
 
   list_users = (opts: any) => {
