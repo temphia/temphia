@@ -1,11 +1,12 @@
-import { AdminDataAPI, FolderTktAPI } from "../../../../lib/apiv2";
-import { AdminPlugStateTktAPI } from "../../../../lib/apiv2/admin/plug_state";
-import { ApiBase } from "../../../../lib/apiv2/base";
 import { ExecAPI } from "../../../../lib/apiv2/engine/exec";
-import type { Environment } from "../../../../lib/engine/environment";
+import type {
+  AssetManager,
+  Environment,
+  ExecVariables,
+} from "../../../../lib/engine/environment";
 import type { Pipe } from "../../../../lib/engine/pipe";
+import { ExecAM } from "../../../../lib/exec/exec_am";
 import type { Registry } from "../../../../lib/registry/registry";
-import { Sockd } from "../../../../lib/sockd";
 import { generateId } from "../../../../lib/utils";
 import { EnvAssetManager } from "./asset_manager";
 
@@ -49,7 +50,45 @@ export class Env implements Environment {
     );
   }
 
-  set_up_pipe(pipe: Pipe) {
+  // public
+
+  PreformAction = async (name: string, data: any): Promise<any> => {
+    return this.preformAction(name, data);
+  };
+
+  PreformParentAction = async (name: string, data: any): Promise<any> => {
+    return this.preformParentAction(name, data);
+  };
+
+  OnParentAction = (handler: (data: any) => {}) => {
+    this._default_parent_handler = handler;
+  };
+
+  GetRegistry = (): any => {
+    return this._registry;
+  };
+
+  GetExecVars(): ExecVariables {
+    return {
+      agent_id: this._opts.agent,
+      plug_id: this._opts.plug,
+      api_base_url: this._opts.api_base_url,
+      tenant_id: this._opts.tenant_id,
+      exec_data: this._startup_payload,
+    };
+  }
+
+  GetAssetManager(): AssetManager {
+    return this.execApiManager();
+  }
+
+  GetExecApiManager(): Promise<any> {
+    return Promise.resolve(new ExecAM(this._opts.api_base_url));
+  }
+
+  // private
+
+  private set_up_pipe(pipe: Pipe) {
     this._pipe = pipe;
     this._pending_pipe_msg = new Map();
 
@@ -66,19 +105,14 @@ export class Env implements Environment {
     });
   }
 
-  init = async () => {};
-
-  // public
-
-  PreformAction = async (name: string, data: any): Promise<any> => {
+  private preformAction = (name: string, data: any) => {
     return this._exec_api.preform_action(name, data);
   };
 
-  startup_payload = () => {
-    return this._startup_payload;
-  };
-
-  PreformParentAction = async (name: string, data: any): Promise<any> => {
+  private preformParentAction = async (
+    name: string,
+    data: any
+  ): Promise<any> => {
     const key = generateId();
 
     const p = new Promise((resolve, reject) => {
@@ -92,40 +126,7 @@ export class Env implements Environment {
     return p;
   };
 
-  OnParentAction = (handler: (data: any) => {}) => {
-    this._default_parent_handler = handler;
-  };
-
-  GetRegistry = (): any => {
-    return this._registry;
-  };
-
-  GetFolderTktAPI = (ticket: string): any => {
-    return new FolderTktAPI(this._opts.api_base_url, ticket);
-  };
-
-  GetRoomTktAPI = async (room: string, ticket?: string): Promise<any> => {
-    const s = new Sockd(
-      `${this._opts.api_base_url}/engine/ws?ticket=${ticket}`
-    );
-    await s.Init();
-    
-    return s;
-  };
-
-  GetDataTableTktAPI = (ticket: string): any => {
-    return new AdminDataAPI(
-      new ApiBase(this._opts.api_base_url, this._opts.tenant_id, ticket)
-    );
-  };
-
-  GetPlugStateTktAPI = (ticket: string): any => {
-    return new AdminPlugStateTktAPI(
-      new ApiBase(this._opts.api_base_url, this._opts.tenant_id, ticket)
-    );
-  };
-
-  GetAssetManager = () => {
+  private execApiManager = () => {
     return new EnvAssetManager(
       this._opts.api_base_url,
       this._opts.plug,

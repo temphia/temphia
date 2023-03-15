@@ -12,7 +12,7 @@ export class EnvAssetManager {
   }
 
   GetAgentAssetURL(name: string): string {
-    return `${this.baseURL}/engine/plug/${this.plugId}/agent/${this.agentId}/serve/${name}`;
+    return this.agent_url(name);
   }
 
   GetExecutorAssetURL(name: string): string {
@@ -24,6 +24,9 @@ export class EnvAssetManager {
   }
 
   SheduleWorker(name: string): Worker {
-    return null;
+    return new Worker(this.agent_url(name));
   }
+
+  private agent_url = (name: string) =>
+    `${this.baseURL}/engine/plug/${this.plugId}/agent/${this.agentId}/serve/${name}`;
 }
