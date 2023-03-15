@@ -1,17 +1,25 @@
-import type { ApiBase } from "../base";
+import { Http } from "../http";
 
 export class AdminPlugStateTktAPI {
-  base: ApiBase;
-  constructor(base: ApiBase) {
-    this.base = base;
+  http: Http;
+  token: string;
+  api_base_url: string;
+  constructor(api_base_url: string, token) {
+    this.http = new Http(api_base_url, {
+      "Content-Type": "application/json",
+      Authorization: token,
+    });
+
+    this.token = token;
+    this.api_base_url = api_base_url;
   }
 
   query(options: any) {
-    return this.base.post(`/admin/plug_state/query`, options);
+    return this.http.post(`/admin/plug_state/query`, options);
   }
 
   add(key: string, value: string, opts?: any) {
-    return this.base.post(`/admin/plug_state/key`, {
+    return this.http.post(`/admin/plug_state/key`, {
       key,
       value,
       options: opts,
@@ -19,20 +27,20 @@ export class AdminPlugStateTktAPI {
   }
 
   update(key: string, value: string, opts?: any) {
-    return this.base.post(`/admin/plug_state/key/${key}`, {
+    return this.http.post(`/admin/plug_state/key/${key}`, {
       key,
       value,
-      options: opts
+      options: opts,
     });
   }
 
   delete(key: string) {
-    return this.base.delete(`/admin/plug_state/key/${key}`, {
+    return this.http.delete(`/admin/plug_state/key/${key}`, {
       key,
     });
   }
 
   get(key: string) {
-    return this.base.get(`/admin/plug_state/key/${key}`);
+    return this.http.get(`/admin/plug_state/key/${key}`);
   }
 }
