@@ -16,17 +16,20 @@ type SelfBindings struct {
 	db      store.CoreHub
 	runtime etypes.Runtime
 	root    *Binder
+
+	activeModules map[string]etypes.Module
 }
 
 func NewSelfBindings(handle *handle.Handle, root *Binder) SelfBindings {
 
 	return SelfBindings{
-		root:    root,
-		handle:  handle,
-		pacman:  handle.Deps.Pacman,
-		cabhub:  handle.Deps.CabinetHub,
-		db:      handle.Deps.Corehub,
-		runtime: handle.Deps.Runtime,
+		root:          root,
+		handle:        handle,
+		pacman:        handle.Deps.Pacman,
+		cabhub:        handle.Deps.CabinetHub,
+		db:            handle.Deps.Corehub,
+		runtime:       handle.Deps.Runtime,
+		activeModules: make(map[string]etypes.Module),
 	}
 }
 
