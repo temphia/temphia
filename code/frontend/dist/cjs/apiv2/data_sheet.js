@@ -4,6 +4,9 @@ exports.DataSheetAPI = void 0;
 const http_1 = require("./http");
 class DataSheetAPI {
     constructor(base_url, token) {
+        this.list_users = (opts) => {
+            return this.http.post(`/data/utils/user`, opts);
+        };
         this.http = new http_1.Http(base_url, {
             "Content-Type": "application/json",
             Authorization: token,

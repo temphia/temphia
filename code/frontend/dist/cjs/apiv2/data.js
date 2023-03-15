@@ -4,19 +4,22 @@ exports.DataAPI = void 0;
 const data_sheet_1 = require("./data_sheet");
 const http_1 = require("./http");
 class DataAPI {
-    constructor(base_url, token) {
+    constructor(api_base_url, token) {
         this.sockd_url = () => {
-            return `${this.base_url}/data_ws/?token=${this.token}`;
+            return `${this.api_base_url}/data_ws/?token=${this.token}`;
         };
         this.sheet_api = () => {
-            return new data_sheet_1.DataSheetAPI(this.base_url, this.token);
+            return new data_sheet_1.DataSheetAPI(this.api_base_url, this.token);
         };
-        this.http = new http_1.Http(base_url, {
+        this.list_users = (opts) => {
+            return this.http.post(`/data/utils/user`, opts);
+        };
+        this.http = new http_1.Http(api_base_url, {
             "Content-Type": "application/json",
             Authorization: token,
         });
         this.token = token;
-        this.base_url = base_url;
+        this.api_base_url = api_base_url;
     }
     load() {
         return this.http.get(`/data`);

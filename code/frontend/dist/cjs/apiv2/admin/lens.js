@@ -5,8 +5,8 @@ class AdminLensAPI {
     constructor(base) {
         this.base = base;
     }
-    query(index, qopts) {
-        return this.base.post(`/admin/lens/${index}`, qopts);
+    query(qopts) {
+        return this.base.post(`/admin/lens/query`, qopts);
     }
 }
 exports.AdminLensAPI = AdminLensAPI;

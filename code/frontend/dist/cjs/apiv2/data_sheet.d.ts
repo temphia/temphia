@@ -20,4 +20,5 @@ export declare class DataSheetAPI {
     get_row_cell(sid: string, rid: string): Promise<import("./http").HttpResponse>;
     update_row_cell(sid: string, rid: string, data: any): Promise<import("./http").HttpResponse>;
     delete_row_cell(sid: string, rid: string): Promise<import("./http").HttpResponse>;
+    list_users: (opts: any) => Promise<import("./http").HttpResponse>;
 }
