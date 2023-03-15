@@ -50,6 +50,8 @@ export class Env implements Environment {
     );
   }
 
+  async init() {}
+
   // public
 
   PreformAction = async (name: string, data: any): Promise<any> => {
