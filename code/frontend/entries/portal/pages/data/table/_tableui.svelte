@@ -49,8 +49,7 @@
   };
 
   const cloneRow = (rowId: number) => {
-
-    console.log("@clone_row", rowId)
+    console.log("@clone_row", rowId);
 
     const ds = get(data_store);
     const rowdata = { ...(ds.indexed_rows[rowId] || {}) };
@@ -59,6 +58,12 @@
 
     row_service.state.start_row_edit(0, rowdata);
     show_editor = true;
+  };
+
+  const deleteRows = () => {
+    // batch row delete support
+    row_service.delete_row(selected_rows[0]);
+    selected_rows = []
   };
 </script>
 
@@ -98,7 +103,7 @@
         selected_rows = [];
       }}
       on:tb_clone={() => cloneRow(selected_rows[0])}
-      on:tb_delete={() => {}}
+      on:tb_delete={deleteRows}
       on:tb_execute_widget
       on:tb_history={() => dispatch("goto_history")}
       on:tb_share={() => {}}
@@ -125,7 +130,7 @@
         selected_rows = [];
       }}
       on:tb_clone={() => cloneRow(selected_rows[0])}
-      on:tb_delete={() => {}}
+      on:tb_delete={deleteRows}
       on:tb_execute_widget
       on:tb_history={() => dispatch("goto_history")}
       on:tb_share={() => {}}
