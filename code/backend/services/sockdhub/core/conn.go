@@ -14,6 +14,20 @@ type Conn struct {
 	closed  bool
 	failed  bool
 	writeCh chan []byte
+
+	tags map[string]struct{}
+}
+
+func (c *Conn) hasTags(tags []string) bool {
+
+	for _, v := range tags {
+		_, ok := c.tags[v]
+		if !ok {
+			return false
+		}
+	}
+
+	return true
 }
 
 func (c *Conn) start() {

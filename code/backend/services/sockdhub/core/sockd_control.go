@@ -31,19 +31,14 @@ func (s *Sockd) localListRoomConns(ns, room string) (map[int64][]string, error) 
 		return nil, sockdx.ErrRoomNotFound
 	}
 
-	resp := make(map[int64][]string, 0)
+	resp := make(map[int64][]string, len(r.connections))
 
-	for tag, cids := range r.tags {
-		for _, cid := range cids {
-
-			old, ok := resp[cid]
-			if ok {
-				old = []string{tag}
-			} else {
-				old = append(old, tag)
-			}
-			resp[cid] = old
+	for cid, conn := range r.connections {
+		ctags := make([]string, 0, len(conn.tags))
+		for k := range conn.tags {
+			ctags = append(ctags, k)
 		}
+		resp[cid] = ctags
 	}
 
 	return resp, nil

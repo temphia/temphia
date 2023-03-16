@@ -31,7 +31,6 @@ func (s *Sockd) roomGet(ns, name string, autoCreate bool) *room {
 		name:        name,
 		connections: make(map[int64]*Conn),
 		rlock:       sync.Mutex{},
-		tags:        make(map[string][]int64),
 		parent:      s,
 	}
 

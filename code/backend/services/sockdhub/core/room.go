@@ -1,14 +1,13 @@
 package core
 
 import (
-	"strings"
 	"sync"
 
+	"github.com/k0kubun/pp"
 	"github.com/rs/xid"
 	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
-
 	"github.com/thoas/go-funk"
 )
 
@@ -17,9 +16,7 @@ type room struct {
 	ns          string
 	name        string
 	connections map[int64]*Conn
-	tags        map[string][]int64
-
-	rlock sync.Mutex
+	rlock       sync.Mutex
 }
 
 func (r *room) sendDirect(connId int64, payload []byte) error {
@@ -132,9 +129,10 @@ func (r *room) sendBroadcast(ignores []int64, payload []byte) error {
 		Msg(logid.SockdSendBroadcast)
 
 	for cid, conn := range r.connections {
-		if containsCid(ignores, cid) {
+		if funk.ContainsInt64(ignores, cid) {
 			continue
 		}
+
 		conn.write(out)
 	}
 
@@ -151,6 +149,8 @@ func (r *room) sendTagged(tags []string, ignores []int64, payload []byte) error 
 	if len(tagSet) == 0 {
 		return nil
 	}
+
+	pp.Println("@pushing_to_tags", tagSet)
 
 	msg := sockdx.Message{
 		Room:        r.name,
@@ -202,36 +202,23 @@ func (r *room) roomUpdateTags(opts sockdx.UpdateTagOptions) bool {
 	r.rlock.Lock()
 	defer r.rlock.Unlock()
 
-	_, ok := r.connections[opts.Id]
+	conn, ok := r.connections[opts.Id]
 	if !ok {
 		return false
 	}
 
-	for tagkey, conns := range r.tags {
-		if strings.HasPrefix(tagkey, "@") {
-			continue
-		}
-
-		if opts.ClearOld {
-			if containsCid(conns, opts.Id) {
-				r.tags[tagkey] = filterCid(conns, opts.Id)
-			}
-		} else {
-			if funk.ContainsString(opts.RemoveTags, tagkey) {
-				r.tags[tagkey] = filterCid(conns, opts.Id)
-			}
+	if opts.ClearOld {
+		for k := range conn.tags {
+			delete(conn.tags, k)
 		}
 	}
 
-	for _, tag := range opts.AddTags {
-		old, ok := r.tags[tag]
-		if ok {
-			old = []int64{opts.Id}
-		} else {
-			old = append(old, opts.Id)
-		}
+	for _, ov := range opts.RemoveTags {
+		delete(conn.tags, ov)
+	}
 
-		r.tags[tag] = old
+	for _, v := range opts.AddTags {
+		conn.tags[v] = struct{}{}
 	}
 
 	return true
@@ -243,10 +230,21 @@ func (r *room) AddConn(conn sockdx.Conn, tags []string) {
 
 	id := conn.Id()
 
+	pp.Println("@conn start", id, tags)
+
 	oldconn, ok := r.connections[id]
 	if ok {
+
+		pp.Println("@closing old conn")
+
 		oldconn.close(false)
 		r.clearConnTags(id)
+	}
+
+	iTags := make(map[string]struct{})
+
+	for _, v := range tags {
+		iTags[v] = struct{}{}
 	}
 
 	c := &Conn{
@@ -255,26 +253,19 @@ func (r *room) AddConn(conn sockdx.Conn, tags []string) {
 		closed:  false,
 		failed:  false,
 		writeCh: make(chan []byte),
-	}
-
-	for _, tag := range tags {
-		old, ok := r.tags[tag]
-		if ok {
-			old = []int64{id}
-		} else {
-			old = append(old, id)
-		}
-
-		r.tags[tag] = old
+		tags:    iTags,
 	}
 
 	c.start()
-	r.connections[conn.Id()] = c
+	r.connections[id] = c
 
 	r.rlock.Unlock()
 
+	pp.Println("@conn end", id, tags)
+	pp.Println("@total_conn", len(r.connections))
+
 	r.parent.logger.Info().
-		Int64("conn_id", int64(conn.Id())).
+		Int64("conn_id", int64(id)).
 		Msg(logid.SockdNewConnection)
 
 }
@@ -314,25 +305,12 @@ func (r *room) cidFromTags(tags []string, ignores []int64) map[int64]struct{} {
 	r.rlock.Lock()
 	defer r.rlock.Unlock()
 
-	head, ok := r.tags[tags[0]]
-	if !ok {
-		return nil
-	}
-
-	for _, cid := range head {
-		tagSet[cid] = struct{}{}
-	}
-
-	for _, tag := range tags {
-		cids, ok := r.tags[tag]
-		if !ok {
-			return nil
+	for cid, c := range r.connections {
+		if funk.ContainsInt64(ignores, cid) {
+			continue
 		}
-
-		for ci := range tagSet {
-			if !containsCid(cids, ci) {
-				delete(tagSet, ci)
-			}
+		if c.hasTags(tags) {
+			tagSet[cid] = struct{}{}
 		}
 	}
 
@@ -341,32 +319,4 @@ func (r *room) cidFromTags(tags []string, ignores []int64) map[int64]struct{} {
 
 func (r *room) clearConnTags(cid int64) {
 
-	for k, all := range r.tags {
-		if !containsCid(all, (cid)) {
-			continue
-		}
-		r.tags[k] = filterCid(all, cid)
-	}
-
-}
-
-func containsCid(s []int64, v int64) bool {
-	for _, vv := range s {
-		if vv == v {
-			return true
-		}
-	}
-	return false
-}
-
-func filterCid(s []int64, v int64) []int64 {
-	resp := make([]int64, 0, len(s)-1)
-	for _, vv := range s {
-		if vv == v {
-			continue
-		}
-		resp = append(resp, vv)
-	}
-
-	return resp
 }
