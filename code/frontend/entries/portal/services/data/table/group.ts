@@ -1,7 +1,12 @@
 import { DataAPI, FolderTktAPI } from "../../../../../lib/apiv2";
-import type { Sockd, SockdMessage } from "../../../../../lib/sockd";
+import {
+  MESSAGE_SERVER_PUBLISH,
+  Sockd,
+  SockdMessage,
+} from "../../../../../lib/sockd";
 import type { SockdService } from "../../sockd/sockd";
 import { TableService } from "./table_service";
+import type { DataModification } from "./table_types";
 
 export class GroupService {
   source: string;
@@ -60,7 +65,15 @@ export class GroupService {
   };
 
   __sockd_handle = (msg: SockdMessage) => {
-    console.log("MESSAGE FROM DATA WS SOCKD THING|>", msg);
+    if (msg.type !== MESSAGE_SERVER_PUBLISH) {
+      return;
+    }
+    
+    const payload = msg.payload as DataModification;
+    const tablesvc = this.tables_services.get(payload.table);
+    if (tablesvc) {
+      tablesvc.on_sockd(payload);
+    }
   };
 
   default_table = () => {

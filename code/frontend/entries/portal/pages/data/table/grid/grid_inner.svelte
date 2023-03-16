@@ -4,6 +4,7 @@
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import * as cf from "../../../../services/data/table/column";
   import type { FolderTktAPI } from "../../../../../../lib/apiv2";
+  import type { MarkColorType } from "../../../../services/data";
 
   export let columns_index: { [_: string]: object };
   export let columns: string[];
@@ -11,6 +12,7 @@
   export let rows_index: { [_: string]: object };
   export let selected_rows = [];
   export let folder_api: FolderTktAPI;
+  export let marked_rows: { [_: number]: MarkColorType };
 
   const dispatch = createEventDispatcher();
   const onPageButtom = () => dispatch("on_page_buttom");
@@ -68,7 +70,9 @@
         <tr class="text-left bg-{flipCSS(ridx)}-100">
           <td class="border-dashed border-t border-gray-200 px-2">
             <label
-              class="text-teal-500 inline-flex gap-1 justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer"
+              class="text-teal-500 inline-flex gap-1 justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer bg-{marked_rows[
+                item
+              ]}-100"
             >
               <input
                 type="checkbox"
@@ -83,7 +87,7 @@
           {#each columns as col}
             {@const coldata = columns_index[col]}
             {@const ctype = coldata["ctype"]}
-            {@const celldata = rows_index[item][col]}
+            {@const celldata = (rows_index[item] || {})[col]}
 
             <td class="border-dashed border-t border-gray-200 p-1">
               <div class="text-gray-700 truncate overflow-hidden text-sm p-1">
@@ -118,6 +122,7 @@
                   <div class="inline-flex gap-1">
                     {#each celldata.split(",") as cd}
                       <div class="flex">
+                        <!-- @USER -->
                         <img
                           alt="user"
                           src="/z/assets/static/default_user_profile.png"

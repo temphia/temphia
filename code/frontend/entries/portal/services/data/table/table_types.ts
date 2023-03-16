@@ -29,3 +29,22 @@ export interface DataWidget {
   icon: string;
   payload: string;
 }
+
+export type DataModType =
+  | typeof DataModTypeInsert
+  | typeof DataModTypeUpdate
+  | typeof DataModTypeDelete
+  | typeof DataModTypeComment;
+
+export const DataModTypeInsert = "insert";
+export const DataModTypeUpdate = "update";
+export const DataModTypeDelete = "delete";
+export const DataModTypeComment = "comment";
+
+export interface DataModification {
+  group?: string;
+  table: string;
+  rows: number[];
+  mod_type: DataModType;
+  data: any;
+}

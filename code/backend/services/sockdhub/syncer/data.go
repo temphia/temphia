@@ -60,10 +60,10 @@ func (s *DataSyncer) PushUpdateRow(source, tenantId, groupId, table string, id i
 	})
 }
 
-func (s *DataSyncer) PushDeleteRow(source, tenantId, groupId, table string, id int64) error {
+func (s *DataSyncer) PushDeleteRow(source, tenantId, groupId, table string, ids []int64) error {
 	return s.pushRowMod(source, tenantId, groupId, &RowMod{
 		Table:   table,
-		Rows:    []int64{id},
+		Rows:    ids,
 		ModType: DataModTypeDelete,
 		Data:    nil,
 	})

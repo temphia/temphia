@@ -178,6 +178,7 @@ type QueryResult struct {
 	Page    int64                       `json:"page,omitempty"`
 	Rows    []map[string]any            `json:"rows"`
 	Columns map[string]*entities.Column `json:"columns,omitempty"`
+	Final   bool                        `json:"final,omitempty"`
 }
 
 type LoadDgroupResp struct {

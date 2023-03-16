@@ -21,6 +21,8 @@
   viewmode={_nav_store.view_mode}
   {selected_rows}
   {data_widgets}
+  needs_refresh={_nav_store.needs_refresh}
+  on:tb_reload
   on:tb_clear
   on:tb_clone
   on:tb_delete
@@ -43,6 +45,7 @@
     rows={_data.rows}
     rows_index={_data.indexed_rows}
     {selected_rows}
+    marked_rows={_data.marked_rows}
     on:on_new_row
     on:on_page_buttom
     on:on_page_top
@@ -50,5 +53,6 @@
     on:on_row_toggle_select
     on:on_table_change
     on:on_change_to_card
+
   />
 </TableLayout>

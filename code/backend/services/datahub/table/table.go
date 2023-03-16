@@ -78,15 +78,32 @@ func (t *Table) UpdateRow(txid uint32, req dyndb.UpdateRowReq) (map[string]any, 
 }
 
 func (t *Table) DeleteRowBatch(txid uint32, req dyndb.DeleteRowBatchReq) error {
+
+	// fixme => sync to room
+
 	return t.inner.DeleteRowBatch(txid, req)
 }
 
 func (t *Table) DeleteRowMulti(txid uint32, req dyndb.DeleteRowMultiReq) error {
-	return t.inner.DeleteRowMulti(txid, req)
+	err := t.inner.DeleteRowMulti(txid, req)
+	if err != nil {
+		return err
+	}
+
+	t.handle.SockdHub.PushDeleteRow(t.source, req.TenantId, req.Group, req.Table, req.Ids)
+
+	return nil
 }
 
 func (t *Table) DeleteRow(txid uint32, req dyndb.DeleteRowReq) error {
-	return t.inner.DeleteRow(txid, req)
+	err := t.inner.DeleteRow(txid, req)
+	if err != nil {
+		return err
+	}
+
+	t.handle.SockdHub.PushDeleteRow(t.source, req.TenantId, req.Group, req.Table, []int64{req.Id})
+
+	return nil
 }
 
 func (t *Table) LoadTable(txid uint32, req dyndb.LoadTableReq) (*dyndb.LoadTableResp, error) {
@@ -160,7 +177,20 @@ func (t *Table) SimpleQuery(txid uint32, req dyndb.SimpleQueryReq) (*dyndb.Query
 		req.Count = dyndb.DefaultQueryFetchCount
 	}
 
-	return t.inner.SimpleQuery(txid, req)
+	// fixme => try fetch count + 1 and check if we got exact else
+	// to determine if its last rows and return all resp_rows -1
+	// you have to check if order by is other than __id
+
+	resp, err := t.inner.SimpleQuery(txid, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if req.Count >= int64(len(resp.Rows)) {
+		resp.Final = true
+	}
+
+	return resp, nil
 }
 
 func (t *Table) FTSQuery(txid uint32, req dyndb.FTSQueryReq) (*dyndb.QueryResult, error) {

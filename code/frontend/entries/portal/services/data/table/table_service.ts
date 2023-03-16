@@ -10,7 +10,13 @@ import {
   defaultViewData,
   ViewModeType,
 } from "./state_types";
-import type { FilterItem } from "./table_types";
+import {
+  DataModification,
+  DataModTypeDelete,
+  DataModTypeInsert,
+  DataModTypeUpdate,
+  FilterItem,
+} from "./table_types";
 
 export class TableService {
   all_tables: object[];
@@ -57,11 +63,14 @@ export class TableService {
       console.log("Err", resp);
       return;
     }
+
     const count = resp.data["count"] || 0;
     let page = 0;
     let selects = [];
     let filter_conds = [];
-    let last_page = true;
+
+    const queryresp = resp.data["query_response"] || {};
+    let last_page = queryresp["final"] || false;
 
     let view_mode: ViewModeType = "NONE";
     const views = resp.data["views"] || ([] as object[]);
@@ -85,11 +94,96 @@ export class TableService {
       page,
       view_mode
     );
-    this.state.set_rows_data(resp.data["query_response"] || {}, false);
+    this.state.set_rows_data(queryresp, false);
   };
 
-  apply_remote_changes = () => {};
+  on_sockd = (data: DataModification) => {
+    if (data.mod_type === "comment") {
+      console.log("@comment on row", data);
+      return;
+    }
+
+    console.log("@processing data event", data);
+
+    if (data.mod_type === DataModTypeDelete) {
+      this.state.data_store.update((old) => {
+        data.rows.forEach((row_id) => {
+          delete old.indexed_rows[row_id];
+          old.rows = old.rows.filter((v) => v !== row_id);
+          console.log("@deleting_record", row_id);
+        });
+
+        return { ...old };
+      });
+      return;
+    }
+
+    if (this.state._nav_store.view_mode === "NONE") {
+      if (data.mod_type === DataModTypeUpdate) {
+        this.state.data_store.update((old) => {
+          // if we do batch update data.data needs to be array
+
+          const rows: object[] =
+            data.rows.length == 1 ? [data.data] : data.data;
+
+          data.rows.forEach((row_id, idx) => {
+            const row = rows[idx];
+
+            const oldrow = old.indexed_rows[row_id];
+            if (!oldrow) {
+              return;
+            }
+
+            const newrow = { ...oldrow, ...row };
+
+            old.indexed_rows[row_id] = newrow;
+          });
+
+          console.log("@applying_update", data.data);
+
+          return { ...old, indexed_rows: { ...old.indexed_rows } };
+        });
+      } else if (data.mod_type === DataModTypeInsert) {
+        console.log("@applying_insert");
+        if (this.state._nav_store.last_page) {
+          console.log("@row/push");
+
+          this.state.data_store.update((old) => {
+            // if we support batch insert data.data needs to be array
+
+            const rows: object[] =
+              data.rows.length == 1 ? [data.data] : data.data;
+
+            data.rows.forEach((row_id, idx) => {
+              const row = rows[idx];
+              old.indexed_rows[row_id] = row;
+
+              console.log("@row", row, row_id);
+
+              old.rows.push(row_id);
+            });
+            return { ...old };
+          });
+        } else {
+          this.state.set_needs_refresh();
+        }
+      }
+    } else {
+      this.state.data_store.update((old) => {
+        data.rows.forEach((row) => {
+          old.marked_rows[row] = data.mod_type === "update" ? "blue" : "green";
+        });
+
+        console.log("@refresh/mark");
+
+        return old;
+      });
+      this.state.set_needs_refresh();
+    }
+  };
+
   poll = async () => {};
+
   close = () => {};
 
   get_row_service = () => {
@@ -131,10 +225,7 @@ export class TableService {
       return;
     }
 
-    let last_page = false;
-    if (query.count > resp.data["rows"].length) {
-      last_page = true;
-    }
+    let last_page = resp["final"] || false;
 
     const active_filter_conds = query.filter_conds as FilterItem[];
 
@@ -170,6 +261,7 @@ export class TableService {
     const data = await this.do_query({
       ...navdata.active_view,
       page: navdata.active_page + 1,
+      count: 50,
     });
     if (!data) {
       console.warn("Could not fetch rows");
@@ -220,7 +312,7 @@ export class TableState {
       active_page: 0,
       last_page: false,
       active_view: defaultViewData(),
-
+      needs_refresh: false,
       views: {},
     });
 
@@ -235,6 +327,7 @@ export class TableState {
       remote_dirty: {},
       views: [],
       ref_rows_cache: {},
+      marked_rows: {},
     });
 
     // debug
@@ -278,6 +371,10 @@ export class TableState {
       loading_error: "",
       view_mode,
     }));
+  };
+
+  set_needs_refresh = () => {
+    this.nav_store.update((old) => ({ ...old, needs_refresh: true }));
   };
 
   set_row_data = (data: any) => {

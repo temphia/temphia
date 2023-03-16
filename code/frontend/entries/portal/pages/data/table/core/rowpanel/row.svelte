@@ -18,6 +18,10 @@
   $: _dirty_store = table_service.state.dirty_store;
   $: _rowid = $_dirty_store.rowid || 0;
   $: _row = rows_indexed[_rowid] || {};
+
+  const toggleRowEditor = () => {
+    show_editor = !show_editor;
+  };
 </script>
 
 {#key _rowid}
@@ -29,6 +33,7 @@
         {columns}
         {columns_indexded}
         {table_service}
+        {toggleRowEditor}
       />
     </svelte:fragment>
 

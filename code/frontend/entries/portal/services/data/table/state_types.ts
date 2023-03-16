@@ -21,6 +21,7 @@ export interface NavData {
   active_page: number;
   view_mode: ViewModeType;
   active_view?: ViewData;
+  needs_refresh: boolean;
 }
 
 export interface DirtyData {
@@ -37,6 +38,8 @@ export const defaultViewData = () => ({
   page: 0,
 });
 
+export type MarkColorType =  "blue" | "green"
+
 export interface DataState {
   indexed_column: { [_: string]: Column };
   column_order: string[];
@@ -49,4 +52,6 @@ export interface DataState {
   sparse_rows: number[];
   remote_dirty: { [_: string]: true };
   views: object[];
+  
+  marked_rows: { [_: number]: MarkColorType };
 }
