@@ -22,6 +22,10 @@ export class ExecAM {
     return NewSockdRoom(`${this.api_base_url}/engine/ws?ticket=${token}`);
   };
 
+  new_sockd_room_from_url = async (url: string) => {
+    return NewSockdRoom(url);
+  };
+
   new_plug_state = (token: string) => {
     return NewPlugStateApi(this.api_base_url, token);
   };
