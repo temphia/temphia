@@ -9,6 +9,13 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
+const (
+	DataModTypeInsert  = "insert"
+	DataModTypeUpdate  = "update"
+	DataModTypeDelete  = "delete"
+	DataModTypeComment = "comment"
+)
+
 type DataSyncer struct {
 	sockd sockdx.SockdCore
 }
@@ -39,7 +46,7 @@ func (s *DataSyncer) PushNewRow(source, tenantId, groupId, table string, data ma
 	return s.pushRowMod(source, tenantId, groupId, &RowMod{
 		Table:   table,
 		Rows:    []int64{id},
-		ModType: "insert",
+		ModType: DataModTypeInsert,
 		Data:    data,
 	})
 }
@@ -48,7 +55,7 @@ func (s *DataSyncer) PushUpdateRow(source, tenantId, groupId, table string, id i
 	return s.pushRowMod(source, tenantId, groupId, &RowMod{
 		Table:   table,
 		Rows:    []int64{id},
-		ModType: "update",
+		ModType: DataModTypeUpdate,
 		Data:    data,
 	})
 }
@@ -57,7 +64,7 @@ func (s *DataSyncer) PushDeleteRow(source, tenantId, groupId, table string, id i
 	return s.pushRowMod(source, tenantId, groupId, &RowMod{
 		Table:   table,
 		Rows:    []int64{id},
-		ModType: "delete",
+		ModType: DataModTypeDelete,
 		Data:    nil,
 	})
 }
