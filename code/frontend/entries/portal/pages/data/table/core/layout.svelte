@@ -12,6 +12,7 @@
   export let selected_rows = [];
   export let layout: string = "grid";
   export let viewmode: string;
+  export let needs_refresh: boolean;
 
   export let rows_loaded_no = 0;
   export let rows_total_no = 0;
@@ -69,7 +70,12 @@
       <!-- TOOLBAR  start -->
       <div class="flex flex-wrap p-1 pr-4 gap-x-1">
         {#key re_render}
-          <ActionNormal icon="refresh" name="Refresh" onClick={() => {}} />
+          <ActionNormal
+            icon="refresh"
+            name="Refresh"
+            onClick={() => dispatch("tb_reload")}
+            active={needs_refresh}
+          />
           <ActionNormal
             icon="cog"
             name="Setting"

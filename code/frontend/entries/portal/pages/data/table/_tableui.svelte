@@ -98,6 +98,7 @@
       data_widgets={table_service.data_widgets}
       {selected_rows}
       {table_service}
+      on:tb_reload={table_service.init}
       on:on_table_change
       on:on_change_to_card
       on:on_new_row={on_new_row}
