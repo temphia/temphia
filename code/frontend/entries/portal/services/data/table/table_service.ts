@@ -435,9 +435,9 @@ export class TableState {
     });
   };
 
-  start_row_edit = (row_id: number) => {
+  start_row_edit = (row_id: number, data?: any ) => {
     this.dirty_store.set({
-      data: {},
+      data: data || {},
       rowid: row_id,
     });
   };

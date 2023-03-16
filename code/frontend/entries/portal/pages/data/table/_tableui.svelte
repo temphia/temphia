@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { TableService } from "../../../services/data";
+  import { KeyPrimary, TableService } from "../../../services/data";
   import CardLayout from "./card/card.svelte";
   import GridLayout from "./grid/grid.svelte";
 
@@ -8,6 +8,7 @@
 
   import { createEventDispatcher } from "svelte";
   import type { ViewModal } from "../table/core/view/view";
+  import { get } from "svelte/store";
 
   export let table_service: TableService;
   export let layout: string;
@@ -46,6 +47,19 @@
       selected_rows = [...selected_rows, rowid];
     }
   };
+
+  const cloneRow = (rowId: number) => {
+
+    console.log("@clone_row", rowId)
+
+    const ds = get(data_store);
+    const rowdata = { ...(ds.indexed_rows[rowId] || {}) };
+
+    delete rowdata[KeyPrimary];
+
+    row_service.state.start_row_edit(0, rowdata);
+    show_editor = true;
+  };
 </script>
 
 {#key layout}
@@ -83,7 +97,7 @@
       on:tb_clear={() => {
         selected_rows = [];
       }}
-      on:tb_clone={() => {}}
+      on:tb_clone={() => cloneRow(selected_rows[0])}
       on:tb_delete={() => {}}
       on:tb_execute_widget
       on:tb_history={() => dispatch("goto_history")}
@@ -110,7 +124,7 @@
       on:tb_clear={() => {
         selected_rows = [];
       }}
-      on:tb_clone={() => {}}
+      on:tb_clone={() => cloneRow(selected_rows[0])}
       on:tb_delete={() => {}}
       on:tb_execute_widget
       on:tb_history={() => dispatch("goto_history")}
