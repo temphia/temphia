@@ -9,6 +9,7 @@
   import { createEventDispatcher } from "svelte";
   import type { ViewModal } from "../table/core/view/view";
   import { get } from "svelte/store";
+  import Search from "./core/search/search.svelte";
 
   export let table_service: TableService;
   export let layout: string;
@@ -63,7 +64,14 @@
   const deleteRows = () => {
     // batch row delete support
     row_service.delete_row(selected_rows[0]);
-    selected_rows = []
+    selected_rows = [];
+  };
+
+  const on_search = () => {
+    table_service._open_modal(Search, {
+      table_service,
+      columns: Object.values($data_store.indexed_column),
+    });
   };
 </script>
 
@@ -135,6 +143,7 @@
       on:tb_delete={deleteRows}
       on:tb_execute_widget
       on:tb_history={() => dispatch("goto_history")}
+      on:tb_search={on_search}
       on:tb_share={() => {}}
       on:tb_view={() => {
         show_view_panel = !show_view_panel;
