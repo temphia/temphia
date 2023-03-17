@@ -10,10 +10,10 @@
 
 <button
   on:click={onClick}
-  class="p-1 text-gray-700 inline-flex font-light rounded hover:bg-gray-200 bg-gray-50 {active ||
+  class="p-1  inline-flex font-light rounded hover:bg-gray-200 {active ||
   tint
-    ? 'bg-blue-400'
-    : ''}"
+    ? 'bg-blue-400 text-white'
+    : 'text-gray-700 bg-gray-50'}"
 >
   <Icon name={icon} class="h-5 w-5 mt-1 mr-1" />
   {name}
