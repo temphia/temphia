@@ -12,6 +12,7 @@
   export let show_editor;
   export let data_widgets: object[];
   export let selected_rows = [];
+  export let  needs_refresh = false
 
   const dispatch = createEventDispatcher();
   const onPageButtom = () => dispatch("on_page_buttom");
@@ -58,6 +59,7 @@
   on:on_change_to_grid
   rows_total_no={0}
   rows_loaded_no={_data.rows.length || 0}
+  {needs_refresh}
   layout={"card"}
 >
   <div class="flex w-full" style="height:calc(100vh - 7em);">

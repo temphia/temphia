@@ -6,6 +6,7 @@
   export let table_service: TableService;
   export let data_widgets: object[];
   export let selected_rows = [];
+  export let needs_refresh = false;
 
   const data_store = table_service.state.data_store;
   const nav_store = table_service.state.nav_store;
@@ -21,7 +22,7 @@
   viewmode={_nav_store.view_mode}
   {selected_rows}
   {data_widgets}
-  needs_refresh={_nav_store.needs_refresh}
+  {needs_refresh}
   on:tb_reload
   on:tb_clear
   on:tb_clone
@@ -53,6 +54,5 @@
     on:on_row_toggle_select
     on:on_table_change
     on:on_change_to_card
-
   />
 </TableLayout>

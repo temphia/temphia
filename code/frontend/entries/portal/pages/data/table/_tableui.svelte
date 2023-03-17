@@ -93,6 +93,7 @@
       bind:show_editor
       {selected_rows}
       {table_service}
+      needs_refresh={$nav_store.needs_refresh}
       on:on_change_to_grid
       on:on_table_change
       on:on_page_top={on_page_top}
@@ -117,6 +118,7 @@
       data_widgets={table_service.data_widgets}
       {selected_rows}
       {table_service}
+      needs_refresh={$nav_store.needs_refresh}
       on:tb_reload={table_service.init}
       on:on_table_change
       on:on_change_to_card
