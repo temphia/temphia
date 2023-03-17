@@ -37,11 +37,10 @@
   const action_agent_exts = (id: string) => app.nav.admin_agent_ext(pid, id);
   const action_agent_resources = (id: string) =>
     app.nav.admin_agent_res(pid, id);
-  const action_dev_shell = (id: string) =>
-    app.nav.admin_plug_dev_shell(pid, id);
 
-    const action_logs = (id: string) =>
-    app.nav.admin_plug_dev_logs(pid, id);
+  const action_ipc_shell = (id: string) => app.nav.admin_plug_dev_ipc_shell(pid, id);
+  const action_live_shell = (id: string) => app.nav.admin_plug_dev_live_shell(pid, id);
+  const action_logs = (id: string) => app.nav.admin_plug_dev_logs(pid, id);
 
   const action_dev_docs = (id: string) => app.nav.admin_plug_dev_docs(pid, id);
   const action_delete = async (id: string) => {
@@ -115,10 +114,16 @@
       },
 
       {
-        Name: "Dev Shell",
+        Name: "IPC Shell",
         drop: true,
         icon: "terminal",
-        Action: action_dev_shell,
+        Action: action_ipc_shell,
+      },
+      {
+        Name: "Live Shell",
+        drop: true,
+        icon: "eye",
+        Action: action_live_shell,
       },
 
       {

@@ -248,9 +248,15 @@ export class Navigator {
   admin_plug_dev_execute = (pid: string, aid: string) => {
     this.set(`#/admin/plug/${pid}/dev/execute/${aid}`);
   };
-  admin_plug_dev_shell = (pid: string, aid: string) => {
-    this.set(`#/admin/plug/${pid}/dev/shell/${aid}`);
+
+  admin_plug_dev_live_shell = (pid: string, aid: string) => {
+    this.set(`#/admin/plug/${pid}/dev/liveshell/${aid}`);
   };
+
+  admin_plug_dev_ipc_shell = (pid: string, aid: string) => {
+    this.set(`#/admin/plug/${pid}/dev/ipcshell/${aid}`);
+  };
+
   admin_plug_dev_docs = (pid: string, aid: string) => {
     this.set(`#/admin/plug/${pid}/dev/docs/${aid}`);
   };

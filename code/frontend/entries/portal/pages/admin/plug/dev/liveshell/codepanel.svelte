@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CEditor } from "../../admin/core";
+  import { CEditor } from "../../../core";
   import { ClientJS, ServerJS } from "./conts";
 
   export let file = ServerJS;
