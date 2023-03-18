@@ -117,7 +117,7 @@ func (d *DynDB) ftsQuery(txid uint32, req dyndb.FTSQueryReq) (*dyndb.QueryResult
 			searchTerm = "%" + searchTerm + "%"
 		}
 
-		likeQ := db.Cond{fmt.Sprintf("%s LIKE", req.SearchColumn): searchTerm}
+		likeQ := db.Cond{fmt.Sprintf("%s ILIKE", req.SearchColumn): searchTerm}
 
 		return sess.SQL().
 			Select().

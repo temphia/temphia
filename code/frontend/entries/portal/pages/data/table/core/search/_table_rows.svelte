@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Column } from "../../../../../services/data";
+  import { KeyPrimary } from "../fields/field";
 
   export let onRowSelect: (row: object) => void;
   export let data = {};
@@ -9,17 +10,23 @@
 <div class="w-full overflow-auto">
   <table class="w-full border">
     <thead>
+
       <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+        <th class="p-1 text-xs text-left"> # </th>
         {#each columns as col}
           <th class="px-1 py-3 text-xs text-left">{col["name"] || col.slug}</th>
         {/each}
-        <th class="p-1 text-xs text-left"> # </th>
+        <th class="p-1 text-xs text-left" />
       </tr>
     </thead>
 
     <tbody class="text-gray-600 text-sm font-light">
       {#each data["rows"] as row}
         <tr class="border-b border-gray-200 hover:bg-gray-100">
+          <td class="px-1 py-3 text-left">
+            <span class="p-1 text-xs">{row[KeyPrimary]}</span>
+          </td>
+
           {#each columns as col}
             <td class="px-1 py-3 text-left">
               {#if col.slug in row && row[col.slug] !== null}
