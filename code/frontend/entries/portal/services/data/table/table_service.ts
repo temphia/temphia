@@ -55,10 +55,17 @@ export class TableService {
     this.row_service = new RowService(this, this.state);
   }
 
-  init = async () => {
+  refresh = () => {
+    return this.init();
+  };
+
+  init = async (filters?: object[]) => {
     this.state.set_loading();
 
-    const resp = await this.data_api.load_table(this.table_slug);
+    const resp = await this.data_api.load_table(
+      this.table_slug,
+      filters ? { view_filters: filters } : {}
+    );
     if (!resp.ok) {
       console.log("Err", resp);
       return;
@@ -81,6 +88,8 @@ export class TableService {
       if (active) {
         view_mode = "STATIC";
       }
+    } else if (!filters) {
+      view_mode = "MANUAL";
     }
 
     this.rev_ref_columns = resp.data["reverse_refs"] || [];
@@ -180,6 +189,10 @@ export class TableService {
       });
       this.state.set_needs_refresh();
     }
+  };
+
+  fts = (opts: { search_term; search_column; count }) => {
+    return this.data_api.fts_query(this.table_slug, opts);
   };
 
   poll = async () => {};
@@ -435,7 +448,7 @@ export class TableState {
     });
   };
 
-  start_row_edit = (row_id: number, data?: any ) => {
+  start_row_edit = (row_id: number, data?: any) => {
     this.dirty_store.set({
       data: data || {},
       rowid: row_id,

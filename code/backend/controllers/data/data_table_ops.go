@@ -157,18 +157,15 @@ func (c *Controller) SimpleQuery(uclaim *claim.Data, tslug string, query dyndb.S
 	return thub.SimpleQuery(0, query)
 }
 
-func (c *Controller) FTSQuery(uclaim *claim.Data, tslug, qstr string) (*dyndb.QueryResult, error) {
+func (c *Controller) FTSQuery(uclaim *claim.Data, req dyndb.FTSQueryReq) (*dyndb.QueryResult, error) {
 	source, group := getTarget(uclaim)
 	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
 	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	return thub.FTSQuery(0, dyndb.FTSQueryReq{
-		TenantId:   uclaim.TenantId,
-		Table:      tslug,
-		Group:      group,
-		SearchTerm: qstr,
-		Count:      10,
-	})
+	req.Group = group
+	req.TenantId = uclaim.TenantId
+
+	return thub.FTSQuery(0, req)
 }
 
 func (d *Controller) TemplateQuery(uclaim *claim.Data, tslug string, query any) (*dyndb.QueryResult, error) {

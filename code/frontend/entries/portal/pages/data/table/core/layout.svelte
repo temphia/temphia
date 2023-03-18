@@ -33,6 +33,7 @@
   };
 
   $: re_render = 0;
+  $: _view_active = viewmode == "MANUAL" || viewmode == "STATIC";
 </script>
 
 <div class="w-full h-full overflow-x-hidden">
@@ -81,23 +82,34 @@
             name="Setting"
             onClick={() => dispatch("tb_goto_setting")}
           />
+
+          {#key _view_active}
+            <ActionNormal
+              icon="filter"
+              name="View"
+              active={_view_active}
+              onClick={() => dispatch("tb_view")}
+            />
+          {/key}
+
           <ActionNormal
-            icon="share"
-            name="Share"
-            onClick={() => dispatch("tb_share")}
+            icon="arrow-sm-left"
+            name="Goto"
+            onClick={() => dispatch("tb_goto")}
           />
 
           <ActionNormal
-            icon="filter"
-            name="View"
-            active={viewmode == "MANUAL" || viewmode == "STATIC"}
-            onClick={() => dispatch("tb_view")}
+            icon="search"
+            name="Search"
+            onClick={() => dispatch("tb_search")}
           />
+
           <ActionNormal
             icon="calendar"
             name="History"
             onClick={() => dispatch("tb_history")}
           />
+
           {#if selected_rows.length > 0}
             <ActionNormal
               icon="duplicate"

@@ -103,8 +103,47 @@ func (d *DynDB) getRow(txid uint32, req dyndb.GetRowReq) (map[string]interface{}
 	return data, err
 }
 
-func (d *DynDB) _FTSQuery(txid uint32, req dyndb.FTSQueryReq) (*dyndb.QueryResult, error) {
-	return nil, nil
+func (d *DynDB) ftsQuery(txid uint32, req dyndb.FTSQueryReq) (*dyndb.QueryResult, error) {
+
+	records := make([]map[string]any, 0)
+	err := d.txOr(txid, func(sess db.Session) error {
+		conds, err := filter.Transform(req.Filters)
+		if err != nil {
+			return err
+		}
+
+		searchTerm := req.SearchTerm
+		if !req.UsePattern {
+			searchTerm = "%" + searchTerm + "%"
+		}
+
+		likeQ := db.Cond{fmt.Sprintf("%s LIKE", req.SearchColumn): searchTerm}
+
+		return sess.SQL().
+			Select().
+			From(d.tns.Table(req.TenantId, req.Group, req.Table)).
+			Where(conds).
+			And(likeQ).
+			Paginate(uint(req.Count)).
+			Page(uint(req.Page + 1)).
+			All(&records)
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	cols, err := d.cache.CachedColumns(req.TenantId, req.Group, req.Table)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dyndb.QueryResult{
+		Count:   int64(len(records)),
+		Page:    req.Page,
+		Rows:    records,
+		Columns: cols,
+	}, err
 }
 
 func (d *DynDB) sqlQuery(txid uint32, tenantId string, req dyndb.SqlQueryReq) (*dyndb.SqlQueryResult, error) {

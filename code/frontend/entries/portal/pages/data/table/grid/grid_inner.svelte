@@ -67,7 +67,7 @@
 
     <tbody>
       {#each rows as item, ridx}
-        <tr class="text-left bg-{flipCSS(ridx)}-100">
+        <tr id="data-table-row-{item}" class="text-left bg-{flipCSS(ridx)}-100">
           <td class="border-dashed border-t border-gray-200 px-2">
             <label
               class="text-teal-500 inline-flex gap-1 justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer bg-{marked_rows[

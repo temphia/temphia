@@ -3,16 +3,18 @@
   import type { Column } from "../../../../../services/data";
 
   export let columns: Column[] = [];
+  export let filters = [];
+
   export let count = "10";
-  export let use_filter = false;
   export let column = columns[0].slug;
   export let pattern = false;
   export let search_string = "";
+  export let filter_name = "";
 
-
+  export let onSubmit;
 </script>
 
-<form class="flex items-center">
+<form class="flex items-center pr-6 sm:pr-0">
   <label for="data-table-search" class="sr-only">Search</label>
   <div class="relative w-full">
     <div
@@ -31,14 +33,14 @@
   </div>
   <button
     type="submit"
-    on:click|preventDefault={() => {}}
+    on:click|preventDefault={() => onSubmit()}
     class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
   >
     <Icon name="search" class="h-5 w-5" />
   </button>
 </form>
 
-<div class="flex flex-wrap text-sm border-b p-1 gap-3">
+<div class="flex flex-wrap text-sm border-b p-1 gap-3 mb-2">
   <label class="inline-flex items-center">
     <span class="text-gray-700">Count</span>
     <select bind:value={count} class="font-medium rounded text-sm p-1 ml-1">
@@ -51,11 +53,15 @@
 
   <label class="inline-flex items-center">
     <span class="text-gray-700">Use Filter</span>
-    <input
-      class="hover:bg-gray-200 rounded-lg p-1 ml-1"
-      bind:checked={use_filter}
-      type="checkbox"
-    />
+
+    <select
+      bind:value={filter_name}
+      class="font-medium rounded text-sm p-1 ml-1"
+    >
+      {#each filters as ft}
+        <option value={ft["name"]}>{ft["name"]}</option>
+      {/each}
+    </select>
   </label>
 
   <label class="inline-flex items-center">

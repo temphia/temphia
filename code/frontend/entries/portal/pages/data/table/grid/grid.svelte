@@ -13,6 +13,8 @@
 
   $: _data = $data_store;
   $: _nav_store = $nav_store;
+
+  $: console.log("@view_mode", _nav_store.view_mode)
 </script>
 
 <TableLayout
@@ -29,7 +31,8 @@
   on:tb_delete
   on:tb_execute_widget
   on:tb_history
-  on:tb_share
+  on:tb_search
+  on:tb_goto
   on:tb_view
   on:tb_goto_setting
   on:on_change_to_card

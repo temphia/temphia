@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { KeyPrimary, TableService } from "../../../services/data";
+  import {
+    FilterLessThan,
+    KeyPrimary,
+    TableService,
+  } from "../../../services/data";
   import CardLayout from "./card/card.svelte";
   import GridLayout from "./grid/grid.svelte";
 
@@ -73,6 +77,21 @@
       columns: Object.values($data_store.indexed_column),
     });
   };
+
+  const on_goto = () => {
+    let rowId = Number(prompt("Enter row id to goto", "20"));
+    if (!rowId) {
+      return;
+    }
+
+    table_service.init([
+      {
+        column: KeyPrimary,
+        cond: FilterLessThan,
+        value: `${rowId - 10}`,
+      },
+    ]);
+  };
 </script>
 
 {#key layout}
@@ -115,7 +134,8 @@
       on:tb_delete={deleteRows}
       on:tb_execute_widget
       on:tb_history={() => dispatch("goto_history")}
-      on:tb_share={() => {}}
+      on:tb_search={on_search}
+      on:tb_goto={on_goto}
       on:tb_view={() => {
         show_view_panel = !show_view_panel;
       }}
@@ -127,7 +147,7 @@
       {selected_rows}
       {table_service}
       needs_refresh={$nav_store.needs_refresh}
-      on:tb_reload={table_service.init}
+      on:tb_reload={table_service.refresh}
       on:on_table_change
       on:on_change_to_card
       on:on_new_row={on_new_row}
@@ -144,7 +164,7 @@
       on:tb_execute_widget
       on:tb_history={() => dispatch("goto_history")}
       on:tb_search={on_search}
-      on:tb_share={() => {}}
+      on:tb_goto={on_goto}
       on:tb_view={() => {
         show_view_panel = !show_view_panel;
       }}

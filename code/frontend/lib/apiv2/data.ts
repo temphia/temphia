@@ -35,14 +35,16 @@ export class DataAPI {
     return this.http.delete(`/data/table/${tid}/row/${rid}`);
   }
 
-  load_table(tid: string, view?: string) {
-    return this.http.post(`/data/table/${tid}/load`, {
-      view,
-    });
+  load_table(tid: string, opts?: any) {
+    return this.http.post(`/data/table/${tid}/load`, opts);
   }
 
   simple_query(tid: string, query: any) {
     return this.http.post(`/data/table/${tid}/simple_query`, query);
+  }
+
+  fts_query(tid: string, query: any) {
+    return this.http.post(`/data/table/${tid}/fts_query`, query);
   }
 
   ref_load(tid: string, data: any) {

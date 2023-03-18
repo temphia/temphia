@@ -139,7 +139,9 @@ func (s *Server) FTSQuery(uclaim *claim.Data, ctx *gin.Context) {
 		return
 	}
 
-	resp, err := s.cData.FTSQuery(uclaim, ctx.Param("tid"), query.SearchTerm)
+	query.Table = ctx.Param("tid")
+
+	resp, err := s.cData.FTSQuery(uclaim, query)
 	httpx.WriteJSON(ctx, resp, err)
 }
 

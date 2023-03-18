@@ -92,7 +92,7 @@ func (d *DynDB) SimpleQuery(txid uint32, req dyndb.SimpleQueryReq) (*dyndb.Query
 }
 
 func (d *DynDB) FTSQuery(txid uint32, req dyndb.FTSQueryReq) (*dyndb.QueryResult, error) {
-	return d._FTSQuery(txid, req)
+	return d.ftsQuery(txid, req)
 }
 
 func (d *DynDB) TemplateQuery(txid uint32, req dyndb.TemplateQueryReq) (*dyndb.QueryResult, error) {

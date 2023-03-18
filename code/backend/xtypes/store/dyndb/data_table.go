@@ -115,11 +115,15 @@ type JoinReq struct {
 }
 
 type FTSQueryReq struct {
-	TenantId   string `json:"-"`
-	Table      string `json:"table,omitempty"`
-	Group      string `json:"group,omitempty"`
-	SearchTerm string `json:"search_term,omitempty"`
-	Count      int64  `json:"count,omitempty"`
+	TenantId     string       `json:"-"`
+	Table        string       `json:"table,omitempty"`
+	Group        string       `json:"group,omitempty"`
+	SearchTerm   string       `json:"search_term,omitempty"`
+	SearchColumn string       `json:"search_column,omitempty"`
+	Count        int64        `json:"count,omitempty"`
+	Filters      []FilterCond `json:"filters,omitempty"`
+	Page         int64        `json:"page,omitempty"`
+	UsePattern   bool         `json:"use_pattern,omitempty"`
 }
 
 type RefLoadReq struct {
