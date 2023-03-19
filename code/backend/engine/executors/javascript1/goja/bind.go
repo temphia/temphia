@@ -94,49 +94,28 @@ func (g *Goja) bind() {
 	}
 
 	if sbind := g.binder.SockdBindingsGet(); sbind != nil {
+
+		g.qbind("_sd_send_direct", func(room string, connId int64, payload []byte) any {
+			return resp(sbind.SendDirect(room, connId, payload))
+		})
+
+		g.qbind("_sd_send_direct_batch", func(room string, connIds []int64, payload []byte) any {
+			return resp(sbind.SendDirectBatch(room, connIds, payload))
+		})
+
+		g.qbind("_sd_send_broadcast", func(room string, ignores []int64, payload []byte) any {
+			return resp(sbind.SendBroadcast(room, ignores, payload))
+		})
+
+		g.qbind("_sd_send_tagged", func(room string, tags []string, ignoreConns []int64, payload []byte) any {
+			return resp(sbind.SendTagged(room, tags, ignoreConns, payload))
+		})
+
 		g.qbind("_sd_ticket", func(room string, opts *ticket.SockdRoom) (any, any) {
 			return sbind.Ticket(room, opts)
 		})
+
 	}
-
-	/*
-
-		if sbind := g.binder.GetSockdBindings(); sbind != nil {
-			g.qbind("_sd_send_direct", func(room string, connId []string, payload []byte) any {
-				return resp(sbind.SendDirect(room, connId, payload))
-			})
-
-			g.qbind("_sd_send_broadcast", func(room string, payload []byte) any {
-				return resp(sbind.SendBroadcast(room, payload))
-			})
-
-			g.qbind("_sd_send_tagged", func(room string, tags []string, ignoreConns []string, payload []byte) any {
-				return resp(sbind.SendTagged(room, tags, ignoreConns, payload))
-			})
-
-			g.qbind("_sd_add_to_room", func(room string, connId string, tags []string) any {
-				return resp(sbind.AddToRoom(room, connId, tags))
-			})
-
-			g.qbind("_sd_kick_from_room", func(room string, connId string) any {
-				return resp(sbind.KickFromRoom(room, connId))
-			})
-
-			g.qbind("_sd_list_room_conns", func(room string) (any, any) {
-				r, err := sbind.ListRoomConns(room)
-				if err != nil {
-					return nil, err.Error()
-				}
-
-				return r, nil
-			})
-
-			g.qbind("_sd_bann_conn", func(connId string) any {
-				return resp(sbind.BannConn(connId))
-			})
-		}
-
-	*/
 
 	if cbind := g.binder.CabinetBindingsGet(); cbind != nil {
 		g.qbind("_cab_add_file", func(folder, file string, payload []byte) any {
