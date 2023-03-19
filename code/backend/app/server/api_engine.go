@@ -59,7 +59,7 @@ func (s *Server) agentServeFile(ctx *gin.Context) {
 
 	out, err := s.cEngine.ServeAgentFile(ctx.Param("tenant_id"), ctx.Param("pid"), ctx.Param("aid"), file)
 	if err != nil {
-		pp.Println("@err/server_agent", err)
+		pp.Println("@err/server_agent", file, err)
 		return
 	}
 

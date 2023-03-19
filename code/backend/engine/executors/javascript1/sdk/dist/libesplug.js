@@ -49,6 +49,7 @@ __nccwpck_require__.d(__webpack_exports__, {
   "Response": () => (/* reexport */ Response),
   "SockdRoom": () => (/* reexport */ SockdRoom),
   "core": () => (/* reexport */ core),
+  "invoker": () => (/* reexport */ invoker),
   "plugkv": () => (/* reexport */ plugkv),
   "self": () => (/* reexport */ self_self),
   "utils": () => (/* reexport */ utils)
@@ -270,16 +271,30 @@ var utils = {
 
 ;// CONCATENATED MODULE: ./lib/self.ts
 var self_self = {
-    list_resource: _self_list_resource,
-    get_resource: _self_get_resource,
-    inlinks: _self_inlinks,
-    outlinks: _self_outlinks,
-    module_execute: _self_module_execute,
-    link_execute: _self_link_execute,
-    fork_execute: _self_fork_execute
+    list_resource: function () { return _self_list_resource(); },
+    get_resource: function (name) { return _self_get_resource(name); },
+    inlinks: function () { return _self_inlinks(); },
+    outlinks: function () { return _self_outlinks(); },
+    module_execute: function (name, method, path, data) {
+        return _self_module_execute(name, method, path, data);
+    },
+    link_execute: function (name, method, path, data, async, detached) { return _self_link_execute(name, method, path, data, async, detached); },
+    fork_execute: function (method, data) { return _self_fork_execute(method, data); }
+};
+
+;// CONCATENATED MODULE: ./lib/invoker.ts
+var invoker = {
+    name: function () { return _invoker_name(); },
+    exec_method: function (method, path, data) {
+        return _invoker_exec_method(method, path, data);
+    },
+    context_user: function () { return _invoker_context_user(); },
+    context_user_info: function () { return _invoker_context_user_info(); },
+    context_user_message: function () { return _invoker_context_user_message(); }
 };
 
 ;// CONCATENATED MODULE: ./lib/index.ts
+
 
 
 

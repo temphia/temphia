@@ -5,4 +5,5 @@ import { CabFolder } from "./cabinet";
 import { SockdRoom } from "./sockd";
 import { utils } from "./utils";
 import { self } from "./self";
-export { core, self, utils, plugkv, Request, Response, CabFolder, SockdRoom, };
+import { invoker } from "./invoker";
+export { core, self, utils, plugkv, invoker, Request, Response, CabFolder, SockdRoom, };

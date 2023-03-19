@@ -27,6 +27,7 @@ func resp(err error) any {
 }
 
 func (g *Goja) bind() {
+
 	g.runtime.SetFieldNameMapper(goja.TagFieldNameMapper("json", true))
 
 	{
