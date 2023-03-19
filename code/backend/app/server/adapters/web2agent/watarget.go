@@ -56,12 +56,8 @@ func (w *WATarget) Type() string {
 	return "web2agent"
 }
 
-func (w *WATarget) ExecuteModule(module, action string, data xtypes.LazyData) (xtypes.LazyData, error) {
-	return w.executeModule(module, action, data)
-}
-
-func (w *WATarget) ListModules() []string {
-	return []string{"web"}
+func (w *WATarget) ExecuteMethod(method, path string, data xtypes.LazyData) (xtypes.LazyData, error) {
+	return w.executeMethod(method, path, data)
 }
 
 func (w *WATarget) UserContext() *invoker.User {

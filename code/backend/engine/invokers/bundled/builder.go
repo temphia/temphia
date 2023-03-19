@@ -5,7 +5,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/invoker"
 )
 
-type Module func(handle Handle, method string, data xtypes.LazyData) (xtypes.LazyData, error)
+type Module func(method, path string, data xtypes.LazyData) (xtypes.LazyData, error)
 
 type Builder struct {
 	name             string

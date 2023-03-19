@@ -15,10 +15,8 @@ type User struct {
 
 type Invoker interface {
 	Type() string
-	ExecuteModule(module, action string, data xtypes.LazyData) (xtypes.LazyData, error)
-	ListModules() []string
+	ExecuteMethod(method, path string, data xtypes.LazyData) (xtypes.LazyData, error)
 	UserContext() *User
-
 	GetAttr(string) interface{}
 	GetAttrs() map[string]interface{}
 }

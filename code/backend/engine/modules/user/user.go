@@ -1,25 +1,18 @@
 package user
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/temphia/temphia/code/backend/engine/binder/handle"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes/invoker"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
-var (
-	ErrEmptyCurrentUser = errors.New("EMPTY CURRENT USER")
-)
-
 type Binding struct {
-	chub       store.CoreHub
-	handle     *handle.Handle
-	iuserCache *invoker.User
+	chub   store.CoreHub
+	handle *handle.Handle
 }
 
 func New(handle *handle.Handle) Binding {
@@ -86,68 +79,4 @@ func (ub *Binding) GetUser(group, name string) (*entities.UserInfo, error) {
 	}
 
 	return usr, nil
-}
-
-func (ub *Binding) MessageCurrentUser(opts *bindx.UserMessage) error {
-	ub.loadInvokeUser()
-	if ub.iuserCache == nil {
-		return ErrEmptyCurrentUser
-	}
-
-	_, err := ub.chub.AddUserMessage(&entities.UserMessage{
-		Title:        opts.Title,
-		Read:         false,
-		Type:         "message",
-		Contents:     opts.Contents,
-		UserId:       ub.iuserCache.Id,
-		FromUser:     "",
-		FromPlug:     ub.handle.PlugId,
-		FromAgent:    ub.handle.AgentId,
-		PlugCallback: "",
-		Encrypted:    false,
-		CreatedAt:    nil,
-		TenantId:     ub.handle.Namespace,
-		WarnLevel:    0,
-	})
-
-	return err
-}
-
-func (ub *Binding) CurrentUser() (*entities.UserInfo, error) {
-	ub.loadInvokeUser()
-	if ub.iuserCache == nil {
-		return nil, ErrEmptyCurrentUser
-	}
-
-	ruser, err := ub.chub.GetUserByID(ub.handle.Namespace, ub.iuserCache.Id)
-	if err != nil {
-		return nil, err
-	}
-
-	return &entities.UserInfo{
-		UserId:    ruser.UserId,
-		FullName:  ruser.FullName,
-		Bio:       ruser.Bio,
-		PublicKey: ruser.PublicKey,
-		Email:     ruser.Email,
-		GroupId:   ruser.GroupID,
-	}, nil
-}
-
-func (ub *Binding) ContextUser() *invoker.User {
-	ub.loadInvokeUser()
-
-	return ub.iuserCache
-}
-
-// private
-
-func (ub *Binding) loadInvokeUser() {
-	if ub.iuserCache != nil {
-		return
-	}
-
-	if ub.handle.Job.Invoker != nil {
-		ub.iuserCache = ub.handle.Job.Invoker.UserContext()
-	}
 }

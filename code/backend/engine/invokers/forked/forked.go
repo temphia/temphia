@@ -17,12 +17,8 @@ func New(from string) invoker.Invoker {
 }
 
 func (f *Forked) Type() string { return "forked" }
-func (f *Forked) ExecuteModule(module, action string, data xtypes.LazyData) (xtypes.LazyData, error) {
+func (f *Forked) ExecuteMethod(module, action string, data xtypes.LazyData) (xtypes.LazyData, error) {
 	return nil, easyerr.NotImpl()
-}
-
-func (f *Forked) ListModules() []string {
-	return []string{}
 }
 
 func (f *Forked) UserContext() *invoker.User {

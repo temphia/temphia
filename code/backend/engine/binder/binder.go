@@ -37,6 +37,7 @@ type Binder struct {
 	net     net.Binding
 	ncache  ncache.Binding
 	self    SelfBindings
+	invoker InvokerBindings
 }
 
 func (b *Binder) AttachJob(j *job.Job) {
@@ -54,6 +55,7 @@ func (b *Binder) AttachJob(j *job.Job) {
 	b.net = net.New()
 	b.ncache = ncache.New(b.Handle)
 	b.self = NewSelfBindings(b.Handle, b)
+	b.invoker = NewInvoker(b.Handle)
 }
 
 func (b *Binder) SetExec(exec etypes.Executor) {
@@ -109,7 +111,7 @@ func (b *Binder) Execute() (*event.Response, error) {
 func (b *Binder) PlugKVBindingsGet() bindx.PlugKV   { return &b.plugKV }
 func (b *Binder) SelfBindingsGet() bindx.Self       { return &b.self }
 func (b *Binder) NetGet() bindx.Net                 { return &b.net }
-func (b *Binder) InvokerGet() bindx.Invoker         { return nil }
+func (b *Binder) InvokerGet() bindx.Invoker         { return &b.invoker }
 func (b *Binder) SockdBindingsGet() bindx.Sockd     { return &b.sockd }
 func (b *Binder) CabinetBindingsGet() bindx.Cabinet { return &b.cabinet }
 

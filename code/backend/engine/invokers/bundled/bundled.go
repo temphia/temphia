@@ -1,6 +1,8 @@
 package bundled
 
 import (
+	"strings"
+
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/invoker"
 )
@@ -15,23 +17,16 @@ type Invoker struct {
 
 func (i *Invoker) Type() string { return i.name }
 
-func (i *Invoker) ExecuteModule(module, action string, data xtypes.LazyData) (xtypes.LazyData, error) {
-	mod := i.modules[module]
+func (i *Invoker) ExecuteMethod(method, path string, data xtypes.LazyData) (xtypes.LazyData, error) {
+
+	mpath := strings.Split(method, ".")
+
+	mod := i.modules[mpath[0]]
 	if mod == nil {
 		panic("invoker module not found")
 	}
 
-	return mod(Handle{
-		invoker: i,
-	}, action, data)
-}
-
-func (i *Invoker) ListModules() []string {
-	ms := make([]string, 0, len(i.modules))
-	for k := range i.modules {
-		ms = append(ms, k)
-	}
-	return ms
+	return mod(mpath[1], path, data)
 }
 
 func (i *Invoker) UserContext() *invoker.User {
@@ -52,22 +47,4 @@ func (i *Invoker) GetAttr(name string) any {
 
 func (i *Invoker) GetAttrs() map[string]any {
 	return i.arrts
-}
-
-// handle
-
-type Handle struct {
-	invoker *Invoker
-}
-
-func (h *Handle) ExecuteModule(module, action string, data xtypes.LazyData) (xtypes.LazyData, error) {
-	return h.invoker.ExecuteModule(module, action, data)
-}
-
-func (h *Handle) ListModule() []string {
-	return h.invoker.ListModules()
-}
-
-func (h *Handle) GetApp() interface{} {
-	return h.invoker.app
 }
