@@ -4,6 +4,7 @@ import (
 	"github.com/dop251/goja"
 
 	"github.com/temphia/temphia/code/backend/libx/lazydata"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx/ticket"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
@@ -159,6 +160,49 @@ func (g *Goja) bind() {
 				return nil, err.Error()
 			}
 			return tok, nil
+		})
+
+	}
+
+	if ibind := g.binder.InvokerGet(); ibind != nil {
+		g.qbind("_invoker_name", func() any {
+			return ibind.Name()
+		})
+
+		g.qbind("_invoker_exec_method", func(method, path string, data goja.Value) (any, any) {
+
+			resp, err := ibind.ExecMethod(method, path, lazydata.NewGojaData(g.runtime, data))
+			if err != nil {
+				return nil, err.Error()
+			}
+			var i any
+
+			err = resp.AsObject(&i)
+			if err != nil {
+				return nil, err.Error()
+			}
+
+			return i, nil
+		})
+
+		g.qbind("_invoker_context_user", func() any {
+			return ibind.ContextUser()
+		})
+
+		g.qbind("_invoker_context_user_info", func() (any, any) {
+			u, err := ibind.ContextUserInfo()
+			if err != nil {
+				return nil, err.Error()
+			}
+			return u, nil
+		})
+
+		g.qbind("_invoker_context_user_message", func(opts *bindx.UserMessage) any {
+			err := ibind.ContextUserMessage(opts)
+			if err != nil {
+				return err.Error()
+			}
+			return nil
 		})
 
 	}
