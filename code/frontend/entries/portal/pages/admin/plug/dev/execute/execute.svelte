@@ -6,6 +6,9 @@
   import type { ExecInstanceOptions } from "../../../../../services/engine/exec_type";
   import { LoadingSpinner, PortalService } from "../../../core";
 
+  export let pid = $params.pid;
+  export let aid = $params.aid;
+
   const app = getContext("__app__") as PortalService;
   const eapi = app.api_manager.get_engine_api();
 
@@ -35,7 +38,7 @@
     loading = false;
   };
 
-  load($params.pid, $params.aid);
+  load(pid, aid);
 </script>
 
 {#if loading}
@@ -43,7 +46,7 @@
 {:else}
   <IframeExecute
     exec_data={data}
-    name="{$params.pid}/{$params.aid}"
+    name="{pid}/{aid}"
     secret_id={sid}
     tenant_id={app.options.tenant_id}
     {bootloader}

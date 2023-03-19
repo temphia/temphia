@@ -32,7 +32,7 @@
             __active = false;
             onClick(file);
           }}
-          class="block py-2 w-full text-sm text-gray-600 capitalize transition-colors duration-200 transform hover:bg-blue-200"
+          class="block py-2 w-full text-sm text-gray-600 transition-colors duration-200 transform hover:bg-blue-200"
         >
           {file}
         </button>

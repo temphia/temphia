@@ -1,17 +1,39 @@
 <script lang="ts">
+  import { getContext } from "svelte";
+  import type { PortalService } from "../../../core";
   import Codepanel from "./codepanel.svelte";
   import Outputpanel from "./outputpanel.svelte";
   import Layout from "./_layout.svelte";
 
-  export let files = ["server.js", "client.js"];
-  export let file = "server.js";
+  export let files;
+  export let file;
+  export let bid;
+  
   let editor;
   let code = "";
-  let loading = false;
-
   const modified = {};
+  let loading = true;
 
-  const changeFile = (tofile) => {
+  const app = getContext("__app__") as PortalService;
+  const bapi = app.api_manager.get_admin_bprint_api();
+
+  const load = async (lfile: string) => {
+    loading = true;
+    const resp = await bapi.get_file(bid, lfile);
+    if (!resp.ok) {
+      console.log("@resp", resp);
+      return;
+    }
+
+    if (typeof resp.data === "object") {
+      code = JSON.stringify(resp.data, undefined, 2);
+    } else {
+      code = resp.data;
+    }
+
+    loading = false;
+  };
+  const changeFile = async (tofile) => {
     if (file === tofile) {
       return;
     }
@@ -19,15 +41,17 @@
     if (editor && file) {
       modified[file] = editor.getValue();
     }
+    file = tofile;
 
     const old = modified[tofile];
     if (old) {
       code = old;
     } else {
-      code = "// data";
+      await load(tofile);
     }
-    file = tofile;
   };
+
+  load(file);
 </script>
 
 <Layout {file} {changeFile} {files}>

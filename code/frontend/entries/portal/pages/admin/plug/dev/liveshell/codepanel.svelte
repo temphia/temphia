@@ -9,6 +9,11 @@
 
 {#if file}
   {#if !loading}
-    <CEditor {code} bind:editor container_style={"height:100%;"} />
+    <CEditor
+      mode={(file || "a.js").split(".").pop()}
+      {code}
+      bind:editor
+      container_style={"height:100%;"}
+    />
   {/if}
 {/if}
