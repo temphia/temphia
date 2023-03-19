@@ -33,6 +33,27 @@ type DGModule struct {
 
 func (d *DGModule) IPC(method string, path string, args xtypes.LazyData) (xtypes.LazyData, error) {
 
+	if MethodTicket == method {
+		app := d.binder.GetApp().(xtypes.App)
+		signer := app.GetDeps().Signer().(service.Signer)
+
+		uctx := d.binder.InvokerGet().ContextUser()
+
+		tok, err := signer.SignData(d.tenantId, &claim.Data{
+			TenantId:   d.tenantId,
+			UserID:     uctx.Id,
+			UserGroup:  uctx.Group,
+			SessionID:  uctx.SessionId,
+			DeviceId:   uctx.DeviceId,
+			DataSource: d.dynsrc.Name(),
+			DataGroup:  d.group,
+			DataTables: []string{"*"},
+			IsExec:     true,
+		})
+
+		return d.response(tok, err)
+	}
+
 	txid, table, rowid := d.extractPath(path)
 
 	dhub := d.dynsrc.GetDataTableHub(d.tenantId, d.group)
@@ -110,25 +131,7 @@ func (d *DGModule) IPC(method string, path string, args xtypes.LazyData) (xtypes
 			return nil, err
 		}
 		return d.response(dhub.SimpleQuery(txid, req))
-	case MethodTicket:
-		app := d.binder.GetApp().(xtypes.App)
-		signer := app.GetDeps().Signer().(service.Signer)
 
-		uctx := d.binder.InvokerGet().ContextUser()
-
-		tok, err := signer.SignData(d.tenantId, &claim.Data{
-			TenantId:   d.tenantId,
-			UserID:     uctx.Id,
-			UserGroup:  uctx.Group,
-			SessionID:  uctx.SessionId,
-			DeviceId:   uctx.DeviceId,
-			DataSource: d.dynsrc.Name(),
-			DataGroup:  d.group,
-			DataTables: []string{"*"},
-			IsExec:     true,
-		})
-
-		return d.response(tok, err)
 	}
 
 	return nil, easyerr.NotFound()
