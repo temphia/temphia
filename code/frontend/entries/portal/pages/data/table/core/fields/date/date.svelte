@@ -34,7 +34,8 @@
   value={_date}
   element={_element}
   on:change={(ev) => {
-    const _new_date = ev.detail[0][0].toISOString();
+    console.log("@on_change", ev)
+    const _new_date = ((ev.detail[0] || [])[0] || new Date()).toISOString();
     onChange(_new_date);
   }}
 >
