@@ -1,6 +1,8 @@
 package goja
 
 import (
+	"encoding/json"
+
 	"github.com/dop251/goja"
 
 	"github.com/temphia/temphia/code/backend/libx/lazydata"
@@ -207,10 +209,22 @@ func (g *Goja) bind() {
 
 	}
 
-	g.qbind("_http1", func(method string, url string, headers map[string]string, body []byte) (int, any, any) {
+	if nb := g.binder.NetGet(); nb != nil {
 
-		return 0, nil, nil
-	})
+		hfunc := http1(nb, g.runtime)
+		g.qbind("_http1", func(method string, url string, headers map[string]string, body any) (int, any, any) {
+
+			resp := hfunc(&HTTPRequest{
+				Method:  method,
+				Path:    url,
+				Headers: headers,
+				Body:    body,
+			})
+
+			return resp.SatusCode, resp.Headers, resp.Body
+		})
+
+	}
 
 	if self := g.binder.SelfBindingsGet(); self != nil {
 		g.qbind("_self_list_resource", func() (any, any) {
@@ -291,23 +305,21 @@ func (g *Goja) bind() {
 
 }
 
-/*
-
 type HTTPRequest struct {
 	Method  string            `json:"method,omitempty"`
 	Path    string            `json:"path,omitempty"`
 	Headers map[string]string `json:"headers,omitempty"`
-	Body    any       `json:"body,omitempty"`
+	Body    any               `json:"body,omitempty"`
 }
 
 type HTTPResponse struct {
 	SatusCode int                 `json:"status_code,omitempty"`
 	Headers   map[string][]string `json:"headers,omitempty"`
-	Body      any         `json:"body,omitempty"`
+	Body      any                 `json:"body,omitempty"`
 }
 
-func http(bindings etypes.Bindings, runtime *goja.Runtime) func(request *HTTPRequest) *HTTPResponse {
-	return func(request *HTTPRequest) *HTTPResponse {
+func http1(nb bindx.Net, runtime *goja.Runtime) func(request *HTTPRequest) HTTPResponse {
+	return func(request *HTTPRequest) HTTPResponse {
 
 		var bytes []byte
 
@@ -318,28 +330,17 @@ func http(bindings etypes.Bindings, runtime *goja.Runtime) func(request *HTTPReq
 			bytes, _ = json.Marshal(request.Body)
 		}
 
-		resp := bindings.HTTPCall(etypes.HTTPRequest{
+		resp := nb.HttpRaw(&bindx.HttpRequest{
 			Method:  request.Method,
 			Path:    request.Path,
 			Headers: request.Headers,
 			Body:    bytes,
 		})
 
-		var out any
-
-		if resp.Json {
-			json.Unmarshal(resp.Body, &out)
-		} else {
-			out = runtime.NewArrayBuffer(resp.Body)
-		}
-
-		return &HTTPResponse{
+		return HTTPResponse{
 			SatusCode: resp.SatusCode,
 			Headers:   resp.Headers,
-			Body:      out,
+			Body:      runtime.NewArrayBuffer(resp.Body),
 		}
 	}
 }
-
-
-*/
