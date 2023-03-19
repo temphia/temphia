@@ -8,7 +8,7 @@
 </script>
 
 {#if file}
-  {#if loading}
+  {#if !loading}
     <CEditor {code} bind:editor container_style={"height:100%;"} />
   {/if}
 {/if}
