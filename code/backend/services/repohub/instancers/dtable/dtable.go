@@ -1,6 +1,8 @@
 package dtable
 
 import (
+	"fmt"
+
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/services/repohub/seeder"
 	"github.com/temphia/temphia/code/backend/xtypes"
@@ -61,10 +63,11 @@ func (di *dtabeInstancer) Instance(opts xinstance.Options) (*xinstance.Response,
 	}
 
 	return &xinstance.Response{
-		Ok:      true,
-		Message: "",
-		Slug:    resp.GroupSlug,
-		Data:    resp,
+		Ok:             true,
+		Message:        "",
+		Slug:           resp.GroupSlug,
+		Data:           resp,
+		ResourceTarget: fmt.Sprintf("%s/%s", resp.Source, resp.GroupSlug),
 	}, nil
 
 }

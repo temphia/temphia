@@ -160,7 +160,7 @@
         {
           "name": "Num Value",
           "slug": "numval",
-          "ctype": "number"
+          "ctype": "currency"
         },
         {
           "name": "Color",

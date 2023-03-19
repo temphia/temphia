@@ -16,10 +16,12 @@ type Options struct {
 }
 
 type Response struct {
-	Ok      bool   `json:"ok,omitempty"`
-	Message string `json:"message,omitempty"`
-	Slug    string `json:"slug,omitempty"`
-	Data    any    `json:"data,omitempty"`
+	Ok             bool   `json:"ok,omitempty"`
+	Type           string `json:"type,omitempty"`
+	Message        string `json:"message,omitempty"`
+	Slug           string `json:"slug,omitempty"`
+	Data           any    `json:"data,omitempty"`
+	ResourceTarget string `json:"resource_target,omitempty"`
 }
 
 type Handle interface {
