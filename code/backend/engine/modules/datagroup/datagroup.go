@@ -48,11 +48,10 @@ func (d *DGModule) IPC(method string, path string, args xtypes.LazyData) (xtypes
 		modctx := dyndb.ModCtx{
 			TableName: table,
 		}
-		if ub := d.binder.UserBindingsGet(); ub != nil {
-			uctx := ub.ContextUser()
-			if uctx != nil {
-				modctx.UserId = uctx.Id
-			}
+
+		uctx := d.binder.InvokerGet().ContextUser()
+		if uctx != nil {
+			modctx.UserId = uctx.Id
 		}
 
 		return d.response(dhub.NewRow((txid), dyndb.NewRowReq{
@@ -82,11 +81,9 @@ func (d *DGModule) IPC(method string, path string, args xtypes.LazyData) (xtypes
 		modctx := dyndb.ModCtx{
 			TableName: table,
 		}
-		if ub := d.binder.UserBindingsGet(); ub != nil {
-			uctx := ub.ContextUser()
-			if uctx != nil {
-				modctx.UserId = uctx.Id
-			}
+		uctx := d.binder.InvokerGet().ContextUser()
+		if uctx != nil {
+			modctx.UserId = uctx.Id
 		}
 
 		return d.response(dhub.UpdateRow(txid, dyndb.UpdateRowReq{
@@ -116,7 +113,8 @@ func (d *DGModule) IPC(method string, path string, args xtypes.LazyData) (xtypes
 	case MethodTicket:
 		app := d.binder.GetApp().(xtypes.App)
 		signer := app.GetDeps().Signer().(service.Signer)
-		uctx := d.binder.UserBindingsGet().ContextUser()
+
+		uctx := d.binder.InvokerGet().ContextUser()
 
 		tok, err := signer.SignData(d.tenantId, &claim.Data{
 			TenantId:   d.tenantId,

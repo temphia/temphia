@@ -1,10 +1,6 @@
 package wazero
 
-import (
-	"context"
-
-	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
-)
+/*
 
 func UserList(ctx context.Context, gPtr, gLen, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
@@ -53,3 +49,6 @@ func UserCurrent(ctx context.Context, respOffset, respLen int32) int32 {
 	usrs, err := e.bindUser.CurrentUser()
 	return e.writeJSONFinal(respOffset, respLen, usrs, err)
 }
+
+
+*/

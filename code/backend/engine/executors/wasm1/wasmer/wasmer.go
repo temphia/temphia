@@ -13,14 +13,12 @@ type Executor struct {
 	extenFns map[string]wasmer.IntoExtern
 
 	// bindings cache
-	bindings   bindx.Bindings
-	bindPluKV  bindx.PlugKV
-	bindSockd  bindx.Sockd
-	bindUser   bindx.User
-	bindCab    bindx.Cabinet
-	bindSelf   bindx.Self
-	bindNcache bindx.NodeCache
-	bindNet    bindx.Net
+	bindings  bindx.Bindings
+	bindPluKV bindx.PlugKV
+	bindSockd bindx.Sockd
+	bindCab   bindx.Cabinet
+	bindSelf  bindx.Self
+	bindNet   bindx.Net
 }
 
 func (e *Executor) Process(req *event.Request) (*event.Response, error) {

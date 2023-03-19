@@ -14,11 +14,10 @@ type Bindings interface {
 
 	PlugKVBindingsGet() PlugKV
 	SockdBindingsGet() Sockd
-	UserBindingsGet() User
 	CabinetBindingsGet() Cabinet
 	SelfBindingsGet() Self
-	NodeCacheGet() NodeCache
 	NetGet() Net
+	InvokerGet() Invoker
 }
 
 type Core interface {
@@ -63,16 +62,6 @@ type Sockd interface {
 	Ticket(room string, opts *ticket.SockdRoom) (string, error)
 }
 
-type User interface {
-	ContextUser() *invoker.User
-	ListUser(group string) ([]string, error)
-	MessageUser(group, user string, opts *UserMessage) error
-	GetUser(group, user string) (*entities.UserInfo, error)
-
-	MessageCurrentUser(opts *UserMessage) error
-	CurrentUser() (*entities.UserInfo, error)
-}
-
 type Net interface {
 	HttpRaw(*HttpRequest) *HttpResponse
 	HttpRawBatch([]*HttpRequest) []*HttpResponse
@@ -83,13 +72,6 @@ type Net interface {
 
 	HttpJsonGet(url string, headers map[string]string) ([]byte, error)
 	HttpJsonPost(url string, headers map[string]string, data []byte) ([]byte, error)
-}
-
-type NodeCache interface {
-	Put(key string, value []byte, expire int64) error
-	PutCAS(key string, value []byte, version, expire int64) error
-	Get(key string) (data []byte, version int64, expire int64, err error)
-	Expire(key string) error
 }
 
 type Self interface {
@@ -112,4 +94,12 @@ type Self interface {
 	SelfModuleExec(name, method, path string, data xtypes.LazyData) (xtypes.LazyData, error)
 
 	SelfForkExec(method string, data []byte) error
+}
+
+type Invoker interface {
+	Name() string
+	ExecMethod(method, path string, data xtypes.LazyData) (xtypes.LazyData, error)
+	ContextUser() *invoker.User
+	ContextUserInfo() (*entities.UserInfo, error)
+	ContextUserMessage(opts *UserMessage) error
 }
