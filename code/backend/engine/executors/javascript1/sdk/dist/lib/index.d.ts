@@ -4,4 +4,5 @@ import { Request, Response } from "./http";
 import { CabFolder } from "./cabinet";
 import { SockdRoom } from "./sockd";
 import { utils } from "./utils";
-export { core, utils, plugkv, Request, Response, CabFolder, SockdRoom, };
+import { self } from "./self";
+export { core, self, utils, plugkv, Request, Response, CabFolder, SockdRoom, };

@@ -50,6 +50,7 @@ __nccwpck_require__.d(__webpack_exports__, {
   "SockdRoom": () => (/* reexport */ SockdRoom),
   "core": () => (/* reexport */ core),
   "plugkv": () => (/* reexport */ plugkv),
+  "self": () => (/* reexport */ self_self),
   "utils": () => (/* reexport */ utils)
 });
 
@@ -216,23 +217,14 @@ var SockdRoom = /** @class */ (function () {
         this.send_direct = function (connIds, value) {
             return _sd_send_direct(_this._room, connIds, value);
         };
-        this.send_broadcast = function (value) {
-            return _sd_send_broadcast(_this._room, value);
+        this.send_direct_batch = function (connIds, value) {
+            return _sd_send_direct_batch(_this._room, connIds, value);
+        };
+        this.send_broadcast = function (value, ignores) {
+            return _sd_send_broadcast(_this._room, value, ignores ? ignores : []);
         };
         this.send_tagged = function (tags, value, ignore) {
-            return _sd_send_tagged(_this._room, tags, value, ignore);
-        };
-        this.add_to_room = function (conn, tags) {
-            return _sd_add_to_room(_this._room, conn, tags);
-        };
-        this.kick_from_room = function (conn) {
-            return _sd_kick_from_room(_this._room, conn);
-        };
-        this.list_room_conns = function () {
-            return _sd_list_room_conns(_this._room);
-        };
-        this.bann_conn = function (conn) {
-            return _sd_bann_conn(conn);
+            return _sd_send_tagged(_this._room, tags, value, ignore ? ignore : []);
         };
         this.ticket = function (opts) {
             return _sd_ticket(_this._room, opts);
@@ -276,7 +268,19 @@ var utils = {
     generate_str_id: function () { return Math.random().toString(36).slice(2); }
 };
 
+;// CONCATENATED MODULE: ./lib/self.ts
+var self_self = {
+    list_resource: _self_list_resource,
+    get_resource: _self_get_resource,
+    inlinks: _self_inlinks,
+    outlinks: _self_outlinks,
+    module_execute: _self_module_execute,
+    link_execute: _self_link_execute,
+    fork_execute: _self_fork_execute
+};
+
 ;// CONCATENATED MODULE: ./lib/index.ts
+
 
 
 
