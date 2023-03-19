@@ -3,6 +3,7 @@ package goja
 import (
 	"github.com/dop251/goja"
 
+	"github.com/temphia/temphia/code/backend/libx/lazydata"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx/ticket"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
@@ -188,60 +189,82 @@ func (g *Goja) bind() {
 		return 0, nil, nil
 	})
 
-	// if rbind := g.binder.GetResourceBindings(); rbind != nil {
-	// 	g.qbind("_GetResource", func(name string) any {
-	// 		resp, err := rbind.GetResource(name)
-	// 		if err != nil {
-	// 			return err
-	// 		}
-	// 		return resp
-	// 	})
+	if self := g.binder.SelfBindingsGet(); self != nil {
+		g.qbind("_self_list_resource", func() (any, any) {
+			resp, err := self.SelfListResources()
+			if err != nil {
+				return nil, err.Error()
+			}
+			return resp, nil
+		})
 
-	// 	g.qbind("_ListResource", func() any {
-	// 		resp, err := rbind.ListResource()
-	// 		if err != nil {
-	// 			return err
-	// 		}
-	// 		return resp
-	// 	})
-	// }
+		g.qbind("_self_get_resource", func(name string) (any, any) {
+			resp, err := self.SelfGetResource(name)
+			if err != nil {
+				return nil, err.Error()
+			}
 
-	// if ibind := g.binder.GetIPCBindings(); ibind != nil {
-	// 	g.qbind("_CallSlot", func(slot string, payload any) any {
-	// 		resp, err := ibind.CallSlot(slot, payload)
-	// 		if err != nil {
-	// 			return err
-	// 		}
-	// 		return resp
-	// 	})
+			return resp, nil
+		})
 
-	// 	g.qbind("_ListIncommin", func() any {
-	// 		resp, err := ibind.ListIncommin()
-	// 		if err != nil {
-	// 			return err
-	// 		}
-	// 		return resp
-	// 	})
-	// 	g.qbind("_ListOutgoing", func() any {
-	// 		resp, err := ibind.ListOutgoing()
-	// 		if err != nil {
-	// 			return err
-	// 		}
-	// 		return resp
-	// 	})
-	// }
+		g.qbind("_self_inlinks", func() (any, any) {
+			resp, err := self.SelfInLinks()
+			if err != nil {
+				return nil, err.Error()
+			}
 
-	// if bind := g.binder.GetModuleBindings(); bind != nil {
+			return resp, nil
+		})
 
-	// }
+		g.qbind("_self_outlinks", func() (any, any) {
+			resp, err := self.SelfOutLinks()
+			if err != nil {
+				return nil, err.Error()
+			}
+			return resp, nil
+		})
 
-	// if bind := g.binder.GetCryptoBindings(); bind != nil {
+		g.qbind("_self_module_execute", func(name, method, path string, data goja.Value) (any, any) {
+			resp, err := self.SelfModuleExec(name, method, path, lazydata.NewGojaData(g.runtime, data))
+			if err != nil {
+				return nil, err.Error()
+			}
 
-	// }
+			var i any
 
-	// if bind := g.binder.GetUserBindings(); bind != nil {
+			err = resp.AsObject(&i)
+			if err != nil {
+				return nil, err.Error()
+			}
 
-	// }
+			return i, nil
+		})
+
+		g.qbind("_self_link_execute", func(name, method, path string, data goja.Value, async, detached bool) (any, any) {
+			resp, err := self.SelfLinkExec(name, method, lazydata.NewGojaData(g.runtime, data), async, detached)
+			if err != nil {
+				return nil, err.Error()
+			}
+
+			var i any
+
+			err = resp.AsObject(&i)
+			if err != nil {
+				return nil, err.Error()
+			}
+
+			return i, nil
+		})
+
+		g.qbind("_self_fork_execute", func(method string, data string) any {
+			err := self.SelfForkExec(method, []byte(data))
+			if err != nil {
+				return err.Error()
+			}
+			return nil
+		})
+
+	}
 
 }
 
