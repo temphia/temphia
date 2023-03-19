@@ -6,6 +6,8 @@
   $: __epoch = 0;
 </script>
 
-{#key __epoch}
-  <Execute />
-{/key}
+{#if __epoch !== 0}
+  {#key __epoch}
+    <Execute />
+  {/key}
+{/if}
