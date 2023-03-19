@@ -8,7 +8,9 @@
   export let files;
   export let file;
   export let bid;
-  
+
+  let onRun;
+
   let editor;
   let code = "";
   const modified = {};
@@ -51,16 +53,29 @@
     }
   };
 
+  const onSave = async () => {
+    if (loading) {
+      return;
+    }
+
+    const formdata = new FormData();
+    formdata.append("file", editor.getValue());
+
+    const resp = await bapi.update_file(bid, file, formdata);
+
+    console.log(resp);
+  };
+
   load(file);
 </script>
 
-<Layout {file} {changeFile} {files}>
+<Layout {file} {changeFile} {files} {onRun} {onSave}>
   <svelte:fragment slot="code">
     {#key file}
       <Codepanel bind:editor {file} {code} {loading} />
     {/key}
   </svelte:fragment>
   <svelte:fragment slot="output">
-    <Outputpanel />
+    <Outputpanel bind:onRun />
   </svelte:fragment>
 </Layout>

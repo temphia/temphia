@@ -24,7 +24,7 @@
 
   {#if __active}
     <div
-      class="absolute z-50 -right-4 top-8 py-2 bg-white rounded shadow dark:bg-gray-800 w-40 transition-all ease-out duration-500"
+      class="absolute z-50 -right-4 top-8 py-2 bg-white rounded shadow dark:bg-gray-800 w-36 transition-all ease-out duration-500"
     >
       {#each files as file}
         <button

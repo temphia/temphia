@@ -5,6 +5,9 @@
   export let files = [];
   export let changeFile;
   export let file;
+
+  export let onRun = () => {};
+  export let onSave = () => {};
 </script>
 
 <div class="p-1 flex justify-between">
@@ -14,20 +17,20 @@
 
   <div class="flex gap-1 items-center">
     <button
+      on:click={onRun}
       class="p-1 rounded bg-green-500 shadow hover:bg-green-900 flex text-white text-sm sm:text-base uppercase"
     >
       <Icon name="play" class="h-4 w-4 md:h-6 md:w-6" solid />
       run
     </button>
 
-
     <button
+      on:click={onSave}
       class="p-1 rounded bg-blue-400 shadow hover:bg-blue-600 flex text-white uppercase"
     >
       <Icon name="save" class="h-4 w-4 md:h-6 md:w-6" solid />
       save
     </button>
-
 
     <button
       class="p-1 rounded bg-blue-200 shadow hover:bg-blue-600 flex text-white"
