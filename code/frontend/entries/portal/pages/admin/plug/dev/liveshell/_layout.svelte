@@ -2,24 +2,14 @@
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import Tab from "./_tab.svelte";
 
-  import { ClientJS, ServerJS } from "./conts";
-
+  export let files = [];
   export let changeFile;
   export let file;
 </script>
 
 <div class="p-1 flex justify-between">
-  <div class="grow h-10 flex flex-row flex-nowrap overflow-hidden">
-    <Tab
-      name="server.js"
-      active={file === ServerJS}
-      onClick={() => changeFile(ServerJS)}
-    />
-    <Tab
-      name="client.js"
-      active={file === ClientJS}
-      onClick={() => changeFile(ClientJS)}
-    />
+  <div class="grow h-10 flex flex-row flex-nowrap">
+    <Tab name={file} onClick={changeFile} {files} />
   </div>
 
   <div class="flex gap-1 items-center">
@@ -27,7 +17,7 @@
       class="p-1 rounded bg-green-500 shadow hover:bg-green-900 flex text-white text-sm sm:text-base"
     >
       <Icon name="play" class="h-4 w-4 md:h-6 md:w-6" solid />
-      SUBMIT
+      RUN
     </button>
 
     <button
