@@ -22,8 +22,8 @@ backend_build:
 build_all: frontend_build frontend_copy_files backend_build
 
 install_cli:
-	cp build/temphia-cli ~/.bin
+	cp ../build/temphia-cli ~/.bin
 backup_cli:
-	cp build/temphia-cli ~/Desktop/temphia_run
+	cp ../build/temphia-cli ~/Desktop/temphia_run
 
 .PHONY: check docker_run server_run frontend_build frontend_copy_files backend_build build_all install_cli backup_cli
