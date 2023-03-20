@@ -1,6 +1,6 @@
 <script lang="ts">
   import { HSplitPane, VSplitPane } from "svelte-split-pane";
-  import Ceditor from "../../../shared/_compo1/ceditor/ceditor.svelte";
+  import Ceditor from "../../../xcompo/ceditor/ceditor.svelte";
   let tableresp = {
     columns: [
       {

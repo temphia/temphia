@@ -1,8 +1,7 @@
 <script lang="ts">
   import Modal from "svelte-simple-modal";
   import { Router, Route } from "svelte-routing";
-
-  import BigModal from "../../shared/modal/big.svelte";
+  import BigModal from "../xcompo/modal/big.svelte";
   import Magicdial from "./pages/magicdial/magicdial.svelte";
   import Start from "./pages/start/start.svelte";
   import Tenants from "./pages/tenant/tenants.svelte";

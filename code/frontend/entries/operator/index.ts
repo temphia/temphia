@@ -1,4 +1,4 @@
-import OperatorSvelteApp from "./operator/index.svelte"
+import OperatorSvelteApp from "./index.svelte"
 
 const __svelte_app__ = new OperatorSvelteApp({
     target: document.body,
