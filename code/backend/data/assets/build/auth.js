@@ -114,7 +114,9 @@ var app = (function () {
         target.insertBefore(node, anchor || null);
     }
     function detach(node) {
-        node.parentNode.removeChild(node);
+        if (node.parentNode) {
+            node.parentNode.removeChild(node);
+        }
     }
     function destroy_each(iterations, detaching) {
         for (let i = 0; i < iterations.length; i += 1) {
@@ -183,13 +185,36 @@ var app = (function () {
             throw new Error('Function called outside component initialization');
         return current_component;
     }
+    /**
+     * Schedules a callback to run immediately before the component is unmounted.
+     *
+     * Out of `onMount`, `beforeUpdate`, `afterUpdate` and `onDestroy`, this is the
+     * only one that runs inside a server-side component.
+     *
+     * https://svelte.dev/docs#run-time-svelte-ondestroy
+     */
     function onDestroy(fn) {
         get_current_component().$$.on_destroy.push(fn);
     }
+    /**
+     * Associates an arbitrary `context` object with the current component and the specified `key`
+     * and returns that object. The context is then available to children of the component
+     * (including slotted content) with `getContext`.
+     *
+     * Like lifecycle functions, this must be called during component initialisation.
+     *
+     * https://svelte.dev/docs#run-time-svelte-setcontext
+     */
     function setContext(key, context) {
         get_current_component().$$.context.set(key, context);
         return context;
     }
+    /**
+     * Retrieves the context that belongs to the closest parent component with the specified `key`.
+     * Must be called during component initialisation.
+     *
+     * https://svelte.dev/docs#run-time-svelte-getcontext
+     */
     function getContext(key) {
         return get_current_component().$$.context.get(key);
     }
@@ -234,15 +259,29 @@ var app = (function () {
     const seen_callbacks = new Set();
     let flushidx = 0; // Do *not* move this inside the flush() function
     function flush() {
+        // Do not reenter flush while dirty components are updated, as this can
+        // result in an infinite loop. Instead, let the inner flush handle it.
+        // Reentrancy is ok afterwards for bindings etc.
+        if (flushidx !== 0) {
+            return;
+        }
         const saved_component = current_component;
         do {
             // first, call beforeUpdate functions
             // and update components
-            while (flushidx < dirty_components.length) {
-                const component = dirty_components[flushidx];
-                flushidx++;
-                set_current_component(component);
-                update(component.$$);
+            try {
+                while (flushidx < dirty_components.length) {
+                    const component = dirty_components[flushidx];
+                    flushidx++;
+                    set_current_component(component);
+                    update(component.$$);
+                }
+            }
+            catch (e) {
+                // reset dirty state to not end up in a deadlocked state and then rethrow
+                dirty_components.length = 0;
+                flushidx = 0;
+                throw e;
             }
             set_current_component(null);
             dirty_components.length = 0;
@@ -315,6 +354,9 @@ var app = (function () {
             });
             block.o(local);
         }
+        else if (callback) {
+            callback();
+        }
     }
 
     const globals = (typeof window !== 'undefined'
@@ -363,14 +405,17 @@ var app = (function () {
         block && block.c();
     }
     function mount_component(component, target, anchor, customElement) {
-        const { fragment, on_mount, on_destroy, after_update } = component.$$;
+        const { fragment, after_update } = component.$$;
         fragment && fragment.m(target, anchor);
         if (!customElement) {
             // onMount happens before the initial afterUpdate
             add_render_callback(() => {
-                const new_on_destroy = on_mount.map(run).filter(is_function);
-                if (on_destroy) {
-                    on_destroy.push(...new_on_destroy);
+                const new_on_destroy = component.$$.on_mount.map(run).filter(is_function);
+                // if the component was destroyed immediately
+                // it will update the `$$.on_destroy` reference to `null`.
+                // the destructured on_destroy may still reference to the old array
+                if (component.$$.on_destroy) {
+                    component.$$.on_destroy.push(...new_on_destroy);
                 }
                 else {
                     // Edge case - component was destroyed immediately,
@@ -406,7 +451,7 @@ var app = (function () {
         set_current_component(component);
         const $$ = component.$$ = {
             fragment: null,
-            ctx: null,
+            ctx: [],
             // state
             props,
             update: noop,
@@ -471,6 +516,9 @@ var app = (function () {
             this.$destroy = noop;
         }
         $on(type, callback) {
+            if (!is_function(callback)) {
+                return noop;
+            }
             const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
             callbacks.push(callback);
             return () => {
@@ -489,7 +537,7 @@ var app = (function () {
     }
 
     function dispatch_dev(type, detail) {
-        document.dispatchEvent(custom_event(type, Object.assign({ version: '3.48.0' }, detail), { bubbles: true }));
+        document.dispatchEvent(custom_event(type, Object.assign({ version: '3.55.1' }, detail), { bubbles: true }));
     }
     function append_dev(target, node) {
         dispatch_dev('SvelteDOMInsert', { target, node });
@@ -543,6 +591,25 @@ var app = (function () {
         for (const slot_key of Object.keys(slot)) {
             if (!~keys.indexOf(slot_key)) {
                 console.warn(`<${name}> received an unexpected slot "${slot_key}".`);
+            }
+        }
+    }
+    function construct_svelte_component_dev(component, props) {
+        const error_message = 'this={...} of <svelte:component> should specify a Svelte component.';
+        try {
+            const instance = new component(props);
+            if (!instance.$$ || !instance.$set || !instance.$on || !instance.$destroy) {
+                throw new Error(error_message);
+            }
+            return instance;
+        }
+        catch (err) {
+            const { message } = err;
+            if (typeof message === 'string' && message.indexOf('is not a constructor') !== -1) {
+                throw new Error(error_message);
+            }
+            else {
+                throw err;
             }
         }
     }
@@ -1220,7 +1287,7 @@ var app = (function () {
     let matches = derived(match, $ => $.matches || []); // parents of active route and itself
     let components = derived(matches, $ => $.map(e => e.$$component).filter(e => e));// components to use in <Router/>
 
-    /* node_modules/svelte-hash-router/src/components/Router.svelte generated by Svelte v3.48.0 */
+    /* node_modules/svelte-hash-router/src/components/Router.svelte generated by Svelte v3.55.1 */
 
     function create_fragment$l(ctx) {
     	let switch_instance;
@@ -1243,7 +1310,7 @@ var app = (function () {
     	}
 
     	if (switch_value) {
-    		switch_instance = new switch_value(switch_props());
+    		switch_instance = construct_svelte_component_dev(switch_value, switch_props());
     	}
 
     	const block = {
@@ -1255,10 +1322,7 @@ var app = (function () {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			if (switch_instance) {
-    				mount_component(switch_instance, target, anchor);
-    			}
-
+    			if (switch_instance) mount_component(switch_instance, target, anchor);
     			insert_dev(target, switch_instance_anchor, anchor);
     			current = true;
     		},
@@ -1280,7 +1344,7 @@ var app = (function () {
     				}
 
     				if (switch_value) {
-    					switch_instance = new switch_value(switch_props());
+    					switch_instance = construct_svelte_component_dev(switch_value, switch_props());
     					create_component(switch_instance.$$.fragment);
     					transition_in(switch_instance.$$.fragment, 1);
     					mount_component(switch_instance, switch_instance_anchor.parentNode, switch_instance_anchor);
@@ -1367,7 +1431,7 @@ var app = (function () {
     	}
     }
 
-    /* entries/auth/pages/start/index.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/start/index.svelte generated by Svelte v3.55.1 */
 
     function create_fragment$k(ctx) {
     	const block = {
@@ -1432,7 +1496,7 @@ var app = (function () {
     	}
     }
 
-    /* entries/auth/pages/login/_methods/_oauth.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/login/_methods/_oauth.svelte generated by Svelte v3.55.1 */
 
     const { console: console_1$4 } = globals;
     const file$g = "entries/auth/pages/login/_methods/_oauth.svelte";
@@ -1566,6 +1630,20 @@ var app = (function () {
     		app.nav.goto_alt_first_stage(resp.data);
     	};
 
+    	$$self.$$.on_mount.push(function () {
+    		if (app === undefined && !('app' in $$props || $$self.$$.bound[$$self.$$.props['app']])) {
+    			console_1$4.warn("<Oauth> was created without expected prop 'app'");
+    		}
+
+    		if (method === undefined && !('method' in $$props || $$self.$$.bound[$$self.$$.props['method']])) {
+    			console_1$4.warn("<Oauth> was created without expected prop 'method'");
+    		}
+
+    		if (data === undefined && !('data' in $$props || $$self.$$.bound[$$self.$$.props['data']])) {
+    			console_1$4.warn("<Oauth> was created without expected prop 'data'");
+    		}
+    	});
+
     	const writable_props = ['app', 'method', 'data'];
 
     	Object.keys($$props).forEach(key => {
@@ -1610,21 +1688,6 @@ var app = (function () {
     			options,
     			id: create_fragment$j.name
     		});
-
-    		const { ctx } = this.$$;
-    		const props = options.props || {};
-
-    		if (/*app*/ ctx[2] === undefined && !('app' in props)) {
-    			console_1$4.warn("<Oauth> was created without expected prop 'app'");
-    		}
-
-    		if (/*method*/ ctx[0] === undefined && !('method' in props)) {
-    			console_1$4.warn("<Oauth> was created without expected prop 'method'");
-    		}
-
-    		if (/*data*/ ctx[3] === undefined && !('data' in props)) {
-    			console_1$4.warn("<Oauth> was created without expected prop 'data'");
-    		}
     	}
 
     	get app() {
@@ -1652,7 +1715,7 @@ var app = (function () {
     	}
     }
 
-    /* entries/auth/pages/login/_methods/alt_method.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/login/_methods/alt_method.svelte generated by Svelte v3.55.1 */
     const file$f = "entries/auth/pages/login/_methods/alt_method.svelte";
 
     // (8:2) {#if method["type"] === "oauth"}
@@ -1785,6 +1848,21 @@ var app = (function () {
     	let { app } = $$props;
     	let { method } = $$props;
     	let { data } = $$props;
+
+    	$$self.$$.on_mount.push(function () {
+    		if (app === undefined && !('app' in $$props || $$self.$$.bound[$$self.$$.props['app']])) {
+    			console.warn("<Alt_method> was created without expected prop 'app'");
+    		}
+
+    		if (method === undefined && !('method' in $$props || $$self.$$.bound[$$self.$$.props['method']])) {
+    			console.warn("<Alt_method> was created without expected prop 'method'");
+    		}
+
+    		if (data === undefined && !('data' in $$props || $$self.$$.bound[$$self.$$.props['data']])) {
+    			console.warn("<Alt_method> was created without expected prop 'data'");
+    		}
+    	});
+
     	const writable_props = ['app', 'method', 'data'];
 
     	Object.keys($$props).forEach(key => {
@@ -1823,21 +1901,6 @@ var app = (function () {
     			options,
     			id: create_fragment$i.name
     		});
-
-    		const { ctx } = this.$$;
-    		const props = options.props || {};
-
-    		if (/*app*/ ctx[0] === undefined && !('app' in props)) {
-    			console.warn("<Alt_method> was created without expected prop 'app'");
-    		}
-
-    		if (/*method*/ ctx[1] === undefined && !('method' in props)) {
-    			console.warn("<Alt_method> was created without expected prop 'method'");
-    		}
-
-    		if (/*data*/ ctx[2] === undefined && !('data' in props)) {
-    			console.warn("<Alt_method> was created without expected prop 'data'");
-    		}
     	}
 
     	get app() {
@@ -1865,7 +1928,7 @@ var app = (function () {
     	}
     }
 
-    /* entries/auth/pages/login/_methods/password.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/login/_methods/password.svelte generated by Svelte v3.55.1 */
 
     const file$e = "entries/auth/pages/login/_methods/password.svelte";
 
@@ -2078,6 +2141,12 @@ var app = (function () {
     		}
     	};
 
+    	$$self.$$.on_mount.push(function () {
+    		if (app === undefined && !('app' in $$props || $$self.$$.bound[$$self.$$.props['app']])) {
+    			console.warn("<Password> was created without expected prop 'app'");
+    		}
+    	});
+
     	const writable_props = ['app'];
 
     	Object.keys($$props).forEach(key => {
@@ -2139,13 +2208,6 @@ var app = (function () {
     			options,
     			id: create_fragment$h.name
     		});
-
-    		const { ctx } = this.$$;
-    		const props = options.props || {};
-
-    		if (/*app*/ ctx[4] === undefined && !('app' in props)) {
-    			console.warn("<Password> was created without expected prop 'app'");
-    		}
     	}
 
     	get app() {
@@ -2161,7 +2223,7 @@ var app = (function () {
         "google": "https://icons.duckduckgo.com/ip3/google.com.ico"
     };
 
-    /* entries/auth/pages/login/_inner.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/login/_inner.svelte generated by Svelte v3.55.1 */
 
     const { console: console_1$3 } = globals;
     const file$d = "entries/auth/pages/login/_inner.svelte";
@@ -2744,6 +2806,12 @@ var app = (function () {
     		$$invalidate(3, alt_auth_mode = true);
     	};
 
+    	$$self.$$.on_mount.push(function () {
+    		if (app === undefined && !('app' in $$props || $$self.$$.bound[$$self.$$.props['app']])) {
+    			console_1$3.warn("<Inner> was created without expected prop 'app'");
+    		}
+    	});
+
     	const writable_props = ['app', 'alt_methods', 'password', 'opensignup'];
 
     	Object.keys($$props).forEach(key => {
@@ -2820,13 +2888,6 @@ var app = (function () {
     			options,
     			id: create_fragment$g.name
     		});
-
-    		const { ctx } = this.$$;
-    		const props = options.props || {};
-
-    		if (/*app*/ ctx[0] === undefined && !('app' in props)) {
-    			console_1$3.warn("<Inner> was created without expected prop 'app'");
-    		}
     	}
 
     	get app() {
@@ -2906,7 +2967,7 @@ var app = (function () {
         return `${window.location.origin}/z/auth?${opts.tenant_id ? "tenant_id=" + opts.tenant_id + "&" : ""}${opts.user_group ? "ugroup=" + opts.user_group : ""}`;
     };
 
-    /* entries/auth/pages/common/layout.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/common/layout.svelte generated by Svelte v3.55.1 */
     const file$c = "entries/auth/pages/common/layout.svelte";
 
     // (194:8) {#if !app.user_group_fixed}
@@ -3351,7 +3412,7 @@ var app = (function () {
     	}
     }
 
-    /* entries/auth/pages/login/login.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/login/login.svelte generated by Svelte v3.55.1 */
     const file$b = "entries/auth/pages/login/login.svelte";
 
     // (21:2) {:else}
@@ -3640,7 +3701,7 @@ var app = (function () {
     	}
     }
 
-    /* entries/auth/pages/login/nextstage/index.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/login/nextstage/index.svelte generated by Svelte v3.55.1 */
 
     const { console: console_1$2 } = globals;
     const file$a = "entries/auth/pages/login/nextstage/index.svelte";
@@ -3858,7 +3919,7 @@ var app = (function () {
     	}
     }
 
-    /* entries/auth/pages/common/new_user_info.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/common/new_user_info.svelte generated by Svelte v3.55.1 */
 
     const file$9 = "entries/auth/pages/common/new_user_info.svelte";
 
@@ -4171,6 +4232,16 @@ var app = (function () {
     		onNext({ user_id, full_name, bio });
     	};
 
+    	$$self.$$.on_mount.push(function () {
+    		if (email === undefined && !('email' in $$props || $$self.$$.bound[$$self.$$.props['email']])) {
+    			console.warn("<New_user_info> was created without expected prop 'email'");
+    		}
+
+    		if (onNext === undefined && !('onNext' in $$props || $$self.$$.bound[$$self.$$.props['onNext']])) {
+    			console.warn("<New_user_info> was created without expected prop 'onNext'");
+    		}
+    	});
+
     	const writable_props = ['user_id_hints', 'user_id', 'full_name', 'bio', 'email', 'onNext'];
 
     	Object.keys($$props).forEach(key => {
@@ -4268,17 +4339,6 @@ var app = (function () {
     			options,
     			id: create_fragment$c.name
     		});
-
-    		const { ctx } = this.$$;
-    		const props = options.props || {};
-
-    		if (/*email*/ ctx[3] === undefined && !('email' in props)) {
-    			console.warn("<New_user_info> was created without expected prop 'email'");
-    		}
-
-    		if (/*onNext*/ ctx[6] === undefined && !('onNext' in props)) {
-    			console.warn("<New_user_info> was created without expected prop 'onNext'");
-    		}
     	}
 
     	get user_id_hints() {
@@ -4330,7 +4390,7 @@ var app = (function () {
     	}
     }
 
-    /* entries/auth/pages/alt/firststage/index.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/alt/firststage/index.svelte generated by Svelte v3.55.1 */
 
     const { Object: Object_1 } = globals;
 
@@ -4551,7 +4611,7 @@ var app = (function () {
     	}
     }
 
-    /* entries/auth/pages/alt/secondstage/index.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/alt/secondstage/index.svelte generated by Svelte v3.55.1 */
     const file$8 = "entries/auth/pages/alt/secondstage/index.svelte";
 
     // (22:0) {#if opts.email_verify}
@@ -4800,7 +4860,7 @@ var app = (function () {
     	}
     }
 
-    /* entries/auth/pages/signup/index.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/signup/index.svelte generated by Svelte v3.55.1 */
 
     const file$7 = "entries/auth/pages/signup/index.svelte";
 
@@ -4864,7 +4924,7 @@ var app = (function () {
     	}
     }
 
-    /* entries/auth/pages/signup/nextstage/index.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/signup/nextstage/index.svelte generated by Svelte v3.55.1 */
 
     const file$6 = "entries/auth/pages/signup/nextstage/index.svelte";
 
@@ -4928,7 +4988,7 @@ var app = (function () {
     	}
     }
 
-    /* entries/auth/pages/reset/index.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/reset/index.svelte generated by Svelte v3.55.1 */
 
     const file$5 = "entries/auth/pages/reset/index.svelte";
 
@@ -4992,7 +5052,7 @@ var app = (function () {
     	}
     }
 
-    /* entries/auth/pages/reset/finish/index.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/reset/finish/index.svelte generated by Svelte v3.55.1 */
 
     const file$4 = "entries/auth/pages/reset/finish/index.svelte";
 
@@ -5056,7 +5116,7 @@ var app = (function () {
     	}
     }
 
-    /* entries/auth/pages/prehook/index.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/prehook/index.svelte generated by Svelte v3.55.1 */
 
     const { console: console_1$1 } = globals;
     const file$3 = "entries/auth/pages/prehook/index.svelte";
@@ -5143,7 +5203,7 @@ var app = (function () {
     	}
     }
 
-    /* entries/auth/pages/common/user_card.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/common/user_card.svelte generated by Svelte v3.55.1 */
     const file$2 = "entries/auth/pages/common/user_card.svelte";
 
     // (42:8) {#if show_timeout}
@@ -5564,6 +5624,32 @@ var app = (function () {
 
     	const app = getContext("_auth_app_");
 
+    	$$self.$$.on_mount.push(function () {
+    		if (tenant_name === undefined && !('tenant_name' in $$props || $$self.$$.bound[$$self.$$.props['tenant_name']])) {
+    			console.warn("<User_card> was created without expected prop 'tenant_name'");
+    		}
+
+    		if (tenant_id === undefined && !('tenant_id' in $$props || $$self.$$.bound[$$self.$$.props['tenant_id']])) {
+    			console.warn("<User_card> was created without expected prop 'tenant_id'");
+    		}
+
+    		if (user_id === undefined && !('user_id' in $$props || $$self.$$.bound[$$self.$$.props['user_id']])) {
+    			console.warn("<User_card> was created without expected prop 'user_id'");
+    		}
+
+    		if (full_name === undefined && !('full_name' in $$props || $$self.$$.bound[$$self.$$.props['full_name']])) {
+    			console.warn("<User_card> was created without expected prop 'full_name'");
+    		}
+
+    		if (group_name === undefined && !('group_name' in $$props || $$self.$$.bound[$$self.$$.props['group_name']])) {
+    			console.warn("<User_card> was created without expected prop 'group_name'");
+    		}
+
+    		if (bio === undefined && !('bio' in $$props || $$self.$$.bound[$$self.$$.props['bio']])) {
+    			console.warn("<User_card> was created without expected prop 'bio'");
+    		}
+    	});
+
     	const writable_props = [
     		'tenant_name',
     		'tenant_id',
@@ -5687,33 +5773,6 @@ var app = (function () {
     			options,
     			id: create_fragment$4.name
     		});
-
-    		const { ctx } = this.$$;
-    		const props = options.props || {};
-
-    		if (/*tenant_name*/ ctx[0] === undefined && !('tenant_name' in props)) {
-    			console.warn("<User_card> was created without expected prop 'tenant_name'");
-    		}
-
-    		if (/*tenant_id*/ ctx[1] === undefined && !('tenant_id' in props)) {
-    			console.warn("<User_card> was created without expected prop 'tenant_id'");
-    		}
-
-    		if (/*user_id*/ ctx[2] === undefined && !('user_id' in props)) {
-    			console.warn("<User_card> was created without expected prop 'user_id'");
-    		}
-
-    		if (/*full_name*/ ctx[3] === undefined && !('full_name' in props)) {
-    			console.warn("<User_card> was created without expected prop 'full_name'");
-    		}
-
-    		if (/*group_name*/ ctx[4] === undefined && !('group_name' in props)) {
-    			console.warn("<User_card> was created without expected prop 'group_name'");
-    		}
-
-    		if (/*bio*/ ctx[5] === undefined && !('bio' in props)) {
-    			console.warn("<User_card> was created without expected prop 'bio'");
-    		}
     	}
 
     	get tenant_name() {
@@ -5773,7 +5832,7 @@ var app = (function () {
     	}
     }
 
-    /* entries/auth/pages/final/index.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/final/index.svelte generated by Svelte v3.55.1 */
 
     const { console: console_1 } = globals;
     const file$1 = "entries/auth/pages/final/index.svelte";
@@ -6011,7 +6070,7 @@ var app = (function () {
     	}
     }
 
-    /* entries/auth/pages/error/index.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/pages/error/index.svelte generated by Svelte v3.55.1 */
 
     const { Error: Error_1 } = globals;
     const file = "entries/auth/pages/error/index.svelte";
@@ -6099,7 +6158,7 @@ var app = (function () {
         "/error": Error$1,
     };
 
-    /* entries/xcompo/common/_tailwind.svelte generated by Svelte v3.48.0 */
+    /* entries/xcompo/common/_tailwind.svelte generated by Svelte v3.55.1 */
 
     function create_fragment$1(ctx) {
     	const block = {
@@ -6202,6 +6261,7 @@ var app = (function () {
                 method: method,
                 headers: this.headers,
                 body: JSON.stringify(data),
+                mode: "cors",
             });
             if (resp.ok) {
                 return Promise.resolve({
@@ -6437,7 +6497,7 @@ var app = (function () {
         }
     }
 
-    /* entries/auth/index.svelte generated by Svelte v3.48.0 */
+    /* entries/auth/index.svelte generated by Svelte v3.55.1 */
 
     function create_fragment(ctx) {
     	let router;
