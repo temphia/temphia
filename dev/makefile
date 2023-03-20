@@ -13,10 +13,17 @@ docker_run:
 	cd ../cmd/dev && docker-compose up
 server_run:
 	cd .. && go run dev/dev.go
+frontend_build:
+	cd ../code/frontend && npm run build:@all
+frontend_copy_files:
+	cd ../code/frontend && npm run copy:build_files
+backend_build:
+	cd .. && go build -o build/temphia-cli $(GOFLAGS) cmd/cli/cli.go
+build_all: frontend_build frontend_copy_files backend_build
 
-build_install_cli:
-	cd .. && go build -o build/temphia-cli $(GOFLAGS) cmd/cli/cli.go && cp build/temphia-cli ~/.bin
+install_cli:
+	cp build/temphia-cli ~/.bin
 backup_cli:
-	cd .. && go build -o build/temphia-cli cmd/cli/cli.go && cp build/temphia-cli ~/Desktop/temphia_run
+	cp build/temphia-cli ~/Desktop/temphia_run
 
-.PHONY: check docker_run server_run build_install_cli backup_cli
+.PHONY: check docker_run server_run frontend_build frontend_copy_files backend_build build_all install_cli backup_cli
