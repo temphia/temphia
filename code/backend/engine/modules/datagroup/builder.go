@@ -30,7 +30,7 @@ func (d *DGModuleBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, er
 		res:      opts.Resource,
 		dynsrc:   dynhub,
 		group:    target[1],
-		tenantId: opts.Resource.Target,
+		tenantId: opts.Resource.TenantId,
 	}, nil
 
 }

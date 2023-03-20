@@ -41,6 +41,7 @@ func (d *DGModule) IPC(method string, path string, args xtypes.LazyData) (xtypes
 
 		tok, err := signer.SignData(d.tenantId, &claim.Data{
 			TenantId:   d.tenantId,
+			Type:       claim.CTypeData,
 			UserID:     uctx.Id,
 			UserGroup:  uctx.Group,
 			SessionID:  uctx.SessionId,
