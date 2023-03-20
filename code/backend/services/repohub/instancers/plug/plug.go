@@ -122,10 +122,12 @@ func (pi *PlugInstancer) instance(pid string, opts xinstance.Options, schema *xb
 					continue
 				}
 
+				pp.Println("@pobj", pobj)
+
 				err := pi.syncer.AgentResourceNew(opts.TenantId, &entities.AgentResource{
 					Slug:       rdata.Name,
 					PlugId:     pid,
-					AgentId:    agent.Name,
+					AgentId:    agent.Id,
 					ResourceId: pobj.Slug,
 					Actions:    "",
 					Policy:     "",

@@ -169,7 +169,16 @@ func PgLocationToDBType(p [2]float64) string {
 func PgLocationFromDBType(val interface{}) ([2]float64, error) {
 	var p [2]float64
 
-	b, err := hex.DecodeString(string(val.([]uint8)))
+	lstr := ""
+
+	switch lval := val.(type) {
+	case []uint8:
+		lstr = string(lval)
+	case string:
+		lstr = lval
+	}
+
+	b, err := hex.DecodeString(lstr)
 	if err != nil {
 		return p, err
 	}
