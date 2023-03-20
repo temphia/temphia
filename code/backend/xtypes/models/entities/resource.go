@@ -4,8 +4,6 @@ import (
 	"strings"
 
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
-
-	"github.com/temphia/temphia/code/backend/xtypes/models/entities/resource"
 )
 
 type Resource struct {
@@ -22,66 +20,12 @@ type Resource struct {
 }
 
 func (r *Resource) SplitTarget(expected int) ([]string, error) {
-	targets := strings.Split(r.Payload, "/")
+	targets := strings.Split(r.Target, "/")
+
 	if len(targets) != expected {
 		return nil, easyerr.Error("could not parse target")
 	}
 	return targets, nil
-}
-
-type ResourceSockRoom struct {
-	Type   string `json:"type,omitempty"`
-	Value  string `json:"value,omitempty"`
-	Policy string `json:"policy,omitempty"`
-}
-
-func (r *Resource) SockRoom() *ResourceSockRoom {
-	return &ResourceSockRoom{
-		Type:   r.Type,
-		Value:  r.Payload,
-		Policy: r.Policy,
-	}
-}
-
-type ResourceDgroup struct {
-	Type   string `json:"type,omitempty"`
-	Source string `json:"source,omitempty"`
-	Group  string `json:"group,omitempty"`
-	Policy string `json:"policy,omitempty"`
-}
-
-func (r *Resource) Dgroup() *ResourceDgroup {
-	targets, err := r.SplitTarget(2)
-	if err != nil {
-		panic(err)
-	}
-	return &ResourceDgroup{
-		Type:   resource.DataGroup,
-		Source: targets[0],
-		Group:  targets[1],
-		Policy: r.Policy,
-	}
-}
-
-type ResourceFolder struct {
-	Type   string `json:"type,omitempty"`
-	Source string `json:"source,omitempty"`
-	Folder string `json:"group,omitempty"`
-	Policy string `json:"policy,omitempty"`
-}
-
-func (r *Resource) Folder() *ResourceFolder {
-	targets, err := r.SplitTarget(2)
-	if err != nil {
-		panic(err)
-	}
-	return &ResourceFolder{
-		Type:   resource.Folder,
-		Source: targets[0],
-		Folder: targets[1],
-		Policy: r.Policy,
-	}
-
 }
 
 // ResourcePair is container with resource and AgentResource

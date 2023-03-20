@@ -1,7 +1,6 @@
 package datagroup
 
 import (
-	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
@@ -23,8 +22,6 @@ func (d *DGModuleBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, er
 	if err != nil {
 		return nil, err
 	}
-
-	pp.Println("@resource", opts.Resource)
 
 	dynhub := deps.DataHub().(dyndb.DataHub).GetSource(target[0], opts.Resource.TenantId)
 
