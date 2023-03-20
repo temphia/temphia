@@ -1,3 +1,4 @@
+import type { SockdMessage } from "../sockd";
 import { NewDataTableApi } from "./data";
 import { NewFolderApi } from "./folder";
 import { NewPlugStateApi } from "./plug_state";
@@ -18,12 +19,21 @@ export class ExecAM {
     return NewFolderApi(this.api_base_url, token);
   };
 
-  new_sockd_room = async (token: string) => {
-    return NewSockdRoom(`${this.api_base_url}/engine/ws?ticket=${token}`);
+  new_sockd_room = async (
+    token: string,
+    callback: (msg: SockdMessage) => void
+  ) => {
+    return NewSockdRoom(
+      `${this.api_base_url}/engine/ws?ticket=${token}`,
+      callback
+    );
   };
 
-  new_sockd_room_from_url = async (url: string) => {
-    return NewSockdRoom(url);
+  new_sockd_room_from_url = async (
+    url: string,
+    callback: (msg: SockdMessage) => void
+  ) => {
+    return NewSockdRoom(url, callback);
   };
 
   new_plug_state = (token: string) => {
