@@ -9,9 +9,8 @@ import (
 	"syscall"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/backend/controllers/operator/opsutils"
+	"github.com/temphia/temphia/code/backend/app/seeder"
 	"github.com/temphia/temphia/code/backend/data"
-	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/distro"
 	"github.com/temphia/temphia/code/distro/embedpg"
 )
@@ -52,7 +51,8 @@ func RunDemo() error {
 		return err
 	}
 
-	dapp := distro.New(Conf.AsConfig(), true, true)
+	dapp := distro.NewDistroApp(Conf.AsConfig(), true, true)
+	seedapp := seeder.NewAppSeeder(dapp)
 
 	go setUpHandler(func(signal os.Signal) {
 		if signal == syscall.SIGTERM {
@@ -70,28 +70,28 @@ func RunDemo() error {
 		}
 	})
 
-	ok, err := dapp.IsTenantSeeded(xtypes.DefaultTenant)
+	ok, err := seedapp.IsTenantSeeded()
 	if err != nil {
 		return err
 	}
 	if !ok {
-		pp.Println("Looks like new fresh run lets seed tenant and user ")
-		err = dapp.TenantSeed(xtypes.DefaultTenant)
+
+		err = seedapp.TenantSeed()
 		if err != nil {
 			return err
 		}
 
-		err = dapp.SeedWildcardDomain(xtypes.DefaultTenant)
+		err = seedapp.SeedWildcardDomain()
 		if err != nil {
 			return err
 		}
 
-		err = dapp.SeedRepo(xtypes.DefaultTenant, "example1", opsutils.DefaultUser)
+		err = seedapp.SeedRepo()
 		if err != nil {
 			return err
 		}
 
-		err := dapp.SeedWelcomeMessage(xtypes.DefaultTenant, opsutils.DefaultUser)
+		err := seedapp.SendWelcome()
 		if err != nil {
 			return err
 		}

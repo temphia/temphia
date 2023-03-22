@@ -4,33 +4,40 @@ import (
 	"time"
 
 	"github.com/temphia/temphia/code/backend/controllers/operator/opmodels"
-	"github.com/temphia/temphia/code/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
-const (
-	DefaultUserName = "Super User"
-	DefaultUser     = "superuser"
+func AddTenant(coredb store.CoreDB, data *opmodels.NewTenant) error {
 
-	DefaultGroupName = "Super Admin"
-	DefaultGroup     = "super_admin"
-)
+	return AddTenantWithUser(coredb, &TenantWithUserOptions{
+		Name:          data.Name,
+		Slug:          data.Slug,
+		SuperPassword: data.SuperPassword,
+		SuperEmail:    data.SuperEmail,
+		SuperUserName: opmodels.DefaultUserName,
+		SuperUser:     opmodels.DefaultUser,
+		SuperGroup:    opmodels.DefaultGroup,
+	})
 
-func AddTenant(app xtypes.App, data *opmodels.NewTenant) error {
+}
 
-	if app.SingleTenant() {
-		if app.StaticTenants()[0] != data.Slug {
-			return easyerr.Error("Server is in single tenant mode, you cannot add this tenant")
-		}
-	}
+type TenantWithUserOptions struct {
+	Name           string
+	Slug           string
+	SuperPassword  string
+	SuperEmail     string
+	SuperUserName  string
+	SuperUser      string
+	SuperGroup     string
+	SuperGroupName string
+}
 
-	coredb := app.GetDeps().CoreHub().(store.CoreDB)
+func AddTenantWithUser(coredb store.CoreDB, opts *TenantWithUserOptions) error {
 
 	err := coredb.AddTenant(&entities.Tenant{
-		Name: data.Name,
-		Slug: data.Slug,
+		Name: opts.Name,
+		Slug: opts.Slug,
 	})
 
 	if err != nil {
@@ -38,9 +45,9 @@ func AddTenant(app xtypes.App, data *opmodels.NewTenant) error {
 	}
 
 	err = coredb.AddUserGroup(&entities.UserGroup{
-		Name:     DefaultGroupName,
-		Slug:     DefaultGroup,
-		TenantID: data.Slug,
+		Name:     opts.SuperGroupName,
+		Slug:     opts.SuperGroup,
+		TenantID: opts.Slug,
 	})
 
 	if err != nil {
@@ -48,23 +55,23 @@ func AddTenant(app xtypes.App, data *opmodels.NewTenant) error {
 	}
 
 	return coredb.AddUser(&entities.User{
-		UserId:    DefaultUser,
-		FullName:  DefaultUserName,
-		Email:     data.SuperEmail,
-		GroupID:   DefaultGroup,
-		Password:  data.SuperPassword,
-		TenantID:  data.Slug,
+		UserId:    opts.SuperUser,
+		FullName:  opts.SuperUserName,
+		Email:     opts.SuperEmail,
+		GroupID:   opts.SuperGroup,
+		Password:  opts.SuperPassword,
+		TenantID:  opts.Slug,
 		PublicKey: "",
 		CreatedAt: time.Now(),
 		Active:    true,
 	}, &entities.UserData{
-		UserId:             DefaultUser,
+		UserId:             opmodels.DefaultUser,
 		MFAEnabled:         false,
 		MFAType:            "",
 		MFAData:            "",
 		PendingPassChange:  false,
 		PendingEmailVerify: false,
 		ExtraMeta:          nil,
-		TenantID:           data.Slug})
+		TenantID:           opts.Slug})
 
 }

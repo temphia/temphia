@@ -1,5 +1,13 @@
 package opmodels
 
+const (
+	DefaultUserName = "Super User"
+	DefaultUser     = "superuser"
+
+	DefaultGroupName = "Super Admin"
+	DefaultGroup     = "super_admin"
+)
+
 type OperatorLoginReq struct {
 	User          string `json:"user,omitempty"`
 	Password      string `json:"password,omitempty"`

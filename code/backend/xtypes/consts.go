@@ -1,8 +1,9 @@
 package xtypes
 
 const (
-	DefaultTenant    = "default0"
-	BprintBlobFolder = "bprints"
+	DefaultTenantName = "Default"
+	DefaultTenant     = "default0"
+	BprintBlobFolder  = "bprints"
 )
 
 const (

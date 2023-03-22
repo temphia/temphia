@@ -67,7 +67,7 @@ func (c *Controller) Login(data *opmodels.OperatorLoginReq) (*opmodels.OperatorL
 }
 
 func (c *Controller) AddTenant(data *opmodels.NewTenant) error {
-	return opsutils.AddTenant(c.app, data)
+	return opsutils.AddTenant(c.coredb, data)
 }
 
 func (c *Controller) UpdateTenant(slug string, data map[string]any) error {

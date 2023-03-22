@@ -11,15 +11,9 @@ import (
 	"github.com/temphia/temphia/code/backend/plane"
 	"github.com/temphia/temphia/code/backend/stores"
 	"github.com/temphia/temphia/code/backend/xtypes"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
-type App struct {
-	App     xtypes.App
-	CoreHub store.CoreHub
-}
-
-func New(conf *config.Config, dev, singleTenantMode bool) App {
+func NewDistroApp(conf *config.Config, dev, singleTenantMode bool) xtypes.App {
 
 	reg := registry.New(true)
 	sbuilder := stores.NewBuilder(stores.Options{
@@ -64,13 +58,5 @@ func New(conf *config.Config, dev, singleTenantMode bool) App {
 
 	sbuilder.Inject(app)
 
-	return App{
-		App:     app,
-		CoreHub: app.GetDeps().CoreHub().(store.CoreHub),
-	}
-
-}
-
-func (da *App) Run() error {
-	return da.App.Run()
+	return app
 }

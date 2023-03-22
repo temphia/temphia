@@ -3,8 +3,8 @@ package dev
 import (
 	"os"
 
+	"github.com/temphia/temphia/code/backend/app/seeder"
 	"github.com/temphia/temphia/code/backend/libx/xutils"
-	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/distro"
 	_ "github.com/temphia/temphia/code/distro/common"
 )
@@ -14,11 +14,13 @@ func init() {
 }
 
 func RunDev() {
-	dapp := distro.New(
+	dapp := distro.NewDistroApp(
 		conf.AsConfig(), true, true,
 	)
 
-	applied, err := dapp.IsDbSchemaApplied()
+	seedApp := seeder.NewAppSeeder(dapp)
+
+	applied, err := seedApp.IsDbSchemaApplied()
 	handle(err)
 
 	if !applied {
@@ -26,10 +28,10 @@ func RunDev() {
 	}
 
 	if os.Getenv("TEMPHIA_SKIP_TENANT_SEED") != "1" {
-		tseeded, err := dapp.IsTenantSeeded(xtypes.DefaultTenant)
+		tseeded, err := seedApp.IsTenantSeeded()
 		handle(err)
 		if !tseeded {
-			err = dapp.TenantSeed(xtypes.DefaultTenant)
+			err = seedApp.TenantSeed()
 			handle(err)
 		}
 	}
