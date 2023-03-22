@@ -33,10 +33,17 @@ type CoreDB interface {
 	// Migrate() error
 }
 
+type EventQuery struct {
+	TenantId string
+	Etype    string
+	Last     int64
+}
+
 type SystemOps interface {
 	AddSystemEvent(data *entities.SystemEvent) error
 	RemoveSystemEvent(id int64) error
 	ListSystemEvent(last int64) ([]*entities.SystemEvent, error)
+	QuerySystemEvent(query EventQuery) ([]*entities.SystemEvent, error)
 
 	AddSystemKV(tenantId string, data *entities.SystemKV) error
 	UpdateSystemKV(tenantId, key, ktype string, data map[string]any) error

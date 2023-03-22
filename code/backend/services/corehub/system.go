@@ -1,6 +1,9 @@
 package corehub
 
-import "github.com/temphia/temphia/code/backend/xtypes/models/entities"
+import (
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
+)
 
 func (c *CoreHub) AddSystemEvent(data *entities.SystemEvent) error {
 	return c.coredb.AddSystemEvent(data)
@@ -12,6 +15,10 @@ func (c *CoreHub) RemoveSystemEvent(id int64) error {
 
 func (c *CoreHub) ListSystemEvent(last int64) ([]*entities.SystemEvent, error) {
 	return c.coredb.ListSystemEvent(last)
+}
+
+func (c *CoreHub) QuerySystemEvent(query store.EventQuery) ([]*entities.SystemEvent, error) {
+	return c.coredb.QuerySystemEvent(query)
 }
 
 func (c *CoreHub) AddSystemKV(tenantId string, data *entities.SystemKV) error {

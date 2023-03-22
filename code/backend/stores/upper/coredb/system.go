@@ -2,6 +2,7 @@ package coredb
 
 import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/upper/db/v4"
 )
 
@@ -29,6 +30,28 @@ func (d *DB) ListSystemEvent(last int64) ([]*entities.SystemEvent, error) {
 	}
 
 	return resp, nil
+}
+
+func (d *DB) QuerySystemEvent(query store.EventQuery) ([]*entities.SystemEvent, error) {
+
+	resp := make([]*entities.SystemEvent, 0)
+
+	cond := db.Cond{
+		"tenant_id": query.TenantId,
+		"id >":      query.Last,
+	}
+
+	if query.Etype != "" {
+		cond["etype"] = query.Etype
+	}
+
+	err := d.systemKVTable().Find(cond).All(&resp)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+
 }
 
 // systemkv

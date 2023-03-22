@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 	"github.com/upper/db/v4"
 )
 
@@ -24,7 +25,7 @@ func (m *MsgBus) genericPoll(currMax int64) error {
 		for _, ev := range events {
 			subs := m.store.getSubs(ev.Type)
 
-			msg := Message{
+			msg := xplane.Message{
 				Id:     ev.Id,
 				Topic:  ev.Type,
 				Tenant: ev.TenantId,

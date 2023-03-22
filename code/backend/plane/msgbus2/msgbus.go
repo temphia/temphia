@@ -5,6 +5,7 @@ import (
 
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
 type MsgBus struct {
@@ -17,7 +18,7 @@ type MsgBus struct {
 func New(nodeId int64, db store.SystemOps) *MsgBus {
 	return &MsgBus{
 		store: SubStore{
-			topics:     make(map[string][]Subscription),
+			topics:     make(map[string][]xplane.Subscription),
 			mlock:      sync.Mutex{},
 			subCounter: 0,
 		},
@@ -40,7 +41,7 @@ func (m *MsgBus) Run() error {
 	return m.watchPoll(currMax)
 }
 
-func (m *MsgBus) Submit(topic string, msg Message) (int64, error) {
+func (m *MsgBus) Submit(topic string, msg xplane.Message) (int64, error) {
 	return 0, m.db.AddSystemEvent(&entities.SystemEvent{
 		Type:      topic,
 		Data:      msg.Data,
@@ -49,7 +50,7 @@ func (m *MsgBus) Submit(topic string, msg Message) (int64, error) {
 	})
 }
 
-func (m *MsgBus) Subscribe(topic string, ch chan Message) (int32, error) {
+func (m *MsgBus) Subscribe(topic string, ch chan xplane.Message) (int32, error) {
 	return m.store.addSub(topic, ch), nil
 }
 

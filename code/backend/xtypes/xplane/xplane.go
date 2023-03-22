@@ -15,6 +15,8 @@ type ControlPlane interface {
 	GetSockdRouter() SockdRouter
 	GetEventBus() EventBus
 
+	GetMsgBus() MsgBus
+
 	GetNodeId() int64
 	GetIdService() IDService
 }

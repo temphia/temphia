@@ -63,6 +63,10 @@ func (p *PlaneLite) GetSockdRouter() xplane.SockdRouter {
 // eventbus
 func (p *PlaneLite) GetEventBus() xplane.EventBus { return p.eventbus }
 
+func (p *PlaneLite) GetMsgBus() xplane.MsgBus {
+	return nil
+}
+
 func (p *PlaneLite) GetNodeId() int64 {
 	return p.nodeId
 }
