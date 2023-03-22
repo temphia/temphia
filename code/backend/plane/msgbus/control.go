@@ -25,6 +25,10 @@ func (m *MsgBus) genericPoll(currMax int64) error {
 		for _, ev := range events {
 			subs := m.store.getSubs(ev.Type)
 
+			if subs == nil {
+				continue
+			}
+
 			msg := xplane.Message{
 				Id:     ev.Id,
 				Topic:  ev.Type,
