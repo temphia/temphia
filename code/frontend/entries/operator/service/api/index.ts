@@ -6,7 +6,7 @@ export class OperatorAPI {
   constructor(token: string, baseURL: string) {
     this.token = token;
     this.baseURL = baseURL;
-    this.tenantURL = `${this.baseURL}/z/operator/tenant`;
+    this.tenantURL = `${this.baseURL}/z/operator/api/tenant`;
   }
 
   create_tenant = async (data: object) => {

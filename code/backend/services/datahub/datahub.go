@@ -21,7 +21,6 @@ type DataHub struct {
 func New(dyns map[string]dyndb.DynDB) *DataHub {
 
 	handle := &handle.Handle{
-		EventHub: nil,
 		SockdHub: nil,
 		Engine:   nil,
 		CoreHub:  nil,
@@ -84,8 +83,9 @@ func (d *DataHub) ListSources(tenant string) ([]string, error) {
 func (d *DataHub) Inject(_app xtypes.App) {
 
 	deps := _app.GetDeps()
+	cplane := deps.ControlPlane().(xplane.ControlPlane)
+	d.handle.MsgBus = cplane.GetMsgBus()
 
-	deps.ControlPlane().(xplane.ControlPlane).GetEventBus()
 	sockdhub := deps.SockdHub().(sockdx.Hub)
 	d.handle.SockdHub = sockdhub.GetDataSyncer()
 	d.handle.CoreHub = deps.CoreHub().(store.CoreHub)

@@ -3,6 +3,7 @@ package plane
 import (
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/plane/idservice"
+	"github.com/temphia/temphia/code/backend/plane/msgbus"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/job"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
@@ -11,29 +12,34 @@ import (
 var _ xplane.ControlPlane = (*PlaneLite)(nil)
 
 type PlaneLite struct {
-	eventbus *EventBus
-	locker   *Locker
-	router   *Router
-	nodeId   int64
-	seq      idservice.IDService
+	locker *Locker
+	router *Router
+	nodeId int64
+	seq    idservice.IDService
+
+	msgbus xplane.MsgBus
 }
 
-func NewLite(CoreHub store.CoreHub) *PlaneLite {
+func NewLite(coreHub store.CoreHub) *PlaneLite {
 
 	nodeId := int64(1)
 
 	return &PlaneLite{
-		eventbus: NewEventBus(),
-		locker:   NewLocker(),
-		router:   nil,
-		nodeId:   nodeId,
-		seq:      *idservice.New(nodeId),
+		locker: NewLocker(),
+		router: nil,
+		nodeId: nodeId,
+		seq:    *idservice.New(nodeId),
+		msgbus: msgbus.New(nodeId, coreHub),
 	}
 }
 
 // dl and start up stuff
 
-func (p *PlaneLite) Start() error                                         { return nil }
+func (p *PlaneLite) Start() error {
+	go p.msgbus.Start()
+	return nil
+}
+
 func (p *PlaneLite) Inject(iapp interface{}, config *config.Config) error { return nil }
 
 // liveness and status stuff
@@ -60,11 +66,8 @@ func (p *PlaneLite) GetSockdRouter() xplane.SockdRouter {
 	return nil
 }
 
-// eventbus
-func (p *PlaneLite) GetEventBus() xplane.EventBus { return p.eventbus }
-
 func (p *PlaneLite) GetMsgBus() xplane.MsgBus {
-	return nil
+	return p.msgbus
 }
 
 func (p *PlaneLite) GetNodeId() int64 {

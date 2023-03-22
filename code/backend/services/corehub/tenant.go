@@ -1,6 +1,8 @@
 package corehub
 
 import (
+	"encoding/json"
+
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
@@ -11,10 +13,19 @@ func (c *CoreHub) AddTenant(tenant *entities.Tenant) error {
 		return err
 	}
 
-	if c.cplane != nil {
-		// fixme => remove this
-		eb := c.cplane.GetEventBus()
-		eb.EmitTenantEvent(tenant.Slug, xplane.EventCreateTenant, tenant)
+	if c.cplane != nil && c.cplane.GetMsgBus() != nil {
+		msgbus := c.cplane.GetMsgBus()
+
+		out, err := json.Marshal(tenant)
+		if err != nil {
+			return err
+		}
+
+		msgbus.Submit("tenant", xplane.Message{
+			Data:  string(out),
+			Path:  "create",
+			Topic: "tenant",
+		})
 	}
 
 	return nil

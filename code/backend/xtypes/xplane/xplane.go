@@ -13,7 +13,6 @@ type ControlPlane interface {
 	GetRouter() Router
 
 	GetSockdRouter() SockdRouter
-	GetEventBus() EventBus
 
 	GetMsgBus() MsgBus
 

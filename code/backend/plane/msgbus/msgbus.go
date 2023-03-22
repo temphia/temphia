@@ -28,7 +28,7 @@ func New(nodeId int64, db store.SystemOps) *MsgBus {
 	}
 }
 
-func (m *MsgBus) Run() error {
+func (m *MsgBus) Start() error {
 
 	currMax, err := m.getMaxId()
 	if err != nil {
@@ -39,6 +39,10 @@ func (m *MsgBus) Run() error {
 		return m.genericPoll(currMax)
 	}
 	return m.watchPoll(currMax)
+}
+
+func (m *MsgBus) Stop() error {
+	return nil
 }
 
 func (m *MsgBus) Submit(topic string, msg xplane.Message) (int64, error) {

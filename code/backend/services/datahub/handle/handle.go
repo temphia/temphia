@@ -10,7 +10,7 @@ import (
 // shared handle between datasheethub and datatablehub etc
 
 type Handle struct {
-	EventHub xplane.EventBus
+	MsgBus   xplane.MsgBus
 	SockdHub sockdx.DataSyncer
 	Engine   etypes.Engine
 	CoreHub  store.CoreHub

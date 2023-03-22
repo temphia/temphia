@@ -5,15 +5,16 @@ import (
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
+	"github.com/tidwall/gjson"
 )
 
 type CabHub struct {
 	defaultProvider store.CabinetSource
 	sources         map[string]store.CabinetSource
 	defName         string
+	modChan         chan xplane.Message
 }
 
 func New(sources map[string]store.CabinetSource, defprovider string) *CabHub {
@@ -21,23 +22,25 @@ func New(sources map[string]store.CabinetSource, defprovider string) *CabHub {
 		sources:         sources,
 		defaultProvider: sources[defprovider],
 		defName:         defprovider,
+		modChan:         make(chan xplane.Message),
 	}
 	return ch
 }
 
-func (c *CabHub) Start(eventbus any) error {
-	eb := eventbus.(xplane.EventBus)
+func (c *CabHub) Start(mb xplane.MsgBus) error {
 
-	eb.OnTenantChange(func(tenant, event string, data *entities.Tenant) {
-		go func() {
-			switch event {
-			case xplane.EventCreateTenant:
-				c.defaultProvider.InitilizeTenent(tenant, store.DefaultFolders)
-			default:
-				pp.Println("skipping event")
-			}
-		}()
-	})
+	mb.Subscribe("tenant", c.modChan)
+
+	go func() {
+		msg := <-c.modChan
+
+		switch msg.Path {
+		case "create":
+			c.defaultProvider.InitilizeTenent(gjson.Get(msg.Data, "slug").String(), store.DefaultFolders)
+		default:
+			pp.Println("skipping event")
+		}
+	}()
 
 	return nil
 }

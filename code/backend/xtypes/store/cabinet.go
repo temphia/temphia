@@ -3,6 +3,8 @@ package store
 import (
 	"context"
 	"io"
+
+	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
 const (
@@ -29,7 +31,7 @@ type BlobInfo struct {
 }
 
 type CabinetHub interface {
-	Start(eventbus any) error
+	Start(mb xplane.MsgBus) error
 	Default(tenant string) CabinetSourced
 	ListSources(tenant string) ([]string, error)
 	GetSource(source, tenant string) CabinetSourced

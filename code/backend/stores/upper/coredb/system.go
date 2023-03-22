@@ -14,7 +14,7 @@ func (d *DB) AddSystemEvent(data *entities.SystemEvent) error {
 }
 
 func (d *DB) RemoveSystemEvent(id int64) error {
-	return d.systemKVTable().Find(db.Cond{"id": id}).Delete()
+	return d.systemEventTable().Find(db.Cond{"id": id}).Delete()
 }
 
 func (d *DB) ListSystemEvent(last int64) ([]*entities.SystemEvent, error) {
@@ -24,7 +24,7 @@ func (d *DB) ListSystemEvent(last int64) ([]*entities.SystemEvent, error) {
 		"id >": last,
 	}
 
-	err := d.systemKVTable().Find(cond).All(&resp)
+	err := d.systemEventTable().Find(cond).All(&resp)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func (d *DB) QuerySystemEvent(query store.EventQuery) ([]*entities.SystemEvent, 
 		cond["etype"] = query.Etype
 	}
 
-	err := d.systemKVTable().Find(cond).All(&resp)
+	err := d.systemEventTable().Find(cond).All(&resp)
 	if err != nil {
 		return nil, err
 	}

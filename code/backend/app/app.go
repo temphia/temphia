@@ -3,6 +3,7 @@ package app
 import (
 	"os"
 
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes"
 )
@@ -68,13 +69,23 @@ func (a *App) hostAddrs(privatePriIp, privateSecIps, p2p bool) []string {
 
 func (a *App) run() error {
 
-	err := a.deps.engine.Run()
+	err := a.deps.controlPlane.Start()
+	if err != nil {
+		return err
+	}
+
+	err = a.deps.engine.Run()
 	if err != nil {
 		return err
 	}
 
 	// ectrl := a.deps.croot.EngineController()
 	// ectrl.RunStartupHooks(a.tenantIds, time.Minute*2)
+
+	pp.Println(a.
+		deps.
+		cabinetHub.
+		Start(a.deps.controlPlane.GetMsgBus()))
 
 	return a.deps.server.Listen()
 }

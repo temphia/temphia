@@ -27,6 +27,8 @@ func (s *Server) zRoutes(z *gin.RouterGroup) {
 
 	s.dev(z.Group("/dev"))
 
+	// 	z.POST("/operator/login", s.operatorLogin)
+
 	s.operatorAPI(z.Group("/operator/api"))
 
 	s.API(z.Group("/api/:tenant_id/v2/"))
