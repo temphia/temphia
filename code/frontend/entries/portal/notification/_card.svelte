@@ -39,7 +39,7 @@
         <p tabindex="0" class="focus:outline-none text-sm leading-none">
           <span class="text-indigo-700">{nmsg["from_user"] || (nmsg["type"] === "system_message" ? "system": "") }</span>
           messaged you:
-          <span class="italic">{nmsg["contents"] || ""}</span>
+          <span class="italic leading-5">{nmsg["contents"] || ""}</span>
         </p>
         <SvgClose
           onClick={() => {
