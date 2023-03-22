@@ -16,17 +16,11 @@ func (d *DB) RemoveSystemEvent(id int64) error {
 	return d.systemKVTable().Find(db.Cond{"id": id}).Delete()
 }
 
-func (d *DB) ListSystemEvent(tenantId, etype string, last int64) ([]*entities.SystemEvent, error) {
-
+func (d *DB) ListSystemEvent(last int64) ([]*entities.SystemEvent, error) {
 	resp := make([]*entities.SystemEvent, 0)
 
-	cond := db.Cond{"tenant_id": tenantId}
-
-	if etype != "" {
-		cond["type"] = etype
-	}
-	if last != 0 {
-		cond["id >"] = last
+	cond := db.Cond{
+		"id >": last,
 	}
 
 	err := d.systemKVTable().Find(cond).All(&resp)

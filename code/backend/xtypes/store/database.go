@@ -36,7 +36,7 @@ type CoreDB interface {
 type SystemOps interface {
 	AddSystemEvent(data *entities.SystemEvent) error
 	RemoveSystemEvent(id int64) error
-	ListSystemEvent(tenantId, etype string, last int64) ([]*entities.SystemEvent, error)
+	ListSystemEvent(last int64) ([]*entities.SystemEvent, error)
 
 	AddSystemKV(tenantId string, data *entities.SystemKV) error
 	UpdateSystemKV(tenantId, key, ktype string, data map[string]any) error
