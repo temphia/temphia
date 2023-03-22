@@ -45,6 +45,8 @@ func (c *CLI) doExecute(prefix string) error {
 	case prefix + "start":
 
 		os.Chdir("cmd/demo/")
+
+		xutils.CreateIfNotExits("temphia-data")
 		xutils.CreateIfNotExits("temphia-data/files")
 		xutils.CreateIfNotExits("temphia-data/logs")
 		xutils.CreateIfNotExits("temphia-data/pgdata")

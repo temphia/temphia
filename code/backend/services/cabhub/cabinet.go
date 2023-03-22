@@ -35,6 +35,9 @@ func (c *CabHub) Start(mb xplane.MsgBus) error {
 		msg := <-c.modChan
 
 		switch msg.Path {
+		case "":
+			// fixme => path support in systemevent
+			fallthrough
 		case "create":
 			c.defaultProvider.InitilizeTenent(gjson.Get(msg.Data, "slug").String(), store.DefaultFolders)
 		default:
