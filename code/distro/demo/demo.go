@@ -117,6 +117,40 @@ func runSeed(app xtypes.App) error {
 			return err
 		}
 
+		err = seedExtraUser(seedapp)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func seedExtraUser(sapp *seeder.AppSeeder) error {
+
+	err := sapp.AddNewUserGroup("LabRats", "laprats")
+	if err != nil {
+		return err
+	}
+
+	err = sapp.AddNewUser("toprat1", "Top Rat1", "top1@lrat.com", "cheesy123", "laprats")
+	if err != nil {
+		return err
+	}
+
+	err = sapp.AddNewUser("toprat2", "Top Rat2", "top2@lrat.com", "cheesy123", "laprats")
+	if err != nil {
+		return err
+	}
+
+	err = sapp.AddNewUser("toprat3", "Top Rat3", "top3@lrat.com", "cheesy123", "laprats")
+	if err != nil {
+		return err
+	}
+
+	err = sapp.AddNewUser("toprat4", "Top Rat4", "top4@lrat.com", "cheesy123", "laprats")
+	if err != nil {
+		return err
 	}
 
 	return nil
