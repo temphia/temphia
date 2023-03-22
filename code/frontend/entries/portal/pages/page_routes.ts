@@ -10,7 +10,7 @@ import DataTableLoader from "./data/table/loader.svelte"
 import DataTable from "./data/table/table.svelte";
 import DataSheetLoader from "./data/sheet/loader.svelte";
 import DataSheet from "./data/sheet/sheet.svelte";
-
+import DataSheetsNew from "./data/sheets_new.svelte";
 
 // cabinet
 import CabLoader from "./cabinet/loader.svelte";
@@ -49,6 +49,7 @@ export default {
     "/:source/:dgroup/table/:dtable": DataTable,
     "/:source/:dgroup/table/:dtable/:layout": DataTable,
   },
+  "/data_sheets/new": DataSheetsNew,
 
   "/cabinet": {
     "/": CabLoader,

@@ -63,6 +63,10 @@ export class Navigator {
     this.set(`#/data/${source}/${dgroup}/sheet`);
   }
 
+  data_sheets_new() {
+    this.set(`#/data_sheets/new`);
+  }
+
   // cab
 
   cab_loader = () => {

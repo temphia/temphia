@@ -5,7 +5,8 @@
   import { strHash } from "../../../../lib/utils";
   import Dropdown from "../../../xcompo/autotable/_dropdown.svelte";
   import type { PortalService } from "../../services";
-  import { LoadingSpinner } from "../admin/core";
+  import { FloatingAdd, LoadingSpinner } from "../admin/core";
+  import NewDataPicker from "./_new_data_picker.svelte";
 
   export let source = $params.source;
 
@@ -141,3 +142,9 @@
     </div>
   </div>
 {/if}
+
+<FloatingAdd
+  onClick={() => {
+    app.utils.small_modal_open(NewDataPicker, { app });
+  }}
+/>
