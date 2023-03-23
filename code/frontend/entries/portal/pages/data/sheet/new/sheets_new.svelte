@@ -1,6 +1,7 @@
 <script lang="ts">
   import Step from "../../../play/stepper/step.svelte";
   import Stepper from "../../../play/stepper/stepper.svelte";
+  import Template from "./_template.svelte";
 
   let final = false;
 
@@ -35,37 +36,36 @@
       on:complete={onCompleteHandler}
     >
       <Step>
-        <svelte:fragment slot="header">Going Back.</svelte:fragment>
-        <p>
-          The current step progress will be tracked at the top. Tap <u>back</u> to
-          return to the previous step.
-        </p>
+        <svelte:fragment slot="header">New Sheet</svelte:fragment>
+
+        <svelte:fragment>
+          <div class="flex-col flex py-3">
+            <label for="" class="pb-2 text-gray-700 font-semibold">Name</label>
+            <input
+              type="text"
+              class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200"
+            />
+          </div>
+
+          <div class="flex-col flex py-3">
+            <label for="" class="pb-2 text-gray-700 font-semibold">Info</label>
+            <textarea
+              class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200"
+            />
+          </div>
+        </svelte:fragment>
       </Step>
 
       <Step back_locked={final}>
-        <svelte:fragment slot="header">Long Form Content.</svelte:fragment>
-        <p>The steps will expand to fit content of any length.</p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque vel
-          expedita porro vero, saepe dicta repellendus facilis ab accusamus
-          unde, tempora ut nobis eum. Veniam, architecto corrupti. Lorem ipsum
-          dolor sit amet consectetur adipisicing elit. Itaque vel expedita porro
-          vero, saepe dicta repellendus facilis ab accusamus unde, tempora ut
-          nobis eum. Veniam, architecto corrupti. Lorem ipsum dolor sit amet
-          consectetur adipisicing elit. Itaque vel expedita porro vero, saepe
-          dicta repellendus facilis ab accusamus unde, tempora ut nobis eum.
-          Veniam, architecto corrupti. Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Itaque vel expedita porro vero, saepe dicta
-          repellendus facilis ab accusamus unde, tempora ut nobis eum. Veniam,
-          architecto corrupti. Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Itaque vel expedita porro vero, saepe dicta
-          repellendus facilis ab accusamus unde, tempora ut nobis eum. Veniam,
-          architecto corrupti.
-        </p>
+        <svelte:fragment slot="header">Select Template</svelte:fragment>
+
+        <svelte:fragment>
+          <Template />
+        </svelte:fragment>
       </Step>
       <Step back_locked={final}>
         <svelte:fragment slot="header">Finished.</svelte:fragment>
-        <p>Sheet is read. Go explore.</p>
+        <p>Sheet is ready. Go explore.</p>
       </Step>
     </Stepper>
   </div>
