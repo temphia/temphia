@@ -43,14 +43,14 @@
             <label for="" class="pb-2 text-gray-700 font-semibold">Name</label>
             <input
               type="text"
-              class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200"
+              class="p-2 rounded-lg bg-gray-100 outline-none focus:bg-gray-200"
             />
           </div>
 
           <div class="flex-col flex py-3">
             <label for="" class="pb-2 text-gray-700 font-semibold">Info</label>
             <textarea
-              class="p-2 shadow rounded-lg bg-gray-100 outline-none focus:bg-gray-200"
+              class="p-2 rounded-lg bg-gray-100 outline-none focus:bg-gray-200"
             />
           </div>
         </svelte:fragment>
