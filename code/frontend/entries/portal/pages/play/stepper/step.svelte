@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { getContext, onDestroy } from 'svelte';
+	import Icon from '@krowten/svelte-heroicons/Icon.svelte';
+import { getContext, onDestroy } from 'svelte';
 	import type { Writable } from 'svelte/store';
 	import { fade } from 'svelte/transition';
     import type {CssClasses} from "./stypes"
@@ -7,6 +8,8 @@
 
 	// Props
 	export let locked: boolean = false;
+	export let back_locked: boolean = false;
+
 	// Props (regions)
 	/** Provide arbitrary classes to the step header region. */
 	export let regionHeader: CssClasses = '';
@@ -45,6 +48,7 @@
 		dispatchParent('step', { step: stepIndex, state: $state });
 	}
 	function onBack(): void {
+		if (back_locked) return
 		$state.current--;
 		/** @event { $state } back - Fires when the BACK button is pressed per step.  */
 		dispatchParent('back', { step: stepIndex, state: $state });
@@ -77,22 +81,27 @@
 		<!-- Navigation -->
 		{#if $state.total > 1}
 			<div class="step-navigation {classesNavigation}" transition:fade|local={{ duration: 100 }}>
-				<button type={buttonBackType} class="btn bg-gray-600 hover:bg-gray-800 rounded text-white {buttonBack}" on:click={onBack} disabled={$state.current === 0}
-					>{@html buttonBackLabel}</button
-				>
+				<button type={buttonBackType} class="btn inline-flex bg-gray-600 hover:bg-gray-800 rounded text-white {buttonBack}" on:click={onBack} disabled={$state.current === 0}>
+					{#if back_locked}
+						<Icon name="lock-closed" class="w-3 aspect-square" />
+					{/if}
+
+					{@html buttonBackLabel}
+				</button>
 				{#if stepIndex < $state.total - 1}
-					<button type={buttonNextType} class="btn {buttonNext} bg-gray-600 hover:bg-gray-800 rounded-full p-2 text-white" on:click={onNext} disabled={locked}>
+					<button type={buttonNextType} class="btn inline-flex {buttonNext} bg-gray-600 hover:bg-gray-800 rounded-full p-2 text-white" on:click={onNext} disabled={locked}>
 						{#if locked}
-							<svg class="w-3 aspect-square" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-								<path
-									d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z"
-								/>
-							</svg>
+							<Icon name="lock-closed" class="w-3 aspect-square" />
 						{/if}
 						<span>{@html buttonNextLabel}</span>
 					</button>
 				{:else}
-					<button type={buttonCompleteType} class="btn {buttonComplete}" on:click={onComplete}>{@html buttonCompleteLabel}</button>
+					<button type={buttonCompleteType} class="btn inline-flex {buttonComplete}" on:click={onComplete}>
+						{#if locked}
+							<Icon name="lock-closed" class="w-3 aspect-square" />
+						{/if}
+						<span>{@html buttonCompleteLabel}</span>
+					</button>
 				{/if}
 			</div>
 		{/if}
