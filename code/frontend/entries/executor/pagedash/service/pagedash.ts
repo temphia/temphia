@@ -14,6 +14,6 @@ export class PageDashService {
       return;
     }
 
-    return resp.data as Response;
+    return resp.data;
   };
 }

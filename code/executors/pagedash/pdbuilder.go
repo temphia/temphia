@@ -6,6 +6,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/executors/helper"
+	"gopkg.in/yaml.v2"
 
 	gojaExec "github.com/temphia/temphia/code/backend/engine/executors/javascript1/goja"
 )
@@ -27,6 +28,24 @@ func NewBuilder(app any) (etypes.ExecutorBuilder, error) {
 
 func (pd *PdBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, error) {
 
+	ffile := opts.EnvVars["dash_file"]
+	if ffile == "" {
+		ffile = "dash1.yaml"
+	}
+
+	out, _, err := opts.Binder.GetFileWithMeta(ffile)
+	if err != nil {
+		return nil, err
+	}
+
+	dash := &DashModel{}
+	err = yaml.Unmarshal(out, dash)
+	if err != nil {
+		return nil, err
+	}
+
+	convertModel(dash)
+
 	rt := goja.New()
 
 	if opts.File != "" {
@@ -47,6 +66,7 @@ func (pd *PdBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 		builder:   pd,
 		jsruntime: rt,
 		binder:    opts.Binder,
+		model:     dash,
 	}, nil
 }
 
