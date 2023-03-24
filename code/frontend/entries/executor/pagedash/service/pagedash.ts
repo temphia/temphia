@@ -7,13 +7,7 @@ export class PageDashService {
     this.env = env;
   }
 
-  load = async (opts: any) => {
-    const resp = await this.env.PreformAction("load", opts);
-    if (!resp.ok) {
-      console.log("@err", resp);
-      return;
-    }
-
-    return resp.data;
+  load = (opts: any) => {
+    return this.env.PreformAction("load", opts);
   };
 }

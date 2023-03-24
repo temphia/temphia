@@ -1,17 +1,26 @@
 <script lang="ts">
   import { LoadingSpinner } from "../../xcompo";
   import { PageDashService } from "./service";
+  import Pagedash from "./pagedash.svelte";
+  import Tailwind from "../../xcompo/common/_tailwind.svelte";
+
   export let env: any;
 
   let loading = false;
+  let data = {};
+  let service;
 
   const load = async () => {
-    const service = new PageDashService(env);
-    const data = await service.load({});
-    if (!data) {
+    if (!service) {
+      service = new PageDashService(env);
+    }
+
+    const resp = await service.load({});
+    if (!resp.ok) {
       return;
     }
-    console.log("@resp", data);
+    data = resp.data;
+    loading = false;
   };
 
   load();
@@ -20,5 +29,7 @@
 {#if loading}
   <LoadingSpinner />
 {:else}
-  <div>Pagedash</div>
+  <Pagedash {service} {data} />
 {/if}
+
+<Tailwind />
