@@ -1,10 +1,10 @@
 import { registerExecLoaderFactory } from "../../../lib/engine/register";
-import PageForm from "./index.svelte";
+import PageDash from "./index.svelte";
 
-registerExecLoaderFactory("pageform.loader", (opts) => {
-  console.log("@@pagefrom.loader", opts);
+registerExecLoaderFactory("pagedash.loader", (opts) => {
+  console.log("@pagedash.loader", opts);
 
-  new PageForm({
+  new PageDash({
     target: opts.target,
     props: {
       env: opts.env,

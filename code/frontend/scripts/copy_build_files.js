@@ -28,7 +28,9 @@ const FILES = [
     "adapter_editor_easypage.js",
     "adapter_editor_easypage.css",
     "executor_pageform.js",
-    "executor_pageform.css"
+    "executor_pageform.css",
+    "executor_pagedash.js",
+    "executor_pagedash.css"
 ]
 
 fs_Extra.readdirSync(BUILD_FOLDER).forEach((file) => {
