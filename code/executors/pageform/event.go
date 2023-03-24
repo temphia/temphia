@@ -116,7 +116,7 @@ func (pf *Pageform) pfCtx(data map[string]any) *PfCtx {
 		data:           data,
 		model:          pf.model,
 		disabledFields: make([]string, 0),
-		rt:             pf.runtime,
+		rt:             pf.jsruntime,
 		ok:             true,
 	}
 

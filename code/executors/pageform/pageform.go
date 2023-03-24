@@ -10,10 +10,10 @@ import (
 )
 
 type Pageform struct {
-	builder *PfBuilder
-	model   *FormModel
-	runtime *goja.Runtime
-	binder  bindx.Bindings
+	builder   *PfBuilder
+	model     *FormModel
+	jsruntime *goja.Runtime
+	binder    bindx.Bindings
 }
 
 func (pf *Pageform) Process(ev *event.Request) (*event.Response, error) {

@@ -64,10 +64,10 @@ func (pf *PfBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 	}
 
 	return &Pageform{
-		builder: pf,
-		model:   form,
-		runtime: rt,
-		binder:  opts.Binder,
+		builder:   pf,
+		model:     form,
+		jsruntime: rt,
+		binder:    opts.Binder,
 	}, nil
 }
 
