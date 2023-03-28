@@ -1,12 +1,12 @@
 package pagedash
 
 type DashModel struct {
-	Name       string         `json:"name,omitempty" yaml:"name,omitempty"`
-	Sections   []Section      `json:"sections,omitempty" yaml:"sections,omitempty"`
-	OnLoad     []Hook         `json:"on_load,omitempty" yaml:"on_load,omitempty"`
-	OnBuild    []Hook         `json:"on_build,omitempty" yaml:"on_build,omitempty"`
-	StaticData map[string]any `json:"static_data,omitempty" yaml:"static_data,omitempty"`
-	Sources    map[string]any `json:"sources,omitempty" yaml:"sources,omitempty"`
+	Name       string            `json:"name,omitempty" yaml:"name,omitempty"`
+	Sections   []Section         `json:"sections,omitempty" yaml:"sections,omitempty"`
+	OnLoad     []Hook            `json:"on_load,omitempty" yaml:"on_load,omitempty"`
+	OnBuild    []Hook            `json:"on_build,omitempty" yaml:"on_build,omitempty"`
+	StaticData map[string]any    `json:"static_data,omitempty" yaml:"static_data,omitempty"`
+	Sources    map[string]Source `json:"sources,omitempty" yaml:"sources,omitempty"`
 }
 
 type Hook struct {
@@ -41,13 +41,15 @@ type Source struct {
 // req/resp types
 
 type LoadRequest struct {
-	ExecData any `json:"exec_data,omitempty"`
+	ExecData any    `json:"exec_data,omitempty"`
+	Version  string `json:"version,omitempty"`
 }
 
 type LoadResponse struct {
-	Name     string         `json:"name,omitempty" yaml:"name,omitempty"`
-	Data     map[string]any `json:"data,omitempty" yaml:"data,omitempty"`
-	Sections []Section      `json:"sections,omitempty" yaml:"sections,omitempty"`
+	Name     string            `json:"name,omitempty" yaml:"name,omitempty"`
+	Data     map[string]any    `json:"data,omitempty" yaml:"data,omitempty"`
+	Sources  map[string]Source `json:"sources,omitempty" yaml:"sources,omitempty"`
+	Sections []Section         `json:"sections,omitempty" yaml:"sections,omitempty"`
 }
 
 type BuildRequest struct {
