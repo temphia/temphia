@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/k0kubun/pp"
 )
 
 type ginHands struct {
@@ -21,6 +22,9 @@ func (m *Middleware) Log(c *gin.Context) {
 	// before request
 	path := c.Request.URL.Path
 	raw := c.Request.URL.RawQuery
+
+	pp.Println("@Req-host", c.Request.Host)
+	pp.Println("@Url-host", c.Request.URL.Host)
 
 	// time.Sleep(2 * time.Second)
 
