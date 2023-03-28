@@ -3,9 +3,9 @@ package pagedash
 func (pd *PageDash) actionLoad(req LoadRequest) (*LoadResponse, error) {
 
 	return &LoadResponse{
-		Name:       pd.model.Name,
-		SourceData: make(map[string]any),
-		Sections:   pd.model.Sections,
+		Name:     pd.model.Name,
+		Data:     pd.model.StaticData,
+		Sections: pd.model.Sections,
 	}, nil
 }
 
