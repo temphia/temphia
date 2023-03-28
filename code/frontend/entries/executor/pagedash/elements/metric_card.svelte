@@ -1,6 +1,5 @@
 <script lang="ts">
-  import type { Panel } from "../service";
-  export let panel: Panel;
+  export let panel: any;
   export let data;
 
   let increase = data["increase"];

@@ -4,6 +4,8 @@
   export let data: any;
 
   let options = panel["options"] || {};
+
+  $: console.log("@chartjs", data, panel)
 </script>
 
 <div class="w-full p-1 flex justify-center">

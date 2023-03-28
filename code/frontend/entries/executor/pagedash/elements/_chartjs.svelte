@@ -47,10 +47,12 @@
   });
 
   const loadChartJs = () => draw();
+
+  let chartjsUrl = window["Chart"] ? "" : "/z/assets/lib/chartjs/chartjs.js";
 </script>
 
 <svelte:head>
-  <script on:load={loadChartJs} src="/z/assets/lib/chartjs/chartjs.js"></script>
+  <script on:load={loadChartJs} src={chartjsUrl}></script>
 </svelte:head>
 
 <canvas bind:this={canvasRef} />
