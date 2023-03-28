@@ -26,19 +26,23 @@ func convertModel(model *DashModel) {
 
 }
 
-func convertInner(m map[string]any) {
-
+func convertInner(m map[string]interface{}) {
 	for idx, data := range m {
-
 		switch v2 := data.(type) {
-		case map[any]any:
-			m[idx] = convert(v2)
+		case map[interface{}]interface{}:
+			m2 := make(map[string]interface{})
+			for k, v := range v2 {
+				m2[fmt.Sprint(k)] = v
+			}
+			convertInner(m2)
+			m[idx] = m2
 		default:
 			continue
 		}
 	}
-
 }
+
+/*
 
 func convert(m map[any]any) map[string]any {
 	res := map[string]any{}
@@ -52,3 +56,6 @@ func convert(m map[any]any) map[string]any {
 	}
 	return res
 }
+
+
+*/
