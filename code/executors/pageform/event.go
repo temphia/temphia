@@ -39,8 +39,8 @@ func (pf *Pageform) actionSubmit(req SubmitRequest) (*Response, error) {
 	}
 
 	ctx := pf.pfCtx(req.Data)
-	if currStage.OnSubmit != "" {
-		err := ctx.execute(currStage.OnSubmit, "on_submit", req.Stage)
+	for _, shook := range currStage.OnSubmit {
+		err := ctx.execute(shook.Target, "on_submit", req.Stage)
 		if err != nil {
 			return nil, err
 		}
@@ -91,8 +91,8 @@ func (pf *Pageform) generate(ctx *PfCtx) (*Response, error) {
 	}
 
 	ctx.applyData(stage.Data)
-	if stage.OnGenerate != "" {
-		err := ctx.execute(stage.OnGenerate, "on_generate", ctx.nextStage)
+	for _, shook := range stage.OnBuild {
+		err := ctx.execute(shook.Target, "on_submit", ctx.nextStage)
 		if err != nil {
 			return nil, err
 		}

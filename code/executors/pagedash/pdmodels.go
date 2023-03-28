@@ -11,6 +11,7 @@ type DashModel struct {
 
 type Hook struct {
 	Name    string         `json:"name,omitempty" yaml:"name,omitempty"`
+	Target  string         `json:"target,omitempty" yaml:"target,omitempty"`
 	Type    string         `json:"type,omitempty" yaml:"type,omitempty"`
 	Options map[string]any `json:"options,omitempty" yaml:"options,omitempty"`
 }

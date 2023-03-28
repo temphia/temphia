@@ -10,11 +10,21 @@ type FormModel struct {
 }
 
 type FormStage struct {
-	About      string         `json:"about,omitempty" yaml:"about,omitempty"`
-	Items      []FormItem     `json:"items,omitempty" yaml:"items,omitempty"`
-	OnSubmit   string         `json:"on_submit,omitempty" yaml:"on_submit,omitempty"`     // validate data -> side_effect -> maybe_modify_data -> set_next_stage
-	OnGenerate string         `json:"on_generate,omitempty" yaml:"on_generate,omitempty"` // load_fileds -> set_data
-	Data       map[string]any `json:"data,omitempty" yaml:"data,omitempty"`
+	About    string         `json:"about,omitempty" yaml:"about,omitempty"`
+	Items    []FormItem     `json:"items,omitempty" yaml:"items,omitempty"`
+	OnSubmit []Hook         `json:"on_submit,omitempty" yaml:"on_submit,omitempty"` // validate data -> side_effect -> maybe_modify_data -> set_next_stage
+	OnBuild  []Hook         `json:"on_build,omitempty" yaml:"on_build,omitempty"`   // load_fileds -> set_data
+	Data     map[string]any `json:"data,omitempty" yaml:"data,omitempty"`
+}
+
+type FormItem struct {
+	Name     string            `json:"name,omitempty" yaml:"name,omitempty"`
+	Info     string            `json:"info,omitempty" yaml:"info,omitempty"`
+	Type     string            `json:"type,omitempty" yaml:"type,omitempty"`
+	Options  []string          `json:"options,omitempty" yaml:"options,omitempty"`
+	Pattern  string            `json:"pattern,omitempty" yaml:"pattern,omitempty"`
+	HtmlAttr map[string]string `json:"html_attr,omitempty" yaml:"html_attr,omitempty"`
+	Disabled bool              `json:"disabled,omitempty" yaml:"disabled,omitempty"`
 }
 
 func (fs *FormStage) GetItems(ignores []string) []FormItem {
@@ -35,14 +45,11 @@ func (fs *FormStage) GetItems(ignores []string) []FormItem {
 
 }
 
-type FormItem struct {
-	Name     string            `json:"name,omitempty" yaml:"name,omitempty"`
-	Info     string            `json:"info,omitempty" yaml:"info,omitempty"`
-	Type     string            `json:"type,omitempty" yaml:"type,omitempty"`
-	Options  []string          `json:"options,omitempty" yaml:"options,omitempty"`
-	Pattern  string            `json:"pattern,omitempty" yaml:"pattern,omitempty"`
-	HtmlAttr map[string]string `json:"html_attr,omitempty" yaml:"html_attr,omitempty"`
-	Disabled bool              `json:"disabled,omitempty" yaml:"disabled,omitempty"`
+type Hook struct {
+	Name    string `json:"name,omitempty" yaml:"name,omitempty"`
+	Target  string `json:"target,omitempty" yaml:"target,omitempty"`
+	Type    string `json:"type,omitempty" yaml:"type,omitempty"`
+	Options string `json:"options,omitempty" yaml:"options,omitempty"`
 }
 
 type LoadRequest struct {
