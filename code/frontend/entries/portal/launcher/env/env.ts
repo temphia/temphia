@@ -20,6 +20,7 @@ export interface EnvOptions {
   pipe: Pipe;
   startup_payload?: any;
   registry: Registry<any>;
+  target: HTMLElement;
 }
 
 interface Pending {
@@ -136,4 +137,14 @@ export class Env implements Environment {
       "FIXME"
     );
   };
+
+  Extend(s: any): any {
+    this._registry.GetAll("extensions").forEach((factory) => {
+      factory({
+        service: s,
+        env: this,
+        target: this._opts.target,
+      });
+    });
+  }
 }

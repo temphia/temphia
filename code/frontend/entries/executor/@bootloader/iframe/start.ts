@@ -51,6 +51,8 @@ export default () => {
 
     const pipe = new IFramePipe(opts.parent_secret, transfered_port);
 
+    const target = document.getElementById("plugroot");
+
     const env = new Env({
       agent: opts.agent,
       plug: opts.plug,
@@ -60,6 +62,7 @@ export default () => {
       pipe: pipe,
       registry: window["__registry__"],
       tenant_id: opts.tenant_id,
+      target: target,
     });
 
     await env.init();
@@ -71,7 +74,7 @@ export default () => {
       agent: opts.agent,
       entry: opts.entry,
       env: env,
-      target: document.getElementById("plugroot"),
+      target: target,
       exec_loader: opts.exec_loader,
       payload: null,
     });

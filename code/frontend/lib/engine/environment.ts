@@ -21,7 +21,13 @@ export interface AssetManager {
   SheduleWorker(name: string): Worker;
 }
 
-export interface Environment {
+export interface Extendable {
+  OnEvent(evname: string, handler: (ev: any) => void): void
+}
+
+export type ExtendableType = Extendable | any
+
+export interface Environment<S=ExtendableType> {
   PreformAction: (name: string, data: any) => Promise<{data:any,ok:boolean,status:number}>;
   PreformParentAction: (name: string, data: any) => Promise<any>;
   OnParentAction: (handler: (data: any) => {}) => void;
@@ -30,5 +36,6 @@ export interface Environment {
   GetExecVars: () => ExecVariables;
   GetAssetManager: () => AssetManager;
   GetExecApiManager: () => Promise<any>
+  Extend(s: S): S
 }
 
