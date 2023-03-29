@@ -3,16 +3,17 @@
   import { PageDashService } from "./service";
   import Pagedash from "./pagedash.svelte";
   import Tailwind from "../../xcompo/common/_tailwind.svelte";
+  import type { Environment } from "../../../lib/engine/environment";
 
-  export let env: any;
+  export let env: Environment;
 
   let loading = false;
   let data = {};
-  let service;
+  let service: PageDashService;
 
   const load = async () => {
     if (!service) {
-      service = new PageDashService(env);
+      service = env.Extend(new PageDashService(env));
     }
 
     const resp = await service.load({});
