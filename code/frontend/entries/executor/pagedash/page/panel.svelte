@@ -12,12 +12,11 @@
   let panel_data = {};
 
   if (panel.source.startsWith("data/")) {
-    console.log("@data", data, panel.source)
-    
+    console.log("@data", data, panel.source);
 
-    panel_data = data[panel.source.replace("data/", "")] || {};
+    panel_data = data.data[panel.source.replace("data/", "")] || {};
 
-    console.log("@panel_data", panel_data)
+    console.log("@panel_data", panel_data);
 
     loading = false;
   }
@@ -42,10 +41,10 @@
   };
 </script>
 
-<div class="rounded p-1 bg-white {classIt(view_opts["width"])}">
+<div class="rounded p-1 bg-white {classIt(view_opts['width'])}">
   {#if loading}
     <LoadingSpinner classes="" />
   {:else}
-    <Element {data} {panel} />
+    <Element data={panel_data} {panel} />
   {/if}
 </div>

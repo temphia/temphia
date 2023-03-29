@@ -6,7 +6,7 @@
 </script>
 
 <div class="flex flex-col py-2">
-  <div class="flex items-center justify-center">
+  <div class="flex items-center justify-center gap-2">
     <svg class="w-6 h-6">
       {@html panel.data_opts["icon"] || ""}
     </svg>
