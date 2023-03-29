@@ -16,8 +16,8 @@ func convertModel(model *DashModel) {
 		for pidx := range section.Panels {
 
 			panel := &section.Panels[pidx]
-			if panel.Options != nil {
-				convertInner(panel.Options)
+			if panel.DataOpts != nil {
+				convertInner(panel.DataOpts)
 			}
 
 		}

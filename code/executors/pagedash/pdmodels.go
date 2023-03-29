@@ -25,11 +25,10 @@ type Section struct {
 
 type Panel struct {
 	Name     string         `json:"name,omitempty" yaml:"name,omitempty"`
-	Width    uint8          `json:"width,omitempty" yaml:"width,omitempty"`
-	Height   uint8          `json:"height,omitempty" yaml:"height,omitempty"`
-	Interval string         `json:"interval,omitempty" yaml:"interval,omitempty"`
+	Info     string         `json:"info,omitempty" yaml:"info,omitempty"`
+	ViewOpts map[string]any `json:"view_opts,omitempty" yaml:"view_opts,omitempty"`
 	Type     string         `json:"type,omitempty" yaml:"type,omitempty"`
-	Options  map[string]any `json:"options,omitempty" yaml:"options,omitempty"`
+	DataOpts map[string]any `json:"data_opts,omitempty" yaml:"data_opts,omitempty"`
 	Source   string         `json:"source,omitempty" yaml:"source,omitempty"`
 }
 
