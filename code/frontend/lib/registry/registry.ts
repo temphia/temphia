@@ -1,5 +1,5 @@
 export type FactoryOptions<F = any> = F;
-export type Factory<F = any> = (opts: FactoryOptions<F>) => void;
+export type Factory<F = any> = (opts: FactoryOptions<F>) => any;
 
 export class Registry<F> {
   _factories: Map<string, (opts: FactoryOptions<F>) => void>;

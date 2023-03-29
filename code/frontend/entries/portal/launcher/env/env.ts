@@ -140,11 +140,17 @@ export class Env implements Environment {
 
   Extend(s: any): any {
     this._registry.GetAll("extensions").forEach((factory) => {
-      factory({
+      const mods = factory({
         service: s,
         env: this,
         target: this._opts.target,
       });
+      
+      if (mods) {
+        s = mods;
+      }
     });
+
+    return s;
   }
 }

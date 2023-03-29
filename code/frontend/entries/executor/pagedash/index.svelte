@@ -1,14 +1,14 @@
 <script lang="ts">
   import { LoadingSpinner } from "../../xcompo";
   import { PageDashService } from "./service";
-  import Pagedash from "./pagedash.svelte";
+  import Pagedash from "./page/index.svelte";
   import Tailwind from "../../xcompo/common/_tailwind.svelte";
   import type { Environment } from "../../../lib/engine/environment";
 
   export let env: Environment;
 
   let loading = false;
-  let data = {};
+  let data;
   let service: PageDashService;
 
   const load = async () => {
