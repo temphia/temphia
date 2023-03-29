@@ -1,0 +1,13 @@
+name: example2
+sections:
+  - name: first1
+    layout: flex
+    panels:
+      - name: no_of_subcribers
+        type: hero_card
+        source: data/no_of_subcribers
+        info: Number of subscriber
+        data_opts: {}
+static_data:
+  no_of_subcribers:
+    value: 12

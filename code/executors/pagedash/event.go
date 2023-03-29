@@ -1,6 +1,8 @@
 package pagedash
 
-import "github.com/temphia/temphia/code/backend/libx/easyerr"
+import (
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+)
 
 func (pd *PageDash) actionLoad(req LoadRequest) (*LoadResponse, error) {
 
@@ -10,7 +12,7 @@ func (pd *PageDash) actionLoad(req LoadRequest) (*LoadResponse, error) {
 		data = pd.model.StaticData
 	} else {
 		data = make(map[string]any)
-		data["__exec_data__"] = data
+		data["__exec_data__"] = req.ExecData
 		for k, v := range pd.model.StaticData {
 			data[k] = v
 		}

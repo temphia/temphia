@@ -2,6 +2,7 @@ package pagedash
 
 import (
 	"github.com/dop251/goja"
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 )
 
@@ -72,6 +73,8 @@ func (pd *PdCtx) getDataValue(field string) any {
 }
 
 func (pd *PdCtx) setDataValue(field string, value any) {
+	pp.Println("@value", value)
+
 	pd.data[field] = value
 }
 

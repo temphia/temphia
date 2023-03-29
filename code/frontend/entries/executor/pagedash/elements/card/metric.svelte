@@ -10,7 +10,7 @@
     <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900 "
       >{data["value1"] || ""}</span
     >
-    <h3 class="text-base font-normal text-gray-500">{panel.name}</h3>
+    <h3 class="text-base font-normal text-gray-500">{panel["info"] || ""}</h3>
   </div>
   <div
     class="ml-5 w-0 flex items-center justify-end flex-1 text-base font-bold {increase
@@ -23,7 +23,6 @@
       class="w-5 h-5 {increase ? '' : 'rotate-180'}"
       fill="currentColor"
       viewBox="0 0 20 20"
-      xmlns="http://www.w3.org/2000/svg"
     >
       <path
         fill-rule="evenodd"
