@@ -19,11 +19,10 @@ export interface Section {
 
 export interface Panel {
   name: string;
-  width: string;
-  height: number;
-  interval: number;
   type: string;
-  options: { [_: string]: any };
+  info: string;
+  view_opts: { [_: string]: any };
+  data_opts: { [_: string]: any };
   source: string;
 }
 

@@ -25,9 +25,9 @@ type Section struct {
 
 type Panel struct {
 	Name     string         `json:"name,omitempty" yaml:"name,omitempty"`
+	Type     string         `json:"type,omitempty" yaml:"type,omitempty"`
 	Info     string         `json:"info,omitempty" yaml:"info,omitempty"`
 	ViewOpts map[string]any `json:"view_opts,omitempty" yaml:"view_opts,omitempty"`
-	Type     string         `json:"type,omitempty" yaml:"type,omitempty"`
 	DataOpts map[string]any `json:"data_opts,omitempty" yaml:"data_opts,omitempty"`
 	Source   string         `json:"source,omitempty" yaml:"source,omitempty"`
 }
