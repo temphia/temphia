@@ -27,6 +27,17 @@ func (pd *PageDash) actionLoad(req LoadRequest) (*LoadResponse, error) {
 				if err != nil {
 					return nil, err
 				}
+			case "func":
+				hfunc, ok := hookFuncs[hook.Target]
+				if !ok {
+					return nil, easyerr.NotFound()
+				}
+
+				err := hfunc(pctx)
+				if err != nil {
+					return nil, err
+				}
+
 			default:
 				return nil, easyerr.NotImpl()
 			}

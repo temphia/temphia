@@ -9,19 +9,18 @@ import (
 func TestCtx(t *testing.T) {
 
 	ctx := PdCtx{
-		data: map[string]any{
+		Data: map[string]any{
 			"x": 1,
 		},
-		model: nil,
-		ok:    true,
-		rt:    goja.New(),
+		Model: nil,
+		Rt:    goja.New(),
 	}
 
-	ctx.rt.Set("test_fail", func(reason string) {
+	ctx.Rt.Set("test_fail", func(reason string) {
 		t.Fatal(reason)
 	})
 
-	_, err := ctx.rt.RunScript("test", `
+	_, err := ctx.Rt.RunScript("test", `
 	
 	function run_test(version) {
 		if (get_data_value("x") !== 1) {

@@ -1,37 +1,37 @@
 package pagedash
 
 import (
+	"sync"
+
 	"github.com/dop251/goja"
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 )
 
 type PdCtx struct {
-	data    map[string]any
-	model   *DashModel
-	message string
-	ok      bool
-	rt      *goja.Runtime
+	Data    map[string]any
+	Model   *DashModel
+	Message string
+	Rt      *goja.Runtime
 }
 
 func (pd *PageDash) new(data map[string]any) *PdCtx {
 
 	return &PdCtx{
-		data:    data,
-		model:   pd.model,
-		message: "",
-		ok:      true,
-		rt:      pd.jsruntime,
+		Data:    data,
+		Model:   pd.model,
+		Message: "",
+		Rt:      nil,
 	}
 }
 
 func (pd *PdCtx) bind() {
-	pd.rt.Set("apply_data", pd.applyData)
-	pd.rt.Set("get_data", pd.getData)
-	pd.rt.Set("get_data_value", pd.getDataValue)
-	pd.rt.Set("set_data_value", pd.setDataValue)
+	pd.Rt.Set("apply_data", pd.applyData)
+	pd.Rt.Set("get_data", pd.getData)
+	pd.Rt.Set("get_data_value", pd.getDataValue)
+	pd.Rt.Set("set_data_value", pd.setDataValue)
 
-	pd.rt.Set("get_bind_funcs", func() any {
+	pd.Rt.Set("get_bind_funcs", func() any {
 		return []string{
 			"apply_data",
 			"get_data",
@@ -44,7 +44,7 @@ func (pd *PdCtx) bind() {
 
 func (pd *PdCtx) execute(method, version string) error {
 	var fn func(version string) error
-	err := getEntry(pd.rt, method, &fn)
+	err := getEntry(pd.Rt, method, &fn)
 	if err != nil {
 		return err
 	}
@@ -57,25 +57,25 @@ func (pd *PdCtx) applyData(data map[string]any) {
 		return
 	}
 
-	for k, v := range pd.data {
+	for k, v := range pd.Data {
 		data[k] = v
 	}
 
-	pd.data = data
+	pd.Data = data
 }
 
 func (pd *PdCtx) getData() any {
-	return pd.data
+	return pd.Data
 }
 
 func (pd *PdCtx) getDataValue(field string) any {
-	return pd.data[field]
+	return pd.Data[field]
 }
 
 func (pd *PdCtx) setDataValue(field string, value any) {
 	pp.Println("@value", value)
 
-	pd.data[field] = value
+	pd.Data[field] = value
 }
 
 // helper
@@ -87,4 +87,18 @@ func getEntry(runtime *goja.Runtime, name string, entry interface{}) error {
 	}
 
 	return runtime.ExportTo(rawentry, entry)
+}
+
+type HookFunc func(ctx *PdCtx) error
+
+var (
+	hookFuncs map[string]HookFunc
+	hLock     sync.Mutex
+)
+
+func RegisterHookFunc(name string, hfunc HookFunc) {
+	hLock.Lock()
+	defer hLock.Unlock()
+
+	hookFuncs[name] = hfunc
 }
