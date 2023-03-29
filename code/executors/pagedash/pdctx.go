@@ -21,7 +21,7 @@ func (pd *PageDash) new(data map[string]any) *PdCtx {
 		Data:    data,
 		Model:   pd.model,
 		Message: "",
-		Rt:      nil,
+		Rt:      pd.jsruntime,
 	}
 }
 
