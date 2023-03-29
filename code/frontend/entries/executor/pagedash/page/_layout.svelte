@@ -3,10 +3,12 @@
 </script>
 
 <div class="h-full w-full flex-1 flex flex-col overflow-hidden">
+  <div class="flex p-2 justify-between bg-blue-300">
+    <div class="flex"><h3 class="text-white mr-4">Dash [{name}]</h3></div>
+    <div class="flex gap-2" />
+  </div>
   <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
     <div class="container mx-auto py-2">
-      <h3 class="text-gray-700 text-3xl font-medium">{name}</h3>
-
       <slot />
     </div>
   </main>

@@ -1,6 +1,6 @@
 <script lang="ts">
   import Pertable from "./table/percentage.svelte";
-  import MetricCard from "./card/metric.svelte";
+  import HeroCard from "./card/hero.svelte";
   import AutoTable from "./table/auto.svelte";
   import ChartGraph from "./chart/chart.svelte";
   export let panel: any;
@@ -8,7 +8,7 @@
 </script>
 
 {#if panel.type === "hero_card"}
-  <MetricCard {data} {panel} />
+  <HeroCard {data} {panel} />
 
 <!-- {:else if panel.type === "auto_table"}
   <AutoTable {data} {panel} /> 

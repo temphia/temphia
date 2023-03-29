@@ -7,11 +7,12 @@
 
   export let env: Environment;
 
-  let loading = false;
+  let loading = true;
   let data;
   let service: PageDashService;
 
   const load = async () => {
+    loading = true
     if (!service) {
       service = env.Extend(new PageDashService(env));
     }
@@ -20,6 +21,9 @@
     if (!resp.ok) {
       return;
     }
+
+    console.log("@resp", resp)
+
     data = resp.data;
     loading = false;
   };

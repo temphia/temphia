@@ -24,6 +24,7 @@ func convertModel(model *DashModel) {
 
 	}
 
+	convertInner(model.StaticData)
 }
 
 func convertInner(m map[string]interface{}) {
