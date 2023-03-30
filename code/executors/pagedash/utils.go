@@ -149,6 +149,23 @@ func convertInner(m map[string]interface{}) {
 			}
 			convertInner(m2)
 			m[idx] = m2
+
+		case []interface{}:
+			for innIdx := range v2 {
+				innVal := v2[innIdx]
+				switch innv2 := innVal.(type) {
+				case map[interface{}]interface{}:
+					m2 := make(map[string]interface{})
+					for k, v := range innv2 {
+						m2[fmt.Sprint(k)] = v
+					}
+					convertInner(m2)
+
+					v2[innIdx] = m2
+				}
+
+			}
+
 		default:
 			continue
 		}
