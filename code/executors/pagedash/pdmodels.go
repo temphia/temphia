@@ -42,14 +42,17 @@ type Source struct {
 
 type LoadRequest struct {
 	ExecData any    `json:"exec_data,omitempty"`
-	Version  string `json:"version,omitempty"`
+	Id       string `json:"version,omitempty"`
 }
 
 type LoadResponse struct {
-	Name     string            `json:"name,omitempty" yaml:"name,omitempty"`
-	Data     map[string]any    `json:"data,omitempty" yaml:"data,omitempty"`
-	Sources  map[string]Source `json:"sources,omitempty" yaml:"sources,omitempty"`
-	Sections []Section         `json:"sections,omitempty" yaml:"sections,omitempty"`
+	Name         string            `json:"name,omitempty"`
+	Data         map[string]any    `json:"data,omitempty"`
+	Sources      map[string]Source `json:"sources,omitempty"`
+	Sections     []Section         `json:"sections,omitempty"`
+	ActiveKey    string            `json:"active_key,omitempty"`
+	BuildDate    string            `json:"build_date,omitempty"`
+	PreviousKeys map[string]string `json:"previous_keys,omitempty"`
 }
 
 type BuildRequest struct {

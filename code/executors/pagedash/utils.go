@@ -1,8 +1,120 @@
 package pagedash
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
+
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/upper/db/v4"
 )
+
+type Index struct {
+	ActiveKey    string            `json:"active_key,omitempty"`
+	BuildDate    string            `json:"build_date,omitempty"`
+	PreviousKeys map[string]string `json:"previous_keys,omitempty"`
+	Version      int64             `json:"-"`
+}
+
+func (pd *PageDash) getBuildData(key string) (map[string]any, error) {
+	pkv := pd.binder.PlugKVBindingsGet()
+
+	resp, err := pkv.Get(0, key)
+	if err != nil {
+		return nil, err
+	}
+
+	data := make(map[string]any)
+
+	err = json.Unmarshal([]byte(resp.Value), &data)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}
+
+func (pd *PageDash) setBuildData(key string, data map[string]any) error {
+	pkv := pd.binder.PlugKVBindingsGet()
+
+	out, err := json.Marshal(&data)
+	if err != nil {
+		return err
+	}
+
+	return pkv.Set(0, key, string(out), &store.SetOptions{})
+}
+
+func (pd *PageDash) delBuldData(key string) error {
+	pkv := pd.binder.PlugKVBindingsGet()
+	return pkv.Del(0, key)
+}
+
+func (pd *PageDash) setIndex(index *Index) error {
+
+	out, err := json.Marshal(index)
+	if err != nil {
+		return err
+	}
+
+	return pd.setIndexRaw(string(out), index.Version)
+}
+
+func (pd *PageDash) getIndex() (*Index, error) {
+	val, err := pd.getIndexRaw()
+	if err != nil {
+		return nil, err
+	}
+	index := &Index{}
+
+	err = json.Unmarshal([]byte(val.Value), index)
+	if err != nil {
+		return nil, err
+	}
+
+	index.Version = val.Version
+	if index.PreviousKeys == nil {
+		index.PreviousKeys = make(map[string]string)
+	}
+
+	return index, nil
+}
+
+func (pd *PageDash) getIndexRaw() (*entities.PlugKV, error) {
+	pkv := pd.binder.PlugKVBindingsGet()
+
+	val, err := pkv.Get(0, "index")
+	if err != nil {
+		return nil, err
+	}
+
+	return val, nil
+
+}
+
+func (pd *PageDash) setIndexRaw(value string, version int64) error {
+	pkv := pd.binder.PlugKVBindingsGet()
+	err := pkv.Update(0, "index", value, &store.UpdateOptions{
+		WithVerison: true,
+		Version:     int(version),
+	})
+
+	if err == nil {
+		return nil
+	}
+
+	if errors.Is(err, db.ErrNoMoreRows) {
+		err = pkv.Set(0, "index", value, &store.SetOptions{})
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+
+	return err
+
+}
 
 func convertModel(model *DashModel) {
 
@@ -42,21 +154,3 @@ func convertInner(m map[string]interface{}) {
 		}
 	}
 }
-
-/*
-
-func convert(m map[any]any) map[string]any {
-	res := map[string]any{}
-	for k, v := range m {
-		switch v2 := v.(type) {
-		case map[interface{}]interface{}:
-			res[fmt.Sprint(k)] = convert(v2)
-		default:
-			res[fmt.Sprint(k)] = v
-		}
-	}
-	return res
-}
-
-
-*/
