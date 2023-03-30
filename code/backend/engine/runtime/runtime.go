@@ -99,7 +99,12 @@ func (r *runtime) PreformAsync(j *job.AsyncJob) {
 }
 
 func (r *runtime) ResetAgents(tenantId, plug string, agents []string) {
+	ns := r.getNS(tenantId, false)
+	if ns == nil {
+		return
+	}
 
+	ns.destroy(plug, agents)
 }
 
 func (r *runtime) ResetBprint(tenantId, bprint string) {

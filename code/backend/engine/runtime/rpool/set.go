@@ -6,13 +6,13 @@ type plugSet struct {
 }
 
 type agentSet struct {
-	events       Set
+	binders      Set
 	counter      int64
 	epochVersion int64
 }
 
 func (a *agentSet) isEmpty() bool {
-	return a.events.IsEmpty()
+	return a.binders.IsEmpty()
 }
 
 type Set map[string]struct{}

@@ -45,7 +45,7 @@ func (p *Pool) Borrow(plugId, agentId string) (*binder.Binder, int) {
 		return nil, 0
 	}
 
-	event := agentEventSet.events.Pop()
+	event := agentEventSet.binders.Pop()
 
 	if agentEventSet.isEmpty() {
 		delete(p.agentIndex, plugId+agentId)
@@ -58,7 +58,26 @@ func (p *Pool) Borrow(plugId, agentId string) (*binder.Binder, int) {
 	p.totalCount = p.totalCount - 1
 	agentEventSet.counter = agentEventSet.counter + 1
 
-	return bind, len(agentEventSet.events)
+	return bind, len(agentEventSet.binders)
+
+}
+
+func (p *Pool) Destroy(plugId string, agentIds []string) {
+	p.slock.Lock()
+	defer p.slock.Unlock()
+
+	for _, agentId := range agentIds {
+		agentSet := p.agentIndex[plugId+agentId]
+		if agentSet == nil {
+			continue
+		}
+
+		for bdr := range agentSet.binders {
+			delete(p.binders, bdr)
+		}
+
+		agentSet.epochVersion = agentSet.epochVersion + 1
+	}
 
 }
 
@@ -81,7 +100,7 @@ func (p *Pool) Return(b *binder.Binder) {
 	aset, ok := p.agentIndex[b.Handle.PlugId+b.Handle.AgentId]
 	if !ok {
 		aset = &agentSet{
-			events: Set{
+			binders: Set{
 				b.Handle.EventId: struct{}{},
 			},
 			counter:      0,
@@ -94,7 +113,7 @@ func (p *Pool) Return(b *binder.Binder) {
 		}
 
 		count := p.calculate(aset.counter)
-		if len(aset.events) > int(count) {
+		if len(aset.binders) > int(count) {
 			return
 		}
 
@@ -105,7 +124,7 @@ func (p *Pool) Return(b *binder.Binder) {
 			delete(p.binders, b.Handle.EventId)
 		}
 
-		aset.events.Push(b.Handle.EventId)
+		aset.binders.Push(b.Handle.EventId)
 	}
 
 	p.totalCount = p.totalCount + 1
@@ -123,8 +142,8 @@ func (p *Pool) SetEpoch(plug, agent string, e int64) {
 
 	aset.epochVersion = e
 
-	for ev := range aset.events {
-		delete(aset.events, ev)
+	for ev := range aset.binders {
+		delete(aset.binders, ev)
 		delete(p.binders, ev)
 	}
 }
@@ -143,7 +162,7 @@ func (p *Pool) getRandom(currPlug, currAgent string) *binder.Binder {
 			}
 
 			aset := p.agentIndex[cval.Handle.PlugId+cval.Handle.AgentId]
-			if len(aset.events) < 1 {
+			if len(aset.binders) < 1 {
 				continue
 			}
 

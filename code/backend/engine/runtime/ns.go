@@ -48,6 +48,10 @@ func (n *ns) doWork(j *job.Job) (*event.Response, error) {
 	return resp, err
 }
 
+func (n *ns) destroy(plug string, agents []string) {
+	n.pool.Destroy(plug, agents)
+}
+
 func (n *ns) listRunning() []etypes.RunningExec {
 	re := make([]etypes.RunningExec, len(n.running))
 	for _, b := range n.running {
