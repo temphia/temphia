@@ -8,6 +8,7 @@
 
   export let onRun = () => {};
   export let onSave = () => {};
+  export let onReset = () => {};
 </script>
 
 <div class="p-1 flex justify-between">
@@ -23,6 +24,14 @@
       <Icon name="play" class="h-4 w-4 md:h-6 md:w-6" solid />
       run
     </button>
+
+    <button
+    on:click={onReset}
+    class="p-1 rounded bg-red-400 shadow hover:bg-red-600 flex text-white uppercase"
+  >
+    <Icon name="refresh" class="h-4 w-4 md:h-6 md:w-6" solid />
+    reset
+  </button>
 
     <button
       on:click={onSave}

@@ -76,7 +76,7 @@ func (c *Controller) Execute(tenantId, action string, ctx *gin.Context) {
 }
 
 func (c *Controller) Reset(tenantId, plugId, agentId string) error {
-
+	c.engine.GetRuntime().ResetAgents(tenantId, plugId, []string{agentId})
 	return nil
 }
 

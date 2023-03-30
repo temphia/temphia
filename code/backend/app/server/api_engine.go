@@ -20,6 +20,8 @@ func (s *Server) engineAPI(rg *gin.RouterGroup) {
 	rg.POST("/launch/target", s.X(s.launchTarget))
 	rg.POST("/launch/admin", s.X(s.launchAdmin))
 	rg.POST("/launch/auth", s.launchAuth)
+	rg.POST("/reset", s.X(s.reset))
+
 	rg.GET("/boot/:pid/:aid", s.bootAgent())
 
 	// execute action
@@ -136,6 +138,24 @@ func (s *Server) launchAuth(ctx *gin.Context) {
 
 	httpx.WriteJSON(ctx, out, err)
 
+}
+
+type ResetRequest struct {
+	PlugId  string `json:"plug_id,omitempty"`
+	AgentId string `json:"agent_id,omitempty"`
+}
+
+func (s *Server) reset(ctx httpx.Request) {
+	req := ResetRequest{}
+
+	err := ctx.Http.BindJSON(&req)
+	if err != nil {
+		httpx.UnAuthorized(ctx.Http)
+		return
+	}
+
+	s.cEngine.Reset(ctx.Session.TenantId, req.PlugId, req.AgentId)
+	httpx.WriteFinal(ctx.Http, err)
 }
 
 //  boot agent

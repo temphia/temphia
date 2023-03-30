@@ -14,4 +14,11 @@ export class EngineAPI {
   launch_admin(data: any) {
     return this.base.post("/engine/launch/admin", data);
   }
+
+  reset(plug_id: string, agent_id: string) {
+    return this.base.post("/engine/reset", {
+      plug_id,
+      agent_id,
+    });
+  }
 }
