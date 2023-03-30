@@ -9,7 +9,7 @@ import (
 
 	"github.com/tetratelabs/wazero"
 	"github.com/tetratelabs/wazero/api"
-	"github.com/tetratelabs/wazero/wasi_snapshot_preview1"
+	"github.com/tetratelabs/wazero/imports/wasi_snapshot_preview1"
 )
 
 // greetWasm was compiled using `tinygo build -o greet.wasm -scheduler=none --no-debug -target=wasi greet.go`
@@ -26,29 +26,27 @@ func main() {
 	ctx := context.Background()
 
 	// Create a new WebAssembly Runtime.
-	r := wazero.NewRuntimeWithConfig(wazero.NewRuntimeConfig().
-		// Enable WebAssembly 2.0 support, which is required for TinyGo 0.24+.
-		WithWasmCore2())
+	r := wazero.NewRuntime(ctx)
 	defer r.Close(ctx) // This closes everything this Runtime created.
 
 	// Instantiate a Go-defined module named "env" that exports a function to
 	// log to the console.
-	_, err := r.NewModuleBuilder("env").
-		ExportFunction("log", logString).
-		Instantiate(ctx, r)
+	_, err := r.NewHostModuleBuilder("env").
+		NewFunctionBuilder().
+		WithFunc(logString).
+		Export("log").
+		Instantiate(ctx)
 	if err != nil {
 		log.Panicln(err)
 	}
 
 	// Note: testdata/greet.go doesn't use WASI, but TinyGo needs it to
 	// implement functions such as panic.
-	if _, err = wasi_snapshot_preview1.Instantiate(ctx, r); err != nil {
-		log.Panicln(err)
-	}
+	wasi_snapshot_preview1.MustInstantiate(ctx, r)
 
 	// Instantiate a WebAssembly module that imports the "log" function defined
 	// in "env" and exports "memory" and functions we'll use in this example.
-	mod, err := r.InstantiateModuleFromBinary(ctx, greetWasm)
+	mod, err := r.Instantiate(ctx, greetWasm)
 	if err != nil {
 		log.Panicln(err)
 	}
@@ -77,9 +75,9 @@ func main() {
 	defer free.Call(ctx, namePtr)
 
 	// The pointer is a linear memory offset, which is where we write the name.
-	if !mod.Memory().Write(ctx, uint32(namePtr), []byte(name)) {
+	if !mod.Memory().Write(uint32(namePtr), []byte(name)) {
 		log.Panicf("Memory.Write(%d, %d) out of range of memory size %d",
-			namePtr, nameSize, mod.Memory().Size(ctx))
+			namePtr, nameSize, mod.Memory().Size())
 	}
 
 	// Now, we can call "greet", which reads the string we wrote to memory!
@@ -98,16 +96,16 @@ func main() {
 	greetingPtr := uint32(ptrSize[0] >> 32)
 	greetingSize := uint32(ptrSize[0])
 	// The pointer is a linear memory offset, which is where we write the name.
-	if bytes, ok := mod.Memory().Read(ctx, greetingPtr, greetingSize); !ok {
+	if bytes, ok := mod.Memory().Read(greetingPtr, greetingSize); !ok {
 		log.Panicf("Memory.Read(%d, %d) out of range of memory size %d",
-			greetingPtr, greetingSize, mod.Memory().Size(ctx))
+			greetingPtr, greetingSize, mod.Memory().Size())
 	} else {
 		fmt.Println("go >>", string(bytes))
 	}
 }
 
 func logString(ctx context.Context, m api.Module, offset, byteCount uint32) {
-	buf, ok := m.Memory().Read(ctx, offset, byteCount)
+	buf, ok := m.Memory().Read(offset, byteCount)
 	if !ok {
 		log.Panicf("Memory.Read(%d, %d) out of range", offset, byteCount)
 	}

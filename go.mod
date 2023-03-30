@@ -26,7 +26,7 @@ require (
 	github.com/rs/xid v1.4.0
 	github.com/rs/zerolog v1.27.0
 	github.com/siddontang/go v0.0.0-20180604090527-bdc77568d726
-	github.com/tetratelabs/wazero v0.0.0-20220812081006-d7d18a5519e6
+	github.com/tetratelabs/wazero v1.0.1
 	github.com/thoas/go-funk v0.9.2
 	github.com/tidwall/buntdb v1.2.9
 	github.com/tidwall/gjson v1.14.3
