@@ -6,9 +6,11 @@ import (
 	"github.com/dop251/goja"
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 )
 
 type PdCtx struct {
+	Binder  bindx.Bindings
 	Data    map[string]any
 	Model   *DashModel
 	Message string
@@ -22,6 +24,7 @@ func (pd *PageDash) new(data map[string]any) *PdCtx {
 		Model:   pd.model,
 		Message: "",
 		Rt:      pd.jsruntime,
+		Binder:  pd.binder,
 	}
 }
 

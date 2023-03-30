@@ -118,6 +118,7 @@ func (pf *Pageform) pfCtx(data map[string]any) *PfCtx {
 		disabledFields: make([]string, 0),
 		rt:             pf.jsruntime,
 		ok:             true,
+		bindings:       pf.binder,
 	}
 
 }

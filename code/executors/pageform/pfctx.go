@@ -1,9 +1,12 @@
 package pageform
 
 import (
+	"sync"
+
 	"github.com/dop251/goja"
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 	"github.com/thoas/go-funk"
 )
 
@@ -16,6 +19,7 @@ type PfCtx struct {
 	final          bool
 	nextStage      string
 	rt             *goja.Runtime
+	bindings       bindx.Bindings
 
 	currStage string
 }
@@ -164,4 +168,18 @@ func getEntry(runtime *goja.Runtime, name string, entry interface{}) error {
 	}
 
 	return runtime.ExportTo(rawentry, entry)
+}
+
+type HookFunc func(ctx *PfCtx) error
+
+var (
+	hookFuncs map[string]HookFunc
+	hLock     sync.Mutex
+)
+
+func RegisterHookFunc(name string, hfunc HookFunc) {
+	hLock.Lock()
+	defer hLock.Unlock()
+
+	hookFuncs[name] = hfunc
 }
