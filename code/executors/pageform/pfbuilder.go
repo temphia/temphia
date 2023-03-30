@@ -5,7 +5,7 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/executors/helper"
+	"github.com/temphia/temphia/code/executors/elib/helper"
 	"gopkg.in/yaml.v2"
 
 	gojaExec "github.com/temphia/temphia/code/backend/engine/executors/javascript1/goja"
