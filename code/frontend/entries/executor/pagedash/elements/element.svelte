@@ -12,13 +12,8 @@
   <HeroCard {data} {panel} />
 {:else if panel.type === "metric_card"}
   <MetricCard {data} {panel} />
-
-  <!-- 
-{:else if panel.type === "per_table"}
-  <Pertable {data} {panel} />
-{:else if panel.type === "chart_graph"}
+{:else if panel.type === "chart"}
   <ChartGraph {data} {panel} />
-  -->
 {:else}
   <div>Not Impl</div>
 {/if}

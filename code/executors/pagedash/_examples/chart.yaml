@@ -1,0 +1,36 @@
+name: example2
+sections:
+  - name: first1
+    layout: flex
+    panels:
+      - name: no_of_votes
+        type: chart
+        source: data/no_of_votes
+        info: Number of Votes
+        view_opts:
+          width: 2xl
+        data_opts:
+          chart_type: bar
+          options:
+            scales:
+              "y":
+                beginAtZero: true
+static_data:
+  no_of_votes:
+    labels:
+      - Red
+      - Blue
+      - Yellow
+      - Green
+      - Purple
+      - Orange
+    datasets:
+      - label: "# of Votes"
+        data:
+          - 12
+          - 19
+          - 3
+          - 5
+          - 2
+          - 3
+        borderWidth: 1

@@ -12,7 +12,7 @@
   let service: PageDashService;
 
   const load = async () => {
-    loading = true
+    loading = true;
     if (!service) {
       service = env.Extend(new PageDashService(env));
     }
@@ -22,7 +22,7 @@
       return;
     }
 
-    console.log("@resp", resp)
+    console.log("@resp", resp);
 
     data = resp.data;
     loading = false;
@@ -30,6 +30,10 @@
 
   load();
 </script>
+
+<svelte:head>
+  <script src="/z/assets/lib/chartjs/chartjs.js"></script>
+</svelte:head>
 
 {#if loading}
   <LoadingSpinner />

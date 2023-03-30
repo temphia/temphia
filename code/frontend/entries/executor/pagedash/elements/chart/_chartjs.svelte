@@ -56,3 +56,4 @@
 </svelte:head>
 
 <canvas bind:this={canvasRef} />
+
