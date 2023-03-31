@@ -80,9 +80,20 @@ export class SelfAPI {
     return this.base.get("/self/system/module");
   }
 
-
   list_repo_sources() {
     return this.base.get("/self/system/repo");
+  }
+
+  list_sheet_templates() {
+    return this.base.get("/sheet/template");
+  }
+
+  instance_sheet_template(name: string, info: string, template: string) {
+    return this.base.post("/sheet/template", {
+      name,
+      info,
+      template,
+    });
   }
 
   // device

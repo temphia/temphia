@@ -4,7 +4,6 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/backend/controllers/data"
 	"github.com/temphia/temphia/code/backend/controllers/sockd"
 	"github.com/temphia/temphia/code/backend/services/sockdhub/transports"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
@@ -33,27 +32,7 @@ func (s *Server) dataAPI(rg *gin.RouterGroup) {
 	s.dataSheetAPI(rg.Group("/sheet"))
 
 	rg.POST("/utils/user", s.dx(s.listDataUsers))
-	rg.GET("/utils/sheet/template", s.X(s.listSheetTemplates))
-	rg.GET("/utils/sheet/instance", s.X(s.instanceSheetTemplate))
 
-}
-
-func (s *Server) listSheetTemplates(ctx httpx.Request) {
-	resp, err := s.cData.ListSheetTemplates(ctx.Session)
-	httpx.WriteJSON(ctx.Http, resp, err)
-}
-
-func (s *Server) instanceSheetTemplate(ctx httpx.Request) {
-	req := data.QuickSheetInstance{}
-
-	err := ctx.Http.BindJSON(&req)
-	if err != nil {
-		httpx.WriteErr(ctx.Http, err)
-		return
-	}
-
-	err = s.cData.InstanceSheet(ctx.Session, req)
-	httpx.WriteErr(ctx.Http, err)
 }
 
 func (s *Server) loadGroup(uclaim *claim.Data, ctx *gin.Context) {

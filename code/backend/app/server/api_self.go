@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/backend/controllers/data"
 	"github.com/temphia/temphia/code/backend/controllers/sockd"
 	"github.com/temphia/temphia/code/backend/services/sockdhub/transports"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
@@ -26,6 +27,9 @@ func (s *Server) selfAPI(rg *gin.RouterGroup) {
 	rg.POST("/issue/data", s.X(s.issueDataTkt))
 	rg.POST("/issue/ugroup", s.X(s.issueUgroup))
 	rg.GET("/self/ws", s.sockdUserWS)
+
+	rg.GET("/sheet/template", s.X(s.listSheetTemplates))
+	rg.POST("/sheet/template", s.X(s.instanceSheetTemplate))
 
 	s.selfSysAPI(rg.Group("/system"))
 	s.selfDeviceAPI(rg.Group("/device"))
@@ -77,6 +81,24 @@ func (s *Server) selfListMessages(ctx httpx.Request) {
 	}
 
 	resp, err := s.cBasic.ListMessages(ctx.Session, opts)
+	httpx.WriteJSON(ctx.Http, resp, err)
+}
+
+func (s *Server) instanceSheetTemplate(ctx httpx.Request) {
+	req := data.QuickSheetInstance{}
+
+	err := ctx.Http.BindJSON(&req)
+	if err != nil {
+		httpx.WriteErr(ctx.Http, err)
+		return
+	}
+
+	err = s.cData.InstanceSheet(ctx.Session, req)
+	httpx.WriteErr(ctx.Http, err)
+}
+
+func (s *Server) listSheetTemplates(ctx httpx.Request) {
+	resp, err := s.cData.ListSheetTemplates(ctx.Session)
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
