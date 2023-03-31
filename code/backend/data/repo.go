@@ -9,6 +9,7 @@ import (
 	"path"
 
 	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 )
@@ -102,7 +103,7 @@ func (er *EmbedRepo) GetZip(tenantid, slug, version string) (io.ReadCloser, erro
 		return nil, err
 	}
 
-	return newZipRepoItem(file), nil
+	return xutils.NewTempFile(os.TempDir(), file), nil
 }
 
 func (er *EmbedRepo) readIndex(file string) (*repox.BPrint, error) {
@@ -120,21 +121,4 @@ func (er *EmbedRepo) readIndex(file string) (*repox.BPrint, error) {
 	bprint.Versions = []string{"current"}
 
 	return &bprint, nil
-}
-
-func newZipRepoItem(file *os.File) *ZipRepoItem {
-	return &ZipRepoItem{
-		file:       file.Name(),
-		ReadCloser: file,
-	}
-}
-
-type ZipRepoItem struct {
-	io.ReadCloser
-	file string
-}
-
-func (zr *ZipRepoItem) Close() error {
-	zr.ReadCloser.Close()
-	return os.Remove(path.Join(os.TempDir(), zr.file))
 }
