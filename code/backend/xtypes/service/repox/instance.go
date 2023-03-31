@@ -3,6 +3,7 @@ package repox
 import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
 )
 
 type InstanceOptions struct {
@@ -15,7 +16,7 @@ type InstanceOptions struct {
 }
 
 type InstancHub interface {
-	SheetTemplate(tenantId, source, gslug string, template *xbprint.NewSheetGroup) error
+	SheetTemplate(tenantId, source, gslug string, template *xbprint.NewSheetGroup) (*xinstance.Response, error)
 	ManualSingle(opt InstanceOptions) (any, error)
 	ManualBundleItem(opts InstanceOptions) (any, error)
 	AutomaticBundle(opt InstanceOptions) (any, error)

@@ -93,8 +93,8 @@ func (s *Server) instanceSheetTemplate(ctx httpx.Request) {
 		return
 	}
 
-	err = s.cData.InstanceSheet(ctx.Session, req)
-	httpx.WriteErr(ctx.Http, err)
+	resp, err := s.cData.InstanceSheet(ctx.Session, req)
+	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
 func (s *Server) listSheetTemplates(ctx httpx.Request) {

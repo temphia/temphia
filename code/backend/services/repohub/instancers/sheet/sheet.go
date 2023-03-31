@@ -71,15 +71,19 @@ func (s *SheetInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 		return nil, err
 	}
 
+	return s.instanceInner(opts.TenantId, schemaData, dropts)
+}
+
+func (s *SheetInstancer) instanceInner(tenantId string, schemaData *xbprint.NewSheetGroup, dropts *dtable.DataGroupRequest) (*xinstance.Response, error) {
+
 	dropts.SeedType = ""
 	dropts.GroupName = schemaData.Name
-	resp, err := s.dataInstancer.DirectInstance(opts.TenantId, dropts, &parsedSchema)
+	resp, err := s.dataInstancer.DirectInstance(tenantId, dropts, &parsedSchema)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.instance(resp.Source, opts.TenantId, resp.GroupSlug, schemaData)
-
+	return s.instance(resp.Source, tenantId, resp.GroupSlug, schemaData)
 }
 
 func (s *SheetInstancer) instance(source, tenantId, gslug string, schemaData *xbprint.NewSheetGroup) (*xinstance.Response, error) {
@@ -212,17 +216,20 @@ func (s *SheetInstancer) instance(source, tenantId, gslug string, schemaData *xb
 
 	return &xinstance.Response{
 		Ok:             true,
-		Type:           "data_sheet",
+		Type:           xbprint.TypeDataSheet,
 		Slug:           gslug,
 		ResourceTarget: fmt.Sprintf("%s/%s", source, gslug),
 	}, nil
 
 }
 
-func (s *SheetInstancer) DirectInstance(tenantId, source, gslug string, template *xbprint.NewSheetGroup) error {
-	_, err := s.instance(tenantId, source, gslug, template)
+func (s *SheetInstancer) DirectInstance(tenantId, source, gslug string, template *xbprint.NewSheetGroup) (*xinstance.Response, error) {
+
+	resp, err := dtable.ExtractUserOptions(s.cabhub, s.coreHub, s.dynhub)(tenantId, true, nil, &parsedSchema)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+
+	return s.instanceInner(tenantId, template, resp)
+
 }

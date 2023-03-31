@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
 )
 
 //go:embed sheet_templates.json
@@ -31,21 +31,19 @@ type QuickSheetInstance struct {
 	Source   string `json:"source,omitempty"`
 }
 
-func (c *Controller) InstanceSheet(uclaim *claim.Session, req QuickSheetInstance) error {
+func (c *Controller) InstanceSheet(uclaim *claim.Session, req QuickSheetInstance) (*xinstance.Response, error) {
 
 	tpl, ok := Templates[req.Template]
 	if !ok {
-		return easyerr.NotFound()
-	}
-
-	slug, err := xutils.GenerateRandomString(5)
-	if err != nil {
-		return err
+		return nil, easyerr.NotFound()
 	}
 
 	if req.Source == "" {
 		req.Source = c.dynHub.DefaultSource(uclaim.TenantId).Name()
 	}
 
-	return c.repoman.GetInstanceHub().SheetTemplate(uclaim.TenantId, req.Source, slug, &tpl)
+	tpl.Name = req.Name
+	tpl.Info = req.Info
+
+	return c.repoman.GetInstanceHub().SheetTemplate(uclaim.TenantId, req.Source, "", &tpl)
 }

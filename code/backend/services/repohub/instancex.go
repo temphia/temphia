@@ -31,8 +31,8 @@ type InstancHub struct {
 
 */
 
-func (i *InstancHub) SheetTemplate(tenantId, source, gslug string, template *xbprint.NewSheetGroup) error {
-	sintancer := i.pacman.instancers["sheet"].(*sheet.SheetInstancer)
+func (i *InstancHub) SheetTemplate(tenantId, source, gslug string, template *xbprint.NewSheetGroup) (*xinstance.Response, error) {
+	sintancer := i.pacman.instancers[xbprint.TypeDataSheet].(*sheet.SheetInstancer)
 	return sintancer.DirectInstance(tenantId, source, gslug, template)
 }
 

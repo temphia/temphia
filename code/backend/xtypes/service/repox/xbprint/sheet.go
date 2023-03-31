@@ -20,6 +20,7 @@ const (
 
 type NewSheetGroup struct {
 	Name   string     `json:"name,omitempty"`
+	Info   string     `json:"info,omitempty"`
 	Sheets []NewSheet `json:"sheets,omitempty"`
 }
 
