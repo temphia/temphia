@@ -1,6 +1,8 @@
 package repox
 
 import (
+	"io"
+
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
@@ -13,13 +15,23 @@ type Hub interface {
 	GetInstanceHub() InstancHub
 }
 
+type RepoImportOpts struct {
+	Slug    string `json:"slug,omitempty"`
+	Group   string `json:"group,omitempty"`
+	Source  int64  `json:"source,omitempty"`
+	Version string `json:"version,omitempty"`
+	NewId   string `json:"new_id,omitempty"`
+}
+
 type RepoCore interface {
 	RepoSources(tenantid string) (map[int64]string, error)
-	RepoSourceList(tenantid, group string, source int64, tags ...string) ([]entities.BPrint, error)
-	RepoSourceGet(tenantid, group, slug string, source int64) (*entities.BPrint, error)
-	RepoSourceGetBlob(tenantid, group, slug string, source int64, file string) ([]byte, error)
 
-	RepoSourceImport(tenantid string, data *RepoImportOpts) (string, error)
+	RepoSourceImport(tenantid string, opts *RepoImportOpts) (string, error)
+	RepoSourceList(tenantid, group string, source int64, tags ...string) ([]BPrint, error)
+	RepoSourceGet(tenantid, slug string, source int64) (*BPrint, error)
+	RepoSourceGetZip(tenantid string, source int64, slug, version string) (io.ReadCloser, error)
+
+	BprintCreateFromZip(tenantId string, rawreader io.ReadCloser) (string, error)
 }
 
 type RepoBprintOps interface {

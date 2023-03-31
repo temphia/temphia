@@ -1,86 +1,123 @@
 package repohub
 
 import (
-	"context"
+	"archive/zip"
 	"encoding/json"
+	"io"
+	"io/ioutil"
+	"os"
+	"path"
 
-	"github.com/rs/xid"
-	"github.com/temphia/temphia/code/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
-
-	"github.com/thoas/go-funk"
 )
 
 func (p *PacMan) RepoSourceImport(tenantid string, opts *repox.RepoImportOpts) (string, error) {
 
-	repo := p.getRepoSource(tenantid, opts.Source)
-	if repo == nil {
-		return "", easyerr.NotFound()
+	reader, err := p.RepoSourceGetZip(tenantid, opts.Source, opts.Slug, opts.Version)
+	if err != nil {
+		return "", err
 	}
+	return p.BprintCreateFromZip(tenantid, reader)
+}
 
-	bp, err := repo.GetItem(tenantid, opts.Group, opts.Slug)
+func (p *PacMan) RepoSourceList(tenantid, group string, source int64, tags ...string) ([]repox.BPrint, error) {
+	repo := p.getRepoSource(tenantid, source)
+
+	return repo.Query(tenantid, &repox.RepoQuery{
+		Group: group,
+		Tags:  tags,
+		Page:  0,
+	})
+
+}
+
+func (p *PacMan) RepoSourceGet(tenantid, slug string, source int64) (*repox.BPrint, error) {
+	repo := p.getRepoSource(tenantid, source)
+	return repo.Get(tenantid, slug)
+}
+
+func (p *PacMan) RepoSourceGetZip(tenantid string, source int64, slug, version string) (io.ReadCloser, error) {
+	repo := p.getRepoSource(tenantid, source)
+	return repo.GetZip(tenantid, slug, version)
+}
+
+func (p *PacMan) BprintCreateFromZip(tenantId string, rawreader io.ReadCloser) (string, error) {
+
+	file, err := os.CreateTemp(os.TempDir(), "import_bprint*.zip")
+	if err != nil {
+		return "", err
+	}
+	defer func() {
+		name := file.Name()
+		file.Close()
+		os.Remove(path.Join(os.TempDir(), name))
+	}()
+
+	_, err = io.Copy(file, rawreader)
 	if err != nil {
 		return "", err
 	}
 
-	bp.ID = opts.NewId
-	if bp.ID == "" {
-		bp.ID = xid.New().String()
-	}
-
-	bp.TenantID = tenantid
-
-	if opts.SkipFiles != nil || len(opts.SkipFiles) != 0 {
-		files := make([]string, 0, len(bp.Files)-len(opts.SkipFiles))
-		for _, f := range bp.Files {
-			if !funk.ContainsString(opts.SkipFiles, f) {
-				files = append(files, f)
-			}
-		}
-		bp.Files = entities.JsonArray(files)
-	}
-
-	backFiles := bp.Files
-	bp.Files = make(entities.JsonArray, 0)
-
-	_, err = p.BprintCreate(tenantid, bp)
+	info, err := file.Stat()
 	if err != nil {
 		return "", err
 	}
 
-	bstore := p.blobStore(tenantid)
+	reader, err := zip.NewReader(file, info.Size())
+	if err != nil {
+		return "", err
+	}
 
-	for _, fkey := range backFiles {
+	ifile, err := reader.Open("index.json")
+	if err != nil {
+		return "", err
+	}
 
-		if funk.ContainsString(opts.SkipFiles, fkey) {
+	bprint := &entities.BPrint{}
+	err = json.NewDecoder(ifile).Decode(bprint)
+	if err != nil {
+		return "", err
+	}
+
+	files := make([]string, 0)
+	bprint.Files = entities.JsonArray{}
+
+	bprint.TenantID = tenantId
+	bid, err := p.BprintCreate(tenantId, bprint)
+	if err != nil {
+		return "", err
+	}
+
+	for _, file := range reader.File {
+		if file.Name == "index.json" {
 			continue
 		}
 
-		bytes, err := repo.GetFile(tenantid, opts.Group, opts.Slug, fkey)
-		if err != nil {
-			return "", err
-		}
-		err = bstore.AddBlob(context.TODO(), xtypes.BprintBlobFolder, ffile(bp.ID, fkey), bytes)
+		rfile, err := file.Open()
 		if err != nil {
 			return "", err
 		}
 
+		out, err := ioutil.ReadAll(rfile)
+		if err != nil {
+			return "", err
+		}
+
+		err = p.BprintNewBlob(tenantId, bid, file.Name, out, false)
+		if err != nil {
+			rfile.Close()
+			return "", err
+		}
+
+		files = append(files, file.Name)
+
+		rfile.Close()
 	}
 
-	out, err := json.Marshal(backFiles)
-	if err != nil {
-		return "", nil
-	}
+	pp.Println("@files", files)
 
-	err = p.corehub.BprintUpdate(tenantid, bp.ID, map[string]any{
-		"files": string(out),
-	})
-
-	if err != nil {
-		return "", err
-	}
-
-	return bp.ID, nil
+	err = p.BprintUpdateFilesList(bprint.TenantID, bid, files...)
+	return bid, err
 }

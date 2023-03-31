@@ -1,7 +1,7 @@
 package repox
 
 import (
-	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"io"
 )
 
 type BuilderOptions struct {
@@ -18,10 +18,20 @@ type RepoQuery struct {
 	Page  int64
 }
 
+type BPrint struct {
+	Name        string   `json:"name,omitempty"`
+	Slug        string   `json:"slug,omitempty"`
+	Type        string   `json:"type,omitempty"`
+	SubType     string   `json:"sub_type,omitempty"`
+	Description string   `json:"description,omitempty"`
+	Icon        string   `json:"icon,omitempty"`
+	Tags        []string `json:"tags,omitempty"`
+}
+
 type Repository interface {
 	Name() string
-	Query(tenantId string, opts *RepoQuery) ([]entities.BPrint, error)
-	GetItem(tenantid, group, slug string) (*entities.BPrint, error)
-	GetFile(tenantid, group, slug, file string) ([]byte, error)
-	GetFileURL(tenantid, group, slug, file string) (string, error)
+	Query(tenantId string, opts *RepoQuery) ([]BPrint, error)
+
+	Get(tenantid, slug string) (*BPrint, error)
+	GetZip(tenantid, slug, version string) (io.ReadCloser, error)
 }
