@@ -85,11 +85,11 @@ export class SelfAPI {
   }
 
   list_sheet_templates() {
-    return this.base.get("/sheet/template");
+    return this.base.get("/self/sheet/template");
   }
 
   instance_sheet_template(name: string, info: string, template: string) {
-    return this.base.post("/sheet/template", {
+    return this.base.post("/self/sheet/template", {
       name,
       info,
       template,
