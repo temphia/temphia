@@ -70,7 +70,7 @@ func New(opts Options) *RootController {
 		cAuth:    authed.New(corehub, signer, seq),
 		cBasic:   basic.New(corehub, cab, dynhub, pacman, signer),
 		cCabinet: cabinet.New(cab, signer),
-		cDtable:  data.New(dynhub, cab, signer),
+		cDtable:  data.New(dynhub, pacman, cab, signer),
 		cRepo:    repo.New(pacman),
 		cOperator: operator.New(
 			corehub,

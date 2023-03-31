@@ -4,6 +4,8 @@ import (
 	_ "embed"
 	"encoding/json"
 
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 )
@@ -18,7 +20,7 @@ func init() {
 	json.Unmarshal(tplbytes, &Templates)
 }
 
-func (c *Controller) ListSheetTemplates(uclaim *claim.Data) (map[string]xbprint.NewSheetGroup, error) {
+func (c *Controller) ListSheetTemplates(uclaim *claim.Session) (map[string]xbprint.NewSheetGroup, error) {
 	return Templates, nil
 }
 
@@ -29,14 +31,21 @@ type QuickSheetInstance struct {
 	Source   string `json:"source,omitempty"`
 }
 
-func (c *Controller) InstanceSheet(uclaim *claim.Data, req QuickSheetInstance) error {
+func (c *Controller) InstanceSheet(uclaim *claim.Session, req QuickSheetInstance) error {
 
-	// tpl, ok := Templates[req.Template]
-	// if !ok {
-	// 	return easyerr.NotFound()
-	// }
+	tpl, ok := Templates[req.Template]
+	if !ok {
+		return easyerr.NotFound()
+	}
 
-	// sheet.New()
+	slug, err := xutils.GenerateRandomString(5)
+	if err != nil {
+		return err
+	}
 
-	return nil
+	if req.Source == "" {
+		req.Source = c.dynHub.DefaultSource(uclaim.TenantId).Name()
+	}
+
+	return c.repoman.GetInstanceHub().SheetTemplate(uclaim.TenantId, req.Source, slug, &tpl)
 }

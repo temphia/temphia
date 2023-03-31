@@ -5,6 +5,7 @@ import (
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/services/repohub/instancers/sheet"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
@@ -29,6 +30,11 @@ type InstancHub struct {
 			- single -> instancer
 
 */
+
+func (i *InstancHub) SheetTemplate(tenantId, source, gslug string, template *xbprint.NewSheetGroup) error {
+	sintancer := i.pacman.instancers["sheet"].(*sheet.SheetInstancer)
+	return sintancer.DirectInstance(tenantId, source, gslug, template)
+}
 
 func (i *InstancHub) ManualSingle(opts repox.InstanceOptions) (any, error) {
 
