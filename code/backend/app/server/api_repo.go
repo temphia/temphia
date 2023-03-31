@@ -1,6 +1,7 @@
 package server
 
 import (
+	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -10,7 +11,7 @@ import (
 func (s *Server) repoAPI(rg *gin.RouterGroup) {
 	rg.GET("/:repo", s.X(s.repoList))
 	rg.GET("/:repo/:group_id/:slug", s.X(s.repoGet))
-	rg.GET("/:repo/:group_id/:slug/:file", s.X(s.repoGetFile))
+	rg.GET("/:repo/:group_id/:slug/zip", s.X(s.repoGetZip))
 
 }
 
@@ -43,20 +44,27 @@ func (s *Server) repoGet(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) repoGetFile(ctx httpx.Request) {
-
-	sid, err := strconv.ParseInt(ctx.MustParam("repo"), 10, 64)
+func (s *Server) repoGetZip(ctx httpx.Request) {
+	sid, err := strconv.ParseInt(ctx.Http.Param("repo"), 10, 64)
 	if err != nil {
 		return
 	}
 
-	resp, err := s.cRepo.RepoSourceGetBlob(
+	version := ctx.Http.Query("version")
+	if version == "" {
+		version = "current"
+	}
+
+	resp, err := s.cRepo.RepoSourceGetZip(
 		ctx.Session,
-		ctx.MustParam("group_id"),
-		ctx.MustParam("slug"),
-		sid,
-		ctx.MustParam("file"),
-	)
-	httpx.WriteJSON(ctx.Http, resp, err)
+		ctx.Http.Param("group_id"),
+		ctx.Http.Param("slug"),
+		version,
+		sid)
+	if err != nil {
+		return
+	}
+
+	ctx.Http.DataFromReader(http.StatusOK, 0, "application/zip", resp, nil)
 
 }

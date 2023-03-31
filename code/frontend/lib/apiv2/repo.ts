@@ -20,7 +20,9 @@ export class RepoAPI {
     return this.base.get(`/repo/${id}/${group}/${slug}`);
   }
 
-  getBprintFile(id: string, group: string, slug: string, file: string) {
-    return this.base.get(`/repo/${id}/${group}/${slug}/${file}`);
+  getBprintZip(id: string, group: string, slug: string, version?: string) {
+    return this.base.get(
+      `/repo/${id}/${group}/${slug}/zip?version=${version || ""}`
+    );
   }
 }

@@ -16,7 +16,6 @@ import (
 	// repo providers
 	_ "github.com/temphia/temphia/code/backend/services/repohub/rprovider/embed"
 	_ "github.com/temphia/temphia/code/backend/services/repohub/rprovider/github"
-	_ "github.com/temphia/temphia/code/backend/services/repohub/rprovider/gitlab"
 	_ "github.com/temphia/temphia/code/backend/services/repohub/rprovider/local"
 
 	// db providers

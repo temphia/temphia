@@ -101,7 +101,7 @@ func (l *Local) Get(tenantid, slug string) (*repox.BPrint, error) {
 
 	bprint.Versions = []string{"current"}
 
-	return nil, nil
+	return &bprint, nil
 }
 
 func (l *Local) GetZip(tenantid, slug, version string) (io.ReadCloser, error) {
