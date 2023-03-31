@@ -25,6 +25,7 @@ type BPrint struct {
 	SubType     string   `json:"sub_type,omitempty"`
 	Description string   `json:"description,omitempty"`
 	Icon        string   `json:"icon,omitempty"`
+	Versions    []string `json:"versions,omitempty"`
 	Tags        []string `json:"tags,omitempty"`
 }
 

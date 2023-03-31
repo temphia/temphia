@@ -1,8 +1,14 @@
 package data
 
 import (
+	"archive/zip"
 	"encoding/json"
+	"fmt"
+	"io"
+	"os"
+	"path"
 
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 )
@@ -21,9 +27,8 @@ func (lr *EmbedRepo) Name() string {
 	return "embed"
 }
 
-func (lr *EmbedRepo) Query(tenantId string, opts *repox.RepoQuery) ([]entities.BPrint, error) {
-
-	out, err := lr.assetStore.tryRead("", "repo", "index.json")
+func (er *EmbedRepo) Query(tenantId string, opts *repox.RepoQuery) ([]repox.BPrint, error) {
+	out, err := er.assetStore.tryRead("", "repo", "index.json")
 	if err != nil {
 		return nil, err
 	}
@@ -34,48 +39,102 @@ func (lr *EmbedRepo) Query(tenantId string, opts *repox.RepoQuery) ([]entities.B
 		return nil, err
 	}
 
-	bprints := make([]entities.BPrint, 0, len(index))
-	for _, v := range index {
-		bout, err := lr.assetStore.tryRead("", "repo", v)
-		if err != nil {
-			continue
-		}
-		bprint := entities.BPrint{}
-		err = json.Unmarshal(bout, &bprint)
+	items := make([]repox.BPrint, 0, len(index))
+	for _, idxfile := range index {
+
+		bp, err := er.readIndex(idxfile)
 		if err != nil {
 			continue
 		}
 
-		if opts.Group != "" {
-			if bprint.Type != opts.Group {
-				continue
-			}
+		items = append(items, *bp)
+	}
+
+	return items, nil
+}
+
+func (er *EmbedRepo) Get(tenantid, slug string) (*repox.BPrint, error) {
+	return er.readIndex(fmt.Sprintf("%s_index.json", slug))
+}
+
+func (er *EmbedRepo) GetZip(tenantid, slug, version string) (io.ReadCloser, error) {
+
+	bout, err := er.assetStore.tryRead("", "repo", fmt.Sprintf("%s_index.json", slug))
+	if err != nil {
+		return nil, err
+	}
+
+	bprint := entities.BPrint{}
+	err = json.Unmarshal(bout, &bprint)
+	if err != nil {
+		return nil, err
+	}
+
+	file, err := os.CreateTemp(os.TempDir(), "embed_*.zip")
+	if err != nil {
+		return nil, err
+	}
+
+	writer := zip.NewWriter(file)
+
+	for _, file := range bprint.Files {
+		bout, err := er.assetStore.tryRead("", "repo", fmt.Sprintf("%s_%s", slug, file))
+		if err != nil {
+			return nil, err
 		}
 
-		bprints = append(bprints, bprint)
+		fw, err := writer.Create(file)
+		if err != nil {
+			pp.Println(err)
+			continue
+		}
+
+		_, err = fw.Write(bout)
+		if err != nil {
+			pp.Println(err)
+			continue
+		}
 	}
-	return bprints, nil
+
+	err = writer.Close()
+	if err != nil {
+		os.ReadFile(path.Join(os.TempDir(), file.Name()))
+		return nil, err
+	}
+
+	return newZipRepoItem(file), nil
 }
 
-func (lr *EmbedRepo) GetItem(tenantid, group, slug string) (*entities.BPrint, error) {
-	bout, err := lr.assetStore.tryRead("", "repo", (slug + "_index.json"))
+func (er *EmbedRepo) readIndex(file string) (*repox.BPrint, error) {
+	bout, err := er.assetStore.tryRead("", "repo", file)
 	if err != nil {
 		return nil, err
 	}
-	bprint := &entities.BPrint{}
-	err = json.Unmarshal(bout, bprint)
+
+	bprint := repox.BPrint{}
+	err = json.Unmarshal(bout, &bprint)
 	if err != nil {
 		return nil, err
 	}
 
-	return bprint, nil
+	bprint.Versions = []string{"current"}
+
+	return &bprint, nil
 }
 
-func (lr *EmbedRepo) GetFile(tenantid, group, slug, file string) ([]byte, error) {
-	return lr.assetStore.tryRead("", "repo", (slug + "_" + file))
+func newZipRepoItem(file *os.File) *ZipRepoItem {
+	return &ZipRepoItem{
+		file:       file.Name(),
+		ReadCloser: file,
+	}
 }
 
-func (lr *EmbedRepo) GetFileURL(tenantid, group, slug, file string) (string, error) {
-	// fmt.Sprintf("%s", lr.BaseURL)
-	return "", nil
+type ZipRepoItem struct {
+	io.ReadCloser
+	file string
+}
+
+func (zr *ZipRepoItem) Close() error {
+	zr.ReadCloser.Close()
+	return os.Remove(path.Join(os.TempDir(), zr.file))
 }
