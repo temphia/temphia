@@ -50,6 +50,8 @@ func (p *PacMan) RepoSourceGetZip(tenantid string, source int64, slug, version s
 
 func (p *PacMan) BprintCreateFromZip(tenantId string, rawreader io.ReadCloser) (string, error) {
 
+	defer rawreader.Close()
+
 	pp.Println("@bprint_from_zip")
 
 	file, err := os.CreateTemp(os.TempDir(), "import_bprint*.zip")
@@ -57,7 +59,6 @@ func (p *PacMan) BprintCreateFromZip(tenantId string, rawreader io.ReadCloser) (
 		return "", err
 	}
 	defer func() {
-		rawreader.Close()
 		name := file.Name()
 		file.Close()
 		os.Remove(path.Join(os.TempDir(), name))
