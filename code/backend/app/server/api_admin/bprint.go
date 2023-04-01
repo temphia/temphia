@@ -154,6 +154,10 @@ func (r *ApiAdmin) BprintImport(ctx httpx.Request) {
 		return
 	}
 
+	if opts.Version == "" {
+		opts.Version = "current"
+	}
+
 	resp, err := r.cAdmin.BprintImport(ctx.Session, opts)
 
 	r.rutil.WriteJSON(ctx.Http, resp, err)

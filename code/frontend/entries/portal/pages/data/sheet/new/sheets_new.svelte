@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Step from "../../../play/stepper/step.svelte";
-  import Stepper from "../../../play/stepper/stepper.svelte";
+  import Step from "../../../../../xcompo/stepper/step.svelte";
+  import Stepper from "../../../../../xcompo/stepper/stepper.svelte";
   import Template from "./_template.svelte";
   import { getContext } from "svelte";
   import type { PortalService } from "../../../../services";

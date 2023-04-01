@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Stepper from "./stepper/stepper.svelte";
-  import Step from "./stepper/step.svelte";
+  import Stepper from "../../../xcompo/stepper/stepper.svelte";
+  import Step from "../../../xcompo/stepper/step.svelte";
 
   let locked: boolean = true;
   function onNextHandler(e: any): void {
