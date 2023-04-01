@@ -7,6 +7,7 @@ import (
 )
 
 func NewTempFile(path string, file *os.File) *TempFile {
+	file.Seek(0, 0)
 	return &TempFile{
 		path:       path,
 		name:       file.Name(),
