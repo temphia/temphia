@@ -15,10 +15,15 @@ import (
 
 func (p *PacMan) RepoSourceImport(tenantid string, opts *repox.RepoImportOpts) (string, error) {
 
+	pp.Println("@repo_import")
+
 	reader, err := p.RepoSourceGetZip(tenantid, opts.Source, opts.Slug, opts.Version)
 	if err != nil {
+		pp.Println("@could_not_get_zip", err.Error())
 		return "", err
 	}
+	pp.Println("@after_get_zip")
+
 	return p.BprintCreateFromZip(tenantid, reader)
 }
 
@@ -45,17 +50,28 @@ func (p *PacMan) RepoSourceGetZip(tenantid string, source int64, slug, version s
 
 func (p *PacMan) BprintCreateFromZip(tenantId string, rawreader io.ReadCloser) (string, error) {
 
+	pp.Println("@bprint_from_zip")
+
 	file, err := os.CreateTemp(os.TempDir(), "import_bprint*.zip")
 	if err != nil {
 		return "", err
 	}
 	defer func() {
+		rawreader.Close()
 		name := file.Name()
 		file.Close()
 		os.Remove(path.Join(os.TempDir(), name))
 	}()
 
-	_, err = io.Copy(file, rawreader)
+	bn, err := io.Copy(file, rawreader)
+	if err != nil {
+		pp.Println("@copy_err", err.Error())
+		return "", err
+	}
+
+	pp.Println("@copy_bytes", bn)
+
+	err = file.Sync()
 	if err != nil {
 		return "", err
 	}
@@ -67,6 +83,9 @@ func (p *PacMan) BprintCreateFromZip(tenantId string, rawreader io.ReadCloser) (
 
 	reader, err := zip.NewReader(file, info.Size())
 	if err != nil {
+		pp.Println("@couldnot open zip", err.Error())
+		pp.Println("@reader", file.Name())
+
 		return "", err
 	}
 

@@ -78,6 +78,16 @@ func (er *EmbedRepo) GetZip(tenantid, slug, version string) (io.ReadCloser, erro
 
 	writer := zip.NewWriter(file)
 
+	iw, err := writer.Create("index.json")
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = iw.Write(bout)
+	if err != nil {
+		return nil, err
+	}
+
 	for _, file := range bprint.Files {
 		bout, err := er.assetStore.tryRead("", "repo", fmt.Sprintf("%s_%s", slug, file))
 		if err != nil {

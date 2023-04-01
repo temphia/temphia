@@ -124,6 +124,16 @@ func (l *Local) GetZip(tenantid, slug, version string) (io.ReadCloser, error) {
 
 	writer := zip.NewWriter(file)
 
+	iw, err := writer.Create("index.json")
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = iw.Write(out)
+	if err != nil {
+		return nil, err
+	}
+
 	for _, file := range bprint.Files {
 
 		fw, err := writer.Create(file)
