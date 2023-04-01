@@ -17,6 +17,8 @@
 
   let importing = true;
 
+  let bid = ""
+
   const importPreform = async () => {
     const bapi = app.api_manager.get_admin_bprint_api();
     const resp = await bapi.import({
@@ -29,24 +31,25 @@
       console.log("@resp", resp);
       return;
     }
+
+    bid = resp.data
+    importing = false;
   };
 
-  function onNextHandler(e: any): void {
-    console.log("event:next", e.detail["step"]);
-    if (e.detail["step"] === 1) {
-      importPreform();
-    }
-  }
-  function onBackHandler(e: any): void {
-    console.log("event:prev", e.detail);
-  }
-  function onStepHandler(e: any): void {
-    console.log("event:step", e.detail);
-  }
+  const onNextHandler = (e: any) => {
+    console.log("event:next", e.detail);
 
-  function onCompleteHandler(e: any): void {
-    console.log("event:complete", e.detail);
-  }
+    switch (e.detail["step"]) {
+      case 0:
+        importPreform();
+        break;
+        case 1:
+          app.nav.admin_bprint_auto_instancer(bid)
+
+      default:
+        break;
+    }
+  };
 </script>
 
 <div class="w-full bg-gray-50 h-full py-4 px-1">
@@ -54,20 +57,16 @@
     class="card p-4 text-token border shadow  mx-auto my-4 bg-white"
     style="max-width: 750px;"
   >
-    <Stepper
-      buttonCompleteLabel={""}
-      on:next={onNextHandler}
-      on:back={onBackHandler}
-      on:step={onStepHandler}
-      on:complete={onCompleteHandler}
-    >
+    <Stepper buttonCompleteLabel={""} on:next={onNextHandler}>
       <Step back_locked={true}>
+        <svelte:fragment slot="header">Import</svelte:fragment>
+
         <svelte:fragment>
           <Detail {data} />
         </svelte:fragment>
       </Step>
 
-      <Step locked={!importing}>
+      <Step locked={importing} back_locked={!importing}>
         <svelte:fragment slot="header"
           >{importing ? "Importing" : "Imported"}</svelte:fragment
         >
@@ -76,22 +75,21 @@
             <LoadingSpinner classes="" />
           {:else}
             <p>
-              Blueprint is import, click next to instance or click <button
-                >here</button
-              > explore
+              Blueprint is import, click next to instance or click
+
+              <button
+                on:click={() => {
+                  app.nav.admin_bprints();
+                }}
+                class="text-blue-600 underline">here</button
+              > explore all blueprints.
             </p>
           {/if}
         </svelte:fragment>
       </Step>
       <Step back_locked={final}>
         <svelte:fragment slot="header">Final</svelte:fragment>
-        <!-- {#if preforming}
-          <LoadingSpinner classes="" />
-        {:else if message}
-          <p class="text-red-500">{message}</p>
-        {:else}
-          <p>Sheet is ready. Go explore.</p>
-        {/if} -->
+        <svelte:fragment />
       </Step>
     </Stepper>
   </div>
