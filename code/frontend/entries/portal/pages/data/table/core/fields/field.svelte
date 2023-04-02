@@ -173,7 +173,7 @@
 {:else if column.ctype === CtypeSingleUser}
   <User {column} {onChange} value={_value} {row_service} />
 {:else if column.ctype === CtypeMultiUser}
-  <User {column} {onChange} value={_value} {row_service} />
+  <User {column} {onChange} value={_value} {row_service} multi={true} />
 {:else if column.ctype === CtypeEmail}
   <div class="flex w-full">
     <input

@@ -1,17 +1,35 @@
 <script lang="ts">
   import PanelLayout from "../_panel_layout.svelte";
+  import type { Column, RowService } from "../../../../../../services/data";
 
-  export let profile;
+  export let row_service: RowService;
+  export let profile_generator: (user: string) => string;
+  export let column: Column;
+  export let onSelect: (user) => void;
+
   let selected;
 
-  const users = [
-    { name: "John Doe", id: "user1", bio: "this a example user", active: true },
-  ];
+  let users = [];
 
-  let loading = false;
+  let loading = true;
+  const load = async () => {
+    const resp = await row_service.list_user(column.slug);
+    if (!resp.ok) {
+      return;
+    }
+
+    users = resp.data;
+    loading = false;
+  };
+
+  load();
 </script>
 
-<PanelLayout {loading} onSelect={() => {}} selected={!!selected}>
+<PanelLayout
+  {loading}
+  onSelect={() => selected && onSelect(selected)}
+  selected={!!selected}
+>
   <table class="min-w-full leading-normal">
     <thead
       ><tr
@@ -27,48 +45,48 @@
 
         <th
           class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
-          >Bio</th
-        >
-        <th
-          class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
-          >Active</th
+          >Group</th
         >
       </tr></thead
     >
     <tbody>
-      <tr>
-        {#each users as user}
+      {#each users as user}
+        <tr>
           <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"
             ><div class="flex items-center">
               <input
                 type="checkbox"
                 class="h-6 w-6 m-1"
-                checked={selected === user.id}
+                on:click={() => {
+                  if (selected === user.user_id) {
+                    selected = null;
+                  } else {
+                    selected = user.user_id;
+                  }
+                }}
+                checked={selected === user.user_id}
               />
 
               <div class="flex-shrink-0 w-10 h-10">
                 <img
                   class="w-24 h-auto rounded-full"
-                  src={profile(user.id)}
+                  src={profile_generator(user.user_id)}
                   alt=""
                 />
               </div>
               <div class="ml-3">
-                <p class="text-gray-900 whitespace-no-wrap">{user.name}</p>
+                <p class="text-gray-900 whitespace-no-wrap">{user.full_name}</p>
               </div>
             </div></td
           >
           <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"
-            ><p class="text-gray-900 whitespace-no-wrap">{user.id}</p></td
+            ><p class="text-gray-900 whitespace-no-wrap">{user.user_id}</p></td
           >
           <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-            {user.bio}
+            {user.group}
           </td>
-          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm"
-            ><p class="text-gray-900 whitespace-no-wrap">{user.active}</p></td
-          >
-        {/each}
-      </tr>
+        </tr>
+      {/each}
     </tbody>
   </table>
 </PanelLayout>

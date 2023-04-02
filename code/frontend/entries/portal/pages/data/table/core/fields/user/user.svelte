@@ -1,17 +1,17 @@
 <script lang="ts">
   import type { Column, RowService } from "../../../../../../services/data";
 
-
   import UserPanel from "./_user_panel.svelte";
 
-  export let value;
+  export let value = "";
   export let column: Column;
   export let onChange: (value: any) => void;
   export let row_service: RowService;
+  export let multi = false;
 
-  $: __value = [];
+  const profile_generator = row_service.service.profile_generator;
 
-  const link_gen = (user: string) => ""; // fixme
+  $: __value = value === "" ? [] : value.split(",");
 
   const unSelectUser = (userId: string) => () => {
     __value = [...__value.filter((val) => val !== userId)];
@@ -24,10 +24,10 @@
     style="min-height: 2rem;"
   >
     {#each __value as item}
-      <div class="flex flex-col relative border p-1 rounded-lg">
+      <div class="flex relative border p-1 rounded-lg">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <svg
           on:click={() => unSelectUser(item)}
-          xmlns="http://www.w3.org/2000/svg"
           class="h-4 w-4 absolute -right-1 text-blue-500 border rounded-full bg-white cursor-pointer"
           viewBox="0 0 20 20"
           fill="currentColor"
@@ -39,8 +39,8 @@
           />
         </svg>
         <img
-          class="w-10 h-auto rounded-full"
-          src={link_gen(item)}
+          class="w-6 h-auto rounded-full"
+          src={profile_generator(item)}
           alt=""
         />
         <span class="text-gray-800 bg-blue-50 rounded">{item}</span>
@@ -48,10 +48,24 @@
     {/each}
   </div>
 
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div
     class="p-2 flex justify-end text-gray-600 cursor-pointer"
     on:click={() => {
-      row_service.open_model(UserPanel, { profile: link_gen });
+      row_service.open_model(UserPanel, {
+        profile_generator,
+        column,
+        row_service,
+        onSelect: (_user) => {
+          if (multi) {
+            __value = [...__value, _user];
+          } else {
+            __value = [_user];
+          }
+          onChange(__value.join(","));
+          row_service.close_model()
+        },
+      });
     }}
   >
     <svg
