@@ -127,11 +127,13 @@ func (i *InstancHub) AutomaticBundle(opts repox.InstanceOptions) (any, error) {
 			iObjs[bitem.Name] = &xinstance.Response{
 				Ok:      false,
 				Message: err.Error(),
+				Type:    bitem.Type,
 			}
 
 			continue
 		}
 
+		resp.Type = bitem.Type
 		iObjs[bitem.Name] = resp
 	}
 
@@ -166,6 +168,8 @@ func (i *InstancHub) AutomaticSingle(opts repox.InstanceOptions) (any, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	iresp.Type = opts.InstancerType
 
 	return AutoResp{
 		AllOk: err == nil,

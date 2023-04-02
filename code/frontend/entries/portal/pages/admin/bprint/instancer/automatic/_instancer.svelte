@@ -1,9 +1,10 @@
 <script lang="ts">
-  import Stepper from "../../../../../xcompo/stepper/stepper.svelte";
-  import Step from "../../../../../xcompo/stepper/step.svelte";
+  import Stepper from "../../../../../../xcompo/stepper/stepper.svelte";
+  import Step from "../../../../../../xcompo/stepper/step.svelte";
   import ItemTable from "./_item_table.svelte";
   import { getContext } from "svelte";
   import { LoadingSpinner, PortalService } from "../../../core";
+  import FinalTable from "./_final_table.svelte";
 
   export let bid;
   export let bundle_objects;
@@ -40,7 +41,6 @@
     switch (e.detail["step"]) {
       case 0:
         instance();
-        console.log("@first");
         break;
       default:
         break;
@@ -50,14 +50,15 @@
   };
 </script>
 
-<div
-  class="card p-2 bg-white border shadow mx-auto"
-  style="max-width: 750px;"
->
-  <Stepper on:next={onNextHandler}>
+<div class="card p-2 bg-white border shadow mx-auto" style="max-width: 750px;">
+  <Stepper on:next={onNextHandler} buttonCompleteLabel="">
     <Step back_locked locked={instanceing}>
-      <svelte:fragment slot="header">Blueprint items instance</svelte:fragment>
+      <svelte:fragment slot="header">Blueprint items</svelte:fragment>
       <ItemTable items={bundle_objects} />
+
+      <p class="text-sm italic my-1">
+        Click next to instance items automatically or click manual to instance individual items.
+      </p>
     </Step>
 
     <Step back_locked={instanced_resp}>
@@ -72,10 +73,7 @@
           {message}
         </p>
       {:else}
-        <details>
-          <summary>Response</summary>
-          <pre><code>{JSON.stringify(instancedData, null, 2)}</code></pre>
-        </details>
+        <FinalTable installed_items={instancedData["objects"] || {}} />
       {/if}
     </Step>
   </Stepper>
