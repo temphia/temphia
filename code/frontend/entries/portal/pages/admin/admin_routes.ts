@@ -7,7 +7,8 @@ import AdminBprintFile from "./bprint/files/file.svelte";
 import AdminBprintDataInstancer from "./bprint/instancer/manual/data/data.svelte";
 import AdminBprintPlugInstancer from "./bprint/instancer/manual/plug/plug.svelte";
 import AdminBprintEditor from "./bprint/editor/editor.svelte";
-import AdminBprintAutomaticInstancer from "./bprint/instancer/automatic/automatic.svelte";
+import AdminBprintAutomaticInstancer from "./bprint/instancer/automatic/index.svelte";
+
 import AdminBrpintZipit from "./bprint/zipit.svelte";
 
 // plug

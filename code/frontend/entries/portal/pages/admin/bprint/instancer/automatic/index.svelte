@@ -1,9 +1,9 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import { LoadingSpinner, PortalService } from "../../../core";
+  import { LoadingSpinner, PortalService } from "../../../../admin/core";
 
   import { params } from "svelte-hash-router";
-  import AutoInner from "./auto_inner.svelte";
+  import InstancerInner from "./_instancer.svelte";
 
   export let bid = $params.bid;
 
@@ -57,6 +57,6 @@
   {#if loading}
     <LoadingSpinner />
   {:else}
-    <AutoInner {bid} {bundle_objects} {instancer_type} />
+    <InstancerInner {bid} {bundle_objects} {instancer_type} />
   {/if}
 </div>
