@@ -32,7 +32,6 @@
     app.nav.admin_bprint_auto_instancer(id);
   };
 
-
   const action_edit = (id: string) => app.nav.admin_bprint(id);
   const action_issue = (id: string) =>
     app.utils.small_modal_open(Issuer, { app, bid: id });
@@ -47,6 +46,8 @@
   const action_new = () => {
     app.utils.small_modal_open(PickNewBprint, { app });
   };
+
+  const action_update = (bid) => app.nav.admin_bprint_update(bid);
 
   const action_zipit = (id: string) => app.nav.admin_bprint_export_zip(id);
 
@@ -102,6 +103,13 @@
         Action: action_zipit,
         drop: true,
         icon: "archive",
+      },
+
+      {
+        Name: "Update",
+        Action: action_update,
+        drop: true,
+        icon: "cloud-download",
       },
 
       {

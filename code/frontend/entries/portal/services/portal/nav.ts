@@ -132,6 +132,10 @@ export class Navigator {
     this.set(`#/admin/bprint/${bid}/zipit`);
   };
 
+  admin_bprint_update = (bid: string) => {
+    this.set(`#/admin/bprint/${bid}/update`);
+  };
+
   admin_bprint_new = () => {
     this.set(`#/admin/bprint/new`);
   };

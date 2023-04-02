@@ -10,6 +10,7 @@ import AdminBprintEditor from "./bprint/editor/editor.svelte";
 import AdminBprintAutomaticInstancer from "./bprint/instancer/automatic/index.svelte";
 
 import AdminBrpintZipit from "./bprint/zipit.svelte";
+import AdminBprintUpdater from "./bprint/updater/index.svelte"
 
 // plug
 import AdminPlugs from "./plug/plugs.svelte";
@@ -129,6 +130,7 @@ export default {
     "/": AdminBprints,
     "/:bid/edit": AdminBprint,
     "/:bid/zipit": AdminBrpintZipit,
+    "/:bid/update": AdminBprintUpdater,
     "/new": AdminBprintNew,
     "/new/zip": AdminBprintZip,
 
