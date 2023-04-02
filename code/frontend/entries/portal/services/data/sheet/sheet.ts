@@ -41,7 +41,7 @@ export class SheetGroupService {
     this.sheets.set(resp.data["sheets"] || []);
 
     const folder_ticket = resp.data["folder_ticket"] || "";
-    this.folder_api = new FolderTktAPI(this.data_api.base_url, folder_ticket);
+    this.folder_api = new FolderTktAPI(this.data_api.api_base_url, folder_ticket);
   };
 
   get_sheet_service = async (sheetid: string) => {

@@ -26,6 +26,8 @@ export class GroupService {
   sockd_conn: Sockd;
   event_timer: number;
 
+ profile_generator:  (string: any) => string
+
   constructor(opts: {
     source: string;
     name: string;
@@ -34,6 +36,7 @@ export class GroupService {
     api_base_url: string;
     close_modal: any;
     open_modal: any;
+    profile_generator:  (string: any) => string
   }) {
     this.source = opts.source;
     this.name = opts.name;
@@ -45,6 +48,7 @@ export class GroupService {
     this.sockd_builder = opts.sockd_builder;
     this.close_modal = opts.close_modal;
     this.open_modal = opts.open_modal;
+    this.profile_generator = opts.profile_generator
   }
 
   init = async () => {
@@ -91,6 +95,7 @@ export class GroupService {
         folder_api: this.folder_api,
         close_modal: this.close_modal,
         open_modal: this.open_modal,
+        profile_generator: this.profile_generator,
       });
 
       await tservice.init();

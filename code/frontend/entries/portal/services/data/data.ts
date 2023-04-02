@@ -19,7 +19,7 @@ export class DataService {
   api_base_url: string;
 
   current_sheet_group: SheetGroupService;
-  profile_genrator: (string) => string;
+  profile_genrator: (user:string) => string;
 
   constructor(opts: {
     sources: string[];
@@ -99,7 +99,9 @@ export class DataService {
       open_modal: this.open_modal,
       api_base_url: this.api_base_url,
       sockd_builder: this.sockd_builder,
+      profile_generator: this.profile_genrator,
     });
+
 
     await group_svc.init();
     return group_svc;

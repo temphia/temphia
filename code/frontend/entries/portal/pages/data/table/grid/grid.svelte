@@ -50,6 +50,7 @@
     rows_index={_data.indexed_rows}
     {selected_rows}
     marked_rows={_data.marked_rows}
+    profile_generator={table_service.profile_generator}   
     on:on_new_row
     on:on_page_buttom
     on:on_page_top

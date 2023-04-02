@@ -5,6 +5,7 @@
   import * as cf from "../../../../services/data/table/column";
   import type { FolderTktAPI } from "../../../../../../lib/apiv2";
   import type { MarkColorType } from "../../../../services/data";
+  import UserAvatar from "../../sheet/field/_user_avatar.svelte";
 
   export let columns_index: { [_: string]: object };
   export let columns: string[];
@@ -13,6 +14,7 @@
   export let selected_rows = [];
   export let folder_api: FolderTktAPI;
   export let marked_rows: { [_: number]: MarkColorType };
+  export let profile_generator: (string: any) => string;
 
   const dispatch = createEventDispatcher();
   const onPageButtom = () => dispatch("on_page_buttom");
@@ -121,18 +123,14 @@
                 {:else if (ctype === cf.CtypeSingleUser || ctype === cf.CtypeMultiUser) && celldata}
                   <div class="inline-flex gap-1">
                     {#each celldata.split(",") as cd}
-                      <div class="flex">
-                        <!-- @USER -->
-                        <img
-                          alt="user"
-                          src="/z/assets/static/default_user_profile.png"
-                          class="w-6 h-6 p-1 rounded-full bg-green-50"
+                      <div
+                        class="p-0.5 rounded bg-gray-50 flex border gap-0.5 text-xs items-center"
+                      >
+                        <UserAvatar
+                          name={cd}
+                          url={profile_generator && profile_generator(cd)}
                         />
-                        <!-- fixme => profile image -->
-                        <span
-                          class="underline text-green-800 bg-green-50 rounded"
-                          >{cd}</span
-                        >
+                        <span>{cd}</span>
                       </div>
                     {/each}
                   </div>

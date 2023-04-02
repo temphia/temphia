@@ -32,6 +32,8 @@ export class TableService {
   _open_modal: (compo: any, props: object) => void;
   _close_modal: () => void;
 
+  profile_generator:  (string: any) => string
+
   row_service: RowService;
 
   constructor(opts: {
@@ -42,6 +44,7 @@ export class TableService {
     folder_api: FolderTktAPI;
     open_modal: (compo: any, props: object) => void;
     close_modal: () => void;
+    profile_generator:  (string: any) => string
   }) {
     this.all_tables = opts.all_tables;
     this.table_slug = opts.table_slug;
@@ -50,7 +53,7 @@ export class TableService {
     this.folder_api = opts.folder_api;
     this._open_modal = opts.open_modal;
     this._close_modal = opts.close_modal;
-
+    this.profile_generator = opts.profile_generator
     this.state = new TableState(this);
     this.row_service = new RowService(this, this.state);
   }
