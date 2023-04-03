@@ -28,7 +28,7 @@
         on:click={() => {
           selectd = file.name;
         }}
-        class="flex flex-col p-1 border rounded-lg bg-white hover:bg-gray-600 cursor-pointer {selectd ===
+        class="flex flex-col p-1 border rounded-lg bg-white hover:bg-gray-200 cursor-pointer {selectd ===
         file.name
           ? 'bg-gray-400'
           : ''}"

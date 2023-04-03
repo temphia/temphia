@@ -182,9 +182,9 @@
           >
         </p>
 
-        <div>
+        <!-- <div>
           View Mode [<span class="text-slate-600 text-base">{viewmode}</span>]
-        </div>
+        </div> -->
       </div>
     </div>
     <!-- end right  -->
