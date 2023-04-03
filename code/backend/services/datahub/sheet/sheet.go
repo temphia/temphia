@@ -1,6 +1,8 @@
 package sheet
 
 import (
+	"fmt"
+
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/services/datahub/handle"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -117,21 +119,12 @@ func (s *Sheet) LoadSheet(txid uint32, data *dyndb.LoadSheetReq) (*dyndb.LoadShe
 		rowCells = cells.Rows[:offset]
 	}
 
+	apps, _ := s.handle.CoreHub.ListTargetAppByType(s.tenantId, entities.TargetAppTypeDataSheetWidget, fmt.Sprintf("%s/%s", s.source, s.group))
+
 	return &dyndb.LoadSheetResp{
-		Columns: columns.Rows,
-		Cells:   rowCells,
-		WidgetApps: []*entities.TargetApp{{
-			Id:          1,
-			Name:        "test",
-			Icon:        "",
-			Policy:      "",
-			TargetType:  entities.TargetAppTypeDataSheetWidget,
-			Target:      "default/group/table",
-			ContextType: "todo.1",
-			PlugId:      "test1",
-			AgentId:     "default",
-			TenantId:    s.tenantId,
-		}},
+		Columns:    columns.Rows,
+		Cells:      rowCells,
+		WidgetApps: apps,
 	}, nil
 
 }

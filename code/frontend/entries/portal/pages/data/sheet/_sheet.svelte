@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getContext } from "svelte";
+  import { getContext, tick } from "svelte";
   import { get, Writable } from "svelte/store";
   import { LoadingSpinner, PortalService } from "../../admin/core";
   import SheetUi from "./_sheet_ui.svelte";
@@ -12,6 +12,7 @@
   import SearchPanel from "./panels/_search_panel.svelte";
   import type { SheetWidget } from "./sheets";
   import type { SheetService, SheetState } from "../../../services/data";
+  import { TargetAppTypeDataSheetWidget } from "../../admin/target/target";
 
   export let source;
   export let group;
@@ -123,6 +124,18 @@
   const doActionRunWidget = (ev) => {
     const widget = ev.detail as SheetWidget;
     console.log("@widget", widget);
+
+    app.launcher.instance_by_target({
+      invoker_name: "data_sheet",
+      target_id: String(widget.id),
+      invoker_factory: null,
+      target_name: widget.name,
+      target_type: TargetAppTypeDataSheetWidget,
+    });
+
+    tick().then(() => {
+      app.launcher.plane_float();
+    });
   };
 </script>
 
@@ -138,7 +151,7 @@
       columns={$state.columns}
       rows={$state.rows}
       sheets={$sheets}
-      widgets={$state.widgets}      
+      widgets={$state.widgets}
       profile_genrator={sheet_service.profile_genrator}
       on:add_column={doAddColumn}
       on:action_goto_history={() =>

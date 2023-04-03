@@ -4,6 +4,7 @@
   import type { PortalService } from "../../../services";
   import type { TableService } from "../../../services/data";
   import { LoadingSpinner } from "../../admin/core";
+  import { TargetAppTypeDataTableWidget } from "../../admin/target/target";
   import TableUI from "./_tableui.svelte";
 
   export let source = $params.source;
@@ -34,7 +35,7 @@
       target_id: String(widget.id),
       invoker_name: "data_table",
       target_name: widget.name,
-      target_type: widget.target_type,
+      target_type: TargetAppTypeDataTableWidget,
       invoker_factory: null, //table_service, // fixme => wrap it
     });
 
