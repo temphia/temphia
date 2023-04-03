@@ -21,6 +21,8 @@
       return;
     }
 
+    // fixme change schema.json -> install.json
+
     if (resp1.data["type"] === "bundle") {
       const resp = await bapi.get_file(bid, "schema.json");
       if (!resp.ok) {

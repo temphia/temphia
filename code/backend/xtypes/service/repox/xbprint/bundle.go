@@ -1,20 +1,16 @@
 package xbprint
 
-type Bundle struct {
-	Type      string       `json:"type,omitempty"`
-	Items     []BundleItem `json:"items,omitempty"`
-	FormItems []FormItem   `json:"form_items,omitempty"`
+type Install struct {
+	Type  string        `json:"type,omitempty"`
+	Items []InstallItem `json:"items,omitempty"`
 }
 
-type BundleItem struct {
-	Name      string `json:"name,omitempty"`
-	Type      string `json:"type,omitempty"`
-	File      string `json:"file,omitempty"`
-	Templated bool   `json:"templated,omitempty"`
+type InstallItem struct {
+	Name string `json:"name,omitempty"`
+	Type string `json:"type,omitempty"`
+	File string `json:"file,omitempty"`
 }
 
-type FormItem struct {
-	Name  string `json:"name,omitempty"`
-	Type  string `json:"type,omitempty"`
-	Value string `json:"value,omitempty"`
+type Upgrade struct {
+	MinVersion string `json:"min_version,omitempty"`
 }

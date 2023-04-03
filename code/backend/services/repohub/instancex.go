@@ -86,7 +86,7 @@ func (i *InstancHub) ManualBundleItem(opts repox.InstanceOptions) (any, error) {
 }
 
 func (i *InstancHub) AutomaticBundle(opts repox.InstanceOptions) (any, error) {
-	bundle := xbprint.Bundle{}
+	bundle := xbprint.Install{}
 	err := i.pacman.loadFile(opts.UserSession.TenantId, opts.BprintId, opts.File, &bundle)
 	if err != nil {
 		return nil, err
