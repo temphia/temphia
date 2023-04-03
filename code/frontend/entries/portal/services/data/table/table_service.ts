@@ -91,7 +91,7 @@ export class TableService {
       if (active) {
         view_mode = "STATIC";
       }
-    } else if (!filters) {
+    } else if (filters) {
       view_mode = "MANUAL";
     }
 
