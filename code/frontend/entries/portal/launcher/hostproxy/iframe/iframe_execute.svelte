@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { TemplatedBuilder } from "../../../../../lib/engine/templatev2";
+  import { TemplatedBuilder } from "../../../../../lib/engine/template";
   import type { ExecInstanceOptions } from "../../../services/engine/exec_type";
 
   export let name: string;
