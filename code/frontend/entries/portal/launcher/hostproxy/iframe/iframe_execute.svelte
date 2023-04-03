@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { iframeTemplateBuild } from "../../../../../lib/engine/template";
+  import { TemplatedBuilder } from "../../../../../lib/engine/templatev2";
   import type { ExecInstanceOptions } from "../../../services/engine/exec_type";
 
   export let name: string;
@@ -11,7 +11,7 @@
   let iframe: HTMLIFrameElement | null;
   const channel = new MessageChannel();
 
-  const src = iframeTemplateBuild({
+  const builder = new TemplatedBuilder({
     plug: exec_data["plug"],
     agent: exec_data["agent"],
     api_base_url: exec_data["api_base_url"],
@@ -25,7 +25,9 @@
     startup_payload: {},
     tenant_id: tenant_id,
     bootloader,
-  });
+  })
+
+  const src = builder.build()
 
   const onmessage = (ev) => {
     console.log("@message from iframe", ev);
