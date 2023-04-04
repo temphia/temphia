@@ -21,6 +21,7 @@ const (
 	EngineExecServeExecBuilderNotFound = "engine_exec_serve_builder_not_found"
 	EngineExecServeExecBuilderErr      = "engine_exec_serve_builder_err"
 	EngineExecAction                   = "engine_exec_action"
+	EngineExecActionErr                = "engine_exec_action_err"
 	EngineResourcesLoading             = "engine_exec_resource_loading"
 	EngineResourcesLoaded              = "engine_exec_resource_loaded"
 )

@@ -31,6 +31,13 @@ func (e *Engine) execute(opts etypes.Execution) ([]byte, error) {
 
 	eresp, err := e.runtime.Preform(j)
 	if err != nil {
+		e.logger.Debug().Str("tenant_id", opts.TenantId).
+			Str("plug_id", opts.PlugId).
+			Str("agent_id", opts.AgentId).
+			Str("action", opts.Action).
+			Err(err).
+			Msg(logid.EngineExecActionErr)
+
 		return nil, err
 	}
 
