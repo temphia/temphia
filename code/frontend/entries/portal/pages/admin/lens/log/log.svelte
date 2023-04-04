@@ -15,11 +15,24 @@
   let fromDate = "";
   let toDate = "";
 
-  const load = async () => {
+  let message = ""
+
+  const load = async (filter_query: string) => {
     loading = true;
+    let filters = {};
+
+    console.log("@using_filter", filter_query)
+
+    try {
+      filters = JSON.parse(filter_query || "{}");
+    } catch (error) {
+      message = error
+      loading = false
+      return
+    }
+
     const queryOpts = {
-      //   from: fromDate,
-      //   to: toDate,
+      filters,
     };
 
     if (fromDate) {
@@ -32,6 +45,8 @@
 
     const resp = await lapi.query(queryOpts);
     if (!resp.ok) {
+      message = resp.data
+      loading = false
       console.log("@err", resp.data);
       return;
     }
@@ -47,7 +62,7 @@
   $: __open_row_idx = null;
 </script>
 
-<Layout do_query={(qstr) => load()} bind:fromDate bind:toDate {loading}>
+<Layout {message} do_query={load} bind:fromDate bind:toDate {loading}>
   {#if loaded}
     <div class="p-2 w-full h-full bg-white rounded">
       <VirtualList items={datas} let:item let:idx>

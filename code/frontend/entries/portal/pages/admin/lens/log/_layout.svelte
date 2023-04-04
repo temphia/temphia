@@ -7,11 +7,12 @@
   export let fromDate = null;
   export let toDate = null;
   export let loading = false;
+  export let message;
+
+  export let do_query = (qstr) => {};
 
   const app = getContext("__app__") as PortalService;
   let editor;
-
-  export let do_query = (qstr) => {};
 </script>
 
 <div class="p-2 w-full h-full" style="min-height: 80vh;">
@@ -72,7 +73,9 @@
 
       <div class="flex justify-end p-1 gap-1">
         <button
-          on:click={() => do_query("")}
+          on:click={() => {
+            do_query(editor.getValue());
+          }}
           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-2 flex"
         >
           {#if loading}
@@ -91,6 +94,10 @@
           <Icon name="information-circle" class="h-6 w-6" solid />
         </button>
       </div>
+    </div>
+
+    <div>
+      <p class="text-red-500">{message}</p>
     </div>
   </div>
 

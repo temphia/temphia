@@ -8,7 +8,7 @@ import (
 type LogQuery struct {
 	From    string            `json:"from,omitempty"`
 	To      string            `json:"to,omitempty"`
-	Filters map[string]string `json:"filter,omitempty"`
+	Filters map[string]string `json:"filters,omitempty"`
 	Cursor  string            `json:"cursor,omitempty"`
 }
 
