@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/k0kubun/pp"
 	"github.com/rs/xid"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
@@ -75,25 +74,25 @@ lineLoop:
 		// to/from time check here
 		ltime := curXid.Time()
 
-		pp.Printf("@processing_current [%s]  To/FROM [%s/%s] \n", ltime, toTime, fromTime)
+		// pp.Printf("@processing_current [%s]  To/FROM [%s/%s] \n", ltime, toTime, fromTime)
 
 		if fromTime != nil {
 			if fromTime.After(ltime) {
-				pp.Println("@fromtime", fromTime, ltime)
+				//	pp.Println("@fromtime", fromTime, ltime)
 				continue
 			}
 		}
 
 		if toTime != nil {
 			if toTime.Before(ltime) {
-				pp.Println("@totime", toTime, ltime)
+				//				pp.Println("@totime", toTime, ltime)
 				break
 			}
 		}
 
 		if tenantId != "" {
 			if gjson.GetBytes(line, "tenant_id").String() != tenantId {
-				pp.Println("@skipping_due_tenant", tenantId)
+				//				pp.Println("@skipping_due_tenant", tenantId)
 				continue
 			}
 		}

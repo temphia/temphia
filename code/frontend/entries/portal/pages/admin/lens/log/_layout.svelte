@@ -8,10 +8,17 @@
   export let toDate = null;
   export let loading = false;
   export let message;
-
   export let do_query = (qstr) => {};
 
   const app = getContext("__app__") as PortalService;
+
+  const opts = app.nav.options || {};
+  let code = "{}";
+
+  if (opts["filters"]) {
+    code = JSON.stringify(opts["filters"], null, 4);
+  }
+
   let editor;
 </script>
 
@@ -24,7 +31,7 @@
           class="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label
         >
         <div class="relative">
-          <CEditor bind:editor />
+          <CEditor bind:editor {code} />
         </div>
       </div>
     </div>

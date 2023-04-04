@@ -525,7 +525,7 @@ export class Navigator {
     this.set(`#/admin/tenant/system/event`);
   }
 
-  admin_lens_logs() {
-    this.set(`#/admin/lens/logs`);
+  admin_lens_logs(opts?: any) {
+    this.set(`#/admin/lens/logs`, opts);
   }
 }

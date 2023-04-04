@@ -38,9 +38,18 @@
   const action_agent_resources = (id: string) =>
     app.nav.admin_agent_res(pid, id);
 
-  const action_ipc_shell = (id: string) => app.nav.admin_plug_dev_ipc_shell(pid, id);
-  const action_live_shell = (id: string) => app.nav.admin_plug_dev_live_shell(pid, id);
-  const action_logs = (id: string) => app.nav.admin_plug_dev_logs(pid, id);
+  const action_ipc_shell = (id: string) =>
+    app.nav.admin_plug_dev_ipc_shell(pid, id);
+  const action_live_shell = (id: string) =>
+    app.nav.admin_plug_dev_live_shell(pid, id);
+  const action_logs = (id: string) => {
+    app.nav.admin_lens_logs({
+      filters: {
+        plug_id: pid,
+        agent_id: id,
+      },
+    });
+  };
 
   const action_dev_docs = (id: string) => app.nav.admin_plug_dev_docs(pid, id);
   const action_delete = async (id: string) => {
