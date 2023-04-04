@@ -103,13 +103,15 @@
                     >
                   </div>
                 {:else if (ctype === cf.CtypeMultiFile || ctype === cf.CtypeFile) && celldata}
-                  {#each celldata.split(",") as cd}
-                    <img
-                      class="h-8 w-auto"
-                      src={folder_api && folder_api.getFilePreviewUrl(cd)}
-                      alt=""
-                    />
-                  {/each}
+                  <div class="flex gap-1">
+                    {#each celldata.split(",") as cd}
+                      <img
+                        class="h-8 w-auto"
+                        src={folder_api && folder_api.getFilePreviewUrl(cd)}
+                        alt=""
+                      />
+                    {/each}
+                  </div>
                 {:else if ctype === cf.CtypeDateTime && celldata}
                   <span class="underline text-blue-700"
                     >{new Date(celldata).toLocaleDateString()}</span

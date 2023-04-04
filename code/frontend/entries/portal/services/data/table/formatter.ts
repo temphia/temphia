@@ -119,6 +119,18 @@ export const calculate_card_order = (
     done["tag"] = true;
   }
 
+  if (!sk.image) {
+    const pimgs = Object.values(columns).filter(
+      (col) =>
+        col["ctype"] === ct.CtypeMultiFile || col["ctype"] === ct.CtypeFile
+    );
+
+    if (pimgs.length) {
+      sk.image = pimgs[0]["slug"];
+      done[sk.image] = true;
+    }
+  }
+
   const colkeys = Object.keys(columns);
   for (let index = 0; index < colkeys.length; index++) {
     const element = colkeys[index];

@@ -12,13 +12,14 @@
   export let show_editor;
   export let data_widgets: object[];
   export let selected_rows = [];
-  export let  needs_refresh = false
+  export let needs_refresh = false;
 
   const dispatch = createEventDispatcher();
   const onPageButtom = () => dispatch("on_page_buttom");
   const onPageTop = () => dispatch("on_page_top");
   const rowClick = (payload) => dispatch("on_row_click", payload);
 
+  const folder_api = table_service.get_row_service().folder_api();
   const data_store = table_service.state.data_store;
   const nav_store = table_service.state.nav_store;
 
@@ -75,6 +76,7 @@
           order={_order}
           row={_data.indexed_rows[row] || {}}
           onEdit={() => rowClick(row)}
+          {folder_api}
         />
       {/each}
     </div>

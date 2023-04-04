@@ -1,12 +1,17 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import type { Column } from "../../../../services/data";
+  import type { FolderTktAPI } from "../../../../../../lib/apiv2";
+  import type { Column, Order } from "../../../../services/data";
   import Cicon from "../core/cicon/cicon.svelte";
 
-  export let order: any; // Order;
+  export let order: Order;
   export let row: object;
   export let columns: { [_: string]: Column };
   export let onEdit = () => {};
+  export let folder_api: FolderTktAPI;
+
+  const image_column = order.image ? row[order.image]  : null
+  const images = image_column ? (row[order.image] || "").split(",") : [];
 </script>
 
 <div class="relative mx-auto w-full">
@@ -16,9 +21,15 @@
     <div class="shadow p-2 rounded-lg bg-white">
       <div class="flex justify-center relative rounded-lg overflow-hidden h-52">
         <div
-          class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full"
+          class="w-full flex gap-1 flex-wrap bg-gray-50"
         >
-          <div class="absolute inset-0 bg-black opacity-10" />
+          {#each images as img}
+            <img
+              src={folder_api.getFilePreviewUrl(img)}
+              class="h-20 p-1 border bg-white cursor-pointer"
+              alt=""
+            />
+          {/each}
         </div>
 
         <div class="absolute flex justify-center bottom-0 mb-3">
