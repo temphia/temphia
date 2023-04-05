@@ -20,7 +20,7 @@ type HsqlVisitor struct {
 	allowedTables   []string
 }
 
-func (h *HsqlVisitor) Visit(node sql.Node) (w sql.Visitor, err error) {
+func (h *HsqlVisitor) Visit(node sql.Node) (sql.Visitor, error) {
 
 	switch snode := node.(type) {
 
