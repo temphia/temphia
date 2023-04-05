@@ -1,6 +1,7 @@
 package datagroup
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -131,6 +132,11 @@ func (d *DGModule) IPC(method string, path string, args xtypes.LazyData) (xtypes
 		if err != nil {
 			return nil, err
 		}
+
+		req.TenantId = d.tenantId
+		req.Group = d.group
+		req.Table = table
+
 		return d.response(dhub.SimpleQuery(txid, req))
 
 	}
@@ -156,8 +162,8 @@ func (d *DGModule) extractPath(path string) (uint32, string, int64) {
 	*/
 
 	contents := strings.Split(path, "/")
-	if len(contents) != 2 || len(contents) != 3 {
-		panic("err invalid path")
+	if !(len(contents) == 2 || len(contents) == 3) {
+		panic(fmt.Sprintf("%s is invalid path", path))
 	}
 
 	txid := uint32(0)

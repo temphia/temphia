@@ -121,7 +121,6 @@ func (t *Table) LoadTable(txid uint32, req dyndb.LoadTableReq) (*dyndb.LoadTable
 		FilterConds: make([]dyndb.FilterCond, 0),
 		Page:        0,
 		Selects:     nil,
-		SearchTerm:  "",
 	}
 
 	finalResp := &dyndb.LoadTableResp{

@@ -101,7 +101,6 @@ type SimpleQueryReq struct {
 	FilterConds []FilterCond `json:"filter_conds,omitempty"`
 	Page        int64        `json:"page,omitempty"`
 	Selects     []string     `json:"selects,omitempty"`
-	SearchTerm  string       `json:"search_term,omitempty"`
 	OrderBy     string       `json:"order_by,omitempty"`
 }
 
