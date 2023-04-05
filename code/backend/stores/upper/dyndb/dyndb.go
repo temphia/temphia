@@ -2,10 +2,10 @@ package dyndb
 
 import (
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
+	"github.com/temphia/temphia/code/backend/libx/dbutils/hsql"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dyncore"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/tns"
 	"github.com/temphia/temphia/code/backend/stores/upper/ucore"
-	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
@@ -22,6 +22,7 @@ type DynDB struct {
 	tns        tns.TNS
 	vendor     string
 	cache      dyndb.DCache
+	hsql       *hsql.Hsql
 }
 
 func New(opts ucore.DynDBOptions) *DynDB {
@@ -33,6 +34,7 @@ func New(opts ucore.DynDBOptions) *DynDB {
 		tns:        opts.TNS,
 		vendor:     store.VendorPostgres, // fixme =>  from config
 		cache:      nil,
+		hsql:       hsql.New(opts.TNS),
 	}
 
 	d.cache = dyncore.NewCache(d.ListColumns)
@@ -99,7 +101,7 @@ func (d *DynDB) TemplateQuery(txid uint32, req dyndb.TemplateQueryReq) (*dyndb.Q
 	return d.templateQuery(txid, req)
 }
 
-func (d *DynDB) SqlQueryRaw(txid uint32, tenantId, group, qstr string) (*dyndb.SqlQueryResult, error) {
+func (d *DynDB) SqlQueryRaw(txid uint32, tenantId, group, qstr string) (any, error) {
 	var rs []map[string]any
 
 	err := d.txOr(txid, func(sess db.Session) error {
@@ -116,14 +118,32 @@ func (d *DynDB) SqlQueryRaw(txid uint32, tenantId, group, qstr string) (*dyndb.S
 		return nil, err
 	}
 
-	return &dyndb.SqlQueryResult{
-		Records: rs,
-		Columns: make(map[string]*entities.Column),
-	}, nil
+	return rs, nil
 }
 
-func (d *DynDB) SqlQueryScopped(txid uint32, tenantId, group, qstr string) (*dyndb.SqlQueryResult, error) {
-	return nil, nil
+func (d *DynDB) SqlQueryScopped(txid uint32, tenantId, group, qstr string) (any, error) {
+	result, err := d.hsql.Transform(tenantId, group, nil, qstr)
+	if err != nil {
+		return nil, err
+	}
+
+	var rs []map[string]any
+
+	err = d.txOr(txid, func(sess db.Session) error {
+
+		rows, err := sess.SQL().Query(result.TransformedQuery)
+		if err != nil {
+			return err
+		}
+		rs, err = dbutils.SelectScan(rows)
+		return err
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return rs, nil
 }
 
 func (d *DynDB) RefLoad(txid uint32, tenantId, gslug string, req *dyndb.RefLoadReq) (*dyndb.QueryResult, error) {

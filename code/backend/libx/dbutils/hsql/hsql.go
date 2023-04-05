@@ -42,6 +42,7 @@ func (h *Hsql) Transform(tenantId, group string, allowedTables []string, query s
 		tenantId:        tenantId,
 		group:           group,
 		tns:             h.tns,
+		allowedTables:   allowedTables,
 		inverseAliasMap: make(map[string]string),
 	}
 

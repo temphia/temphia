@@ -211,12 +211,25 @@ func (t *Table) ReverseRefLoad(txid uint32, gslug string, req *dyndb.RevRefLoadR
 
 func (t *Table) SqlQuery(txid uint32, req dyndb.SqlQueryReq) (*dyndb.SqlQueryResult, error) {
 
+	var records any
+	var err error
+
 	if !req.Raw {
-		return t.inner.SqlQueryScopped(txid, t.tenantId, req.Group, req.QStr)
+		records, err = t.inner.SqlQueryScopped(txid, t.tenantId, req.Group, req.QStr)
+	} else {
+		// fixme => check if tenant allows raw query
+		records, err = t.inner.SqlQueryRaw(txid, t.tenantId, req.Group, req.QStr)
 	}
 
-	// fixme => check if tenant allows raw query
-	return t.inner.SqlQueryRaw(txid, t.tenantId, req.Group, req.QStr)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dyndb.SqlQueryResult{
+		Records: records,
+		Columns: nil,
+	}, nil
+
 }
 
 func (t *Table) LiveSeed(table, userId string, max int) error {

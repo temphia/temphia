@@ -52,8 +52,8 @@ type DynDB interface {
 
 	TemplateQuery(txid uint32, req TemplateQueryReq) (*QueryResult, error)
 
-	SqlQueryRaw(txid uint32, tenantId, group, qstr string) (*SqlQueryResult, error)
-	SqlQueryScopped(txid uint32, tenantId, group, qstr string) (*SqlQueryResult, error)
+	SqlQueryRaw(txid uint32, tenantId, group, qstr string) (any, error)
+	SqlQueryScopped(txid uint32, tenantId, group, qstr string) (any, error)
 
 	GetCache() DCache
 }
