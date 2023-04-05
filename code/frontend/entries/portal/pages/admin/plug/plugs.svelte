@@ -11,8 +11,9 @@
   let loading = true;
   const app = getContext("__app__") as PortalService;
 
+  const api = app.api_manager.get_admin_plug_api();
+
   const load = async () => {
-    const api = app.api_manager.get_admin_plug_api();
     const resp = await api.list_plug();
     if (!resp.ok) {
       return;
@@ -40,6 +41,25 @@
     const papi = app.api_manager.get_admin_plug_api();
     await papi.delete_plug(id);
     load();
+  };
+
+  const action_reset = async (id) => {
+    loading = true;
+    const eapi = app.api_manager.get_engine_api();
+
+    const aresp = await api.list_agent(id);
+    if (!aresp.ok) {
+      loading = false;
+      return;
+    }
+
+    await Promise.all(
+      aresp.data.map(async (data) => {
+        await eapi.reset(id, data["id"]);
+      })
+    ).finally(() => {
+      loading = false;
+    });
   };
 
   const action_new = () => app.nav.admin_plug_new();
@@ -82,6 +102,13 @@
         Action: action_show_flowmap,
         drop: true,
         icon: "map",
+      },
+
+      {
+        Name: "Reset",
+        Action: action_reset,
+        drop: true,
+        icon: "refresh",
       },
 
       {

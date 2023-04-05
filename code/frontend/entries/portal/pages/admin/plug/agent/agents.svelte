@@ -7,7 +7,7 @@
     PortalService,
   } from "../../core";
   import { params } from "svelte-hash-router";
-
+  
   export let pid = $params.pid;
 
   let datas = [];
@@ -49,6 +49,13 @@
         agent_id: id,
       },
     });
+  };
+
+  const action_dev_reset = async (id: string) => {
+    const eapi = app.api_manager.get_engine_api();
+    loading = true;
+    await eapi.reset(pid, id);
+    loading = false;
   };
 
   const action_dev_docs = (id: string) => app.nav.admin_plug_dev_docs(pid, id);
@@ -133,6 +140,13 @@
         drop: true,
         icon: "eye",
         Action: action_live_shell,
+      },
+
+      {
+        Name: "Reset",
+        Action: action_dev_reset,
+        drop: true,
+        icon: "refresh",
       },
 
       {
