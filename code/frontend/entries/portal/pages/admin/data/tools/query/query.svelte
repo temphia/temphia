@@ -15,6 +15,15 @@
   let raw = false;
   let data = {};
 
+  const code = `
+  
+  /*
+	  FETCH syetem_tables()
+    FETCH syetem_columns('example_table')
+  */
+
+  `
+
   export let do_query = async () => {
     const resp = await api.query(source, group, {
       raw,
@@ -37,7 +46,7 @@
           class="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label
         >
         <div class="relative">
-          <CEditor bind:editor />
+          <CEditor bind:editor {code} />
         </div>
       </div>
     </div>

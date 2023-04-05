@@ -25,7 +25,6 @@ import AdminPlugStateNew from "./plug/state/state_new.svelte";
 import AdminPlugStateEdit from "./plug/state/state_edit.svelte";
 
 import AdminPlugDevDocs from "./plug/dev/docs/docs.svelte";
-import AdminPlugDevLogs from "./plug/dev/logs/logs.svelte";
 import AdminPlugDevExec from "./plug/dev/execute/execute.svelte";
 import AdminPlugIPCShell from "./plug/dev/ipcshell/index.svelte";
 import AdminPlugLiveShell from "./plug/dev/liveshell/index.svelte";
@@ -149,7 +148,6 @@ export default {
       "/ipcshell/:aid": AdminPlugIPCShell,
       "/liveshell/:aid": AdminPlugLiveShell,
       "/docs/:aid": AdminPlugDevDocs,
-      "/logs/:aid": AdminPlugDevLogs,
     },
 
     "/new": AdminPlugNew,

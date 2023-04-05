@@ -1,6 +1,10 @@
 package dyndb
 
 import (
+	"fmt"
+	"regexp"
+	"strings"
+
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/libx/dbutils/hsql"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dyncore"
@@ -122,6 +126,18 @@ func (d *DynDB) SqlQueryRaw(txid uint32, tenantId, group, qstr string) (any, err
 }
 
 func (d *DynDB) SqlQueryScopped(txid uint32, tenantId, group, qstr string) (any, error) {
+	qstr = strings.TrimSpace(removeSQLComments(qstr))
+
+	if strings.HasPrefix(qstr, "FETCH syetem_tables") {
+		return d.ListTables(tenantId, group)
+	} else if strings.HasPrefix(qstr, "FETCH syetem_columns") {
+		tname, err := extractTableName(qstr)
+		if err != nil {
+			return nil, err
+		}
+		return d.ListColumns(tenantId, group, tname)
+	}
+
 	result, err := d.hsql.Transform(tenantId, group, nil, qstr)
 	if err != nil {
 		return nil, err
@@ -157,4 +173,21 @@ func (d *DynDB) ReverseRefLoad(txid uint32, tenantId, gslug string, req *dyndb.R
 func (d *DynDB) GetCache() dyndb.DCache {
 
 	return nil
+}
+
+func removeSQLComments(query string) string {
+	commentRegex := regexp.MustCompile(`(--|#|/\*).*?(\*/|\n)`)
+	return commentRegex.ReplaceAllString(query, "")
+}
+
+func extractTableName(input string) (string, error) {
+	regex := regexp.MustCompile(`'([^']*)'`)
+
+	match := regex.FindStringSubmatch(input)
+
+	if len(match) != 2 {
+		return "", fmt.Errorf("Unable to extract table name from input string: %s", input)
+	}
+
+	return match[1], nil
 }
