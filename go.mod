@@ -26,6 +26,7 @@ require (
 	github.com/k0kubun/pp v3.0.1+incompatible
 	github.com/lib/pq v1.10.7
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
+	github.com/rqlite/sql v0.0.0-20221103124402-8f9ff0ceb8f0
 	github.com/rs/xid v1.4.0
 	github.com/rs/zerolog v1.27.0
 	github.com/siddontang/go v0.0.0-20180604090527-bdc77568d726
