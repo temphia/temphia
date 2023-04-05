@@ -103,6 +103,12 @@ func (g *Goja) Process(ev *event.Request) (*event.Response, error) {
 		return nil, err
 	}
 
+	if resp == nil {
+		return &event.Response{
+			Payload: []byte(`{}`),
+		}, nil
+	}
+
 	out, err := json.Marshal(&resp.Payload)
 	if err != nil {
 		return nil, err
