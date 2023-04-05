@@ -1,6 +1,7 @@
 package hsql
 
 import (
+	"regexp"
 	"strings"
 
 	"github.com/rqlite/sql"
@@ -24,6 +25,7 @@ func New(tns tns.TNS) *Hsql {
 }
 
 func (h *Hsql) Transform(tenantId, group string, allowedTables []string, query string) (*Result, error) {
+	query = removeSQLComments(query)
 
 	parser := sql.NewParser(strings.NewReader(query))
 	stmt, err := parser.ParseStatement()
@@ -55,4 +57,9 @@ func (h *Hsql) Transform(tenantId, group string, allowedTables []string, query s
 		InverseAlias:     v.inverseAliasMap,
 		TransformedQuery: stmt.String(),
 	}, nil
+}
+
+func removeSQLComments(query string) string {
+	commentRegex := regexp.MustCompile(`(--|#|/\*).*?(\*/|\n)`)
+	return commentRegex.ReplaceAllString(query, "")
 }
