@@ -17,10 +17,9 @@
 
   const code = `
   
-  /*
-	  FETCH syetem_tables()
-    FETCH syetem_columns('example_table')
-  */
+--  FETCH syetem_tables()
+-- FETCH syetem_columns('example_table')
+
 
   `
 
