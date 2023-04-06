@@ -215,6 +215,7 @@ func (s *Server) dx(fn func(uclaim *claim.Data, ctx *gin.Context)) func(*gin.Con
 
 type newRowReq struct {
 	Cells map[string]interface{} `json:"cells,omitempty"`
+	// Assets map[string]string      `json:"assets,omitempty"`
 }
 
 type commentRowReq struct {
