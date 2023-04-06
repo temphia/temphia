@@ -44,7 +44,7 @@
 {#if loading}
   <LoadingSpinner />
 {:else}
-  <Layout>
+  <Layout title={data["title"]}  >
     <StartPage {data} on:submit={submit} />
   </Layout>
 {/if}

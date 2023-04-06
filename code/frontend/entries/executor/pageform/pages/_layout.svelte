@@ -1,5 +1,7 @@
 <script lang="ts">
   import Tailwind from "../../../xcompo/common/_tailwind.svelte";
+
+  export let title = "";
 </script>
 
 <div class="h-full w-full p-2 bg-blue-50 flex justify-center">
@@ -10,7 +12,7 @@
     <h1
       class="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4"
     >
-      Form 1
+      {title}
     </h1>
 
     <slot />

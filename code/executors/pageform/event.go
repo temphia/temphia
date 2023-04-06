@@ -103,6 +103,7 @@ func (pf *Pageform) generate(ctx *PfCtx) (*Response, error) {
 	pp.Println("@ctx.message", ctx.message)
 
 	return &Response{
+		Title:   ctx.model.Name,
 		Ok:      ctx.ok,
 		Final:   ctx.final,
 		Message: ctx.message,

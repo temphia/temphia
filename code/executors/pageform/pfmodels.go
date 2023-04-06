@@ -64,6 +64,7 @@ type SubmitRequest struct {
 }
 
 type Response struct {
+	Title   string         `json:"title,omitempty" yaml:"title,omitempty"`
 	Ok      bool           `json:"ok,omitempty" yaml:"ok,omitempty"`
 	Final   bool           `json:"final,omitempty" yaml:"final,omitempty"`
 	Message string         `json:"message,omitempty" yaml:"message,omitempty"`
