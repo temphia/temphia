@@ -12,8 +12,12 @@ stages:
       - name: metameta
         info: this could include some meta info
         type: longtext
-    on_submit: OnStartSubmit
-    on_generate: OnStartGenerate
+    on_submit:
+      - type: script
+        target: OnStartSubmit
+    on_generate:
+      - type: script
+        target: OnStartGenerate
   second:
     about: Second stage
     items:
@@ -27,4 +31,6 @@ stages:
         type: shorttext
     
 exec_hint: [start, second, third]
-on_load: OnLoadForm
+on_load:
+  - type: script
+    target: OnLoadForm

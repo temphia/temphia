@@ -2,13 +2,13 @@
   import StartPage from "./pages/start/start.svelte";
   import Layout from "./pages/_layout.svelte";
   import { LoadingSpinner } from "../../xcompo";
-  import { Response, PageFormService } from "./service";
+  import {  PageFormService } from "./service";
 
   export let env: any;
 
   let loading = true;
   let service: PageFormService;
-  let data: Response;
+  let data: any;
 
   const load = async () => {
     service = new PageFormService(env);

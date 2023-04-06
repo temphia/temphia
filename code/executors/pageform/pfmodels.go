@@ -6,7 +6,7 @@ type FormModel struct {
 	Name     string               `json:"name,omitempty" yaml:"name,omitempty"`
 	Stages   map[string]FormStage `json:"stages,omitempty" yaml:"stages,omitempty"`
 	ExecHint []string             `json:"exec_hint,omitempty" yaml:"exec_hint,omitempty"`
-	OnLoad   string               `json:"on_load,omitempty" yaml:"on_load,omitempty"`
+	OnLoad   []Hook               `json:"on_load,omitempty" yaml:"on_load,omitempty"`
 }
 
 type FormStage struct {

@@ -17,10 +17,12 @@ func (pf *Pageform) actionLoad(req LoadRequest) (*Response, error) {
 	}
 
 	ctx.bind()
-	if pf.model.OnLoad != "" {
-		err := ctx.execute(pf.model.OnLoad, "on_load", "")
-		if err != nil {
-			return nil, err
+	if pf.model.OnLoad != nil {
+		for _, hook := range pf.model.OnLoad {
+			err := ctx.execute(hook.Target, "on_load", "")
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 
