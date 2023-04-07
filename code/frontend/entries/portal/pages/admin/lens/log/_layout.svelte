@@ -19,6 +19,41 @@
     code = JSON.stringify(opts["filters"], null, 4);
   }
 
+  const subtractTimeFromDate = (objDate, sec) => {
+    var numberOfMlSeconds = objDate.getTime();
+
+    var addMlSeconds = sec * 1000;
+
+    var newDateObj = new Date(numberOfMlSeconds - addMlSeconds);
+
+    return newDateObj;
+  };
+
+  const date_range = {
+    "5min": ["Last 5 minute", 5 * 60],
+    "15min": ["Last 15 minute", 15 * 60],
+    "1hour": ["Last hour", 60 * 60],
+    "1day": ["Last day", 60 * 60 * 24],
+    "1week": ["Last week", 60 * 60 * 24 * 7],
+    "15days": ["Last 15 days", 60 * 60 * 24 * 15],
+    "1mon": ["Last 1 month", 60 * 60 * 24 * 30],
+  };
+
+  let range;
+  const reset_range = () => {
+    console.log("@reset_value", fromDate);
+    range = "custom";
+  };
+
+  $: if (date_range[range]) {
+    console.log("@range", date_range[range]);
+    fromDate = subtractTimeFromDate(
+      new Date(),
+      date_range[range][1]
+    ).toISOString().slice(0, 16)
+    console.log("@range_from", fromDate);
+  }
+
   let editor;
 </script>
 
@@ -28,7 +63,7 @@
       <div class="p-1 flex-grow">
         <label
           for="default-search"
-          class="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label
+          class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label
         >
         <div class="relative">
           <CEditor bind:editor {code} />
@@ -42,11 +77,17 @@
           class="bg-green-100 p-1 rounded-lg flex space-x-1 flex-row items-center cursor-pointer"
         >
           <Icon name="chevron-left" class="h-4" />
-          <input
-            type="datetime-local"
-            class="text-xs bg-green-100"
-            bind:value={fromDate}
-          />
+
+          {#key range}
+            {#key fromDate}
+              <input
+                type="datetime-local"
+                on:change={reset_range}
+                class="text-xs bg-green-100"
+                bind:value={fromDate}
+              />
+            {/key}
+          {/key}
         </div>
 
         <div
@@ -79,6 +120,16 @@
       </div>
 
       <div class="flex justify-end p-1 gap-1">
+        <label class="inline-flex items-center">
+          <select bind:value={range} class="font-medium rounded text-sm p-1">
+            <option value="custom" />
+
+            {#each Object.entries(date_range) as [dkey, dval]}
+              <option value={dkey}>{dval[0]}</option>
+            {/each}
+          </select>
+        </label>
+
         <button
           on:click={() => {
             do_query(editor.getValue());
