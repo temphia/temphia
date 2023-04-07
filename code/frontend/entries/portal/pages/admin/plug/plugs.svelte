@@ -62,6 +62,14 @@
     });
   };
 
+  const action_logs = (id: string) => {
+    app.nav.admin_lens_logs({
+      filters: {
+        plug_id: id,
+      },
+    });
+  };
+
   const action_new = () => app.nav.admin_plug_new();
 </script>
 
@@ -102,6 +110,13 @@
         Action: action_show_flowmap,
         drop: true,
         icon: "map",
+      },
+
+      {
+        Name: "Logs",
+        drop: true,
+        icon: "document-search",
+        Action: action_logs,
       },
 
       {
