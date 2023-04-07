@@ -477,7 +477,7 @@ create table agent_links(
     to_handler text not null default '',
     tenant_id text not null,
     foreign KEY(to_plug_id, tenant_id) references plugs(id, tenant_id),
-    foreign KEY(to_plug_id, to_agent_id, tenant_id) references agents(id,plug_id, tenant_id),
+    foreign KEY(to_agent_id, to_plug_id, tenant_id) references agents(id,plug_id, tenant_id),
 
     foreign KEY(from_plug_id, tenant_id) references plugs(id, tenant_id),
     foreign KEY( from_agent_id, from_plug_id, tenant_id) references agents(id,plug_id, tenant_id),

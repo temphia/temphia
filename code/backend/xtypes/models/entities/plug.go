@@ -44,8 +44,8 @@ type AgentLink struct {
 	Name      string     `json:"name,omitempty" db:"name,omitempty"`
 	FromPlug  string     `json:"from_plug_id,omitempty" db:"from_plug_id,omitempty"`
 	FromAgent string     `json:"from_agent_id,omitempty" db:"from_agent_id,omitempty"`
-	ToPlug    string     `json:"to_plug_id,omitempty" db:"to_plug,omitempty"`
-	ToAgent   string     `json:"to_agent_id,omitempty" db:"to_agent,omitempty"`
+	ToPlug    string     `json:"to_plug_id,omitempty" db:"to_plug_id,omitempty"`
+	ToAgent   string     `json:"to_agent_id,omitempty" db:"to_agent_id,omitempty"`
 	ToHandler string     `json:"to_handler,omitempty" db:"to_handler,omitempty"`
 	ExtraMeta JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
 	TenantId  string     `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`
