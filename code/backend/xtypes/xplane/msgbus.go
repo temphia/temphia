@@ -1,11 +1,12 @@
 package xplane
 
 type Message struct {
-	Id     int64
-	Topic  string
-	Tenant string
-	Path   string
-	Data   string
+	Id      int64
+	Topic   string
+	Tenant  string
+	Path    string
+	Data    string
+	Persist bool
 }
 
 type Subscription struct {
