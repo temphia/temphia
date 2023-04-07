@@ -7,6 +7,7 @@
   export let fromDate = null;
   export let toDate = null;
   export let loading = false;
+  export let count = "20";
   export let message;
   export let do_query = (qstr) => {};
 
@@ -108,7 +109,8 @@
         </label>
 
         <label class="inline-flex items-center">
-          <select class="font-medium rounded text-sm p-1">
+          <select class="font-medium rounded text-sm p-1" bind:value={count}>
+            <option value="20">20</option>
             <option value="50">50</option>
             <option value="100">100</option>
             <option value="500">500</option>
@@ -159,7 +161,7 @@
     </div>
   </div>
 
-  <div class="mt-2 h-full">
+  <div class="mt-2">
     <slot />
   </div>
 </div>
