@@ -93,12 +93,7 @@
             >
               Label
             </th>
-            <th
-              scope="col"
-              class="text-sm font-medium text-gray-900 p-1 text-left"
-            >
-              Index
-            </th>
+
             <th
             scope="col"
             class="text-sm font-medium text-gray-900 p-1 text-left"
@@ -111,6 +106,20 @@
             >
               Tenant Id
             </th>
+
+            <th
+            scope="col"
+            class="text-sm font-medium text-gray-900 p-1 text-left"
+          >
+            Index
+          </th>
+
+          <th
+          scope="col"
+          class="text-sm font-medium text-gray-900 p-1 text-left"
+        >
+          Service
+        </th>
 
             <th
               scope="col"
@@ -162,11 +171,7 @@
                 {data["level"] || ""}
               </td>
 
-              <td
-                class="p-1 whitespace-nowrap text-sm font-medium text-gray-900"
-              >
-                {data["index"] || ""}
-              </td>
+
 
               <td
               class="p-1 whitespace-nowrap text-sm font-medium text-gray-900"
@@ -180,6 +185,19 @@
               >
                 {data["tenant_id"] || ""}
               </td>
+
+              <td
+              class="p-1 whitespace-nowrap text-sm font-medium text-gray-900"
+            >
+              {data["index"] || ""}
+            </td>
+
+            <td
+            class="p-1 whitespace-nowrap text-sm font-medium text-gray-900"
+          >
+            {data["service_id"] || ""}
+          </td>
+
               <td
                 class="p-1 whitespace-nowrap text-sm font-medium text-gray-900"
               >
