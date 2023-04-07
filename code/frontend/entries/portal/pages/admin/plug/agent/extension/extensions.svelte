@@ -9,7 +9,7 @@
     import { params } from "svelte-hash-router";
   
     export let pid = $params.pid;
-    export let aid = $params.pid;
+    export let aid = $params.aid;
   
     let datas = [];
     let loading = true;

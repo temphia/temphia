@@ -4,7 +4,7 @@
   import { params } from "svelte-hash-router";
 
   export let pid = $params.pid;
-  export let aid = $params.pid;
+  export let aid = $params.aid;
 
   const app = getContext("__app__") as PortalService;
   const api = app.api_manager.get_admin_plug_api();

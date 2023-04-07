@@ -10,7 +10,7 @@
   import NewPicker from "./_new_picker.svelte";
 
   export let pid = $params.pid;
-  export let aid = $params.pid;
+  export let aid = $params.aid;
 
   let datas = [];
   let loading = true;

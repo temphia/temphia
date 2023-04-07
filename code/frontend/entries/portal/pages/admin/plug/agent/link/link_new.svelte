@@ -17,7 +17,7 @@
   }
 
   const save = async (_data) => {
-    const resp = await api.new_agent_link(pid, aid, _data);
+    const resp = await api.new_agent_link(pid, aid, {...data, ..._data});
     if (!resp.ok) {
       message = resp.data;
       return;
@@ -27,6 +27,7 @@
 </script>
 
 <AutoForm
+  modified={true}
   {message}
   schema={{
     fields: [
