@@ -2,6 +2,7 @@
   import { getContext } from "svelte";
   import type { PortalService } from "../../core";
   import Layout from "./_layout.svelte";
+  import { time_ago } from "../../../../../../lib/vendor/timeago";
 
   const app = getContext("__app__") as PortalService;
   const lapi = app.api_manager.get_admin_lens_api();
@@ -131,7 +132,9 @@
           {#each datas as rdata, idx}
             {@const data = JSON.parse(rdata) || {}}
             {@const show_data = __open_row_idx === idx}
-            <tr class="bg-gray-100 border-b">
+            {@const white =   idx %2 == 0}
+
+            <tr class="border-b {white ? "bg-gray-100": ""}">
               <td
                 class="p-1 whitespace-nowrap text-sm font-medium text-gray-900"
               >
@@ -140,9 +143,12 @@
 
               <td
               class="p-1 whitespace-nowrap text-sm font-medium text-gray-900"
-            >
-              {data["time"] || ""}
-            </td>
+              >
+              <span>{time_ago(new Date(data["time"]))}</span>
+
+              [{data["time"] || ""}]
+
+              </td>
 
               <td
                 class="p-1 whitespace-nowrap text-sm font-medium text-gray-900"
