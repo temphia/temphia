@@ -21,13 +21,10 @@
   }
 
   const subtractTimeFromDate = (objDate, sec) => {
-    var numberOfMlSeconds = objDate.getTime();
-
-    var addMlSeconds = sec * 1000;
-
-    var newDateObj = new Date(numberOfMlSeconds - addMlSeconds);
-
-    return newDateObj;
+    const numberOfMlSeconds = objDate.getTime();
+    const offset = objDate.getTimezoneOffset() * 60 * 1000;
+    const addMlSeconds = sec * 1000;
+    return new Date((numberOfMlSeconds - offset) - (addMlSeconds ));
   };
 
   const date_range = {
@@ -48,10 +45,9 @@
 
   $: if (date_range[range]) {
     console.log("@range", date_range[range]);
-    fromDate = subtractTimeFromDate(
-      new Date(),
-      date_range[range][1]
-    ).toISOString().slice(0, 16)
+    fromDate = subtractTimeFromDate(new Date(), date_range[range][1])
+      .toISOString()
+      .slice(0, 16);
     console.log("@range_from", fromDate);
   }
 
