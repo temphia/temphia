@@ -24,10 +24,14 @@ type SimpleLogProxy struct {
 }
 
 func (s *SimpleLogProxy) Query(tenantId string, req logx.QueryRequest) ([]logx.Log, error) {
-	return s.query(req.From, req.To, req.Cursor, tenantId, req.Filters)
+	if req.Count == 0 {
+		req.Count = 20
+	}
+
+	return s.query(req.From, req.To, req.Cursor, tenantId, req.Filters, req.Count)
 }
 
-func (s *SimpleLogProxy) query(from, to, cursor, tenantId string, filters map[string]string) ([]logx.Log, error) {
+func (s *SimpleLogProxy) query(from, to, cursor, tenantId string, filters map[string]string, max int) ([]logx.Log, error) {
 	readFile, err := os.Open(s.Path)
 	if err != nil {
 		return nil, err
@@ -35,8 +39,6 @@ func (s *SimpleLogProxy) query(from, to, cursor, tenantId string, filters map[st
 
 	fileScanner := bufio.NewScanner(readFile)
 	fileScanner.Split(bufio.ScanLines)
-
-	const max = 20
 
 	fromTime, toTime, err := parseTime(from, to)
 	if err != nil {

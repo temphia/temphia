@@ -10,6 +10,7 @@ type LogQuery struct {
 	To      string            `json:"to,omitempty"`
 	Filters map[string]string `json:"filters,omitempty"`
 	Cursor  string            `json:"cursor,omitempty"`
+	Count   int               `json:"count,omitempty"`
 }
 
 func (c *Controller) LensQuery(uclaim *claim.Session, query LogQuery) ([]logx.Log, error) {
@@ -18,5 +19,6 @@ func (c *Controller) LensQuery(uclaim *claim.Session, query LogQuery) ([]logx.Lo
 		To:      query.To,
 		Cursor:  query.Cursor,
 		Filters: query.Filters,
+		Count:   query.Count,
 	})
 }

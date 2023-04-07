@@ -10,6 +10,7 @@ type Provider interface {
 type Log string
 
 type QueryRequest struct {
+	Count   int
 	From    string
 	To      string
 	Cursor  string
