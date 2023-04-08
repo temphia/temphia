@@ -15,7 +15,9 @@ func (c *Controller) AddUser(uclaim *claim.Session, user *entities.User) error {
 	}
 
 	user.TenantID = uclaim.TenantId
-	user.CreatedAt = time.Now()
+	user.CreatedAt = dbutils.Time{
+		Inner: time.Now(),
+	}
 
 	return c.coredb.AddUser(user, &entities.UserData{
 		UserId:             user.UserId,

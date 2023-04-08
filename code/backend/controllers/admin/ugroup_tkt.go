@@ -3,6 +3,7 @@ package admin
 import (
 	"time"
 
+	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
@@ -18,7 +19,9 @@ func (c *Controller) UgroupListUsersByGroup(uclaim *claim.UserMgmtTkt) ([]*entit
 func (c *Controller) UgroupAddUser(uclaim *claim.UserMgmtTkt, data *entities.User) error {
 
 	data.TenantID = uclaim.TenantId
-	data.CreatedAt = time.Now()
+	data.CreatedAt = dbutils.Time{
+		Inner: time.Now(),
+	}
 
 	return c.coredb.AddUser(data, &entities.UserData{
 		UserId:             data.UserId,

@@ -1,8 +1,6 @@
 package entities
 
-import (
-	"time"
-)
+import "github.com/temphia/temphia/code/backend/libx/dbutils"
 
 type PlugKV struct {
 	Key     string `json:"key,omitempty" db:"key"`
@@ -13,8 +11,8 @@ type PlugKV struct {
 	TenantID string `json:"tenant_id,omitempty" db:"tenant_id"`
 
 	// meta
-	Tag1 string     `json:"tag1,omitempty" db:"tag1"`
-	Tag2 string     `json:"tag2,omitempty" db:"tag2"`
-	Tag3 string     `json:"tag3,omitempty" db:"tag3"`
-	TTL  *time.Time `json:"ttl,omitempty" db:"ttl"`
+	Tag1 string        `json:"tag1,omitempty" db:"tag1"`
+	Tag2 string        `json:"tag2,omitempty" db:"tag2"`
+	Tag3 string        `json:"tag3,omitempty" db:"tag3"`
+	TTL  *dbutils.Time `json:"ttl,omitempty" db:"ttl"`
 }

@@ -3,6 +3,7 @@ package seeder
 import (
 	"time"
 
+	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
@@ -24,8 +25,10 @@ func (a *AppSeeder) AddNewUser(userId, fname, email, pass string, ugroup string)
 		Password:  pass,
 		TenantID:  a.TenantSlug,
 		PublicKey: "",
-		CreatedAt: time.Now(),
-		Active:    true,
+		CreatedAt: dbutils.Time{
+			Inner: time.Now(),
+		},
+		Active: true,
 	}, &entities.UserData{
 		UserId:             userId,
 		MFAEnabled:         false,
@@ -50,12 +53,14 @@ func (a *AppSeeder) SendUserWelcome(user, msg string) error {
 	}
 
 	_, err := a.CoreHub.AddUserMessage(&entities.UserMessage{
-		Title:     "Welcome User",
-		Contents:  msg,
-		TenantId:  a.TenantSlug,
-		UserId:    user,
-		Type:      "system_message",
-		CreatedAt: &now,
+		Title:    "Welcome User",
+		Contents: msg,
+		TenantId: a.TenantSlug,
+		UserId:   user,
+		Type:     "system_message",
+		CreatedAt: &dbutils.Time{
+			Inner: now,
+		},
 	})
 	return err
 }

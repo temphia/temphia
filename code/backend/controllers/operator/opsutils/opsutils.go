@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/temphia/temphia/code/backend/controllers/operator/opmodels"
+	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
@@ -62,8 +63,10 @@ func AddTenantWithUser(coredb store.CoreDB, opts *TenantWithUserOptions) error {
 		Password:  opts.SuperPassword,
 		TenantID:  opts.Slug,
 		PublicKey: "",
-		CreatedAt: time.Now(),
-		Active:    true,
+		CreatedAt: dbutils.Time{
+			Inner: time.Now(),
+		},
+		Active: true,
 	}, &entities.UserData{
 		UserId:             opmodels.DefaultUser,
 		MFAEnabled:         false,

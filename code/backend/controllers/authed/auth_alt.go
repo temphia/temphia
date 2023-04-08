@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -92,8 +93,10 @@ func (c *Controller) authNextSecond(opts AuthNextSecondRequest) (*AuthNextSecond
 			Password:  "",
 			TenantID:  sclaim.TenantId,
 			PublicKey: "",
-			CreatedAt: time.Now(),
-			Active:    true,
+			CreatedAt: dbutils.Time{
+				Inner: time.Now(),
+			},
+			Active: true,
 		}, &entities.UserData{
 			UserId:             opts.SignUpdata.UserId,
 			MFAEnabled:         false,

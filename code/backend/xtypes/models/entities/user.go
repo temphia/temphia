@@ -2,20 +2,21 @@ package entities
 
 import (
 	"database/sql/driver"
-	"time"
+
+	"github.com/temphia/temphia/code/backend/libx/dbutils"
 )
 
 type User struct {
-	UserId    string    `json:"user_id,omitempty" db:"user_id"`
-	FullName  string    `json:"full_name,omitempty" db:"full_name"`
-	Email     string    `json:"email,omitempty" db:"email"`
-	Bio       string    `json:"bio,omitempty" db:"bio"`
-	GroupID   string    `json:"group_id,omitempty" db:"group_id"`
-	Password  string    `json:"password,omitempty" db:"password"`
-	TenantID  string    `json:"tenant_id,omitempty" db:"tenant_id"`
-	PublicKey string    `json:"pub_key,omitempty" db:"pub_key"`
-	CreatedAt time.Time `json:"created_at,omitempty" db:"created_at"`
-	Active    bool      `json:"active,omitempty" db:"active"`
+	UserId    string       `json:"user_id,omitempty" db:"user_id"`
+	FullName  string       `json:"full_name,omitempty" db:"full_name"`
+	Email     string       `json:"email,omitempty" db:"email"`
+	Bio       string       `json:"bio,omitempty" db:"bio"`
+	GroupID   string       `json:"group_id,omitempty" db:"group_id"`
+	Password  string       `json:"password,omitempty" db:"password"`
+	TenantID  string       `json:"tenant_id,omitempty" db:"tenant_id"`
+	PublicKey string       `json:"pub_key,omitempty" db:"pub_key"`
+	CreatedAt dbutils.Time `json:"created_at,omitempty" db:"created_at"`
+	Active    bool         `json:"active,omitempty" db:"active"`
 }
 
 type UserData struct {
