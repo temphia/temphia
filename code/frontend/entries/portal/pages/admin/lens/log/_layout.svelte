@@ -157,7 +157,7 @@
     </div>
   </div>
 
-  <div class="mt-2">
+  <div class="mt-2 w-full">
     <slot />
   </div>
 </div>

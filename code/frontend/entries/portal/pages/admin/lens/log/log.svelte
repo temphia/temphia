@@ -65,8 +65,8 @@
 
 <Layout {message} do_query={load} bind:fromDate bind:toDate bind:count {loading}>
   {#if loaded}
-    <div class="p-2 w-full h-full bg-white rounded">
-      <table class="min-w-full overflow-auto min-h-fit">
+    <div class="p-2 bg-white rounded w-full overflow-auto" style="max-width: 100vw;" >
+      <table class="w-full">
         <thead class="bg-white border-b">
           <tr>
             <th
