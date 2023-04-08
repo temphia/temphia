@@ -1,6 +1,7 @@
 package authed
 
 import (
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
@@ -29,6 +30,9 @@ func (c *Controller) sessionClaim(uclaim *claim.User, opts RefreshReq) *RefreshR
 
 	_, err := c.coredb.GetUserDevice(uclaim.TenantId, uclaim.UserID, uclaim.DeviceId)
 	if err != nil {
+
+		pp.Println("@get_user_device_error", err)
+
 		return &RefreshResp{
 			Token:    "",
 			Message:  "device not found",
@@ -49,6 +53,8 @@ func (c *Controller) sessionClaim(uclaim *claim.User, opts RefreshReq) *RefreshR
 
 	token, err := c.signer.SignSession(uclaim.TenantId, sclaim)
 	if err != nil {
+		pp.Println("@sign_err", err)
+
 		return &RefreshResp{
 			Token:    "",
 			Expiry:   "",

@@ -5,6 +5,7 @@ import (
 
 	"github.com/bwmarrin/snowflake"
 	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -120,7 +121,9 @@ func (c *Controller) AuthFinish(opts AuthFinishRequest, deviceName, addr string)
 		ExtraMeta:   entities.JsonStrMap{},
 		TenantID:    sclaim.TenantId,
 		PairOptions: entities.JsonStrMap{},
-		ExpiresOn:   time.Now().Add(time.Hour * 24 * 60),
+		ExpiresOn: dbutils.Time{
+			Inner: time.Now().Add(time.Hour * 24 * 60),
+		},
 	}
 
 	err = c.coredb.AddUserDevice(sclaim.TenantId, paclaim.UserID, device)

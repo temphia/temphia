@@ -3,6 +3,7 @@ package admin
 import (
 	"time"
 
+	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -106,11 +107,13 @@ func (c *Controller) AddUserDevice(uclaim *claim.Session, user string, data *New
 	// fixme => return id
 
 	return c.coredb.AddUserDevice(uclaim.TenantId, user, &entities.UserDevice{
-		Id:          0,
-		Name:        data.Name,
-		UserId:      user,
-		DeviceType:  data.DeviceType,
-		ExpiresOn:   time.Now().Add(time.Hour * 24 * 60),
+		Id:         0,
+		Name:       data.Name,
+		UserId:     user,
+		DeviceType: data.DeviceType,
+		ExpiresOn: dbutils.Time{
+			Inner: time.Now().Add(time.Hour * 24 * 60),
+		},
 		APNToken:    "",
 		Scopes:      data.Scopes,
 		ExtraMeta:   data.ExtraMeta,

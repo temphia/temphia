@@ -3,6 +3,7 @@ package basic
 import (
 	"time"
 
+	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
@@ -30,7 +31,9 @@ func (c *Controller) AddUserDevice(uclaim *claim.Session, data *NewUserDevice) e
 		TenantID:    uclaim.TenantId,
 		LastData:    entities.JsonStrMap{},
 		PairOptions: entities.JsonStrMap{},
-		ExpiresOn:   time.Now().Add(time.Hour * 24 * 60),
+		ExpiresOn: dbutils.Time{
+			Inner: time.Now().Add(time.Hour * 24 * 60),
+		},
 	})
 
 }
