@@ -1,5 +1,12 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
+  import { instance_helper } from "../instance";
+  import { getContext } from "svelte";
+  import type { PortalService } from "../../../core";
+
+  import { params } from "svelte-hash-router";
+
+  export let bid = $params.bid;
 
   export let items;
   const iconTypes = {
@@ -9,18 +16,18 @@
     data_sheet: "table",
   };
 
+  const app = getContext("__app__") as PortalService;
+
   const action_instance_manual = async (item) => {
-    // const api = app.api_manager.get_admin_bprint_api();
-    // const resp = await api.get(id);
-    // if (!resp.ok) {
-    //   console.log("@@");
-    //   return;
-    // }
-    // const bprint = resp.data;
-    // const file = bprint["files"].filter(
-    //   (v) => v !== "schema.json" || v !== "schema.yaml"
-    // )[0];
-    // instance_helper(app, bprint["type"], bprint, file, InstanceBundlePicker);
+    const api = app.api_manager.get_admin_bprint_api();
+    const resp = await api.get(bid);
+    if (!resp.ok) {
+      console.log("@@");
+      return;
+    }
+    const bprint = resp.data;
+    const file = bprint["files"].filter((v) => v !== "schema.json")[0];
+    instance_helper(app, bprint["type"], bprint, file);
   };
 </script>
 
@@ -56,6 +63,7 @@
 
         <td class="py-3 px-6 text-center">
           <button
+            on:click={() => action_instance_manual(item)}
             class="bg-blue-200 text-blue-600 py-1 px-3 rounded-full text-xs"
             >manual</button
           >

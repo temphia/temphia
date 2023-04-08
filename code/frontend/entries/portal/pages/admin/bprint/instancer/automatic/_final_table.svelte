@@ -1,5 +1,9 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
+  import { getContext } from "svelte";
+  import type { PortalService } from "../../../core";
+
+  const app = getContext("__app__") as PortalService;
 
   export let installed_items = {};
 
@@ -8,6 +12,25 @@
     plug: "view-grid-add",
     resource: "cube",
     data_sheet: "table",
+  };
+
+  const navigate = (item_type) => {
+    switch (item_type) {
+      case "data_group":
+      case "data_sheet":
+      case "data_table":
+        app.nav.data_loader();
+        break;
+      case "resource":
+        app.nav.admin_resources();
+        break;
+      case "plug":
+        app.nav.admin_plugs();
+        break;
+      default:
+        app.nav.admin_bprints();
+        break;
+    }
   };
 </script>
 
@@ -55,6 +78,7 @@
             </p>
           {:else}
             <button
+              on:click={() => navigate(item["type"])}
               class="bg-blue-200 text-blue-600 py-1 px-3 rounded-full text-xs"
               >explore</button
             >
