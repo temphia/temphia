@@ -1,13 +1,7 @@
 package zenerator
 
 import (
-	"errors"
 	"strings"
-)
-
-var (
-	ErrUnknownColumn = errors.New("Unknown Column")
-	ErrUnknownVendor = errors.New("Unknown Vendor")
 )
 
 func TableHead(tableName string) string {
@@ -66,6 +60,10 @@ func (w *WriterCtx) Seperator() {
 }
 
 func (w *WriterCtx) Terminate() {
+	if w.terminated {
+		return
+	}
+
 	w.buffer.Write([]byte(");\n"))
 }
 

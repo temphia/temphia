@@ -105,7 +105,7 @@ func (g *zenerator) DropTable(tenantId, gslug, tslug string) (string, error) {
 }
 
 func (g *zenerator) AddColumn(tenantId, gslug, tslug, cslug string, model *xbprint.NewColumn) (string, error) {
-	return "", nil
+	return g.addColumn(tenantId, gslug, tslug, cslug, model.Ctype, model.NotNullable)
 }
 
 func (g *zenerator) addColumn(tenantId, gslug, tslug, cname, ctype string, notnull bool) (string, error) {
