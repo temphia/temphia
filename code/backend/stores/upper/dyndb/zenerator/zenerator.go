@@ -31,7 +31,11 @@ func New(vendor string, tns tns.TNS) *zenerator {
 	switch vendor {
 	case store.VendorPostgres:
 		z._index = z.indexPg
-		z._innerColumn = z.innerColumnPg()
+		z._innerColumn = z.innerColumnPg(pgCtypeMap)
+	case store.VendorSqlite:
+		z._index = z.indexSqlite
+		z._innerColumn = z.innerColumnPg(sqliteCtypeMap)
+
 	default:
 		panic("not supported vendor:" + vendor)
 	}

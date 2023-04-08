@@ -43,8 +43,8 @@ func PgFTSIndex(table string, model *entities.Index) string {
 	return buf.String()
 }
 
-func (g *zenerator) innerColumnPg() func(cslug, ctype string, notnull bool, defval string) string {
-	fn := CTypeMap(pgCtypeMap)
+func (g *zenerator) innerColumnPg(cmap map[string]string) func(cslug, ctype string, notnull bool, defval string) string {
+	fn := CTypeMap(cmap)
 
 	return func(cslug, ctype string, notnull bool, defval string) string {
 

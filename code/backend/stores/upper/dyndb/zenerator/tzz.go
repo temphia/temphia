@@ -45,9 +45,6 @@ func (t *tzz) CreateTable() (string, error) {
 		wctx.Write(colstr)
 	}
 
-	// fixme => remove this
-	// wctx.CondWriteCol(t.model.DeletedAt, t.gzz._innerColumn("deleted_at", dyndb.CtypeDateTime, false, ""))
-
 	// unique index
 	for _, idx := range t.model.UniqueIndexes {
 		wctx.Seperator()
