@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
@@ -43,13 +44,7 @@ func (pg *PGCtypeProcesser) FromRowDBType(row map[string]interface{}) error {
 		}
 
 		switch col.Ctype {
-		case dyndb.CtypeShortText:
-		case dyndb.CtypePhone:
-		case dyndb.CtypeSelect:
-		case dyndb.CtypeRFormula:
-		case dyndb.CtypeFile:
-		case dyndb.CtypeMultiFile:
-		case dyndb.CtypeCheckBox:
+
 		case dyndb.CtypeCurrency:
 			fstr := ""
 
@@ -74,12 +69,6 @@ func (pg *PGCtypeProcesser) FromRowDBType(row map[string]interface{}) error {
 				return err
 			}
 			row[k] = point
-		case dyndb.CtypeDateTime:
-		case dyndb.CtypeMultSelect:
-		case dyndb.CtypeLongText:
-		case dyndb.CtypeSingleUser:
-		case dyndb.CtypeMultiUser:
-		case dyndb.CtypeEmail:
 		case dyndb.CtypeJSON:
 			switch vv := v.(type) {
 			case string:
@@ -89,12 +78,8 @@ func (pg *PGCtypeProcesser) FromRowDBType(row map[string]interface{}) error {
 			default:
 				continue
 			}
-
-		case dyndb.CtypeRangeNumber:
-		case dyndb.CtypeColor:
-
 		default:
-			panic("not implemented")
+			continue
 		}
 
 	}
@@ -131,31 +116,10 @@ func (pg *PGCtypeProcesser) ToRowDBType(row map[string]interface{}) error {
 		}
 
 		switch col.Ctype {
-		case dyndb.CtypeShortText:
-		case dyndb.CtypePhone:
-		case dyndb.CtypeSelect:
-		case dyndb.CtypeRFormula:
-		case dyndb.CtypeFile:
-		case dyndb.CtypeMultiFile:
-		case dyndb.CtypeCheckBox:
-		case dyndb.CtypeCurrency:
-			//
-		case dyndb.CtypeNumber:
 		case dyndb.CtypeLocation:
 			row[k] = PgLocationToDBType(convertToFloat(v))
-		case dyndb.CtypeDateTime:
-
-		case dyndb.CtypeMultSelect:
-		case dyndb.CtypeLongText:
-		case dyndb.CtypeSingleUser:
-		case dyndb.CtypeMultiUser:
-		case dyndb.CtypeEmail:
-		case dyndb.CtypeJSON:
-		case dyndb.CtypeRangeNumber:
-		case dyndb.CtypeColor:
-
 		default:
-			panic("not implemented")
+			continue
 		}
 
 	}
@@ -195,7 +159,7 @@ func PgLocationFromDBType(val interface{}) ([2]float64, error) {
 	case 1:
 		byteOrder = binary.LittleEndian
 	default:
-		return p, fmt.Errorf("Invalid byte order %d", wkbByteOrder)
+		return p, easyerr.Error(fmt.Sprintf("Invalid byte order %d", wkbByteOrder))
 	}
 
 	var wkbGeometryType uint64
