@@ -9,65 +9,31 @@ import (
 	"github.com/temphia/temphia/code/backend/app/seeder"
 	"github.com/temphia/temphia/code/backend/data"
 	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/distro"
 	"github.com/temphia/temphia/code/distro/embedpg"
 )
 
 func RunDemo() error {
 
-	port, err := getPort()
-	if err != nil {
-		return nil
-	}
-
-	dpg := embedpg.New("temphia-data/pgdata", port)
-
-	Conf.Database.Port = fmt.Sprintf("%d", dpg.GetPort())
-
-	pp.Println("PORT ", int(dpg.GetPort()))
-
-	err = dpg.Start()
-	if err != nil {
-		return err
-	}
-
-	pp.Println("POSTGRES STARTED")
-
-	defer func() {
-		pp.Println("STOPPING POSTGRES", dpg.Stop())
-	}()
-
-	pp.Println("database started port ", int(dpg.GetPort()))
-
-	out, err := data.DataDir.ReadFile("schema/postgres.sql")
-	if err != nil {
-		return err
-	}
-
-	err = dpg.RunSchema(string(out))
-	if err != nil {
-		return err
+	switch Conf.Database.Vendor {
+	case store.VendorPostgres:
+		err := initPg()
+		if err != nil {
+			return err
+		}
+	case store.VendorSqlite:
+		err := initSqlite()
+		if err != nil {
+			return err
+		}
+	default:
+		panic("Not supported vendor " + Conf.Database.Vendor)
 	}
 
 	dapp := distro.NewDistroApp(Conf.AsConfig(), true, true)
 
-	go setUpHandler(func(signal os.Signal) {
-		if signal == syscall.SIGTERM {
-			fmt.Println("Got kill signal. ")
-			fmt.Println("Program will terminate now.")
-			fmt.Println(dpg.Stop())
-			os.Exit(0)
-		} else if signal == syscall.SIGINT {
-			fmt.Println("Got CTRL+C signal")
-			fmt.Println("Closing.")
-			fmt.Println(dpg.Stop())
-			os.Exit(0)
-		} else {
-			fmt.Println("Ignoring signal: ", signal)
-		}
-	})
-
-	err = runSeed(dapp)
+	err := runSeed(dapp)
 	if err != nil {
 		return err
 	}
@@ -152,6 +118,65 @@ func seedExtraUser(sapp *seeder.AppSeeder) error {
 	if err != nil {
 		return err
 	}
+
+	return nil
+}
+
+func initSqlite() error {
+
+	return nil
+}
+
+func initPg() error {
+	port, err := getPort()
+	if err != nil {
+		return nil
+	}
+
+	dpg := embedpg.New("temphia-data/pgdata", port)
+
+	Conf.Database.Port = fmt.Sprintf("%d", dpg.GetPort())
+
+	pp.Println("PORT ", int(dpg.GetPort()))
+
+	err = dpg.Start()
+	if err != nil {
+		return err
+	}
+
+	pp.Println("POSTGRES STARTED")
+
+	defer func() {
+		pp.Println("STOPPING POSTGRES", dpg.Stop())
+	}()
+
+	pp.Println("database started port ", int(dpg.GetPort()))
+
+	out, err := data.DataDir.ReadFile("schema/postgres.sql")
+	if err != nil {
+		return err
+	}
+
+	err = dpg.RunSchema(string(out))
+	if err != nil {
+		return err
+	}
+
+	go setUpHandler(func(signal os.Signal) {
+		if signal == syscall.SIGTERM {
+			fmt.Println("Got kill signal. ")
+			fmt.Println("Program will terminate now.")
+			fmt.Println(dpg.Stop())
+			os.Exit(0)
+		} else if signal == syscall.SIGINT {
+			fmt.Println("Got CTRL+C signal")
+			fmt.Println("Closing.")
+			fmt.Println(dpg.Stop())
+			os.Exit(0)
+		} else {
+			fmt.Println("Ignoring signal: ", signal)
+		}
+	})
 
 	return nil
 }

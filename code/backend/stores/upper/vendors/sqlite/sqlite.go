@@ -22,7 +22,7 @@ type sl struct{}
 
 func (sl) Db(so *config.StoreSource) (db.Session, error) {
 	var settings = sqlite.ConnectionURL{
-		Database: so.Name,
+		Database: so.HostPath,
 	}
 
 	return sqlite.Open(settings)

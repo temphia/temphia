@@ -9,6 +9,21 @@ var Conf = simple.Config{
 	OperatorName:     "ops",
 	OperatorPassword: "ops123",
 	Database: simple.DatabaseOptions{
+		Provider: "sqlite",
+		Vendor:   "sqlite",
+		HostPath: "demo.db",
+		Options:  map[string]interface{}{},
+	},
+
+	ExecutorOptions: make(map[string]any),
+	ModulesOptions:  make(map[string]any),
+	FilesFolder:     "./temphia-data/files",
+	LogFolder:       "./temphia-data/logs",
+}
+
+/*
+
+	Database: simple.DatabaseOptions{
 		Provider: "postgres",
 		Vendor:   "postgres",
 		HostPath: "localhost",
@@ -19,8 +34,5 @@ var Conf = simple.Config{
 		Options:  map[string]interface{}{},
 	},
 
-	ExecutorOptions: make(map[string]any),
-	ModulesOptions:  make(map[string]any),
-	FilesFolder:     "./temphia-data/files",
-	LogFolder:       "./temphia-data/logs",
-}
+
+*/
