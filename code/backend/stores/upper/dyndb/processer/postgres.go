@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
@@ -158,6 +159,8 @@ func PgLocationFromDBType(val interface{}) ([2]float64, error) {
 
 	b, err := hex.DecodeString(lstr)
 	if err != nil {
+		pp.Println("@lstr", lstr)
+		pp.Println("@hex_err", err)
 		return p, err
 	}
 	r := bytes.NewReader(b)

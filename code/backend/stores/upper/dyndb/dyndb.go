@@ -11,7 +11,6 @@ import (
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/tns"
 	"github.com/temphia/temphia/code/backend/stores/upper/ucore"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/upper/db/v4"
 )
@@ -36,7 +35,7 @@ func New(opts ucore.DynDBOptions) *DynDB {
 		txn:        opts.TxnManager,
 		dyngen:     opts.DynGen,
 		tns:        opts.TNS,
-		vendor:     store.VendorPostgres, // fixme =>  from config
+		vendor:     opts.Vendor,
 		cache:      nil,
 		hsql:       hsql.New(opts.TNS),
 	}

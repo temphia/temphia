@@ -48,6 +48,7 @@ func NewAdapter(upvendor ucore.UpperVendor) func(conf *config.StoreSource) (stor
 				DynGen:     ztr,
 				TNS:        _tns,
 				SharedLock: dlock.New(""),
+				Vendor:     conf.Vendor,
 			}),
 		}, nil
 	}

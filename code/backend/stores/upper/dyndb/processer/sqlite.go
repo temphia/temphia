@@ -62,8 +62,22 @@ func (scp *SqliteCtypeProcesser) FromRowDBType(row map[string]interface{}) error
 			row[k] = s
 		case dyndb.CtypeNumber:
 		case dyndb.CtypeLocation:
-			point := convertToFloat(v)
-			row[k] = fmt.Sprintf(`{"type":"Point", "coordinates":[%v, %v]}`, point[0], point[1])
+			var lstr []byte
+			switch vv := v.(type) {
+			case string:
+				lstr = []byte(vv)
+			case []uint8:
+				lstr = vv
+			default:
+				continue
+			}
+
+			point := GeoJSON{}
+			err := json.Unmarshal(lstr, &point)
+			if err != nil {
+				return err
+			}
+			row[k] = point.Coordinates
 		default:
 			continue
 		}
@@ -105,21 +119,14 @@ func (scp *SqliteCtypeProcesser) ToRowDBType(row map[string]interface{}) error {
 
 		switch col.Ctype {
 		case dyndb.CtypeLocation:
-			fstr := []byte(`{}`)
 
 			switch vv := v.(type) {
-			case string:
-				fstr = []byte(vv)
-			case []uint8:
-				fstr = vv
+			case []any:
+				row[k] = fmt.Sprintf(`{"type":"Point", "coordinates":[%v, %v]}`, vv[0], vv[1])
+			default:
+				panic(fmt.Sprintf("Wrong location type key: %v value: %v", k, v))
 			}
 
-			point := &GeoJSON{}
-			err := json.Unmarshal(fstr, point)
-			if err != nil {
-				return err
-			}
-			row[k] = point.Coordinates
 		default:
 			continue
 		}

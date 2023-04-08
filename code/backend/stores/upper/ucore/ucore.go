@@ -21,6 +21,7 @@ type DynDBOptions struct {
 	TxnManager dbutils.TxManager
 	DynGen     Zenerator
 	TNS        tns.TNS
+	Vendor     string
 }
 
 // upper throws timeout when it takes long to run query so get

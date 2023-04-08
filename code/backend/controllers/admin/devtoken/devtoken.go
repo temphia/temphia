@@ -3,6 +3,7 @@ package devtoken
 import (
 	"encoding/base64"
 
+	"github.com/k0kubun/pp"
 	"github.com/ugorji/go/codec"
 )
 
@@ -30,6 +31,7 @@ func NewPlug(rawstr string) (*Plug, error) {
 
 	raw, err := base64.StdEncoding.DecodeString(rawstr)
 	if err != nil {
+		pp.Println("@err_plug", err)
 		return nil, err
 	}
 
