@@ -2,6 +2,7 @@ package zenerator
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
@@ -29,6 +30,15 @@ var (
 		dyndb.CtypeColor:       "text",
 	}
 )
+
+func TableHeadSqlite(tableName string) string {
+	var buf strings.Builder
+	buf.WriteString("create table ")
+	buf.WriteString(tableName)
+	buf.WriteString("(\n")
+	buf.WriteString("\t__id integer primary key autoincrement not null,\n\t__version integer not null default 0, \n\t__mod_sig text")
+	return buf.String()
+}
 
 func (g *zenerator) indexSqlite(tblname, iname, itype string, spans []string) string {
 

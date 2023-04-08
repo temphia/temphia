@@ -35,7 +35,12 @@ func (t *tzz) CreateTable() (string, error) {
 
 	wctx := WriterCtx{}
 
-	wctx.Write(TableHead(t.tableSlug))
+	switch t.gzz.vendor {
+	case store.VendorSqlite:
+		wctx.Write(TableHeadSqlite(t.tableSlug))
+	default:
+		wctx.Write(TableHead(t.tableSlug))
+	}
 
 	for _, col := range t.model.Columns {
 		colstr := t.gzz._innerColumn(col.Slug, col.Ctype, col.NotNullable, "")
