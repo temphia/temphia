@@ -1,6 +1,7 @@
 package zenerator
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -70,4 +71,36 @@ func (g *zenerator) indexPg(tblname, iname, itype string, spans []string) string
 	default:
 		panic("not supported index type:" + itype)
 	}
+}
+
+func (t *tzz) activityTablePg(wctx *WriterCtx) {
+	activityTable := t.tns.ActivityTable(t.tenantId, t.gslug, t.model.Slug)
+
+	wctx.Write(
+		fmt.Sprintf(`
+
+			CREATE TABLE %s (
+				id serial primary key,
+				type TEXT NOT NULL,
+				row_id integer not null,
+				row_version integer not null,
+				user_id text not null DEFAULT '',
+				user_sign text not null DEFAULT '',
+				init_sign text not null DEFAULT '',
+				payload text not null DEFAULT '',
+				message text not null DEFAULT '',
+				created_at timestamptz not null default now()
+			);
+			
+			`, activityTable,
+		),
+	)
+
+	if t.model.ActivityType == dyndb.DynActivityTypeStrict {
+		wctx.Write(fmt.Sprintf(`CREATE TRIGGER 
+			data_tg_%s AFTER INSERT OR UPDATE ON 
+			%s FOR EACH ROW EXECUTE 
+			FUNCTION data_activity_tg();`, t.tableSlug, t.tableSlug))
+	}
+
 }

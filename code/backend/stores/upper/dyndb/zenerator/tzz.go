@@ -1,8 +1,6 @@
 package zenerator
 
 import (
-	"fmt"
-
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/tns"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -71,39 +69,13 @@ func (t *tzz) CreateTable() (string, error) {
 
 	wctx.Terminate()
 
-	tname := t.tableSlug
-
-	if t.gzz.vendor == store.VendorPostgres {
-
-		activityTable := t.tns.ActivityTable(t.tenantId, t.gslug, t.model.Slug)
-
-		wctx.Write(
-			fmt.Sprintf(`
-
-			CREATE TABLE %s (
-				id serial primary key,
-				type TEXT NOT NULL,
-				row_id integer not null,
-				row_version integer not null,
-				user_id text not null DEFAULT '',
-				user_sign text not null DEFAULT '',
-				init_sign text not null DEFAULT '',
-				payload text not null DEFAULT '',
-				message text not null DEFAULT '',
-				created_at timestamptz not null default now()
-			);
-			
-			`, activityTable,
-			),
-		)
-
-		if t.model.ActivityType == dyndb.DynActivityTypeStrict {
-			wctx.Write(fmt.Sprintf(`CREATE TRIGGER 
-			data_tg_%s AFTER INSERT OR UPDATE ON 
-			%s FOR EACH ROW EXECUTE 
-			FUNCTION data_activity_tg();`, tname, tname))
-		}
-
+	switch t.gzz.vendor {
+	case store.VendorPostgres:
+		t.activityTablePg(&wctx)
+	case store.VendorSqlite:
+		t.activityTableSqlite(&wctx)
+	default:
+		panic("Invalid verndor " + t.gzz.vendor)
 	}
 
 	return wctx.buffer.String(), nil
