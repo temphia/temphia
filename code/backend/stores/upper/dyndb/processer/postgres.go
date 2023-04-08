@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"strconv"
 
@@ -118,6 +119,19 @@ func (pg *PGCtypeProcesser) ToRowDBType(row map[string]interface{}) error {
 		switch col.Ctype {
 		case dyndb.CtypeLocation:
 			row[k] = PgLocationToDBType(convertToFloat(v))
+		case dyndb.CtypeJSON:
+
+			switch vv := v.(type) {
+			case map[string]any:
+				out, err := json.Marshal(&vv)
+				if err != nil {
+					return err
+				}
+				row[k] = out
+			default:
+				continue
+			}
+
 		default:
 			continue
 		}

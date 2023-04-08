@@ -37,6 +37,8 @@ func (d *DynDB) newRow(txid uint32, req dyndb.NewRowReq) (int64, error) {
 
 		ir, err := tbl.Insert(req.Data)
 		if err != nil {
+			pp.Println("@inser_req", req)
+			pp.Println("@inser_err", err)
 			return err
 		}
 		id = ir.ID().(int64)
