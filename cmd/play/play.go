@@ -4,7 +4,10 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/k0kubun/pp"
+
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/temphia/temphia/code/backend/libx/dbutils"
 )
 
 func main() {
@@ -17,6 +20,13 @@ func main() {
 		panic(err)
 	}
 	defer db.Close()
+
+	result, err := db.Query(`SELECT json('{"JSON": true}');`)
+	if err != nil {
+		panic(err)
+	}
+
+	pp.Println(dbutils.SelectScan(result))
 
 	// Create table for testing
 	_, err = db.Exec(`
@@ -31,6 +41,7 @@ func main() {
 			id INTEGER,
 			row_id INTEGER,
 			mod_sig TEXT,
+			payload TEXT,
 			user_id TEXT,
 			type TEXT,
 			row_version INTEGER,
@@ -47,20 +58,17 @@ func main() {
 	_, err = db.Exec(`
 
 		CREATE TRIGGER tablexyz_trigger_insert
-			BEFORE INSERT ON tablexyz
+			AFTER INSERT ON tablexyz
 		BEGIN
-		
-
-
-			INSERT INTO tablexyz_log(row_id, mod_sig, type, row_version, data)
-				VALUES (NEW.__id, '', 'INSERT', NEW.__version, NEW.data);
+			INSERT INTO tablexyz_log(row_id, payload, type, row_version, data)
+				VALUES (NEW.__id, json_object('data', NEW.data) , 'INSERT', NEW.__version, NEW.data);
 		END;
 
 		CREATE TRIGGER tablexyz_trigger_update
-			BEFORE UPDATE ON tablexyz
+			AFTER UPDATE ON tablexyz
 		BEGIN
-			INSERT INTO tablexyz_log(row_id, mod_sig, type, row_version, data)
-				VALUES (NEW.__id, '', 'UPDATE', NEW.__version, NEW.data);
+			INSERT INTO tablexyz_log(row_id, payload, type, row_version, data)
+				VALUES (NEW.__id, json_object('data', NEW.data), 'UPDATE', NEW.__version, NEW.data);
 		END;
 
 
@@ -73,7 +81,7 @@ func main() {
 
 	// Insert test data
 	_, err = db.Exec(`
-		INSERT INTO tablexyz (__id, __mod_sig, __version, data)
+		INSERT INTO tablexyz (__id, __mod_ctx, __version, data)
 		VALUES (1, '', 0, 'testxyzyzyyzyzyzy')
 	`)
 	if err != nil {

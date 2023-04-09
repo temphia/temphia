@@ -12,7 +12,6 @@ require (
 	github.com/brianvoe/gofakeit/v6 v6.18.0
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dop251/goja v0.0.0-20220815083517-0c74f9139fd6
-	github.com/doug-martin/goqu/v9 v9.18.0
 	github.com/fergusstrange/embedded-postgres v1.19.0
 	github.com/flosch/go-humanize v0.0.0-20140728123800-3ba51eabe506
 	github.com/gin-gonic/gin v1.8.1
@@ -82,7 +81,7 @@ require (
 	github.com/logrusorgru/aurora v0.0.0-20181002194514-a7b3b318ed4e // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
-	github.com/mattn/go-sqlite3 v1.14.9 // indirect
+	github.com/mattn/go-sqlite3 v1.14.16 // indirect
 	github.com/mitchellh/copystructure v1.0.0 // indirect
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/mitchellh/reflectwalk v1.0.0 // indirect
