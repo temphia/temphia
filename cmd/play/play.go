@@ -11,7 +11,6 @@ import (
 )
 
 func main() {
-	// Connect to SQLite database
 
 	const memURL = "file::memory:?mode=memory&cache=shared"
 
@@ -28,24 +27,26 @@ func main() {
 
 	pp.Println(dbutils.SelectScan(result))
 
-	// Create table for testing
 	_, err = db.Exec(`
 		CREATE TABLE tablexyz (
-			__id INTEGER,
-			__mod_ctx TEXT,
-			__version INTEGER,
-			data TEXT
+			__id integer primary key autoincrement not null,
+			__mod_ctx text,
+			__version integer,
+			title text not null,
+			count integer not null
 		);
 
 		CREATE TABLE tablexyz_log (
-			id INTEGER,
-			row_id INTEGER,
-			mod_sig TEXT,
-			payload TEXT,
-			user_id TEXT,
-			type TEXT,
-			row_version INTEGER,
-			data TEXT
+			id integer primary key autoincrement not null,
+			type text not null,
+			row_id integer not null,
+			row_version integer not null,
+			user_id text not null DEFAULT '',
+			user_sign text not null DEFAULT '',
+			init_sign text not null DEFAULT '',
+			payload text not null DEFAULT '',
+			message text not null DEFAULT '',
+			created_at text not null default current_timestamp
 		)
 
 
@@ -54,17 +55,48 @@ func main() {
 		panic(err)
 	}
 
-	// Create trigger
 	_, err = db.Exec(`
 
-		CREATE TRIGGER tablexyz_trigger_insert
-			AFTER INSERT ON tablexyz
-		BEGIN
-			INSERT INTO tablexyz_log(row_id, payload, type, row_version, data)
-				VALUES (NEW.__id, json_object('data', NEW.data) , 'INSERT', NEW.__version, NEW.data);
-		END;
+			CREATE TRIGGER tablexyz_trigger_insert
+				AFTER INSERT ON tablexyz
+			BEGIN
+				INSERT INTO tablexyz_log(
+					type,
+					row_id,
+					row_version,
+					user_id,
+					user_sign,
+					init_sign,
+					payload
+				)
+				VALUES (
+					'insert', 
+					NEW.__id, 
+					NEW.__version, 
+					COALESCE(json_extract(NEW.__mod_ctx, '$.user_id' ), ''), 
+					COALESCE(json_extract(NEW.__mod_ctx, '$.user_sign'), ''), 
+					COALESCE(json_extract(NEW.__mod_ctx, '$.init_sign'), ''),
+					json_object('title', NEW.title)
+					);
+			END;
+		`)
+	if err != nil {
+		panic(err)
+	}
 
-		CREATE TRIGGER tablexyz_trigger_update
+	// user_sign
+
+	_, err = db.Exec(`
+			INSERT INTO tablexyz (__id, __mod_ctx, __version, title, count)
+			VALUES (1, '{"user_id": "user12"}', 0, 'ping pong', 12)
+	`)
+	if err != nil {
+		pp.Println(err)
+		panic(err)
+	}
+
+	/*
+			CREATE TRIGGER tablexyz_trigger_update
 			AFTER UPDATE ON tablexyz
 		BEGIN
 			INSERT INTO tablexyz_log(row_id, payload, type, row_version, data)
@@ -72,21 +104,7 @@ func main() {
 		END;
 
 
-
-
-	`)
-	if err != nil {
-		panic(err)
-	}
-
-	// Insert test data
-	_, err = db.Exec(`
-		INSERT INTO tablexyz (__id, __mod_ctx, __version, data)
-		VALUES (1, '', 0, 'testxyzyzyyzyzyzy')
-	`)
-	if err != nil {
-		panic(err)
-	}
+	*/
 
 	fmt.Println("Test harness completed successfully")
 }
