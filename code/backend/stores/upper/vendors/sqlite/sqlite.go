@@ -22,7 +22,13 @@ func init() {
 
 type sl struct{}
 
+var csess db.Session
+
 func (sl) Db(so *config.StoreSource) (db.Session, error) {
+	if csess != nil {
+		return csess, nil
+	}
+
 	return NewUpperDb(so.HostPath)
 }
 
@@ -36,7 +42,13 @@ func NewUpperDb(path string) (db.Session, error) {
 		return nil, err
 	}
 
-	return sqlite.New(db)
+	sess, err := sqlite.New(db)
+	if err != nil {
+		return nil, err
+	}
+
+	csess = sess
+	return sess, nil
 
 }
 
@@ -48,9 +60,9 @@ func NewRawDB(path string) (*sql.DB, error) {
 
 	dvr := &sqlite3.SQLiteDriver{
 		Extensions: []string{},
-		ConnectHook: func(sc *sqlite3.SQLiteConn) error {
+		ConnectHook: func(conn *sqlite3.SQLiteConn) error {
 			pp.Println("@connect")
-			return nil
+			return conn.RegisterFunc("temphia_delete_record", temphiaDeleteRecord(conn), false)
 		},
 	}
 
