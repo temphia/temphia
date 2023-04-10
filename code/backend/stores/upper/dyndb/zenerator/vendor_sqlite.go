@@ -67,7 +67,7 @@ func (t *tzz) activityTableSqlite(wctx *WriterCtx) {
 				init_sign text not null DEFAULT '',
 				payload text not null DEFAULT '',
 				message text not null DEFAULT '',
-				created_at timestamptz not null default current_timestamp
+				created_at timestamp not null default current_timestamp
 			);
 
 			CREATE TRIGGER data_tg_%s_insert
