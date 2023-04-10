@@ -1,7 +1,8 @@
 package dyndb
 
 import (
-	"fmt"
+	"strconv"
+	"strings"
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
@@ -112,7 +113,7 @@ func (d *DynDB) deleteRow(txid uint32, req dyndb.DeleteRowReq) error {
 
 	return d.txOr(txid, func(sess db.Session) error {
 		if d.vendor == store.VendorSqlite {
-			_, err := sess.SQL().Exec("select temphia_delete_record(?, ?, ?)", tablename, modctx, fmt.Sprintf("%d", req.Id))
+			_, err := sess.SQL().Exec("select temphia_delete_record(?, ?, ?)", tablename, modctx, strconv.FormatInt(req.Id, 10))
 			return err
 		} else {
 			tbl := sess.Collection(tablename)
@@ -128,17 +129,70 @@ func (d *DynDB) deleteRowBatch(txid uint32, req dyndb.DeleteRowBatchReq) error {
 		return err
 	}
 
+	modctx, err := req.ModCtx.JSON()
+	if err != nil {
+		return err
+	}
+
+	tablename := d.tns.Table(req.TenantId, req.Group, req.Table)
+
 	return d.txOr(txid, func(sess db.Session) error {
-		tbl := sess.Collection(d.tns.Table(req.TenantId, req.Group, req.Table))
-		return tbl.Find(fcond).Delete()
+
+		if d.vendor == store.VendorSqlite {
+			keys := make([]Key, 0)
+
+			err = sess.Collection(tablename).Find(fcond).All(keys)
+			if err != nil {
+				return err
+			}
+
+			var buf strings.Builder
+
+			for id, v := range keys {
+				if id != 0 {
+					buf.WriteByte(',')
+				}
+				buf.WriteString(strconv.FormatInt(v.ID, 10))
+			}
+
+			_, err := sess.SQL().Exec("select temphia_delete_record(?, ?, ?)", tablename, modctx, buf.String())
+			return err
+
+		} else {
+			tbl := sess.Collection(tablename)
+			return tbl.Find(fcond).Select(dyndb.KeyPrimary).Delete()
+		}
 	})
 
 }
 
 func (d *DynDB) deleteRowMulti(txid uint32, req dyndb.DeleteRowMultiReq) error {
+
+	modctx, err := req.ModCtx.JSON()
+	if err != nil {
+		return err
+	}
+
+	tablename := d.tns.Table(req.TenantId, req.Group, req.Table)
+
 	return d.txOr(txid, func(sess db.Session) error {
-		tbl := sess.Collection(d.tns.Table(req.TenantId, req.Group, req.Table))
-		return tbl.Find(dyndb.KeyPrimary, req.Ids).Delete()
+		if d.vendor == store.VendorSqlite {
+			var buf strings.Builder
+
+			for id, v := range req.Ids {
+				if id != 0 {
+					buf.WriteByte(',')
+				}
+				buf.WriteString(strconv.FormatInt(v, 10))
+			}
+
+			_, err := sess.SQL().Exec("select temphia_delete_record(?, ?, ?)", tablename, modctx, buf.String())
+			return err
+		} else {
+			tbl := sess.Collection(d.tns.Table(req.TenantId, req.Group, req.Table))
+			return tbl.Find(dyndb.KeyPrimary, req.Ids).Delete()
+		}
+
 	})
 }
 
