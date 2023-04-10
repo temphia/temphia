@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-func TableHead(tableName string) string {
+func tableHead(tableName string) string {
 	var buf strings.Builder
 	buf.WriteString("create table ")
 	buf.WriteString(tableName)
@@ -13,7 +13,7 @@ func TableHead(tableName string) string {
 	return buf.String()
 }
 
-func Bracketed(items []string, class string) string {
+func bracketed(items []string, class string) string {
 	var buf strings.Builder
 	buf.Write([]byte("("))
 
@@ -29,52 +29,14 @@ func Bracketed(items []string, class string) string {
 	return buf.String()
 }
 
-type WriterCtx struct {
-	buffer     strings.Builder
-	seperated  bool // seperated with comma
-	terminated bool // terminated with ';'
-}
-
-func (w *WriterCtx) DirectWrite(s string) {
-	w.buffer.WriteString(s)
-}
-
-func (w *WriterCtx) CondWriteCol(write bool, s string) {
-	if !write {
-		return
-	}
-	w.Seperator()
-	w.Write(s)
-}
-
-func (w *WriterCtx) Write(s string) {
-	w.seperated = false
-	w.buffer.WriteString(s)
-}
-
-func (w *WriterCtx) Seperator() {
-	if w.seperated {
-		return
-	}
-	w.buffer.WriteByte(byte(','))
-}
-
-func (w *WriterCtx) Terminate() {
-	if w.terminated {
-		return
-	}
-
-	w.buffer.Write([]byte(");\n"))
-}
-
-func Unique(spans []string) string {
+func unique(spans []string) string {
 	var buf strings.Builder
 	buf.Write([]byte("UNIQUE"))
-	buf.Write([]byte(Bracketed(spans, "")))
+	buf.Write([]byte(bracketed(spans, "")))
 	return buf.String()
 }
 
-func CTypeMap(mapping map[string]string) func(slug, ctype string, notnull bool, defval string) string {
+func cTypeMap(mapping map[string]string) func(slug, ctype string, notnull bool, defval string) string {
 	return func(slug, ctype string, notnull bool, defval string) string {
 		var buf strings.Builder
 
@@ -93,28 +55,28 @@ func CTypeMap(mapping map[string]string) func(slug, ctype string, notnull bool, 
 	}
 }
 
-func InnerFKRef(target string, from []string, to []string) string {
+func innerFKRef(target string, from []string, to []string) string {
 	var buf strings.Builder
 	buf.Write([]byte("FOREIGN KEY"))
-	buf.Write([]byte(Bracketed(from, "")))
+	buf.Write([]byte(bracketed(from, "")))
 	buf.Write([]byte(" REFERENCES "))
 	buf.WriteString(target)
-	buf.WriteString(Bracketed(to, ""))
+	buf.WriteString(bracketed(to, ""))
 	//buf.Write([]byte(";"))
 	return buf.String()
 }
 
-func IndexName(tblname, iname string) string {
+func indexName(tblname, iname string) string {
 	return tblname + "_" + iname
 }
 
 func addNormalIndex(tbl string, iname, itype string, spans []string) string {
 	var buf strings.Builder
 	buf.Write([]byte("CREATE INDEX "))
-	buf.WriteString(IndexName(tbl, iname))
+	buf.WriteString(indexName(tbl, iname))
 	buf.Write([]byte(" ON "))
 	buf.WriteString(tbl)
-	buf.Write([]byte(Bracketed(spans, "")))
+	buf.Write([]byte(bracketed(spans, "")))
 	buf.Write([]byte(";"))
 	return buf.String()
 }

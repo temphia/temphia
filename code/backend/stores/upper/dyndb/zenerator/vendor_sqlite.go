@@ -31,7 +31,7 @@ var (
 	}
 )
 
-func TableHeadSqlite(tableName string) string {
+func tableHeadSqlite(tableName string) string {
 	var buf strings.Builder
 	buf.WriteString("create table ")
 	buf.WriteString(tableName)

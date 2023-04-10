@@ -18,7 +18,7 @@ type tzz struct {
 	referecedTables []string
 }
 
-func (g *zenerator) TZZ(tenantId, gslug string, model *xbprint.NewTable, sibling []string) *tzz {
+func (g *zenerator) newTZZ(tenantId, gslug string, model *xbprint.NewTable, sibling []string) *tzz {
 	return &tzz{
 		tenantId:        tenantId,
 		gslug:           gslug,
@@ -37,9 +37,9 @@ func (t *tzz) CreateTable() (string, error) {
 
 	switch t.gzz.vendor {
 	case store.VendorSqlite:
-		wctx.Write(TableHeadSqlite(t.tableSlug))
+		wctx.Write(tableHeadSqlite(t.tableSlug))
 	default:
-		wctx.Write(TableHead(t.tableSlug))
+		wctx.Write(tableHead(t.tableSlug))
 	}
 
 	for _, col := range t.model.Columns {
@@ -51,7 +51,7 @@ func (t *tzz) CreateTable() (string, error) {
 	// unique index
 	for _, idx := range t.model.UniqueIndexes {
 		wctx.Seperator()
-		wctx.Write(Unique(idx.Spans))
+		wctx.Write(unique(idx.Spans))
 	}
 
 	// foreign key
@@ -65,7 +65,7 @@ func (t *tzz) CreateTable() (string, error) {
 			t.referecedTables = append(t.referecedTables, fk.Target)
 			wctx.Seperator()
 			wctx.Write(
-				InnerFKRef(t.tns.Table(t.tenantId, t.gslug, fk.Target), fk.FromCols, fk.ToCols),
+				innerFKRef(t.tns.Table(t.tenantId, t.gslug, fk.Target), fk.FromCols, fk.ToCols),
 			)
 		default:
 			continue

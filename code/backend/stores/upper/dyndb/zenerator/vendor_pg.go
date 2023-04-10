@@ -35,17 +35,17 @@ var (
 func PgFTSIndex(table string, model *entities.Index) string {
 	var buf strings.Builder
 	buf.Write([]byte("CREATE INDEX "))
-	buf.WriteString(IndexName(table, model.Slug))
+	buf.WriteString(indexName(table, model.Slug))
 	buf.Write([]byte(" ON "))
 	buf.WriteString(table)
 	buf.Write([]byte(" USING gin"))
-	buf.Write([]byte(Bracketed(model.Spans, " gin_trgm_ops")))
+	buf.Write([]byte(bracketed(model.Spans, " gin_trgm_ops")))
 	buf.Write([]byte(";"))
 	return buf.String()
 }
 
 func (g *zenerator) innerColumnPg(cmap map[string]string) func(cslug, ctype string, notnull bool, defval string) string {
-	fn := CTypeMap(cmap)
+	fn := cTypeMap(cmap)
 
 	return func(cslug, ctype string, notnull bool, defval string) string {
 

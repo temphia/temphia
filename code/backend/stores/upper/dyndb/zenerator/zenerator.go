@@ -79,7 +79,7 @@ func (g *zenerator) NewGroup(tenantId string, model *xbprint.NewTableGroup) (*uc
 
 func (g *zenerator) NewTable(tenantId, gslug string, model *xbprint.NewTable, siblings []string) (*ucore.DDLStmt, error) {
 
-	tgen := g.TZZ(tenantId, gslug, model, siblings) // table generator
+	tgen := g.newTZZ(tenantId, gslug, model, siblings) // table generator
 	str, err := tgen.CreateTable()
 	if err != nil {
 		return nil, err
@@ -125,7 +125,7 @@ func (g *zenerator) AddIndex(tenantId, gslug, tslug, iname, itype string, spans 
 
 func (g *zenerator) AddFKRef(tenantId, gslug, tslug, target string, from []string, to []string) (string, error) {
 	tbl := g.tns.Table(tenantId, gslug, tslug)
-	return fmt.Sprintf(`ALTER TABLE ADD CONSTRAINT %s %s;`, tbl, InnerFKRef(target, from, to)), nil
+	return fmt.Sprintf(`ALTER TABLE ADD CONSTRAINT %s %s;`, tbl, innerFKRef(target, from, to)), nil
 }
 
 func (g *zenerator) RemoveFKRef(tenantId, gslug, tslug string, fkslug string) (string, error) {
