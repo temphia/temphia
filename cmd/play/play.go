@@ -79,6 +79,31 @@ func main() {
 					json_object('title', NEW.title)
 					);
 			END;
+
+
+			CREATE TRIGGER tablexyz_trigger_update
+				AFTER UPDATE ON tablexyz
+			BEGIN
+				INSERT INTO tablexyz_log(
+					type,
+					row_id,
+					row_version,
+					user_id,
+					user_sign,
+					init_sign,
+					payload
+				)
+				VALUES (
+					'update', 
+					NEW.__id, 
+					NEW.__version, 
+					COALESCE(json_extract(NEW.__mod_ctx, '$.user_id' ), ''), 
+					COALESCE(json_extract(NEW.__mod_ctx, '$.user_sign'), ''), 
+					COALESCE(json_extract(NEW.__mod_ctx, '$.init_sign'), ''),
+					json_object('title', NEW.title)
+				);
+			END
+
 		`)
 	if err != nil {
 		panic(err)
@@ -87,24 +112,19 @@ func main() {
 	// user_sign
 
 	_, err = db.Exec(`
-			INSERT INTO tablexyz (__id, __mod_ctx, __version, title, count)
-			VALUES (1, '{"user_id": "user12"}', 0, 'ping pong', 12)
+			INSERT INTO tablexyz ( __mod_ctx, __version, title, count)
+			VALUES ('{"user_id": "user12"}', 0, 'ping pong', 12)
 	`)
 	if err != nil {
-		pp.Println(err)
 		panic(err)
 	}
 
-	/*
-			CREATE TRIGGER tablexyz_trigger_update
-			AFTER UPDATE ON tablexyz
-		BEGIN
-			INSERT INTO tablexyz_log(row_id, payload, type, row_version, data)
-				VALUES (NEW.__id, json_object('data', NEW.data), 'UPDATE', NEW.__version, NEW.data);
-		END;
-
-
-	*/
+	_, err = db.Exec(`
+			UPDATE tablexyz SET  __mod_ctx = '{"user_id": "user13"}', title='moded', __version = __version + 1   WHERE __id = 1;
+	`)
+	if err != nil {
+		panic(err)
+	}
 
 	fmt.Println("Test harness completed successfully")
 }
