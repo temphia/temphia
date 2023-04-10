@@ -1,10 +1,13 @@
 package dyndb
 
 import (
+	"fmt"
+
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/filter"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/processer"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/upper/db/v4"
 )
@@ -99,9 +102,23 @@ func (d *DynDB) NewBatchRows(txid uint32, req dyndb.NewBatchRowReq) ([]int64, er
 }
 
 func (d *DynDB) deleteRow(txid uint32, req dyndb.DeleteRowReq) error {
+
+	modctx, err := req.ModCtx.JSON()
+	if err != nil {
+		return err
+	}
+
+	tablename := d.tns.Table(req.TenantId, req.Group, req.Table)
+
 	return d.txOr(txid, func(sess db.Session) error {
-		tbl := sess.Collection(d.tns.Table(req.TenantId, req.Group, req.Table))
-		return tbl.Find(dyndb.KeyPrimary, req.Id).Delete()
+		if d.vendor == store.VendorSqlite {
+			_, err := sess.SQL().Exec("select temphia_delete_record(?, ?, ?)", tablename, modctx, fmt.Sprintf("%d", req.Id))
+			return err
+		} else {
+			tbl := sess.Collection(tablename)
+			return tbl.Find(dyndb.KeyPrimary, req.Id).Delete()
+		}
+
 	})
 }
 

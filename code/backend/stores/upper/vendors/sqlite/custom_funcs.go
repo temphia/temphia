@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/k0kubun/pp"
 	"github.com/mattn/go-sqlite3"
 	"github.com/tidwall/gjson"
 )
@@ -18,19 +19,21 @@ func temphiaDeleteRecord(conn *sqlite3.SQLiteConn) func(table, ctx, rowids strin
 
 	return func(table, ctx, rowids string) error {
 
+		pp.Println("@temphia_delete_record", table, ctx, rowids)
+
 		results := gjson.GetMany(ctx, "user_id", "user_sign", "init_sign")
 
 		userId := results[0].String()
 		userSign := results[1].String()
 		initSign := results[2].String()
 
-		activityTable := fmt.Sprintf("xd_%s_activity", table)
+		activityTable := fmt.Sprintf("%s_activity", table)
 
 		var buf bytes.Buffer
 
 		buf.Write([]byte("DELETE FROM "))
 		buf.WriteString(table)
-		buf.Write([]byte("WHERE __id IN ("))
+		buf.Write([]byte(" WHERE __id IN ("))
 
 		rowStrs := strings.Split(rowids, ",")
 		vids := make([]driver.Value, 0, len(rowStrs))
@@ -47,20 +50,27 @@ func temphiaDeleteRecord(conn *sqlite3.SQLiteConn) func(table, ctx, rowids strin
 
 		buf.Write([]byte(`);`))
 
-		_, err := conn.Exec(buf.String(), vids)
+		delquery := buf.String()
+
+		pp.Println("@EXEC", delquery)
+
+		_, err := conn.Exec(delquery, vids)
 		if err != nil {
+			pp.Println("@err_while_deleting", err)
 			return err
 		}
 
 		errs := []error{}
 
 		for _, vid := range vids {
-			_, err := conn.Exec(
-				fmt.Sprintf("INSERT INTO %s( type, row_id, row_version, user_id, user_sign, init_sign) VALUES (?, ?, ?, ?, ?, ?);", activityTable),
-				[]driver.Value{"delete", vid, 0, userId, userSign, initSign},
-			)
+			qstr := fmt.Sprintf("INSERT INTO %s( type, row_id, row_version, user_id, user_sign, init_sign) VALUES (?, ?, 0, ?, ?, ?);", activityTable)
+			params := []driver.Value{"delete", vid, userId, userSign, initSign}
+			_, err := conn.Exec(qstr, params)
+
 			errs = append(errs, err)
 		}
+
+		pp.Println("@errs_@activity", errs)
 
 		return errors.Join(errs...)
 	}
