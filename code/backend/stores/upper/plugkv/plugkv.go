@@ -201,10 +201,6 @@ func (s *PlugKV) Commit(txid uint32) error {
 
 // private
 
-// func (s *PlugKV) txOr(tx uint32, fn func(sess db.Session) error) error {
-// 	return s.txn.TxOr(tx, s.db, fn)
-// }
-
 func (s *PlugKV) stateTx(tx uint32, fn func(tbl db.Collection) error) error {
 	return s.txn.TxOr(tx, s.db, func(sess db.Session) error {
 		return fn(pkvTable(sess))
