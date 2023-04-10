@@ -69,18 +69,71 @@ func (t *tzz) activityTableSqlite(wctx *WriterCtx) {
 				message text not null DEFAULT '',
 				created_at timestamptz not null default current_timestamp
 			);
-			
-			`, activityTable,
-		),
-	)
 
-	// fixme => add trigger
+			CREATE TRIGGER data_tg_%s_insert
+				AFTER INSERT ON %s
+			BEGIN
+				INSERT INTO %s(
+					type,
+					row_id,
+					row_version,
+					user_id,
+					user_sign,
+					init_sign,
+					payload
+				)
+				VALUES (
+					'insert', 
+					NEW.__id, 
+					NEW.__version, 
+					COALESCE(json_extract(NEW.__mod_sig, '$.user_id' ), ''), 
+					COALESCE(json_extract(NEW.__mod_sig, '$.user_sign'), ''), 
+					COALESCE(json_extract(NEW.__mod_sig, '$.init_sign'), ''),
+					json_object(
+						`, activityTable, t.tableSlug, t.tableSlug, activityTable,
+		))
 
-	// if t.model.ActivityType == dyndb.DynActivityTypeStrict {
-	// 	wctx.Write(fmt.Sprintf(`CREATE TRIGGER
-	// 		data_tg_%s AFTER INSERT OR UPDATE ON
-	// 		%s FOR EACH ROW EXECUTE
-	// 		FUNCTION data_activity_tg();`, t.tableSlug, t.tableSlug))
-	// }
+	for cidx, col := range t.model.Columns {
+		if cidx != 0 {
+			wctx.Seperator()
+		}
+		wctx.Write(fmt.Sprintf("'%s', NEW.%s \n", col.Slug, col.Slug))
+	}
+
+	wctx.Write(`)
+					);					
+			END;`)
+
+	wctx.Write(fmt.Sprintf(`			CREATE TRIGGER data_tg_%s_update
+			AFTER UPDATE ON %s
+		BEGIN
+			INSERT INTO %s(
+				type,
+				row_id,
+				row_version,
+				user_id,
+				user_sign,
+				init_sign,
+				payload
+			)
+			VALUES (
+				'update', 
+				NEW.__id, 
+				NEW.__version, 
+				COALESCE(json_extract(NEW.__mod_sig, '$.user_id' ), ''), 
+				COALESCE(json_extract(NEW.__mod_sig, '$.user_sign'), ''), 
+				COALESCE(json_extract(NEW.__mod_sig, '$.init_sign'), ''),
+				json_object(
+					`, activityTable, t.tableSlug, t.tableSlug))
+	for cidx, col := range t.model.Columns {
+		if cidx != 0 {
+			wctx.Seperator()
+		}
+		wctx.Write(fmt.Sprintf("'%s', NEW.%s \n", col.Slug, col.Slug))
+	}
+
+	wctx.Write(`)
+					);					
+			END;`)
 
 }
