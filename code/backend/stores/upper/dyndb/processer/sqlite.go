@@ -133,8 +133,9 @@ func (scp *SqliteCtypeProcesser) ToRowDBType(row map[string]interface{}) error {
 			}
 
 		case dyndb.CtypeLocation:
-
 			switch vv := v.(type) {
+			case [2]float64:
+				row[k] = fmt.Sprintf(`{"type":"Point", "coordinates":[%v, %v]}`, vv[0], vv[1])
 			case []any:
 				row[k] = fmt.Sprintf(`{"type":"Point", "coordinates":[%v, %v]}`, vv[0], vv[1])
 			default:
