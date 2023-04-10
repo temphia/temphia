@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
@@ -118,6 +119,19 @@ func (scp *SqliteCtypeProcesser) ToRowDBType(row map[string]interface{}) error {
 		}
 
 		switch col.Ctype {
+
+		case dyndb.CtypeJSON:
+			switch v.(type) {
+			case map[string]any:
+				bytes, err := json.Marshal(k)
+				if err != nil {
+					pp.Println("@err", err)
+					continue
+				}
+
+				row[k] = string(bytes)
+			}
+
 		case dyndb.CtypeLocation:
 
 			switch vv := v.(type) {
