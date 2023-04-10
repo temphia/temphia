@@ -1,9 +1,13 @@
 package demo
 
 import (
+	"context"
+	"database/sql"
+	"errors"
 	"fmt"
 	"os"
 	"syscall"
+	"time"
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/seeder"
@@ -12,6 +16,8 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/distro"
 	"github.com/temphia/temphia/code/distro/embedpg"
+	"github.com/upper/db/v4"
+	"github.com/upper/db/v4/adapter/sqlite"
 )
 
 func RunDemo() error {
@@ -124,7 +130,36 @@ func seedExtraUser(sapp *seeder.AppSeeder) error {
 
 func initSqlite() error {
 
-	return nil
+	sess, err := sqlite.Open(sqlite.ConnectionURL{
+		Database: Conf.Database.HostPath,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	ok, err := sess.Collection("tenants").Exists()
+	if err != nil {
+		if !errors.Is(err, db.ErrCollectionDoesNotExist) {
+			return err
+		}
+	}
+
+	if ok {
+		return nil
+	}
+
+	conn := sess.Driver().(*sql.DB)
+
+	out, err := data.DataDir.ReadFile("schema/sqlite.sql")
+	if err != nil {
+		return err
+	}
+
+	ctx, cfunc := context.WithTimeout(context.Background(), time.Minute*2)
+	defer cfunc()
+	_, err = conn.ExecContext(ctx, string(out))
+	return err
 }
 
 func initPg() error {
