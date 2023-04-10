@@ -23,9 +23,27 @@ func init() {
 type sl struct{}
 
 func (sl) Db(so *config.StoreSource) (db.Session, error) {
+	return NewUpperDb(so.HostPath)
+}
+
+func (sl) NewTx(sqlTx *sql.Tx) (dbutils.Tx, error) {
+	return sqlite.NewTx(sqlTx)
+}
+
+func NewUpperDb(path string) (db.Session, error) {
+	db, err := NewRawDB(path)
+	if err != nil {
+		return nil, err
+	}
+
+	return sqlite.New(db)
+
+}
+
+func NewRawDB(path string) (*sql.DB, error) {
 
 	var settings = sqlite.ConnectionURL{
-		Database: so.HostPath,
+		Database: path,
 	}
 
 	dvr := &sqlite3.SQLiteDriver{
@@ -37,15 +55,5 @@ func (sl) Db(so *config.StoreSource) (db.Session, error) {
 	}
 
 	sql.Register("sqlite3_temphia", dvr)
-
-	db, err := sql.Open("sqlite3_temphia", settings.String())
-	if err != nil {
-		return nil, err
-	}
-
-	return sqlite.New(db)
-}
-
-func (sl) NewTx(sqlTx *sql.Tx) (dbutils.Tx, error) {
-	return sqlite.NewTx(sqlTx)
+	return sql.Open("sqlite3_temphia", settings.String())
 }

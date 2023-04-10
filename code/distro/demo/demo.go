@@ -12,12 +12,12 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/seeder"
 	"github.com/temphia/temphia/code/backend/data"
+	"github.com/temphia/temphia/code/backend/stores/upper/vendors/sqlite"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/distro"
 	"github.com/temphia/temphia/code/distro/embedpg"
 	"github.com/upper/db/v4"
-	"github.com/upper/db/v4/adapter/sqlite"
 )
 
 func RunDemo() error {
@@ -130,10 +130,7 @@ func seedExtraUser(sapp *seeder.AppSeeder) error {
 
 func initSqlite() error {
 
-	sess, err := sqlite.Open(sqlite.ConnectionURL{
-		Database: Conf.Database.HostPath,
-	})
-
+	sess, err := sqlite.NewUpperDb(Conf.Database.HostPath)
 	if err != nil {
 		return err
 	}
