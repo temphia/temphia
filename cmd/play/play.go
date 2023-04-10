@@ -76,7 +76,9 @@ func main() {
 					COALESCE(json_extract(NEW.__mod_ctx, '$.user_id' ), ''), 
 					COALESCE(json_extract(NEW.__mod_ctx, '$.user_sign'), ''), 
 					COALESCE(json_extract(NEW.__mod_ctx, '$.init_sign'), ''),
-					json_object('title', NEW.title)
+					json_object(
+						'title', NEW.title
+						)
 					);
 			END;
 
@@ -100,7 +102,9 @@ func main() {
 					COALESCE(json_extract(NEW.__mod_ctx, '$.user_id' ), ''), 
 					COALESCE(json_extract(NEW.__mod_ctx, '$.user_sign'), ''), 
 					COALESCE(json_extract(NEW.__mod_ctx, '$.init_sign'), ''),
-					json_object('title', NEW.title)
+					json_object(
+						'title', NEW.title
+					)
 				);
 			END
 

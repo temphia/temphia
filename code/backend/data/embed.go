@@ -5,7 +5,6 @@ import (
 )
 
 //go:embed schema
-//go:embed schema/postgres
 //go:embed schema/postgres.sql
 //go:embed templates
 //go:embed repo
