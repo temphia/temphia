@@ -8,7 +8,7 @@ Additionally, app has an associated user interface (UI) written in JS, which is 
 
 ## Database
 
-Database layer is sits on top of [upperdb](https://github.com/upper/db).
+Database layer is sits on top of [upper](https://github.com/upper/db).
 
 | Vendor       | Support   | Notes                                         
 |--------------|-----------|-----------------------------------------------
