@@ -23,12 +23,12 @@ func (c *Conn) processPacket2(msg []byte) {
 		RawJSON("data", msg).
 		Msg(logid.SockdMsgReceivedDebug)
 
-	if msgFromid != int64(c.conn.Id()) {
-		c.parent.getLogger().Warn().
-			Str("xid", msgXid).
-			Msg(logid.SockdMsgInvalidId)
-		return
-	}
+	// if msgFromid != int64(c.conn.Id()) {
+	// 	c.parent.getLogger().Warn().
+	// 		Str("xid", msgXid).
+	// 		Msg(logid.SockdMsgInvalidId)
+	// 	return
+	// }
 
 	switch msgType {
 
@@ -95,6 +95,7 @@ func (c *Conn) processPacket2(msg []byte) {
 	default:
 		c.parent.getLogger().Warn().
 			Str("xid", msgXid).
+			RawJSON("data", msg).
 			Msg(logid.SockdMsgInvalidMType)
 	}
 
