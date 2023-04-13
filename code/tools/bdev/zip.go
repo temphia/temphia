@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"os"
 
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
@@ -63,9 +64,12 @@ func ZipIt(bprint *xbprint.LocalBprint, outFile string) error {
 		return err
 	}
 
+	log.Println("creating zip")
+
 	// write all remaining files
 
 	for fk, fpath := range bprint.Files {
+		log.Println("addng file: ", fk, fpath)
 
 		rfile, err := os.Open(fpath)
 		if err != nil {
@@ -83,5 +87,8 @@ func ZipIt(bprint *xbprint.LocalBprint, outFile string) error {
 			return err
 		}
 	}
+
+	log.Println("create zip ok")
+
 	return zipWriter.Close()
 }
