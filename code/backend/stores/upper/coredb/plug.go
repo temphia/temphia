@@ -123,7 +123,7 @@ func (d *DB) AgentGet(tenantId, pid, id string) (*entities.Agent, error) {
 
 }
 func (d *DB) AgentDel(tenantId, pid, agentId string) error {
-	return d.agentTable().Find(db.Cond{"id": pid, "tenant_id": tenantId, "plug_id": pid}).Delete()
+	return d.agentTable().Find(db.Cond{"id": agentId, "tenant_id": tenantId, "plug_id": pid}).Delete()
 }
 
 func (d *DB) AgentList(tenantId, pid string) ([]*entities.Agent, error) {
