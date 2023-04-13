@@ -43,7 +43,25 @@ func (d *DB) PlugDel(tenantId, pid string) error {
 			"plug_id":   pid,
 		}).Delete()
 	if err != nil {
-		pp.Println("@delete_plug_resources", err)
+		pp.Println("@delete_agent_resource_err", err)
+	}
+
+	err = d.agentLinkTable().Find(
+		db.Cond{
+			"tenant_id": tenantId,
+			"plug_id":   pid,
+		}).Delete()
+	if err != nil {
+		pp.Println("@delete_agent_link_err", err)
+	}
+
+	err = d.agentExtensionTable().Find(
+		db.Cond{
+			"tenant_id": tenantId,
+			"plug_id":   pid,
+		}).Delete()
+	if err != nil {
+		pp.Println("@delete_agent_link_err", err)
 	}
 
 	err = d.agentTable().Find(
@@ -123,6 +141,33 @@ func (d *DB) AgentGet(tenantId, pid, id string) (*entities.Agent, error) {
 
 }
 func (d *DB) AgentDel(tenantId, pid, agentId string) error {
+	err := d.agentResourceTable().Find(
+		db.Cond{
+			"tenant_id": tenantId,
+			"plug_id":   pid,
+		}).Delete()
+	if err != nil {
+		pp.Println("@delete_agent_resource_err", err)
+	}
+
+	err = d.agentLinkTable().Find(
+		db.Cond{
+			"tenant_id": tenantId,
+			"plug_id":   pid,
+		}).Delete()
+	if err != nil {
+		pp.Println("@delete_agent_link_err", err)
+	}
+
+	err = d.agentExtensionTable().Find(
+		db.Cond{
+			"tenant_id": tenantId,
+			"plug_id":   pid,
+		}).Delete()
+	if err != nil {
+		pp.Println("@delete_agent_link_err", err)
+	}
+
 	return d.agentTable().Find(db.Cond{"id": agentId, "tenant_id": tenantId, "plug_id": pid}).Delete()
 }
 
