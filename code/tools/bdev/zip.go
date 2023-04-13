@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -89,6 +90,7 @@ func ZipIt(bprint *xbprint.LocalBprint, outFile string) error {
 	}
 
 	log.Println("create zip ok")
+	pp.Println(outFile)
 
 	return zipWriter.Close()
 }
