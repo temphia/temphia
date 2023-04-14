@@ -1,3 +1,7 @@
+<script>
+  import { SiteUtils } from "../../../lib/utils/site";
+</script>
+
 <div class="w-full h-screen flex flex-col items-center justify-center">
   <img
     src="/z/assets/static/400.svg"
@@ -12,10 +16,14 @@
     <p class="md:text-lg lg:text-xl text-gray-600 mt-8">
       Sorry, invalid session or you are not logged in.
     </p>
-    <a
+    <button
+      on:click={() => {
+        const sutil = new SiteUtils("");
+        sutil.clearAuthedData();
+        sutil.gotoLoginPage();
+      }}
       href="/z/auth"
       class="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-gray-100 px-4 py-2 mt-12 rounded transition duration-150"
-      title="Return Home"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -30,6 +38,6 @@
         />
       </svg>
       <span>Goto Auth Page</span>
-    </a>
+    </button>
   </div>
 </div>
