@@ -4,16 +4,25 @@
   import build from "./services";
   import { onMount } from "svelte";
   import { LoadingSpinner } from "../xcompo";
+  import Noauth from "./pages/noauth.svelte";
 
   let loading = true;
+  let message = "";
 
   const app = build();
-  app.init().then(() => {
-    loading = false;
-  });
 
-  console.log("@portal_service", app);
-  window["ps"] = app;
+  if (app) {
+    console.log("@portal_service", app);
+    window["ps"] = app;
+
+    app.init().then((msg) => {
+      message = msg;
+      loading = false;
+    });
+  } else {
+    message = "Not Logged";
+    loading = false;
+  }
 
   onMount(() => {
     window.onunhandledrejection = (e) => {
@@ -25,6 +34,8 @@
 
 {#if loading}
   <LoadingSpinner />
+{:else if message}
+  <Noauth />
 {:else}
   <Portal {app} />
 {/if}

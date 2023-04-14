@@ -55,14 +55,12 @@ export class ApiManager {
     });
 
     if (!rresp.ok) {
-      console.log("@ERR", rresp);
-      return;
+      return await rresp.text();
     }
 
     const rdata = await rresp.json();
     if (!rdata["status_ok"]) {
-      console.log("@ERR", rdata);
-      return;
+      return "Status error"
     }
 
     this.session_token = rdata["token"];
@@ -78,8 +76,7 @@ export class ApiManager {
 
     const resp = await this.self_api.load();
     if (!resp.ok) {
-      console.log("@ERR", resp);
-      return;
+      return resp.data
     }
     this.self_data = new SelfData(this, resp.data as SelfLoad);
   }

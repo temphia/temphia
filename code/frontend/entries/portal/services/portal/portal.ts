@@ -44,7 +44,7 @@ export class PortalService {
   cabinet_service: CabinetService;
 
   constructor(opts: AppOptions) {
-    console.log("@portal_service", this)
+    console.log("@portal_service", this);
 
     this.options = opts;
     this.nav = new Navigator();
@@ -61,7 +61,10 @@ export class PortalService {
   }
 
   async init() {
-    await this.api_manager.init();
+    const resp = await this.api_manager.init();
+    if (resp) {
+      return resp;
+    }
     this.init_notifier();
     this.xtmgr.init();
   }
@@ -98,7 +101,7 @@ export class PortalService {
 
   inject(utils: Utils) {
     this.utils = utils;
-    this.notifier.toast_open = utils.toast_success
+    this.notifier.toast_open = utils.toast_success;
   }
 
   get_sockd_service = () => {
