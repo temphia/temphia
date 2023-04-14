@@ -70,7 +70,7 @@ func Transform(fcs []dyndb.FilterCond) (interface{}, error) {
 		default:
 			optr, ok := OptrMap[filter.Cond]
 			if !ok {
-				return conds, nil
+				continue
 			}
 			conds[filter.Column+optr] = filter.Value
 		}

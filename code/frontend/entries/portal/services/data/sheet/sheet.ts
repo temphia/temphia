@@ -19,16 +19,21 @@ export class SheetGroupService {
   folder_api: FolderTktAPI;
   data_api: DataAPI;
   data_sheet_api: DataSheetAPI;
-  profile_genrator : (string) => string
+  profile_genrator: (string) => string;
 
-  constructor(source: string, group: string, api: DataAPI, profile_genrator : (string) => string) {
+  constructor(
+    source: string,
+    group: string,
+    api: DataAPI,
+    profile_genrator: (string) => string
+  ) {
     this.source = source;
     this.group_slug = group;
     this.active_sheets = new Map();
     this.sheets = writable([]);
     this.data_api = api;
     this.data_sheet_api = api.sheet_api();
-    this.profile_genrator = profile_genrator
+    this.profile_genrator = profile_genrator;
   }
 
   init = async () => {
@@ -41,7 +46,10 @@ export class SheetGroupService {
     this.sheets.set(resp.data["sheets"] || []);
 
     const folder_ticket = resp.data["folder_ticket"] || "";
-    this.folder_api = new FolderTktAPI(this.data_api.api_base_url, folder_ticket);
+    this.folder_api = new FolderTktAPI(
+      this.data_api.api_base_url,
+      folder_ticket
+    );
   };
 
   get_sheet_service = async (sheetid: string) => {
@@ -82,12 +90,16 @@ export class SheetService {
   state: Writable<SheetState>;
   api: DataSheetAPI;
   force_render_index: Writable<number>;
-  profile_genrator : (string) => string
+  profile_genrator: (string) => string;
 
-  constructor(group: SheetGroupService, sheetid: string, profile_genrator : (string) => string) {
+  constructor(
+    group: SheetGroupService,
+    sheetid: string,
+    profile_genrator: (string) => string
+  ) {
     this.group = group;
     this.sheetid = sheetid;
-    this.profile_genrator = profile_genrator
+    this.profile_genrator = profile_genrator;
 
     this.api = group.data_sheet_api;
 
@@ -198,7 +210,14 @@ export class SheetService {
   };
 
   remove_row_cell = async (rid: string) => {
-    await this.api.delete_row_cell(this.sheetid, rid);
+    const resp = await this.api.delete_row_cell(this.sheetid, rid);
+    if (resp.ok) {
+      const id = Number(rid);
+      this.state.update((old) => {
+        const newrows = old.rows.filter((v) => v.__id !== id);
+        return { ...old, rows: newrows };
+      });
+    }
   };
 
   get_sibling_sheet = async (sheetid) => {

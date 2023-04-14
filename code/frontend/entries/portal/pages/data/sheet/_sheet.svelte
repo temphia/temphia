@@ -137,6 +137,11 @@
       app.launcher.plane_float();
     });
   };
+
+  const doRemoveRowId = ({ detail }) => {
+    sheet_service.remove_row_cell(detail);
+    selected_rows = []
+  };
 </script>
 
 {#if loading || $state.loading}
@@ -169,6 +174,7 @@
       on:edit_column={doEditColumn}
       on:action_search={doSearch}
       on:action_run_widget={doActionRunWidget}
+      on:action_delete_trash={doRemoveRowId}
     />
   {/key}
 {/if}

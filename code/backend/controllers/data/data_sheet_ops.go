@@ -152,3 +152,10 @@ func (c *Controller) UpdateRowWithCell(uclaim *claim.Data, sid, rid int64, data 
 
 	return thub.UpdateRowWithCell(0, sid, rid, uclaim.UserID, data)
 }
+
+func (c *Controller) DeleteRowWithCell(uclaim *claim.Data, sid, rid int64) error {
+	source, _ := getTarget(uclaim)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataSheetHub(uclaim.TenantId, uclaim.DataGroup)
+	return thub.DeleteRowWithCell(0, sid, rid, uclaim.UserID)
+}

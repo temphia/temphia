@@ -46,7 +46,7 @@
     {columns}
     {rows}
     {cells}
-    {selected_rows}
+    bind:selected_rows={selected_rows}
     {folder_api}
   />
 </SheetLayout>

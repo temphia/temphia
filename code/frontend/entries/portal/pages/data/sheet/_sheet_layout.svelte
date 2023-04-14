@@ -13,7 +13,7 @@
 </script>
 
 <div class="flex flex-col p-2 rounded">
-  <nav class="flex flex-row  border flex-nowrap overflow-auto">
+  <nav class="flex flex-row border flex-nowrap overflow-auto">
     {#each sheets as sheet}
       {#if sheet.__id === active_sheet}
         <button
@@ -61,13 +61,15 @@
       name="History"
     />
 
-    {#if selected_rows.length === 1}
-      <ActionNormal
-        onClick={() => dispatch("action_delete_trash")}
-        icon="trash"
-        name="Delete"
-      />
-    {/if}
+    {#key selected_rows}
+      {#if selected_rows.length === 1}
+        <ActionNormal
+          onClick={() => dispatch("action_delete_trash", selected_rows[0])}
+          icon="trash"
+          name="Delete"
+        />
+      {/if}
+    {/key}
 
     <ActionNormal
       onClick={() => dispatch("action_search")}

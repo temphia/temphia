@@ -442,3 +442,38 @@ func (s *Sheet) UpdateRowWithCell(txid uint32, sid, rid int64, userId string, da
 
 	return nil, nil
 }
+
+func (s *Sheet) DeleteRowWithCell(txid uint32, sid, rid int64, userId string) error {
+
+	err := s.tableHub.DeleteRowBatch(txid, dyndb.DeleteRowBatchReq{
+		TenantId: s.tenantId,
+		Group:    s.group,
+		Table:    dyndb.SheetCellTable,
+		FilterConds: []dyndb.FilterCond{
+			{
+				Column: "rowid",
+				Cond:   "equal",
+				Value:  rid,
+			},
+			{
+				Column: "sheetid",
+				Cond:   "equal",
+				Value:  sid,
+			},
+		},
+	})
+	if err != nil {
+		return err
+	}
+
+	return s.tableHub.DeleteRow(txid, dyndb.DeleteRowReq{
+		TenantId: s.tenantId,
+		Group:    s.group,
+		Table:    dyndb.SheetRowTable,
+		Id:       rid,
+		ModCtx: dyndb.ModCtx{
+			UserId:   userId,
+			UserSign: "",
+		},
+	})
+}

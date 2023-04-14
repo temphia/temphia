@@ -192,5 +192,9 @@ func (s *Server) GetRowWithCell(uclaim *claim.Data, ctx *gin.Context) {
 }
 
 func (s *Server) DeleteRowWithCell(uclaim *claim.Data, ctx *gin.Context) {
+	sid, _ := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	rid, _ := strconv.ParseInt(ctx.Param("rid"), 10, 64)
 
+	err := s.cData.DeleteRowWithCell(uclaim, sid, rid)
+	httpx.WriteJSON(ctx, nil, err)
 }
