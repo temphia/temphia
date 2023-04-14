@@ -53,15 +53,16 @@ func (m *MsgBus) genericPoll(currMax int64) error {
 			}
 		}
 
-		err = m.setMaxId(nextMaxId)
-		if err != nil {
-			pp.Println("FIXME DONOT PANIC, BUT RETRY INSTEAD")
-			panic(err)
+		if nextMaxId != currMax {
+			pp.Println("@setting_next_max", nextMaxId)
+			err = m.setMaxId(nextMaxId)
+			if err != nil {
+				pp.Println("FIXME DONOT PANIC, BUT RETRY INSTEAD")
+				panic(err)
+			}
+			pp.Println("@set_next_max_ok", nextMaxId)
+			currMax = nextMaxId
 		}
-
-		pp.Println("@next_max", nextMaxId)
-
-		currMax = nextMaxId
 
 		time.Sleep(time.Duration(rand.Int()%5) * time.Second)
 	}
