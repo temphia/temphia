@@ -11,7 +11,6 @@ func (d *DynDB) activityTable(tenantId, group, table string) db.Collection {
 }
 
 func (d *DynDB) QueryActivity(tenantId, group, table string, query *entities.ActivityQuery) ([]*entities.DynActivity, error) {
-	tbl := d.activityTable(tenantId, group, table)
 
 	cnd := db.Cond{
 		"id >": query.Offset,
@@ -28,7 +27,12 @@ func (d *DynDB) QueryActivity(tenantId, group, table string, query *entities.Act
 	// fixme => impl between
 
 	resp := make([]*entities.DynActivity, 0)
-	err := tbl.Find(cnd).Limit(int(query.Count)).OrderBy("id").All(&resp)
+
+	err := d.session.SQL().
+		SelectFrom(d.tns.ActivityTable(tenantId, group, table)).
+		Where(cnd).
+		Limit(int(query.Count)).
+		OrderBy("id").All(&resp)
 	if err != nil {
 		return nil, err
 	}
