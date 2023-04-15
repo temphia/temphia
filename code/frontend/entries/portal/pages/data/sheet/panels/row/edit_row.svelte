@@ -1,27 +1,20 @@
 <script lang="ts">
   import type { SheetCell, SheetColumn, SheetRow } from "../../sheets";
-  import Cell from "../../field/cell.svelte";
+  import Layout from "./_layout.svelte";
   import type { SheetService } from "../../../../../services/data";
+  import EditRow from "./_edit_row.svelte";
 
   export let columns: SheetColumn[];
   export let row: SheetRow;
   export let cells: { [_: number]: { [_: string]: SheetCell } };
   export let service: SheetService;
   export let onSave = async (data) => {};
-  export let current_cells = {};
 
   let open_column;
+
+  let current_cells = cells[row.__id] || {};
 </script>
 
-{#each columns as col}
-  <Cell
-    {service}
-    column={col}
-    bind:open_column
-    celldata={current_cells[col.__id]}
-    onCellChange={(data) => {
-      const old = current_cells[col.__id] || {};
-      current_cells[col.__id] = { ...old, ...data };
-    }}
-  />
-{/each}
+<Layout title="Edit Row" onClick={() => onSave(current_cells)}>
+  <EditRow {cells} {columns} {row} {service} {onSave} bind:current_cells />
+</Layout>
