@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { SheetColumn } from "../sheets";
-  import Layout from "./_layout.svelte";
+  import type { SheetColumn } from "../../sheets";
+  import Layout from "../row/_layout.svelte";
 
   export let column: SheetColumn;
 </script>

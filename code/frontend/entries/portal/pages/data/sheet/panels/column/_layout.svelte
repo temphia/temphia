@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   export let title;
   export let onClick;
 
@@ -7,7 +7,7 @@
 
 <div class="flex flex-col h-full">
   <div class="mb-4 border-b">
-    <h1 class="block mb-2 text-lg font-bold text-gray-700" for="slug">
+    <h1 class="block mb-2 text-lg font-bold text-gray-700">
       {title}
     </h1>
   </div>

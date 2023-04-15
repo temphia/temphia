@@ -3,12 +3,12 @@
   import { get, Writable } from "svelte/store";
   import { LoadingSpinner, PortalService } from "../../admin/core";
   import SheetUi from "./_sheet_ui.svelte";
-  import AddColumn from "./panels/_add_column.svelte";
+  import AddColumn from "./panels/column/_add_column.svelte";
   import AddSheet from "./panels/_add_sheet.svelte";
-  import EditRow from "./panels/_edit_row.svelte";
-  import AddRow from "./panels/_add_row.svelte";
+  import EditRow from "./panels/row/_edit_row.svelte";
+  import AddRow from "./panels/row/_add_row.svelte";
   import RemoveSheetDialog from "./panels/_remove_sheet_dialog.svelte";
-  import EditColumn from "./panels/_edit_column.svelte";
+  import EditColumn from "./panels/column/_edit_column.svelte";
   import SearchPanel from "./panels/_search_panel.svelte";
   import type { SheetWidget } from "./sheets";
   import type { SheetService, SheetState } from "../../../services/data";

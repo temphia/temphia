@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { SheetCell, SheetColumn, SheetRow } from "../sheets";
+  import type { SheetCell, SheetColumn, SheetRow } from "../../sheets";
   import Layout from "./_layout.svelte";
-  import Cell from "../field/cell.svelte";
-  import type { SheetService } from "../../../../services/data";
+  import Cell from "../../field/cell.svelte";
+  import type { SheetService } from "../../../../../services/data";
 
   export let columns: SheetColumn[];
   export let row: SheetRow;

@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { each } from "svelte/internal";
-  import Kveditor from "../../../../../xcompo/common/kveditor.svelte";
-  import type { SheetService } from "../../../../services/data";
-  import { LoadingSpinner, MultiText } from "../../../admin/core";
+  import Kveditor from "../../../../../../xcompo/common/kveditor.svelte";
+  import type { SheetService } from "../../../../../services/data";
+  import { LoadingSpinner, MultiText } from "../../../../admin/core";
 
   import {
     Sheet,
@@ -12,8 +11,8 @@
     SheetColTypeSelect,
     SheetColTypeText,
     SheetCtypeShapes,
-  } from "../sheets";
-  import Layout from "./_layout.svelte";
+  } from "../../sheets";
+  import Layout from "../row/_layout.svelte";
 
   export let sheets: Sheet[];
   export let sheetid;

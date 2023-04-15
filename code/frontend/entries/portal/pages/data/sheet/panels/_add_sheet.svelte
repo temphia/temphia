@@ -1,6 +1,6 @@
 <script lang="ts">
   import Kveditor from "../../../../../xcompo/common/kveditor.svelte";
-  import Layout from "./_layout.svelte";
+  import Layout from "./row/_layout.svelte";
 
   export let onAdd = async (name: string, opts: object) => {};
 
