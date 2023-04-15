@@ -1,0 +1,7 @@
+{
+  "name": "Hello World",
+  "slug": "helloworld",
+  "type": "plug",
+  "description": "This is example hello world plug",
+  "files": ["schema.json", "client.css", "client.js", "server.js"]
+}
