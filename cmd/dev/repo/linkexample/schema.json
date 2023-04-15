@@ -1,0 +1,18 @@
+{
+  "type": "bundle",
+  "items": [
+    {
+      "name": "aplug",
+      "type": "plug",
+      "file": "a.schema.json"
+    },
+    {
+      "name": "bplug",
+      "type": "plug",
+      "file": "b.schema.json"
+    }
+  ],
+
+  "links": [],
+  "targets": []
+}

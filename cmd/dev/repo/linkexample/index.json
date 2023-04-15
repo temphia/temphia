@@ -1,0 +1,14 @@
+{
+  "name": "Link Example",
+  "slug": "linkexample",
+  "type": "bundle",
+  "description": "This is a link example",
+  "files": [
+    "schema.json",
+    "a.schema.json",
+    "b.schema.json",
+    "client.css",
+    "client.js",
+    "server.js"
+  ]
+}
