@@ -3,7 +3,7 @@
 
   export let title;
   export let onSave;
-  export let onDelete = undefined
+  export let onDelete = undefined;
 
   export let new_record = true;
   export let mode: "EDIT" | "RELATIONS" | "HISTORY" = "EDIT";
@@ -65,7 +65,7 @@
   <div class="flex justify-end gap-2 border-t">
     {#if new_record}
       <Button name="Save" onClick={onSave} loading={saving} />
-    {:else}
+    {:else if mode === "EDIT"}
       <Button name="Save" onClick={onSave} loading={saving} />
       <Button name="Delete" onClick={onDelete} loading={deleting} color="red" />
     {/if}
