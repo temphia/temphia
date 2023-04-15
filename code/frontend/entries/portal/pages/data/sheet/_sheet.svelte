@@ -7,7 +7,7 @@
   import AddSheet from "./panels/sheet/_add_sheet.svelte";
   import EditRow from "./panels/row/edit_row.svelte";
   import AddRow from "./panels/row/add_row.svelte";
-  import RemoveSheetDialog from "./panels/_remove_sheet_dialog.svelte";
+  import RemoveSheetDialog from "./panels/sheet/_remove_sheet_dialog.svelte";
   import EditColumn from "./panels/column/_edit_column.svelte";
   import SearchPanel from "./panels/_search_panel.svelte";
   import type { SheetWidget } from "./sheets";
