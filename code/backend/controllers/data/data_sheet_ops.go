@@ -159,3 +159,11 @@ func (c *Controller) DeleteRowWithCell(uclaim *claim.Data, sid, rid int64) error
 	thub := ddb.GetDataSheetHub(uclaim.TenantId, uclaim.DataGroup)
 	return thub.DeleteRowWithCell(0, sid, rid, uclaim.UserID)
 }
+
+func (c *Controller) GetRowRelations(uclaim *claim.Data, sid, rid, refsheet, refcol int64) (*dyndb.Relation, error) {
+	source, _ := getTarget(uclaim)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataSheetHub(uclaim.TenantId, uclaim.DataGroup)
+
+	return thub.GetRowRelations(0, sid, rid, refsheet, refcol)
+}

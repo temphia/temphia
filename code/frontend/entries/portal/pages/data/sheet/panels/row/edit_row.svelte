@@ -3,6 +3,8 @@
   import Layout from "./_layout.svelte";
   import type { SheetService } from "../../../../../services/data";
   import EditRow from "./_edit_row.svelte";
+  import Relations from "./_relations.svelte";
+  import History from "./_history.svelte";
 
   export let columns: SheetColumn[];
   export let row: SheetRow;
@@ -21,14 +23,14 @@
   new_record={false}
 >
   <svelte:fragment slot="edit">
-    <EditRow {cells} {columns} {row} {service} {onSave} bind:current_cells />
+    <EditRow {columns} {service} bind:current_cells />
   </svelte:fragment>
 
   <svelte:fragment slot="relation">
-    <div>relation</div>
+    <Relations {service} rid={row.__id} />
   </svelte:fragment>
 
   <svelte:fragment slot="history">
-    <div>history</div>
+    <History {service}  rid={row.__id} />
   </svelte:fragment>
 </Layout>

@@ -22,6 +22,10 @@ export class DataSheetAPI {
     return this.http.post(`/data/sheet/${sheetid}/load`, options);
   }
 
+  get_row_relation(sheetid: string, rid: string, refsheet: string, refcol: string) {
+    return this.http.get(`/data/sheet/${sheetid}/relation/${rid}/ref/${refsheet}/column/${refcol}`);
+  }
+
   // sheet
 
   list_sheets() {
@@ -87,5 +91,4 @@ export class DataSheetAPI {
   list_users = (opts: any) => {
     return this.http.post(`/data/utils/user`, opts);
   };
-  
 }

@@ -40,7 +40,14 @@ type QuerySheetResp struct {
 }
 
 type LoadSheetResp struct {
-	Columns    []map[string]any      `json:"columns,omitempty"`
-	Cells      []map[string]any      `json:"cells,omitempty"`
-	WidgetApps []*entities.TargetApp `json:"widget_apps,omitempty"`
+	Columns           []map[string]any      `json:"columns,omitempty"`
+	Cells             []map[string]any      `json:"cells,omitempty"`
+	WidgetApps        []*entities.TargetApp `json:"widget_apps,omitempty"`
+	ReverseRefColumns []map[string]any      `json:"reverse_ref_cols,omitempty"`
+}
+
+type Relation struct {
+	SheetId int64            `json:"sheet_id,omitempty"`
+	Columns []map[string]any `json:"columns,omitempty"`
+	Cells   []map[string]any `json:"cells,omitempty"`
 }

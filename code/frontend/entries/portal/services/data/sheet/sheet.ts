@@ -80,6 +80,8 @@ export interface SheetState {
   columns: SheetColumn[];
   cells: { [_: string]: { [_: string]: SheetCell } };
   rows: SheetRow[];
+
+  ref_columns: SheetColumn[]
   widgets: SheetWidget[];
   loading: boolean;
 }
@@ -108,6 +110,7 @@ export class SheetService {
       columns: [],
       rows: [],
       widgets: [],
+      ref_columns: [],
       loading: true,
     });
 
@@ -147,6 +150,7 @@ export class SheetService {
       rows,
       loading: false,
       widgets: resp.data["widget_apps"] || [],
+      ref_columns: resp.data["reverse_ref_cols"] || []
     });
 
     return true;
@@ -233,5 +237,9 @@ export class SheetService {
     console.log("@refetch_column", resp.data);
 
     this.state.update((old) => ({ ...old, columns: resp.data }));
+  };
+
+  get_relations = (rid: string, refsheet: string, refcol: string) => {
+    return this.api.get_row_relation(this.sheetid, rid, refsheet, refcol);
   };
 }

@@ -121,11 +121,31 @@ func (s *Sheet) LoadSheet(txid uint32, data *dyndb.LoadSheetReq) (*dyndb.LoadShe
 
 	apps, _ := s.handle.CoreHub.ListTargetAppByType(s.tenantId, entities.TargetAppTypeDataSheetWidget, fmt.Sprintf("%s/%s", s.source, s.group))
 
-	return &dyndb.LoadSheetResp{
-		Columns:    columns.Rows,
-		Cells:      rowCells,
-		WidgetApps: apps,
-	}, nil
+	fresp := &dyndb.LoadSheetResp{
+		Columns:           columns.Rows,
+		Cells:             rowCells,
+		WidgetApps:        apps,
+		ReverseRefColumns: nil,
+	}
+
+	refresp, err := s.tableHub.SimpleQuery(0, dyndb.SimpleQueryReq{
+		TenantId: s.tenantId,
+		Group:    s.group,
+		Table:    dyndb.SheetColumnTable,
+		FilterConds: []dyndb.FilterCond{
+			{
+				Column: "refsheet",
+				Cond:   "equal",
+				Value:  data.SheetId,
+			},
+		},
+	})
+
+	if err == nil {
+		fresp.ReverseRefColumns = refresp.Rows
+	}
+
+	return fresp, nil
 
 }
 
@@ -476,4 +496,50 @@ func (s *Sheet) DeleteRowWithCell(txid uint32, sid, rid int64, userId string) er
 			UserSign: "",
 		},
 	})
+}
+
+func (s *Sheet) GetRowRelations(txid uint32, sid, rid, refsheet, refcol int64) (*dyndb.Relation, error) {
+
+	cresp, err := s.tableHub.SimpleQuery(0, dyndb.SimpleQueryReq{
+		TenantId: s.tenantId,
+		Group:    s.group,
+		Table:    dyndb.SheetColumnTable,
+		FilterConds: []dyndb.FilterCond{
+			{
+				Column: "sheetid",
+				Cond:   "equal",
+				Value:  refsheet,
+			},
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	refresp, err := s.tableHub.SimpleQuery(0, dyndb.SimpleQueryReq{
+		TenantId: s.tenantId,
+		Group:    s.group,
+		Table:    dyndb.SheetCellTable,
+		FilterConds: []dyndb.FilterCond{
+			{
+				Column: "sheetid",
+				Cond:   "equal",
+				Value:  refsheet,
+			},
+			{
+				Column: "numval",
+				Cond:   "equal",
+				Value:  rid,
+			},
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &dyndb.Relation{
+		SheetId: refsheet,
+		Columns: cresp.Rows,
+		Cells:   refresp.Rows,
+	}, nil
 }
