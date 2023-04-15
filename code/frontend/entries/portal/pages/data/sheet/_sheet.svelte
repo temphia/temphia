@@ -4,7 +4,7 @@
   import { LoadingSpinner, PortalService } from "../../admin/core";
   import SheetUi from "./_sheet_ui.svelte";
   import AddColumn from "./panels/column/_add_column.svelte";
-  import AddSheet from "./panels/_add_sheet.svelte";
+  import AddSheet from "./panels/sheet/_add_sheet.svelte";
   import EditRow from "./panels/row/edit_row.svelte";
   import AddRow from "./panels/row/add_row.svelte";
   import RemoveSheetDialog from "./panels/_remove_sheet_dialog.svelte";

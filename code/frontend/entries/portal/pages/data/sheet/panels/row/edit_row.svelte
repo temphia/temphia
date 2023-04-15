@@ -15,6 +15,20 @@
   let current_cells = cells[row.__id] || {};
 </script>
 
-<Layout title="Edit Row" onClick={() => onSave(current_cells)}>
-  <EditRow {cells} {columns} {row} {service} {onSave} bind:current_cells />
+<Layout
+  title="Edit Row"
+  onSave={() => onSave(current_cells)}
+  new_record={false}
+>
+  <svelte:fragment slot="edit">
+    <EditRow {cells} {columns} {row} {service} {onSave} bind:current_cells />
+  </svelte:fragment>
+
+  <svelte:fragment slot="relation">
+    <div>relation</div>
+  </svelte:fragment>
+
+  <svelte:fragment slot="history">
+    <div>history</div>
+  </svelte:fragment>
 </Layout>

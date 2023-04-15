@@ -1,9 +1,12 @@
 <script lang="ts">
+  import Button from "./_button.svelte";
+
   export let title;
-  export let onClick;
+  export let onSave;
+  export let onDelete = undefined
 
   export let new_record = true;
-  export let mode: "NONE" | "EDIT" | "RELATIONS" | "HISTORY" = "NONE";
+  export let mode: "EDIT" | "RELATIONS" | "HISTORY" = "EDIT";
 
   export const setMode = (newmode) => {
     if (mode !== newmode) {
@@ -11,9 +14,10 @@
     }
   };
 
-  const modes = ["NONE", "EDIT", "RELATIONS", "HISTORY"];
+  const modes = ["EDIT", "RELATIONS", "HISTORY"];
 
-  let loading = false;
+  let saving = false;
+  let deleting = false;
 </script>
 
 <div class="flex flex-col h-full">
@@ -23,20 +27,22 @@
         {title}
       </h1>
     {:else}
-      {#each modes as m}
-        {#if mode == m}
-          <button
-            class="p-2 hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500 inline-flex"
-            >{mode}
-          </button>
-        {:else}
-          <button
-            on:click={() => setMode(m)}
-            class="text-gray-600 p-2 block hover:text-blue-500 focus:outline-none"
-            >{m}</button
-          >
-        {/if}
-      {/each}
+      <div class="flex flex-row border flex-nowrap overflow-auto">
+        {#each modes as m}
+          {#if mode == m}
+            <button
+              class="p-2 hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500 inline-flex"
+              >{mode}
+            </button>
+          {:else}
+            <button
+              on:click={() => setMode(m)}
+              class="text-gray-600 p-2 block hover:text-blue-500 focus:outline-none"
+              >{m}</button
+            >
+          {/if}
+        {/each}
+      </div>
     {/if}
   </div>
 
@@ -47,30 +53,22 @@
   {:else}
     <div class="flex flex-col flex-grow gap-2">
       {#if mode === "EDIT"}
-        <slot name="activity">Empty Edit template</slot>
+        <slot name="edit">Empty Edit template</slot>
       {:else if mode === "RELATIONS"}
-        <slot name="edit">Empty relations template</slot>
+        <slot name="relation">Empty relations template</slot>
       {:else if mode === "HISTORY"}
-        <slot name="relations">Empty history template</slot>
+        <slot name="history">Empty history template</slot>
       {/if}
     </div>
   {/if}
 
-  <div class="flex justify-end border-t">
-    <button
-      on:click={async () => {
-        loading = true;
-        const resp = onClick();
-        if (resp instanceof Promise) {
-          await resp;
-        }
-
-        loading = false;
-      }}
-      class="px-2 py-1 font-bold text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:shadow-outline rounded mt-1 {loading
-        ? 'animate-bounce'
-        : ''} ">Save</button
-    >
+  <div class="flex justify-end gap-2 border-t">
+    {#if new_record}
+      <Button name="Save" onClick={onSave} loading={saving} />
+    {:else}
+      <Button name="Save" onClick={onSave} loading={saving} />
+      <Button name="Delete" onClick={onDelete} loading={deleting} color="red" />
+    {/if}
   </div>
 </div>
 

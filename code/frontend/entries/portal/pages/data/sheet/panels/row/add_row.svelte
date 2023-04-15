@@ -13,7 +13,7 @@
   let dirty_data = {};
 </script>
 
-<Layout title="Add Row" onClick={async () => onSave(dirty_data)}>
+<Layout title="Add Row" onSave={async () => onSave(dirty_data)}>
   {#each columns as col}
     <Cell
       {service}

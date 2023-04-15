@@ -12,7 +12,7 @@
     SheetColTypeText,
     SheetCtypeShapes,
   } from "../../sheets";
-  import Layout from "../row/_layout.svelte";
+  import Layout from "./_layout.svelte";
 
   export let sheets: Sheet[];
   export let sheetid;
