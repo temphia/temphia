@@ -32,7 +32,16 @@
     };
   };
 
-  const load = async () => {};
+  const load = async () => {
+    loading = true;
+    const resp = await service.load();
+    if (!resp.ok) {
+      return;
+    }
+
+    data = resp.data;
+    loading = false;
+  };
 
   setContext(KEY, {
     get_service: () => service,
@@ -42,6 +51,9 @@
       load,
     }),
   });
+
+  load()
+
 </script>
 
 <DialogmodalCompo bind:modal />

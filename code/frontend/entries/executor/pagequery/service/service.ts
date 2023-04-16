@@ -5,4 +5,12 @@ export class PageQueryService {
   constructor(env: Environment) {
     this.env = env;
   }
+
+  load = () => {
+    return this.env.PreformAction("load", {});
+  };
+
+  submit = (data: any) => {
+    return this.env.PreformAction("submit", data);
+  };
 }
