@@ -11,13 +11,26 @@
 
   let mode: "START" | "END" = "START";
   let loading = false;
+
+  let data = {};
 </script>
 
 {#if loading}
   <LoadingSpinner />
 {:else if mode == "START"}
   <Layout>
-    <Start />
+    <Start
+      onNext={(_data) => {
+        data = _data;
+        mode = "END";
+      }}
+      onSubmit={async () => {
+        return {
+          ok: true,
+          data: {},
+        };
+      }}
+    />
   </Layout>
 {:else}
   <Layout>

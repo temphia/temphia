@@ -5,9 +5,13 @@
   };
 
   let values = {};
+
+  export const getParamData = () => {
+    return values;
+  };
 </script>
 
-<div class="w-full h-full flex flex-col p-2 border mb-2">
+<div class="w-full h-full flex flex-col p-2 border my-2">
   <h1
     class="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4"
   >
