@@ -7,11 +7,8 @@ type PgModel struct {
 }
 
 type QueryStage struct {
-	Script         string             `json:"script,omitempty" yaml:"script,omitempty"`
-	About          string             `json:"about,omitempty" yaml:"about,omitempty"`
-	NeedsParamData bool               `json:"needs_param_data,omitempty" yaml:"needs_param_data,omitempty"`
-	Parameters     map[string]Element `json:"parameters,omitempty" yaml:"parameters,omitempty"`
-	ParamGetAction string             `json:"param_get_actions,omitempty" yaml:"param_get_actions,omitempty"`
+	Script string `json:"script,omitempty" yaml:"script,omitempty"`
+	About  string `json:"about,omitempty" yaml:"about,omitempty"`
 }
 
 type Element struct {
@@ -34,9 +31,8 @@ type LoadResponse struct {
 }
 
 type SubmitRequest struct {
-	Stage     string         `json:"stage,omitempty" yaml:"stage,omitempty"`
-	ParamData map[string]any `json:"param_data,omitempty" yaml:"param_data,omitempty"`
-	Script    string         `json:"script,omitempty" yaml:"script,omitempty"`
+	Stage  string `json:"stage,omitempty" yaml:"stage,omitempty"`
+	Script string `json:"script,omitempty" yaml:"script,omitempty"`
 }
 
 type SubmitResponse struct {

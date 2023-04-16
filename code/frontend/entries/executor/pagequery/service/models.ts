@@ -7,8 +7,6 @@ export interface PgModel {
 export interface QueryStage {
   script: string;
   about: string;
-  parameters: { [_: string]: Element };
-  needs_param_data: boolean;
 }
 
 export interface Element {
