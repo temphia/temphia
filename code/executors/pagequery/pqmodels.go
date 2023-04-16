@@ -11,6 +11,7 @@ type QueryStage struct {
 	About          string             `json:"about,omitempty" yaml:"about,omitempty"`
 	NeedsParamData bool               `json:"needs_param_data,omitempty" yaml:"needs_param_data,omitempty"`
 	Parameters     map[string]Element `json:"parameters,omitempty" yaml:"parameters,omitempty"`
+	ParamGetAction string             `json:"param_get_actions,omitempty" yaml:"param_get_actions,omitempty"`
 }
 
 type Element struct {
