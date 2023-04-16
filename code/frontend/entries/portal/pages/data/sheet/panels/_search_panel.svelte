@@ -1,5 +1,29 @@
-<script>
+<script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
+  import type { SheetService } from "../../../../services/data";
+  import { formatRefCells } from "../../../../services/data/sheet/format";
+  import { LoadingSpinner } from "../../../admin/core";
+  import SheetInner from "../_sheet_inner.svelte";
+
+  export let service: SheetService;
+
+  let searchstring = "";
+  let loading = false;
+
+  let data;
+
+  const load = async () => {
+    loading = true;
+
+    const resp = await service.search(searchstring);
+    if (!resp.ok) {
+      console.log("@resp", resp);
+      return;
+    }
+
+    data = formatRefCells({ ...resp.data, sheet_id: service.sheetid });
+    loading = false;
+  };
 </script>
 
 <form class="flex items-center">
@@ -13,14 +37,15 @@
     <input
       type="text"
       id="simple-search"
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       placeholder="Search"
+      bind:value={searchstring}
       required
     />
   </div>
   <button
     type="submit"
-    on:click|preventDefault={() => {}}
+    on:click|preventDefault={() => load()}
     class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
   >
     <Icon name="search" class="h-5 w-5" />
@@ -39,3 +64,21 @@
     </label>
   </div>
 </div>
+
+{#if loading}
+  <LoadingSpinner classes="" />
+{:else if data}
+  <div class="p-1 border rounded shadow overflow-auto">
+    <SheetInner
+      editable={false}
+      cells={data["cells"] || {}}
+      columns={data["columns"] || []}
+      rows={data["rows"] || []}
+      selected_rows={[]}
+      pick_label="goto"
+      on:pick_row={(ev) => {
+        console.log("@", ev);
+      }}
+    />
+  </div>
+{/if}

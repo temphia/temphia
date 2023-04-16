@@ -82,7 +82,7 @@ export interface SheetState {
   cells: { [_: string]: { [_: string]: SheetCell } };
   rows: SheetRow[];
 
-  ref_columns: SheetColumn[]
+  ref_columns: SheetColumn[];
   widgets: SheetWidget[];
   loading: boolean;
 }
@@ -126,8 +126,7 @@ export class SheetService {
     }
 
     const cell: SheetCell[] = resp.data["cells"] || [];
-    const pcells = formatCells(cell)
-    
+    const pcells = formatCells(cell);
 
     const rows = Object.keys(pcells)
       .map((v) => ({ __id: Number(v), sheetid: Number(this.sheetid) }))
@@ -141,7 +140,7 @@ export class SheetService {
       rows,
       loading: false,
       widgets: resp.data["widget_apps"] || [],
-      ref_columns: resp.data["reverse_ref_cols"] || []
+      ref_columns: resp.data["reverse_ref_cols"] || [],
     });
 
     return true;
@@ -232,5 +231,9 @@ export class SheetService {
 
   get_relations = (rid: string, refsheet: string, refcol: string) => {
     return this.api.get_row_relation(this.sheetid, rid, refsheet, refcol);
+  };
+
+  search = (search: string) => {
+    return this.api.search(this.sheetid, search);
   };
 }

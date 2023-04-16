@@ -140,7 +140,7 @@ func TransformWithPrefix(fcs []dyndb.FilterCond, prefix string) (db.Cond, error)
 
 			normalTransform()
 		case FilterContains:
-			filter.Cond = FilterLike
+			filter.Cond = FilterILike
 			filter.Value = fmt.Sprintf("%%%s%%", filter.Value)
 			normalTransform()
 		case FilterIsNull:

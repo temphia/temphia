@@ -32,6 +32,18 @@ func (c *Controller) ListSheetGroup(uclaim *claim.Data) (*dyndb.ListSheetGroupRe
 
 }
 
+func (c *Controller) FTSQuerySheet(uclaim *claim.Data, req *dyndb.FTSQuerySheet) (*dyndb.QuerySheetResp, error) {
+
+	source, _ := getTarget(uclaim)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataSheetHub(uclaim.TenantId, uclaim.DataGroup)
+
+	req.Group = uclaim.DataGroup
+	req.TenantId = uclaim.TenantId
+
+	return thub.FTSQuery(0, req)
+}
+
 func (c *Controller) LoadSheet(uclaim *claim.Data, data *dyndb.LoadSheetReq) (*dyndb.LoadSheetResp, error) {
 	source, _ := getTarget(uclaim)
 	ddb := c.dynHub.GetSource(source, uclaim.TenantId)

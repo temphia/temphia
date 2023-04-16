@@ -22,8 +22,15 @@ export class DataSheetAPI {
     return this.http.post(`/data/sheet/${sheetid}/load`, options);
   }
 
-  get_row_relation(sheetid: string, rid: string, refsheet: string, refcol: string) {
-    return this.http.get(`/data/sheet/${sheetid}/relation/${rid}/ref/${refsheet}/column/${refcol}`);
+  get_row_relation(
+    sheetid: string,
+    rid: string,
+    refsheet: string,
+    refcol: string
+  ) {
+    return this.http.get(
+      `/data/sheet/${sheetid}/relation/${rid}/ref/${refsheet}/column/${refcol}`
+    );
   }
 
   // sheet
@@ -91,4 +98,10 @@ export class DataSheetAPI {
   list_users = (opts: any) => {
     return this.http.post(`/data/utils/user`, opts);
   };
+
+  search(sheetid: string, search: string) {
+    return this.http.post(`/data/sheet/${sheetid}/search`, {
+      search_term: search,
+    });
+  }
 }

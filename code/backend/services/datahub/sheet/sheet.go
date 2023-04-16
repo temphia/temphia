@@ -5,6 +5,7 @@ import (
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/services/datahub/handle"
+	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/filter"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
@@ -552,5 +553,62 @@ func (s *Sheet) GetRowRelations(txid uint32, sid, rid, refsheet, refcol int64) (
 		SheetId: refsheet,
 		Columns: cresp.Rows,
 		Cells:   refresp.Rows,
+	}, nil
+}
+
+func (s *Sheet) FTSQuery(txid uint32, req *dyndb.FTSQuerySheet) (*dyndb.QuerySheetResp, error) {
+
+	cresp, err := s.tableHub.SimpleQuery(0, dyndb.SimpleQueryReq{
+		TenantId: s.tenantId,
+		Group:    s.group,
+		Table:    dyndb.SheetColumnTable,
+		FilterConds: []dyndb.FilterCond{
+			{
+				Column: "sheetid",
+				Cond:   "equal",
+				Value:  req.SheetId,
+			},
+		},
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	refresp, err := s.tableHub.JoinQuery(0, dyndb.JoinReq{
+		TenantId: s.tenantId,
+		Group:    s.group,
+		Parent:   dyndb.SheetCellTable,
+		Child:    dyndb.SheetCellTable,
+		OnParent: "rowid",
+		OnChild:  "rowid",
+		ParentFilters: []dyndb.FilterCond{
+			{
+				Column: "sheetid",
+				Cond:   "equal",
+				Value:  req.SheetId,
+			},
+			{
+				Column: "value",
+				Cond:   filter.FilterContains,
+				Value:  req.SearchTerm,
+			},
+		},
+		ChildFilters: []dyndb.FilterCond{
+			{
+				Column: "sheetid",
+				Cond:   "equal",
+				Value:  req.SheetId,
+			},
+		},
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &dyndb.QuerySheetResp{
+		Cells:   refresp.Rows,
+		Columns: cresp.Rows,
 	}, nil
 }

@@ -118,7 +118,7 @@
   };
 
   const doSearch = () => {
-    app.utils.big_modal_open(SearchPanel, {});
+    app.utils.big_modal_open(SearchPanel, { service: sheet_service });
   };
 
   const doActionRunWidget = (ev) => {
@@ -140,7 +140,7 @@
 
   const doRemoveRowId = ({ detail }) => {
     sheet_service.remove_row_cell(detail);
-    selected_rows = []
+    selected_rows = [];
   };
 </script>
 

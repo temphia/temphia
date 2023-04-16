@@ -27,6 +27,13 @@ type LoadSheetReq struct {
 	FilterConds []FilterCond `json:"filter_conds,omitempty"`
 }
 
+type FTSQuerySheet struct {
+	TenantId   string `json:"-"`
+	Group      string `json:"group,omitempty"`
+	SheetId    int64  `json:"sheet_id,omitempty"`
+	SearchTerm string `json:"search_term,omitempty"`
+}
+
 type QuerySheetReq struct {
 	TenantId    string       `json:"-"`
 	Group       string       `json:"group,omitempty"`
@@ -36,7 +43,8 @@ type QuerySheetReq struct {
 }
 
 type QuerySheetResp struct {
-	Cells []map[string]any `json:"cells,omitempty"`
+	Cells   []map[string]any `json:"cells,omitempty"`
+	Columns []map[string]any `json:"columns,omitempty"`
 }
 
 type LoadSheetResp struct {
