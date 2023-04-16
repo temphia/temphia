@@ -1,0 +1,14 @@
+title: example1
+stages:
+  first:
+    script: >
+      core.Log("this is first1");
+    about: First one.
+    data: {}
+    parameters: {}
+  second:
+    script: >
+      core.Log("this is first1");
+    about: Second one.
+    data: {}
+    parameters: {}
