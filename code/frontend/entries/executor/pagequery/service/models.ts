@@ -1,13 +1,14 @@
 export interface PgModel {
   title: string;
   stages: { [_: string]: any };
+  first_stage: string;
 }
 
 export interface QueryStage {
   script: string;
   about: string;
-  data: { [_: string]: any };
-  parameters: {[_: string]: Element};
+  parameters: { [_: string]: Element };
+  needs_param_data: boolean;
 }
 
 export interface Element {
@@ -17,4 +18,26 @@ export interface Element {
   view_opts: { [_: string]: any };
   data_opts: { [_: string]: any };
   source: string;
+}
+
+export interface LoadRequest {
+  exec_data: { [_: string]: any };
+}
+
+export interface LoadResponse {
+  title: string;
+  stages: { [_: string]: QueryStage };
+  first_stage: string;
+}
+
+export interface SubmitRequest {
+  stage: string;
+  param_data: { [_: string]: any };
+  script: string;
+}
+
+export interface SubmitResponse {
+  stage: string;
+  data: { [_: string]: any };
+  elements: { [_: string]: any };
 }

@@ -1,15 +1,16 @@
 package pagequery
 
 type PgModel struct {
-	Title  string                `json:"name,omitempty" yaml:"name,omitempty"`
-	Stages map[string]QueryStage `json:"stages,omitempty" yaml:"stages,omitempty"`
+	Title      string                `json:"name,omitempty" yaml:"name,omitempty"`
+	Stages     map[string]QueryStage `json:"stages,omitempty" yaml:"stages,omitempty"`
+	FirstStage string                `json:"first_stage,omitempty" yaml:"first_stage,omitempty"`
 }
 
 type QueryStage struct {
-	Script     string             `json:"script,omitempty" yaml:"script,omitempty"`
-	About      string             `json:"about,omitempty" yaml:"about,omitempty"`
-	Data       map[string]any     `json:"data,omitempty" yaml:"data,omitempty"`
-	Parameters map[string]Element `json:"parameters,omitempty" yaml:"parameters,omitempty"`
+	Script         string             `json:"script,omitempty" yaml:"script,omitempty"`
+	About          string             `json:"about,omitempty" yaml:"about,omitempty"`
+	NeedsParamData bool               `json:"needs_param_data,omitempty" yaml:"needs_param_data,omitempty"`
+	Parameters     map[string]Element `json:"parameters,omitempty" yaml:"parameters,omitempty"`
 }
 
 type Element struct {
@@ -26,14 +27,15 @@ type LoadRequest struct {
 }
 
 type LoadResponse struct {
-	Title  string                `json:"name,omitempty" yaml:"name,omitempty"`
-	Stages map[string]QueryStage `json:"stages,omitempty" yaml:"stages,omitempty"`
+	Title      string                `json:"name,omitempty" yaml:"name,omitempty"`
+	Stages     map[string]QueryStage `json:"stages,omitempty" yaml:"stages,omitempty"`
+	FirstStage string                `json:"first_stage,omitempty" yaml:"first_stage,omitempty"`
 }
 
 type SubmitRequest struct {
-	Stage     string            `json:"stage,omitempty" yaml:"stage,omitempty"`
-	ParamData map[string]string `json:"param_data,omitempty" yaml:"param_data,omitempty"`
-	Script    string            `json:"script,omitempty" yaml:"script,omitempty"`
+	Stage     string         `json:"stage,omitempty" yaml:"stage,omitempty"`
+	ParamData map[string]any `json:"param_data,omitempty" yaml:"param_data,omitempty"`
+	Script    string         `json:"script,omitempty" yaml:"script,omitempty"`
 }
 
 type SubmitResponse struct {
