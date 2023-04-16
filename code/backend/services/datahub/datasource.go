@@ -179,3 +179,25 @@ func (ds *DataSource) GetDataSheetHub(tenantId, group string) dyndb.DataSheetHub
 	return dh
 
 }
+
+/*
+
+
+pp.Println(ds.inner.JoinQuery(0, dyndb.JoinReq{
+		TenantId: tenantId,
+		Group:    group,
+		Parent:   "sale",
+		Child:    "customer",
+		OnParent: "customer",
+		OnChild:  "__id",
+		ParentFilters: []dyndb.FilterCond{
+			{
+				Column: "amt",
+				Cond:   filter.FilterGT,
+				Value:  100,
+			},
+		},
+		ChildFilters: []dyndb.FilterCond{},
+	}))
+
+*/

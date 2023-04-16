@@ -192,6 +192,10 @@ func (t *Table) SimpleQuery(txid uint32, req dyndb.SimpleQueryReq) (*dyndb.Query
 	return resp, nil
 }
 
+func (t *Table) JoinQuery(txid uint32, req dyndb.JoinReq) (*dyndb.JoinResult, error) {
+	return t.inner.JoinQuery(txid, req)
+}
+
 func (t *Table) FTSQuery(txid uint32, req dyndb.FTSQueryReq) (*dyndb.QueryResult, error) {
 	return t.inner.FTSQuery(txid, req)
 }

@@ -105,12 +105,20 @@ type SimpleQueryReq struct {
 }
 
 type JoinReq struct {
+	TenantId      string       `json:"-"`
+	Group         string       `json:"group,omitempty"`
 	Parent        string       `json:"parent,omitempty"`
 	Child         string       `json:"child,omitempty"`
 	OnParent      string       `json:"on_parent,omitempty"`
 	OnChild       string       `json:"on_child,omitempty"`
 	ParentFilters []FilterCond `json:"parent_ft,omitempty"`
 	ChildFilters  []FilterCond `json:"child_ft,omitempty"`
+}
+
+type JoinResult struct {
+	Rows       []map[string]any            `json:"rows"`
+	ParentCols map[string]*entities.Column `json:"parent_columns,omitempty"`
+	ChildCols  map[string]*entities.Column `json:"child_columns,omitempty"`
 }
 
 type FTSQueryReq struct {

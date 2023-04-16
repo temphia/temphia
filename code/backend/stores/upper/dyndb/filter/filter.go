@@ -8,16 +8,16 @@ import (
 )
 
 const (
-	filterEqual     = "equal"
-	filterNotEqual  = "not_equal"
-	filterIn        = "in"
-	filterNotIn     = "not_in"
-	filterLT        = "less_than"
-	filterGT        = "greater_than"
-	filterLTE       = "less_than_or_equal"
-	filterGTE       = "greater_than_or_equal"
-	filterAround    = "around"
-	filterNotAround = "not_around"
+	FilterEqual     = "equal"
+	FilterNotEqual  = "not_equal"
+	FilterIn        = "in"
+	FilterNotIn     = "not_in"
+	FilterLT        = "less_than"
+	FilterGT        = "greater_than"
+	FilterLTE       = "less_than_or_equal"
+	FilterGTE       = "greater_than_or_equal"
+	FilterAround    = "around"
+	FilterNotAround = "not_around"
 
 	OptrEqual    = ""
 	OptrNotEqual = " !="
@@ -37,14 +37,14 @@ const (
 
 var (
 	OptrMap = map[string]string{
-		filterEqual:    OptrEqual,
-		filterNotEqual: OptrNotEqual,
-		filterIn:       OptrIn,
-		filterNotIn:    OptrNotIn,
-		filterLT:       OptrLT,
-		filterGT:       OptrGT,
-		filterLTE:      OptrLTE,
-		filterGTE:      OptrGTE,
+		FilterEqual:    OptrEqual,
+		FilterNotEqual: OptrNotEqual,
+		FilterIn:       OptrIn,
+		FilterNotIn:    OptrNotIn,
+		FilterLT:       OptrLT,
+		FilterGT:       OptrGT,
+		FilterLTE:      OptrLTE,
+		FilterGTE:      OptrGTE,
 	}
 )
 
@@ -58,11 +58,11 @@ func Transform(fcs []dyndb.FilterCond) (interface{}, error) {
 	for _, filter := range fcs {
 
 		switch filter.Cond {
-		case filterAround, filterNotAround:
+		case FilterAround, FilterNotAround:
 			// fixme => sql_escape column ?
 			data := locationData(filter.Value.(string))
 			comOp := "<"
-			if filter.Cond == filterNotAround {
+			if filter.Cond == FilterNotAround {
 				comOp = ">"
 			}
 

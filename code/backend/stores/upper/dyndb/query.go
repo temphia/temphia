@@ -102,6 +102,47 @@ func (d *DynDB) getRow(txid uint32, req dyndb.GetRowReq) (map[string]interface{}
 	return data, err
 }
 
+func (d *DynDB) joinQuery(txid uint32, req dyndb.JoinReq) (*dyndb.JoinResult, error) {
+
+	records := make([]map[string]any, 0)
+
+	cond1, err := filter.Transform(req.ParentFilters)
+	if err != nil {
+		return nil, err
+	}
+
+	cond2, err := filter.Transform(req.ChildFilters)
+	if err != nil {
+		return nil, err
+	}
+
+	pcols, err := d.cache.CachedColumns(req.TenantId, req.Group, req.Parent)
+	if err != nil {
+		return nil, err
+	}
+
+	ccols, err := d.cache.CachedColumns(req.TenantId, req.Group, req.Child)
+	if err != nil {
+		return nil, err
+	}
+
+	err = d.txOr(txid, func(sess db.Session) error {
+		return sess.SQL().
+			Select().
+			From(fmt.Sprintf("%s AS parent", d.tns.Table(req.TenantId, req.Group, req.Parent))).
+			Where(cond1).
+			Join(fmt.Sprintf("%s As child", d.tns.Table(req.TenantId, req.Group, req.Child))).On(fmt.Sprintf("parent.%s = child.%s", req.OnParent, req.OnChild)).
+			Where(cond2).
+			All(&records)
+	})
+
+	return &dyndb.JoinResult{
+		Rows:       records,
+		ParentCols: pcols,
+		ChildCols:  ccols,
+	}, err
+}
+
 func (d *DynDB) ftsQuery(txid uint32, req dyndb.FTSQueryReq) (*dyndb.QueryResult, error) {
 
 	records := make([]map[string]any, 0)

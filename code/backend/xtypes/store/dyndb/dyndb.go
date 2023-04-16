@@ -45,6 +45,7 @@ type DynDB interface {
 
 	SimpleQuery(txid uint32, req SimpleQueryReq) (*QueryResult, error)
 	FTSQuery(txid uint32, req FTSQueryReq) (*QueryResult, error)
+	JoinQuery(txid uint32, req JoinReq) (*JoinResult, error)
 
 	RefResolve(txid uint32, tenantId, gslug string, req *RefResolveReq) (*QueryResult, error)
 	RefLoad(txid uint32, tenantId, gslug string, req *RefLoadReq) (*QueryResult, error)
