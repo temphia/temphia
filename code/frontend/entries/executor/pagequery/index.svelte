@@ -43,6 +43,10 @@
     loading = false;
   };
 
+  const back = () => {
+    mode = "START";
+  };
+
   setContext(KEY, {
     get_service: () => service,
     get_modal: () => modal,
@@ -52,8 +56,7 @@
     }),
   });
 
-  load()
-
+  load();
 </script>
 
 <DialogmodalCompo bind:modal />
@@ -67,7 +70,7 @@
     </Layout>
   {:else}
     <Layout>
-      <Final />
+      <Final onBack={back} />
     </Layout>
   {/if}
 </div>
