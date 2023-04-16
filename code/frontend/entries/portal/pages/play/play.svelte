@@ -1,9 +1,5 @@
 <script lang="ts">
-  import { getContext } from "svelte";
-  import type { PortalService } from "../../services";
-
-
-  import StepperExample from "./stepper_example.svelte";
+  import PageQuery from "../../../executor/pagequery/index.svelte";
 </script>
 
-<StepperExample />
+<PageQuery env="" />

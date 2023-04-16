@@ -1,0 +1,42 @@
+<script>
+  export let form = {
+    Test: "text",
+    Test2: "longtext",
+  };
+
+  let values = {};
+</script>
+
+<div class="w-full h-full flex flex-col p-2 border mb-2">
+  <h1
+    class="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4"
+  >
+    Form 1
+  </h1>
+
+  {#each Object.entries(form) as [elemkey, elemtype]}
+    <label for="name" class="pb-2 text-gray-700 flex uppercase">{elemkey}</label
+    >
+    <div class="flex flex-col w-full">
+      {#if elemtype === "text"}
+        <input
+          type="text"
+          class="p-2 border w-full rounded-lg bg-gray-50 outline-none focus:bg-gray-100 mr-1"
+        />
+      {:else if elemtype === "longtext"}
+        <textarea
+          id="metameta"
+          class="p-2 border w-full rounded-lg bg-gray-50 outline-none focus:bg-gray-100 mr-1"
+          placeholder="write something..."
+          data-lt-tmp-id="lt-308914"
+          spellcheck="false"
+          data-gramm="false"
+        />
+      {/if}
+
+      <p class="text-sm italic mb-4" />
+    </div>
+
+    <div class="grow" />
+  {/each}
+</div>
