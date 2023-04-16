@@ -1,5 +1,7 @@
 <script lang="ts">
   import type { SheetService } from "../../../../../services/data";
+  import SheetInner from "../../_sheet_inner.svelte";
+  import { formatRefCells } from "../../../../../services/data/sheet/format";
 
   export let service: SheetService;
   export let rid;
@@ -17,20 +19,19 @@
 
   let selected;
   let loading = false;
-  let data = {};
+  let data: object = {};
 
   const load = async (refsheet, refcol) => {
-    console.log("@columns_refs", refcols);
+    loading = true;
+    selected = true;
     const resp = await service.get_relations(rid, refsheet, refcol);
     if (resp.ok) {
-      data = resp.data;
-    } else {
-      data = {};
+      data = formatRefCells(resp.data);
+      loading = false;
     }
   };
 
-  $: console.log("@data", data)
-
+  $: console.log("@data", data);
 </script>
 
 <div class="w-full p-2 flex flex-col relative">
@@ -58,8 +59,22 @@
   {#if selected && loading}
     <div>Loading...</div>
   {:else if selected}
-    {#if data["rows"]}
-      <div>TODO SHOW DATA</div>
+    {#if data}
+      <div
+        class="p-1 border rounded shadow h-64 mt-2 overflow-auto"
+      >
+        <SheetInner
+          editable={false}
+          cells={data["cells"] || {}}
+          columns={data["columns"] || []}
+          rows={data["rows"] || []}
+          selected_rows={[]}
+          pick_label="goto"
+          on:pick_row={(ev) => {
+            console.log("@", ev);
+          }}
+        />
+      </div>
     {/if}
   {/if}
 </div>

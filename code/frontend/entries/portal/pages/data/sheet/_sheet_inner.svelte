@@ -25,9 +25,10 @@
   export let rows: SheetRow[];
   export let cells: { [_: number]: { [_: string]: SheetCell } };
   export let selected_rows = [];
-  export let folder_api: FolderTktAPI;
+  export let folder_api: FolderTktAPI = undefined;
   export let editable = true;
-  export let profile_genrator: (string) => string;
+  export let profile_genrator: (string) => string = undefined;
+  export let pick_label = "pick";
 
   const dispatch = createEventDispatcher();
 </script>
@@ -41,7 +42,7 @@
 
       {#each columns as col}
         <th
-          class="sticky top-0 border-b  px-6 py-1 font-bold tracking-wider uppercase text-base text-gray-700 bg-gray-100"
+          class="sticky top-0 border-b px-6 py-1 font-bold tracking-wider uppercase text-base text-gray-700 bg-gray-100"
         >
           <button
             class="inline-flex hover:bg-blue-200 rounded px-1"
@@ -147,11 +148,15 @@
                   {#if value}
                     {#each value.split(",") as cd}
                       <div class="flex gap-1">
-                        <img
-                          class="h-8 w-auto border rounded"
-                          src={folder_api && folder_api.getFilePreviewUrl(cd)}
-                          alt=""
-                        />
+                        {#if folder_api}
+                          <img
+                            class="h-8 w-auto border rounded"
+                            src={folder_api.getFilePreviewUrl(cd)}
+                            alt=""
+                          />
+                        {:else}
+                          <span>{cd}</span>
+                        {/if}
                       </div>
                     {/each}
                   {/if}
@@ -159,7 +164,7 @@
                   {#if value}
                     <div class="flex gap-1">
                       {#each value.split(",") as cd}
-                        <span class="bg-gray-100  hover:bg-gray-200 rounded"
+                        <span class="bg-gray-100 hover:bg-gray-200 rounded"
                           >{cd}</span
                         >
                       {/each}
@@ -171,10 +176,12 @@
                       <div
                         class="p-0.5 rounded bg-gray-50 flex border gap-0.5 text-xs items-center"
                       >
-                        <UserAvatar
-                          name={cd}
-                          url={profile_genrator && profile_genrator(cd)}
-                        />
+                        {#if profile_genrator}
+                          <UserAvatar name={cd} url={profile_genrator(cd)} />
+                        {:else}
+                          <span>{cd}</span>
+                        {/if}
+
                         <span>{cd}</span>
                       </div>
                     {/each}
@@ -197,7 +204,7 @@
           {:else}
             <button
               class="underline text-blue-600"
-              on:click={() => dispatch("pick_row", row)}>pick</button
+              on:click={() => dispatch("pick_row", row)}>{pick_label}</button
             >
           {/if}
         </td>

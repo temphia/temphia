@@ -8,6 +8,7 @@ import type {
   Sheet,
   SheetWidget,
 } from "../../../pages/data/sheet/sheets";
+import { formatCells } from "./format";
 
 export class SheetGroupService {
   source: string;
@@ -125,18 +126,8 @@ export class SheetService {
     }
 
     const cell: SheetCell[] = resp.data["cells"] || [];
-
-    const pcells = cell.reduce((prev, cell) => {
-      let row = prev[cell.rowid];
-      if (!row) {
-        row = {};
-        prev[cell.rowid] = row;
-      }
-
-      row[cell.colid] = cell;
-
-      return prev;
-    }, {});
+    const pcells = formatCells(cell)
+    
 
     const rows = Object.keys(pcells)
       .map((v) => ({ __id: Number(v), sheetid: Number(this.sheetid) }))
