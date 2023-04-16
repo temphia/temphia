@@ -1,5 +1,9 @@
 <script>
   export let title = "";
+  
+  export let onBack = () => {
+
+  };
 </script>
 
 <div class="container mx-auto py-2">

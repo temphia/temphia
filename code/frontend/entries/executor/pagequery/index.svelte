@@ -18,7 +18,7 @@
   let loading = false;
   let root_elem;
   let modal;
-  let data = {};
+  let data: any = {};
 
   const next = (_data) => {
     data = _data;
@@ -66,7 +66,7 @@
     <LoadingSpinner />
   {:else if mode == "START"}
     <Layout>
-      <Start onNext={next} onSubmit={submit} />
+      <Start onNext={next} onSubmit={submit} {data} />
     </Layout>
   {:else}
     <Layout>
