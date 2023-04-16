@@ -120,12 +120,15 @@ func (d *DynDB) joinQuery(txid uint32, req dyndb.JoinReq) (*dyndb.JoinResult, er
 		cond1[k] = v
 	}
 
+	parent := d.tns.Table(req.TenantId, req.Group, req.Parent)
+	child := d.tns.Table(req.TenantId, req.Group, req.Child)
+
 	err = d.txOr(txid, func(sess db.Session) error {
 		return sess.SQL().
 			Select().
-			From(fmt.Sprintf("%s AS parent", d.tns.Table(req.TenantId, req.Group, req.Parent))).
+			From(fmt.Sprintf("%s AS parent", parent)).
 			Where(cond1).
-			Join(fmt.Sprintf("%s As child", d.tns.Table(req.TenantId, req.Group, req.Child))).
+			Join(fmt.Sprintf("%s As child", child)).
 			On(fmt.Sprintf("parent.%s = child.%s", req.OnParent, req.OnChild)).
 			All(&records)
 	})
