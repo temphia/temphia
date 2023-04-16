@@ -48,34 +48,40 @@ var (
 	}
 )
 
-func Transform(fcs []dyndb.FilterCond) (interface{}, error) {
+func Transform(fcs []dyndb.FilterCond) (db.Cond, error) {
+	return TransformWithPrefix(fcs, "")
+}
+
+func TransformWithPrefix(fcs []dyndb.FilterCond, prefix string) (db.Cond, error) {
 
 	conds := make(db.Cond)
-	resp := []interface{}{
-		conds,
-	}
 
 	for _, filter := range fcs {
 
 		switch filter.Cond {
 		case FilterAround, FilterNotAround:
 			// fixme => sql_escape column ?
-			data := locationData(filter.Value.(string))
-			comOp := "<"
-			if filter.Cond == FilterNotAround {
-				comOp = ">"
-			}
 
-			resp = append(resp, db.Raw(fmt.Sprintf("ST_Distance(%s, ST_MakePoint(?, ?)::geography) %s", filter.Column, comOp), data.lat, data.long, data.distance))
+			/*
+				data := locationData(filter.Value.(string))
+				comOp := "<"
+				if filter.Cond == FilterNotAround {
+					comOp = ">"
+				}
+
+				resp = append(resp, db.Raw(fmt.Sprintf("ST_Distance(%s, ST_MakePoint(?, ?)::geography) %s", filter.Column, comOp), data.lat, data.long, data.distance))
+			*/
 		default:
 			optr, ok := OptrMap[filter.Cond]
 			if !ok {
 				continue
 			}
-			conds[filter.Column+optr] = filter.Value
+
+			conds[fmt.Sprintf("%s%s%s", prefix, filter.Column, optr)] = filter.Value
 		}
 
 	}
 
 	return conds, nil
+
 }

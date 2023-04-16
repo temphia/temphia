@@ -106,12 +106,30 @@ func (d *DynDB) joinQuery(txid uint32, req dyndb.JoinReq) (*dyndb.JoinResult, er
 
 	records := make([]map[string]any, 0)
 
-	cond1, err := filter.Transform(req.ParentFilters)
+	cond1, err := filter.TransformWithPrefix(req.ParentFilters, "parent.")
 	if err != nil {
 		return nil, err
 	}
 
-	cond2, err := filter.Transform(req.ChildFilters)
+	cond2, err := filter.TransformWithPrefix(req.ChildFilters, "child.")
+	if err != nil {
+		return nil, err
+	}
+
+	for k, v := range cond2 {
+		cond1[k] = v
+	}
+
+	err = d.txOr(txid, func(sess db.Session) error {
+		return sess.SQL().
+			Select().
+			From(fmt.Sprintf("%s AS parent", d.tns.Table(req.TenantId, req.Group, req.Parent))).
+			Where(cond1).
+			Join(fmt.Sprintf("%s As child", d.tns.Table(req.TenantId, req.Group, req.Child))).
+			On(fmt.Sprintf("parent.%s = child.%s", req.OnParent, req.OnChild)).
+			All(&records)
+	})
+
 	if err != nil {
 		return nil, err
 	}
@@ -126,21 +144,11 @@ func (d *DynDB) joinQuery(txid uint32, req dyndb.JoinReq) (*dyndb.JoinResult, er
 		return nil, err
 	}
 
-	err = d.txOr(txid, func(sess db.Session) error {
-		return sess.SQL().
-			Select().
-			From(fmt.Sprintf("%s AS parent", d.tns.Table(req.TenantId, req.Group, req.Parent))).
-			Where(cond1).
-			Join(fmt.Sprintf("%s As child", d.tns.Table(req.TenantId, req.Group, req.Child))).On(fmt.Sprintf("parent.%s = child.%s", req.OnParent, req.OnChild)).
-			Where(cond2).
-			All(&records)
-	})
-
 	return &dyndb.JoinResult{
 		Rows:       records,
 		ParentCols: pcols,
 		ChildCols:  ccols,
-	}, err
+	}, nil
 }
 
 func (d *DynDB) ftsQuery(txid uint32, req dyndb.FTSQueryReq) (*dyndb.QueryResult, error) {

@@ -516,23 +516,34 @@ func (s *Sheet) GetRowRelations(txid uint32, sid, rid, refsheet, refcol int64) (
 		return nil, err
 	}
 
-	refresp, err := s.tableHub.SimpleQuery(0, dyndb.SimpleQueryReq{
+	refresp, err := s.tableHub.JoinQuery(0, dyndb.JoinReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
-		Table:    dyndb.SheetCellTable,
-		FilterConds: []dyndb.FilterCond{
+		Parent:   dyndb.SheetCellTable,
+		Child:    dyndb.SheetCellTable,
+		OnParent: "rowid",
+		OnChild:  "rowid",
+		ParentFilters: []dyndb.FilterCond{
 			{
 				Column: "sheetid",
 				Cond:   "equal",
 				Value:  refsheet,
 			},
 			{
-				Column: "numval",
+				Column: "colid",
 				Cond:   "equal",
-				Value:  rid,
+				Value:  refcol,
+			},
+		},
+		ChildFilters: []dyndb.FilterCond{
+			{
+				Column: "sheetid",
+				Cond:   "equal",
+				Value:  refsheet,
 			},
 		},
 	})
+
 	if err != nil {
 		return nil, err
 	}
