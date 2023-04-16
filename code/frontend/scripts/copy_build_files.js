@@ -30,7 +30,9 @@ const FILES = [
     "executor_pageform.js",
     "executor_pageform.css",
     "executor_pagedash.js",
-    "executor_pagedash.css"
+    "executor_pagedash.css",
+    "executor_pagequery.js",
+    "executor_pagequery.css"
 ]
 
 fs_Extra.readdirSync(BUILD_FOLDER).forEach((file) => {

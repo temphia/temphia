@@ -6,6 +6,7 @@ import (
 	"github.com/temphia/temphia/code/executors/noop"
 	"github.com/temphia/temphia/code/executors/pagedash"
 	"github.com/temphia/temphia/code/executors/pageform"
+	"github.com/temphia/temphia/code/executors/pagequery"
 
 	// core executors
 	"github.com/temphia/temphia/code/backend/engine/executors/javascript1/goja"
@@ -39,6 +40,7 @@ func init() {
 	registry.SetExecutor("wasm1", wazero.NewBuilder)
 	registry.SetExecutor("pageform", pageform.NewBuilder)
 	registry.SetExecutor("pagedash", pagedash.NewBuilder)
+	registry.SetExecutor("pagequery", pagequery.NewBuilder)
 	registry.SetExecutor("noop", noop.NewBuilder)
 
 	registry.SetExecModule("data_group", datagroup.NewBuilder)
