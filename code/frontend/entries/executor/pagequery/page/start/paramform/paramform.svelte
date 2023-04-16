@@ -3,6 +3,7 @@
     Test: "text",
     Test2: "longtext",
   };
+  export let title = "Form 1";
 
   let values = {};
 
@@ -15,7 +16,7 @@
   <h1
     class="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4"
   >
-    Form 1
+    {title}
   </h1>
 
   {#each Object.entries(form) as [elemkey, elemtype]}

@@ -8,7 +8,7 @@
   let editor;
   let getParamData;
 
-  let show = true;
+  let show = false;
   let loading = false;
   let message = "";
 
