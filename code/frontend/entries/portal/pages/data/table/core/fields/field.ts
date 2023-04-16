@@ -74,27 +74,34 @@ export const CtypeConvertables = {
   [CtypeColor]: [CtypeShortText],
 };
 
-export const FilterEqual = "equal";
-export const FilterIsNull = "is_null";
-export const FilterIsNotNull = "is_not_null";
-export const FilterLessThan = "less_than";
-export const FilterNotEqual = "not_equal";
-export const FilterGreaterThan = "greater_than";
-export const FilterLessOrEqual = "less_than_or_equal";
-export const FilterGreatOrEqual = "greater_than_or_equal";
-export const FilterIn = "in";
-export const FilterNotIn = "not_in";
-export const FilterBetween = "between";
 
-export const FilterAround = "around";
-export const FilterNotAround = "not_around";
-export const FilterBefore = "before";
-export const FilterAfter = "after";
-
-export const FilterContains = "contains";
-export const FilterHasPrefix = "has_prefix";
-export const FilterHasSuffix = "has_suffix";
-
+export const FilterEqual     = "equal"
+export const FilterNotEqual  = "not_equal"
+export const FilterIn        = "in"
+export const FilterNotIn     = "not_in"
+export const FilterNumIn     = "num_in"
+export const FilterNumNotIn  = "num_not_in"
+export const FilterLT        = "less_than"
+export const FilterGT        = "greater_than"
+export const FilterLTE       = "less_than_or_equal"
+export const FilterGTE       = "greater_than_or_equal"
+export const FilterAround    = "around"
+export const FilterNotAround = "not_around"
+export const FilterLike      = "like"
+export const FilterNotLike   = "not_like"
+export const FilterILike     = "insensitive_like"
+export const FilterNotILike  = "not_insensitive_like"
+export const FilterRgex      = "regex"
+export const FilterNotRgex   = "not_regex"
+export const FilterBefore    = "before"
+export const FilterAfter     = "after"
+export const FilterContains   = "contains"
+export const FilterHasPrefix  = "has_prefix"
+export const FilterHasSuffix  = "has_suffix"
+export const FilterIsNull     = "is_null"
+export const FilterIsNotNull  = "is_not_null"
+export const FilterBetween    = "between"
+export const FilterNotBetween = "not_between"
 
 export const CtypeIcons = {
   [CtypeShortText]: "annotation",
