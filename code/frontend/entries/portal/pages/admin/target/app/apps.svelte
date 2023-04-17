@@ -24,8 +24,8 @@
   const load = async () => {
     let resp;
 
-    loading = true
-    
+    loading = true;
+
     if (!ttype) {
       resp = await api.listApp();
     } else {
@@ -47,8 +47,15 @@
   const action_edit = (id: string, data: object) =>
     app.nav.admin_target_app_edit(data["target_type"], Number(id));
   const action_delete = async (id: string, data: object) => {
-    const resp = await api.deleteApp(data["target_type"], Number(id));
-    load();
+    console.log("@delete");
+    loading = true;
+
+    try {
+      const resp = await api.deleteApp(data["target_type"], Number(id));
+    } catch (error) {
+    } finally {
+      load();
+    }
   };
 
   const actions = {
@@ -86,7 +93,7 @@
       ["id", "Id"],
       ["target_type", "Type"],
       ["target", "Target"],
-      ["context_type", "Context Type"]
+      ["context_type", "Context Type"],
     ]}
     color={["target_type"]}
     {datas}

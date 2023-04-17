@@ -94,7 +94,8 @@ func (r *ApiAdmin) RemoveTargetApp(ctx httpx.Request) {
 		r.rutil.WriteErr(ctx.Http, err.Error())
 		return
 	}
-	r.cAdmin.RemoveTargetApp(ctx.Session, ctx.MustParam("target_type"), id)
+	err = r.cAdmin.RemoveTargetApp(ctx.Session, ctx.MustParam("target_type"), id)
+	r.rutil.WriteFinal(ctx.Http, err)
 }
 
 // hook
@@ -131,7 +132,7 @@ func (r *ApiAdmin) UpdateTargetHook(ctx httpx.Request) {
 	}
 
 	err = r.cAdmin.UpdateTargetHook(ctx.Session, ctx.MustParam("target_type"), id, data)
-	r.rutil.WriteJSON(ctx.Http, nil, err)
+	r.rutil.WriteFinal(ctx.Http, err)
 }
 
 func (r *ApiAdmin) ListTargetHook(ctx httpx.Request) {
