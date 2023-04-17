@@ -20,11 +20,12 @@ type ListSheetGroupResp struct {
 }
 
 type LoadSheetReq struct {
-	TenantId    string       `json:"-"`
-	Group       string       `json:"group,omitempty"`
-	SheetId     int64        `json:"sheet_id,omitempty"`
-	View        string       `json:"view,omitempty"`
-	FilterConds []FilterCond `json:"filter_conds,omitempty"`
+	TenantId    string `json:"-"`
+	Group       string `json:"group,omitempty"`
+	SheetId     int64  `json:"sheet_id,omitempty"`
+	View        string `json:"view,omitempty"`
+	RowCursorId int64  `json:"row_cursor_id,omitempty"`
+	Desc        bool   `json:"desc,omitempty"`
 }
 
 type FTSQuerySheet struct {
@@ -35,11 +36,12 @@ type FTSQuerySheet struct {
 }
 
 type QuerySheetReq struct {
-	TenantId    string       `json:"-"`
-	Group       string       `json:"group,omitempty"`
-	SheetId     int64        `json:"sheet_id,omitempty"`
-	View        string       `json:"view,omitempty"`
-	FilterConds []FilterCond `json:"filter_conds,omitempty"`
+	TenantId    string `json:"-"`
+	Group       string `json:"group,omitempty"`
+	SheetId     int64  `json:"sheet_id,omitempty"`
+	View        string `json:"view,omitempty"`
+	RowCursorId int64  `json:"row_cursor_id,omitempty"`
+	Desc        bool   `json:"desc,omitempty"`
 }
 
 type QuerySheetResp struct {

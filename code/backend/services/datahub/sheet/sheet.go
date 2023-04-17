@@ -57,7 +57,7 @@ func (s *Sheet) LoadSheet(txid uint32, data *dyndb.LoadSheetReq) (*dyndb.LoadShe
 		FilterConds: []dyndb.FilterCond{
 			{
 				Column: "sheetid",
-				Cond:   "equal",
+				Cond:   filter.FilterEqual,
 				Value:  data.SheetId,
 			},
 		},
@@ -76,6 +76,11 @@ func (s *Sheet) LoadSheet(txid uint32, data *dyndb.LoadSheetReq) (*dyndb.LoadShe
 	colNo := len(columns.Rows)
 	count := int64((dyndb.DefaultQueryFetchCount * colNo) + colNo)
 
+	cursorFilter := filter.FilterGT
+	if data.Desc {
+		cursorFilter = filter.FilterLT
+	}
+
 	cells, err := s.tableHub.SimpleQuery(0, dyndb.SimpleQueryReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
@@ -83,11 +88,16 @@ func (s *Sheet) LoadSheet(txid uint32, data *dyndb.LoadSheetReq) (*dyndb.LoadShe
 		FilterConds: []dyndb.FilterCond{
 			{
 				Column: "sheetid",
-				Cond:   "equal",
+				Cond:   filter.FilterEqual,
 				Value:  data.SheetId,
 			},
+			{
+				Column: "rowid",
+				Cond:   cursorFilter,
+				Value:  data.RowCursorId,
+			},
 		},
-
+		Desc:    data.Desc,
 		Count:   count,
 		OrderBy: "rowid",
 	})
@@ -136,7 +146,7 @@ func (s *Sheet) LoadSheet(txid uint32, data *dyndb.LoadSheetReq) (*dyndb.LoadShe
 		FilterConds: []dyndb.FilterCond{
 			{
 				Column: "refsheet",
-				Cond:   "equal",
+				Cond:   filter.FilterEqual,
 				Value:  data.SheetId,
 			},
 		},
