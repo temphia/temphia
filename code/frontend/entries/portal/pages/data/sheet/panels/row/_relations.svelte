@@ -23,7 +23,7 @@
 
   const load = async (refsheet, refcol) => {
     loading = true;
-    selected = true;
+    selected = refsheet;
     const resp = await service.get_relations(rid, refsheet, refcol);
     if (resp.ok) {
       data = formatRefCells(resp.data);
@@ -45,24 +45,13 @@
         </option>
       {/each}
     </select>
-
-    <div>
-      {#if selected && !loading}
-        <button
-          class="p-1 text-white bg-blue-500 rounded hover:scale-110"
-          on:click={() => {}}>Follow</button
-        >
-      {/if}
-    </div>
   </div>
 
   {#if selected && loading}
     <div>Loading...</div>
   {:else if selected}
     {#if data}
-      <div
-        class="p-1 border rounded shadow h-64 mt-2 overflow-auto"
-      >
+      <div class="p-1 border rounded shadow h-64 mt-2 overflow-auto">
         <SheetInner
           editable={false}
           cells={data["cells"] || {}}
@@ -70,8 +59,9 @@
           rows={data["rows"] || []}
           selected_rows={[]}
           pick_label="goto"
-          on:pick_row={(ev) => {
-            console.log("@", ev);
+          on:pick_row={async (ev) => {
+            // service.goto_row(ev.detail["__id"]);
+            // service.close_small_modal();
           }}
         />
       </div>
