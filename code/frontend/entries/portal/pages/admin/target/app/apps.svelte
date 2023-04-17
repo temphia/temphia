@@ -24,6 +24,8 @@
   const load = async () => {
     let resp;
 
+    loading = true
+    
     if (!ttype) {
       resp = await api.listApp();
     } else {
