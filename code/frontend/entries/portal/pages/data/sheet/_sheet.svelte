@@ -144,6 +144,10 @@
     });
   };
 
+  const refPreview = ({detail}) => {
+    console.log("ref_preview", detail)
+  }
+
   const doRemoveRowId = ({ detail }) => {
     sheet_service.remove_row_cell(detail);
     selected_rows = [];
@@ -181,6 +185,8 @@
         sheet_service.close_big_modal = app.utils.big_modal_close;
         sheet_service.close_small_modal = app.utils.small_modal_close;
       }}
+
+      on:ref_preview={refPreview}
       on:remove_sheet={doRemoveSheet}
       on:edit_column={doEditColumn}
       on:action_search={doSearch}

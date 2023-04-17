@@ -43,6 +43,7 @@
     on:edit_column
     on:edit_row
     on:mounted
+    on:ref_preview
     {profile_genrator}
     {columns}
     {rows}

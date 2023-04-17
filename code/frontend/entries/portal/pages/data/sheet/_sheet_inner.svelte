@@ -133,13 +133,16 @@
                   {value && new Date(value).toLocaleDateString()}
                 {:else if col.ctype === SheetColTypeReference}
                   {#if num_value}
-                    <span class="bg-blue-100 rounded p-0.5 text-gray-600 text-xs">
+                    <button
+                      on:click={() => dispatch("ref_preview", celldata)}
+                      class="bg-blue-100 rounded p-0.5 text-gray-600 text-xs hover:underline"
+                    >
                       Ref:
                       {num_value}
                       <strong class="font-semibold text-gray-700 text-xs"
                         >{value}</strong
                       >
-                    </span>
+                    </button>
                   {/if}
                 {:else if col.ctype === SheetColTypeLocation}
                   <div class="text-xs">

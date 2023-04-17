@@ -55,8 +55,8 @@ export class Navigator {
     this.set(`#/data/${source}/${dgroup}/table`);
   }
 
-  data_render_sheet(source: string, dgroup: string, sheetid: string) {
-    this.set(`#/data/${source}/${dgroup}/sheet/${sheetid}`);
+  data_render_sheet(source: string, dgroup: string, sheetid: string, opts?: any) {
+    this.set(`#/data/${source}/${dgroup}/sheet/${sheetid}`, opts);
   }
 
   data_render_sheet_loader(source: string, dgroup: string) {
