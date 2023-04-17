@@ -48,10 +48,8 @@
             "file",
             "select",
             "multi_select",
-            "ref_number",
-            "ref_text",
-            "remote_text",
-            "remote_number"
+            "reference",
+            "remote"
           ]
         },
         {
