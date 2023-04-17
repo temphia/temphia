@@ -15,13 +15,16 @@ func (c *Conn) processPacket2(msg []byte) {
 	c.parent.getLogger().Info().
 		Int64("conn_id", int64(c.conn.Id())).
 		Str("msg_type", msgType).Int64("from_id", msgFromid).
+		Int("msg_size", len(msg)).
 		Str("xid", msgXid).
 		Msg(logid.SockdMsgReceived)
 
-	c.parent.getLogger().Debug().
-		Str("xid", msgXid).
-		RawJSON("data", msg).
-		Msg(logid.SockdMsgReceivedDebug)
+	pp.Println(string(msg))
+
+	// c.parent.getLogger().Debug().
+	// 	Str("xid", msgXid).
+	// 	RawJSON("data", msg).
+	// 	Msg(logid.SockdMsgReceivedDebug)
 
 	// if msgFromid != int64(c.conn.Id()) {
 	// 	c.parent.getLogger().Warn().
