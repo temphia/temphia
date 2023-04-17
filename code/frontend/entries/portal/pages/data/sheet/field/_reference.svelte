@@ -34,8 +34,8 @@
   const pick_row = (ev) => {
     const rowid = ev.detail["__id"];
     const colcells = $state.cells[rowid] || {};
-    const refcell = colcells[column.sheetid] || {};
-    const ref_value = String(refcell["value"] || refcell["num_value"] || "");
+    const refcell = colcells[column.refcolumn] || {};
+    const ref_value = String(refcell["value"] || "");
     onSelect({ __id: rowid, ref_value });
   };
 

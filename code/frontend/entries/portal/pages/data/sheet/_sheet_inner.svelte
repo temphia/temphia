@@ -133,10 +133,10 @@
                   {value && new Date(value).toLocaleDateString()}
                 {:else if col.ctype === SheetColTypeReference}
                   {#if num_value}
-                    <span class="bg-blue-100 rounded p-0.5 text-gray-600">
+                    <span class="bg-blue-100 rounded p-0.5 text-gray-600 text-xs">
                       Ref:
                       {num_value}
-                      <strong class="font-semibold text-gray-700"
+                      <strong class="font-semibold text-gray-700 text-xs"
                         >{value}</strong
                       >
                     </span>
