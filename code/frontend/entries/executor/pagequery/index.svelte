@@ -62,7 +62,7 @@
 
 <DialogmodalCompo bind:modal />
 
-<div bind:this={root_elem}>
+<div bind:this={root_elem} class="h-full w-full">
   {#if loading}
     <LoadingSpinner />
   {:else if mode == "START"}
