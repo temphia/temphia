@@ -96,3 +96,13 @@ export interface SheetWidget {
   icon?: string;
   context: string;
 }
+
+export interface SheetExecData {
+  invoker_type: "data_sheet";
+  sheet_id: string;
+  data_group: string;
+
+  cells: { [_: string]: { [_: string]: SheetCell } };
+  rows: SheetRow[];
+  columns?: SheetColumn[];
+}

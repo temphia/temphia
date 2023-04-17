@@ -7,6 +7,7 @@ import type {
   SheetRow,
   Sheet,
   SheetWidget,
+  SheetExecData,
 } from "../../../pages/data/sheet/sheets";
 import { formatCells } from "./format";
 
@@ -95,8 +96,8 @@ export class SheetService {
   force_render_index: Writable<number>;
   profile_genrator: (string) => string;
   scroller?: (rowid: string) => void;
-  close_big_modal?: () => void
-  close_small_modal?: () => void
+  close_big_modal?: () => void;
+  close_small_modal?: () => void;
 
   constructor(
     group: SheetGroupService,
@@ -246,12 +247,30 @@ export class SheetService {
         this.scroller(rowid);
       }
     } else {
-      console.log("@load cell")
+      console.log("@load cell");
     }
   };
 
   get_invoker(widget: SheetWidget) {
     return new SheetInvoker(this, widget);
+  }
+
+  get_exec_data(rows: number[]): SheetExecData {
+    const state = get(this.state);
+    const cells = {};
+
+    rows.forEach((row) => {
+      cells[row] = state.cells[row];
+    });
+
+    return {
+      data_group: this.group.group_slug,
+      invoker_type: "data_sheet",
+      sheet_id: this.sheetid,
+      cells,
+      columns: state.columns,
+      rows: rows.map((r) => ({ __id: r, sheetid: Number(this.sheetid) })),
+    };
   }
 }
 
