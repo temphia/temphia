@@ -102,6 +102,7 @@ type SimpleQueryReq struct {
 	Page        int64        `json:"page,omitempty"`
 	Selects     []string     `json:"selects,omitempty"`
 	OrderBy     string       `json:"order_by,omitempty"`
+	Desc        bool         `json:"desc,omitempty"`
 }
 
 type JoinReq struct {

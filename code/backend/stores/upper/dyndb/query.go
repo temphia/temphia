@@ -34,10 +34,9 @@ func (d *DynDB) simpleQuery(txid uint32, req dyndb.SimpleQueryReq) (*dyndb.Query
 			orderBy = req.OrderBy
 		}
 
-		// tbl := sess.Collection(d.tns.Table(req.TenantId, req.Group, req.Table))
-
-		// fixme => search join
-		// https://tour.upper.io/sql-builder/02
+		if req.Desc {
+			orderBy = fmt.Sprintf("%s DESC", req.OrderBy)
+		}
 
 		err = sess.SQL().
 			Select(selects...).
