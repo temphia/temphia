@@ -17,6 +17,7 @@ import {
   DataModTypeUpdate,
   DataWidget,
   FilterItem,
+  TableExecData,
 } from "./table_types";
 
 export class TableService {
@@ -302,6 +303,25 @@ export class TableService {
 
   get_invoker(widget: DataWidget) {
     return new TableInvoker(this, widget);
+  }
+
+  get_exec_data(rows: number[]): TableExecData {
+    const state = get(this.state.data_store);
+
+    const cells = {};
+
+    rows.forEach((r) => {
+      cells[r] = state.indexed_rows[r];
+    });
+
+    return {
+      cells,
+      data_group: this.group_slug,
+      invoker_type: "data_table",
+      rows: rows,
+      table_id: this.table_slug,
+      columns: Object.values(state.indexed_column),
+    };
   }
 }
 

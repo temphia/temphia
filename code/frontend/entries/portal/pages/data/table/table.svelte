@@ -15,7 +15,6 @@
   let loading = true;
   let selected_rows = [];
 
-
   const load = async (table: string) => {
     if (!table) return;
 
@@ -39,13 +38,7 @@
       target_name: widget.name,
       target_type: TargetAppTypeDataTableWidget,
       invoker: table_service.get_invoker(widget),
-      startup_payload: {
-        invoker_type: "data_table",
-        source,
-        group,
-        selected_rows,
-        table: $params.dtable,
-      },
+      startup_payload: table_service.get_exec_data(selected_rows),
     });
 
     tick().then(() => {

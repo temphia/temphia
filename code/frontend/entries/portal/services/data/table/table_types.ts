@@ -48,3 +48,13 @@ export interface DataModification {
   mod_type: DataModType;
   data: any;
 }
+
+export interface TableExecData {
+  invoker_type: "data_table";
+  table_id: string;
+  data_group: string;
+
+  cells: { [_: string]: { [_: string]: any } };
+  rows: number[];
+  columns?: Column[];
+}
