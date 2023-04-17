@@ -18,7 +18,7 @@ export interface EnvOptions {
   tenant_id: string;
   parent_secret?: string;
   pipe: Pipe;
-  startup_payload?: any;
+  startup_payload: any;
   registry: Registry<any>;
   target: HTMLElement;
 }

@@ -7,7 +7,7 @@ import { IFramePipe } from "./iframe_pipe";
 import { fakeStorage } from "./fakestorage";
 
 export default () => {
-  console.log("Iframe Exec start..");
+  console.log("Iframe Exec start here..");
 
   try {
     if (!window["localStorage"]) {
@@ -63,6 +63,7 @@ export default () => {
       registry: window["__registry__"],
       tenant_id: opts.tenant_id,
       target: target,
+      startup_payload: opts.startup_payload,
     });
 
     await env.init();
@@ -76,7 +77,6 @@ export default () => {
       env: env,
       target: target,
       exec_loader: opts.exec_loader,
-      payload: null,
     });
   };
 

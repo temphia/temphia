@@ -1,3 +1,6 @@
 tmp/
 cmd/demo/temphia-data
 build/
+
+code/frontend/node_modules/
+code/frontend/public/build/

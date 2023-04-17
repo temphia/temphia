@@ -9,8 +9,9 @@
   import { LoadingSpinner } from "../../xcompo";
   import { PageQueryService, KEY } from "./service";
   import { setContext } from "svelte";
+  import type { Environment } from "../../../lib/engine/environment";
 
-  export let env: any;
+  export let env: Environment;
 
   const service = new PageQueryService(env);
 
@@ -66,7 +67,12 @@
     <LoadingSpinner />
   {:else if mode == "START"}
     <Layout>
-      <Start onNext={next} onSubmit={submit} {data} />
+      <Start
+        onNext={next}
+        onSubmit={submit}
+        {data}
+        startup_payload={env.GetExecVars().exec_data}
+      />
     </Layout>
   {:else}
     <Layout>

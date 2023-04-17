@@ -40,7 +40,7 @@ import { Env } from "../../../portal/launcher/env";
       return;
     }
 
-    console.log("iframe portal opts @=>", opts);
+    console.log("suborigin_opts @=>", opts);
 
     const target = document.getElementById("plugroot")
 

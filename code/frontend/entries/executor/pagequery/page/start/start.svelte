@@ -1,13 +1,11 @@
 <script lang="ts">
   import Ceditor from "../../../../xcompo/ceditor/ceditor.svelte";
-  import Paramform from "./paramform/paramform.svelte";
-
   import type { LoadResponse } from "../../service";
 
   export let onSubmit = async (data): Promise<any> => {};
   export let onNext = (data) => {};
   export let data: LoadResponse;
-  
+  export let startup_payload;
 
   let editor;
   let getParamData;
@@ -42,7 +40,7 @@
   };
 </script>
 
-<div class="rounded bg-white p-2">
+<div class="rounded bg-white p-2 h-full">
   <div
     class="flex flex-wrap justify-end text-sm items-center gap-1 text-gray-700"
   >
@@ -62,15 +60,25 @@
 
   <p class="text-red-500">{message}</p>
 
-  {#if show}
-    <div class="p-1 flex-grow">
-      <Ceditor bind:editor {code} />
+  <div class="p-1 flex-grow">
+    <Ceditor bind:editor {code} />
+  </div>
+
+  <div />
+
+  <div class="flex flex-wrap justify-end text-sm items-center gap-2">
+    <div>
+      <details>
+        <summary> Exec Data </summary>
+
+        <code class="p-2 rounded bg-gray-100">
+          <pre>
+            {JSON.stringify(startup_payload)}
+          </pre>
+        </code>
+      </details>
     </div>
-  {/if}
 
-  <Paramform bind:getParamData />
-
-  <div class="flex flex-wrap justify-end text-sm items-center">
     <button
       on:click={submit}
       class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-2 flex"

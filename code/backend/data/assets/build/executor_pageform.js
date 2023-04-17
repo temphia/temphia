@@ -2797,12 +2797,13 @@
     	let div1;
     	let div0;
     	let h1;
+    	let t0;
     	let t1;
     	let t2;
     	let tailwind;
     	let current;
-    	const default_slot_template = /*#slots*/ ctx[1].default;
-    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[0], null);
+    	const default_slot_template = /*#slots*/ ctx[2].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[1], null);
     	tailwind = new Tailwind({ $$inline: true });
 
     	const block = {
@@ -2810,18 +2811,18 @@
     			div1 = element("div");
     			div0 = element("div");
     			h1 = element("h1");
-    			h1.textContent = "Form 1";
+    			t0 = text(/*title*/ ctx[0]);
     			t1 = space();
     			if (default_slot) default_slot.c();
     			t2 = space();
     			create_component(tailwind.$$.fragment);
     			attr_dev(h1, "class", "text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4");
-    			add_location(h1, file$1, 8, 4, 280);
+    			add_location(h1, file$1, 9, 4, 303);
     			attr_dev(div0, "class", "pb-1 px-2 pt-2 bg-white rounded w-full flex flex-col overflow-auto");
     			set_style(div0, "max-width", "700px");
-    			add_location(div0, file$1, 4, 2, 158);
+    			add_location(div0, file$1, 5, 2, 181);
     			attr_dev(div1, "class", "h-full w-full p-2 bg-blue-50 flex justify-center");
-    			add_location(div1, file$1, 3, 0, 93);
+    			add_location(div1, file$1, 4, 0, 116);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2830,6 +2831,7 @@
     			insert_dev(target, div1, anchor);
     			append_dev(div1, div0);
     			append_dev(div0, h1);
+    			append_dev(h1, t0);
     			append_dev(div0, t1);
 
     			if (default_slot) {
@@ -2841,16 +2843,18 @@
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
+    			if (!current || dirty & /*title*/ 1) set_data_dev(t0, /*title*/ ctx[0]);
+
     			if (default_slot) {
-    				if (default_slot.p && (!current || dirty & /*$$scope*/ 1)) {
+    				if (default_slot.p && (!current || dirty & /*$$scope*/ 2)) {
     					update_slot_base(
     						default_slot,
     						default_slot_template,
     						ctx,
-    						/*$$scope*/ ctx[0],
+    						/*$$scope*/ ctx[1],
     						!current
-    						? get_all_dirty_from_scope(/*$$scope*/ ctx[0])
-    						: get_slot_changes(default_slot_template, /*$$scope*/ ctx[0], dirty, null),
+    						? get_all_dirty_from_scope(/*$$scope*/ ctx[1])
+    						: get_slot_changes(default_slot_template, /*$$scope*/ ctx[1], dirty, null),
     						null
     					);
     				}
@@ -2889,24 +2893,35 @@
     function instance$2($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Layout', slots, ['default']);
-    	const writable_props = [];
+    	let { title = "" } = $$props;
+    	const writable_props = ['title'];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Layout> was created with unknown prop '${key}'`);
     	});
 
     	$$self.$$set = $$props => {
-    		if ('$$scope' in $$props) $$invalidate(0, $$scope = $$props.$$scope);
+    		if ('title' in $$props) $$invalidate(0, title = $$props.title);
+    		if ('$$scope' in $$props) $$invalidate(1, $$scope = $$props.$$scope);
     	};
 
-    	$$self.$capture_state = () => ({ Tailwind });
-    	return [$$scope, slots];
+    	$$self.$capture_state = () => ({ Tailwind, title });
+
+    	$$self.$inject_state = $$props => {
+    		if ('title' in $$props) $$invalidate(0, title = $$props.title);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [title, $$scope, slots];
     }
 
     class Layout extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$2, create_fragment$2, safe_not_equal, {});
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { title: 0 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -2914,6 +2929,14 @@
     			options,
     			id: create_fragment$2.name
     		});
+    	}
+
+    	get title() {
+    		throw new Error("<Layout>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set title(value) {
+    		throw new Error("<Layout>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
 
@@ -16675,6 +16698,7 @@
 
     	layout = new Layout({
     			props: {
+    				title: /*data*/ ctx[1]["title"],
     				$$slots: { default: [create_default_slot] },
     				$$scope: { ctx }
     			},
@@ -16691,6 +16715,7 @@
     		},
     		p: function update(ctx, dirty) {
     			const layout_changes = {};
+    			if (dirty & /*data*/ 2) layout_changes.title = /*data*/ ctx[1]["title"];
 
     			if (dirty & /*$$scope, data*/ 66) {
     				layout_changes.$$scope = { dirty, ctx };
@@ -16763,7 +16788,7 @@
     	return block;
     }
 
-    // (38:2) <Layout>
+    // (38:2) <Layout title={data["title"]}  >
     function create_default_slot(ctx) {
     	let startpage;
     	let current;
@@ -16806,7 +16831,7 @@
     		block,
     		id: create_default_slot.name,
     		type: "slot",
-    		source: "(38:2) <Layout>",
+    		source: "(38:2) <Layout title={data[\\\"title\\\"]}  >",
     		ctx
     	});
 

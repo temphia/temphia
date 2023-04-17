@@ -6,7 +6,7 @@ export interface LoaderOptions {
     agent: string;
     api_base_url: string;
     parent_secret?: string;
-    startup_payload?: any;
+    startup_payload: any;
     tenant_id: string;
 }
 export interface FactoryOptions {
