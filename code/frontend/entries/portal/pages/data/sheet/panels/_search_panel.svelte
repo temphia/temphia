@@ -77,7 +77,8 @@
       selected_rows={[]}
       pick_label="goto"
       on:pick_row={(ev) => {
-        console.log("@", ev);
+        service.goto_row(ev.detail["__id"]);
+        service.close_big_modal()
       }}
     />
   </div>

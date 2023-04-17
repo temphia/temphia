@@ -1,6 +1,6 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import type { FolderTktAPI } from "../../../../../lib/apiv2";
   import UserAvatar from "./field/_user_avatar.svelte";
   import Point from "./field/_point.svelte";
@@ -30,10 +30,23 @@
   export let profile_genrator: (string) => string = undefined;
   export let pick_label = "pick";
 
+  const scroller = (rowid: string) => {
+    const elem = root.querySelector(`#sheet-${rowid}`);
+    if (elem) {
+      elem.scrollIntoView();
+    }
+  };
+
+  let root: HTMLElement;
   const dispatch = createEventDispatcher();
+
+  onMount(() => {
+    dispatch("mounted", { sheet_elem: root, scroller });
+  });
 </script>
 
 <table
+  bind:this={root}
   class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative"
 >
   <thead class="text-gray-600 border-gray-200 bg-gray-100">
@@ -74,7 +87,7 @@
     {#each rows as row}
       {@const rowdata = cells[row.__id] || {}}
 
-      <tr>
+      <tr id={`sheet-${row.__id}`}>
         <td class="border-dashed border-t border-gray-200 px-2">
           {#if editable}
             <label

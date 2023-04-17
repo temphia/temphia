@@ -42,6 +42,7 @@
     on:add_column
     on:edit_column
     on:edit_row
+    on:mounted
     {profile_genrator}
     {columns}
     {rows}

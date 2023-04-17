@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getContext, tick } from "svelte";
+  import { getContext, onMount, tick } from "svelte";
   import { get, Writable } from "svelte/store";
   import { LoadingSpinner, PortalService } from "../../admin/core";
   import SheetUi from "./_sheet_ui.svelte";
@@ -28,7 +28,6 @@
   let sheets;
 
   let selected_rows = [];
-
   const load = async () => {
     const dsvc = await app.get_data_service();
     const gsvc = await dsvc.group_sheet(source, group);
@@ -176,6 +175,11 @@
       on:add_sheet={doAddSheet}
       on:change_sheet={(ev) => {
         app.nav.data_render_sheet(source, group, ev.detail);
+      }}
+      on:mounted={({ detail }) => {
+        sheet_service.scroller = detail.scroller;
+        sheet_service.close_big_modal = app.utils.big_modal_close;
+        sheet_service.close_small_modal = app.utils.small_modal_close;
       }}
       on:remove_sheet={doRemoveSheet}
       on:edit_column={doEditColumn}

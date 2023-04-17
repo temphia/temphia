@@ -1,4 +1,4 @@
-import { writable, Writable } from "svelte/store";
+import { get, writable, Writable } from "svelte/store";
 import { DataAPI, FolderTktAPI } from "../../../../../lib/apiv2";
 import type { DataSheetAPI } from "../../../../../lib/apiv2/data_sheet";
 import type {
@@ -94,6 +94,9 @@ export class SheetService {
   api: DataSheetAPI;
   force_render_index: Writable<number>;
   profile_genrator: (string) => string;
+  scroller?: (rowid: string) => void;
+  close_big_modal?: () => void
+  close_small_modal?: () => void
 
   constructor(
     group: SheetGroupService,
@@ -237,8 +240,18 @@ export class SheetService {
     return this.api.search(this.sheetid, search);
   };
 
+  goto_row = (rowid: string) => {
+    if (get(this.state).cells[rowid]) {
+      if (this.scroller) {
+        this.scroller(rowid);
+      }
+    } else {
+      console.log("@load cell")
+    }
+  };
+
   get_invoker(widget: SheetWidget) {
-    return new SheetInvoker(this, widget)
+    return new SheetInvoker(this, widget);
   }
 }
 
