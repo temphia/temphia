@@ -12,8 +12,6 @@ export interface TargetInvoker {
   close(instance_id: string);
 }
 
-export type InvokerFactory = (widget: object) => TargetInvoker;
-
 export interface Instance {
   id: string;
   target_id: string;
@@ -25,15 +23,17 @@ export interface Instance {
 
 export interface InvokerOptions {
   invoker_name: string;
-  invoker_factory?: InvokerFactory;
+  invoker?: TargetInvoker;
   target_name?: string;
   target_type?: string;
   target_id: string;
+  startup_payload: any
 }
 
 export class Launcher {
   state: Writable<LauncherState>;
   bootloader?: string;
+  last_startup_payload: any
 
   target_index: { [_: string]: string };
 
@@ -91,6 +91,7 @@ export class Launcher {
     }
 
     const instance_id = generateId();
+    this.last_startup_payload = topts.startup_payload;
 
 
     this.state.update((old) => ({
@@ -104,6 +105,7 @@ export class Launcher {
           name: topts.target_name || "",
           target_type: topts.target_type || "",
           target_id: topts.target_id,
+          invoker: topts.invoker,
         },
       ],
     }));

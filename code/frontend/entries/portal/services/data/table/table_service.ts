@@ -15,6 +15,7 @@ import {
   DataModTypeDelete,
   DataModTypeInsert,
   DataModTypeUpdate,
+  DataWidget,
   FilterItem,
 } from "./table_types";
 
@@ -298,6 +299,10 @@ export class TableService {
     this.state.last_loading = now;
     return false;
   };
+
+  get_invoker(widget: DataWidget) {
+    return new TableInvoker(this, widget);
+  }
 }
 
 export class TableState {
@@ -590,4 +595,21 @@ export class RowService {
   folder_api() {
     return this.service.folder_api;
   }
+}
+
+export class TableInvoker {
+  service: TableService;
+  widget: DataWidget;
+  constructor(service: TableService, widget: DataWidget) {
+    this.service = service;
+    this.widget = widget;
+  }
+
+  handle = (instance_id: string, msg_id: string, data: any) => {
+    console.log("@instance_handle", instance_id, msg_id, data);
+  };
+
+  close = (instance_id: string) => {
+    console.log("@close", instance_id);
+  };
 }

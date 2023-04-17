@@ -42,6 +42,8 @@ import { Env } from "../../../portal/launcher/env";
 
     console.log("iframe portal opts @=>", opts);
 
+    const target = document.getElementById("plugroot")
+
     const env = new Env({
       agent: opts.agent_id,
       plug: opts.plug_id,
@@ -51,6 +53,8 @@ import { Env } from "../../../portal/launcher/env";
       pipe: null,
       registry: window["__registry__"],
       tenant_id: opts.tenant_id,
+      target,
+      startup_payload: opts["startup_payload"] || {}
     });
 
     await env.init();
@@ -62,9 +66,8 @@ import { Env } from "../../../portal/launcher/env";
       agent: opts.agent_id,
       entry: opts.entry_name,
       env: env,
-      target: document.getElementById("plugroot"),
+      target,
       exec_loader: opts.exec_loader,
-      payload: null,
     });
   };
 

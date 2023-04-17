@@ -128,9 +128,16 @@
     app.launcher.instance_by_target({
       invoker_name: "data_sheet",
       target_id: String(widget.id),
-      invoker_factory: null,
       target_name: widget.name,
       target_type: TargetAppTypeDataSheetWidget,
+      startup_payload: {
+        invoker_type: "data_sheet",
+        source,
+        group,
+        sheetid,
+        selected_rows,
+      },
+      invoker: sheet_service.get_invoker(widget),
     });
 
     tick().then(() => {

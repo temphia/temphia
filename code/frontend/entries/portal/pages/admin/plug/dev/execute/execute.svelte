@@ -50,5 +50,6 @@
     secret_id={sid}
     tenant_id={app.options.tenant_id}
     {bootloader}
+    startup_payload={{}}
   />
 {/if}

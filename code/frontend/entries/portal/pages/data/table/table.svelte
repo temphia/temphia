@@ -13,6 +13,8 @@
   const app: PortalService = getContext("__app__");
   let table_service: TableService;
   let loading = true;
+  let selected_rows = [];
+
 
   const load = async (table: string) => {
     if (!table) return;
@@ -36,7 +38,14 @@
       invoker_name: "data_table",
       target_name: widget.name,
       target_type: TargetAppTypeDataTableWidget,
-      invoker_factory: null, //table_service, // fixme => wrap it
+      invoker: table_service.get_invoker(widget),
+      startup_payload: {
+        invoker_type: "data_table",
+        source,
+        group,
+        selected_rows,
+        table: $params.dtable,
+      },
     });
 
     tick().then(() => {
@@ -50,6 +59,7 @@
 {:else}
   {#key $params.dtable && $params.layout}
     <TableUI
+      bind:selected_rows
       layout={$params.layout}
       {table_service}
       view_modal={{

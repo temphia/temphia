@@ -25,7 +25,6 @@ export const initRegistry = () => {
         entry: opts.entry,
         env: opts.env,
         target: opts.target,
-        payload: opts.payload,
         registry: opts.registry,
       });
     }
@@ -46,7 +45,6 @@ export const plugStart = async (opts: {
   entry: string;
   env: any; // Environment;
   target: HTMLElement;
-  payload?: any;
 }) => {
   console.log("let there be light", opts);
 
@@ -79,6 +77,5 @@ export const plugStart = async (opts: {
     env: opts.env,
     registry: registry,
     target: opts.target,
-    payload: opts.payload,
   });
 };

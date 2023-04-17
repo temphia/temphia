@@ -16,7 +16,6 @@ export interface FactoryOptions {
   entry: string;
   env: any; //Environment;
   target: HTMLElement;
-  payload?: any;
   registry: any;
 }
 

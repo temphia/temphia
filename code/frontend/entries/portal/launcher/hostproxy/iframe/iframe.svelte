@@ -14,6 +14,8 @@
   let loading = true;
   let data: ExecInstanceOptions;
   let bootloader = "";
+  
+  let startup_payload: any
 
   const load = async () => {
     bootloader = await app.launcher.get_bootloader();
@@ -27,8 +29,12 @@
       return;
     }
     data = resp.data;
+
+    startup_payload = app.launcher.last_startup_payload || {}
+    app.launcher.last_startup_payload = null
     loading = false;
   };
+
 
   load();
 </script>
@@ -42,5 +48,6 @@
     secret_id={options.id}
     tenant_id={app.options.tenant_id}
     {bootloader}
+    {startup_payload}
   />
 {/if}

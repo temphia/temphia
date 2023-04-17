@@ -18,6 +18,7 @@
   export let table_service: TableService;
   export let layout: string;
   export let view_modal: ViewModal;
+  export let selected_rows = [];
 
   const row_service = table_service.get_row_service();
   const data_store = table_service.state.data_store;
@@ -25,7 +26,6 @@
 
   let show_editor = false;
   let show_view_panel = false;
-  let selected_rows = [];
 
   const dispatch = createEventDispatcher();
 

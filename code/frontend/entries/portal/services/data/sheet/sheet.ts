@@ -236,4 +236,25 @@ export class SheetService {
   search = (search: string) => {
     return this.api.search(this.sheetid, search);
   };
+
+  get_invoker(widget: SheetWidget) {
+    return new SheetInvoker(this, widget)
+  }
+}
+
+export class SheetInvoker {
+  widget: SheetWidget;
+  service: SheetService;
+  constructor(service: SheetService, widget: SheetWidget) {
+    this.widget = widget;
+    this.service = service;
+  }
+
+  handle = (instance_id: string, msg_id: string, data: any) => {
+    console.log("@instance_handle", instance_id, msg_id, data);
+  };
+
+  close = (instance_id: string) => {
+    console.log("@close", instance_id);
+  };
 }

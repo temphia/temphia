@@ -7,6 +7,8 @@
   export let secret_id: string;
   export let tenant_id: string;
   export let bootloader: string;
+  export let startup_payload: any
+
 
   let iframe: HTMLIFrameElement | null;
   const channel = new MessageChannel();
@@ -22,7 +24,7 @@
     token: exec_data["token"] || "",
     ext_scripts: exec_data["ext_scripts"] || {},
     parent_secret: secret_id,
-    startup_payload: {},
+    startup_payload,
     tenant_id: tenant_id,
     bootloader,
   })
