@@ -5,90 +5,86 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 )
 
-type PqLoadCtx struct {
-	Binder  bindx.Bindings
-	Model   *PgModel
-	Message string
-	Rt      *goja.Runtime
-
-	Data map[string]any
+type ctxResponse struct {
+	Stage    string             `json:"stage,omitempty" yaml:"stage,omitempty"`
+	Data     map[string]any     `json:"data,omitempty" yaml:"data,omitempty"`
+	Elements map[string]Element `json:"elements,omitempty" yaml:"elements,omitempty"`
 }
 
-/*
+type PqLoadCtx struct {
+	Binder bindx.Bindings
+	Model  *PgModel
+	Rt     *goja.Runtime
 
-func (pf *PageQuery) new(data map[string]any) *PdCtx {
+	ExecData  map[string]any
+	ParamData map[string]string
+	Stage     string
+}
 
-	return &PdCtx{
-		Data:    data,
-		Model:   pf.model,
-		Message: "",
-		Rt:      pf.jsruntime,
-		Binder:  pf.binder,
+func (pf *PageQuery) new(ed map[string]any, pd map[string]string, stage string) PqLoadCtx {
+	return PqLoadCtx{
+		Binder:    pf.binder,
+		Model:     pf.model,
+		Rt:        pf.jsruntime,
+		ExecData:  ed,
+		ParamData: pd,
+		Stage:     stage,
 	}
 }
 
-func (ctx *PdCtx) bind() {
-	ctx.Rt.Set("apply_data", ctx.applyData)
-	ctx.Rt.Set("get_data", ctx.getData)
-	ctx.Rt.Set("get_data_value", ctx.getDataValue)
-	ctx.Rt.Set("set_data_value", ctx.setDataValue)
+func (ctx *PqLoadCtx) execute(script string) (*ctxResponse, error) {
+
+	ctx.bind()
+
+	val, err := ctx.Rt.RunString(script)
+	if err != nil {
+		return nil, err
+	}
+
+	cresp := &ctxResponse{}
+
+	err = ctx.Rt.ExportTo(val, cresp)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, err
+}
+
+func (ctx *PqLoadCtx) bind() {
+	ctx.Rt.Set("get_execdata", ctx.getExecdata)
+	ctx.Rt.Set("get_execdata_item", ctx.getExecdataItem)
+	ctx.Rt.Set("get_paramdata", ctx.getParamdata)
+	ctx.Rt.Set("get_paramdata_item", ctx.getParamdataItem)
+	ctx.Rt.Set("get_stage", ctx.getStage)
 
 	ctx.Rt.Set("get_bind_funcs", func() any {
 		return []string{
-			"apply_data",
-			"get_data",
-			"get_data_value",
-			"set_data_value",
+			"get_execdata",
+			"get_execdata_item",
+			"get_paramdata",
+			"get_paramdata_item",
+			"get_stage",
 		}
 	})
-
 }
 
-func (ctx *PdCtx) execute(method, version string) error {
-	var fn func(version string) error
-	err := getEntry(ctx.Rt, method, &fn)
-	if err != nil {
-		return err
-	}
-
-	return fn(method)
+func (ctx *PqLoadCtx) getExecdata() any {
+	return ctx.ExecData
 }
 
-func (ctx *PdCtx) applyData(data map[string]any) {
-	if data == nil {
-		return
-	}
-
-	for k, v := range ctx.Data {
-		data[k] = v
-	}
-
-	ctx.Data = data
+func (ctx *PqLoadCtx) getExecdataItem(name string) any {
+	return ctx.ExecData[name]
 }
 
-func (ctx *PdCtx) getData() any {
-	return ctx.Data
+func (ctx *PqLoadCtx) getParamdata() any {
+	return ctx.ParamData
 }
 
-func (ctx *PdCtx) getDataValue(field string) any {
-	return ctx.Data[field]
+func (ctx *PqLoadCtx) getParamdataItem(name string) any {
+	return ctx.ParamData[name]
 }
 
-func (ctx *PdCtx) setDataValue(field string, value any) {
-	pp.Println("@value", value)
-
-	ctx.Data[field] = value
+func (ctx *PqLoadCtx) getStage() string {
+	return ctx.Stage
 }
-
-// helper
-
-func getEntry(runtime *goja.Runtime, name string, entry interface{}) error {
-	rawentry := runtime.Get(name)
-	if rawentry == nil {
-		return easyerr.NotFound()
-	}
-
-	return runtime.ExportTo(rawentry, entry)
-}
-
-*/
