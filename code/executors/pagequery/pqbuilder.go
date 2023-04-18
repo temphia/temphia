@@ -7,7 +7,9 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/executors/elib/helper"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
+	"github.com/temphia/temphia/code/executors/execlib/goja2db"
+	"github.com/temphia/temphia/code/executors/execlib/helper"
 	"gopkg.in/yaml.v2"
 
 	gojaExec "github.com/temphia/temphia/code/backend/engine/executors/javascript1/goja"
@@ -65,11 +67,18 @@ func (pg *PgBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 		pp.Println(rt.RunString(string(out)))
 	}
 
+	dhub := pg.app.GetDeps().DataHub().(dyndb.DataHub)
+
+	gdb := goja2db.New(opts.TenantId, dhub, rt)
+	gdb.Bind()
+
 	return &PageQuery{
 		builder:   pg,
 		model:     model,
 		jsruntime: rt,
 		binder:    opts.Binder,
+		tenantId:  opts.TenantId,
+		datahub:   dhub,
 	}, nil
 }
 

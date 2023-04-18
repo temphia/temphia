@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 
 	"github.com/dop251/goja"
+
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 type PageQuery struct {
@@ -14,6 +16,8 @@ type PageQuery struct {
 	model     *PgModel
 	jsruntime *goja.Runtime
 	binder    bindx.Bindings
+	tenantId  string
+	datahub   dyndb.DataHub
 }
 
 func (pf *PageQuery) Process(ev *event.Request) (*event.Response, error) {

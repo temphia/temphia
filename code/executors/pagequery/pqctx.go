@@ -12,10 +12,10 @@ type ctxResponse struct {
 }
 
 type PqLoadCtx struct {
-	Binder bindx.Bindings
-	Model  *PgModel
-	Rt     *goja.Runtime
-
+	parent    *PageQuery
+	Binder    bindx.Bindings
+	Model     *PgModel
+	Rt        *goja.Runtime
 	ExecData  map[string]any
 	ParamData map[string]string
 	Stage     string
@@ -23,6 +23,7 @@ type PqLoadCtx struct {
 
 func (pf *PageQuery) new(ed map[string]any, pd map[string]string, stage string) PqLoadCtx {
 	return PqLoadCtx{
+		parent:    pf,
 		Binder:    pf.binder,
 		Model:     pf.model,
 		Rt:        pf.jsruntime,
@@ -48,7 +49,7 @@ func (ctx *PqLoadCtx) execute(script string) (*ctxResponse, error) {
 		return nil, err
 	}
 
-	return nil, err
+	return cresp, nil
 }
 
 func (ctx *PqLoadCtx) bind() {
