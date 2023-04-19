@@ -2,6 +2,7 @@ package pagequery
 
 import (
 	"github.com/dop251/goja"
+	"github.com/temphia/temphia/code/backend/libx"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 )
 
@@ -37,7 +38,16 @@ func (ctx *PqLoadCtx) execute(script string) (*ctxResponse, error) {
 
 	ctx.bind()
 
-	val, err := ctx.Rt.RunString(script)
+	var err error
+	var val goja.Value
+
+	perr := libx.PanicWrapper(func() {
+		val, err = ctx.Rt.RunString(script)
+	})
+	if perr != nil {
+		return nil, perr
+	}
+
 	if err != nil {
 		return nil, err
 	}
