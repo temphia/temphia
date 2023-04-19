@@ -7,11 +7,8 @@
   export let secret_id: string;
   export let tenant_id: string;
   export let bootloader: string;
-  export let startup_payload: any
-
-
-  let iframe: HTMLIFrameElement | null;
-  const channel = new MessageChannel();
+  export let startup_payload: any;
+  export let iframe: HTMLIFrameElement;
 
   const builder = new TemplatedBuilder({
     plug: exec_data["plug"],
@@ -27,24 +24,14 @@
     startup_payload,
     tenant_id: tenant_id,
     bootloader,
-  })
+  });
 
-  const src = builder.build()
-
-  const onmessage = (ev) => {
-    console.log("@message from iframe", ev);
-    // fixme => pass to invoker
-  };
-
-  channel.port1.onmessage = onmessage;
+  const src = builder.build();
 </script>
 
 <iframe
   bind:this={iframe}
-  on:load={(ev) => {
-    console.log("@port_transfer_from_HOST");
-    iframe.contentWindow.postMessage("port_transfer", "*", [channel.port2]);
-  }}
+  on:load
   title={name}
   class="w-full h-full transition-all"
   srcdoc={src}
@@ -57,4 +44,3 @@
     so fallback to sandbox ? in that case you cannot use localStorage
     sandbox="allow-scripts"
 -->
-

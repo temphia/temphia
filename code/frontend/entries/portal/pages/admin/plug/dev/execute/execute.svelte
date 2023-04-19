@@ -17,6 +17,11 @@
   let loading = true;
   let bootloader = "";
 
+  let iframe;
+
+  let chan = new MessageChannel();
+  chan.port1.onmessage = () => {};
+
   const load = async (pid: string, aid: string) => {
     if (!pid || !aid) {
       return;
@@ -45,11 +50,15 @@
   <LoadingSpinner />
 {:else}
   <IframeExecute
+    bind:iframe
     exec_data={data}
     name="{pid}/{aid}"
     secret_id={sid}
     tenant_id={app.options.tenant_id}
     {bootloader}
     startup_payload={{}}
+    on:load={() => {
+      iframe.contentWindow.postMessage("port_transfer", "*", [chan.port2]);
+    }}
   />
 {/if}

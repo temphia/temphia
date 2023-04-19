@@ -8,9 +8,9 @@ interface LauncherState {
 }
 
 export interface TargetInvoker {
-  init(instance_id: string);
-  handle(msg_id: string, data: any);
-  close();
+  init(instance_id: string): void;
+  handle(msg_id: string, data: any): void;
+  close(): void;
 }
 
 export interface Instance {
@@ -20,6 +20,7 @@ export interface Instance {
   name: string;
   invoker?: TargetInvoker;
   invoker_name: string;
+  channel: MessageChannel;
 }
 
 export interface InvokerOptions {
@@ -94,6 +95,9 @@ export class Launcher {
     const instance_id = generateId();
     this.last_startup_payload = topts.startup_payload;
 
+    const chan = new MessageChannel();
+    chan.port1.onmessage = this.handle_channel(instance_id);
+
     this.state.update((old) => ({
       ...old,
       active_instance: instance_id,
@@ -106,12 +110,17 @@ export class Launcher {
           target_type: topts.target_type || "",
           target_id: topts.target_id,
           invoker: topts.invoker,
+          channel: chan,
         },
       ],
     }));
 
     return instance_id;
   }
+
+  handle_channel = (instance_id) => (ev) => {
+    console.log("@instance", instance_id, ev);
+  };
 
   instance_change(instance_id: string) {
     // fixme => check if instance is still in instances array

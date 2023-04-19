@@ -22,6 +22,8 @@
         target_id: target,
         target_name: name,
         target_type: lopts["target_type"] || "",
+        startup_payload: {},
+        invoker: null,
       });
     }
     launcher.plane_show();
