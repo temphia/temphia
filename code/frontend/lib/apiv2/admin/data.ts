@@ -136,4 +136,8 @@ export class AdminDataAPI {
       `/admin/data/${source}/group/${gid}/table/${tid}/activity?offset=${offset}`
     );
   };
+
+  list_sheet = (source: string, gid: string) => {
+    return this.base.get(`/admin/data/${source}/group/${gid}/sheet`);
+  };
 }

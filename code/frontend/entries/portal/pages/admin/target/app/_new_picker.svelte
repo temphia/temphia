@@ -7,6 +7,7 @@
     TargetAppTypeDomainWidget,
     TargetAppTypeUserGroupApp,
   } from "../target";
+  import NewDataSheetWidget from "./_new_data_sheet_widget.svelte";
   import NewDataTableWidget from "./_new_data_table_widget.svelte";
   import NewUserGroupApp from "./_new_user_group_app.svelte";
 
@@ -34,13 +35,7 @@
       icon: "table",
       info: "DataSheet widget",
       action: () => {
-        service.nav.admin_target_app_new({
-          target_type: TargetAppTypeDataSheetWidget,
-          context_type: "widget.1",
-        });
-
-        service.utils.small_modal_close()
-
+        service.utils.small_modal_open(NewDataSheetWidget, { service });
       },
     },
 
@@ -54,8 +49,7 @@
           context_type: "widget.1",
         });
 
-        service.utils.small_modal_close()
-
+        service.utils.small_modal_close();
       },
     },
   ];

@@ -139,6 +139,7 @@
   };
 
   const refPreview = ({ detail }) => {
+    
     console.log("ref_preview", detail);
   };
 

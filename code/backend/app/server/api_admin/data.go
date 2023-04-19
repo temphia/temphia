@@ -18,6 +18,7 @@ func (a *ApiAdmin) dataAPI(rg *gin.RouterGroup) {
 	rg.GET("/:source/group/:gid", a.X(a.GetGroup))
 	rg.DELETE("/:source/group/:gid", a.X(a.DeleteGroup))
 
+	rg.GET("/:source/group/:gid/sheet", a.X(a.GetGroupSheet))
 	rg.POST("/:source/group/:gid/query", a.X(a.query))
 
 	rg.GET("/:source/group/:gid/table", a.X(a.ListTables))
@@ -55,8 +56,8 @@ func (a *ApiAdmin) NewGroup(ctx httpx.Request) {
 
 	err = a.cAdmin.NewGroup(ctx.Session, ctx.Http.Param("source"), tg)
 	a.rutil.WriteFinal(ctx.Http, err)
-
 }
+
 func (a *ApiAdmin) EditGroup(ctx httpx.Request) {
 	tg := &entities.TableGroupPartial{}
 	err := ctx.Http.BindJSON(tg)
@@ -70,6 +71,11 @@ func (a *ApiAdmin) EditGroup(ctx httpx.Request) {
 
 func (a *ApiAdmin) GetGroup(ctx httpx.Request) {
 	resp, err := a.cAdmin.GetGroup(ctx.Session, ctx.MustParam("source"), ctx.MustParam("gid"))
+	a.rutil.WriteJSON(ctx.Http, resp, err)
+}
+
+func (a *ApiAdmin) GetGroupSheet(ctx httpx.Request) {
+	resp, err := a.cAdmin.GetGroupSheets(ctx.Session, ctx.MustParam("source"), ctx.MustParam("gid"))
 	a.rutil.WriteJSON(ctx.Http, resp, err)
 }
 

@@ -155,7 +155,7 @@ func (t *Table) LoadTable(txid uint32, req dyndb.LoadTableReq) (*dyndb.LoadTable
 	}
 	finalResp.QueryResponse = sqresp
 
-	apps, err := t.handle.CoreHub.ListTargetAppByType(req.TenantId, entities.TargetAppTypeDataTableWidget, fmt.Sprintf("%s/%s", t.source, req.Group))
+	apps, err := t.handle.CoreHub.ListTargetAppByType(req.TenantId, entities.TargetAppTypeDataTableWidget, fmt.Sprintf("%s/%s/%s", t.source, req.Group, req.Table))
 	if err == nil {
 		finalResp.DataWidgets = apps
 	}

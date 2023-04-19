@@ -2,23 +2,31 @@
   import { LoadingSpinner } from "../../../../../adapter_editor/easypage/core";
   import type { PortalService } from "../../core";
   import ActionPicker from "../../core/action_picker.svelte";
-  import { TargetAppTypeDataTableWidget, TargetAppTypeUserGroupApp } from "../target";
+  import {
+    TargetAppTypeDataTableWidget,
+  } from "../target";
 
   export let service: PortalService;
 
   let loading = true;
   let source = "";
-  let ugroup = "";
+  let group = "";
+  let table = "";
   let plug_id = "";
   let agent_id = "";
 
   let sources = [];
   let groups = [];
+  let tables = [];
   let plugs = [];
   let agents = [];
 
-  let mode: "pick_source" | "pick_group" | "pick_plug" | "pick_agent" =
-    "pick_source";
+  let mode:
+    | "pick_source"
+    | "pick_group"
+    | "pick_table"
+    | "pick_plug"
+    | "pick_agent" = "pick_source";
 
   const load = async () => {
     sources = await service.api_manager.self_data.get_data_sources();
@@ -41,8 +49,22 @@
 
   const pick_group = async (picked) => {
     loading = true;
+    mode = "pick_table";
+    group = picked.data.slug;
+
+    const api = service.api_manager.get_admin_data_api();
+    const resp = await api.list_tables(source, group);
+    if (!resp.ok) {
+      return;
+    }
+    tables = resp.data;
+    loading = false;
+  };
+
+  const pick_table = async (picked) => {
+    loading = true;
     mode = "pick_plug";
-    ugroup = picked.data.slug;
+    table = picked.data.slug;
 
     const api = service.api_manager.get_admin_plug_api();
     const resp = await api.list_plug();
@@ -74,7 +96,7 @@
 
     service.nav.admin_target_app_new({
       target_type: TargetAppTypeDataTableWidget,
-      target: `${source}/${ugroup}`,
+      target: `${source}/${group}/${table}`,
       context_type: "global.1",
       plug_id,
       agent_id,
@@ -107,7 +129,18 @@
       name: ug.slug,
       data: ug,
     }))}
-    title="Pick User Group"
+    title="Pick Data Group"
+  />
+{:else if mode === "pick_table"}
+  <ActionPicker
+    actions={tables.map((ug) => ({
+      action: pick_table,
+      icon: "hashtag",
+      info: ug.name,
+      name: ug.slug,
+      data: ug,
+    }))}
+    title="Pick Data Table"
   />
 {:else if mode === "pick_plug"}
   <ActionPicker

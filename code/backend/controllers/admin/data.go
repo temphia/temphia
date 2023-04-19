@@ -29,6 +29,12 @@ func (c *Controller) GetGroup(uclaim *claim.Session, source, gslug string) (*ent
 	return dynDB.GetGroup(uclaim.TenantId, gslug)
 }
 
+func (c *Controller) GetGroupSheets(uclaim *claim.Session, source, gslug string) (any, error) {
+	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	sheet := dynDB.GetDataSheetHub(uclaim.TenantId, gslug)
+	return sheet.ListSheet(0)
+}
+
 func (c *Controller) ListGroup(uclaim *claim.Session, source string) ([]*entities.TableGroup, error) {
 	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
 	return dynDB.ListGroup(uclaim.TenantId)

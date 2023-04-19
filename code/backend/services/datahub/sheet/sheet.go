@@ -130,7 +130,7 @@ func (s *Sheet) LoadSheet(txid uint32, data *dyndb.LoadSheetReq) (*dyndb.LoadShe
 		rowCells = cells.Rows[:offset]
 	}
 
-	apps, _ := s.handle.CoreHub.ListTargetAppByType(s.tenantId, entities.TargetAppTypeDataSheetWidget, fmt.Sprintf("%s/%s", s.source, s.group))
+	apps, _ := s.handle.CoreHub.ListTargetAppByType(s.tenantId, entities.TargetAppTypeDataSheetWidget, fmt.Sprintf("%s/%s/%d", s.source, s.group, data.SheetId))
 
 	fresp := &dyndb.LoadSheetResp{
 		Columns:           columns.Rows,
