@@ -301,8 +301,8 @@ export class TableService {
     return false;
   };
 
-  get_invoker(widget: DataWidget) {
-    return new TableInvoker(this, widget);
+  get_invoker(widget: DataWidget, launcher: any) {
+    return new TableInvoker(this, widget, launcher);
   }
 
   get_exec_data(rows: number[]): TableExecData {
@@ -620,16 +620,24 @@ export class RowService {
 export class TableInvoker {
   service: TableService;
   widget: DataWidget;
-  constructor(service: TableService, widget: DataWidget) {
+  instance_id?: string;
+  launcher: any;
+
+  constructor(service: TableService, widget: DataWidget, launcher: any) {
     this.service = service;
     this.widget = widget;
+    this.launcher = launcher;
   }
 
-  handle = (instance_id: string, msg_id: string, data: any) => {
-    console.log("@instance_handle", instance_id, msg_id, data);
+  init = (instance_id: string) => {
+    this.instance_id = instance_id;
   };
 
-  close = (instance_id: string) => {
-    console.log("@close", instance_id);
+  handle = (msg_id: string, data: any) => {
+    console.log("@instance_handle", msg_id, data);
+  };
+
+  close = () => {
+    console.log("@close");
   };
 }

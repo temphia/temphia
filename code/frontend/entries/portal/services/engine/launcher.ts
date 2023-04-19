@@ -8,8 +8,9 @@ interface LauncherState {
 }
 
 export interface TargetInvoker {
-  handle(instance_id: string, msg_id: string, data: any);
-  close(instance_id: string);
+  init(instance_id: string);
+  handle(msg_id: string, data: any);
+  close();
 }
 
 export interface Instance {
@@ -27,13 +28,13 @@ export interface InvokerOptions {
   target_name?: string;
   target_type?: string;
   target_id: string;
-  startup_payload: any
+  startup_payload: any;
 }
 
 export class Launcher {
   state: Writable<LauncherState>;
   bootloader?: string;
-  last_startup_payload: any
+  last_startup_payload: any;
 
   target_index: { [_: string]: string };
 
@@ -93,7 +94,6 @@ export class Launcher {
     const instance_id = generateId();
     this.last_startup_payload = topts.startup_payload;
 
-
     this.state.update((old) => ({
       ...old,
       active_instance: instance_id,
@@ -109,7 +109,6 @@ export class Launcher {
         },
       ],
     }));
-
 
     return instance_id;
   }

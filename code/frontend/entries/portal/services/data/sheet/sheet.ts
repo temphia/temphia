@@ -251,8 +251,8 @@ export class SheetService {
     }
   };
 
-  get_invoker(widget: SheetWidget) {
-    return new SheetInvoker(this, widget);
+  get_invoker(widget: SheetWidget, launcher: any) {
+    return new SheetInvoker(this, widget, launcher);
   }
 
   get_exec_data(rows: number[]): SheetExecData {
@@ -277,16 +277,22 @@ export class SheetService {
 export class SheetInvoker {
   widget: SheetWidget;
   service: SheetService;
-  constructor(service: SheetService, widget: SheetWidget) {
+  instance_id?: string;
+  launcher: any;
+
+  constructor(service: SheetService, widget: SheetWidget, launcher: any) {
     this.widget = widget;
     this.service = service;
+    this.launcher = launcher;
   }
 
-  handle = (instance_id: string, msg_id: string, data: any) => {
-    console.log("@instance_handle", instance_id, msg_id, data);
+  init = (instance_id: string) => {
+    this.instance_id = instance_id;
   };
 
-  close = (instance_id: string) => {
-    console.log("@close", instance_id);
+  handle = (msg_id: string, data: any) => {
+    console.log("@instance_handle", msg_id, data);
   };
+
+  close = () => {};
 }

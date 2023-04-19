@@ -37,7 +37,7 @@
       invoker_name: "data_table",
       target_name: widget.name,
       target_type: TargetAppTypeDataTableWidget,
-      invoker: table_service.get_invoker(widget),
+      invoker: table_service.get_invoker(widget, app.launcher),
       startup_payload: table_service.get_exec_data(selected_rows),
     });
 

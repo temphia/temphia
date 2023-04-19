@@ -13,6 +13,7 @@
   import type { SheetWidget } from "./sheets";
   import type { SheetService, SheetState } from "../../../services/data";
   import { TargetAppTypeDataSheetWidget } from "../../admin/target/target";
+  import RefRecord from "./panels/row/ref_record.svelte";
 
   export let source;
   export let group;
@@ -130,7 +131,7 @@
       target_name: widget.name,
       target_type: TargetAppTypeDataSheetWidget,
       startup_payload: sheet_service.get_exec_data(selected_rows),
-      invoker: sheet_service.get_invoker(widget),
+      invoker: sheet_service.get_invoker(widget, app.launcher),
     });
 
     tick().then(() => {
@@ -139,8 +140,10 @@
   };
 
   const refPreview = ({ detail }) => {
-    
-    console.log("ref_preview", detail);
+    app.utils.small_modal_open(RefRecord, {
+      service: sheet_service,
+      record: detail,
+    });
   };
 
   const doRemoveRowId = ({ detail }) => {
