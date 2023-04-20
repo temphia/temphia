@@ -124,7 +124,7 @@ func (d *DynDB) deleteRow(txid uint32, req dyndb.DeleteRowReq) error {
 }
 
 func (d *DynDB) deleteRowBatch(txid uint32, req dyndb.DeleteRowBatchReq) ([]int64, error) {
-	fcond, err := filter.Transform(req.FilterConds)
+	fcond, err := filter.Transform(d.vendor, req.FilterConds)
 	if err != nil {
 		return nil, err
 	}

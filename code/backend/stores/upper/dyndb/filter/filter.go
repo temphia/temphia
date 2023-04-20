@@ -39,6 +39,9 @@ const (
 	FilterBetween    = "between"
 	FilterNotBetween = "not_between"
 
+	FilterSdateBefore = "sdate_before"
+	FilterSdateAfter  = "sdate_after"
+
 	OptrEqual      = ""
 	OptrNotEqual   = " !="
 	OptrIn         = " IN"
@@ -86,11 +89,11 @@ var (
 	}
 )
 
-func Transform(fcs []dyndb.FilterCond) (db.Cond, error) {
-	return TransformWithPrefix(fcs, "")
+func Transform(vendor string, fcs []dyndb.FilterCond) (db.Cond, error) {
+	return TransformWithPrefix(vendor, fcs, "")
 }
 
-func TransformWithPrefix(fcs []dyndb.FilterCond, prefix string) (db.Cond, error) {
+func TransformWithPrefix(vendor string, fcs []dyndb.FilterCond, prefix string) (db.Cond, error) {
 
 	conds := make(db.Cond)
 
@@ -154,6 +157,13 @@ func TransformWithPrefix(fcs []dyndb.FilterCond, prefix string) (db.Cond, error)
 			filter.Cond = FilterLike
 			filter.Value = fmt.Sprintf("%s%%", filter.Value)
 			normalTransform()
+		case FilterSdateBefore:
+			// if vendor == store.VendorPostgres {
+
+			// }
+
+		case FilterSdateAfter:
+
 		default:
 			normalTransform()
 		}
