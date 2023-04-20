@@ -123,20 +123,22 @@ func (d *DynDB) deleteRow(txid uint32, req dyndb.DeleteRowReq) error {
 	})
 }
 
-func (d *DynDB) deleteRowBatch(txid uint32, req dyndb.DeleteRowBatchReq) error {
+func (d *DynDB) deleteRowBatch(txid uint32, req dyndb.DeleteRowBatchReq) ([]int64, error) {
 	fcond, err := filter.Transform(req.FilterConds)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	modctx, err := req.ModCtx.JSON()
 	if err != nil {
-		return err
+		return nil, err
 	}
+
+	result := make([]int64, 0)
 
 	tablename := d.tns.Table(req.TenantId, req.Group, req.Table)
 
-	return d.txOr(txid, func(sess db.Session) error {
+	err = d.txOr(txid, func(sess db.Session) error {
 
 		if d.vendor == store.VendorSqlite {
 			keys := make([]Key, 0)
@@ -153,16 +155,44 @@ func (d *DynDB) deleteRowBatch(txid uint32, req dyndb.DeleteRowBatchReq) error {
 					buf.WriteByte(',')
 				}
 				buf.WriteString(strconv.FormatInt(v.ID, 10))
+				result = append(result, v.ID)
 			}
 
 			_, err := sess.SQL().Exec("select temphia_delete_record(?, ?, ?)", tablename, modctx, buf.String())
 			return err
 
 		} else {
-			tbl := sess.Collection(tablename)
-			return tbl.Find(fcond).Select(dyndb.KeyPrimary).Delete()
+			deleter := sess.SQL().DeleteFrom(tablename).Where(fcond).Amend(func(queryIn string) (queryOut string) {
+				return queryIn + " RETURNING __id"
+			})
+
+			rows, err := sess.SQL().Query(deleter.String(), deleter.Arguments()...)
+			if err != nil {
+				return nil
+			}
+
+			defer rows.Close()
+
+			for rows.Next() {
+				var k Key
+				err := rows.Scan(&k.ID)
+				if err != nil {
+					return err
+				}
+				result = append(result, k.ID)
+			}
+			if err := rows.Err(); err != nil {
+				return err
+			}
+			return nil
 		}
 	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 
 }
 

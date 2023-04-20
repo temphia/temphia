@@ -136,7 +136,7 @@ type deleteRowBatchOpts struct {
 	UserId      string             `json:"user_id,omitempty"`
 }
 
-func (ctx *goja2db) deleteRowBatch(opts deleteRowBatchOpts) any {
+func (ctx *goja2db) deleteRowBatch(opts deleteRowBatchOpts) ([]int64, any) {
 	table := ctx.datahub.GetDataTableHub(opts.Source, ctx.tenantId, opts.Group)
 
 	return table.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{

@@ -39,7 +39,7 @@ type DynDB interface {
 
 	GetRow(txid uint32, req GetRowReq) (map[string]any, error)
 	UpdateRow(txid uint32, req UpdateRowReq) (map[string]any, error)
-	DeleteRowBatch(txid uint32, req DeleteRowBatchReq) error
+	DeleteRowBatch(txid uint32, req DeleteRowBatchReq) ([]int64, error)
 	DeleteRowMulti(txid uint32, req DeleteRowMultiReq) error
 	DeleteRow(txid uint32, req DeleteRowReq) error
 

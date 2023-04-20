@@ -220,7 +220,7 @@ func (s *Sheet) UpdateSheet(txid uint32, id int64, userId string, data map[strin
 }
 
 func (s *Sheet) DeleteSheet(txid uint32, id int64, userId string) error {
-	err := s.tableHub.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
+	_, err := s.tableHub.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetCellTable,
@@ -344,7 +344,7 @@ func (s *Sheet) UpdateSheetColumn(txid uint32, sid, cid int64, userId string, da
 
 func (s *Sheet) DeleteSheetColumn(txid uint32, sid, cid int64, userId string) error {
 
-	err := s.tableHub.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
+	_, err := s.tableHub.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetCellTable,
@@ -476,7 +476,7 @@ func (s *Sheet) UpdateRowWithCell(txid uint32, sid, rid int64, userId string, da
 
 func (s *Sheet) DeleteRowWithCell(txid uint32, sid, rid int64, userId string) error {
 
-	err := s.tableHub.DeleteRowBatch(txid, dyndb.DeleteRowBatchReq{
+	_, err := s.tableHub.DeleteRowBatch(txid, dyndb.DeleteRowBatchReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetCellTable,

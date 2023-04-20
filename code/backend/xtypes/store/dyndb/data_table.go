@@ -23,6 +23,7 @@ type NewRowReq struct {
 	Table    string         `json:"table,omitempty"`
 	Data     map[string]any `json:"data,omitempty"`
 	ModCtx   ModCtx         `json:"mod_ctx,omitempty"`
+	NoReact  bool           `json:"no_react,omitempty"`
 }
 
 type NewBatchRowReq struct {
@@ -31,6 +32,7 @@ type NewBatchRowReq struct {
 	Table    string           `json:"table,omitempty"`
 	Data     []map[string]any `json:"data,omitempty"`
 	ModCtx   ModCtx           `json:"mod_ctx,omitempty"`
+	NoReact  bool             `json:"no_react,omitempty"`
 }
 
 type GetRowReq struct {
@@ -49,6 +51,7 @@ type UpdateRowReq struct {
 	Table    string         `json:"table,omitempty"`
 	Data     map[string]any `json:"data,omitempty"`
 	ModCtx   ModCtx         `json:"mod_ctx,omitempty"`
+	NoReact  bool           `json:"no_react,omitempty"`
 }
 
 type DeleteRowReq struct {
@@ -57,6 +60,7 @@ type DeleteRowReq struct {
 	Table    string `json:"table,omitempty"`
 	Id       int64  `json:"id,omitempty"`
 	ModCtx   ModCtx `json:"mod_ctx,omitempty"`
+	NoReact  bool   `json:"no_react,omitempty"`
 }
 
 type DeleteRowMultiReq struct {
@@ -65,6 +69,7 @@ type DeleteRowMultiReq struct {
 	Table    string  `json:"table,omitempty"`
 	Ids      []int64 `json:"sid,omitempty"`
 	ModCtx   ModCtx  `json:"mod_ctx,omitempty"`
+	NoReact  bool    `json:"no_react,omitempty"`
 }
 
 type DeleteRowBatchReq struct {
@@ -73,6 +78,7 @@ type DeleteRowBatchReq struct {
 	Table       string       `json:"table,omitempty"`
 	FilterConds []FilterCond `json:"filter_conds,omitempty"`
 	ModCtx      ModCtx       `json:"mod_ctx,omitempty"`
+	NoReact     bool         `json:"no_react,omitempty"`
 }
 
 type LoadTableReq struct {

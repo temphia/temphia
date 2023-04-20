@@ -87,7 +87,7 @@ func (c *Controller) DeleteRowBatch(uclaim *claim.Data, tslug string, filterOpts
 	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
 	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	return thub.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
+	_, err := thub.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
 		TenantId:    uclaim.TenantId,
 		Group:       group,
 		Table:       tslug,
@@ -96,6 +96,8 @@ func (c *Controller) DeleteRowBatch(uclaim *claim.Data, tslug string, filterOpts
 			UserId: uclaim.UserID,
 		},
 	})
+
+	return err
 }
 
 func (c *Controller) DeleteRowMulti(uclaim *claim.Data, tslug string, ids []int64) error {

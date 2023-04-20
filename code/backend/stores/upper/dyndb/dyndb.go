@@ -80,7 +80,7 @@ func (d *DynDB) UpdateRow(txid uint32, req dyndb.UpdateRowReq) (map[string]inter
 	return d.updateRow(txid, req)
 }
 
-func (d *DynDB) DeleteRowBatch(txid uint32, req dyndb.DeleteRowBatchReq) error {
+func (d *DynDB) DeleteRowBatch(txid uint32, req dyndb.DeleteRowBatchReq) ([]int64, error) {
 	return d.deleteRowBatch(txid, req)
 }
 

@@ -10,7 +10,7 @@ import (
 )
 
 func Execute(driver *sql.DB, qstr string) error {
-	fmt.Printf(qstr)
+	fmt.Print(qstr)
 
 	// fixme => check syntax using explain or sth
 	_, err := driver.Exec(qstr)

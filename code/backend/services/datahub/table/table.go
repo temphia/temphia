@@ -40,12 +40,14 @@ func (t *Table) NewRow(txid uint32, req dyndb.NewRowReq) (int64, error) {
 
 	req.Data[dyndb.KeyPrimary] = id
 
-	// fixme => when txid != 0
-	if txid == 0 {
-		err = t.handle.SockdHub.PushNewRow(t.source, req.TenantId, req.Group, req.Table, req.Data)
-		if err != nil {
-			pp.Println(err)
-		}
+	if txid != 0 || req.NoReact {
+		// fixme => when txid != 0
+		return id, nil
+	}
+
+	err = t.handle.SockdHub.PushNewRow(t.source, req.TenantId, req.Group, req.Table, req.Data)
+	if err != nil {
+		pp.Println(err)
 	}
 
 	return id, nil
@@ -53,7 +55,6 @@ func (t *Table) NewRow(txid uint32, req dyndb.NewRowReq) (int64, error) {
 
 func (t *Table) GetRow(txid uint32, req dyndb.GetRowReq) (map[string]any, error) {
 	if txid != 0 || req.SkipCache {
-
 		return t.inner.GetRow(txid, req)
 	}
 
@@ -69,25 +70,42 @@ func (t *Table) UpdateRow(txid uint32, req dyndb.UpdateRowReq) (map[string]any, 
 		return nil, err
 	}
 
+	if txid != 0 || req.NoReact {
+		return data, nil
+	}
+
 	err = t.handle.SockdHub.PushUpdateRow(t.source, req.TenantId, req.Group, req.Table, req.Id, req.Data)
 	if err != nil {
 		pp.Println(err)
 	}
 
 	return data, nil
+
 }
 
-func (t *Table) DeleteRowBatch(txid uint32, req dyndb.DeleteRowBatchReq) error {
+func (t *Table) DeleteRowBatch(txid uint32, req dyndb.DeleteRowBatchReq) ([]int64, error) {
+	ids, err := t.inner.DeleteRowBatch(txid, req)
+	if err != nil {
+		return nil, err
+	}
 
-	// fixme => sync to room
+	if txid != 0 || req.NoReact {
+		return ids, nil
+	}
 
-	return t.inner.DeleteRowBatch(txid, req)
+	t.handle.SockdHub.PushDeleteRow(t.source, req.TenantId, req.Group, req.Table, ids)
+
+	return ids, nil
 }
 
 func (t *Table) DeleteRowMulti(txid uint32, req dyndb.DeleteRowMultiReq) error {
 	err := t.inner.DeleteRowMulti(txid, req)
 	if err != nil {
 		return err
+	}
+
+	if txid != 0 || req.NoReact {
+		return nil
 	}
 
 	t.handle.SockdHub.PushDeleteRow(t.source, req.TenantId, req.Group, req.Table, req.Ids)
@@ -99,6 +117,10 @@ func (t *Table) DeleteRow(txid uint32, req dyndb.DeleteRowReq) error {
 	err := t.inner.DeleteRow(txid, req)
 	if err != nil {
 		return err
+	}
+
+	if txid != 0 || req.NoReact {
+		return nil
 	}
 
 	t.handle.SockdHub.PushDeleteRow(t.source, req.TenantId, req.Group, req.Table, []int64{req.Id})
