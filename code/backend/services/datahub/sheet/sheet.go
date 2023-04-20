@@ -162,9 +162,125 @@ func (s *Sheet) LoadSheet(txid uint32, data *dyndb.LoadSheetReq) (*dyndb.LoadShe
 
 func (s *Sheet) Query(txid uint32, data *dyndb.QuerySheetReq) (*dyndb.QuerySheetResp, error) {
 
-	// fixme => impl
+	cursorFilter := filter.FilterGT
+	if data.Desc {
+		cursorFilter = filter.FilterLT
+	}
 
-	return nil, nil
+	frags := []dyndb.JoinFragment{}
+
+	for _, fc := range data.FilterConds {
+
+		textFilter := func() {
+			frags = append(frags, dyndb.JoinFragment{
+				Name:     dyndb.SheetCellTable,
+				OnColumn: "__id",
+				Filters: []dyndb.FilterCond{
+					{
+						Column: "sheetid",
+						Cond:   filter.FilterEqual,
+						Value:  data.SheetId,
+					},
+					{
+						Column: "value",
+						Cond:   fc.Cond,
+						Value:  fc.Value,
+					},
+					{
+						Column: "rowid",
+						Cond:   cursorFilter,
+						Value:  data.RowCursorId,
+					},
+				},
+			})
+		}
+
+		numFilter := func() {
+			frags = append(frags, dyndb.JoinFragment{
+				Name:     dyndb.SheetCellTable,
+				OnColumn: "__id",
+				Filters: []dyndb.FilterCond{
+					{
+						Column: "sheetid",
+						Cond:   filter.FilterEqual,
+						Value:  data.SheetId,
+					},
+					{
+						Column: "numval",
+						Cond:   fc.Cond,
+						Value:  fc.Value,
+					},
+					{
+						Column: "rowid",
+						Cond:   cursorFilter,
+						Value:  data.RowCursorId,
+					},
+				},
+			})
+		}
+
+		switch fc.Cond {
+		case filter.FilterAround, filter.FilterNotAround:
+			panic("Not supported")
+		case filter.FilterNumEqual,
+			filter.FilterNumNotEqual,
+			filter.FilterNumIn,
+			filter.FilterNumNotIn,
+			filter.FilterLT,
+			filter.FilterGT,
+			filter.FilterLTE,
+			filter.FilterGTE:
+			numFilter()
+		default:
+			textFilter()
+		}
+	}
+
+	result, err := s.tableHub.MultiJoinQuery(txid, dyndb.MultiJoinReq{
+		TenantId: data.TenantId,
+		Group:    data.Group,
+		Parent:   dyndb.SheetCellTable,
+		ParentFilters: []dyndb.FilterCond{
+			{
+				Column: "sheetid",
+				Cond:   filter.FilterEqual,
+				Value:  data.SheetId,
+			},
+
+			{
+				Column: "rowid",
+				Cond:   cursorFilter,
+				Value:  data.RowCursorId,
+			},
+		},
+		OnParent:  "__id",
+		Fragments: frags,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	cresp, err := s.tableHub.SimpleQuery(0, dyndb.SimpleQueryReq{
+		TenantId: s.tenantId,
+		Group:    s.group,
+		Table:    dyndb.SheetColumnTable,
+		FilterConds: []dyndb.FilterCond{
+			{
+				Column: "sheetid",
+				Cond:   "equal",
+				Value:  data.SheetId,
+			},
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &dyndb.QuerySheetResp{
+		Cells:   result.Rows,
+		Columns: cresp.Rows,
+	}, nil
 }
 
 func (s *Sheet) ListSheet(txid uint32) ([]map[string]any, error) {

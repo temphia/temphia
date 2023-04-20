@@ -11,26 +11,28 @@ import (
 )
 
 const (
-	FilterEqual     = "equal"
-	FilterNotEqual  = "not_equal"
-	FilterIn        = "in"
-	FilterNotIn     = "not_in"
-	FilterNumIn     = "num_in"
-	FilterNumNotIn  = "num_not_in"
-	FilterLT        = "less_than"
-	FilterGT        = "greater_than"
-	FilterLTE       = "less_than_or_equal"
-	FilterGTE       = "greater_than_or_equal"
-	FilterAround    = "around"
-	FilterNotAround = "not_around"
-	FilterLike      = "like"
-	FilterNotLike   = "not_like"
-	FilterILike     = "insensitive_like"
-	FilterNotILike  = "not_insensitive_like"
-	FilterRgex      = "regex"
-	FilterNotRgex   = "not_regex"
-	FilterBefore    = "before"
-	FilterAfter     = "after"
+	FilterEqual       = "equal"
+	FilterNumEqual    = "num_equal"
+	FilterNotEqual    = "not_equal"
+	FilterNumNotEqual = "num_not_equal"
+	FilterIn          = "in"
+	FilterNotIn       = "not_in"
+	FilterNumIn       = "num_in"
+	FilterNumNotIn    = "num_not_in"
+	FilterLT          = "less_than"
+	FilterGT          = "greater_than"
+	FilterLTE         = "less_than_or_equal"
+	FilterGTE         = "greater_than_or_equal"
+	FilterAround      = "around"
+	FilterNotAround   = "not_around"
+	FilterLike        = "like"
+	FilterNotLike     = "not_like"
+	FilterILike       = "insensitive_like"
+	FilterNotILike    = "not_insensitive_like"
+	FilterRgex        = "regex"
+	FilterNotRgex     = "not_regex"
+	FilterBefore      = "before"
+	FilterAfter       = "after"
 
 	FilterContains   = "contains"
 	FilterHasPrefix  = "has_prefix"
@@ -172,6 +174,11 @@ func TransformWithPrefix(vendor string, fcs []dyndb.FilterCond, prefix string) (
 				filter.Cond = FilterBefore
 			}
 			normalTransform()
+
+		case FilterNumEqual:
+			filter.Cond = FilterEqual
+		case FilterNumNotEqual:
+			filter.Cond = FilterNumNotEqual
 		case FilterSdateAfter:
 			if vendor == store.VendorPostgres {
 				filter.Cond = PgCustomAfter
