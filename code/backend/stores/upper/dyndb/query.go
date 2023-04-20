@@ -182,11 +182,12 @@ func (d *DynDB) multiJoinQuery(txid uint32, req dyndb.MultiJoinReq) (*dyndb.Mult
 			From(fmt.Sprintf("%s AS parent", parent)).
 			Where(cond1)
 
-		for _, fg := range req.Fragments {
+		for idx, fg := range req.Fragments {
+			fname := fmt.Sprintf("inner%d", idx)
 			fgtable := d.tns.Table(req.TenantId, req.Group, fg.Name)
 
-			sqlq = sqlq.Join(fmt.Sprintf("%s As child", fgtable)).
-				On(fmt.Sprintf("parent.%s = %s.%s", req.OnParent, fgtable, fg.OnColumn))
+			sqlq = sqlq.Join(fmt.Sprintf("%s As %s", fgtable, fname)).
+				On(fmt.Sprintf("parent.%s = %s.%s", req.OnParent, fname, fg.OnColumn))
 		}
 
 		return sqlq.All(&records)
