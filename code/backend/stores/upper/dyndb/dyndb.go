@@ -104,6 +104,10 @@ func (d *DynDB) JoinQuery(txid uint32, req dyndb.JoinReq) (*dyndb.JoinResult, er
 	return d.joinQuery(txid, req)
 }
 
+func (d *DynDB) MultiJoinQuery(txid uint32, req dyndb.MultiJoinReq) (*dyndb.MultiJoinResult, error) {
+	return d.multiJoinQuery(txid, req)
+}
+
 func (d *DynDB) TemplateQuery(txid uint32, req dyndb.TemplateQueryReq) (*dyndb.QueryResult, error) {
 	return d.templateQuery(txid, req)
 }

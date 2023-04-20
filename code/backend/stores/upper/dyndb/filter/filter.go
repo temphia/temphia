@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/upper/db/v4"
 )
@@ -64,6 +65,11 @@ const (
 	OptrNotBetween = " NOT BETWEEN"
 )
 
+const (
+	PgCustomBefore = "pg_custom_before"
+	PgCustomAfter  = "pg_custom_after"
+)
+
 var (
 	OptrMap = map[string]string{
 		FilterEqual:      OptrEqual,
@@ -86,6 +92,8 @@ var (
 		FilterIsNotNull:  OptrIsNotNull,
 		FilterBetween:    OptrBetween,
 		FilterNotBetween: OptrNotBetween,
+		PgCustomBefore:   " |<",
+		PgCustomAfter:    " |>",
 	}
 )
 
@@ -158,12 +166,19 @@ func TransformWithPrefix(vendor string, fcs []dyndb.FilterCond, prefix string) (
 			filter.Value = fmt.Sprintf("%s%%", filter.Value)
 			normalTransform()
 		case FilterSdateBefore:
-			// if vendor == store.VendorPostgres {
-
-			// }
-
+			if vendor == store.VendorPostgres {
+				filter.Cond = PgCustomBefore
+			} else {
+				filter.Cond = FilterBefore
+			}
+			normalTransform()
 		case FilterSdateAfter:
-
+			if vendor == store.VendorPostgres {
+				filter.Cond = PgCustomAfter
+			} else {
+				filter.Cond = FilterAfter
+			}
+			normalTransform()
 		default:
 			normalTransform()
 		}

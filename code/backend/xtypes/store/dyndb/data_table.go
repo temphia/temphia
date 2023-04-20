@@ -122,6 +122,26 @@ type JoinReq struct {
 	ChildFilters  []FilterCond `json:"child_ft,omitempty"`
 }
 
+type MultiJoinReq struct {
+	TenantId      string         `json:"-"`
+	Group         string         `json:"group,omitempty"`
+	Parent        string         `json:"parent,omitempty"`
+	OnParent      string         `json:"on_parent,omitempty"`
+	ParentFilters []FilterCond   `json:"parent_ft,omitempty"`
+	Fragments     []JoinFragment `json:"fragments,omitempty"`
+}
+
+type JoinFragment struct {
+	Name     string       `json:"name,omitempty"`
+	OnColumn string       `json:"on_column,omitempty"`
+	Filters  []FilterCond `json:"filters,omitempty"`
+}
+
+type MultiJoinResult struct {
+	Rows    []map[string]any            `json:"rows"`
+	Columns map[string]*entities.Column `json:"columns,omitempty"`
+}
+
 type JoinResult struct {
 	Rows       []map[string]any            `json:"rows"`
 	ParentCols map[string]*entities.Column `json:"parent_columns,omitempty"`

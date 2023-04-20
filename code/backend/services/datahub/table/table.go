@@ -218,6 +218,10 @@ func (t *Table) JoinQuery(txid uint32, req dyndb.JoinReq) (*dyndb.JoinResult, er
 	return t.inner.JoinQuery(txid, req)
 }
 
+func (t *Table) MultiJoinQuery(txid uint32, req dyndb.MultiJoinReq) (*dyndb.MultiJoinResult, error) {
+	return t.inner.MultiJoinQuery(txid, req)
+}
+
 func (t *Table) FTSQuery(txid uint32, req dyndb.FTSQueryReq) (*dyndb.QueryResult, error) {
 	return t.inner.FTSQuery(txid, req)
 }

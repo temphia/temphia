@@ -64,6 +64,8 @@ type DataTableHub interface {
 
 	SimpleQuery(txid uint32, req SimpleQueryReq) (*QueryResult, error)
 	JoinQuery(txid uint32, req JoinReq) (*JoinResult, error)
+	MultiJoinQuery(txid uint32, req MultiJoinReq) (*MultiJoinResult, error)
+
 	FTSQuery(txid uint32, req FTSQueryReq) (*QueryResult, error)
 	RefResolve(txid uint32, gslug string, req *RefResolveReq) (*QueryResult, error)
 	RefLoad(txid uint32, gslug string, req *RefLoadReq) (*QueryResult, error)

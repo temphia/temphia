@@ -14,7 +14,13 @@ import (
 
 func (d *DynDB) simpleQuery(txid uint32, req dyndb.SimpleQueryReq) (*dyndb.QueryResult, error) {
 	records := make([]map[string]interface{}, 0)
-	err := d.txOr(txid, func(sess db.Session) error {
+
+	conds, err := filter.Transform(d.vendor, req.FilterConds)
+	if err != nil {
+		return nil, err
+	}
+
+	err = d.txOr(txid, func(sess db.Session) error {
 
 		pp.Println(req)
 
@@ -22,11 +28,6 @@ func (d *DynDB) simpleQuery(txid uint32, req dyndb.SimpleQueryReq) (*dyndb.Query
 
 		for _, s := range req.Selects {
 			selects = append(selects, s)
-		}
-
-		conds, err := filter.Transform(req.FilterConds)
-		if err != nil {
-			return err
 		}
 
 		orderBy := dyndb.KeyPrimary
@@ -105,12 +106,12 @@ func (d *DynDB) joinQuery(txid uint32, req dyndb.JoinReq) (*dyndb.JoinResult, er
 
 	records := make([]map[string]any, 0)
 
-	cond1, err := filter.TransformWithPrefix(req.ParentFilters, "parent.")
+	cond1, err := filter.TransformWithPrefix(d.vendor, req.ParentFilters, "parent.")
 	if err != nil {
 		return nil, err
 	}
 
-	cond2, err := filter.TransformWithPrefix(req.ChildFilters, "child.")
+	cond2, err := filter.TransformWithPrefix(d.vendor, req.ChildFilters, "child.")
 	if err != nil {
 		return nil, err
 	}
@@ -153,11 +154,65 @@ func (d *DynDB) joinQuery(txid uint32, req dyndb.JoinReq) (*dyndb.JoinResult, er
 	}, nil
 }
 
+func (d *DynDB) multiJoinQuery(txid uint32, req dyndb.MultiJoinReq) (*dyndb.MultiJoinResult, error) {
+
+	records := make([]map[string]any, 0)
+
+	cond1, err := filter.TransformWithPrefix(d.vendor, req.ParentFilters, "parent.")
+	if err != nil {
+		return nil, err
+	}
+
+	for _, fg := range req.Fragments {
+		cond, err := filter.TransformWithPrefix(d.vendor, fg.Filters, fmt.Sprintf("%s.", fg.Name))
+		if err != nil {
+			return nil, err
+		}
+
+		for k, v := range cond {
+			cond1[k] = v
+		}
+	}
+
+	parent := d.tns.Table(req.TenantId, req.Group, req.Parent)
+
+	err = d.txOr(txid, func(sess db.Session) error {
+		sqlq := sess.SQL().
+			Select().
+			From(fmt.Sprintf("%s AS parent", parent)).
+			Where(cond1)
+
+		for _, fg := range req.Fragments {
+			fgtable := d.tns.Table(req.TenantId, req.Group, fg.Name)
+
+			sqlq = sqlq.Join(fmt.Sprintf("%s As child", fgtable)).
+				On(fmt.Sprintf("parent.%s = %s.%s", req.OnParent, fgtable, fg.OnColumn))
+		}
+
+		return sqlq.All(&records)
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	pcols, err := d.cache.CachedColumns(req.TenantId, req.Group, req.Parent)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dyndb.MultiJoinResult{
+		Rows:    records,
+		Columns: pcols,
+	}, nil
+
+}
+
 func (d *DynDB) ftsQuery(txid uint32, req dyndb.FTSQueryReq) (*dyndb.QueryResult, error) {
 
 	records := make([]map[string]any, 0)
 	err := d.txOr(txid, func(sess db.Session) error {
-		conds, err := filter.Transform(req.Filters)
+		conds, err := filter.Transform(d.vendor, req.Filters)
 		if err != nil {
 			return err
 		}
