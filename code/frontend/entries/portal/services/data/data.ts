@@ -19,7 +19,7 @@ export class DataService {
   api_base_url: string;
 
   current_sheet_group: SheetGroupService;
-  profile_genrator: (user:string) => string;
+  profile_genrator: (user: string) => string;
 
   constructor(opts: {
     sources: string[];
@@ -77,6 +77,7 @@ export class DataService {
       source,
       group,
       dapi,
+      this.sockd_builder,
       this.profile_genrator
     );
     await sgs.init();
@@ -101,7 +102,6 @@ export class DataService {
       sockd_builder: this.sockd_builder,
       profile_generator: this.profile_genrator,
     });
-
 
     await group_svc.init();
     return group_svc;

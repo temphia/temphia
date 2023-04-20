@@ -10,6 +10,13 @@ import type {
   SheetExecData,
 } from "../../../pages/data/sheet/sheets";
 import { formatCells } from "./format";
+import type { SockdService } from "../../sockd/sockd";
+import {
+  MESSAGE_SERVER_PUBLISH,
+  Sockd,
+  SockdMessage,
+} from "../../../../../lib/sockd";
+import type { DataModification } from "../table";
 
 export class SheetGroupService {
   source: string;
@@ -21,12 +28,16 @@ export class SheetGroupService {
   folder_api: FolderTktAPI;
   data_api: DataAPI;
   data_sheet_api: DataSheetAPI;
+  sockd_builder: SockdService;
+  sockd_conn: Sockd;
+
   profile_genrator: (string) => string;
 
   constructor(
     source: string,
     group: string,
     api: DataAPI,
+    sockd_builder: SockdService,
     profile_genrator: (string) => string
   ) {
     this.source = source;
@@ -36,6 +47,7 @@ export class SheetGroupService {
     this.data_api = api;
     this.data_sheet_api = api.sheet_api();
     this.profile_genrator = profile_genrator;
+    this.sockd_builder = sockd_builder;
   }
 
   init = async () => {
@@ -52,6 +64,20 @@ export class SheetGroupService {
       this.data_api.api_base_url,
       folder_ticket
     );
+
+    this.sockd_conn = await this.sockd_builder.build(
+      this.data_api.sockd_url(),
+      this.sockd_handle
+    );
+  };
+
+  private sockd_handle = (msg: SockdMessage) => {
+    if (msg.type !== MESSAGE_SERVER_PUBLISH) {
+      return;
+    }
+
+    const payload = msg.payload as DataModification;
+    console.log("@sheet_sockd", payload);
   };
 
   get_sheet_service = async (sheetid: string) => {
