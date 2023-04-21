@@ -5,6 +5,7 @@
   import EditRow from "./_edit_row.svelte";
   import Relations from "./_relations.svelte";
   import History from "./_history.svelte";
+  import { LoadingSpinner } from "../../../../admin/core";
 
   export let columns: SheetColumn[];
   export let row: SheetRow;
@@ -20,6 +21,10 @@
 <Layout
   title="Edit Row"
   onSave={() => onSave(current_cells)}
+  onDelete={async () => {
+    await service.remove_row_cell(String(row.__id));
+    service.close_big_modal();
+  }}
   new_record={false}
 >
   <svelte:fragment slot="edit">
@@ -31,6 +36,6 @@
   </svelte:fragment>
 
   <svelte:fragment slot="history">
-    <History {service}  rid={row.__id} />
+    <History {service} rid={row.__id} />
   </svelte:fragment>
 </Layout>
