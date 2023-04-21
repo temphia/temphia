@@ -130,9 +130,14 @@ export class Launcher {
   instance_close(instance_id: string) {
     this.state.update((old) => {
       const instances = old.instances.filter((v) => v.id !== instance_id);
+      let display = old.display;
+      if (instances.length === 0 && display == "FLOATING") {
+        display = "HIDDEN";
+      }
 
       return {
         ...old,
+        display,
         active_instance: instances.length > 0 ? instances[0].id : undefined,
         instances,
       };
