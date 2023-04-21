@@ -14,6 +14,7 @@
   import type { SheetService, SheetState } from "../../../services/data";
   import { TargetAppTypeDataSheetWidget } from "../../admin/target/target";
   import RefRecord from "./panels/row/ref_record.svelte";
+  import ExtraActions from "./panels/extra_actions.svelte";
 
   export let source;
   export let group;
@@ -150,6 +151,10 @@
     sheet_service.remove_row_cell(detail);
     selected_rows = [];
   };
+
+  const extraAction = () => {
+    app.utils.small_modal_open(ExtraActions, { service: sheet_service });
+  };
 </script>
 
 {#if loading || $state.loading}
@@ -183,6 +188,7 @@
         sheet_service.close_big_modal = app.utils.big_modal_close;
         sheet_service.close_small_modal = app.utils.small_modal_close;
       }}
+      on:action_extra={extraAction}
       on:ref_preview={refPreview}
       on:remove_sheet={doRemoveSheet}
       on:edit_column={doEditColumn}

@@ -55,10 +55,17 @@
       icon="hashtag"
       name="Raw"
     />
+
     <ActionNormal
       onClick={() => dispatch("action_goto_history")}
       icon="calendar"
       name="History"
+    />
+
+    <ActionNormal
+      onClick={() => dispatch("action_extra")}
+      icon="dots-horizontal"
+      name="Extra"
     />
 
     {#key selected_rows}

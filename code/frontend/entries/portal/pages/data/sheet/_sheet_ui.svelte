@@ -37,6 +37,7 @@
   on:change_sheet
   on:remove_sheet
   on:action_run_widget
+  on:action_extra
 >
   <SheetInner
     on:add_column
