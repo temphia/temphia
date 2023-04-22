@@ -37,7 +37,7 @@ const (
 
 const (
 	DefaultSeedNo          = 10
-	DefaultQueryFetchCount = 100
+	DefaultQueryFetchCount = 10
 )
 
 var (

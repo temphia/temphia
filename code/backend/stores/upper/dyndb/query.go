@@ -171,8 +171,9 @@ func (d *DynDB) multiJoinQuery(txid uint32, req dyndb.MultiJoinReq) (*dyndb.Mult
 		return nil, err
 	}
 
-	for _, fg := range req.Fragments {
-		cond, err := filter.TransformWithPrefix(d.vendor, fg.Filters, fmt.Sprintf("%s.", fg.Name))
+	for idx, fg := range req.Fragments {
+		fname := fmt.Sprintf("inner%d", idx)
+		cond, err := filter.TransformWithPrefix(d.vendor, fg.Filters, fmt.Sprintf("%s.", fname))
 		if err != nil {
 			return nil, err
 		}

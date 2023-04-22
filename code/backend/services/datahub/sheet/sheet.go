@@ -112,23 +112,7 @@ func (s *Sheet) LoadSheet(txid uint32, data *dyndb.LoadSheetReq) (*dyndb.LoadShe
 		}, nil
 	}
 
-	rowCells := cells.Rows
-
-	if len(cells.Rows) == int(count) {
-		// remove last incomplete cells of a row
-		lastrowId := cells.Rows[len(cells.Rows)-1]["rowid"].(int64)
-		offset := (len(cells.Rows) - 1) - colNo
-
-		for _, cr := range cells.Rows[:offset] {
-			crowId := cr["rowid"].(int64)
-			if crowId == lastrowId {
-				break
-			}
-			offset = offset + 1
-		}
-
-		rowCells = cells.Rows[:offset]
-	}
+	rowCells := trimIncompleteCells(cells.Rows, colNo, int(count))
 
 	apps, _ := s.handle.CoreHub.ListTargetAppByType(s.tenantId, entities.TargetAppTypeDataSheetWidget, fmt.Sprintf("%s/%s/%d", s.source, s.group, data.SheetId))
 
@@ -164,12 +148,17 @@ func (s *Sheet) Query(txid uint32, data *dyndb.QuerySheetReq) (*dyndb.QuerySheet
 
 	frags := []dyndb.JoinFragment{}
 
+	cursorFilter := filter.FilterGT
+	if data.Desc {
+		cursorFilter = filter.FilterLT
+	}
+
 	for _, fc := range data.FilterConds {
 
 		textFilter := func() {
 			frags = append(frags, dyndb.JoinFragment{
 				Name:     dyndb.SheetCellTable,
-				OnColumn: "__id",
+				OnColumn: "rowid",
 				Filters: []dyndb.FilterCond{
 					{
 						Column: "sheetid",
@@ -181,6 +170,11 @@ func (s *Sheet) Query(txid uint32, data *dyndb.QuerySheetReq) (*dyndb.QuerySheet
 						Cond:   fc.Cond,
 						Value:  fc.Value,
 					},
+					{
+						Column: "rowid",
+						Cond:   cursorFilter,
+						Value:  data.RowCursorId,
+					},
 				},
 			})
 		}
@@ -188,7 +182,7 @@ func (s *Sheet) Query(txid uint32, data *dyndb.QuerySheetReq) (*dyndb.QuerySheet
 		numFilter := func() {
 			frags = append(frags, dyndb.JoinFragment{
 				Name:     dyndb.SheetCellTable,
-				OnColumn: "__id",
+				OnColumn: "rowid",
 				Filters: []dyndb.FilterCond{
 					{
 						Column: "sheetid",
@@ -199,6 +193,11 @@ func (s *Sheet) Query(txid uint32, data *dyndb.QuerySheetReq) (*dyndb.QuerySheet
 						Column: "numval",
 						Cond:   fc.Cond,
 						Value:  fc.Value,
+					},
+					{
+						Column: "rowid",
+						Cond:   cursorFilter,
+						Value:  data.RowCursorId,
 					},
 				},
 			})
@@ -231,8 +230,13 @@ func (s *Sheet) Query(txid uint32, data *dyndb.QuerySheetReq) (*dyndb.QuerySheet
 				Cond:   filter.FilterEqual,
 				Value:  data.SheetId,
 			},
+			{
+				Column: "rowid",
+				Cond:   cursorFilter,
+				Value:  data.RowCursorId,
+			},
 		},
-		OnParent:  "__id",
+		OnParent:  "rowid",
 		Fragments: frags,
 		OrderBy:   "rowid",
 	})
@@ -719,4 +723,23 @@ func (s *Sheet) FTSQuery(txid uint32, req *dyndb.FTSQuerySheet) (*dyndb.QueryShe
 		Cells:   refresp.Rows,
 		Columns: cresp.Rows,
 	}, nil
+}
+
+func trimIncompleteCells(rows []map[string]any, colno, count int) []map[string]any {
+	if len(rows) == int(count) {
+		// remove last incomplete cells of a row
+		lastrowId := rows[len(rows)-1]["rowid"].(int64)
+		offset := (len(rows) - 1) - colno
+		tail := rows[offset:]
+		for _, cr := range tail {
+			crowId := cr["rowid"].(int64)
+			if crowId == lastrowId {
+				break
+			}
+			offset = offset + 1
+		}
+		return rows[:offset]
+	}
+
+	return rows
 }

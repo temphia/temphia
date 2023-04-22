@@ -59,11 +59,12 @@ func (c *Controller) QuerySheet(uclaim *claim.Data, data *dyndb.QuerySheetReq) (
 
 	return thub.Query(0, &dyndb.QuerySheetReq{
 		TenantId:    uclaim.TenantId,
-		Group:       data.Group,
+		Group:       uclaim.DataGroup,
 		SheetId:     data.SheetId,
 		View:        data.View,
 		FilterConds: data.FilterConds,
 		Desc:        data.Desc,
+		RowCursorId: data.RowCursorId,
 	})
 }
 

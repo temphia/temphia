@@ -41,6 +41,7 @@ type QuerySheetReq struct {
 	SheetId     int64        `json:"sheet_id,omitempty"`
 	View        string       `json:"view,omitempty"`
 	FilterConds []FilterCond `json:"filter_conds,omitempty"`
+	RowCursorId int64        `json:"row_cursor_id,omitempty"`
 	Desc        bool         `json:"desc,omitempty"`
 }
 

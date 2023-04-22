@@ -122,10 +122,10 @@ export class SheetService {
   api: DataSheetAPI;
   force_render_index: Writable<number>;
 
-  last_loading: number;
   scroll_skip: () => boolean;
   max_row: number;
   min_row: number;
+  loading: boolean;
 
   profile_genrator: (string) => string;
   scroller?: (rowid: string) => void;
@@ -154,9 +154,10 @@ export class SheetService {
     this.force_render_index = writable(0);
     this.state.subscribe((state) => console.log("@state", state));
 
-    this.last_loading = 0;
     this.max_row = 0;
     this.min_row = 0;
+    this.loading = false;
+
     this.scroll_skip = scroller().skip;
   }
 
@@ -184,14 +185,22 @@ export class SheetService {
     this.min_row = (rows[0] || {}).__id || 0;
     this.max_row = (rows[rows.length - 1] || {}).__id || 0;
 
-    this.state.set({
+    const nextstate = {
       columns: data["columns"] || [],
       cells: pcells,
       rows,
       loading: false,
-      widgets: data["widget_apps"] || [],
-      ref_columns: data["reverse_ref_cols"] || [],
-    });
+    };
+
+    if (data["widget_apps"]) {
+      nextstate["widgets"] = data["widget_apps"];
+    }
+
+    if (data["reverse_ref_cols"]) {
+      nextstate["ref_columns"] = data["reverse_ref_cols"];
+    }
+
+    this.state.update((old) => ({ ...old, ...nextstate }));
   };
 
   add_sheet = async (name: string, opts: any) => {
@@ -295,30 +304,45 @@ export class SheetService {
     }
   };
 
-  scroll_top = () => {
-    if (get(this.state).loading) {
-      return;
-    }
+  scroll_top = async () => {
+    this.loading = true;
 
     if (this.scroll_skip()) {
       return;
     }
 
-    this.api.query_sheet(this.sheetid, {
+    const resp = await this.api.query_sheet(this.sheetid, {
+      row_cursor_id: this.min_row,
+    });
 
+    if (!resp.ok) {
+      this.loading = false;
+      return;
+    }
 
-
-    })
+    this.apply(resp.data, get(this.state).cells);
+    this.loading = false;
   };
 
-  scroll_bottom = () => {
-    if (get(this.state).loading) {
+  scroll_bottom = async () => {
+    this.loading = true;
+
+    if (this.scroll_skip()) {
       return;
     }
 
-    if (this.scroll_skip) {
+    const resp = await this.api.query_sheet(this.sheetid, {
+      row_cursor_id: this.max_row,
+    });
+
+    if (!resp.ok) {
+      this.loading = false;
+
       return;
     }
+
+    this.apply(resp.data, get(this.state).cells);
+    this.loading = false;
   };
 
   get_invoker(widget: SheetWidget, launcher: any) {
