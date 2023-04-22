@@ -52,6 +52,21 @@ func (c *Controller) LoadSheet(uclaim *claim.Data, data *dyndb.LoadSheetReq) (*d
 	return thub.LoadSheet(0, data)
 }
 
+func (c *Controller) QuerySheet(uclaim *claim.Data, data *dyndb.QuerySheetReq) (*dyndb.QuerySheetResp, error) {
+	source, _ := getTarget(uclaim)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataSheetHub(uclaim.TenantId, uclaim.DataGroup)
+
+	return thub.Query(0, &dyndb.QuerySheetReq{
+		TenantId:    uclaim.TenantId,
+		Group:       data.Group,
+		SheetId:     data.SheetId,
+		View:        data.View,
+		FilterConds: data.FilterConds,
+		Desc:        data.Desc,
+	})
+}
+
 // sheets
 
 func (c *Controller) ListSheet(uclaim *claim.Data) ([]map[string]any, error) {

@@ -162,11 +162,6 @@ func (s *Sheet) LoadSheet(txid uint32, data *dyndb.LoadSheetReq) (*dyndb.LoadShe
 
 func (s *Sheet) Query(txid uint32, data *dyndb.QuerySheetReq) (*dyndb.QuerySheetResp, error) {
 
-	cursorFilter := filter.FilterGT
-	if data.Desc {
-		cursorFilter = filter.FilterLT
-	}
-
 	frags := []dyndb.JoinFragment{}
 
 	for _, fc := range data.FilterConds {
@@ -186,11 +181,6 @@ func (s *Sheet) Query(txid uint32, data *dyndb.QuerySheetReq) (*dyndb.QuerySheet
 						Cond:   fc.Cond,
 						Value:  fc.Value,
 					},
-					{
-						Column: "rowid",
-						Cond:   cursorFilter,
-						Value:  data.RowCursorId,
-					},
 				},
 			})
 		}
@@ -209,11 +199,6 @@ func (s *Sheet) Query(txid uint32, data *dyndb.QuerySheetReq) (*dyndb.QuerySheet
 						Column: "numval",
 						Cond:   fc.Cond,
 						Value:  fc.Value,
-					},
-					{
-						Column: "rowid",
-						Cond:   cursorFilter,
-						Value:  data.RowCursorId,
 					},
 				},
 			})
@@ -246,15 +231,10 @@ func (s *Sheet) Query(txid uint32, data *dyndb.QuerySheetReq) (*dyndb.QuerySheet
 				Cond:   filter.FilterEqual,
 				Value:  data.SheetId,
 			},
-
-			{
-				Column: "rowid",
-				Cond:   cursorFilter,
-				Value:  data.RowCursorId,
-			},
 		},
 		OnParent:  "__id",
 		Fragments: frags,
+		OrderBy:   "rowid",
 	})
 
 	if err != nil {
@@ -669,6 +649,7 @@ func (s *Sheet) GetRowRelations(txid uint32, sid, rid, refsheet, refcol int64) (
 				Value:  refsheet,
 			},
 		},
+		OrderBy: "rowid",
 	})
 
 	if err != nil {
@@ -727,6 +708,7 @@ func (s *Sheet) FTSQuery(txid uint32, req *dyndb.FTSQuerySheet) (*dyndb.QueryShe
 				Value:  req.SheetId,
 			},
 		},
+		OrderBy: "rowid",
 	})
 
 	if err != nil {

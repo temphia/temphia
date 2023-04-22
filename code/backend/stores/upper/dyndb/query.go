@@ -120,6 +120,13 @@ func (d *DynDB) joinQuery(txid uint32, req dyndb.JoinReq) (*dyndb.JoinResult, er
 		cond1[k] = v
 	}
 
+	orderby := ""
+	if req.Desc {
+		orderby = fmt.Sprintf("-parent.%s", req.OrderBy)
+	} else {
+		orderby = fmt.Sprintf("parent.%s", req.OrderBy)
+	}
+
 	parent := d.tns.Table(req.TenantId, req.Group, req.Parent)
 	child := d.tns.Table(req.TenantId, req.Group, req.Child)
 
@@ -130,6 +137,7 @@ func (d *DynDB) joinQuery(txid uint32, req dyndb.JoinReq) (*dyndb.JoinResult, er
 			Where(cond1).
 			Join(fmt.Sprintf("%s As child", child)).
 			On(fmt.Sprintf("parent.%s = child.%s", req.OnParent, req.OnChild)).
+			OrderBy(orderby).
 			All(&records)
 	})
 
@@ -176,6 +184,13 @@ func (d *DynDB) multiJoinQuery(txid uint32, req dyndb.MultiJoinReq) (*dyndb.Mult
 
 	parent := d.tns.Table(req.TenantId, req.Group, req.Parent)
 
+	orderby := ""
+	if req.Desc {
+		orderby = fmt.Sprintf("-parent.%s", req.OrderBy)
+	} else {
+		orderby = fmt.Sprintf("parent.%s", req.OrderBy)
+	}
+
 	err = d.txOr(txid, func(sess db.Session) error {
 		sqlq := sess.SQL().
 			Select().
@@ -190,7 +205,7 @@ func (d *DynDB) multiJoinQuery(txid uint32, req dyndb.MultiJoinReq) (*dyndb.Mult
 				On(fmt.Sprintf("parent.%s = %s.%s", req.OnParent, fname, fg.OnColumn))
 		}
 
-		return sqlq.All(&records)
+		return sqlq.OrderBy(orderby).All(&records)
 	})
 
 	if err != nil {

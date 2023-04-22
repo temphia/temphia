@@ -164,11 +164,10 @@ func (ctx *goja2db) querySheet(opts sheetQueryOptions) (any, any) {
 	sheet := ctx.datahub.GetDataSheetHub(opts.Source, ctx.tenantId, opts.Group)
 
 	return sheet.Query(0, &dyndb.QuerySheetReq{
-		TenantId:    ctx.tenantId,
-		Group:       opts.Group,
-		SheetId:     opts.SheetId,
-		RowCursorId: opts.RowCursorId,
-		Desc:        opts.Desc,
+		TenantId: ctx.tenantId,
+		Group:    opts.Group,
+		SheetId:  opts.SheetId,
+		Desc:     opts.Desc,
 	})
 }
 

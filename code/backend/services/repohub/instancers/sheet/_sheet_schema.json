@@ -19,9 +19,20 @@
           "slug": "opts",
           "ctype": "json",
           "not_nullable": false
+        },
+        {
+          "name": "Cursor Offset",
+          "ctype": "number",
+          "slug": "curoffset"
+        },
+        {
+          "name": "Column Order",
+          "ctype": "shorttext",
+          "slug": "colorder"
         }
       ]
     },
+
     {
       "name": "Sheet Columns",
       "slug": "scols",
@@ -196,6 +207,11 @@
         {
           "slug": "uqrowcol1",
           "spans": ["rowid", "colid", "sheetid"]
+        },
+        
+        {
+          "slug": "uqsheetrow",
+          "spans": ["rowid", "sheetid"]
         }
       ]
     }

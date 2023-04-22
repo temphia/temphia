@@ -173,7 +173,7 @@
       profile_genrator={sheet_service.profile_genrator}
       on:add_column={doAddColumn}
       on:action_goto_history={() =>
-        app.nav.admin_data_activity(source, group, "sheets")}
+        app.nav.admin_data_activity(source, group, "scells")}
       on:action_goto_rawtable={() =>
         app.nav.data_render_table_loader(source, group)}
       on:add_row={doAddRow}

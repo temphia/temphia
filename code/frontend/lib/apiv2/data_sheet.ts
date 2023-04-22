@@ -22,6 +22,10 @@ export class DataSheetAPI {
     return this.http.post(`/data/sheet/${sheetid}/load`, options);
   }
 
+  query_sheet(sheetid: string, options: any) {
+    return this.http.post(`/data/sheet/${sheetid}/query`, options);
+  }
+
   get_row_relation(
     sheetid: string,
     rid: string,

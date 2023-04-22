@@ -17,7 +17,6 @@
     const { scrollTop, scrollTopMax } = container;
     if (scrollTop == 0) {
       dispatch("scroll_top");
-      console.log("@top", ev);
     } else if (scrollTopMax === scrollTop) {
       dispatch("scroll_bottom");
     }

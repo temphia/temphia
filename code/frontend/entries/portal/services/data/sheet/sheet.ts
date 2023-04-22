@@ -181,8 +181,8 @@ export class SheetService {
         return Number(a["__id"]) - Number(b["__id"]);
       });
 
-    this.min_row = rows[0].__id;
-    this.max_row = rows[rows.length - 1].__id;
+    this.min_row = (rows[0] || {}).__id || 0;
+    this.max_row = (rows[rows.length - 1] || {}).__id || 0;
 
     this.state.set({
       columns: data["columns"] || [],
@@ -300,9 +300,15 @@ export class SheetService {
       return;
     }
 
-    if (this.scroll_skip) {
+    if (this.scroll_skip()) {
       return;
     }
+
+    this.api.query_sheet(this.sheetid, {
+
+
+
+    })
   };
 
   scroll_bottom = () => {

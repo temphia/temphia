@@ -120,6 +120,8 @@ type JoinReq struct {
 	OnChild       string       `json:"on_child,omitempty"`
 	ParentFilters []FilterCond `json:"parent_ft,omitempty"`
 	ChildFilters  []FilterCond `json:"child_ft,omitempty"`
+	OrderBy       string       `json:"order_by,omitempty"`
+	Desc          bool         `json:"desc,omitempty"`
 }
 
 type MultiJoinReq struct {
@@ -129,6 +131,8 @@ type MultiJoinReq struct {
 	OnParent      string         `json:"on_parent,omitempty"`
 	ParentFilters []FilterCond   `json:"parent_ft,omitempty"`
 	Fragments     []JoinFragment `json:"fragments,omitempty"`
+	OrderBy       string         `json:"order_by,omitempty"`
+	Desc          bool           `json:"desc,omitempty"`
 }
 
 type JoinFragment struct {
