@@ -195,6 +195,8 @@
       on:action_search={doSearch}
       on:action_run_widget={doActionRunWidget}
       on:action_delete_trash={doRemoveRowId}
+      on:scroll_top={sheet_service.scroll_top}
+      on:scroll_bottom={sheet_service.scroll_bottom}
     />
   {/key}
 {/if}

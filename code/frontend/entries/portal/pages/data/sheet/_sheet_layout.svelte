@@ -10,6 +10,18 @@
   export let widgets: SheetWidget[];
 
   const dispatch = createEventDispatcher();
+
+  let container;
+
+  const on_scroll = (ev) => {
+    const { scrollTop, scrollTopMax } = container;
+    if (scrollTop == 0) {
+      dispatch("scroll_top");
+      console.log("@top", ev);
+    } else if (scrollTopMax === scrollTop) {
+      dispatch("scroll_bottom");
+    }
+  };
 </script>
 
 <div class="flex flex-col p-2 rounded">
@@ -95,7 +107,12 @@
     {/each}
   </div>
 
-  <div id="sheet-main" class="bg-white border rounded overflow-auto relative">
+  <div
+    id="sheet-main"
+    bind:this={container}
+    class="bg-white border rounded overflow-auto relative"
+    on:scroll={on_scroll}
+  >
     <slot />
   </div>
 </div>

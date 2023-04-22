@@ -17,6 +17,7 @@ import {
   SockdMessage,
 } from "../../../../../lib/sockd";
 import type { DataModification } from "../table";
+import { scroller } from "./scroll";
 
 export class SheetGroupService {
   source: string;
@@ -120,6 +121,12 @@ export class SheetService {
   state: Writable<SheetState>;
   api: DataSheetAPI;
   force_render_index: Writable<number>;
+
+  last_loading: number;
+  scroll_skip: () => boolean;
+  max_row: number;
+  min_row: number;
+
   profile_genrator: (string) => string;
   scroller?: (rowid: string) => void;
   close_big_modal?: () => void;
@@ -133,7 +140,6 @@ export class SheetService {
     this.group = group;
     this.sheetid = sheetid;
     this.profile_genrator = profile_genrator;
-
     this.api = group.data_sheet_api;
 
     this.state = writable({
@@ -147,6 +153,11 @@ export class SheetService {
 
     this.force_render_index = writable(0);
     this.state.subscribe((state) => console.log("@state", state));
+
+    this.last_loading = 0;
+    this.max_row = 0;
+    this.min_row = 0;
+    this.scroll_skip = scroller().skip;
   }
 
   init = async () => {
@@ -155,8 +166,14 @@ export class SheetService {
       return false;
     }
 
-    const cell: SheetCell[] = resp.data["cells"] || [];
-    const pcells = formatCells(cell);
+    this.apply(resp.data, {});
+
+    return true;
+  };
+
+  apply = (data: any, prevcells: object) => {
+    const cell: SheetCell[] = data["cells"] || [];
+    const pcells = { ...prevcells, ...formatCells(cell) };
 
     const rows = Object.keys(pcells)
       .map((v) => ({ __id: Number(v), sheetid: Number(this.sheetid) }))
@@ -164,16 +181,17 @@ export class SheetService {
         return Number(a["__id"]) - Number(b["__id"]);
       });
 
+    this.min_row = rows[0].__id;
+    this.max_row = rows[rows.length - 1].__id;
+
     this.state.set({
-      columns: resp.data["columns"] || [],
+      columns: data["columns"] || [],
       cells: pcells,
       rows,
       loading: false,
-      widgets: resp.data["widget_apps"] || [],
-      ref_columns: resp.data["reverse_ref_cols"] || [],
+      widgets: data["widget_apps"] || [],
+      ref_columns: data["reverse_ref_cols"] || [],
     });
-
-    return true;
   };
 
   add_sheet = async (name: string, opts: any) => {
@@ -274,6 +292,26 @@ export class SheetService {
       }
     } else {
       console.log("@load cell");
+    }
+  };
+
+  scroll_top = () => {
+    if (get(this.state).loading) {
+      return;
+    }
+
+    if (this.scroll_skip) {
+      return;
+    }
+  };
+
+  scroll_bottom = () => {
+    if (get(this.state).loading) {
+      return;
+    }
+
+    if (this.scroll_skip) {
+      return;
     }
   };
 

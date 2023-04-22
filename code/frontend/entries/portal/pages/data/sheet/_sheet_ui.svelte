@@ -38,6 +38,8 @@
   on:remove_sheet
   on:action_run_widget
   on:action_extra
+  on:scroll_top
+  on:scroll_bottom
 >
   <SheetInner
     on:add_column
