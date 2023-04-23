@@ -4,3 +4,4 @@ build/
 
 code/frontend/node_modules/
 code/frontend/public/build/
+dist/

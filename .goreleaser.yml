@@ -1,0 +1,59 @@
+project_name: temphia
+env:
+  - GO111MODULE=on
+builds:
+
+- id: temphia-darwin-amd64
+  binary: temphia
+  env:
+    - CGO_ENABLED=1
+    - CC=o64-clang
+    - CXX=o64-clang++
+  main: ./main.go
+  goos:
+    - darwin
+  goarch:
+    - amd64
+
+- id: temphia-darwin-arm64
+  binary: temphia
+  env:
+    - CGO_ENABLED=1
+    - CC=aarch64-apple-darwin21.4-clang
+    - CXX=aarch64-apple-darwin21.4-clang++
+  main: ./main.go
+  goos:
+    - darwin
+  goarch:
+    - arm64
+
+- id: temphia-linux
+  binary: temphia
+  env:
+    - CGO_ENABLED=1
+  main: ./main.go
+  goos:
+    - linux
+  goarch:
+    - amd64
+
+- id: temphia-windows
+  ldflags: -buildmode=exe
+  binary: temphia
+  env:
+    - CGO_ENABLED=1
+    - CC=x86_64-w64-mingw32-gcc
+    - CXX=x86_64-w64-mingw32-g++
+  main: ./main.go
+  goos:
+    - windows
+  goarch:
+    - amd64
+
+archives:
+- format: tar.gz
+  format_overrides:
+    - goos: windows
+      format: zip
+  name_template: "{{ .Binary }}-alpha-{{ .Os }}-{{ .Arch }}"
+  allow_different_binary_count: true
