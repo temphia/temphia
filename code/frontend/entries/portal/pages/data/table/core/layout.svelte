@@ -117,7 +117,7 @@
               onClick={() => dispatch("tb_clone")}
             />
             <ActionNormal
-              icon="refresh"
+              icon="trash"
               name="Delete"
               onClick={() => dispatch("tb_delete")}
             />

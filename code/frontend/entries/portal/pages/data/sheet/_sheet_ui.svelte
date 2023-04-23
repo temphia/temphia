@@ -40,6 +40,8 @@
   on:action_extra
   on:scroll_top
   on:scroll_bottom
+  on:action_clear_selects
+  on:action_clone
 >
   <SheetInner
     on:add_column
@@ -51,7 +53,7 @@
     {columns}
     {rows}
     {cells}
-    bind:selected_rows={selected_rows}
+    bind:selected_rows
     {folder_api}
   />
 </SheetLayout>

@@ -86,6 +86,19 @@
           icon="trash"
           name="Delete"
         />
+        <ActionNormal
+          onClick={() => dispatch("action_clone", selected_rows[0])}
+          icon="duplicate"
+          name="Clone"
+        />
+      {/if}
+
+      {#if selected_rows.length}
+        <ActionNormal
+          onClick={() => dispatch("action_clear_selects")}
+          icon="refresh"
+          name="Clear {selected_rows.length}"
+        />
       {/if}
     {/key}
 

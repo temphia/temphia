@@ -105,12 +105,14 @@
     });
   };
 
-  const doAddRow = () => {
+  const doAddRow = (dirty_data = {}) => {
     app.utils.big_modal_open(AddRow, {
       columns: $state.columns,
       service: sheet_service,
+      dirty_data,
       onSave: async (data) => {
         await sheet_service.add_row_cell(data);
+
 
         app.utils.big_modal_close();
         await sheet_service.init();
@@ -155,6 +157,20 @@
   const extraAction = () => {
     app.utils.small_modal_open(ExtraActions, { service: sheet_service });
   };
+
+  const clearSelects = () => {
+    selected_rows = [];
+  };
+
+  const cloneRow = () => {
+    const row = selected_rows[0];
+    if (!row) {
+      return;
+    }
+    const data = $state.cells[row] || {};
+    delete data["__id"];
+    doAddRow(data);
+  };
 </script>
 
 {#if loading || $state.loading}
@@ -197,6 +213,8 @@
       on:action_delete_trash={doRemoveRowId}
       on:scroll_top={sheet_service.scroll_top}
       on:scroll_bottom={sheet_service.scroll_bottom}
+      on:action_clear_selects={clearSelects}
+      on:action_clone={cloneRow}
     />
   {/key}
 {/if}

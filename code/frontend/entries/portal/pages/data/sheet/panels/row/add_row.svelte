@@ -9,8 +9,7 @@
   export let service: SheetService;
 
   export let open_column;
-
-  let dirty_data = {};
+  export  let dirty_data = {};
 </script>
 
 <Layout title="Add Row" onSave={async () => onSave(dirty_data)}>
