@@ -1,8 +1,8 @@
 <script lang="ts">
+  import Button from "../row/_button.svelte";
   export let title;
-  export let onClick;
-
-  let loading = false;
+  export let onSave;
+  export let onDelete = undefined;
 </script>
 
 <div class="flex flex-col h-full">
@@ -16,21 +16,12 @@
     <slot />
   </div>
 
-  <div class="flex justify-end border-t">
-    <button
-      on:click={async () => {
-        loading = true;
-        const resp = onClick();
-        if (resp instanceof Promise) {
-          await resp;
-        }
+  <div class="flex justify-end gap-2 border-t">
+    {#if onDelete}
+      <Button name="Delete" onClick={onDelete} color="red" />
+    {/if}
 
-        loading = false;
-      }}
-      class="px-2 py-1 font-bold text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:shadow-outline rounded mt-1 {loading
-        ? 'animate-bounce'
-        : ''} ">Save</button
-    >
+    <Button name="Save" onClick={onSave} />
   </div>
 </div>
 

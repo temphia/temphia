@@ -1,7 +1,13 @@
 <script lang="ts">
   export let modified = false;
   export let data = {};
-  $: _data = { ...data };
+
+  $: _data =
+    data === ""
+      ? {}
+      : typeof data === "string"
+      ? JSON.parse(data)
+      : { ...data };
 
   export const getData = () => ({ ..._data });
 

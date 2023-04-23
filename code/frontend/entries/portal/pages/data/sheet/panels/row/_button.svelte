@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let loading = true;
+  export let loading = false;
   export let onClick;
   export let name;
   export let color = "blue";

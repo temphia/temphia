@@ -64,7 +64,7 @@
   };
 </script>
 
-<Layout title="New Column" onClick={doOnAdd}>
+<Layout title="New Column" onSave={doOnAdd}>
   <div class="mb-4">
     <label class="block mb-2 text-sm font-bold text-gray-700" for="name"
       >Name</label
