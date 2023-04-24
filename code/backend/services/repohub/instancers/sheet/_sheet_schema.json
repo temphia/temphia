@@ -207,11 +207,6 @@
         {
           "slug": "uqrowcol1",
           "spans": ["rowid", "colid", "sheetid"]
-        },
-        
-        {
-          "slug": "uqsheetrow",
-          "spans": ["rowid", "sheetid"]
         }
       ]
     }
