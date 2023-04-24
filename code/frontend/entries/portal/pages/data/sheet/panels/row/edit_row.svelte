@@ -14,9 +14,11 @@
   export let onSave = async (data) => {};
   export let gotoSiblingSheet = (ssid, rowid) => {}
 
-
-
   let current_cells = cells[row.__id] || {};
+
+  $: console.log("@current_cells", current_cells);
+
+
 </script>
 
 <Layout
