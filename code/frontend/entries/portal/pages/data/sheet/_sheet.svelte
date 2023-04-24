@@ -131,7 +131,10 @@
   };
 
   const doSearch = () => {
-    app.utils.big_modal_open(SearchPanel, { service: sheet_service });
+    app.utils.big_modal_open(SearchPanel, {
+      service: sheet_service,
+      columns: $state.columns,
+    });
   };
 
   const doActionRunWidget = (ev) => {
@@ -208,7 +211,7 @@
         app.nav.admin_data_activity(source, group, "scells")}
       on:action_goto_rawtable={() =>
         app.nav.data_render_table_loader(source, group)}
-      on:add_row={doAddRow}
+      on:add_row={() => doAddRow()}
       on:edit_row={doEditRow}
       on:action_refresh={() => sheet_service.init()}
       on:add_sheet={doAddSheet}

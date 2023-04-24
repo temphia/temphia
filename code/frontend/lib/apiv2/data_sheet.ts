@@ -103,9 +103,7 @@ export class DataSheetAPI {
     return this.http.post(`/data/utils/user`, opts);
   };
 
-  search(sheetid: string, search: string) {
-    return this.http.post(`/data/sheet/${sheetid}/search`, {
-      search_term: search,
-    });
+  search(sheetid: string, opts: object) {
+    return this.http.post(`/data/sheet/${sheetid}/search`, opts);
   }
 }

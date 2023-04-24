@@ -295,8 +295,8 @@ export class SheetService {
     return this.api.get_row_relation(this.sheetid, rid, refsheet, refcol);
   };
 
-  search = (search: string) => {
-    return this.api.search(this.sheetid, search);
+  search = (opts: object) => {
+    return this.api.search(this.sheetid, opts );
   };
 
   goto_row = (rowid: string) => {

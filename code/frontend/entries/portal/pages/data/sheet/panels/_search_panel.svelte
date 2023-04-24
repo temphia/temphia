@@ -4,18 +4,39 @@
   import { formatRefCells } from "../../../../services/data/sheet/format";
   import { LoadingSpinner } from "../../../admin/core";
   import SheetInner from "../_sheet_inner.svelte";
+  import { SheetColTypeText, SheetColumn } from "../sheets";
 
   export let service: SheetService;
+  export let columns: SheetColumn[];
 
   let searchstring = "";
   let loading = false;
-
+  let column = "";
   let data;
+
+  let count = "10";
 
   const load = async () => {
     loading = true;
 
-    const resp = await service.search(searchstring);
+    let column_id = 0;
+    let column_type = SheetColTypeText;
+
+    if (column) {
+      const fcol = columns.filter((c) => c.__id !== Number(column))[0];
+      if (fcol) {
+        column_id = fcol.__id;
+        column_type = fcol.ctype;
+      }
+    }
+
+    const resp = await service.search({
+      search_term: searchstring,
+      column_id,
+      column_type,
+      count: Number(count),
+    });
+
     if (!resp.ok) {
       console.log("@resp", resp);
       return;
@@ -56,10 +77,20 @@
   <div class="flex flex-wrap text-sm p-1 gap-1">
     <label class="inline-flex items-center">
       <span class="ml-2 text-gray-700">Count</span>
-      <select class="font-medium rounded text-sm p-1">
+      <select bind:value={count} class="font-medium rounded text-sm p-1">
         <option value="10">10</option>
         <option value="50">50</option>
         <option value="100">100</option>
+      </select>
+    </label>
+
+    <label class="inline-flex items-center">
+      <span class="ml-2 text-gray-700">Column</span>
+      <select bind:value={column} class="font-medium rounded text-sm p-1">
+        <option value="">*</option>
+        {#each columns as col}
+          <option value={col.__id}>{col.name}</option>
+        {/each}
       </select>
     </label>
   </div>
@@ -78,7 +109,7 @@
       pick_label="goto"
       on:pick_row={(ev) => {
         service.goto_row(ev.detail["__id"]);
-        service.close_big_modal()
+        service.close_big_modal();
       }}
     />
   </div>

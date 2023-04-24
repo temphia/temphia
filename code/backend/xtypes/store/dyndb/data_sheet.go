@@ -33,6 +33,9 @@ type FTSQuerySheet struct {
 	Group      string `json:"group,omitempty"`
 	SheetId    int64  `json:"sheet_id,omitempty"`
 	SearchTerm string `json:"search_term,omitempty"`
+	Count      int32  `json:"count,omitempty"`
+	ColumnId   int64  `json:"column_id,omitempty"`
+	ColumnType string `json:"column_type,omitempty"`
 }
 
 type QuerySheetReq struct {
