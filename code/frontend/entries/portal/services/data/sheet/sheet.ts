@@ -305,7 +305,7 @@ export class SheetService {
         this.scroller(rowid);
       }
     } else {
-      this.init(Number(rowid));
+      this.init(Number(rowid)-1);
     }
   };
 
