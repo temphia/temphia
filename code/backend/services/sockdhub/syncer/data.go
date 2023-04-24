@@ -51,6 +51,16 @@ func (s *DataSyncer) PushNewRow(source, tenantId, groupId, table string, data ma
 	})
 }
 
+func (s *DataSyncer) PushNewRowBatch(source, tenantId, groupId, table string, ids []int64, data []map[string]any) error {
+	return s.pushRowMod(source, tenantId, groupId, &RowMod{
+		Table:   table,
+		Rows:    ids,
+		ModType: DataModTypeInsert,
+		Data:    data,
+	})
+
+}
+
 func (s *DataSyncer) PushUpdateRow(source, tenantId, groupId, table string, id int64, data map[string]any) error {
 	return s.pushRowMod(source, tenantId, groupId, &RowMod{
 		Table:   table,

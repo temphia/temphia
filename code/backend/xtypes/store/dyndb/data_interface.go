@@ -54,6 +54,7 @@ type DynSource interface {
 
 type DataTableHub interface {
 	NewRow(txid uint32, req NewRowReq) (int64, error)
+	NewBatchRows(txid uint32, req NewBatchRowReq) ([]int64, error)
 	GetRow(txid uint32, req GetRowReq) (map[string]any, error)
 	UpdateRow(txid uint32, req UpdateRowReq) (map[string]any, error)
 	DeleteRowBatch(txid uint32, req DeleteRowBatchReq) ([]int64, error)

@@ -53,6 +53,25 @@ func (t *Table) NewRow(txid uint32, req dyndb.NewRowReq) (int64, error) {
 	return id, nil
 }
 
+func (t *Table) NewBatchRows(txid uint32, req dyndb.NewBatchRowReq) ([]int64, error) {
+
+	ids, err := t.inner.NewBatchRows(txid, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if txid != 0 || req.NoReact {
+		return ids, nil
+	}
+
+	err = t.handle.SockdHub.PushNewRowBatch(t.source, req.TenantId, req.Group, req.Table, ids, req.Data)
+	if err != nil {
+		pp.Println(err)
+	}
+
+	return ids, nil
+}
+
 func (t *Table) GetRow(txid uint32, req dyndb.GetRowReq) (map[string]any, error) {
 	if txid != 0 || req.SkipCache {
 		return t.inner.GetRow(txid, req)
