@@ -39,7 +39,14 @@
 
     sheets = gsvc.sheets;
 
-    const ssvc = await gsvc.get_sheet_service(sheetid);
+    let rowid = undefined;
+
+    if (app.nav.options) {
+      rowid = app.nav.options["row_cursor_id"];
+      app.nav.options = {};
+    }
+
+    const ssvc = await gsvc.get_sheet_service(sheetid, rowid);
     sheet_service = ssvc;
     state = ssvc.state;
     sheet_service.force_render_index;
@@ -87,7 +94,10 @@
   };
 
   const doEditColumn = (ev) => {
-    app.utils.small_modal_open(EditColumn, { column: ev.detail, service: sheet_service });
+    app.utils.small_modal_open(EditColumn, {
+      column: ev.detail,
+      service: sheet_service,
+    });
   };
 
   const doEditRow = (ev) => {
@@ -97,6 +107,7 @@
       service: sheet_service,
       row: ev.detail,
       folder_api,
+      gotoSiblingSheet: gotoSheetRow,
       onSave: async (data) => {
         await sheet_service.update_row_cell(ev.detail["__id"], data);
         app.utils.big_modal_close();
@@ -112,7 +123,6 @@
       dirty_data,
       onSave: async (data) => {
         await sheet_service.add_row_cell(data);
-
 
         app.utils.big_modal_close();
         await sheet_service.init();
@@ -170,6 +180,12 @@
     const data = $state.cells[row] || {};
     delete data["__id"];
     doAddRow(data);
+  };
+
+  const gotoSheetRow = (nextsheet, rowid) => {
+    app.nav.data_render_sheet(source, group, nextsheet, {
+      row_cursor_id: rowid,
+    });
   };
 </script>
 

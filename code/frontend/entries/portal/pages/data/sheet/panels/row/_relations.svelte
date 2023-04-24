@@ -4,6 +4,7 @@
   import { formatRefCells } from "../../../../../services/data/sheet/format";
 
   export let service: SheetService;
+  export let gotoSiblingSheet;
   export let rid;
 
   const state = service.state;
@@ -59,9 +60,9 @@
           rows={data["rows"] || []}
           selected_rows={[]}
           pick_label="goto"
-          on:pick_row={async (ev) => {
-            // service.goto_row(ev.detail["__id"]);
-            // service.close_small_modal();
+          on:pick_row={(ev) => {
+            gotoSiblingSheet && gotoSiblingSheet();
+            service.close_small_modal()
           }}
         />
       </div>

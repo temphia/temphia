@@ -5,15 +5,16 @@
   import EditRow from "./_edit_row.svelte";
   import Relations from "./_relations.svelte";
   import History from "./_history.svelte";
-  import { LoadingSpinner } from "../../../../admin/core";
 
   export let columns: SheetColumn[];
   export let row: SheetRow;
   export let cells: { [_: number]: { [_: string]: SheetCell } };
   export let service: SheetService;
+  
   export let onSave = async (data) => {};
+  export let gotoSiblingSheet = (ssid, rowid) => {}
 
-  let open_column;
+
 
   let current_cells = cells[row.__id] || {};
 </script>
@@ -32,7 +33,7 @@
   </svelte:fragment>
 
   <svelte:fragment slot="relation">
-    <Relations {service} rid={row.__id} />
+    <Relations {service} rid={row.__id} {gotoSiblingSheet} />
   </svelte:fragment>
 
   <svelte:fragment slot="history">

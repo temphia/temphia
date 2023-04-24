@@ -81,7 +81,7 @@ export class SheetGroupService {
     console.log("@sheet_sockd", payload);
   };
 
-  get_sheet_service = async (sheetid: string) => {
+  get_sheet_service = async (sheetid: string, gotorow?: number) => {
     let ssvc = this.active_sheets.get(sheetid);
     if (ssvc) {
       return ssvc;
@@ -89,7 +89,7 @@ export class SheetGroupService {
 
     ssvc = new SheetService(this, sheetid, this.profile_genrator);
 
-    await ssvc.init();
+    await ssvc.init(gotorow);
 
     this.active_sheets.set(sheetid, ssvc);
     return ssvc;
@@ -161,8 +161,13 @@ export class SheetService {
     this.scroll_skip = scroller().skip;
   }
 
-  init = async () => {
-    const resp = await this.group.data_sheet_api.load_sheet(this.sheetid, {});
+  init = async (gotorow?: number) => {
+    const opts = {};
+    if (gotorow) {
+      opts["row_cursor_id"] = gotorow;
+    }
+
+    const resp = await this.api.load_sheet(this.sheetid, opts);
     if (!resp.ok) {
       return false;
     }
@@ -300,7 +305,7 @@ export class SheetService {
         this.scroller(rowid);
       }
     } else {
-      console.log("@load cell");
+      this.init(Number(rowid));
     }
   };
 
