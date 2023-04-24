@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getContext, onMount, tick } from "svelte";
+  import { getContext, tick } from "svelte";
   import { get, Writable } from "svelte/store";
   import { LoadingSpinner, PortalService } from "../../admin/core";
   import SheetUi from "./_sheet_ui.svelte";
@@ -156,9 +156,24 @@
   };
 
   const refPreview = ({ detail }) => {
+
+    console.log("@ref_preview", detail)
+
+
+
+    const sheets = get(sheet_service.group.sheets);
+    const sheet = sheets.filter((v) => v.__id != detail["sheetid"])[0];
+
     app.utils.small_modal_open(RefRecord, {
       service: sheet_service,
-      record: detail,
+      onYes: () => {
+        gotoSheetRow(sheet.__id, Number(detail["numval"]) -1);
+        app.utils.small_modal_close();
+      },
+      sheet_name: sheet.name,
+      sheet_id: sheet.__id,
+      row_id: detail["numval"],
+      row_name: detail["value"] || "",
     });
   };
 

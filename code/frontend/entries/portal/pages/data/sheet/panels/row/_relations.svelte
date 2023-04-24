@@ -2,7 +2,6 @@
   import type { SheetService } from "../../../../../services/data";
   import SheetInner from "../../_sheet_inner.svelte";
   import { formatRefCells } from "../../../../../services/data/sheet/format";
-
   export let service: SheetService;
   export let gotoSiblingSheet;
   export let rid;
@@ -60,9 +59,10 @@
           rows={data["rows"] || []}
           selected_rows={[]}
           pick_label="goto"
-          on:pick_row={(ev) => {
-            gotoSiblingSheet && gotoSiblingSheet();
-            service.close_small_modal()
+          on:pick_row={({ detail }) => {
+            gotoSiblingSheet &&
+              gotoSiblingSheet(selected, Number(detail["__id"]));
+            service.close_big_modal();
           }}
         />
       </div>
