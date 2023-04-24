@@ -432,6 +432,7 @@ func (s *Sheet) UpdateSheetColumn(txid uint32, sid, cid int64, userId string, da
 		TenantId: s.tenantId,
 		Id:       cid,
 		Group:    s.group,
+		Version:  -1,
 		Table:    dyndb.SheetColumnTable,
 		Data:     data,
 		ModCtx: dyndb.ModCtx{

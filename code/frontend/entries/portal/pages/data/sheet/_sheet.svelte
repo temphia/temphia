@@ -87,7 +87,7 @@
   };
 
   const doEditColumn = (ev) => {
-    app.utils.small_modal_open(EditColumn, { column: ev.detail });
+    app.utils.small_modal_open(EditColumn, { column: ev.detail, service: sheet_service });
   };
 
   const doEditRow = (ev) => {

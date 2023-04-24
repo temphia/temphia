@@ -13,4 +13,5 @@ export class PageQueryService {
   submit = (data: any) => {
     return this.env.PreformAction("submit", data);
   };
+
 }

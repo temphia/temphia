@@ -27,7 +27,7 @@
 
 <Layout
   title="Edit Column {column.__id}"
-  onSave={async (data) => {
+  onSave={async () => {
     await service.update_column(String(column.__id), newdata);
     service.close_small_modal();
     service.init();
@@ -46,6 +46,7 @@
       class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
       id="name"
       type="text"
+      on:change={setValue("name")}
       value={column.name}
     />
   </div>
