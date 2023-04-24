@@ -78,7 +78,18 @@ func (s *SheetInstancer) instanceInner(tenantId string, schemaData *xbprint.NewS
 
 	dropts.SeedType = ""
 	dropts.GroupName = schemaData.Name
-	resp, err := s.dataInstancer.DirectInstance(tenantId, dropts, &parsedSchema)
+
+	resp, err := s.dataInstancer.DirectInstance(tenantId, dropts, &xbprint.NewTableGroup{
+		Name:          schemaData.Name,
+		Slug:          parsedSchema.Slug,
+		Description:   schemaData.Info,
+		Tables:        parsedSchema.Tables,
+		ExecOrder:     parsedSchema.ExecOrder,
+		Renderer:      parsedSchema.Renderer,
+		CabinetSource: parsedSchema.CabinetSource,
+		CabinetFolder: parsedSchema.CabinetFolder,
+	})
+
 	if err != nil {
 		return nil, err
 	}
