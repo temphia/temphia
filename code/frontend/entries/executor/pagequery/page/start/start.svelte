@@ -1,13 +1,13 @@
 <script lang="ts">
   import Ceditor from "../../../../xcompo/ceditor/ceditor.svelte";
-  import type { LoadResponse } from "../../service";
+  import type { LoadResponse, ExecData } from "../../service";
   import ExecRows from "./_exec_rows.svelte";
   import Paramform from "./_paramform.svelte";
   import Templates from "./_templates.svelte";
   export let onSubmit = async (data): Promise<any> => {};
   export let onNext = (data) => {};
   export let data: LoadResponse;
-  export let startup_payload;
+  export let startup_payload: ExecData;
 
   let editor;
   let getParamData;
@@ -50,9 +50,13 @@
 
   <Templates {data} />
 
-  <Paramform title={data.title} />
+  <Paramform title={data.title} bind:getParamData />
 
-  <ExecRows cells={{}} columns={[]} rows={[]} />
+  <ExecRows
+    cells={startup_payload.cells}
+    columns={startup_payload.columns}
+    rows={startup_payload.rows}
+  />
 
   <div class="flex flex-wrap justify-end text-sm items-center gap-2">
     <button

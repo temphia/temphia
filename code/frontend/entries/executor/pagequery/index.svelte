@@ -14,6 +14,8 @@
   export let env: Environment;
 
   const service = new PageQueryService(env);
+  console.log("@pagequery", service) 
+  
 
   let mode: "START" | "END" = "START";
   let loading = false;
