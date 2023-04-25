@@ -32,7 +32,7 @@ type DGModule struct {
 	group    string
 }
 
-func (d *DGModule) IPC(method string, path string, args xtypes.LazyData) (xtypes.LazyData, error) {
+func (d *DGModule) Handle(method string, args xtypes.LazyData) (xtypes.LazyData, error) {
 
 	if MethodTicket == method {
 		app := d.binder.GetApp().(xtypes.App)
@@ -56,7 +56,7 @@ func (d *DGModule) IPC(method string, path string, args xtypes.LazyData) (xtypes
 		return d.response(tok, err)
 	}
 
-	txid, table, rowid := d.extractPath(path)
+	txid, table, rowid := d.extractPath("FXIME")
 
 	dhub := d.dynsrc.GetDataTableHub(d.tenantId, d.group)
 

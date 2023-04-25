@@ -13,7 +13,7 @@ type LogProxy struct {
 	resource *entities.Resource
 }
 
-func (l *LogProxy) IPC(method string, path string, args xtypes.LazyData) (xtypes.LazyData, error) {
+func (l *LogProxy) Handle(method string, args xtypes.LazyData) (xtypes.LazyData, error) {
 
 	ls := l.app.GetDeps().LogService().(logx.Service)
 	lproxy := ls.GetLogProxy()

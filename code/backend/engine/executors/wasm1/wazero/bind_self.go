@@ -55,16 +55,33 @@ func SelfLinkExec(ctx context.Context, nPtr, nLen, mPtr, mLen, dPtr, dLen, async
 	return 1
 }
 
-func SelfModuleExec(ctx context.Context, nPtr, nLen, mPtr, mLen, pPtr, pLen, dPtr, dLen, respOffset, respLen int32) int32 {
+func SelfNewModule(ctx context.Context, nPtr, nLen, dPtr, dLen, respOffset, respLen int32) int32 {
+
+	e := getCtx(ctx)
+
+	out, err := e.bindSelf.SelfNewModule(
+		e.getString(nPtr, nLen),
+		lazydata.NewJsonData(e.getBytes(dPtr, dLen)),
+	)
+	if err != nil {
+		e.writeError(respOffset, respLen, err)
+		return 0
+	}
+
+	e.writeBytesNPtr([]byte(`ok`), respOffset, respLen)
+	return out
+}
+
+func SelfModuleExec(ctx context.Context, mid int32, mPtr, mLen, dPtr, dLen, respOffset, respLen int32) int32 {
 
 	e := getCtx(ctx)
 
 	out, err := e.bindSelf.SelfModuleExec(
-		e.getString(nPtr, nLen),
+		mid,
 		e.getString(mPtr, mLen),
-		e.getString(pPtr, pLen),
 		lazydata.NewJsonData(e.getBytes(dPtr, dLen)),
 	)
+
 	if err != nil {
 		e.writeError(respOffset, respLen, err)
 		return 0
@@ -77,6 +94,7 @@ func SelfModuleExec(ctx context.Context, nPtr, nLen, mPtr, mLen, pPtr, pLen, dPt
 	}
 
 	e.writeBytesNPtr(bytes, respOffset, respLen)
+
 	return 1
 }
 

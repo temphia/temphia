@@ -212,17 +212,34 @@ func SelfLinkExec(name, method string, data []byte, async, detached bool) ([]byt
 	return nil, getErr(respOffset)
 }
 
-func SelfModuleExec(name, method, path string, data []byte) ([]byte, error) {
+func SelfNewModule(name string, data []byte) (int32, error) {
 
 	var respOffset, respLen int32
 
 	nptr, nlen := stringToPtr(name)
-	mptr, mlen := stringToPtr(method)
-	pptr, plen := stringToPtr(path)
 
 	dptr, dlen := bytesToPtr(data)
 
-	if _self_module_exec(nptr, nlen, mptr, mlen, pptr, plen, dptr, dlen, intAddr(&respOffset), intAddr(&respLen)) {
+	mid := _self_new_module(nptr, nlen, dptr, dlen, intAddr(&respOffset), intAddr(&respLen))
+
+	if mid == 0 {
+		return 0, getErr(respOffset)
+	}
+
+	_ = getBytes(respOffset) // to force delete cached []byte
+
+	return mid, nil
+}
+
+func SelfModuleExec(mid int32, method string, data []byte) ([]byte, error) {
+
+	var respOffset, respLen int32
+
+	mptr, mlen := stringToPtr(method)
+
+	dptr, dlen := bytesToPtr(data)
+
+	if _self_module_exec(mid, mptr, mlen, dptr, dlen, intAddr(&respOffset), intAddr(&respLen)) {
 		return getBytes(respOffset), nil
 	}
 
@@ -262,8 +279,12 @@ func _self_out_links(respOffset, respLen int32) bool
 func _self_link_exec(nPtr, nLen, mPtr, mLen, dPtr, dLen, async, detached, respOffset, respLen int32) bool
 
 //go:wasm-module temphia1
-//export self_module_exec
-func _self_module_exec(nPtr, nLen, mPtr, mLen, pPtr, pLen, dPtr, dLen, respOffset, respLen int32) bool
+//export self_new_module
+func _self_new_module(nPtr, nLen, dPtr, dLen, respOffset, respLen int32) int32
+
+//go:wasm-module temphia1
+//export self_new_module
+func _self_module_exec(mid, mPtr, mLen, dPtr, dLen, respOffset, respLen int32) bool
 
 //go:wasm-module temphia1
 //export self_fork_exec

@@ -17,7 +17,8 @@ type SelfBindings struct {
 	runtime etypes.Runtime
 	root    *Binder
 
-	activeModules map[string]etypes.Module
+	activeModules    map[int32]etypes.Module
+	activeModCounter int32
 }
 
 func NewSelfBindings(handle *handle.Handle, root *Binder) SelfBindings {
@@ -29,7 +30,7 @@ func NewSelfBindings(handle *handle.Handle, root *Binder) SelfBindings {
 		cabhub:        handle.Deps.CabinetHub,
 		db:            handle.Deps.Corehub,
 		runtime:       handle.Deps.Runtime,
-		activeModules: make(map[string]etypes.Module),
+		activeModules: make(map[int32]etypes.Module),
 	}
 }
 
@@ -65,8 +66,12 @@ func (b *SelfBindings) SelfDeleteDataFile(file string) error {
 	return b.selfDeleteDataFile(file)
 }
 
-func (b *SelfBindings) SelfModuleExec(name, method, path string, data xtypes.LazyData) (xtypes.LazyData, error) {
-	return b.selfModuleExec(name, method, path, data)
+func (b *SelfBindings) SelfNewModule(name string, data xtypes.LazyData) (int32, error) {
+	return b.selfNewModule(name, data)
+}
+
+func (b *SelfBindings) SelfModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error) {
+	return b.selfModuleExec(mid, method, data)
 }
 
 func (b *SelfBindings) SelfInLinks() ([]bindx.Link, error) {

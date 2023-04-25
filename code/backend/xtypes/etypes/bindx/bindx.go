@@ -91,7 +91,8 @@ type Self interface {
 	SelfOutLinks() ([]Link, error)
 
 	SelfLinkExec(name, method string, data xtypes.LazyData, async, detached bool) (xtypes.LazyData, error)
-	SelfModuleExec(name, method, path string, data xtypes.LazyData) (xtypes.LazyData, error)
+	SelfNewModule(name string, data xtypes.LazyData) (int32, error)
+	SelfModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error)
 
 	SelfForkExec(method string, data []byte) error
 }
