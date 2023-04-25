@@ -3,6 +3,7 @@
   import Editor from "./_editor.svelte";
   import ExecRows from "./_exec_rows.svelte";
   import Paramform from "./_paramform.svelte";
+  import Tabbed from "./_tabbed.svelte";
 
   export let onSubmit = async (data): Promise<any> => {};
   export let onNext = (data) => {};
@@ -11,13 +12,17 @@
 
   let getParamData;
   let getCodeValue;
+  let tabmode;
 
   let loading = false;
   let message = "";
 
   const submit = async () => {
     let code = getCodeValue();
-    const param_data = getParamData();
+    let param_data = {};
+    if (getParamData) {
+      param_data = getParamData();
+    }
 
     loading = true;
     const resp = await onSubmit({
@@ -40,13 +45,17 @@
 
   <Editor {data} bind:getCodeValue />
 
-  <Paramform title={data.title} bind:getParamData />
+  <Tabbed modes={["Params", "Context"]} bind:mode={tabmode} />
 
-  <ExecRows
-    cells={startup_payload.cells}
-    columns={startup_payload.columns}
-    rows={startup_payload.rows}
-  />
+  {#if tabmode === "Params"}
+    <Paramform title={data.title} bind:getParamData />
+  {:else}
+    <ExecRows
+      cells={startup_payload.cells}
+      columns={startup_payload.columns}
+      rows={startup_payload.rows}
+    />
+  {/if}
 
   <div class="flex flex-wrap justify-end text-sm items-center gap-2">
     <button
