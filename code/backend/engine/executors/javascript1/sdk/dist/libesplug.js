@@ -275,8 +275,9 @@ var self_self = {
     get_resource: function (name) { return _self_get_resource(name); },
     inlinks: function () { return _self_inlinks(); },
     outlinks: function () { return _self_outlinks(); },
-    module_execute: function (name, method, path, data) {
-        return _self_module_execute(name, method, path, data);
+    new_module: function (name, data) { return _self_new_module(name, data); },
+    module_execute: function (mid, method, data) {
+        return _self_module_execute(mid, method, data);
     },
     link_execute: function (name, method, path, data, async, detached) { return _self_link_execute(name, method, path, data, async, detached); },
     fork_execute: function (method, data) { return _self_fork_execute(method, data); }

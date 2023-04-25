@@ -2,12 +2,14 @@ declare function _self_list_resource(): [any, string];
 declare function _self_get_resource(name: string): [any, string];
 declare function _self_inlinks(): [any, string];
 declare function _self_outlinks(): [any, string];
+declare function _self_new_module(name: string, data: any): [number, string];
+
 declare function _self_module_execute(
-  name: string,
+  mid: number,
   method: string,
-  path: string,
   data: any
 ): [any, string];
+
 declare function _self_link_execute(
   name: string,
   method: string,
@@ -23,8 +25,10 @@ export const self = {
   get_resource: (name: string) => _self_get_resource(name),
   inlinks: () => _self_inlinks(),
   outlinks: () => _self_outlinks(),
-  module_execute: (name: string, method: string, path: string, data: any) =>
-    _self_module_execute(name, method, path, data),
+  new_module: (name: string, data: any) => _self_new_module(name, data),
+  module_execute: (mid: number, method: string, data: any) =>
+    _self_module_execute(mid, method, data),
+
   link_execute: (
     name: string,
     method: string,
