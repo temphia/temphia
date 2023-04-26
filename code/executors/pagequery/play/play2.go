@@ -7,11 +7,11 @@ import (
 	"github.com/k0kubun/pp"
 )
 
-type MyValue struct {
+type MyValue2 struct {
 	Test string `json:"test,omitempty"`
 }
 
-func main1() {
+func main() {
 
 	rt := goja.New()
 	rt.SetFieldNameMapper(goja.TagFieldNameMapper("json", true))
@@ -31,7 +31,15 @@ func main1() {
 	*/
 
 	const hook = `
+
+
+
+
 	function hook() {
+
+		throw new Error('This is how its done!');
+
+
 		const mv = {
 			"test": "mnop"
 		};
@@ -49,7 +57,7 @@ func main1() {
 		return
 	}
 
-	mv := &MyValue{}
+	mv := &MyValue2{}
 
 	mval := map[string]any{}
 
@@ -63,3 +71,6 @@ func main1() {
 	pp.Println("@export_to", mval)
 
 }
+
+// OUTPUT
+// "ERR" "Error: This is how its done! at hook (<eval>:8:9(3))"
