@@ -53,6 +53,7 @@ export interface TableExecData {
   invoker_type: "data_table";
   table_id: string;
   data_group: string;
+  source: string
 
   cells: { [_: string]: { [_: string]: any } };
   rows: number[];

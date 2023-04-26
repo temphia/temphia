@@ -27,6 +27,7 @@ export class TableService {
   data_api: DataAPI;
   folder_api: FolderTktAPI;
   state: TableState;
+  source: string
 
   data_widgets: object[];
   rev_ref_columns: object[];
@@ -43,6 +44,7 @@ export class TableService {
     table_slug: string;
     group_slug: string;
     data_api: DataAPI;
+    source: string
     folder_api: FolderTktAPI;
     open_modal: (compo: any, props: object) => void;
     close_modal: () => void;
@@ -53,6 +55,7 @@ export class TableService {
     this.group_slug = opts.group_slug;
     this.data_api = opts.data_api;
     this.folder_api = opts.folder_api;
+    this.source = opts.source;
     this._open_modal = opts.open_modal;
     this._close_modal = opts.close_modal;
     this.profile_generator = opts.profile_generator;
@@ -321,6 +324,7 @@ export class TableService {
       rows: rows,
       table_id: this.table_slug,
       columns: Object.values(state.indexed_column),
+      source: this.source,
     };
   }
 }

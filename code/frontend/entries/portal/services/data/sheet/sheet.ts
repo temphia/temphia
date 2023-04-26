@@ -369,6 +369,7 @@ export class SheetService {
       cells,
       columns: state.columns,
       rows: rows.map((r) => ({ __id: r, sheetid: Number(this.sheetid) })),
+      source: this.group.source,
     };
   }
 }

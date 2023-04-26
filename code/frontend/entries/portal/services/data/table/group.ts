@@ -96,6 +96,7 @@ export class GroupService {
         close_modal: this.close_modal,
         open_modal: this.open_modal,
         profile_generator: this.profile_generator,
+        source: this.source,
       });
 
       await tservice.init();
