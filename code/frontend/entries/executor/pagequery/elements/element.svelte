@@ -3,12 +3,17 @@
   import HeroCard from "./card/hero.svelte";
   import MetricCard from "./card/metric.svelte";
   import AutoTable from "./table/auto.svelte";
+  import Sheet from "./table/sheet.svelte";
+  import ChartGraph from "./chart/chart.svelte";
+  import Dump from "./dump/dump.svelte";
 
   import type { Element } from "../service";
 
-  import ChartGraph from "./chart/chart.svelte";
+
   export let element: Element;
   export let data: any;
+
+
 </script>
 
 {#if element.type === "hero_card"}
@@ -19,6 +24,10 @@
   <ChartGraph {data} {element} />
 {:else if element.type === "auto_table"}
   <AutoTable {data} {element} />
+{:else if element.type === "sheet_table"}
+  <Sheet {data} {element} />
+{:else if element.type === "dump"}
+  <Dump />
 {:else}
   <div>Not Impl</div>
 {/if}
