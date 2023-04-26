@@ -37,5 +37,7 @@ export interface SubmitRequest {
 export interface SubmitResponse {
   stage: string;
   data: { [_: string]: any };
-  elements: { [_: string]: any };
+  elements: Element[];
 }
+
+

@@ -7,9 +7,9 @@ import (
 )
 
 type ctxResponse struct {
-	Stage    string             `json:"stage,omitempty"`
-	Data     map[string]any     `json:"data,omitempty"`
-	Elements map[string]Element `json:"elements,omitempty"`
+	Stage    string         `json:"stage,omitempty"`
+	Data     map[string]any `json:"data,omitempty"`
+	Elements []Element      `json:"elements,omitempty"`
 }
 
 type PqLoadCtx struct {

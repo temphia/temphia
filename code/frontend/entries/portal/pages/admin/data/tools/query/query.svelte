@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { Router } from "svelte-hash-router";
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import { getContext } from "svelte";
   import { CEditor, PortalService } from "../../../core";
