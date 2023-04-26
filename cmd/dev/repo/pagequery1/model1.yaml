@@ -1,14 +1,20 @@
 title: example1
 stages:
-  first:
+  "Calculate Total Xyz":
     script: >
-      core.Log("this is first1");
-    about: First one.
+      (function(){
+        core.Log("this is first1");
+      })();
+    about: This teplate calculates total xyz inside given to from range.
     data: {}
-    parameters: {}
+    parameters:
+      from: date
+      to: date
   second:
     script: >
-      core.Log("this is first1");
+      (function(){
+        core.Log("this is second");
+      })();
     about: Second one.
     data: {}
     parameters: {}

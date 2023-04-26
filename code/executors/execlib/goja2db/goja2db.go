@@ -47,14 +47,12 @@ func (ctx *goja2db) bindTable() {
 }
 
 func (ctx *goja2db) bindSheet() {
-	ctx.jsruntime.Set("query_sheet", ctx.querySheet)
 	ctx.jsruntime.Set("list_sheet_group", ctx.listSheetGroup)
 	ctx.jsruntime.Set("list_sheet", ctx.listSheet)
 	ctx.jsruntime.Set("new_sheet", ctx.newSheet)
 	ctx.jsruntime.Set("get_sheet", ctx.getSheet)
 	ctx.jsruntime.Set("update_sheet", ctx.updateSheet)
 	ctx.jsruntime.Set("delete_sheet", ctx.deleteSheet)
-
 	ctx.jsruntime.Set("list_sheet_column", ctx.listSheetColumn)
 	ctx.jsruntime.Set("new_sheet_column", ctx.newSheetColumn)
 	ctx.jsruntime.Set("get_sheet_column", ctx.getSheetColumn)

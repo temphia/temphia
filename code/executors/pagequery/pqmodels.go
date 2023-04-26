@@ -22,24 +22,24 @@ type Element struct {
 }
 
 type LoadRequest struct {
-	ExecData map[string]any `json:"exec_data,omitempty" yaml:"exec_data,omitempty"`
+	ExecData map[string]any `json:"exec_data,omitempty"`
 }
 
 type LoadResponse struct {
-	Title      string                `json:"name,omitempty" yaml:"name,omitempty"`
-	Stages     map[string]QueryStage `json:"stages,omitempty" yaml:"stages,omitempty"`
-	FirstStage string                `json:"first_stage,omitempty" yaml:"first_stage,omitempty"`
+	Title      string                `json:"name,omitempty"`
+	Stages     map[string]QueryStage `json:"stages,omitempty"`
+	FirstStage string                `json:"first_stage,omitempty"`
 }
 
 type SubmitRequest struct {
-	Stage     string            `json:"stage,omitempty" yaml:"stage,omitempty"`
-	Script    string            `json:"script,omitempty" yaml:"script,omitempty"`
-	ExecData  map[string]any    `json:"exec_data,omitempty" yaml:"exec_data,omitempty"`
-	ParamData map[string]string `json:"param_data,omitempty" yaml:"param_data,omitempty"`
+	Stage     string            `json:"stage,omitempty"`
+	Script    string            `json:"script,omitempty"`
+	ExecData  map[string]any    `json:"exec_data,omitempty"`
+	ParamData map[string]string `json:"param_data,omitempty"`
 }
 
 type SubmitResponse struct {
-	Stage    string             `json:"stage,omitempty" yaml:"stage,omitempty"`
-	Data     map[string]any     `json:"data,omitempty" yaml:"data,omitempty"`
-	Elements map[string]Element `json:"elements,omitempty" yaml:"elements,omitempty"`
+	Stage    string             `json:"stage,omitempty"`
+	Data     map[string]any     `json:"data,omitempty"`
+	Elements map[string]Element `json:"elements,omitempty"`
 }

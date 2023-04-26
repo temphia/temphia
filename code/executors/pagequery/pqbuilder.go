@@ -83,7 +83,52 @@ func (pg *PgBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 }
 
 func (pg *PgBuilder) IfaceFile() (*etypes.ExecutorIface, error) {
-	return &etypes.ExecutorIface{}, nil
+	return &etypes.ExecutorIface{
+		Methods: map[string]*etypes.Method{},
+		Bindings: map[string]*etypes.Method{
+			// core
+			"get_execdata":       nil,
+			"get_execdata_item":  nil,
+			"get_paramdata":      nil,
+			"get_paramdata_item": nil,
+			"get_stage":          nil,
+
+			// table
+			"table_query":      nil,
+			"table_join_query": nil,
+			"new_row":          nil,
+			"get_row":          nil,
+			"update_row":       nil,
+			"delete_row_batch": nil,
+			"delete_row_multi": nil,
+			"delete_row":       nil,
+			"load_table":       nil,
+			"fts_query":        nil,
+			"ref_resolve":      nil,
+			"ref_load":         nil,
+			"reverse_ref_load": nil,
+			"sql_query":        nil,
+			// sheet
+			"list_sheet_group":     nil,
+			"list_sheet":           nil,
+			"new_sheet":            nil,
+			"get_sheet":            nil,
+			"update_sheet":         nil,
+			"delete_sheet":         nil,
+			"list_sheet_column":    nil,
+			"new_sheet_column":     nil,
+			"get_sheet_column":     nil,
+			"update_sheet_column":  nil,
+			"delete_sheet_column":  nil,
+			"load_sheet":           nil,
+			"query_sheet":          nil,
+			"fts_query_sheet":      nil,
+			"new_row_with_cell":    nil,
+			"update_row_with_cell": nil,
+			"delete_row_with_cell": nil,
+			"get_row_relations":    nil,
+		},
+	}, nil
 }
 
 func (pg *PgBuilder) ExecFile(file string) ([]byte, error) {

@@ -53,6 +53,9 @@ func (ctx *PqLoadCtx) execute(script string) (*ctxResponse, error) {
 	}
 
 	cresp := &ctxResponse{}
+	if val.Equals(goja.Null()) {
+		return cresp, nil
+	}
 
 	err = ctx.Rt.ExportTo(val, cresp)
 	if err != nil {
@@ -68,16 +71,6 @@ func (ctx *PqLoadCtx) bind() {
 	ctx.Rt.Set("get_paramdata", ctx.getParamdata)
 	ctx.Rt.Set("get_paramdata_item", ctx.getParamdataItem)
 	ctx.Rt.Set("get_stage", ctx.getStage)
-
-	ctx.Rt.Set("get_bind_funcs", func() any {
-		return []string{
-			"get_execdata",
-			"get_execdata_item",
-			"get_paramdata",
-			"get_paramdata_item",
-			"get_stage",
-		}
-	})
 }
 
 func (ctx *PqLoadCtx) getExecdata() any {
