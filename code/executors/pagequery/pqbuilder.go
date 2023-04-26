@@ -82,6 +82,10 @@ func (pg *PgBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 	}, nil
 }
 
-func (pf *PgBuilder) ExecFile(file string) ([]byte, error) {
-	return pf.helper.Serve(file)
+func (pg *PgBuilder) IfaceFile() (*etypes.ExecutorIface, error) {
+	return &etypes.ExecutorIface{}, nil
+}
+
+func (pg *PgBuilder) ExecFile(file string) ([]byte, error) {
+	return pg.helper.Serve(file)
 }

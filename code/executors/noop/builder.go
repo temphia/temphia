@@ -25,6 +25,10 @@ func (nb *NoopBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, er
 	return &Noop{builder: nb, opts: opts}, nil
 }
 
+func (nb *NoopBuilder) IfaceFile() (*etypes.ExecutorIface, error) {
+	return &etypes.ExecutorIface{}, nil
+}
+
 func (nb *NoopBuilder) ExecFile(file string) ([]byte, error) {
 	switch file {
 	case "loader.js":

@@ -71,6 +71,10 @@ func (pf *PfBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 	}, nil
 }
 
+func (pf *PfBuilder) IfaceFile() (*etypes.ExecutorIface, error) {
+	return &etypes.ExecutorIface{}, nil
+}
+
 func (pf *PfBuilder) ExecFile(file string) ([]byte, error) {
 	return pf.helper.Serve(file)
 }

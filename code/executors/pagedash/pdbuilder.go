@@ -70,6 +70,10 @@ func (pd *PdBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 	}, nil
 }
 
+func (pd *PdBuilder) IfaceFile() (*etypes.ExecutorIface, error) {
+	return &etypes.ExecutorIface{}, nil
+}
+
 func (pd *PdBuilder) ExecFile(file string) ([]byte, error) {
 	return pd.helper.Serve(file)
 }

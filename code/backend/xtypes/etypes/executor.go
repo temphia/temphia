@@ -17,6 +17,14 @@ type ExecutorOption struct {
 	EnvVars  map[string]string
 }
 
+type ExecutorIface struct {
+	Methods     map[string]*Method    `json:"methods,omitempty"`
+	Events      map[string]*EventType `json:"events,omitempty"`
+	Schemas     map[string]*ValueType `json:"schemas,omitempty"`
+	Bindings    map[string]*Method    `json:"bindings,omitempty"`
+	Definations map[string]any        `json:"definations,omitempty"`
+}
+
 type Executor interface {
 	Process(*event.Request) (*event.Response, error)
 }
@@ -24,6 +32,7 @@ type Executor interface {
 type ExecutorBuilder interface {
 	Instance(ExecutorOption) (Executor, error)
 	ExecFile(file string) ([]byte, error)
+	IfaceFile() (*ExecutorIface, error)
 }
 
 type ExecBuilderFunc func(ExecutorOption) (Executor, error)
@@ -33,3 +42,5 @@ func (e ExecBuilderFunc) Instance(opts ExecutorOption) (Executor, error) {
 }
 
 func (e ExecBuilderFunc) ExecFile(file string) ([]byte, error) { return []byte(``), nil }
+
+func (e ExecBuilderFunc) IfaceFile() (*ExecutorIface, error) { return &ExecutorIface{}, nil }
