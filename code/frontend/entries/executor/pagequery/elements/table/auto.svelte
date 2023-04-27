@@ -1,8 +1,10 @@
 <script lang="ts">
-  export let element: any;
-  export let data: any[];
+  import type { Element } from "../../service";
 
-  let options = element["options"] || {};
+  export let element: Element;
+  export let data: any[] = [];
+
+  let options = element["view_opts"] || {};
 
   let key_names = options["column_names"] || [];
   let color = options["color_columns"] || [];

@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { Element } from "../../service";
-  export let element: Element;
-
   import Chartjs from "./_chartjs.svelte";
-  export let data: any;
+  
+  export let element: Element;
+  export let data = {};
 
   $: console.log("@chartjs", data, element);
 

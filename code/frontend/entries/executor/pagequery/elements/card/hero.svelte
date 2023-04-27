@@ -2,7 +2,7 @@
   import type { Element } from "../../service";
 
   export let element: Element;
-  export let data;
+  export let data = {};
 </script>
 
 <div class="flex flex-col py-2">

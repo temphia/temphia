@@ -4,7 +4,7 @@
   import type { Element } from "../../service";
 
   export let element: Element;
-  export let data: any;
+  export let data = {};
 
   const cells = formatCells(data["cells"]);
 </script>

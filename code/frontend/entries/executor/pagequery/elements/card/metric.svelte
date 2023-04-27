@@ -1,6 +1,6 @@
 <script lang="ts">
   export let element: any;
-  export let data;
+  export let data = {};
 
   let increase = data["increase"];
 </script>

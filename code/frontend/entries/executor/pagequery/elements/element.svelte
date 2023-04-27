@@ -9,25 +9,28 @@
 
   import type { Element } from "../service";
 
-
   export let element: Element;
   export let data: any;
 
+  let elem_data;
 
+  if (element.source.startsWith("data/")) {
+    elem_data = data.data[element.source.replace("data/", "")];
+  }
 </script>
 
 {#if element.type === "hero_card"}
-  <HeroCard {data} {element} />
+  <HeroCard data={elem_data} {element} />
 {:else if element.type === "metric_card"}
-  <MetricCard {data} {element} />
+  <MetricCard data={elem_data} {element} />
 {:else if element.type === "chart"}
-  <ChartGraph {data} {element} />
+  <ChartGraph data={elem_data} {element} />
 {:else if element.type === "auto_table"}
-  <AutoTable {data} {element} />
+  <AutoTable data={elem_data} {element} />
 {:else if element.type === "sheet_table"}
   <Sheet {data} {element} />
 {:else if element.type === "dump"}
-  <Dump />
+  <Dump data={elem_data} {element} />
 {:else}
   <div>Not Impl</div>
 {/if}
