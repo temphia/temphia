@@ -30,12 +30,7 @@
         />
       {:else if elemtype === "longtext"}
         <textarea
-          id="metameta"
           class="p-2 border w-full rounded-lg bg-gray-50 outline-none focus:bg-gray-100 mr-1"
-          placeholder="write something..."
-          data-lt-tmp-id="lt-308914"
-          spellcheck="false"
-          data-gramm="false"
         />
       {/if}
 

@@ -9,11 +9,13 @@
     }
     return editor.getValue();
   };
+  
+  export let current = data.first_stage;
 
   let editor;
   let modified = false;
 
-  let code = (data.stages[data.first_stage] || {})["script"] || "";
+  $: code = (data.stages[current] || {})["script"] || "";
 </script>
 
 <div class="p-1 flex-grow">
@@ -33,7 +35,7 @@
     class="p-1 rounded w-40 border"
     value={data["first_stage"]}
     on:change={(ev) => {
-      code = (data.stages[ev.target["value"]] || {})["script"] || "";
+      current = ev.target["value"];
       modified = false;
     }}
   >

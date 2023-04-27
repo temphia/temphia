@@ -14,6 +14,7 @@
   let getParamData;
   let getCodeValue;
   let tabmode;
+  let current_stage;
 
   let loading = false;
 
@@ -27,8 +28,10 @@
     }
 
     loading = true;
+
     await onSubmit({
-      code,
+      stage: current_stage,
+      script: code,
       param_data,
     });
 
@@ -39,7 +42,7 @@
 <div class="rounded bg-white p-2 h-full">
   <p class="text-red-500">{message}</p>
 
-  <Editor {data} bind:getCodeValue />
+  <Editor {data} bind:getCodeValue bind:current={current_stage} />
 
   <Tabbed modes={["Params", "Context"]} bind:mode={tabmode} />
 
@@ -56,7 +59,8 @@
   <div class="flex flex-wrap justify-end text-sm items-center gap-2">
     <button
       on:click={submit}
-      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-2 flex"
+      disabled={loading}
+      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-4 py-2 flex disabled:bg-slate-500"
     >
       {#if loading}
         <Icon name="globe" class="h-4 w-4 animate-bounce" solid />
