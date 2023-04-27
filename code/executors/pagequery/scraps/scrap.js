@@ -52,7 +52,51 @@
     return {
         data: { "total": { "hey": 100 } },
         elements: [
-             {
+            {
+                "name": "Total",
+                "type": "dump",
+                "source": "data/total"
+            }
+        ]
+    }
+})();
+
+
+
+// /default/sheetsmhsj7/sheet/1
+
+
+(function () {
+    core.log("Calculating total amount.");
+
+    if (get_execdata_item("sheet_name") !== "todo") {
+        throw "wrong sheet"
+    }
+
+    const columnId = 5
+
+    const [resp, err] = query_sheet({
+        source: get_execdata_item("source"),
+        group: get_execdata_item("data_group"),
+        sheet_id: get_execdata_item("sheet_id"),
+    })
+    if (err) {
+        throw err
+    }
+
+    let acctotal = 0;
+    (resp["cells"] || []).forEach((cell) => {
+        if (cell["colid"] === columnId) {
+            acctotal = acctotal + Number(cell["numval"] || 0)  
+        }
+    })
+
+
+
+    return {
+        data: { "total": acctotal },
+        elements: [
+            {
                 "name": "Total",
                 "type": "dump",
                 "source": "data/total"
