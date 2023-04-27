@@ -15,7 +15,7 @@
   let elem_data;
 
   if (element.source.startsWith("data/")) {
-    elem_data = data.data[element.source.replace("data/", "")];
+    elem_data = data[element.source.replace("data/", "")];
   }
 </script>
 

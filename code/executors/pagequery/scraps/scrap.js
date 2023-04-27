@@ -43,3 +43,20 @@
         }
     }, nil]
 }());
+
+
+
+(function () {
+    core.log("This is test 111");
+
+    return {
+        data: { "total": { "hey": 100 } },
+        elements: [
+             {
+                "name": "Total",
+                "type": "dump",
+                "source": "data/total"
+            }
+        ]
+    }
+})();

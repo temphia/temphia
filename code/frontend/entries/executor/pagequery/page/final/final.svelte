@@ -2,23 +2,7 @@
   import Element from "../../elements/element.svelte";
   import type { SubmitResponse } from "../../service";
   export let data: SubmitResponse;
-
-  // const data1: SubmitResponse = {
-  //   data: {},
-  //   elements: [
-  //     {
-  //       data_opts: {},
-  //       info: "",
-  //       name: "",
-  //       source: "",
-  //       type: "",
-  //       view_opts: {},
-  //     },
-  //   ],
-  //   stage: "",
-  // };
-
-  // data = data1;
+  
 </script>
 
 <div class="container mx-auto py-2 rounded bg-white p-2 h-full">
