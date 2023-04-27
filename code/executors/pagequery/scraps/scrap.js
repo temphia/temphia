@@ -13,8 +13,7 @@
 
 
     if (sheet_id !== expectedcolid) {
-        core.Log("@wrong_sheetid")
-        return
+        throw new Error("Wrong sheetid")
     }
 
     const [resp, err] = query_sheet({
@@ -22,9 +21,8 @@
         group: data_group,
         sheetid: sheet_id,
     })
-    if (err != nil) {
-        core.Log("@query_error" + err)
-        return [nil, nil]
+    if (err) {
+        throw new Error(`Query error: ${err}`)
     }
 
     // process here
@@ -39,7 +37,7 @@
         data: { "total": acctotal },
         elements: {
             "Total": {
-                "type": "paragraph",
+                "type": "dump",
                 "source": "total"
             }
         }
