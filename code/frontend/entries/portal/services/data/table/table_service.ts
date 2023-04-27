@@ -322,6 +322,7 @@ export class TableService {
       data_group: this.group_slug,
       invoker_type: "data_table",
       rows: rows,
+      table_slug: this.table_slug,
       table_id: this.table_slug,
       columns: Object.values(state.indexed_column),
       source: this.source,

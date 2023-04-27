@@ -87,7 +87,14 @@ export class SheetGroupService {
       return ssvc;
     }
 
-    ssvc = new SheetService(this, sheetid, this.profile_genrator);
+    const sheet = get(this.sheets).filter((v) => v.__id === Number(sheetid));
+    
+    ssvc = new SheetService(
+      this,
+      sheetid,
+      sheet[0].name,
+      this.profile_genrator
+    );
 
     await ssvc.init(gotorow);
 
@@ -121,6 +128,7 @@ export class SheetService {
   state: Writable<SheetState>;
   api: DataSheetAPI;
   force_render_index: Writable<number>;
+  sheet_name: string;
 
   scroll_skip: () => boolean;
   max_row: number;
@@ -135,10 +143,12 @@ export class SheetService {
   constructor(
     group: SheetGroupService,
     sheetid: string,
+    sheet_name: string,
     profile_genrator: (string) => string
   ) {
     this.group = group;
     this.sheetid = sheetid;
+    this.sheet_name = sheet_name;
     this.profile_genrator = profile_genrator;
     this.api = group.data_sheet_api;
 
@@ -296,7 +306,7 @@ export class SheetService {
   };
 
   search = (opts: object) => {
-    return this.api.search(this.sheetid, opts );
+    return this.api.search(this.sheetid, opts);
   };
 
   goto_row = (rowid: string) => {
@@ -305,7 +315,7 @@ export class SheetService {
         this.scroller(rowid);
       }
     } else {
-      this.init(Number(rowid)-1);
+      this.init(Number(rowid) - 1);
     }
   };
 
@@ -365,7 +375,8 @@ export class SheetService {
     return {
       data_group: this.group.group_slug,
       invoker_type: "data_sheet",
-      sheet_id: this.sheetid,
+      sheet_id: Number(this.sheetid),
+      sheet_name: this.sheet_name,
       cells,
       columns: state.columns,
       rows: rows.map((r) => ({ __id: r, sheetid: Number(this.sheetid) })),

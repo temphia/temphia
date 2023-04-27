@@ -99,7 +99,8 @@ export interface SheetWidget {
 
 export interface SheetExecData {
   invoker_type: "data_sheet";
-  sheet_id: string;
+  sheet_id: number;
+  sheet_name: string;
   data_group: string;
   source: string
 
