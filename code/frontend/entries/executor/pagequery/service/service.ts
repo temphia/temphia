@@ -1,18 +1,8 @@
 import type { Environment } from "../../../../lib/engine/environment";
-import type { SheetRow } from "../../../portal/pages/data/sheet/sheets";
-import type {
-  SheetColumn,
-  SheetCell,
-} from "../../../portal/pages/data/sheet/sheets";
+import type { SheetExecData } from "../../../portal/pages/data/sheet/sheets";
+import type { TableExecData } from "../../../portal/services/data";
 
-export interface ExecData {
-  invoker_type?: string;
-  data_group?: string;
-  sheet_id?: string;
-  cells?: { [_: number]: { [_: string]: SheetCell } };
-  columns?: SheetColumn[];
-  rows: SheetRow[];
-}
+export type ExecData = SheetExecData | TableExecData | null;
 
 export class PageQueryService {
   env: Environment;

@@ -31,6 +31,7 @@ export interface LoadResponse {
 export interface SubmitRequest {
   stage: string;
   param_data: { [_: string]: any };
+  exec_data: { [_: string]: any };
   script: string;
 }
 

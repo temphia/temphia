@@ -33,6 +33,7 @@
       stage: current_stage,
       script: code,
       param_data,
+      exec_data: startup_payload,
     });
 
     loading = false;
