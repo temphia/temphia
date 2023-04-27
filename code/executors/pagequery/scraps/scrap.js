@@ -135,7 +135,7 @@
                     width: "2xl"
                 },
                 data_opts: {
-                    chart_type: bar,
+                    chart_type: "bar",
                     options: {
                         scales: {
                             'y': {

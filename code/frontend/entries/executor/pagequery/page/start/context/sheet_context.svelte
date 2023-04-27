@@ -1,10 +1,10 @@
 <script lang="ts">
-  import SheetInner from "../../../../portal/pages/data/sheet/_sheet_inner.svelte";
+  import SheetInner from "../../../../../portal/pages/data/sheet/_sheet_inner.svelte";
   import type {
     SheetCell,
     SheetColumn,
     SheetRow,
-  } from "../../../../portal/pages/data/sheet/sheets";
+  } from "../../../../../portal/pages/data/sheet/sheets";
 
   export let columns: SheetColumn[];
   export let rows: SheetRow[];

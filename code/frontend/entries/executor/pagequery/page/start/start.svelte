@@ -1,8 +1,12 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import type { LoadResponse, ExecData } from "../../service";
+  import type { ExecData, LoadResponse } from "../../service";
   import Editor from "./_editor.svelte";
-  import ExecRows from "./_exec_rows.svelte";
+
+  import SheetContext from "./context/sheet_context.svelte";
+  import TableContext from "./context/table_context.svelte";
+  import FallbackContext from "./context/fallback_context.svelte";
+
   import Paramform from "./_paramform.svelte";
   import Tabbed from "./_tabbed.svelte";
 
@@ -49,12 +53,16 @@
 
   {#if tabmode === "Params"}
     <Paramform title={data.title} bind:getParamData />
-  {:else}
-    <ExecRows
-      cells={startup_payload.cells}
-      columns={startup_payload.columns}
-      rows={startup_payload.rows}
+  {:else if startup_payload.invoker_type === "data_sheet"}
+    <SheetContext
+      cells={startup_payload["cells"] || {}}
+      columns={startup_payload["columns"] || []}
+      rows={startup_payload["rows"] || []}
     />
+  {:else if startup_payload.invoker_type === "data_table"}
+    <TableContext />
+  {:else}
+    <FallbackContext />
   {/if}
 
   <div class="flex flex-wrap justify-end text-sm items-center gap-2">

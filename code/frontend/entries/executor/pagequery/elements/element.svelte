@@ -19,18 +19,20 @@
   }
 </script>
 
-{#if element.type === "hero_card"}
-  <HeroCard data={elem_data} {element} />
-{:else if element.type === "metric_card"}
-  <MetricCard data={elem_data} {element} />
-{:else if element.type === "chart"}
-  <ChartGraph data={elem_data} {element} />
-{:else if element.type === "auto_table"}
-  <AutoTable data={elem_data} {element} />
-{:else if element.type === "sheet_table"}
-  <Sheet {data} {element} />
-{:else if element.type === "dump"}
-  <Dump data={elem_data} {element} />
-{:else}
-  <div>Not Impl</div>
-{/if}
+<div class="rounded bg-white">
+  {#if element.type === "hero_card"}
+    <HeroCard data={elem_data} {element} />
+  {:else if element.type === "metric_card"}
+    <MetricCard data={elem_data} {element} />
+  {:else if element.type === "chart"}
+    <ChartGraph data={elem_data} {element} />
+  {:else if element.type === "auto_table"}
+    <AutoTable data={elem_data} {element} />
+  {:else if element.type === "sheet_table"}
+    <Sheet {data} {element} />
+  {:else if element.type === "dump"}
+    <Dump data={elem_data} {element} />
+  {:else}
+    <div>Not Impl</div>
+  {/if}
+</div>
