@@ -1,4 +1,3 @@
-import LinkButton from "./button/link.svelte";
 import FloatingAdd from "./button/floating_add.svelte";
 import FloatingAction from "./button/floating_action.svelte";
 import ToggleButton from "./button/toggle.svelte";
@@ -18,7 +17,6 @@ export {
   Uploader,
   LoadingSpinner,
   
-  LinkButton,
   FloatingAdd,
   FloatingAction,
   ToggleButton
