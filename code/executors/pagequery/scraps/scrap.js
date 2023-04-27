@@ -87,7 +87,7 @@
     let acctotal = 0;
     (resp["cells"] || []).forEach((cell) => {
         if (cell["colid"] === columnId) {
-            acctotal = acctotal + Number(cell["numval"] || 0)  
+            acctotal = acctotal + Number(cell["numval"] || 0)
         }
     })
 
@@ -100,6 +100,57 @@
                 "name": "Total",
                 "type": "dump",
                 "source": "data/total"
+            }
+        ]
+    }
+})();
+
+
+
+
+(function () {
+    core.log("All elements example.");
+
+    return {
+        data: {
+            "one": { name: "hello one" },
+            "two": {
+                "labels": ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                "datasets": [
+                    {
+                        "label": "# of Votes",
+                        "data": [12, 19, 3, 5, 2, 3],
+                        "borderWidth": 1
+                    }
+                ]
+            }
+        },
+
+        elements: [
+            {
+                "name": "Bar1",
+                "type": "chart",
+                "info": "Number of Votes",
+                view_opts: {
+                    width: "2xl"
+                },
+                data_opts: {
+                    chart_type: bar,
+                    options: {
+                        scales: {
+                            'y': {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                },
+                "source": "data/two"
+            },
+
+            {
+                "name": "dump1",
+                "type": "dump",
+                "source": "data/one"
             }
         ]
     }
