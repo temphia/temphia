@@ -52,6 +52,11 @@ type DynSource interface {
 	GetDataSheetHub(tenantId, group string) DataSheetHub
 }
 
+type HubProvider interface {
+	GetDataTableHub(source, tenantId, group string) DataTableHub
+	GetDataSheetHub(source, tenantId, group string) DataSheetHub
+}
+
 type DataTableHub interface {
 	NewRow(txid uint32, req NewRowReq) (int64, error)
 	NewBatchRows(txid uint32, req NewBatchRowReq) ([]int64, error)
@@ -94,6 +99,7 @@ type DataSheetHub interface {
 	LoadSheet(txid uint32, data *LoadSheetReq) (*LoadSheetResp, error)
 	Query(txid uint32, data *QuerySheetReq) (*QuerySheetResp, error)
 	FTSQuery(txid uint32, data *FTSQuerySheet) (*QuerySheetResp, error)
+	RefQuery(txid uint32, data *RefQuerySheet) (*QuerySheetResp, error)
 
 	NewRowWithCell(txid uint32, sid int64, userId string, data map[int64]map[string]any) (map[int64]map[string]any, error)
 	UpdateRowWithCell(txid uint32, sid, rid int64, userId string, data map[int64]map[string]any) (map[int64]map[string]any, error)

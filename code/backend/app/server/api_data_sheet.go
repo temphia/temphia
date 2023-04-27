@@ -14,6 +14,7 @@ func (s *Server) dataSheetAPI(rg *gin.RouterGroup) {
 	rg.POST("/:id/load", s.dx(s.loadSheet))
 	rg.POST("/:id/search", s.dx(s.searchSheet))
 	rg.POST("/:id/query", s.dx(s.querySheet))
+	rg.POST("/:id/ref_query", s.dx(s.refSheet))
 
 	rg.GET("/", s.dx(s.listSheet))
 	rg.GET("/:id", s.dx(s.getSheet))
@@ -51,6 +52,21 @@ func (s *Server) searchSheet(uclaim *claim.Data, ctx *gin.Context) {
 	data.SheetId = id
 
 	resp, err := s.cData.FTSQuerySheet(uclaim, &data)
+	httpx.WriteJSON(ctx, resp, err)
+}
+
+func (s *Server) refSheet(uclaim *claim.Data, ctx *gin.Context) {
+	data := dyndb.RefQuerySheet{}
+	err := ctx.BindJSON(&data)
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	id, _ := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	data.SheetId = id
+
+	resp, err := s.cData.RefQuery(uclaim, &data)
 	httpx.WriteJSON(ctx, resp, err)
 }
 

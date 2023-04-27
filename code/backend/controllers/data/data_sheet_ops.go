@@ -68,6 +68,25 @@ func (c *Controller) QuerySheet(uclaim *claim.Data, data *dyndb.QuerySheetReq) (
 	})
 }
 
+func (c *Controller) RefQuery(uclaim *claim.Data, data *dyndb.RefQuerySheet) (*dyndb.QuerySheetResp, error) {
+
+	source, _ := getTarget(uclaim)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataSheetHub(uclaim.TenantId, uclaim.DataGroup)
+
+	return thub.RefQuery(0, &dyndb.RefQuerySheet{
+		TenantId:      uclaim.TenantId,
+		Group:         uclaim.DataGroup,
+		SheetId:       data.SheetId,
+		ColumnId:      data.ColumnId,
+		RowCursorId:   data.RowCursorId,
+		TargetSource:  data.TargetSource,
+		TargetGroup:   data.TargetGroup,
+		TargetSheetId: data.TargetSheetId,
+	})
+
+}
+
 // sheets
 
 func (c *Controller) ListSheet(uclaim *claim.Data) ([]map[string]any, error) {

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { Writable } from "svelte/store";
   import type { SheetService, SheetState } from "../../../../services/data";
   import { LoadingSpinner } from "../../../admin/core";
   import type { SheetColumn } from "../sheets";
@@ -11,7 +10,7 @@
   export let column: SheetColumn;
 
   let loading = true;
-  let state: Writable<SheetState>;
+  let state;
 
   const load = async () => {
     if (!column.refsheet) {
@@ -19,21 +18,22 @@
       return;
     }
 
-    console.log("@column", column);
+    loading = true;
 
-    const sservice = await service.get_sibling_sheet(column.refsheet);
-    if (!sservice) {
-      return;
-    }
-    state = sservice.state;
+    state = await service.ref_sheet_query({
+      column_id: column.__id,
+      row_cursor_id: 0,
+      target_source: column.extraopts["ref_source"],
+      target_group: column.extraopts["ref_group"],
+      target_sheet_id: column.refsheet,
+    });
+
     loading = false;
-
-    console.log("@state", $state);
   };
 
   const pick_row = (ev) => {
     const rowid = ev.detail["__id"];
-    const colcells = $state.cells[rowid] || {};
+    const colcells = state.cells[rowid] || {};
     const refcell = colcells[column.refcolumn] || {};
     const ref_value = String(refcell["value"] || "");
     onSelect({ __id: rowid, ref_value });
@@ -47,9 +47,9 @@
 {:else}
   <SheetInner
     editable={false}
-    cells={$state.cells}
-    columns={$state.columns}
-    rows={$state.rows}
+    cells={state["cells"] || {}}
+    columns={state["columns"] || []}
+    rows={state["rows"] || []}
     folder_api={null}
     selected_rows={[]}
     on:pick_row={pick_row}

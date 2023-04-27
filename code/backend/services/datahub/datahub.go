@@ -45,6 +45,8 @@ func New(dyns map[string]dyndb.DynDB) *DataHub {
 		handle:  handle,
 	}
 
+	handle.MainHub = dhub
+
 	return dhub
 }
 

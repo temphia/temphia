@@ -144,6 +144,30 @@ func (s *Sheet) LoadSheet(txid uint32, data *dyndb.LoadSheetReq) (*dyndb.LoadShe
 
 }
 
+func (s *Sheet) RefQuery(txid uint32, data *dyndb.RefQuerySheet) (*dyndb.QuerySheetResp, error) {
+
+	// fixme => make sure it could access these by checking original ref column.sheet
+
+	if data.TargetSource == "" {
+		data.TargetSource = s.source
+	}
+
+	var hub dyndb.DataSheetHub
+
+	if data.TargetGroup == "" {
+		hub = s
+	} else {
+		hub = s.handle.MainHub.GetDataSheetHub(data.TargetSource, data.TenantId, data.TargetGroup)
+	}
+
+	return hub.Query(txid, &dyndb.QuerySheetReq{
+		TenantId:    data.TenantId,
+		Group:       data.Group,
+		SheetId:     data.TargetSheetId,
+		RowCursorId: data.RowCursorId,
+	})
+}
+
 func (s *Sheet) Query(txid uint32, data *dyndb.QuerySheetReq) (*dyndb.QuerySheetResp, error) {
 
 	frags := []dyndb.JoinFragment{}

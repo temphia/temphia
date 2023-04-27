@@ -38,6 +38,17 @@ type FTSQuerySheet struct {
 	ColumnType string `json:"column_type,omitempty"`
 }
 
+type RefQuerySheet struct {
+	TenantId      string `json:"-"`
+	Group         string `json:"group,omitempty"`
+	SheetId       int64  `json:"sheet_id,omitempty"`
+	ColumnId      int64  `json:"column_id,omitempty"`
+	RowCursorId   int64  `json:"row_cursor_id,omitempty"`
+	TargetSource  string `json:"target_source,omitempty"`
+	TargetGroup   string `json:"target_group,omitempty"`
+	TargetSheetId int64  `json:"target_sheet_id,omitempty"`
+}
+
 type QuerySheetReq struct {
 	TenantId    string       `json:"-"`
 	Group       string       `json:"group,omitempty"`

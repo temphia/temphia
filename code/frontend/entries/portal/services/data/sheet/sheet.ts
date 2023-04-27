@@ -18,6 +18,7 @@ import {
 } from "../../../../../lib/sockd";
 import type { DataModification } from "../table";
 import { scroller } from "./scroll";
+import { formatRefCells } from "./format";
 
 export class SheetGroupService {
   source: string;
@@ -88,7 +89,7 @@ export class SheetGroupService {
     }
 
     const sheet = get(this.sheets).filter((v) => v.__id === Number(sheetid));
-    
+
     ssvc = new SheetService(
       this,
       sheetid,
@@ -286,8 +287,12 @@ export class SheetService {
     }
   };
 
-  get_sibling_sheet = async (sheetid) => {
-    return await this.group.get_sheet_service(sheetid);
+  ref_sheet_query = async (opts) => {
+    const resp = await this.api.ref_query_sheet(this.sheetid, opts);
+    if (!resp.ok) {
+      return {};
+    }
+    return formatRefCells(resp.data);
   };
 
   private refetch_columns = async () => {
