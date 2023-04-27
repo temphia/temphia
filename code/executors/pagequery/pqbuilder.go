@@ -64,7 +64,9 @@ func (pg *PgBuilder) Instance(opts etypes.ExecutorOption) (etypes.Executor, erro
 			return nil, err
 		}
 
-		pp.Println(rt.RunString(string(out)))
+		v, err := rt.RunString(string(out))
+
+		fmt.Printf("@running_server.js %v %v \n", v, err)
 	}
 
 	dhub := pg.app.GetDeps().DataHub().(dyndb.DataHub)

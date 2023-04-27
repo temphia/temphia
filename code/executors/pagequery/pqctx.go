@@ -1,6 +1,8 @@
 package pagequery
 
 import (
+	"errors"
+
 	"github.com/dop251/goja"
 	"github.com/temphia/temphia/code/backend/libx"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
@@ -44,12 +46,13 @@ func (ctx *PqLoadCtx) execute(script string) (*ctxResponse, error) {
 	perr := libx.PanicWrapper(func() {
 		val, err = ctx.Rt.RunString(script)
 	})
+
 	if perr != nil {
 		return nil, perr
 	}
 
 	if err != nil {
-		return nil, err
+		return nil, errors.New(err.Error())
 	}
 
 	cresp := &ctxResponse{}

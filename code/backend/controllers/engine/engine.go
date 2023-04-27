@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 
@@ -67,8 +68,10 @@ func (c *Controller) Execute(tenantId, action string, ctx *gin.Context) {
 
 	if err != nil {
 		pp.Println("@here_err_after", string(payload))
-		pp.Println(err)
-		ctx.AbortWithError(http.StatusBadRequest, err)
+		fmt.Println("@exec_err", err)
+
+		ctx.Writer.WriteHeader(http.StatusBadRequest)
+		ctx.Writer.WriteString(err.Error())
 		return
 	}
 
