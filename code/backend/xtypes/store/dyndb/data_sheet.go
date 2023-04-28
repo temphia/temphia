@@ -107,6 +107,13 @@ type SheetData struct {
 	Cells   map[int64]map[int64]SheetCell `json:"cells,omitempty"`
 }
 
+type Sheet struct {
+	Id        int64  `json:"__id"`
+	Version   int64  `json:"__version,omitempty"`
+	Name      string `json:"name,omitempty"`
+	ExtraOpts any    `json:"opts,omitempty"`
+}
+
 type SheetColumn struct {
 	Id        int64  `json:"__id,omitempty"`
 	Version   int64  `json:"__version,omitempty"`

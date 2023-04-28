@@ -18,6 +18,23 @@ func (s *Sheet) ExportSheets(txid uint32, opts dyndb.ExportOptions) (*dyndb.Expo
 		SheetData: make(map[int64]dyndb.SheetData),
 	}
 
+	sraw, err := s.ListSheet(txid)
+	if err != nil {
+		return nil, err
+	}
+
+	sheets := make([]dyndb.Sheet, 0, len(sraw))
+
+	decoder, _ := mapstructure.NewDecoder(&mapstructure.DecoderConfig{
+		TagName: "json",
+		Result:  &sheets,
+	})
+
+	err = decoder.Decode(sraw)
+	if err != nil {
+		return nil, err
+	}
+
 	for _, sid := range opts.Sheets {
 
 		sdata := dyndb.SheetData{
@@ -98,7 +115,17 @@ func (s *Sheet) ExportSheets(txid uint32, opts dyndb.ExportOptions) (*dyndb.Expo
 		}
 		sdata.Columns = ocols
 
+		for _, psheet := range sheets {
+
+			if psheet.Id == sid {
+				sdata.Name = psheet.Name
+				break
+			}
+
+		}
+
 		fresp.SheetData[sid] = sdata
+
 	}
 
 	return &fresp, nil
