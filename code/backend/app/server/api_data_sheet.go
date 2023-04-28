@@ -10,6 +10,7 @@ import (
 )
 
 func (s *Server) dataSheetAPI(rg *gin.RouterGroup) {
+	rg.POST("/export", s.dx(s.export))
 	rg.POST("/list", s.dx(s.listSheetGroup))
 	rg.POST("/:id/load", s.dx(s.loadSheet))
 	rg.POST("/:id/search", s.dx(s.searchSheet))
@@ -33,6 +34,20 @@ func (s *Server) dataSheetAPI(rg *gin.RouterGroup) {
 	rg.GET("/:id/row_cell/:rid", s.dx(s.GetRowWithCell))
 	rg.DELETE("/:id/row_cell/:rid", s.dx(s.DeleteRowWithCell))
 	rg.GET("/:id/relation/:rid/ref/:refsheet/column/:refcol", s.dx(s.GetRowRelations))
+}
+
+func (s *Server) export(uclaim *claim.Data, ctx *gin.Context) {
+
+	sheets := make([]int64, 0)
+
+	err := ctx.BindJSON(&sheets)
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	resp, err := s.cData.ExportSheets(uclaim, sheets)
+	httpx.WriteJSON(ctx, resp, err)
 }
 
 func (s *Server) listSheetGroup(uclaim *claim.Data, ctx *gin.Context) {

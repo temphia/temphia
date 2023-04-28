@@ -18,6 +18,10 @@ export class DataSheetAPI {
     return this.http.post(`/data/sheet/list`, {});
   }
 
+  export(sheets: number[]) {
+    return this.http.post(`/data/sheet/export`, sheets);
+  }
+
   load_sheet(sheetid: string, options: any) {
     return this.http.post(`/data/sheet/${sheetid}/load`, options);
   }

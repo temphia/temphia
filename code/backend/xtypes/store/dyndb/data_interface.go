@@ -105,5 +105,8 @@ type DataSheetHub interface {
 	UpdateRowWithCell(txid uint32, sid, rid int64, userId string, data map[int64]map[string]any) (map[int64]map[string]any, error)
 	DeleteRowWithCell(txid uint32, sid, rid int64, userId string) error
 
+	ExportSheets(txid uint32, opts ExportOptions) (*ExportData, error)
+	ImportSheets(txid uint32, opts ImportOptions, data *ExportData) error
+
 	GetRowRelations(txid uint32, sid, rid, refsheet, refcol int64) (*Relation, error)
 }

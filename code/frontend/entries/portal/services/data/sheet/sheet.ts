@@ -365,6 +365,11 @@ export class SheetService {
     this.loading = false;
   };
 
+  export = () => {
+    const sheets = get(this.group.sheets).map((v) => v.__id);
+    return this.api.export(sheets);
+  };
+
   get_invoker(widget: SheetWidget, launcher: any) {
     return new SheetInvoker(this, widget, launcher);
   }

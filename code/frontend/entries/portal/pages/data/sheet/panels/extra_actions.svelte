@@ -4,16 +4,36 @@
 
   export let service: SheetService;
 
+  const exportSheets = () => {
+    service.export();
+  };
+
   let actions = [
-    { name: "Export", icon: "download", info: "Export data as json." },
-    { name: "Import", icon: "upload", info: "Import data as json." },
-    { name: "View Options", icon: "adjustments", info: "Set view options." },
+    {
+      name: "Export",
+      icon: "download",
+      info: "Export data as json.",
+      func: exportSheets,
+    },
+    {
+      name: "Import",
+      icon: "upload",
+      info: "Import data as json.",
+      func: () => {},
+    },
+    {
+      name: "View Options",
+      icon: "adjustments",
+      info: "Set view options.",
+      func: () => {},
+    },
   ];
 </script>
 
 <div class=" flex flex-col gap-2">
   {#each actions as action}
     <button
+      on:click={action.func}
       class="group flex gap-y-2 items-center gap-x-5 rounded-md px-2.5 py-2 transition-all duration-75 hover:bg-blue-100"
     >
       <div

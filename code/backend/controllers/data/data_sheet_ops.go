@@ -214,3 +214,15 @@ func (c *Controller) GetRowRelations(uclaim *claim.Data, sid, rid, refsheet, ref
 
 	return thub.GetRowRelations(0, sid, rid, refsheet, refcol)
 }
+
+func (c *Controller) ExportSheets(uclaim *claim.Data, sheets []int64) (*dyndb.ExportData, error) {
+	source, _ := getTarget(uclaim)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataSheetHub(uclaim.TenantId, uclaim.DataGroup)
+
+	return thub.ExportSheets(0, dyndb.ExportOptions{
+		TenantId: uclaim.TenantId,
+		Group:    uclaim.DataGroup,
+		Sheets:   sheets,
+	})
+}
