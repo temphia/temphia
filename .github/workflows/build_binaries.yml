@@ -1,6 +1,6 @@
 name: build_binaries
 
-on: [push]
+on: [workflow_dispatch]
 
 permissions:
   contents: write
@@ -12,9 +12,6 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v3
 
-      - name: Change Docker cache directory permissions
-        run: sudo chmod 777 /var/lib/docker /var/lib/docker/overlay2
-
       - name: Restore Docker
         id: restore-docker
         uses: actions/cache/restore@v3
@@ -24,6 +21,9 @@ jobs:
 
       - name: run releaser
         run: make snapshot
+      
+      - name: Change Docker cache directory permissions
+        run: sudo chmod -R 777 /var/lib/docker /var/lib/docker/overlay2
 
       - name: Save Docker
         id: save-docker
