@@ -10,35 +10,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: setup dependencies
-        uses: actions/setup-go@v2
-
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/docker
+          key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
+          restore-keys: |
+            ${{ runner.os }}-docker-
+      
       - name: run releaser
         run: make snapshot
 
+      #artifacts
       - uses: actions/upload-artifact@v3
         with:
-          name: buildfiles
-          path: dist/
-
-      # - name: Checkout
-      #   uses: actions/checkout@v3
-      #   with:
-      #     fetch-depth: 0
-      # - name: Set up Go
-      #   uses: actions/setup-go@v3
-
-      #  name: Install Deps
-      #   run: |
-      #     sudo apt-get install gcc-multilib g++-multilib
-
-      # - name: Run GoReleaser
-      #   uses: goreleaser/goreleaser-action@v4
-      #   with:
-      #     distribution: goreleaser
-      #     version: latest
-      #     args: --snapshot --clean
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: temphia_windows_amd64
+          path: dist/temphia-windows_windows_amd64_v1/
+      - uses: actions/upload-artifact@v3
+        with:
+          name: temphia_linux_amd64
+          path: dist/temphia-linux_linux_amd64_v1/
+      - uses: actions/upload-artifact@v3
+        with:
+          name: temphia_darwin_amd64
+          path: dist/temphia-darwin-amd64_darwin_amd64_v1/
+      - uses: actions/upload-artifact@v3
+        with:
+          name: temphia_darwin_arm64
+          path: dist/temphia-darwin-arm64_darwin_arm64/

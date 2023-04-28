@@ -4,7 +4,6 @@ env:
 builds:
 
 - id: temphia-darwin-amd64
-  binary: temphia
   env:
     - CGO_ENABLED=1
     - CC=o64-clang
@@ -16,7 +15,6 @@ builds:
     - amd64
 
 - id: temphia-darwin-arm64
-  binary: temphia
   env:
     - CGO_ENABLED=1
     - CC=aarch64-apple-darwin21.4-clang
@@ -28,7 +26,6 @@ builds:
     - arm64
 
 - id: temphia-linux
-  binary: temphia
   env:
     - CGO_ENABLED=1
   main: ./main.go
@@ -39,7 +36,6 @@ builds:
 
 - id: temphia-windows
   ldflags: -buildmode=exe
-  binary: temphia
   env:
     - CGO_ENABLED=1
     - CC=x86_64-w64-mingw32-gcc
@@ -50,10 +46,10 @@ builds:
   goarch:
     - amd64
 
-archives:
-- format: tar.gz
-  format_overrides:
-    - goos: windows
-      format: zip
-  name_template: "{{ .Binary }}-alpha-{{ .Os }}-{{ .Arch }}"
-  allow_different_binary_count: true
+# archives:
+# - format: tar.gz
+#   format_overrides:
+#     - goos: windows
+#       format: zip
+#   name_template: "{{ .Binary }}-alpha-{{ .Os }}-{{ .Arch }}"
+#   allow_different_binary_count: true
