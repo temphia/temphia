@@ -1,4 +1,4 @@
-package main
+package cli
 
 import (
 	"github.com/alecthomas/kong"
@@ -17,7 +17,7 @@ type CLI struct {
 	ConfigFile string
 }
 
-func main() {
+func RunMain() {
 	cli := &CLI{}
 	ctx := kong.Parse(cli)
 

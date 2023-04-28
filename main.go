@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/temphia/temphia/cmd/dev"
+	"github.com/temphia/temphia/cmd/cli"
 )
 
 func main() {
-	dev.RunDev()
+	cli.RunMain()
 }
