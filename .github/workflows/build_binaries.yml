@@ -12,15 +12,23 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v3
 
-      - uses: actions/cache@v3
+      - name: Restore Docker
+        id: restore-docker
+        uses: actions/cache/restore@v3
         with:
-          path: ~/.cache/docker
-          key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
-          restore-keys: |
-            ${{ runner.os }}-docker-
-      
+          path: /var/lib/docker/overlay2
+          key: ${{ runner.os }}-docker
+
       - name: run releaser
         run: make snapshot
+
+      - name: Save Docker
+        id: save-docker
+        uses: actions/cache/save@v3
+        with:
+          path: /var/lib/docker/overlay2
+          key: ${{ runner.os }}-docker
+
 
       #artifacts
       - uses: actions/upload-artifact@v3
@@ -31,6 +39,12 @@ jobs:
         with:
           name: temphia_linux_amd64
           path: dist/temphia-linux_linux_amd64_v1/
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: temphia_linux_arm64
+          path: dist/temphia-linux-arm64_linux_arm64/
+
       - uses: actions/upload-artifact@v3
         with:
           name: temphia_darwin_amd64
