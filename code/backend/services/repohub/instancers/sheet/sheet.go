@@ -200,7 +200,7 @@ func (s *SheetInstancer) instance(source, tenantId, gslug string, schemaData *xb
 
 				switch column.Ctype {
 				case xbprint.SheetColTypeNumber:
-					cellData["num_value"] = seedCellData
+					cellData["numval"] = seedCellData
 				default:
 					cellData["value"] = seedCellData
 				}

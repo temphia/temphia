@@ -101,13 +101,13 @@ type ExportData struct {
 }
 
 type SheetData struct {
-	Id      int64                    `json:"id,omitempty"`
-	Name    string                   `json:"name,omitempty"`
-	Columns []Column                 `json:"columns,omitempty"`
-	Cells   map[int64]map[int64]Cell `json:"cells,omitempty"`
+	Id      int64                         `json:"id,omitempty"`
+	Name    string                        `json:"name,omitempty"`
+	Columns []SheetColumn                 `json:"columns,omitempty"`
+	Cells   map[int64]map[int64]SheetCell `json:"cells,omitempty"`
 }
 
-type Column struct {
+type SheetColumn struct {
 	Id        int64  `json:"__id,omitempty"`
 	Version   int64  `json:"__version,omitempty"`
 	Name      string `json:"name,omitempty"`
@@ -120,7 +120,7 @@ type Column struct {
 	ExtraOpts any    `json:"extraopts,omitempty"`
 }
 
-type Cell struct {
+type SheetCell struct {
 	Id      int64  `json:"__id,omitempty"`
 	Version int64  `json:"__version,omitempty"`
 	ColId   int64  `json:"colid,omitempty"`

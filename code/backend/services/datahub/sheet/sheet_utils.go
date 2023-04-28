@@ -1,69 +1,108 @@
 package sheet
 
 import (
+	"strconv"
+	"time"
+
+	"github.com/mitchellh/mapstructure"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 func (s *Sheet) ExportSheets(txid uint32, opts dyndb.ExportOptions) (*dyndb.ExportData, error) {
 
-	/*
+	fresp := dyndb.ExportData{
+		Source:    s.source,
+		Group:     s.group,
+		Date:      time.Now(),
+		SheetData: make(map[int64]dyndb.SheetData),
+	}
 
-		fresp := dyndb.ExportData{
-			Source:  s.source,
-			Group:   s.group,
-			Date:    time.Now(),
-			Rows:    make(map[int64][]map[string]any),
-			Columns: make(map[int64][]map[string]any),
+	for _, sid := range opts.Sheets {
+
+		sdata := dyndb.SheetData{
+			Id:      sid,
+			Name:    "",
+			Columns: nil,
+			Cells:   make(map[int64]map[int64]dyndb.SheetCell),
 		}
 
-		for _, sid := range opts.Sheets {
+		rowCursor := int64(0)
 
-			rows := make([]map[string]any, 0)
-
-			rowCursor := int64(0)
-
-			for {
-				resp, err := s.Query(txid, &dyndb.QuerySheetReq{
-					TenantId:    opts.TenantId,
-					Group:       opts.Group,
-					SheetId:     sid,
-					RowCursorId: rowCursor,
-				})
-				if err != nil {
-					return nil, easyerr.Wrap("err querying data for export", err)
-				}
-
-				rowslen := len(resp.Cells)
-				if rowslen == 0 {
-					break
-				}
-
-				rows = append(rows, resp.Cells...)
-
-				switch rid := resp.Cells[rowslen-1][dyndb.KeyPrimary].(type) {
-				case float64:
-					rowCursor = int64(rid)
-				case int64:
-					rowCursor = rid
-				default:
-					panic("row id should be float64 or int64")
-				}
-
-			}
-			fresp.Rows[sid] = rows
-
-			cols, err := s.ListSheetColumn(txid, sid)
+		for {
+			resp, err := s.Query(txid, &dyndb.QuerySheetReq{
+				TenantId:    opts.TenantId,
+				Group:       opts.Group,
+				SheetId:     sid,
+				RowCursorId: rowCursor,
+			})
 			if err != nil {
-				return nil, err
+				return nil, easyerr.Wrap("err querying data for export", err)
 			}
-			fresp.Columns[sid] = cols
+
+			rowslen := len(resp.Cells)
+			if rowslen == 0 {
+				break
+			}
+
+			for _, v := range resp.Cells {
+
+				if nval, ok := v["numval"]; ok {
+					switch n := nval.(type) {
+					case string:
+						inum, err := strconv.ParseInt(n, 10, 64)
+						if err != nil {
+							panic(err)
+						}
+						v["numval"] = inum
+					}
+				}
+
+				cell := dyndb.SheetCell{}
+				err := mapstructure.Decode(v, &cell)
+				if err != nil {
+					return nil, err
+				}
+
+				rowid := cell.RowId
+				colid := cell.ColId
+
+				cell.RowId = 0
+				cell.ColId = 0
+				cell.SheetId = 0
+
+				rowCells, ok := sdata.Cells[rowid]
+				if !ok {
+					rowCells = make(map[int64]dyndb.SheetCell)
+					sdata.Cells[rowid] = rowCells
+				}
+
+				rowCells[colid] = cell
+				if rowid > rowCursor {
+					rowCursor = rowid
+				}
+
+			}
 		}
 
-		return &fresp, nil
+		cols, err := s.ListSheetColumn(txid, sid)
+		if err != nil {
+			return nil, err
+		}
 
-	*/
+		ocols := make([]dyndb.SheetColumn, 0, len(cols))
 
-	return nil, nil
+		err = mapstructure.Decode(cols, &ocols)
+		if err != nil {
+			return nil, err
+		}
+		sdata.Columns = ocols
+
+		fresp.SheetData[sid] = sdata
+	}
+
+	return &fresp, nil
+
 }
 
 func (s *Sheet) ImportSheets(txid uint32, opts dyndb.ImportOptions, data *dyndb.ExportData) error {
@@ -131,7 +170,7 @@ func (s *Sheet) ImportSheets(txid uint32, opts dyndb.ImportOptions, data *dyndb.
 
 // private
 
-func findExecOrder(cols map[int64][]dyndb.Column) []int64 {
+func findExecOrder(cols map[int64][]dyndb.SheetColumn) []int64 {
 	visited := make(map[int64]bool)
 	order := make([]int64, 0)
 
