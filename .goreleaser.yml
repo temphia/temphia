@@ -34,6 +34,16 @@ builds:
   goarch:
     - amd64
 
+- id: temphia-linux-arm64
+  env:
+    - CGO_ENABLED=1
+    - CC=aarch64-linux-gnu-gcc
+  main: ./main.go
+  goos:
+    - linux
+  goarch:
+    - arm64
+
 - id: temphia-windows
   ldflags: -buildmode=exe
   env:
@@ -46,10 +56,5 @@ builds:
   goarch:
     - amd64
 
-# archives:
-# - format: tar.gz
-#   format_overrides:
-#     - goos: windows
-#       format: zip
-#   name_template: "{{ .Binary }}-alpha-{{ .Os }}-{{ .Arch }}"
-#   allow_different_binary_count: true
+archives:
+- format: binary
