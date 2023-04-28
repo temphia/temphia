@@ -33,5 +33,5 @@ snapshot:
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v $(GOPATH)/src:/go/src \
 		-w /temphia \
-		ghcr.io/gythialy/golang-cross:$(GO_BUILDER_VERSION) --snapshot --clean
+		ghcr.io/gythialy/golang-cross:$(GO_BUILDER_VERSION) --snapshot --clean --rm-dist
 		
