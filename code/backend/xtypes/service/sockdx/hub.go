@@ -17,6 +17,7 @@ type Hub interface {
 
 type DataSyncer interface {
 	DataTableSyncer
+	DataSheetSyncer
 }
 
 type DataTableSyncer interface {
