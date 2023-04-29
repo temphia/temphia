@@ -17,12 +17,15 @@ jobs:
 
       - uses: actions/setup-go@v4
         with:
-          go-version: '1.18'
+          go-version: '1.20'
+
+      - name: Install GCC
+        run: sudo apt install -y gcc g++
 
       - uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
-          ndk-version: r21e
+          ndk-version: r25c
           add-to-path: false
           local-cache: true
 
@@ -30,21 +33,19 @@ jobs:
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: |
-          ls -lah $ANDROID_NDK_HOME
-          tree $ANDROID_NDK_HOME
+          ls -lah $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/
       
-      - name: Install GCC
-        run: sudo apt update && sudo apt install -y gcc g++ tree
+      # - name: Build for Android ARM
+      #   env:
+      #     ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+      #   run: |
+      #     export CGO_ENABLED=1
+      #     export GOOS=android
+      #     export GOARCH=arm
+      #     export CC=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi21-clang
+      #     go build -o dist/temphia_android_arm/temphia .
 
-      - name: Build for Android ARM
-        env:
-          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
-        run: |
-          export CGO_ENABLED=1
-          export GOOS=android
-          export GOARCH=arm
-          export CC=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi21-clang
-          go build -o dist/temphia_android_arm/temphia .
+
 
       - name: Build for Android ARM64
         env:
@@ -56,24 +57,24 @@ jobs:
           export CC=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang
           go build -o dist/temphia_android_arm64/temphia .
 
-      - name: Build for Android AMD64
-        env:
-          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
-        run: |
-          export CGO_ENABLED=1
-          export GOOS=android
-          export GOARCH=amd64
-          go build -o dist/temphia_android_amd64/temphia .
+      # - name: Build for Android AMD64
+      #   env:
+      #     ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+      #   run: |
+      #     export CGO_ENABLED=1
+      #     export GOOS=android
+      #     export GOARCH=amd64
+      #     go build -o dist/temphia_android_amd64/temphia .
 
-      - name: Build for Android X86
-        env:
-          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
-        run: |
-          export CGO_ENABLED=1
-          export GOOS=android
-          export GOARCH=386
-          export CC=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android21-clang
-          go build -o dist/temphia_android_x86/temphia .
+      # - name: Build for Android X86
+      #   env:
+      #     ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+      #   run: |
+      #     export CGO_ENABLED=1
+      #     export GOOS=android
+      #     export GOARCH=386
+      #     export CC=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android21-clang
+      #     go build -o dist/temphia_android_x86/temphia .
 
       #artifacts
       - name: save temphia_android_arm64
