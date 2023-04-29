@@ -519,30 +519,29 @@ func (s *Sheet) NewRowWithCell(txid uint32, sid int64, userId string, data map[i
 		return nil, err
 	}
 
-	// fixme => batch support
+	finalCells := make([]map[string]any, 0)
 
 	for cid, cellData := range data {
 		cellData["rowid"] = rid
 		cellData["sheetid"] = sid
 		cellData["colid"] = cid
 
-		cellid, err := s.tableHub.NewRow(txid, dyndb.NewRowReq{
-			TenantId: s.tenantId,
-			Group:    s.group,
-			Table:    dyndb.SheetCellTable,
-			Data:     cellData,
-			ModCtx: dyndb.ModCtx{
-				UserId: userId,
-			},
-		})
-		if err != nil {
-			return nil, err
-		}
-		pp.Println(cellid)
+		finalCells = append(finalCells, cellData)
 
 	}
 
-	return nil, nil
+	_, err = s.tableHub.NewBatchRows(txid, dyndb.NewBatchRowReq{
+		TenantId: s.tenantId,
+		Group:    s.group,
+		Table:    dyndb.SheetCellTable,
+		Data:     finalCells,
+		ModCtx: dyndb.ModCtx{
+			UserId:   userId,
+			AltIdent: fmt.Sprint(rid),
+		},
+	})
+
+	return nil, err
 }
 
 func (s *Sheet) UpdateRowWithCell(txid uint32, sid, rid int64, userId string, data map[int64]map[string]any) (map[int64]map[string]any, error) {
