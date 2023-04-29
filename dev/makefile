@@ -18,7 +18,7 @@ frontend_build:
 frontend_copy_files:
 	cd ../code/frontend && npm run copy:build_files
 backend_build:
-	cd .. && go build -o build/temphia-cli $(GOFLAGS) cmd/cli/cli.go
+	cd .. && go build -o build/temphia-cli $(GOFLAGS) .
 build_all: frontend_build frontend_copy_files backend_build
 
 install_cli:
