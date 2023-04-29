@@ -21,11 +21,12 @@ func temphiaDeleteRecord(conn *sqlite3.SQLiteConn) func(table, ctx, rowids strin
 
 		pp.Println("@temphia_delete_record", table, ctx, rowids)
 
-		results := gjson.GetMany(ctx, "user_id", "user_sign", "init_sign")
+		results := gjson.GetMany(ctx, "user_id", "user_sign", "init_sign", "alt_ident")
 
 		userId := results[0].String()
 		userSign := results[1].String()
 		initSign := results[2].String()
+		altIdent := results[3].String()
 
 		activityTable := fmt.Sprintf("%s_activity", table)
 
@@ -63,8 +64,8 @@ func temphiaDeleteRecord(conn *sqlite3.SQLiteConn) func(table, ctx, rowids strin
 		errs := []error{}
 
 		for _, vid := range vids {
-			qstr := fmt.Sprintf("INSERT INTO %s( type, row_id, row_version, user_id, user_sign, init_sign) VALUES (?, ?, 0, ?, ?, ?);", activityTable)
-			params := []driver.Value{"delete", vid, userId, userSign, initSign}
+			qstr := fmt.Sprintf("INSERT INTO %s( type, row_id, row_version, user_id, user_sign, init_sign, alt_ident) VALUES (?, ?, 0, ?, ?, ?, ?);", activityTable)
+			params := []driver.Value{"delete", vid, userId, userSign, initSign, altIdent}
 			_, err := conn.Exec(qstr, params)
 
 			errs = append(errs, err)

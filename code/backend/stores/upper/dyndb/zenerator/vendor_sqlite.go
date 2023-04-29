@@ -65,6 +65,7 @@ func (t *tzz) activityTableSqlite(wctx *WriterCtx) {
 				user_id text not null DEFAULT '',
 				user_sign text not null DEFAULT '',
 				init_sign text not null DEFAULT '',
+				alt_ident text not null DEFAULT '',
 				payload text not null DEFAULT '',
 				message text not null DEFAULT '',
 				created_at timestamp not null default current_timestamp
@@ -80,6 +81,7 @@ func (t *tzz) activityTableSqlite(wctx *WriterCtx) {
 					user_id,
 					user_sign,
 					init_sign,
+					alt_ident,
 					payload
 				)
 				VALUES (
@@ -89,6 +91,7 @@ func (t *tzz) activityTableSqlite(wctx *WriterCtx) {
 					COALESCE(json_extract(NEW.__mod_sig, '$.user_id' ), ''), 
 					COALESCE(json_extract(NEW.__mod_sig, '$.user_sign'), ''), 
 					COALESCE(json_extract(NEW.__mod_sig, '$.init_sign'), ''),
+					COALESCE(json_extract(NEW.__mod_sig, '$.alt_ident'), ''),
 					json_object(
 						`, activityTable, t.tableSlug, t.tableSlug, activityTable,
 		))
@@ -114,6 +117,7 @@ func (t *tzz) activityTableSqlite(wctx *WriterCtx) {
 				user_id,
 				user_sign,
 				init_sign,
+				alt_ident,
 				payload
 			)
 			VALUES (
@@ -123,6 +127,7 @@ func (t *tzz) activityTableSqlite(wctx *WriterCtx) {
 				COALESCE(json_extract(NEW.__mod_sig, '$.user_id' ), ''), 
 				COALESCE(json_extract(NEW.__mod_sig, '$.user_sign'), ''), 
 				COALESCE(json_extract(NEW.__mod_sig, '$.init_sign'), ''),
+				COALESCE(json_extract(NEW.__mod_sig, '$.alt_ident'), ''),
 				json_object(
 					`, activityTable, t.tableSlug, t.tableSlug))
 	for cidx, col := range t.model.Columns {

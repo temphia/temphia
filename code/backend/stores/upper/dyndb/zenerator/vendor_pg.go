@@ -87,6 +87,7 @@ func (t *tzz) activityTablePg(wctx *WriterCtx) {
 				user_id text not null DEFAULT '',
 				user_sign text not null DEFAULT '',
 				init_sign text not null DEFAULT '',
+				alt_ident text not null DEFAULT '',
 				payload text not null DEFAULT '',
 				message text not null DEFAULT '',
 				created_at timestamptz not null default now()

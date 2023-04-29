@@ -10,6 +10,7 @@ type DynActivity struct {
 	RowId     int64        `json:"row_id,omitempty" db:"row_id"`
 	RowVerson int64        `json:"row_version,omitempty" db:"row_version"`
 	InitSign  string       `json:"init_sign,omitempty" db:"init_sign,omitempty"`
+	AltIdent  string       `json:"alt_ident,omitempty" db:"alt_ident,omitempty"`
 	UserId    string       `json:"user_id,omitempty" db:"user_id,omitempty"`
 	UserSign  string       `json:"user_sign,omitempty" db:"user_sign,omitempty"`
 	Payload   string       `json:"payload,omitempty" db:"payload,omitempty"`
