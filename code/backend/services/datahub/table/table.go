@@ -298,3 +298,15 @@ func (t *Table) LiveSeed(table, userId string, max int) error {
 
 	return nil
 }
+
+func (t *Table) QueryActivity(table string, query *entities.ActivityQuery) ([]*entities.DynActivity, error) {
+	return t.inner.QueryActivity(t.tenantId, t.group, table, query)
+}
+
+func (t *Table) ListActivity(table string, rowId int) ([]*entities.DynActivity, error) {
+	return t.inner.ListActivity(t.tenantId, t.group, table, rowId)
+}
+
+func (t *Table) ListActivityByAlt(table string, alt string) ([]*entities.DynActivity, error) {
+	return t.inner.ListActivityByAlt(t.tenantId, t.group, table, alt)
+}

@@ -3,6 +3,7 @@ package data
 import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
@@ -213,6 +214,14 @@ func (c *Controller) GetRowRelations(uclaim *claim.Data, sid, rid, refsheet, ref
 	thub := ddb.GetDataSheetHub(uclaim.TenantId, uclaim.DataGroup)
 
 	return thub.GetRowRelations(0, sid, rid, refsheet, refcol)
+}
+
+func (c *Controller) GetRowHistory(uclaim *claim.Data, sid, rid int64) ([]*entities.DynActivity, error) {
+	source, _ := getTarget(uclaim)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataSheetHub(uclaim.TenantId, uclaim.DataGroup)
+
+	return thub.GetRowHistory(rid)
 }
 
 func (c *Controller) ExportSheets(uclaim *claim.Data, sheets []int64) (*dyndb.ExportData, error) {

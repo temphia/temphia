@@ -44,6 +44,7 @@ type DynSource interface {
 
 	QueryActivity(tenantId, group, table string, query *entities.ActivityQuery) ([]*entities.DynActivity, error)
 	ListActivity(tenantId, group, table string, rowId int) ([]*entities.DynActivity, error)
+	ListActivityByAlt(tenantId, group, table string, alt string) ([]*entities.DynActivity, error)
 	NewActivity(tenantId, group, table string, record *entities.DynActivity) error
 
 	ListDataUsers(source, tenantId, group, ttype, target string) ([]entities.UserInfo, error)
@@ -79,6 +80,10 @@ type DataTableHub interface {
 
 	SqlQuery(txid uint32, req SqlQueryReq) (*SqlQueryResult, error)
 
+	QueryActivity(table string, query *entities.ActivityQuery) ([]*entities.DynActivity, error)
+	ListActivity(table string, rowId int) ([]*entities.DynActivity, error)
+	ListActivityByAlt(table string, alt string) ([]*entities.DynActivity, error)
+
 	LiveSeed(table, userId string, max int) error
 }
 
@@ -104,6 +109,8 @@ type DataSheetHub interface {
 	NewRowWithCell(txid uint32, sid int64, userId string, data map[int64]map[string]any) (map[int64]map[string]any, error)
 	UpdateRowWithCell(txid uint32, sid, rid int64, userId string, data map[int64]map[string]any) (map[int64]map[string]any, error)
 	DeleteRowWithCell(txid uint32, sid, rid int64, userId string) error
+
+	GetRowHistory(rowid int64) ([]*entities.DynActivity, error)
 
 	ExportSheets(txid uint32, opts ExportOptions) (*ExportData, error)
 	ImportSheets(txid uint32, opts ImportOptions, data *ExportData) error

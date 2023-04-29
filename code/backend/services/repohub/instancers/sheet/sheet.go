@@ -210,6 +210,9 @@ func (s *SheetInstancer) instance(source, tenantId, gslug string, schemaData *xb
 					Group:    gslug,
 					Table:    dyndb.SheetCellTable,
 					Data:     cellData,
+					ModCtx: dyndb.ModCtx{
+						InitSign: fmt.Sprint(rowid),
+					},
 				})
 				if err != nil {
 					pp.Println("err creating cell", err)

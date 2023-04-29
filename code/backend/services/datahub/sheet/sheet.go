@@ -563,7 +563,8 @@ func (s *Sheet) UpdateRowWithCell(txid uint32, sid, rid int64, userId string, da
 				Table:    dyndb.SheetCellTable,
 				Data:     cellData,
 				ModCtx: dyndb.ModCtx{
-					UserId: userId,
+					UserId:   userId,
+					AltIdent: fmt.Sprint(rid),
 				},
 			})
 			if err != nil {
@@ -586,7 +587,8 @@ func (s *Sheet) UpdateRowWithCell(txid uint32, sid, rid int64, userId string, da
 				Data:     cellData,
 				Version:  int64(version),
 				ModCtx: dyndb.ModCtx{
-					UserId: userId,
+					UserId:   userId,
+					AltIdent: fmt.Sprint(rid),
 				},
 			})
 			if err != nil {
@@ -628,7 +630,7 @@ func (s *Sheet) DeleteRowWithCell(txid uint32, sid, rid int64, userId string) er
 		Id:       rid,
 		ModCtx: dyndb.ModCtx{
 			UserId:   userId,
-			UserSign: "",
+			AltIdent: fmt.Sprint(rid),
 		},
 	})
 }
