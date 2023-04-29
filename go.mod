@@ -1,6 +1,6 @@
 module github.com/temphia/temphia
 
-go 1.18
+go 1.20
 
 replace github.com/coreos/bbolt => go.etcd.io/bbolt v1.3.5
 
@@ -25,6 +25,7 @@ require (
 	github.com/k0kubun/pp v3.0.1+incompatible
 	github.com/lib/pq v1.10.7
 	github.com/mattn/go-sqlite3 v1.14.16
+	github.com/mitchellh/mapstructure v1.4.1
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 	github.com/rqlite/sql v0.0.0-20221103124402-8f9ff0ceb8f0
 	github.com/rs/xid v1.4.0
@@ -83,7 +84,6 @@ require (
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mitchellh/copystructure v1.0.0 // indirect
-	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/mitchellh/reflectwalk v1.0.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
