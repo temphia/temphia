@@ -16,15 +16,19 @@ type Hub interface {
 }
 
 type DataSyncer interface {
-	PushNewRow(source, tenantId, groupId, table string, data map[string]any) error
-	PushUpdateRow(source, tenantId, groupId, table string, id int64, data map[string]any) error
+	DataTableSyncer
+}
+
+type DataTableSyncer interface {
+	PushNewRow(source, tenantId, groupId, table string, ids []int64, data any) error
+	PushUpdateRow(source, tenantId, groupId, table string, ids []int64, data any) error
 	PushDeleteRow(source, tenantId, groupId, table string, ids []int64) error
-	PushNewRowBatch(source, tenantId, groupId, table string, ids []int64, data []map[string]any) error
+}
 
-	// fixme =>impl batch versions
-
-	// PushUpdateRow(source, tenantId, groupId, table string, ids []int64, []data map[string]any) error
-
+type DataSheetSyncer interface {
+	PushSheetNewRow(source, tenantId, groupId string, sheetId int64, ids []int64, data any) error
+	PushSheetUpdateRow(source, tenantId, groupId string, sheetId int64, ids []int64, data any) error
+	PushSheetDeleteRow(source, tenantId, groupId string, sheetId int64, ids []int64) error
 }
 
 type UserSyncer interface {

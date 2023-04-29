@@ -45,7 +45,7 @@ func (t *Table) NewRow(txid uint32, req dyndb.NewRowReq) (int64, error) {
 		return id, nil
 	}
 
-	err = t.handle.SockdHub.PushNewRow(t.source, req.TenantId, req.Group, req.Table, req.Data)
+	err = t.handle.SockdHub.PushNewRow(t.source, req.TenantId, req.Group, req.Table, []int64{id}, req.Data)
 	if err != nil {
 		pp.Println(err)
 	}
@@ -64,7 +64,7 @@ func (t *Table) NewBatchRows(txid uint32, req dyndb.NewBatchRowReq) ([]int64, er
 		return ids, nil
 	}
 
-	err = t.handle.SockdHub.PushNewRowBatch(t.source, req.TenantId, req.Group, req.Table, ids, req.Data)
+	err = t.handle.SockdHub.PushNewRow(t.source, req.TenantId, req.Group, req.Table, ids, req.Data)
 	if err != nil {
 		pp.Println(err)
 	}
@@ -93,7 +93,7 @@ func (t *Table) UpdateRow(txid uint32, req dyndb.UpdateRowReq) (map[string]any, 
 		return data, nil
 	}
 
-	err = t.handle.SockdHub.PushUpdateRow(t.source, req.TenantId, req.Group, req.Table, req.Id, req.Data)
+	err = t.handle.SockdHub.PushUpdateRow(t.source, req.TenantId, req.Group, req.Table, []int64{req.Id}, req.Data)
 	if err != nil {
 		pp.Println(err)
 	}
