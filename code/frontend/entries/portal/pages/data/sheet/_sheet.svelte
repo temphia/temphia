@@ -122,10 +122,11 @@
       service: sheet_service,
       dirty_data,
       onSave: async (data) => {
-        await sheet_service.add_row_cell(data);
-
-        app.utils.big_modal_close();
-        await sheet_service.init();
+        const resp = await sheet_service.add_row_cell(data);
+        if (resp.ok) {
+          app.utils.big_modal_close();
+        }
+        return resp;
       },
     });
   };

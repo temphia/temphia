@@ -5,16 +5,29 @@
   import type { SheetService } from "../../../../../services/data";
 
   export let columns: SheetColumn[];
-  export let onSave = async (data) => {};
+  export let onSave: (data) => Promise<any>;
   export let service: SheetService;
 
   export let open_column;
   export let dirty_data = {};
 
   $: console.log("@dirty_data", dirty_data);
+
+  let message = "";
 </script>
 
-<Layout title="Add Row" onSave={async () => onSave(dirty_data)}>
+<Layout
+  title="Add Row"
+  {message}
+  onSave={async () => {
+    const resp = await onSave(dirty_data);
+    if (!resp["ok"]) {
+      message = resp["data"];
+    } else {
+      message = "";
+    }
+  }}
+>
   {#each columns as col}
     <Cell
       {service}

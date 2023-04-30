@@ -267,7 +267,15 @@ export class SheetService {
   };
 
   add_row_cell = async (data: { [_: number]: { [_: string]: any } }) => {
-    await this.api.new_row_cell(this.sheetid, data);
+    const resp = await this.api.new_row_cell(this.sheetid, data);
+    if (!resp.ok) {
+      return resp;
+    }
+
+    const rowid = resp.data[0]["rowid"];
+    this.insert_one_row(rowid, resp.data);
+
+    return resp;
   };
 
   update_row_cell = async (
@@ -396,14 +404,11 @@ export class SheetService {
   }
 
   on_sockd = (payload: DataSheetMod) => {
-    const data = payload.rows.length > 1 ? [payload.data] : payload.data;
-
-    console.log("@data", data)
-    
-
-    switch (data.mod_type) {
+    switch (payload.mod_type) {
       case "sheet_insert":
-
+        const data = payload.data as SheetCell[];
+        this.insert_one_row(payload.rows[0], data);
+        break;
       case "sheet_update":
         break;
       case "sheet_delete":
@@ -412,6 +417,29 @@ export class SheetService {
       default:
         break;
     }
+  };
+
+  insert_one_row = (rowid: number, rcells: SheetCell[]) => {
+    const data = get(this.state);
+
+    if (data.rows.findIndex((val) => val.__id === rowid) !== -1) {
+      return;
+    }
+
+    this.state.update((old) => {
+      old.rows.push({
+        __id: rowid,
+        sheetid: Number(this.sheetid),
+      });
+
+      rcells.forEach((cell) => {
+        const cells = old.cells[cell.rowid] || {};
+        cells[cell.colid] = cell;
+        old.cells[cell.rowid] = cells;
+      });
+
+      return { ...old };
+    });
   };
 }
 
