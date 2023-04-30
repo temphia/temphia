@@ -3,8 +3,10 @@ package datahub
 import (
 	"sync"
 
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/services/datahub/handle"
 	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
@@ -109,4 +111,9 @@ func (d *DataHub) GetDataSheetHub(source, tenantId, group string) dyndb.DataShee
 	}
 
 	return s.GetDataSheetHub(tenantId, group)
+}
+
+func (d *DataHub) ApplyTargetHook(tenantId string, id int64, data *entities.TargetHook) {
+
+	pp.Println("@fixme", data)
 }

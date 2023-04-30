@@ -1,5 +1,7 @@
 package xplane
 
+import "github.com/temphia/temphia/code/backend/xtypes/models/entities"
+
 type Message struct {
 	Id      int64
 	Topic   string
@@ -21,4 +23,8 @@ type MsgBus interface {
 	Subscribe(topic string, ch chan Message) (int32, error)
 	UnSubscribe(topic string, subid int32) error
 	Submit(topic string, msg Message) (int64, error)
+}
+
+type StateWatcher interface {
+	ApplyTargetHook(tenantId string, id int64, data *entities.TargetHook)
 }

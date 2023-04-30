@@ -4,6 +4,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
 type DataHub interface {
@@ -11,6 +12,8 @@ type DataHub interface {
 	GetSource(source, tenant string) DynSource
 	ListSources(tenant string) ([]string, error)
 	Inject(app xtypes.App)
+
+	xplane.StateWatcher
 
 	GetDataTableHub(source, tenantId, group string) DataTableHub
 	GetDataSheetHub(source, tenantId, group string) DataSheetHub
