@@ -418,8 +418,11 @@ export class SheetService {
         this.update_one_row(payload.rows[0], payload.data);
         break;
       case "sheet_delete":
-        
-
+        const id = Number(payload.rows[0]);
+        this.state.update((old) => {
+          const newrows = old.rows.filter((v) => v.__id !== id);
+          return { ...old, rows: newrows };
+        });
         break;
 
       default:
