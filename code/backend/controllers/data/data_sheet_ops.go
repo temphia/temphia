@@ -181,7 +181,7 @@ func (c *Controller) DeleteSheetColumn(uclaim *claim.Data, sid, cid int64) error
 
 // row_cells
 
-func (c *Controller) NewRowWithCell(uclaim *claim.Data, sid int64, data map[int64]map[string]any) (map[int64]map[string]any, error) {
+func (c *Controller) NewRowWithCell(uclaim *claim.Data, sid int64, data map[int64]map[string]any) (any, error) {
 
 	source, _ := getTarget(uclaim)
 	ddb := c.dynHub.GetSource(source, uclaim.TenantId)

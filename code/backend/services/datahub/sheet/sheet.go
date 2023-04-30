@@ -502,7 +502,7 @@ func (s *Sheet) DeleteSheetColumn(txid uint32, sid, cid int64, userId string) er
 	})
 }
 
-func (s *Sheet) NewRowWithCell(txid uint32, sid int64, userId string, data map[int64]map[string]any) (map[int64]map[string]any, error) {
+func (s *Sheet) NewRowWithCell(txid uint32, sid int64, userId string, data map[int64]map[string]any) ([]map[string]any, error) {
 
 	rid, err := s.tableHub.NewRow(txid, dyndb.NewRowReq{
 		TenantId: s.tenantId,
@@ -530,7 +530,7 @@ func (s *Sheet) NewRowWithCell(txid uint32, sid int64, userId string, data map[i
 
 	}
 
-	_, err = s.tableHub.NewBatchRows(txid, dyndb.NewBatchRowReq{
+	cellids, err := s.tableHub.NewBatchRows(txid, dyndb.NewBatchRowReq{
 		TenantId: s.tenantId,
 		Group:    s.group,
 		Table:    dyndb.SheetCellTable,
@@ -540,8 +540,20 @@ func (s *Sheet) NewRowWithCell(txid uint32, sid int64, userId string, data map[i
 			AltIdent: fmt.Sprint(rid),
 		},
 	})
+	if err != nil {
+		return nil, err
+	}
 
-	return nil, err
+	for idx, cell := range finalCells {
+		cell[dyndb.KeyPrimary] = cellids[idx]
+	}
+
+	err = s.handle.SockdHub.PushSheetNewRow(s.source, s.tenantId, s.group, sid, []int64{rid}, finalCells)
+	if err != nil {
+		return nil, nil
+	}
+
+	return finalCells, nil
 }
 
 func (s *Sheet) UpdateRowWithCell(txid uint32, sid, rid int64, userId string, data map[int64]map[string]any) (map[int64]map[string]any, error) {

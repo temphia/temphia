@@ -80,7 +80,7 @@ export class SheetGroupService {
 
     const payload = msg.payload as DataSheetMod;
     const service = this.active_sheets.get(String(payload.sheet_id));
-    service.on_sockd(payload)
+    service.on_sockd(payload);
   };
 
   get_sheet_service = async (sheetid: string, gotorow?: number) => {
@@ -395,8 +395,23 @@ export class SheetService {
     };
   }
 
-  on_sockd = (data: DataSheetMod) => {
-    console.log("@fixme", data);
+  on_sockd = (payload: DataSheetMod) => {
+    const data = payload.rows.length > 1 ? [payload.data] : payload.data;
+
+    console.log("@data", data)
+    
+
+    switch (data.mod_type) {
+      case "sheet_insert":
+
+      case "sheet_update":
+        break;
+      case "sheet_delete":
+        break;
+
+      default:
+        break;
+    }
   };
 }
 
