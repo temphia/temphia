@@ -282,7 +282,13 @@ export class SheetService {
     rid: string,
     data: { [_: number]: { [_: string]: any } }
   ) => {
-    await this.api.update_row_cell(this.sheetid, rid, data);
+    const resp = await this.api.update_row_cell(this.sheetid, rid, data);
+    if (!resp.ok) {
+      return resp;
+    }
+
+    this.update_one_row(Number(rid), resp.data);
+    return resp;
   };
 
   remove_row_cell = async (rid: string) => {
@@ -406,12 +412,14 @@ export class SheetService {
   on_sockd = (payload: DataSheetMod) => {
     switch (payload.mod_type) {
       case "sheet_insert":
-        const data = payload.data as SheetCell[];
-        this.insert_one_row(payload.rows[0], data);
+        this.insert_one_row(payload.rows[0], payload.data);
         break;
       case "sheet_update":
+        this.update_one_row(payload.rows[0], payload.data);
         break;
       case "sheet_delete":
+        
+
         break;
 
       default:
@@ -423,6 +431,7 @@ export class SheetService {
     const data = get(this.state);
 
     if (data.rows.findIndex((val) => val.__id === rowid) !== -1) {
+      console.log("@skipping insert row", rowid);
       return;
     }
 
@@ -432,6 +441,25 @@ export class SheetService {
         sheetid: Number(this.sheetid),
       });
 
+      rcells.forEach((cell) => {
+        const cells = old.cells[cell.rowid] || {};
+        cells[cell.colid] = cell;
+        old.cells[cell.rowid] = cells;
+      });
+
+      return { ...old };
+    });
+  };
+
+  update_one_row = (rowid: number, rcells: SheetCell[]) => {
+    const data = get(this.state);
+
+    if (data.rows.findIndex((val) => val.__id === rowid) === -1) {
+      console.log("@skipping update row, cause outof range ?", rowid);
+      return;
+    }
+
+    this.state.update((old) => {
       rcells.forEach((cell) => {
         const cells = old.cells[cell.rowid] || {};
         cells[cell.colid] = cell;

@@ -109,9 +109,14 @@
       folder_api,
       gotoSiblingSheet: gotoSheetRow,
       onSave: async (data) => {
-        await sheet_service.update_row_cell(ev.detail["__id"], data);
-        app.utils.big_modal_close();
-        await sheet_service.init();
+        const resp = await sheet_service.update_row_cell(
+          ev.detail["__id"],
+          data
+        );
+        if (resp.ok) {
+          app.utils.big_modal_close();
+        }
+        return resp;
       },
     });
   };

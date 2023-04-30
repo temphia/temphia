@@ -10,20 +10,25 @@
   export let row: SheetRow;
   export let cells: { [_: number]: { [_: string]: SheetCell } };
   export let service: SheetService;
-  
-  export let onSave = async (data) => {};
-  export let gotoSiblingSheet = (ssid, rowid) => {}
+
+  export let onSave: (data) => Promise<any>;
+  export let gotoSiblingSheet = (ssid, rowid) => {};
 
   let current_cells = cells[row.__id] || {};
 
   $: console.log("@current_cells", current_cells);
 
-
+  let message = "";
 </script>
 
 <Layout
   title="Edit Row"
-  onSave={() => onSave(current_cells)}
+  onSave={async () => {
+    const resp = await onSave(current_cells);
+    if (!resp["ok"]) {
+      message = resp["data"];
+    }
+  }}
   onDelete={async () => {
     await service.remove_row_cell(String(row.__id));
     service.close_big_modal();

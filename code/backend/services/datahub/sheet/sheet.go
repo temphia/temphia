@@ -550,26 +550,28 @@ func (s *Sheet) NewRowWithCell(txid uint32, sid int64, userId string, data map[i
 
 	err = s.handle.SockdHub.PushSheetNewRow(s.source, s.tenantId, s.group, sid, []int64{rid}, finalCells)
 	if err != nil {
-		return nil, nil
+		pp.Println("@sheet_insert_sync_err", err)
 	}
 
 	return finalCells, nil
 }
 
-func (s *Sheet) UpdateRowWithCell(txid uint32, sid, rid int64, userId string, data map[int64]map[string]any) (map[int64]map[string]any, error) {
+func (s *Sheet) UpdateRowWithCell(txid uint32, sid, rid int64, userId string, data map[int64]map[string]any) ([]map[string]any, error) {
+
+	respData := make([]map[string]any, 0, len(data))
 
 	for colid, cellData := range data {
 
 		pp.Println("@data", cellData)
 
-		cellId, cellOk := cellData[dyndb.KeyPrimary].(float64)
+		cellId, cellOk := cellData[dyndb.KeyPrimary].(float64) // float cz its from req/json
 		version, _ := cellData[dyndb.KeyVersion].(float64)
 		if !cellOk {
 			cellData["rowid"] = rid
 			cellData["sheetid"] = sid
 			cellData["colid"] = colid
 
-			_, err := s.tableHub.NewRow(0, dyndb.NewRowReq{
+			cellId, err := s.tableHub.NewRow(0, dyndb.NewRowReq{
 				TenantId: s.tenantId,
 				Group:    s.group,
 				Table:    dyndb.SheetCellTable,
@@ -580,8 +582,11 @@ func (s *Sheet) UpdateRowWithCell(txid uint32, sid, rid int64, userId string, da
 				},
 			})
 			if err != nil {
+				pp.Println("maybe partial insert 1 ??", err.Error())
 				return nil, err
 			}
+
+			cellData[dyndb.KeyPrimary] = cellId
 
 		} else {
 
@@ -604,12 +609,23 @@ func (s *Sheet) UpdateRowWithCell(txid uint32, sid, rid int64, userId string, da
 				},
 			})
 			if err != nil {
+				pp.Println("maybe partial insert 2 ??", err.Error())
 				return nil, err
 			}
+
+			cellData["rowid"] = rid
+			cellData["sheetid"] = sid
+			cellData["colid"] = colid
 		}
+
+		respData = append(respData, cellData)
+	}
+	err := s.handle.SockdHub.PushSheetUpdateRow(s.source, s.tenantId, s.group, sid, []int64{rid}, respData)
+	if err != nil {
+		pp.Println("@err_syncing_sheet_update", err)
 	}
 
-	return nil, nil
+	return respData, nil
 }
 
 func (s *Sheet) DeleteRowWithCell(txid uint32, sid, rid int64, userId string) error {

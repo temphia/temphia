@@ -107,7 +107,7 @@ type DataSheetHub interface {
 	RefQuery(txid uint32, data *RefQuerySheet) (*QuerySheetResp, error)
 
 	NewRowWithCell(txid uint32, sid int64, userId string, data map[int64]map[string]any) ([]map[string]any, error)
-	UpdateRowWithCell(txid uint32, sid, rid int64, userId string, data map[int64]map[string]any) (map[int64]map[string]any, error)
+	UpdateRowWithCell(txid uint32, sid, rid int64, userId string, data map[int64]map[string]any) ([]map[string]any, error)
 	DeleteRowWithCell(txid uint32, sid, rid int64, userId string) error
 
 	GetRowHistory(rowid int64) ([]*entities.DynActivity, error)

@@ -190,7 +190,7 @@ func (c *Controller) NewRowWithCell(uclaim *claim.Data, sid int64, data map[int6
 	return thub.NewRowWithCell(0, sid, uclaim.UserID, data)
 }
 
-func (c *Controller) UpdateRowWithCell(uclaim *claim.Data, sid, rid int64, data map[int64]map[string]any) (map[int64]map[string]any, error) {
+func (c *Controller) UpdateRowWithCell(uclaim *claim.Data, sid, rid int64, data map[int64]map[string]any) (any, error) {
 
 	pp.Println("@update", data)
 
