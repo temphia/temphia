@@ -16,9 +16,9 @@ import {
   Sockd,
   SockdMessage,
 } from "../../../../../lib/sockd";
-import type { DataModification } from "../table";
 import { scroller } from "./scroll";
 import { formatRefCells } from "./format";
+import type { DataSheetMod } from "./sync";
 
 export class SheetGroupService {
   source: string;
@@ -74,12 +74,13 @@ export class SheetGroupService {
   };
 
   private sockd_handle = (msg: SockdMessage) => {
-    if (msg.type !== MESSAGE_SERVER_PUBLISH) {
+    if (msg.type !== MESSAGE_SERVER_PUBLISH || !msg.payload["sheet_id"]) {
       return;
     }
 
-    const payload = msg.payload as DataModification;
-    console.log("@sheet_sockd", payload);
+    const payload = msg.payload as DataSheetMod;
+    const service = this.active_sheets.get(String(payload.sheet_id));
+    service.on_sockd(payload)
   };
 
   get_sheet_service = async (sheetid: string, gotorow?: number) => {
@@ -393,6 +394,10 @@ export class SheetService {
       source: this.group.source,
     };
   }
+
+  on_sockd = (data: DataSheetMod) => {
+    console.log("@fixme", data);
+  };
 }
 
 export class SheetInvoker {

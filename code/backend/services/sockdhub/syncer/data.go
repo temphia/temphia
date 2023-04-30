@@ -29,7 +29,8 @@ func NewData(sockd sockdx.SockdCore) *DataSyncer {
 	}
 }
 
-type RowMod struct {
+type DataTableMod struct {
+	Group   string  `json:"group,omitempty"`
 	Table   string  `json:"table,omitempty"`
 	Rows    []int64 `json:"rows,omitempty"`
 	ModType string  `json:"mod_type,omitempty"`
@@ -39,7 +40,8 @@ type RowMod struct {
 // datatable
 
 func (s *DataSyncer) PushNewRow(source, tenantId, groupId, table string, ids []int64, data any) error {
-	return s.pushRowMod(source, tenantId, groupId, &RowMod{
+	return s.pushRowMod(source, tenantId, groupId, &DataTableMod{
+		Group:   groupId,
 		Table:   table,
 		Rows:    ids,
 		ModType: DataModTypeInsert,
@@ -49,7 +51,8 @@ func (s *DataSyncer) PushNewRow(source, tenantId, groupId, table string, ids []i
 }
 
 func (s *DataSyncer) PushUpdateRow(source, tenantId, groupId, table string, ids []int64, data any) error {
-	return s.pushRowMod(source, tenantId, groupId, &RowMod{
+	return s.pushRowMod(source, tenantId, groupId, &DataTableMod{
+		Group:   groupId,
 		Table:   table,
 		Rows:    ids,
 		ModType: DataModTypeUpdate,
@@ -58,7 +61,8 @@ func (s *DataSyncer) PushUpdateRow(source, tenantId, groupId, table string, ids 
 }
 
 func (s *DataSyncer) PushDeleteRow(source, tenantId, groupId, table string, ids []int64) error {
-	return s.pushRowMod(source, tenantId, groupId, &RowMod{
+	return s.pushRowMod(source, tenantId, groupId, &DataTableMod{
+		Group:   groupId,
 		Table:   table,
 		Rows:    ids,
 		ModType: DataModTypeDelete,
@@ -66,7 +70,7 @@ func (s *DataSyncer) PushDeleteRow(source, tenantId, groupId, table string, ids 
 	})
 }
 
-func (s *DataSyncer) pushRowMod(source, tenantId, groupId string, data *RowMod) error {
+func (s *DataSyncer) pushRowMod(source, tenantId, groupId string, data *DataTableMod) error {
 	pp.Println("@syncer", data)
 
 	out, err := json.Marshal(data)
@@ -85,7 +89,8 @@ func (s *DataSyncer) pushRowMod(source, tenantId, groupId string, data *RowMod) 
 
 // datasheet
 
-type RowSheetMod struct {
+type DataSheetMod struct {
+	Group   string  `json:"group,omitempty"`
 	SheetId int64   `json:"sheet_id,omitempty"`
 	Rows    []int64 `json:"rows,omitempty"`
 	ModType string  `json:"mod_type,omitempty"`
@@ -94,7 +99,8 @@ type RowSheetMod struct {
 
 func (s *DataSyncer) PushSheetNewRow(source, tenantId, groupId string, sheetId int64, ids []int64, data any) error {
 
-	return s.pushSheetRowMod(source, tenantId, groupId, &RowSheetMod{
+	return s.pushSheetRowMod(source, tenantId, groupId, &DataSheetMod{
+		Group:   groupId,
 		SheetId: sheetId,
 		Rows:    ids,
 		ModType: DataModTypeSheetInsert,
@@ -103,7 +109,8 @@ func (s *DataSyncer) PushSheetNewRow(source, tenantId, groupId string, sheetId i
 }
 
 func (s *DataSyncer) PushSheetUpdateRow(source, tenantId, groupId string, sheetId int64, ids []int64, data any) error {
-	return s.pushSheetRowMod(source, tenantId, groupId, &RowSheetMod{
+	return s.pushSheetRowMod(source, tenantId, groupId, &DataSheetMod{
+		Group:   groupId,
 		SheetId: sheetId,
 		Rows:    ids,
 		ModType: DataModTypeSheetUpdate,
@@ -112,7 +119,8 @@ func (s *DataSyncer) PushSheetUpdateRow(source, tenantId, groupId string, sheetI
 }
 
 func (s *DataSyncer) PushSheetDeleteRow(source, tenantId, groupId string, sheetId int64, ids []int64) error {
-	return s.pushSheetRowMod(source, tenantId, groupId, &RowSheetMod{
+	return s.pushSheetRowMod(source, tenantId, groupId, &DataSheetMod{
+		Group:   groupId,
 		SheetId: sheetId,
 		Rows:    ids,
 		ModType: DataModTypeSheetDelete,
@@ -120,7 +128,7 @@ func (s *DataSyncer) PushSheetDeleteRow(source, tenantId, groupId string, sheetI
 	})
 }
 
-func (s *DataSyncer) pushSheetRowMod(source, tenantId, groupId string, data *RowSheetMod) error {
+func (s *DataSyncer) pushSheetRowMod(source, tenantId, groupId string, data *DataSheetMod) error {
 
 	out, err := json.Marshal(data)
 	if err != nil {
