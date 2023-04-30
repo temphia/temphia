@@ -85,7 +85,8 @@ func (d *DynDB) NewBatchRows(txid uint32, req dyndb.NewBatchRowReq) ([]int64, er
 		}
 	}
 
-	keyMap := make([]Key, 0)
+	keyMap := make([]Key, len(req.Data))
+
 	err = d.txOr(txid, func(sess db.Session) error {
 		inserter := sess.SQL().InsertInto(
 			d.tns.Table(req.TenantId, req.Group, req.Table),
@@ -95,7 +96,6 @@ func (d *DynDB) NewBatchRows(txid uint32, req dyndb.NewBatchRowReq) ([]int64, er
 			inserter.Values(data)
 		}
 
-		keyMap := make([]Key, len(req.Data))
 		inserter.NextResult(&keyMap)
 
 		inserter.Done()
