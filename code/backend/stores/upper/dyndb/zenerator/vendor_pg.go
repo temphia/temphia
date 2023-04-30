@@ -92,8 +92,10 @@ func (t *tzz) activityTablePg(wctx *WriterCtx) {
 				message text not null DEFAULT '',
 				created_at timestamptz not null default now()
 			);
+
+			CREATE INDEX %s_alt_index ON %s (alt_ident);
 			
-			`, activityTable,
+			`, activityTable, activityTable, activityTable,
 		),
 	)
 

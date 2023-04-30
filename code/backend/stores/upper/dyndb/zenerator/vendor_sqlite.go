@@ -71,6 +71,9 @@ func (t *tzz) activityTableSqlite(wctx *WriterCtx) {
 				created_at timestamp not null default current_timestamp
 			);
 
+			CREATE INDEX %s_alt_index ON %s (alt_ident);
+
+
 			CREATE TRIGGER data_tg_%s_insert
 				AFTER INSERT ON %s
 			BEGIN
@@ -93,7 +96,7 @@ func (t *tzz) activityTableSqlite(wctx *WriterCtx) {
 					COALESCE(json_extract(NEW.__mod_sig, '$.init_sign'), ''),
 					COALESCE(json_extract(NEW.__mod_sig, '$.alt_ident'), ''),
 					json_object(
-						`, activityTable, t.tableSlug, t.tableSlug, activityTable,
+						`, activityTable, activityTable, activityTable, t.tableSlug, t.tableSlug, activityTable,
 		))
 
 	for cidx, col := range t.model.Columns {
