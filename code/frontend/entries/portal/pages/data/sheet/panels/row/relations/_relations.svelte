@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { SheetService } from "../../../../../services/data";
-  import SheetInner from "../../_sheet_inner.svelte";
-  import { formatRefCells } from "../../../../../services/data/sheet/format";
+  import SheetInner from "../../../_sheet_inner.svelte";
+  import { formatRefCells } from "../../../../../../services/data/sheet/format";
+  import type { SheetService } from "../../../../../../services/data";
   export let service: SheetService;
   export let gotoSiblingSheet;
   export let rid;

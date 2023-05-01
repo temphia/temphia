@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { time_ago } from "../../../../../../../lib/vendor/timeago";
+  import { time_ago } from "../../../../../../../../lib/vendor/timeago";
 
   import Jsonview from "../../../../../../../xcompo/jsonview/jsonview.svelte";
   import {
@@ -7,7 +7,7 @@
     DataModTypeUpdate,
     DataModTypeDelete,
     DataModTypeComment,
-  } from "../../../../../services/data";
+  } from "../../../../../../services/data";
 
   export let data;
   export let expanded = false;

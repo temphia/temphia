@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { SheetColumn } from "../../sheets";
-  import Cell from "../../field/cell.svelte";
-  import type { SheetService } from "../../../../../services/data";
+  import type { SheetColumn } from "../../../sheets";
+  import Cell from "../../../field/cell.svelte";
+  import type { SheetService } from "../../../../../../services/data";
 
   export let columns: SheetColumn[];
   export let service: SheetService;

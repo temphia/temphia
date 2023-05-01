@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { SheetCell, SheetColumn, SheetRow } from "../../sheets";
-  import Layout from "./_layout.svelte";
-  import type { SheetService } from "../../../../../services/data";
+  import type { SheetCell, SheetColumn, SheetRow } from "../../../sheets";
+  import Layout from "../_layout.svelte";
+  import type { SheetService } from "../../../../../../services/data";
   import EditRow from "./_edit_row.svelte";
-  import Relations from "./_relations.svelte";
-  import History from "./_history.svelte";
+  import Relations from "../relations/_relations.svelte";
+  import History from "../history/_history.svelte";
 
   export let columns: SheetColumn[];
   export let row: SheetRow;

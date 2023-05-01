@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { SheetService } from "../../../../../services/data";
-  import { LoadingSpinner } from "../../../../admin/core";
+  import type { SheetService } from "../../../../../../services/data";
+  import { LoadingSpinner } from "../../../../../admin/core";
   import HistoryCard from "./_history_card.svelte";
 
   export let service: SheetService;

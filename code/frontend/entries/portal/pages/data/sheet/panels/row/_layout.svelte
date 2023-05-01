@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Button from "./_button.svelte";
+  import Button from "./edit/_button.svelte";
 
   export let title;
   export let onSave;
