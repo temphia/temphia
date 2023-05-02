@@ -8,6 +8,7 @@ import (
 	"github.com/go-git/go-git/v5"
 	"github.com/k0kubun/pp"
 
+	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/tools/repobuild/index"
 	"github.com/temphia/temphia/code/tools/repobuild/models"
@@ -42,6 +43,7 @@ func New(conf *models.BuildConfig) *RepoBuilder {
 func (rb *RepoBuilder) Build() error {
 
 	os.RemoveAll(rb.config.BuildFolder)
+	xutils.CreateIfNotExits(rb.config.BuildFolder)
 
 	for k := range rb.config.Items {
 
