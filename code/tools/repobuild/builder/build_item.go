@@ -83,16 +83,16 @@ func (rb *RepoBuilder) runBuild(workFolder, buildcmd string) error {
 func (rb *RepoBuilder) gitClone(path, url, branch string) (string, error) {
 	pp.Println(os.Getwd())
 
+	err := xutils.CreateIfNotExits(path)
+	if err != nil {
+		pp.Println("@create_err", err.Error())
+		return "", err
+	}
+
 	cmd := exec.Command("ls", "-lah")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	pp.Println(cmd.Run())
-
-	err := xutils.CreateIfNotExits(path)
-	if err != nil {
-		pp.Println(err.Error())
-		return "", err
-	}
 
 	repo, err := git.PlainClone(path, false, &git.CloneOptions{
 		URL:           url,
@@ -103,6 +103,7 @@ func (rb *RepoBuilder) gitClone(path, url, branch string) (string, error) {
 	})
 
 	if err != nil {
+		pp.Println("@clone_err", err.Error())
 		if !errors.Is(git.ErrRepositoryAlreadyExists, err) {
 			return "", err
 		}
@@ -116,6 +117,7 @@ func (rb *RepoBuilder) gitClone(path, url, branch string) (string, error) {
 
 	headRef, err := repo.Head()
 	if err != nil {
+		pp.Println("@headref", err.Error())
 		panic(err)
 	}
 
@@ -125,12 +127,14 @@ func (rb *RepoBuilder) gitClone(path, url, branch string) (string, error) {
 func (rb *RepoBuilder) copyArtifact(basePath, name, bprintFile, version string) error {
 	out, err := os.ReadFile(path.Join(basePath, bprintFile))
 	if err != nil {
+		pp.Println("@copy_artifact", err.Error())
 		return err
 	}
 
 	lbprint := &xbprint.LocalBprint{}
 	err = yaml.Unmarshal(out, lbprint)
 	if err != nil {
+		pp.Println("@unmarshel_bprint_err", err.Error())
 		return err
 	}
 
@@ -154,15 +158,17 @@ func (rb *RepoBuilder) copyArtifact(basePath, name, bprintFile, version string) 
 	}()
 
 	err = bdev.ZipIt(lbprint, filename)
-	os.Chdir(wd)
+
+	pp.Println(os.Chdir(wd))
 
 	if err != nil {
+		pp.Println("@zip_err", err.Error())
 		return err
 	}
 
 	distpath := path.Join(rb.config.OutputFolder, name)
 
-	xutils.CreateIfNotExits(distpath)
+	pp.Println("@create_dist_path", xutils.CreateIfNotExits(distpath))
 
 	err = xutils.Copy(
 		path.Join(basePath, filename),
