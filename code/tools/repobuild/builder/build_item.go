@@ -81,6 +81,8 @@ func (rb *RepoBuilder) runBuild(workFolder, buildcmd string) error {
 }
 
 func (rb *RepoBuilder) gitClone(path, url, branch string) (string, error) {
+	pp.Println(os.Getwd())
+
 	err := xutils.CreateIfNotExits(path)
 	if err != nil {
 		return "", err

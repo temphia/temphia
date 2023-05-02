@@ -1,6 +1,7 @@
 package builder
 
 import (
+	"log"
 	"os"
 	"path"
 
@@ -58,6 +59,7 @@ func (rb *RepoBuilder) Build() error {
 func (rb *RepoBuilder) PrintResult() {
 	for k, err := range rb.erroredItems {
 		pp.Println("@err", k, err)
+		log.Println(err.Error())
 	}
 
 	for k, v := range rb.outputs {
