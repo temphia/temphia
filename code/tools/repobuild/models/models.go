@@ -11,4 +11,5 @@ type BuildConfig struct {
 	Items        map[string]RepoItem `json:"items,omitempty" yaml:"items,omitempty"`
 	BuildFolder  string              `json:"build_folder,omitempty" yaml:"build_folder,omitempty"`
 	OutputFolder string              `json:"output_folder,omitempty" yaml:"output_folder,omitempty"`
+	BuildImage   string              `json:"build_image,omitempty" yaml:"build_image,omitempty"`
 }

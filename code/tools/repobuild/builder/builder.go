@@ -3,6 +3,7 @@ package builder
 import (
 	"log"
 	"os"
+	"os/exec"
 	"path"
 
 	"github.com/go-git/go-git/v5"
@@ -12,6 +13,10 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/tools/repobuild/index"
 	"github.com/temphia/temphia/code/tools/repobuild/models"
+)
+
+const (
+	defaultBuildImage = "ghcr.io/temphia/temphia_buildpack:latest"
 )
 
 type RepoBuilder struct {
@@ -30,6 +35,10 @@ type RepoBuilder struct {
 
 func New(conf *models.BuildConfig) *RepoBuilder {
 
+	if conf.BuildImage == "" {
+		conf.BuildImage = defaultBuildImage
+	}
+
 	return &RepoBuilder{
 		config:         conf,
 		indexer:        index.New(path.Join(conf.OutputFolder, "db.json")),
@@ -41,6 +50,12 @@ func New(conf *models.BuildConfig) *RepoBuilder {
 }
 
 func (rb *RepoBuilder) Build() error {
+
+	err := rb.preFetchDockerImage()
+	if err != nil {
+		pp.Println("@feteching_image_err", err)
+		return err
+	}
 
 	os.RemoveAll(rb.config.BuildFolder)
 	xutils.CreateIfNotExits(rb.config.BuildFolder)
@@ -67,5 +82,19 @@ func (rb *RepoBuilder) PrintResult() {
 	for k, v := range rb.outputs {
 		pp.Println("@build_ok", k, v)
 	}
+
+}
+
+func (rb *RepoBuilder) preFetchDockerImage() error {
+
+	cmd := exec.Command(
+		"docker",
+		"pull",
+		rb.config.BuildImage,
+	)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	return cmd.Run()
 
 }
