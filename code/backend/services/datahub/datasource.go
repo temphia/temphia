@@ -107,6 +107,10 @@ func (ds *DataSource) ListActivity(tenantId, group, table string, rowId int) ([]
 	return ds.inner.ListActivity(tenantId, group, table, rowId)
 }
 
+func (ds *DataSource) ListActivityByAlt(tenantId, group, table string, alt string) ([]*entities.DynActivity, error) {
+	return ds.inner.ListActivityByAlt(tenantId, group, table, alt)
+}
+
 func (ds *DataSource) NewActivity(tenantId, group, table string, record *entities.DynActivity) error {
 	_, err := ds.inner.NewActivity(tenantId, group, table, record)
 	return err
@@ -179,25 +183,3 @@ func (ds *DataSource) GetDataSheetHub(tenantId, group string) dyndb.DataSheetHub
 	return dh
 
 }
-
-/*
-
-
-pp.Println(ds.inner.JoinQuery(0, dyndb.JoinReq{
-		TenantId: tenantId,
-		Group:    group,
-		Parent:   "sale",
-		Child:    "customer",
-		OnParent: "customer",
-		OnChild:  "__id",
-		ParentFilters: []dyndb.FilterCond{
-			{
-				Column: "amt",
-				Cond:   filter.FilterGT,
-				Value:  100,
-			},
-		},
-		ChildFilters: []dyndb.FilterCond{},
-	}))
-
-*/

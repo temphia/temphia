@@ -41,8 +41,9 @@ export const DataModTypeUpdate = "update";
 export const DataModTypeDelete = "delete";
 export const DataModTypeComment = "comment";
 
-export interface DataModification {
-  group?: string;
+
+export interface DataTableMod {
+  group: string;
   table: string;
   rows: number[];
   mod_type: DataModType;
@@ -54,7 +55,7 @@ export interface TableExecData {
   table_id: string;
   data_group: string;
   table_slug: string;
-  source: string
+  source: string;
 
   cells: { [_: string]: { [_: string]: any } };
   rows: number[];

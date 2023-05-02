@@ -6,7 +6,7 @@ import {
 } from "../../../../../lib/sockd";
 import type { SockdService } from "../../sockd/sockd";
 import { TableService } from "./table_service";
-import type { DataModification } from "./table_types";
+import type { DataTableMod } from "./table_types";
 
 export class GroupService {
   source: string;
@@ -73,7 +73,7 @@ export class GroupService {
       return;
     }
     
-    const payload = msg.payload as DataModification;
+    const payload = msg.payload as DataTableMod;
     const tablesvc = this.tables_services.get(payload.table);
     if (tablesvc) {
       tablesvc.on_sockd(payload);

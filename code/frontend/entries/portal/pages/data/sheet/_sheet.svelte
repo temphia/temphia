@@ -5,8 +5,8 @@
   import SheetUi from "./_sheet_ui.svelte";
   import AddColumn from "./panels/column/_add_column.svelte";
   import AddSheet from "./panels/sheet/_add_sheet.svelte";
-  import EditRow from "./panels/row/edit_row.svelte";
-  import AddRow from "./panels/row/add_row.svelte";
+  import EditRow from "./panels/row/edit/edit_row.svelte";
+  import AddRow from "./panels/row/edit/add_row.svelte";
   import RemoveSheetDialog from "./panels/sheet/_remove_sheet_dialog.svelte";
   import EditColumn from "./panels/column/_edit_column.svelte";
   import SearchPanel from "./panels/_search_panel.svelte";
@@ -109,9 +109,14 @@
       folder_api,
       gotoSiblingSheet: gotoSheetRow,
       onSave: async (data) => {
-        await sheet_service.update_row_cell(ev.detail["__id"], data);
-        app.utils.big_modal_close();
-        await sheet_service.init();
+        const resp = await sheet_service.update_row_cell(
+          ev.detail["__id"],
+          data
+        );
+        if (resp.ok) {
+          app.utils.big_modal_close();
+        }
+        return resp;
       },
     });
   };
@@ -122,10 +127,11 @@
       service: sheet_service,
       dirty_data,
       onSave: async (data) => {
-        await sheet_service.add_row_cell(data);
-
-        app.utils.big_modal_close();
-        await sheet_service.init();
+        const resp = await sheet_service.add_row_cell(data);
+        if (resp.ok) {
+          app.utils.big_modal_close();
+        }
+        return resp;
       },
     });
   };

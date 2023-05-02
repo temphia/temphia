@@ -31,6 +31,8 @@ type DynDB interface {
 
 	QueryActivity(tenantId, group, table string, query *entities.ActivityQuery) ([]*entities.DynActivity, error)
 	ListActivity(tenantId, group, table string, rowId int) ([]*entities.DynActivity, error)
+	ListActivityByAlt(tenantId, group, table string, alt string) ([]*entities.DynActivity, error)
+
 	NewActivity(tenantId, group, table string, record *entities.DynActivity) (int64, error)
 
 	// ops

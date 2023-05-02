@@ -1,92 +1,83 @@
 <script lang="ts">
   import { time_ago } from "../../../../../../../../lib/vendor/timeago";
   import Jsonview from "../../../../../../../xcompo/jsonview/jsonview.svelte";
+  import {
+    DataModTypeInsert,
+    DataModTypeUpdate,
+    DataModTypeDelete,
+    DataModTypeComment,
+  } from "../../../../../../services/data";
 
-  const CREATE_RECORD = "insert";
-  const UPDATE_RECORD = "update";
-  const DELETE_RECORD = "delete";
-  const COMMENT_RECORD = "comment";
   export let data;
   export let expanded = false;
   export let onClick;
 
-  $: _text = {
-    [CREATE_RECORD]: "created new a record",
-    [UPDATE_RECORD]: "updated a record",
-    [DELETE_RECORD]: "deleted a record",
-    [COMMENT_RECORD]: "commented ",
+  const text = {
+    [DataModTypeInsert]: "created new a record",
+    [DataModTypeUpdate]: "updated a record",
+    [DataModTypeDelete]: "deleted a record",
+    [DataModTypeComment]: "commented ",
   }[data.type];
-</script>
 
-<div class="w-full p-3 mt-4 bg-white rounded shadow flex flex-shrink-0 border">
-  <div
-    tabindex="0"
-    aria-label="group icon"
-    role="img"
-    class="focus:outline-none w-8 h-8 border rounded-full border-gray-200 flex flex-shrink-0 items-center justify-center"
-  >
-    {#if data.type === CREATE_RECORD}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6 text-green-500"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    {:else if data.type === UPDATE_RECORD}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-5 w-5 text-blue-500"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path
+  const icons = {
+    [DataModTypeInsert]: `<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>`,
+    [DataModTypeUpdate]: `<path
           d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"
         />
         <path
           fill-rule="evenodd"
           d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
           clip-rule="evenodd"
-        />
-      </svg>
-    {:else if data.type === DELETE_RECORD}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-5 w-5 text-red-500"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path
+        />`,
+    [DataModTypeDelete]: `<path
           fill-rule="evenodd"
           d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
           clip-rule="evenodd"
-        />
-      </svg>
-    {:else if data.type === COMMENT_RECORD}
-      <svg
-        class="h-5 w-5"
-        viewBox="0 0 16 16"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        ><path
+        />`,
+    [DataModTypeComment]: `<path
           d="M4.30325 12.6667L1.33325 15V2.66667C1.33325 2.48986 1.40349 2.32029 1.52851 2.19526C1.65354 2.07024 1.82311 2 1.99992 2H13.9999C14.1767 2 14.3463 2.07024 14.4713 2.19526C14.5963 2.32029 14.6666 2.48986 14.6666 2.66667V12C14.6666 12.1768 14.5963 12.3464 14.4713 12.4714C14.3463 12.5964 14.1767 12.6667 13.9999 12.6667H4.30325ZM5.33325 6.66667V8H10.6666V6.66667H5.33325Z"
           fill="#4338CA"
-        /></svg
+        />`,
+  };
+</script>
+
+<div class="w-full p-3 mt-4 bg-white rounded shadow flex flex-shrink-0 border">
+  <div
+    class="focus:outline-none w-8 h-8 border rounded-full border-gray-200 flex flex-shrink-0 items-center justify-center"
+  >
+    {#if data.type === DataModTypeInsert}
+      <svg
+        class="h-6 w-6 text-green-500"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
       >
+        {@html icons[data.type]}
+      </svg>
+    {:else if data.type === DataModTypeUpdate}
+      <svg
+        class="h-5 w-5 text-blue-500"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      />
+    {:else if data.type === DataModTypeDelete}
+      <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+        {@html icons[data.type]}
+      </svg>
+    {:else if data.type === DataModTypeComment}
+      <svg class="h-5 w-5" viewBox="0 0 16 16" fill="none">
+        {@html icons[data.type]}
+      </svg>
     {/if}
   </div>
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div class="pl-3 w-full cursor-pointer" on:click={onClick}>
     <div class="flex items-center justify-between w-full">
+      <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
       <p tabindex="0" class="focus:outline-none leading-none">
         <span class="text-indigo-700">{data.user_id}</span>
-        {_text}
+        {text}
 
         <!-- <span class="text-indigo-700">UX Designers</span> -->
       </p>
@@ -111,18 +102,15 @@
       </div>
     </div>
 
-    {#if data.type === COMMENT_RECORD}
+    {#if data.payload}
       <p class="italic text-gray-700">{data.payload}</p>
     {/if}
 
-    <p
-      tabindex="0"
-      class="focus:outline-none text-xs leading-3 pt-1 text-gray-500"
-    >
+    <p class="focus:outline-none text-xs leading-3 pt-1 text-gray-500">
       {time_ago(data.created_at)}
     </p>
 
-    {#if expanded && data.type !== COMMENT_RECORD}
+    {#if expanded && data.type !== DataModTypeComment}
       <div class="p-2 border rounded bg-gray-50">
         <Jsonview json={JSON.parse(data.payload || "{}")} />
       </div>

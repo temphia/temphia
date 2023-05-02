@@ -55,6 +55,22 @@ func (d *DynDB) ListActivity(tenantId, group, table string, rowId int) ([]*entit
 	return data, nil
 }
 
+func (d *DynDB) ListActivityByAlt(tenantId, group, table string, alt string) ([]*entities.DynActivity, error) {
+
+	tbl := d.activityTable(tenantId, group, table)
+
+	data := make([]*entities.DynActivity, 0)
+
+	err := tbl.Find(db.Cond{
+		"alt_ident": alt,
+	}).All(&data)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}
+
 func (d *DynDB) NewActivity(tenantId, group, table string, record *entities.DynActivity) (int64, error) {
 
 	tbl := d.activityTable(tenantId, group, table)

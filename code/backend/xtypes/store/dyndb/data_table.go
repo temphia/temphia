@@ -11,6 +11,7 @@ type ModCtx struct {
 	UserSign  string `json:"user_sign,omitempty"`
 	InitSign  string `json:"init_sign,omitempty"`
 	TableName string `json:"table_name,omitempty"`
+	AltIdent  string `json:"alt_ident,omitempty"`
 }
 
 func (m *ModCtx) JSON() ([]byte, error) {

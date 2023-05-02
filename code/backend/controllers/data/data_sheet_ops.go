@@ -3,6 +3,7 @@ package data
 import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
@@ -180,7 +181,7 @@ func (c *Controller) DeleteSheetColumn(uclaim *claim.Data, sid, cid int64) error
 
 // row_cells
 
-func (c *Controller) NewRowWithCell(uclaim *claim.Data, sid int64, data map[int64]map[string]any) (map[int64]map[string]any, error) {
+func (c *Controller) NewRowWithCell(uclaim *claim.Data, sid int64, data map[int64]map[string]any) (any, error) {
 
 	source, _ := getTarget(uclaim)
 	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
@@ -189,7 +190,7 @@ func (c *Controller) NewRowWithCell(uclaim *claim.Data, sid int64, data map[int6
 	return thub.NewRowWithCell(0, sid, uclaim.UserID, data)
 }
 
-func (c *Controller) UpdateRowWithCell(uclaim *claim.Data, sid, rid int64, data map[int64]map[string]any) (map[int64]map[string]any, error) {
+func (c *Controller) UpdateRowWithCell(uclaim *claim.Data, sid, rid int64, data map[int64]map[string]any) (any, error) {
 
 	pp.Println("@update", data)
 
@@ -213,6 +214,14 @@ func (c *Controller) GetRowRelations(uclaim *claim.Data, sid, rid, refsheet, ref
 	thub := ddb.GetDataSheetHub(uclaim.TenantId, uclaim.DataGroup)
 
 	return thub.GetRowRelations(0, sid, rid, refsheet, refcol)
+}
+
+func (c *Controller) GetRowHistory(uclaim *claim.Data, sid, rid int64) ([]*entities.DynActivity, error) {
+	source, _ := getTarget(uclaim)
+	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	thub := ddb.GetDataSheetHub(uclaim.TenantId, uclaim.DataGroup)
+
+	return thub.GetRowHistory(rid)
 }
 
 func (c *Controller) ExportSheets(uclaim *claim.Data, sheets []int64) (*dyndb.ExportData, error) {

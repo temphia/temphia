@@ -16,9 +16,9 @@ import {
   Sockd,
   SockdMessage,
 } from "../../../../../lib/sockd";
-import type { DataModification } from "../table";
 import { scroller } from "./scroll";
 import { formatRefCells } from "./format";
+import type { DataSheetMod } from "./sync";
 
 export class SheetGroupService {
   source: string;
@@ -74,12 +74,13 @@ export class SheetGroupService {
   };
 
   private sockd_handle = (msg: SockdMessage) => {
-    if (msg.type !== MESSAGE_SERVER_PUBLISH) {
+    if (msg.type !== MESSAGE_SERVER_PUBLISH || !msg.payload["sheet_id"]) {
       return;
     }
 
-    const payload = msg.payload as DataModification;
-    console.log("@sheet_sockd", payload);
+    const payload = msg.payload as DataSheetMod;
+    const service = this.active_sheets.get(String(payload.sheet_id));
+    service.on_sockd(payload);
   };
 
   get_sheet_service = async (sheetid: string, gotorow?: number) => {
@@ -266,14 +267,28 @@ export class SheetService {
   };
 
   add_row_cell = async (data: { [_: number]: { [_: string]: any } }) => {
-    await this.api.new_row_cell(this.sheetid, data);
+    const resp = await this.api.new_row_cell(this.sheetid, data);
+    if (!resp.ok) {
+      return resp;
+    }
+
+    const rowid = resp.data[0]["rowid"];
+    this.insert_one_row(rowid, resp.data);
+
+    return resp;
   };
 
   update_row_cell = async (
     rid: string,
     data: { [_: number]: { [_: string]: any } }
   ) => {
-    await this.api.update_row_cell(this.sheetid, rid, data);
+    const resp = await this.api.update_row_cell(this.sheetid, rid, data);
+    if (!resp.ok) {
+      return resp;
+    }
+
+    this.update_one_row(Number(rid), resp.data);
+    return resp;
   };
 
   remove_row_cell = async (rid: string) => {
@@ -393,6 +408,70 @@ export class SheetService {
       source: this.group.source,
     };
   }
+
+  on_sockd = (payload: DataSheetMod) => {
+    switch (payload.mod_type) {
+      case "sheet_insert":
+        this.insert_one_row(payload.rows[0], payload.data);
+        break;
+      case "sheet_update":
+        this.update_one_row(payload.rows[0], payload.data);
+        break;
+      case "sheet_delete":
+        const id = Number(payload.rows[0]);
+        this.state.update((old) => {
+          const newrows = old.rows.filter((v) => v.__id !== id);
+          return { ...old, rows: newrows };
+        });
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  insert_one_row = (rowid: number, rcells: SheetCell[]) => {
+    const data = get(this.state);
+
+    if (data.rows.findIndex((val) => val.__id === rowid) !== -1) {
+      console.log("@skipping insert row", rowid);
+      return;
+    }
+
+    this.state.update((old) => {
+      old.rows.push({
+        __id: rowid,
+        sheetid: Number(this.sheetid),
+      });
+
+      rcells.forEach((cell) => {
+        const cells = old.cells[cell.rowid] || {};
+        cells[cell.colid] = cell;
+        old.cells[cell.rowid] = cells;
+      });
+
+      return { ...old };
+    });
+  };
+
+  update_one_row = (rowid: number, rcells: SheetCell[]) => {
+    const data = get(this.state);
+
+    if (data.rows.findIndex((val) => val.__id === rowid) === -1) {
+      console.log("@skipping update row, cause outof range ?", rowid);
+      return;
+    }
+
+    this.state.update((old) => {
+      rcells.forEach((cell) => {
+        const cells = old.cells[cell.rowid] || {};
+        cells[cell.colid] = cell;
+        old.cells[cell.rowid] = cells;
+      });
+
+      return { ...old };
+    });
+  };
 }
 
 export class SheetInvoker {

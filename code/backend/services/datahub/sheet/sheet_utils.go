@@ -1,11 +1,13 @@
 package sheet
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
 	"github.com/mitchellh/mapstructure"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
@@ -193,6 +195,10 @@ func (s *Sheet) ImportSheets(txid uint32, opts dyndb.ImportOptions, data *dyndb.
 	*/
 
 	return nil
+}
+
+func (s *Sheet) GetRowHistory(rowid int64) ([]*entities.DynActivity, error) {
+	return s.tableHub.ListActivityByAlt(dyndb.SheetCellTable, fmt.Sprint(rowid))
 }
 
 // private

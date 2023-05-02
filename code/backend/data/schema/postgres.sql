@@ -333,6 +333,8 @@ BEGIN
         	_user_id text =  COALESCE((_raw_mod_ctx->>'user_id')::text, '');
         	_user_sign text = COALESCE((_raw_mod_ctx->>'user_sign')::text, '');
         	_init_sign text =  COALESCE((_raw_mod_ctx->>'init_sign')::text, '');
+            _alt_ident text =  COALESCE((_raw_mod_ctx->>'alt_ident')::text, '');
+
         	_table text = (_raw_mod_ctx->>'table_name')::text;
         	_type text = LOWER(TG_OP);
         	_hpayload hstore = hstore(NEW) - ARRAY['__id','__mod_sig', '__version' ];
@@ -348,10 +350,10 @@ BEGIN
                 RAISE INFO '@@version => %d', _version;
                 
 				EXECUTE format(
-					'INSERT INTO %s_activity( type,row_id,row_version,user_id,user_sign,init_sign,payload) VALUES ($1,$2,$3,$4,$5,$6,$7);',
+					'INSERT INTO %s_activity( type,row_id,row_version,user_id,user_sign,init_sign,payload,alt_ident) VALUES ($1,$2,$3,$4,$5,$6,$7,$8);',
 					_table
 				)
-				USING _type,_id,_version,_user_id,_user_sign,_init_sign,_payload;
+				USING _type,_id,_version,_user_id,_user_sign,_init_sign,_payload, _alt_ident;
 			END;
     END IF;
 RETURN NEW;
@@ -366,15 +368,16 @@ DECLARE
     _user_id text =  COALESCE((_raw_mod_ctx->>'user_id')::text, '');
     _user_sign text = COALESCE((_raw_mod_ctx->>'user_sign')::text, '');
     _init_sign text =  COALESCE((_raw_mod_ctx->>'init_sign')::text, '');
+    _alt_ident text =  COALESCE((_raw_mod_ctx->>'alt_ident')::text, '');
 	_old record = null;
 BEGIN
 	EXECUTE format('SELECT __version FROM xd_%s WHERE __id = $1', _table) INTO _old USING _id;
 	EXECUTE format(
 		'INSERT INTO 
 			xd_%s_activity(
-				type,row_id,row_version,user_id,user_sign,init_sign
-				) VALUES ($1,$2,$3,$4,$5);',_table) 
-		USING 'delete',_id,_old.__version,_user_id,_user_sign,_init_sign;
+				type,row_id,row_version,user_id,user_sign,init_sign,alt_ident
+				) VALUES ($1,$2,$3,$4,$5,$6);',_table) 
+		USING 'delete',_id,_old.__version,_user_id,_user_sign,_init_sign, _alt_ident;
     EXECUTE format('DELETE FROM %s WHERE __id=$1', _table) USING _id;
 END
 $func$  LANGUAGE plpgsql;

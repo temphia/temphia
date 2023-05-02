@@ -11,7 +11,7 @@ import {
   ViewModeType,
 } from "./state_types";
 import {
-  DataModification,
+  DataTableMod,
   DataModTypeDelete,
   DataModTypeInsert,
   DataModTypeUpdate,
@@ -114,7 +114,7 @@ export class TableService {
     this.state.set_rows_data(queryresp, false);
   };
 
-  on_sockd = (data: DataModification) => {
+  on_sockd = (data: DataTableMod) => {
     if (data.mod_type === "comment") {
       console.log("@comment on row", data);
       return;

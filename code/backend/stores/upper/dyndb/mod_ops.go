@@ -57,15 +57,26 @@ type Key struct {
 
 func (d *DynDB) NewBatchRows(txid uint32, req dyndb.NewBatchRowReq) ([]int64, error) {
 
+	req.ModCtx.TableName = d.tns.Table(req.TenantId, req.Group, req.Table)
+	modsig, err := req.ModCtx.JSON()
+	if err != nil {
+		return nil, err
+	}
+
+	_modsig := string(modsig)
+
 	keys := make(map[string]struct{})
 
 	for _, data := range req.Data {
+		data[dyndb.KeyModSig] = _modsig
+
 		for k := range data {
 			keys[k] = struct{}{}
 		}
 	}
 
 	for _, data := range req.Data {
+
 		for k := range keys {
 			_, ok := data[k]
 			if !ok {
@@ -74,8 +85,9 @@ func (d *DynDB) NewBatchRows(txid uint32, req dyndb.NewBatchRowReq) ([]int64, er
 		}
 	}
 
-	keyMap := make([]Key, 0)
-	err := d.txOr(txid, func(sess db.Session) error {
+	keyMap := make([]Key, len(req.Data))
+
+	err = d.txOr(txid, func(sess db.Session) error {
 		inserter := sess.SQL().InsertInto(
 			d.tns.Table(req.TenantId, req.Group, req.Table),
 		).Returning("__id").Batch(len(req.Data))
@@ -84,7 +96,6 @@ func (d *DynDB) NewBatchRows(txid uint32, req dyndb.NewBatchRowReq) ([]int64, er
 			inserter.Values(data)
 		}
 
-		keyMap := make([]Key, len(req.Data))
 		inserter.NextResult(&keyMap)
 
 		inserter.Done()

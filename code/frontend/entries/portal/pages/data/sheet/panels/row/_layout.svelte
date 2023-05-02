@@ -1,9 +1,10 @@
 <script lang="ts">
-  import Button from "./_button.svelte";
+  import Button from "./edit/_button.svelte";
 
   export let title;
   export let onSave;
   export let onDelete = undefined;
+  export let message = "";
 
   export let new_record = true;
   export let mode: "EDIT" | "RELATIONS" | "HISTORY" = "EDIT";
@@ -21,6 +22,8 @@
 </script>
 
 <div class="flex flex-col h-full">
+  <p class="text-red-500">{message}</p>
+
   <div class="mb-4 border-b">
     {#if new_record}
       <h1 class="block mb-2 text-lg font-bold text-gray-700">

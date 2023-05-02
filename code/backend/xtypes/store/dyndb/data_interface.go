@@ -4,6 +4,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
 type DataHub interface {
@@ -11,6 +12,8 @@ type DataHub interface {
 	GetSource(source, tenant string) DynSource
 	ListSources(tenant string) ([]string, error)
 	Inject(app xtypes.App)
+
+	xplane.StateWatcher
 
 	GetDataTableHub(source, tenantId, group string) DataTableHub
 	GetDataSheetHub(source, tenantId, group string) DataSheetHub
@@ -44,6 +47,7 @@ type DynSource interface {
 
 	QueryActivity(tenantId, group, table string, query *entities.ActivityQuery) ([]*entities.DynActivity, error)
 	ListActivity(tenantId, group, table string, rowId int) ([]*entities.DynActivity, error)
+	ListActivityByAlt(tenantId, group, table string, alt string) ([]*entities.DynActivity, error)
 	NewActivity(tenantId, group, table string, record *entities.DynActivity) error
 
 	ListDataUsers(source, tenantId, group, ttype, target string) ([]entities.UserInfo, error)
@@ -79,6 +83,10 @@ type DataTableHub interface {
 
 	SqlQuery(txid uint32, req SqlQueryReq) (*SqlQueryResult, error)
 
+	QueryActivity(table string, query *entities.ActivityQuery) ([]*entities.DynActivity, error)
+	ListActivity(table string, rowId int) ([]*entities.DynActivity, error)
+	ListActivityByAlt(table string, alt string) ([]*entities.DynActivity, error)
+
 	LiveSeed(table, userId string, max int) error
 }
 
@@ -101,9 +109,11 @@ type DataSheetHub interface {
 	FTSQuery(txid uint32, data *FTSQuerySheet) (*QuerySheetResp, error)
 	RefQuery(txid uint32, data *RefQuerySheet) (*QuerySheetResp, error)
 
-	NewRowWithCell(txid uint32, sid int64, userId string, data map[int64]map[string]any) (map[int64]map[string]any, error)
-	UpdateRowWithCell(txid uint32, sid, rid int64, userId string, data map[int64]map[string]any) (map[int64]map[string]any, error)
+	NewRowWithCell(txid uint32, sid int64, userId string, data map[int64]map[string]any) ([]map[string]any, error)
+	UpdateRowWithCell(txid uint32, sid, rid int64, userId string, data map[int64]map[string]any) ([]map[string]any, error)
 	DeleteRowWithCell(txid uint32, sid, rid int64, userId string) error
+
+	GetRowHistory(rowid int64) ([]*entities.DynActivity, error)
 
 	ExportSheets(txid uint32, opts ExportOptions) (*ExportData, error)
 	ImportSheets(txid uint32, opts ImportOptions, data *ExportData) error

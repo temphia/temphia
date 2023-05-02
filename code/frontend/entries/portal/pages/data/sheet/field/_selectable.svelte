@@ -29,6 +29,7 @@
       <label>
         <input
           type="checkbox"
+          checked={_selected.includes(opt)}
           on:change={onOptChange(opt)}
           class="form-checkbox h-5 w-5 text-gray-600"
         />

@@ -10,14 +10,17 @@ import (
 )
 
 type CLI struct {
-	Start struct {
+	StartPg struct {
 	} `cmd:"" help:"Start demo server."`
 
-	ClearLock struct {
+	ClearLockPg struct {
 	} `cmd:"" help:"Clear Postgres Lock"`
 
-	Reset struct {
+	ResetPg struct {
 	} `cmd:"" help:"Reset server data"`
+
+	Start struct {
+	} `cmd:"" help:"Start demo server."`
 
 	ctx *kong.Context
 }
@@ -42,14 +45,16 @@ func (c *CLI) Execute() error {
 func (c *CLI) doExecute(prefix string) error {
 
 	switch c.ctx.Command() {
+
 	case prefix + "start":
+		initData()
+		Conf = sqliteConf
+		return RunDemo()
+	case prefix + "start-pg":
 
-		os.Chdir("cmd/demo/")
+		initData()
 
-		xutils.CreateIfNotExits("temphia-data")
-		xutils.CreateIfNotExits("temphia-data/files")
-		xutils.CreateIfNotExits("temphia-data/logs")
-		xutils.CreateIfNotExits("temphia-data/pgdata")
+		Conf = postgresConf
 
 		if xutils.FileExists("temphia-data/pgdata/data", "postmaster.pid") {
 			fmt.Println("looks like another demo instance is running or last one did not close you might have to clear lock with 'temphia-demo clear-lock'")
@@ -63,11 +68,22 @@ func (c *CLI) doExecute(prefix string) error {
 
 		return err
 
-	case prefix + "clear-lock":
+	case prefix + "clear-lock-pg":
 		return ClearLock()
-	case prefix + "reset":
+	case prefix + "reset-pg":
 		return Reset()
 	default:
 		panic("Command not found" + c.ctx.Command())
 	}
+}
+
+func initData() {
+	os.Chdir("cmd/demo/")
+
+	xutils.CreateIfNotExits("temphia-data")
+	xutils.CreateIfNotExits("temphia-data/files")
+	xutils.CreateIfNotExits("temphia-data/logs")
+	xutils.CreateIfNotExits("temphia-data/pgdata")
+	xutils.CreateIfNotExits("temphia-data/sqlitedata")
+
 }

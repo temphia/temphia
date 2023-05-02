@@ -34,6 +34,9 @@ func (s *Server) dataSheetAPI(rg *gin.RouterGroup) {
 	rg.GET("/:id/row_cell/:rid", s.dx(s.GetRowWithCell))
 	rg.DELETE("/:id/row_cell/:rid", s.dx(s.DeleteRowWithCell))
 	rg.GET("/:id/relation/:rid/ref/:refsheet/column/:refcol", s.dx(s.GetRowRelations))
+
+	rg.GET("/:id/history/:rid", s.dx(s.getRowHistory))
+
 }
 
 func (s *Server) export(uclaim *claim.Data, ctx *gin.Context) {
@@ -271,5 +274,13 @@ func (s *Server) GetRowRelations(uclaim *claim.Data, ctx *gin.Context) {
 	refcol, _ := strconv.ParseInt(ctx.Param("refcol"), 10, 64)
 
 	resp, err := s.cData.GetRowRelations(uclaim, sid, rid, refsheet, refcol)
+	httpx.WriteJSON(ctx, resp, err)
+}
+
+func (s *Server) getRowHistory(uclaim *claim.Data, ctx *gin.Context) {
+	sid, _ := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	rid, _ := strconv.ParseInt(ctx.Param("rid"), 10, 64)
+
+	resp, err := s.cData.GetRowHistory(uclaim, sid, rid)
 	httpx.WriteJSON(ctx, resp, err)
 }

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Button from "../row/_button.svelte";
+  import Button from "../row/edit/_button.svelte";
   export let title;
   export let onSave;
   export let onDelete = undefined;

@@ -34,7 +34,6 @@ export class DataSheetAPI {
     return this.http.post(`/data/sheet/${sheetid}/ref_query`, options);
   }
 
-
   get_row_relation(
     sheetid: string,
     rid: string,
@@ -44,6 +43,10 @@ export class DataSheetAPI {
     return this.http.get(
       `/data/sheet/${sheetid}/relation/${rid}/ref/${refsheet}/column/${refcol}`
     );
+  }
+
+  get_row_history(sheetid: string, rid: string) {
+    return this.http.get(`/data/sheet/${sheetid}/history/${rid}`);
   }
 
   // sheet

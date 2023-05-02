@@ -42,6 +42,8 @@ func NewUpperDb(path string) (db.Session, error) {
 		return nil, err
 	}
 
+	db.SetMaxOpenConns(1)
+
 	sess, err := sqlite.New(db)
 	if err != nil {
 		return nil, err
@@ -56,6 +58,9 @@ func NewRawDB(path string) (*sql.DB, error) {
 
 	var settings = sqlite.ConnectionURL{
 		Database: path,
+		Options: map[string]string{
+			"_journal_mode": "WAL",
+		},
 	}
 
 	dvr := &sqlite3.SQLiteDriver{
@@ -67,5 +72,7 @@ func NewRawDB(path string) (*sql.DB, error) {
 	}
 
 	sql.Register("sqlite3_temphia", dvr)
-	return sql.Open("sqlite3_temphia", settings.String())
+	surl := settings.String()
+	pp.Println("@connecting_to", surl)
+	return sql.Open("sqlite3_temphia", surl)
 }
