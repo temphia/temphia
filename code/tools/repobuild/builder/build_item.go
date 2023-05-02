@@ -83,8 +83,14 @@ func (rb *RepoBuilder) runBuild(workFolder, buildcmd string) error {
 func (rb *RepoBuilder) gitClone(path, url, branch string) (string, error) {
 	pp.Println(os.Getwd())
 
+	cmd := exec.Command("ls", "-lah")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	pp.Println(cmd.Run())
+
 	err := xutils.CreateIfNotExits(path)
 	if err != nil {
+		pp.Println(err.Error())
 		return "", err
 	}
 
