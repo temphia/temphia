@@ -1,6 +1,8 @@
 package binder
 
 import (
+	"fmt"
+
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
@@ -52,6 +54,8 @@ func (b *SelfBindings) selfNewModule(name string, args xtypes.LazyData) (int32, 
 
 	modname := res.SubType
 
+	counter := int32(0)
+
 	switch res.Type {
 
 	case resource.DataGroup:
@@ -74,8 +78,9 @@ func (b *SelfBindings) selfNewModule(name string, args xtypes.LazyData) (int32, 
 			return 0, err
 		}
 
-		b.activeModCounter = b.activeModCounter + 1
-		b.activeModules[b.activeModCounter] = mod
+		counter = b.activeModCounter + 1
+		b.activeModCounter = counter
+		b.activeModules[counter] = mod
 
 	case resource.Folder:
 		fallthrough
@@ -83,10 +88,12 @@ func (b *SelfBindings) selfNewModule(name string, args xtypes.LazyData) (int32, 
 		panic("Not impl")
 	}
 
-	return 0, nil
+	return counter, nil
 }
 
 func (b *SelfBindings) selfModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error) {
+
+	fmt.Println("@", b.activeModules, mid)
 
 	mod, ok := b.activeModules[mid]
 	if !ok {
