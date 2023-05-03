@@ -50,9 +50,15 @@ func (b *SelfBindings) selfNewModule(name string, args xtypes.LazyData) (int32, 
 		return 0, easyerr.Error(etypes.ResourceNotFound)
 	}
 
+	modname := res.SubType
+
 	switch res.Type {
+
+	case resource.DataGroup:
+		modname = resource.DataGroup
+		fallthrough
 	case resource.Module:
-		modbuilder, ok := b.handle.Deps.ModuleBuilders[res.SubType]
+		modbuilder, ok := b.handle.Deps.ModuleBuilders[modname]
 		if !ok {
 			return 0, easyerr.NotFound("resource module")
 		}
