@@ -9,15 +9,8 @@ import (
 
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/tools/repobuild/index"
 )
-
-// syncme => repobuild code https://github.com/temphia/repo
-
-type DB struct {
-	GroupIndex map[string][]string     `json:"group_index" yaml:"group_index"`
-	TagIndex   map[string][]string     `json:"tag_index" yaml:"tag_index"`
-	Items      map[string]repox.BPrint `json:"items" yaml:"items"`
-}
 
 /*
 
@@ -39,17 +32,17 @@ type Github struct {
 	branch string
 
 	cache map[string]repox.BPrint
+	// cacheFillWip bool
 	cLock sync.Mutex
 }
 
 func (g *Github) Name() string { return "github" }
 
 func (g *Github) Query(tenantId string, opts *repox.RepoQuery) ([]repox.BPrint, error) {
-	if g.cache == nil {
-		err := g.fillCache()
-		if err != nil {
-			return nil, err
-		}
+
+	err := g.fillCache()
+	if err != nil {
+		return nil, err
 	}
 
 	vals := make([]repox.BPrint, 0, len(g.cache))
@@ -62,11 +55,10 @@ func (g *Github) Query(tenantId string, opts *repox.RepoQuery) ([]repox.BPrint, 
 }
 
 func (g *Github) Get(tenantid, slug string) (*repox.BPrint, error) {
-	if g.cache == nil {
-		err := g.fillCache()
-		if err != nil {
-			return nil, err
-		}
+
+	err := g.fillCache()
+	if err != nil {
+		return nil, err
 	}
 
 	bp, ok := g.cache[slug]
@@ -89,6 +81,11 @@ func (g *Github) GetZip(tenantid, slug, version string) (io.ReadCloser, error) {
 
 func (g *Github) fillCache() error {
 
+	if g.cache != nil {
+		// fixme => do lastcheckTime here and when it timeouts refill cache
+		return nil
+	}
+
 	resp, err := http.Get(g.mainDB())
 	if err != nil {
 		return err
@@ -96,7 +93,7 @@ func (g *Github) fillCache() error {
 
 	defer resp.Body.Close()
 
-	db := DB{}
+	db := index.DB{}
 
 	dc := json.NewDecoder(resp.Body)
 	err = dc.Decode(&db)
@@ -104,11 +101,11 @@ func (g *Github) fillCache() error {
 		return err
 	}
 
+	g.cLock.Lock()
 	if g.cache == nil {
-		g.cLock.Lock()
 		g.cache = db.Items
-		g.cLock.Unlock()
 	}
+	g.cLock.Unlock()
 
 	return nil
 }
