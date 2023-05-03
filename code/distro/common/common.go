@@ -21,7 +21,6 @@ import (
 
 	// db providers
 	_ "github.com/temphia/temphia/code/backend/stores/upper/vendors/postgres"
-	_ "github.com/temphia/temphia/code/backend/stores/upper/vendors/ql"
 	_ "github.com/temphia/temphia/code/backend/stores/upper/vendors/sqlite"
 
 	// file providers
