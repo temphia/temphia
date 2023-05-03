@@ -70,7 +70,7 @@ func (rb *RepoBuilder) runBuild(workFolder, buildcmd string) error {
 		"--rm",
 		"-v",
 		vol,
-		"ghcr.io/temphia/temphia_buildpack:latest",
+		rb.config.BuildImage,
 		buildcmd,
 	)
 	cmd.Stdout = os.Stdout
