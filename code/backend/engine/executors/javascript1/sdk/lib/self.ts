@@ -4,7 +4,7 @@ declare function _self_inlinks(): [any, string];
 declare function _self_outlinks(): [any, string];
 declare function _self_new_module(name: string, data: any): [number, string];
 
-declare function _self_module_execute(
+declare function _self_module_exec(
   mid: number,
   method: string,
   data: any
@@ -27,7 +27,7 @@ export const self = {
   outlinks: () => _self_outlinks(),
   new_module: (name: string, data: any) => _self_new_module(name, data),
   module_execute: (mid: number, method: string, data: any) =>
-    _self_module_execute(mid, method, data),
+  _self_module_exec(mid, method, data),
 
   link_execute: (
     name: string,
