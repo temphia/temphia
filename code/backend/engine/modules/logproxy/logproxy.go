@@ -11,12 +11,10 @@ import (
 type LogProxy struct {
 	app      xtypes.App
 	resource *entities.Resource
+	logproxy logx.Proxy
 }
 
 func (l *LogProxy) Handle(method string, args xtypes.LazyData) (xtypes.LazyData, error) {
-
-	ls := l.app.GetDeps().LogService().(logx.Service)
-	lproxy := ls.GetLogProxy()
 
 	switch method {
 	case "query":
@@ -26,7 +24,7 @@ func (l *LogProxy) Handle(method string, args xtypes.LazyData) (xtypes.LazyData,
 			return nil, err
 		}
 
-		resp, err := lproxy.Query(l.resource.TenantId, qreq)
+		resp, err := l.logproxy.Query(l.resource.TenantId, qreq)
 		if err != nil {
 			return nil, err
 		}
