@@ -71,6 +71,9 @@
   };
 
   const action_new = () => app.nav.admin_plug_new();
+
+  const action_goto_files = (id, data) =>
+    app.nav.admin_bprint_files(data["bprint_id"]);
 </script>
 
 {#if loading}
@@ -117,6 +120,13 @@
         drop: true,
         icon: "document-search",
         Action: action_logs,
+      },
+      {
+        Name: "Files",
+        Action: action_goto_files,
+        Class: "bg-green-400",
+        icon: "document-duplicate",
+        drop: true,
       },
 
       {
