@@ -18,6 +18,7 @@
   let importing = true;
 
   let bid = ""
+  let version;
 
   const importPreform = async () => {
     const bapi = app.api_manager.get_admin_bprint_api();
@@ -25,6 +26,7 @@
       slug: data["slug"],
       group: data["type"] || data["group"],
       source: Number(source),
+      version,
       new_id: (data["slug"] || "").replaceAll(".", "_") + "_" + generateId(),
     });
     if (!resp.ok) {
@@ -58,11 +60,11 @@
     style="max-width: 750px;"
   >
     <Stepper buttonCompleteLabel={""} on:next={onNextHandler}>
-      <Step back_locked={true}>
+      <Step back_locked={true} locked={!version}>
         <svelte:fragment slot="header">Import</svelte:fragment>
 
         <svelte:fragment>
-          <Detail {data} />
+          <Detail {data} bind:version />
         </svelte:fragment>
       </Step>
 

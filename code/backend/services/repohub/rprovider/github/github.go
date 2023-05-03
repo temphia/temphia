@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"sync"
 
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/tools/repobuild/index"
@@ -62,7 +63,7 @@ func (g *Github) Get(tenantid, slug string) (*repox.BPrint, error) {
 	}
 
 	bp, ok := g.cache[slug]
-	if ok {
+	if !ok {
 		return nil, easyerr.NotFound()
 	}
 
@@ -71,7 +72,11 @@ func (g *Github) Get(tenantid, slug string) (*repox.BPrint, error) {
 
 func (g *Github) GetZip(tenantid, slug, version string) (io.ReadCloser, error) {
 
-	resp, err := http.Get(g.fileURL("data/"+slug, version+".zip"))
+	zipurl := g.fileURL("data/"+slug, version+".zip")
+
+	pp.Println(zipurl)
+
+	resp, err := http.Get(zipurl)
 	if err != nil {
 		return nil, err
 	}
