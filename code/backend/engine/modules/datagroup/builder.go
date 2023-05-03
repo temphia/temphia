@@ -1,6 +1,7 @@
 package datagroup
 
 import (
+	"github.com/temphia/temphia/code/backend/engine/runtime/modipc"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
@@ -25,12 +26,16 @@ func (d *DGModuleBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, er
 
 	dynhub := deps.DataHub().(dyndb.DataHub).GetSource(target[0], opts.Resource.TenantId)
 
-	return &DGModule{
+	dgmod := &DatagroupModule{
 		binder:   opts.Binder,
 		res:      opts.Resource,
 		dynsrc:   dynhub,
 		group:    target[1],
 		tenantId: opts.Resource.TenantId,
-	}, nil
+		source:   target[0],
+		modipc:   nil,
+	}
 
+	dgmod.modipc = modipc.NewModIPC(dgmod)
+	return dgmod, nil
 }
