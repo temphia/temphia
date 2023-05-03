@@ -81,7 +81,7 @@ func (pd *PageDash) runLoadHook(execData any, key string) (map[string]any, error
 		case "func":
 			hfunc, ok := hookFuncs[hook.Target]
 			if !ok {
-				return nil, easyerr.NotFound()
+				return nil, easyerr.NotFound("hookfunc")
 			}
 
 			err := hfunc(pctx)
@@ -137,7 +137,7 @@ func (pd *PageDash) actionBuild(req BuildRequest) (*BuildRespone, error) {
 		case "func":
 			hfunc, ok := hookFuncs[buildHook.Target]
 			if !ok {
-				return nil, easyerr.NotFound()
+				return nil, easyerr.NotFound("hookfunc")
 			}
 
 			err := hfunc(pctx)

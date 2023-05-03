@@ -24,12 +24,12 @@ func NotImpl() error {
 	return tracerr.Wrap(errNotImpl)
 }
 
-func NotFound() error {
+func NotFound(message string) error {
 	if !ScopeInfo {
 		return errNotFound
 	}
-
-	return tracerr.Wrap(errNotFound)
+	err := fmt.Errorf("%s: %w", message, errNotFound)
+	return tracerr.Wrap(err)
 }
 
 func NotSupported() error {

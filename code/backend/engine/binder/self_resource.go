@@ -54,7 +54,7 @@ func (b *SelfBindings) selfNewModule(name string, args xtypes.LazyData) (int32, 
 	case resource.Module:
 		modbuilder, ok := b.handle.Deps.ModuleBuilders[res.SubType]
 		if !ok {
-			return 0, easyerr.NotFound()
+			return 0, easyerr.NotFound("resource module")
 		}
 
 		mod, err := modbuilder.Instance(etypes.ModuleOptions{
@@ -84,7 +84,7 @@ func (b *SelfBindings) selfModuleExec(mid int32, method string, data xtypes.Lazy
 
 	mod, ok := b.activeModules[mid]
 	if !ok {
-		return nil, easyerr.NotFound()
+		return nil, easyerr.NotFound("resource module 1")
 	}
 
 	return mod.Handle(method, data)

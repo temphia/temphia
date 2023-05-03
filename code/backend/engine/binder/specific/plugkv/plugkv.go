@@ -39,7 +39,7 @@ func (pkv *Binding) checkTxn(tx uint32) error {
 		return nil
 	}
 	if !funk.ContainsUInt32(pkv.txns, tx) {
-		return easyerr.NotFound()
+		return easyerr.NotFound("txn not found")
 	}
 	return nil
 }

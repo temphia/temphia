@@ -35,7 +35,7 @@ func (c *Controller) InstanceSheet(uclaim *claim.Session, req QuickSheetInstance
 
 	tpl, ok := Templates[req.Template]
 	if !ok {
-		return nil, easyerr.NotFound()
+		return nil, easyerr.NotFound("template")
 	}
 
 	if req.Source == "" {

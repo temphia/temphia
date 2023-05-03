@@ -31,7 +31,7 @@ func (m *Notz) extract(c *gin.Context) (string, string, error) {
 
 	if hostname == "" || hostname == "localhost" || hostname == m.rootHost {
 		c.Writer.Write(static.Root)
-		return "", "", easyerr.NotFound()
+		return "", "", easyerr.NotFound("host")
 	}
 
 	if tenantId == "" {
@@ -44,7 +44,7 @@ func (m *Notz) extract(c *gin.Context) (string, string, error) {
 
 	if tenantId == "" {
 		c.AbortWithStatus(http.StatusNotFound)
-		return "", "", easyerr.NotFound()
+		return "", "", easyerr.NotFound("tenant")
 	}
 
 	return tenantId, hostname, nil

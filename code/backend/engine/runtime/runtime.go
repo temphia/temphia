@@ -114,7 +114,7 @@ func (r *runtime) ResetBprint(tenantId, bprint string) {
 func (r *runtime) ListRunning(tenantId string) ([]etypes.RunningExec, error) {
 	ns := r.getNS(tenantId, false)
 	if ns == nil {
-		return nil, easyerr.NotFound()
+		return nil, easyerr.NotFound("tenant runtime")
 	}
 
 	return ns.listRunning(), nil

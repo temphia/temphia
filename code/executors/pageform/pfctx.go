@@ -164,7 +164,7 @@ func (pc *PfCtx) setNextStage(stage string) {
 func getEntry(runtime *goja.Runtime, name string, entry interface{}) error {
 	rawentry := runtime.Get(name)
 	if rawentry == nil {
-		return easyerr.NotFound()
+		return easyerr.NotFound("script entry")
 	}
 
 	return runtime.ExportTo(rawentry, entry)

@@ -78,7 +78,7 @@ func (am *AdapterManager) serveEditorFile(tenantId string, did int64, file strin
 			Str("file", file).
 			Msg(logid.NotzAdapterNotFound)
 
-		return nil, easyerr.NotFound()
+		return nil, easyerr.NotFound("domain instance")
 	}
 
 	out, err := instance.serveEditorFile(file)
@@ -105,7 +105,7 @@ func (am *AdapterManager) preformEditorAction(tenantId, name string, did int64, 
 			Str("action", name).
 			Msg(logid.NotzAdapterNotFound)
 
-		return nil, easyerr.NotFound()
+		return nil, easyerr.NotFound("domain instance")
 	}
 
 	resp, err := instance.preformEditorAction(name, data)

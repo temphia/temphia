@@ -42,7 +42,7 @@ func (e *Engine) serveAgentFile(tenantId, plugId, agentId, file string) ([]byte,
 			Str("agent_id", agentId).
 			Str("file", file).
 			Msg(logid.EngineServeEmptyMappings)
-		return nil, easyerr.NotFound()
+		return nil, easyerr.NotFound("web file")
 	}
 
 	out, err := e.pacman.BprintGetBlob(tenantId, plug.BprintId, actualFile)

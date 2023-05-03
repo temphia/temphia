@@ -64,7 +64,7 @@ func (g *Github) Get(tenantid, slug string) (*repox.BPrint, error) {
 
 	bp, ok := g.cache[slug]
 	if !ok {
-		return nil, easyerr.NotFound()
+		return nil, easyerr.NotFound("cache bprint")
 	}
 
 	return &bp, nil

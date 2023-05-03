@@ -26,7 +26,7 @@ func (c *PacMan) BprintCreate(tenantid string, bp *entities.BPrint) (string, err
 
 func (c *PacMan) BprintUpdate(tenantid string, bp *entities.BPrint) error {
 	if bp.ID == "" || bp.Slug == "" {
-		return easyerr.NotFound()
+		return easyerr.NotFound("bprint id/slug")
 	}
 
 	//_, err := c.localStore.BprintUpdate(tenantid, bp)

@@ -71,7 +71,7 @@ func (c *CabHub) GetSource(source, tenant string) store.CabinetSourced {
 
 	provider, ok := c.sources[source]
 	if !ok {
-		panic(easyerr.NotFound())
+		panic(easyerr.NotFound("cabinet source"))
 	}
 
 	return &cabinetSourced{

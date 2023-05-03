@@ -27,7 +27,7 @@ func (pf *Pageform) actionLoad(req LoadRequest) (*Response, error) {
 	}
 
 	if ctx.nextStage == "" {
-		return nil, easyerr.NotFound()
+		return nil, easyerr.NotFound("next stage")
 	}
 
 	return pf.generate(ctx)
@@ -37,7 +37,7 @@ func (pf *Pageform) actionSubmit(req SubmitRequest) (*Response, error) {
 
 	currStage, ok := pf.model.Stages[req.Stage]
 	if !ok {
-		return nil, easyerr.NotFound()
+		return nil, easyerr.NotFound("stage")
 	}
 
 	ctx := pf.pfCtx(req.Data)

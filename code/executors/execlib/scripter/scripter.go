@@ -42,7 +42,7 @@ func (se *Scripter) Bind() {
 func (se *Scripter) SetEntry(name string, entry interface{}) error {
 	rawentry := se.runtime.Get(name)
 	if rawentry == nil {
-		return easyerr.NotFound()
+		return easyerr.NotFound("script entry")
 	}
 
 	return se.runtime.ExportTo(rawentry, entry)

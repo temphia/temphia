@@ -54,7 +54,7 @@ func (s *Binding) Ticket(room string, opts *ticket.SockdRoom) (string, error) {
 
 	res := s.handle.Resources[room]
 	if res == nil {
-		return "", easyerr.NotFound()
+		return "", easyerr.NotFound("Resource room")
 	}
 
 	return s.handle.Deps.Signer.SignSockdTkt(s.tenantId, &claim.SockdTkt{

@@ -69,7 +69,7 @@ func (r *RFencer) get(plugId string) *vm.Program {
 func (r *RFencer) Execute(job *job.Job) error {
 	pg := r.get(job.PlugId)
 	if pg == nil {
-		return easyerr.NotFound()
+		return easyerr.NotFound("rfencer vm")
 	}
 
 	vm := r.pool.Get().(*vm.VM)

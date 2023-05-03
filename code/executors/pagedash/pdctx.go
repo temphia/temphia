@@ -86,7 +86,7 @@ func (pd *PdCtx) setDataValue(field string, value any) {
 func getEntry(runtime *goja.Runtime, name string, entry interface{}) error {
 	rawentry := runtime.Get(name)
 	if rawentry == nil {
-		return easyerr.NotFound()
+		return easyerr.NotFound("script entry")
 	}
 
 	return runtime.ExportTo(rawentry, entry)

@@ -36,6 +36,6 @@ func DNSReverseResolve(cluster, host string) (string, error) {
 		return strings.TrimLeft(txt, key), nil
 	}
 
-	return "", easyerr.NotFound()
+	return "", easyerr.NotFound("DNS TXT token")
 
 }

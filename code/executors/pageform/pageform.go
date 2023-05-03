@@ -40,7 +40,7 @@ func (pf *Pageform) Process(ev *event.Request) (*event.Response, error) {
 		}
 		resp, err = pf.actionSubmit(req)
 	default:
-		return nil, easyerr.NotFound()
+		return nil, easyerr.NotFound("event action")
 	}
 
 	if err != nil {

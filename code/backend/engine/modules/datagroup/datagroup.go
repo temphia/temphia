@@ -141,7 +141,7 @@ func (d *DGModule) Handle(method string, args xtypes.LazyData) (xtypes.LazyData,
 
 	}
 
-	return nil, easyerr.NotFound()
+	return nil, easyerr.NotFound("datagroup mod method")
 
 }
 

@@ -42,7 +42,7 @@ func (i *InstancHub) ManualSingle(opts repox.InstanceOptions) (any, error) {
 
 	instancer, ok := i.pacman.instancers[opts.InstancerType]
 	if !ok {
-		return nil, easyerr.NotFound()
+		return nil, easyerr.NotFound("instancer1")
 	}
 
 	return instancer.Instance(xinstance.Options{
@@ -65,7 +65,7 @@ func (i *InstancHub) ManualBundleItem(opts repox.InstanceOptions) (any, error) {
 
 	instancer, ok := i.pacman.instancers[opts.InstancerType]
 	if !ok {
-		return nil, easyerr.NotFound()
+		return nil, easyerr.NotFound("instancer2")
 	}
 
 	return instancer.Instance(xinstance.Options{
@@ -104,7 +104,7 @@ func (i *InstancHub) AutomaticBundle(opts repox.InstanceOptions) (any, error) {
 		instancer, ok := i.pacman.instancers[bitem.Type]
 		if !ok {
 			pp.Println("NOT FOUND", bitem.Type)
-			return nil, easyerr.NotFound()
+			return nil, easyerr.NotFound("instancer3")
 		}
 
 		resp, err := instancer.Instance(xinstance.Options{
@@ -147,7 +147,7 @@ func (i *InstancHub) AutomaticSingle(opts repox.InstanceOptions) (any, error) {
 
 	instancer, ok := i.pacman.instancers[opts.InstancerType]
 	if !ok {
-		return nil, easyerr.NotFound()
+		return nil, easyerr.NotFound("instancer4")
 	}
 
 	iresp, err := instancer.Instance(xinstance.Options{
