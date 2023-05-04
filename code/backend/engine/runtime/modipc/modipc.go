@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/libx/lazydata"
 	"github.com/temphia/temphia/code/backend/xtypes"
 )
@@ -19,6 +20,11 @@ func NewModIPC(mod any) *ModIPC {
 }
 
 func (m *ModIPC) Handle(method string, args xtypes.LazyData) (xtypes.LazyData, error) {
+
+	switch method {
+	case "Close", "Handle":
+		return nil, easyerr.NotAuthorized()
+	}
 
 	mFunc := m.innerMod.MethodByName(method)
 
