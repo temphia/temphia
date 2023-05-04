@@ -88,6 +88,17 @@ func (a *AppSeeder) SeedRepo() error {
 		return err
 	}
 
+	err = a.CoreHub.RepoNew(a.TenantSlug, &entities.Repo{
+		Id:       0,
+		Name:     "Official",
+		Provider: "official",
+		TenantId: a.TenantSlug,
+	})
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 
 }
