@@ -1,7 +1,7 @@
-tmp/
-cmd/demo/temphia-data
-build/
+/tmp/
+/cmd/demo/temphia-data
+/build
 
-code/frontend/node_modules/
-code/frontend/public/build/
-dist/
+/code/frontend/node_modules/
+/code/frontend/public/build/
+/dist/
