@@ -1,8 +1,9 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
   "compilerOptions": {
-//    "ignoreDeprecations": "5.0"
+    "ignoreDeprecations": "5.0"
   },
+  "verbatimModuleSyntax": true,
 
   "include": ["./**/*"],
   "exclude": ["node_modules/*", "__sapper__/*", "public/*"]

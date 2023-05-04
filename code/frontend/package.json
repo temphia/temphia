@@ -11,7 +11,7 @@
     "build:auth": "ENTRY_FILE=auth rollup -c",
     "build:operator": "ENTRY_FILE=operator rollup -c",
     "build:@all": "npm run build:operator && npm run build:portal && npm run build:auth && npm run build:executor:@all && npm run build:adapter_editor:@all",
-    "build_ui_sdk_package": "tsc -p tsconfig.package.json ",
+    "build_ui_sdk_package": "cp -f scripts/build_package/package.json package.json && tsc -p tsconfig_package.json",
     "###": "#####",
     "build:executor:@iframe_bootloader": "node scripts/executor/build_iframe_bootloader.js",
     "build:executor:@suborigin_bootloader": "node scripts/executor/build_suborigin_bootloader.js",
