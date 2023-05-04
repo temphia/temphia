@@ -1,6 +1,6 @@
-name: build_binaries
-
 on: [workflow_dispatch]
+
+# act workflow_dispatch -W .github/workflows/build_binaries.yml
 
 permissions:
   contents: write

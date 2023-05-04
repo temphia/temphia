@@ -1,5 +1,3 @@
-name: build_binaries_android
-
 # running locally in act
 # act workflow_dispatch -W .github/workflows/build_binaries_android.yaml
 
