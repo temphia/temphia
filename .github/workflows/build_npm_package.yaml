@@ -4,6 +4,9 @@ on: [workflow_dispatch]
 
 jobs:
   build:
+    permissions:
+      contents: read
+      packages: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -13,4 +16,17 @@ jobs:
           node-version: 20
       - name: Build package
         run: |
-          cd code/frontend/ && npm install && npm run build_ui_sdk_package
+          cd code/frontend/
+          npm install
+          npm run build_ui_sdk_package
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: package.json
+          path: code/frontend/package.json
+
+      - uses: JS-DevTools/npm-publish@v2
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          package: code/frontend/
+          registry: https://npm.pkg.github.com
