@@ -13,4 +13,4 @@ jobs:
           node-version: 20
       - name: Build package
         run: |
-          cd code/frontend/ && npm install && echo hello
+          cd code/frontend/ && npm install && npm run build_ui_sdk_package
