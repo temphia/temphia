@@ -44,16 +44,16 @@ func (e *Executor) Process(req *event.Request) (*event.Response, error) {
 
 func (e *Executor) execute(name string, data []byte) error {
 
-	// offset, ok := e.write(data)
-	// if !ok {
-	// 	return ErrOutofMemory
-	// }
+	offset, ok := e.write(data)
+	if !ok {
+		return ErrOutofMemory
+	}
 
-	// actionFunc := e.instance.ExportedFunction(name)
-	// _, err := actionFunc.Call(e.context, uint64(offset), uint64(len(data)))
-	// if err != nil {
-	// 	return err
-	// }
+	actionFunc := e.instance.ExportedFunction(name)
+	_, err := actionFunc.Call(e.context, uint64(offset), uint64(len(data)))
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

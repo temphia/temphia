@@ -3,6 +3,8 @@ package wazero
 import (
 	"context"
 	"errors"
+
+	"github.com/tetratelabs/wazero/api"
 )
 
 type executorCtxType int8
@@ -24,4 +26,24 @@ func (e *Executor) guestAllocateBytes(size uint64) uint32 {
 		panic("allocate_bytes not exported")
 	}
 	return uint32(offset[0])
+}
+
+func (e *Executor) write(data []byte) (uint32, bool) {
+	offset := e.allocateBytes(uint64(len(data)))
+	mem := e.getMem()
+
+	return offset, mem.Write(e.context, offset, data)
+}
+
+func (e *Executor) allocateBytes(size uint64) uint32 {
+	fun := e.instance.ExportedFunction("allocate_bytes")
+	offset, err := fun.Call(context.TODO(), size)
+	if err != nil {
+		panic("allocate_bytes not exported")
+	}
+	return uint32(offset[0])
+}
+
+func (e *Executor) getMem() api.Memory {
+	return e.instance.Memory()
 }
