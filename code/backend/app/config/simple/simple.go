@@ -1,6 +1,10 @@
 package simple
 
-import "github.com/temphia/temphia/code/backend/app/config"
+import (
+	"path"
+
+	"github.com/temphia/temphia/code/backend/app/config"
+)
 
 type Config struct {
 	AppName          string          `json:"app_name,omitempty"`
@@ -11,8 +15,7 @@ type Config struct {
 	Database         DatabaseOptions `json:"database,omitempty"`
 	ExecutorOptions  map[string]any  `json:"executors,omitempty"`
 	ModulesOptions   map[string]any  `json:"modules,omitempty"`
-	FilesFolder      string          `json:"files_folder,omitempty"`
-	LogFolder        string          `json:"log_folder,omitempty"`
+	DataFolder       string          `json:"data_folder,omitempty"`
 }
 
 type DatabaseOptions struct {
@@ -50,8 +53,9 @@ func (s *Config) AsConfig() *config.Config {
 		NodeOptions: &config.NodeOptions{
 			ServerPort:    s.ServerPort,
 			Tags:          []string{},
-			LogFolder:     s.LogFolder,
+			LogFolder:     path.Join(s.DataFolder, "logs"),
 			LogFilePrefix: "temphia_log.log",
+			NodeCache:     path.Join(s.DataFolder, "nodecache"),
 		},
 
 		ExecutorOptions: s.ExecutorOptions,
@@ -61,15 +65,13 @@ func (s *Config) AsConfig() *config.Config {
 		DefaultDyndb:    "default",
 	}
 
-	if s.FilesFolder != "" {
-		conf.Stores["default_fs"] = &config.StoreSource{
-			Name:     "default_fs",
-			Provider: "local_fs",
-			HostPath: s.FilesFolder,
-		}
-
-		conf.DefaultCabinet = "default_fs"
+	conf.Stores["default_fs"] = &config.StoreSource{
+		Name:     "default_fs",
+		Provider: "local_fs",
+		HostPath: path.Join(s.DataFolder, "files"),
 	}
+
+	conf.DefaultCabinet = "default_fs"
 
 	return conf
 }

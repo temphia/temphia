@@ -17,8 +17,7 @@ var sqliteConf = simple.Config{
 
 	ExecutorOptions: make(map[string]any),
 	ModulesOptions:  make(map[string]any),
-	FilesFolder:     "./temphia-data/files",
-	LogFolder:       "./temphia-data/logs",
+	DataFolder:      "./temphia-data",
 }
 
 var postgresConf = simple.Config{
@@ -40,8 +39,7 @@ var postgresConf = simple.Config{
 
 	ExecutorOptions: make(map[string]any),
 	ModulesOptions:  make(map[string]any),
-	FilesFolder:     "./temphia-data/files",
-	LogFolder:       "./temphia-data/logs",
+	DataFolder:      "./temphia-data",
 }
 
 var Conf simple.Config

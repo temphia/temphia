@@ -66,6 +66,7 @@ func (b *Builder) SetDataBox(box xtypes.DataBox) {
 }
 
 func (b *Builder) Build() error {
+
 	err := b.buildServices()
 	if err != nil {
 		return err

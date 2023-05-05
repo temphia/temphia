@@ -3,6 +3,7 @@ package demo
 import (
 	"fmt"
 	"os"
+	"path"
 
 	"github.com/alecthomas/kong"
 	"github.com/temphia/temphia/code/backend/libx/xutils"
@@ -47,22 +48,23 @@ func (c *CLI) doExecute(prefix string) error {
 	switch c.ctx.Command() {
 
 	case prefix + "start":
-		initData()
 		Conf = sqliteConf
+
+		initData()
 		return RunDemo()
 	case prefix + "start-pg":
 
-		initData()
-
 		Conf = postgresConf
 
-		if xutils.FileExists("temphia-data/pgdata/data", "postmaster.pid") {
+		initData()
+
+		if xutils.FileExists(path.Join(Conf.DataFolder, "pgdata/data"), "postmaster.pid") {
 			fmt.Println("looks like another demo instance is running or last one did not close you might have to clear lock with 'temphia-demo clear-lock'")
 		}
 
 		err := RunDemo()
 
-		if xutils.FileExists("temphia-data/pgdata/data", "postmaster.pid") {
+		if xutils.FileExists(path.Join(Conf.DataFolder, "pgdata/data"), "postmaster.pid") {
 			fmt.Println("Looks like db did not close properly, might need to clear lock 'temphia-demo clear-lock'")
 		}
 
@@ -80,10 +82,10 @@ func (c *CLI) doExecute(prefix string) error {
 func initData() {
 	os.Chdir("cmd/demo/")
 
-	xutils.CreateIfNotExits("temphia-data")
-	xutils.CreateIfNotExits("temphia-data/files")
-	xutils.CreateIfNotExits("temphia-data/logs")
-	xutils.CreateIfNotExits("temphia-data/pgdata")
-	xutils.CreateIfNotExits("temphia-data/sqlitedata")
+	xutils.CreateIfNotExits(Conf.DataFolder)
+	xutils.CreateIfNotExits(path.Join(Conf.DataFolder, "files"))
+	xutils.CreateIfNotExits(path.Join(Conf.DataFolder, "logs"))
+	xutils.CreateIfNotExits(path.Join(Conf.DataFolder, "pgdata"))
+	xutils.CreateIfNotExits(path.Join(Conf.DataFolder, "sqlitedata"))
 
 }

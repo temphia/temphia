@@ -92,10 +92,9 @@ func (b *Builder) buildServices() error {
 		SysHelper:   nil,
 	})
 
-	deps.nodeCache = nodecache.New("/tmp/mem1")
+	deps.nodeCache = nodecache.New(b.config.NodeOptions.NodeCache)
 	deps.repoHub = repohub.New(b.app)
 	deps.courier = courier.New()
 	deps.plugKV = b.sbuilder.PlugKV()
-
 	return deps.repoHub.Start()
 }

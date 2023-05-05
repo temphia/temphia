@@ -23,6 +23,7 @@ type NodeOptions struct {
 	Tags           []string          `json:"tags,omitempty"`
 	LogFolder      string            `json:"log_folder,omitempty"`
 	LogFilePrefix  string            `json:"log_file_prefix,omitempty"`
+	NodeCache      string            `json:"node_cache_file,omitempty"`
 }
 
 type StoreSource struct {

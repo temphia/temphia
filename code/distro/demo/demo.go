@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path"
 	"syscall"
 	"time"
 
@@ -53,11 +54,13 @@ func RunDemo() error {
 }
 
 func Reset() error {
-	return os.Remove("temphia-data")
+	os.Remove(postgresConf.DataFolder)
+	os.Remove(sqliteConf.DataFolder)
+	return nil
 }
 
 func ClearLock() error {
-	return os.Remove("temphia-data/pgdata/data/postmaster.pid")
+	return os.Remove(path.Join(postgresConf.DataFolder, "pgdata/data/postmaster.pid"))
 }
 
 func runSeed(app xtypes.App) error {
@@ -165,7 +168,7 @@ func initPg() error {
 		return nil
 	}
 
-	dpg := embedpg.New("temphia-data/pgdata", port)
+	dpg := embedpg.New(path.Join(postgresConf.DataFolder, "pgdata"), port)
 
 	Conf.Database.Port = fmt.Sprintf("%d", dpg.GetPort())
 
