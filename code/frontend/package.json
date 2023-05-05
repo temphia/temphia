@@ -1,6 +1,10 @@
 {
-  "name": "temphia-frontend",
+  "name": "@temphia/temphia",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/temphia/temphia.git"
+  },
   "scripts": {
     "build:portal": "ENTRY_FILE=portal rollup -c",
     "build:auth": "ENTRY_FILE=auth rollup -c",

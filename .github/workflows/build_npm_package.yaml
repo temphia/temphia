@@ -29,4 +29,4 @@ jobs:
         with:
           token: ${{ secrets.NPM_TOKEN }}
           package: code/frontend/
-          registry: https://npm.pkg.github.com
+          registry: https://npm.pkg.github.com/temphia
