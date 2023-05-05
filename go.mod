@@ -39,7 +39,6 @@ require (
 	github.com/tidwall/pretty v1.2.1
 	github.com/ugorji/go/codec v1.2.7
 	github.com/upper/db/v4 v4.5.4
-	github.com/wasmerio/wasmer-go v1.0.4
 	github.com/yuin/goldmark v1.5.3
 	github.com/ztrue/tracerr v0.3.0
 	gitlab.com/mr_balloon/golib v0.0.0-20210813185029-b13a7945a495
