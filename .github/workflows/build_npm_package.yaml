@@ -30,3 +30,9 @@ jobs:
           token: ${{ secrets.NPM_TOKEN }}
           package: code/frontend/
           registry: https://npm.pkg.github.com/temphia
+
+      - uses: JS-DevTools/npm-publish@v2
+        with:
+          token: ${{ secrets.NPM_NPM_PUSH }}
+          package: code/frontend/          
+          access: public
