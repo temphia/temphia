@@ -1,10 +1,11 @@
 {
   "name": "@temphia/temphia",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "dist/cjs/index.js",
   "types": "dist/cjs/index.d.ts",
   "files": [
-    "/dist"
+    "/dist",
+    "readme.md"
   ],
 
   "repository": {
