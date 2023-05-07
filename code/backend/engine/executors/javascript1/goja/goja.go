@@ -1,7 +1,6 @@
 package goja
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"math/rand"
@@ -82,7 +81,9 @@ type Request struct {
 }
 
 func (g *Goja) Process(ev *event.Request) (*event.Response, error) {
-	var entry func(ev *Request) (*Response, error)
+
+	var entry func(ev *Request) (goja.Value, error)
+
 	rawentry := g.runtime.Get(fmt.Sprintf("action_%s", ev.Name))
 	if rawentry == nil {
 		return nil, errors.New("method not found")
@@ -93,29 +94,27 @@ func (g *Goja) Process(ev *event.Request) (*event.Response, error) {
 		return nil, err
 	}
 
-	resp, err := entry(&Request{
+	resp := &event.Response{}
+
+	val, err := entry(&Request{
 		Id:   ev.Id,
 		Name: ev.Name,
 		Data: ev.Data,
 	})
-
 	if err != nil {
 		return nil, err
 	}
 
-	if resp == nil {
-		return &event.Response{
-			Payload: []byte(`{}`),
-		}, nil
+	if goja.IsNull(val) {
+		resp.Payload = []byte("null")
+	} else {
+		out, err := val.ToObject(g.runtime).MarshalJSON()
+		if err != nil {
+			return nil, err
+		}
+		resp.Payload = out
 	}
 
-	out, err := json.Marshal(&resp.Payload)
-	if err != nil {
-		return nil, err
-	}
-
-	return &event.Response{
-		Payload: (out),
-	}, nil
+	return resp, nil
 
 }

@@ -17,10 +17,6 @@ export const utils = {
   is_db_already_exists: (err: string) => {
     return err.indexOf(already_exists) !== -1;
   },
-  ok_response: (data: any): Response => ({ payload: { ok: true, data } }),
-  err_response: (message: string): Response => ({
-    payload: { ok: false, message },
-  }),
 
   ab2str: (buf: ArrayBuffer) => {
     return String.fromCharCode.apply(null, new Uint16Array(buf));
