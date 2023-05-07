@@ -1,12 +1,5 @@
 package bindx
 
-type Value struct {
-	Value    string `json:"value,omitempty"`
-	Audience string `json:"audience,omitempty"`
-	Version  int64  `json:"version,omitempty"`
-	TTL      int64  `json:"ttl,omitempty"`
-}
-
 type Resource struct {
 	Name    string            `json:"name,omitempty"`
 	Type    string            `json:"type,omitempty"`
