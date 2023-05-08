@@ -5,15 +5,13 @@ function list_items() {
     if (err) {
         if (utils.is_db_not_found(err)) {
             core.log("db not found");
-            return utils.ok_response([]);
+            return [];
         }
-        return utils.err_response(err);
+
+        throw err
     }
 
-    core.log("@====>" + JSON.stringify(resp));
-
     const fresp = (resp || []).map((elem) => {
-        core.log("@what the hell happended" + typeof elem.value);
         let pval = {};
         try {
             pval = JSON.parse(elem.value);
@@ -24,8 +22,7 @@ function list_items() {
         return { id: elem.key, value: pval };
     });
 
-    core.log("@====> BEFORE RETURNING RESP");
-    return utils.ok_response(fresp);
+    return fresp;
 }
 
 function action_list_items(params) {
@@ -34,15 +31,14 @@ function action_list_items(params) {
 }
 
 function action_add_item(params) {
-    const data = utils.ab2str(params["data"]);
+    const data = (params["data"]);
     const id = utils.generate_str_id();
 
     const err = plugkv.set(id, data, {
         tag1: "todoitems",
     });
     if (err) {
-        core.log("LIST ERR =>" + err);
-        return utils.err_response(err);
+        return err;
     }
 
     return list_items();

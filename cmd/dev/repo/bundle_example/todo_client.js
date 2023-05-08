@@ -65,7 +65,7 @@ class API {
 
     list_items = async () => {
         const resp = await this.env.PreformAction("list_items", {})
-        return resp.data.data;
+        return resp.data;
     }
 
     add_item = async (item) => {
@@ -73,7 +73,7 @@ class API {
             done: false,
             data: item
         })
-        return resp.data.data;
+        return resp.data;
     }
 
 }
