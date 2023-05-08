@@ -64,7 +64,7 @@ var core = {
         _buffer.length = 0;
     },
     sleep: function (t) { return _sleep(t); },
-    self_file: function (file) { return _get_self_file_as_str(file); }
+    self_file: function (file) { return _get_self_file_as_str(file); },
 };
 
 ;// CONCATENATED MODULE: ./lib/plugkv.ts
@@ -97,7 +97,7 @@ var PlugKV = /** @class */ (function () {
         this.query = function (opts) {
             return _pkv_query(_this.txid, opts);
         };
-        this["delete"] = function (key) {
+        this.delete = function (key) {
             return _pkv_del(_this.txid, key);
         };
         this.batch_delete = function (keys) {
@@ -171,7 +171,7 @@ var Request = /** @class */ (function () {
             var _a = _http1("PATCH", _this._url, _this._headers, _this._body), status = _a[0], header = _a[1], body = _a[2];
             return new Response(status, header, body);
         };
-        this["delete"] = function () {
+        this.delete = function () {
             var _a = _http1("DELETE", _this._url, _this._headers, _this._body), status = _a[0], header = _a[1], body = _a[2];
             return new Response(status, header, body);
         };
@@ -245,10 +245,6 @@ var utils = {
     is_db_already_exists: function (err) {
         return err.indexOf(already_exists) !== -1;
     },
-    ok_response: function (data) { return ({ payload: { ok: true, data: data } }); },
-    err_response: function (message) { return ({
-        payload: { ok: false, message: message }
-    }); },
     ab2str: function (buf) {
         return String.fromCharCode.apply(null, new Uint16Array(buf));
     },
@@ -265,7 +261,7 @@ var utils = {
             (value instanceof ArrayBuffer ||
                 toString.call(value) === "[object ArrayBuffer]"));
     },
-    generate_str_id: function () { return Math.random().toString(36).slice(2); }
+    generate_str_id: function () { return Math.random().toString(36).slice(2); },
 };
 
 ;// CONCATENATED MODULE: ./lib/self.ts
@@ -279,7 +275,7 @@ var self_self = {
         return _self_module_exec(mid, method, data);
     },
     link_execute: function (name, method, path, data, async, detached) { return _self_link_execute(name, method, path, data, async, detached); },
-    fork_execute: function (method, data) { return _self_fork_execute(method, data); }
+    fork_execute: function (method, data) { return _self_fork_execute(method, data); },
 };
 
 ;// CONCATENATED MODULE: ./lib/invoker.ts
@@ -290,7 +286,7 @@ var invoker = {
     },
     context_user: function () { return _invoker_context_user(); },
     context_user_info: function () { return _invoker_context_user_info(); },
-    context_user_message: function () { return _invoker_context_user_message(); }
+    context_user_message: function () { return _invoker_context_user_message(); },
 };
 
 ;// CONCATENATED MODULE: ./lib/index.ts

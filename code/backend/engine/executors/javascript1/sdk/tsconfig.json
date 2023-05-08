@@ -2,8 +2,7 @@
   "include": ["./lib/**/*"],
   "exclude": ["node_modules/*"],
   "compilerOptions": {
-    "ignoreDeprecations": "5.0",
-    "target": "ES3",
+    "target": "ES5",
     "declaration": true,
     "outDir": "build/lib"
   },
