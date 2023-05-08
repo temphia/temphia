@@ -7,11 +7,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
+	"github.com/twpayne/go-geom/encoding/wkt"
 )
 
 type PGCtypeProcesser struct {
@@ -157,12 +159,27 @@ func PgLocationFromDBType(val interface{}) ([2]float64, error) {
 		lstr = lval
 	}
 
+	if strings.HasPrefix(lstr, "SRID=4326;POINT") {
+		w, err := wkt.Unmarshal(lstr)
+		if err != nil {
+			return p, err
+		}
+
+		cod := w.FlatCoords()
+
+		p[0] = cod[0]
+		p[1] = cod[1]
+
+		return p, nil
+	}
+
 	b, err := hex.DecodeString(lstr)
 	if err != nil {
 		pp.Println("@lstr", lstr)
 		pp.Println("@hex_err", err)
-		return p, err
+		b = []byte(lstr)
 	}
+
 	r := bytes.NewReader(b)
 	var wkbByteOrder uint8
 	if err := binary.Read(r, binary.LittleEndian, &wkbByteOrder); err != nil {
