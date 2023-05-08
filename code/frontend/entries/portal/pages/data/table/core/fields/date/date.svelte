@@ -1,14 +1,15 @@
 <script lang="ts">
-  import Flatpickr from "svelte-flatpickr";
+  import Flatpicker from "../../../../../../../xcompo/flatpicker/flatpicker.svelte";
   import type { Column } from "../../../../../../services/data";
 
   export let column: Column;
   export let onChange: (val: string) => void;
   export let value: string;
 
-  const FLATPICKER = "_fpkr_"
+  const FLATPICKER = "_fpkr_";
 
-  $: _id = `row-edit-${column.slug}${window[FLATPICKER] = (window[FLATPICKER] || 0) + 1}`;
+  $: _id = `row-edit-${column.slug}${(window[FLATPICKER] =
+    (window[FLATPICKER] || 0) + 1)}`;
   $: _element = `#${_id}`;
   $: _date = value;
 
@@ -21,9 +22,6 @@
     dateFormat: "Y-m-d",
     parseDate: (dstr) => (dstr ? new Date(dstr) : new Date()),
   };
-
-
-
 </script>
 
 <svelte:head>
@@ -34,17 +32,17 @@
   />
 </svelte:head>
 
-<Flatpickr
+<Flatpicker
   options={defaultOpts}
   value={_date}
   element={_element}
   on:change={(ev) => {
-    console.log("@on_change", ev)
+    console.log("@on_change", ev);
     const _new_date = ((ev.detail[0] || [])[0] || new Date()).toISOString();
     onChange(_new_date);
   }}
 >
-  <div class="mb-5 w-full ">
+  <div class="mb-5 w-full">
     <div class="flatpickr relative" id={_id}>
       <input
         type="text"
@@ -71,4 +69,4 @@
       </div>
     </div>
   </div>
-</Flatpickr>
+</Flatpicker>
