@@ -1,11 +1,13 @@
 package goja
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"math/rand"
 
 	"github.com/dop251/goja"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
 
@@ -81,6 +83,14 @@ type Request struct {
 }
 
 func (g *Goja) Process(ev *event.Request) (*event.Response, error) {
+	var data any
+
+	if ev.Data != nil {
+		err := json.Unmarshal(ev.Data, &data)
+		if err != nil {
+			return nil, easyerr.Wrap("Cannot unmarshel request data", err)
+		}
+	}
 
 	var entry func(ev *Request) (goja.Value, error)
 
@@ -99,7 +109,7 @@ func (g *Goja) Process(ev *event.Request) (*event.Response, error) {
 	val, err := entry(&Request{
 		Id:   ev.Id,
 		Name: ev.Name,
-		Data: ev.Data,
+		Data: data,
 	})
 	if err != nil {
 		return nil, err
