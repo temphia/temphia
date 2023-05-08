@@ -17,6 +17,10 @@ type room struct {
 	name        string
 	connections map[int64]*Conn
 	rlock       sync.Mutex
+
+	// fixme => implement this
+	// debugWatch      bool
+	// debugWatchConns []*Conn
 }
 
 func (r *room) sendDirect(connId int64, payload []byte) error {
