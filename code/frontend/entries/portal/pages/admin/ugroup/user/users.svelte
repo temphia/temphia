@@ -74,6 +74,12 @@
       },
     });
   };
+
+  const action_device_token = (id: string) => {
+        
+
+  };
+
 </script>
 
 {#if loading}
@@ -108,6 +114,14 @@
         icon: "at-symbol",
         drop: true,
       },
+
+      {
+        Name: "Device Token",
+        Action: action_device_token,
+        icon: "ticket",
+        drop: true,
+      },
+
       {
         Name: "Disable",
         Action: (id) => {},
