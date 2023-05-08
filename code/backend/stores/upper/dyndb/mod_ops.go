@@ -27,7 +27,13 @@ func (d *DynDB) newRow(txid uint32, req dyndb.NewRowReq) (int64, error) {
 
 	req.Data[dyndb.KeyModSig] = string(modsig)
 
-	err = d.beforeDBRow(req.TenantId, req.Group, req.Table, req.Data)
+	cols, err := d.cache.CachedColumns(req.TenantId, req.Group, req.Table)
+	if err != nil {
+		return 0, err
+	}
+
+	pcr := processer.New(d.vendor, cols)
+	err = pcr.ToRowDBType(req.Data)
 	if err != nil {
 		return 0, err
 	}
@@ -48,7 +54,17 @@ func (d *DynDB) newRow(txid uint32, req dyndb.NewRowReq) (int64, error) {
 		id = ir.ID().(int64)
 		return nil
 	})
-	return id, err
+
+	if err != nil {
+		return 0, err
+	}
+
+	err = pcr.FromRowDBType(req.Data)
+	if err != nil {
+		pp.Println("@err transforming from db type @newrow", err.Error())
+	}
+
+	return id, nil
 }
 
 type Key struct {
@@ -64,6 +80,13 @@ func (d *DynDB) NewBatchRows(txid uint32, req dyndb.NewBatchRowReq) ([]int64, er
 	}
 
 	_modsig := string(modsig)
+
+	cols, err := d.cache.CachedColumns(req.TenantId, req.Group, req.Table)
+	if err != nil {
+		return nil, err
+	}
+
+	pcr := processer.New(d.vendor, cols)
 
 	keys := make(map[string]struct{})
 
@@ -83,6 +106,11 @@ func (d *DynDB) NewBatchRows(txid uint32, req dyndb.NewBatchRowReq) ([]int64, er
 				data[k] = nil
 			}
 		}
+	}
+
+	err = pcr.ToRowsDBType(req.Data)
+	if err != nil {
+		return nil, err
 	}
 
 	keyMap := make([]Key, len(req.Data))
@@ -108,6 +136,11 @@ func (d *DynDB) NewBatchRows(txid uint32, req dyndb.NewBatchRowReq) ([]int64, er
 	ids := make([]int64, 0, len(keyMap))
 	for _, k := range keyMap {
 		ids = append(ids, (k.ID))
+	}
+
+	err = pcr.FromRowsDBType(req.Data)
+	if err != nil {
+		pp.Println("@err/newrowbatch/convertback", err.Error())
 	}
 
 	return ids, nil
@@ -247,7 +280,13 @@ func (d *DynDB) updateRow(txid uint32, req dyndb.UpdateRowReq) (map[string]inter
 	}
 	req.Data[dyndb.KeyModSig] = string(modsig)
 
-	err = d.beforeDBRow(req.TenantId, req.Group, req.Table, req.Data)
+	cols, err := d.cache.CachedColumns(req.TenantId, req.Group, req.Table)
+	if err != nil {
+		return nil, err
+	}
+
+	pcr := processer.New(d.vendor, cols)
+	err = pcr.ToRowDBType(data)
 	if err != nil {
 		return nil, err
 	}
@@ -290,21 +329,10 @@ func (d *DynDB) updateRow(txid uint32, req dyndb.UpdateRowReq) (map[string]inter
 		return nil, err
 	}
 
-	pcr := d.processer(req.TenantId, req.Group, req.Table)
 	err = pcr.FromRowDBType(data)
 	if err != nil {
 		return nil, err
 	}
 
 	return data, err
-}
-
-func (d *DynDB) beforeDBRow(tenantId, group, table string, data map[string]interface{}) error {
-	cols, err := d.cache.CachedColumns(tenantId, group, table)
-	if err != nil {
-		return err
-	}
-
-	pcr := processer.New(d.vendor, cols)
-	return pcr.ToRowDBType(data)
 }
