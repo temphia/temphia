@@ -8,6 +8,8 @@
 
   export let current_cells = {};
 
+  export let modified_cells = {};
+
   let open_column;
 </script>
 
@@ -20,6 +22,7 @@
     onCellChange={(data) => {
       const old = current_cells[col.__id] || {};
       current_cells[col.__id] = { ...old, ...data };
+      modified_cells[col.__id] = true
     }}
   />
 {/each}
