@@ -6,7 +6,9 @@
   export let onChange: (val: string) => void;
   export let value: string;
 
-  $: _id = `row-edit-${column.slug}`;
+  const FLATPICKER = "_fpkr_"
+
+  $: _id = `row-edit-${column.slug}${window[FLATPICKER] = (window[FLATPICKER] || 0) + 1}`;
   $: _element = `#${_id}`;
   $: _date = value;
 
@@ -19,6 +21,9 @@
     dateFormat: "Y-m-d",
     parseDate: (dstr) => (dstr ? new Date(dstr) : new Date()),
   };
+
+
+
 </script>
 
 <svelte:head>
