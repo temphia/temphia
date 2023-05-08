@@ -567,6 +567,7 @@ func (s *Sheet) UpdateRowWithCell(txid uint32, sid, rid int64, userId string, da
 		cellId, cellOk := cellData[dyndb.KeyPrimary].(float64) // float cz its from req/json
 		version, _ := cellData[dyndb.KeyVersion].(float64)
 		if !cellOk {
+
 			cellData["rowid"] = rid
 			cellData["sheetid"] = sid
 			cellData["colid"] = colid
@@ -613,6 +614,7 @@ func (s *Sheet) UpdateRowWithCell(txid uint32, sid, rid int64, userId string, da
 				return nil, err
 			}
 
+			cellData[dyndb.KeyPrimary] = cellId
 			cellData["rowid"] = rid
 			cellData["sheetid"] = sid
 			cellData["colid"] = colid
