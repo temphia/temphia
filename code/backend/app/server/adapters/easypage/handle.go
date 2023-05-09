@@ -39,14 +39,7 @@ func (s *EasyPage) handle(ctx httpx.Context) {
 }
 
 func (s *EasyPage) handleImg(ctx httpx.Context, file string) {
-	source := s.cabHub.GetSource(s.options.Domain.AdapterCabSource, s.options.TenantId)
-
-	out, err := source.GetBlob(ctx.Http.Request.Context(), s.options.Domain.AdapterCabFolder, file)
-	if err != nil {
-		return
-	}
-
-	httpx.WriteBinary(ctx.Http, out)
+	// fixme => fixme from bprint folder
 }
 
 // private
