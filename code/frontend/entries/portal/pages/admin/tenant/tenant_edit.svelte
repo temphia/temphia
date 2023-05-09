@@ -74,16 +74,16 @@
           key_name: "disable_p2p",
         },
 
-        {
-          name: "SMTP User",
-          ftype: "TEXT",
-          key_name: "smtp_user",
-        },
-        {
-          name: "SMTP Password",
-          ftype: "TEXT",
-          key_name: "smtp_pass",
-        },
+        // {
+        //   name: "SMTP User",
+        //   ftype: "TEXT",
+        //   key_name: "smtp_user",
+        // },
+        // {
+        //   name: "SMTP Password",
+        //   ftype: "TEXT",
+        //   key_name: "smtp_pass",
+        // },
 
         {
           name: "Extra Meta",
