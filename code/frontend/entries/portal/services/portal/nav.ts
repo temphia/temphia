@@ -423,21 +423,6 @@ export class Navigator {
     this.set(`#/admin/user/new`);
   }
 
-  admin_perms() {
-    this.set(`#/admin/user/perm`);
-  }
-
-  admin_perm_new() {
-    this.set(`#/admin/user/perm/new`);
-  }
-
-  admin_roles() {
-    this.set(`#/admin/user/role`);
-  }
-
-  admin_role_new() {
-    this.set(`#/admin/user/role/new`);
-  }
 
   admin_ugroups() {
     this.set(`#/admin/ugroup/`);

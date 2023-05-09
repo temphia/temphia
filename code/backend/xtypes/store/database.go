@@ -114,27 +114,6 @@ type UserOps interface {
 	RemoveUserDevice(tenantId string, user string, id int64) error
 }
 
-type UserPermissionOps interface {
-	AddPerm(data *entities.Permission) error
-	UpdatePerm(data map[string]any) error
-	GetPerm(tenantId string, id int64) (*entities.Permission, error)
-	RemovePerm(tenantId string, id int64) error
-
-	AddRole(data *entities.Role) error
-	GetRole(tenantId string, id int64) (*entities.Role, error)
-	UpdateRole(data map[string]any) error
-	RemoveRole(data *entities.Role) error
-	AddUserRole(data *entities.UserRole) error
-	GetUserRole(tenantId string, id int64) (*entities.UserRole, error)
-	UpdateUserRole(data map[string]any) error
-	RemoveUserRole(data *entities.UserRole) error
-	ListAllPerm(tenantId string) ([]*entities.Permission, error)
-	ListAllRole(tenantId string) ([]*entities.Permission, error)
-	ListAllUserRole(tenantId string) ([]*entities.Permission, error)
-	ListAllUserPerm(tenantId string) ([]*entities.Permission, error)
-	ListUserPerm(tenantId string, userId, objType, objsub string) ([]*entities.Permission, error)
-}
-
 type UserGroupExtra interface {
 	AddUserGroupAuth(data *entities.UserGroupAuth) error
 	UpdateUserGroupAuth(tenantId string, gslug string, id int64, data map[string]any) error

@@ -177,31 +177,6 @@ create table user_messages(
     foreign KEY(user_id, tenant_id) references users(user_id, tenant_id)
 );
 
-create table roles(
-    slug text not null,
-    tenant_id text not null,
-    PRIMARY KEY(slug, tenant_id)
-);
-
-create table user_roles(
-    role_id text not null,
-    user_id text not null,
-    tenant_id text not null,
-    FOREIGN KEY(role_id, tenant_id) references roles(slug, tenant_id),
-    FOREIGN KEY(user_id, tenant_id) references users(user_id, tenant_id),
-    PRIMARY KEY(role_id, tenant_id, user_id)
-);
-
-create table permissions(
-        id integer primary key autoincrement not null,
-    object_type text not null,
-    object_id text not null default '',
-    role_id text not null,
-    extra_meta json not null default '{}',
-    tenant_id text not null,
-    FOREIGN KEY(role_id, tenant_id) references roles(slug, tenant_id)
-);
-
 
 create table user_group_auths(
         id integer primary key autoincrement not null,

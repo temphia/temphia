@@ -18,7 +18,7 @@
     {
       name: "From Store",
       icon: "shopping-bag",
-      info: "You can import required data tables from store, if you have proper permissions.",
+      info: "You can import required data tables from store, if you have proper scope.",
       action: () => {
         app.utils.small_modal_close();
         app.nav.repo_loader();

@@ -66,8 +66,6 @@
 
 <TopActions
   actions={{
-    Permissions: () => app.nav.admin_perms(),
-    Roles: () => app.nav.admin_roles(),
     "User Groups": () => app.nav.admin_ugroups(),
   }}
 />
