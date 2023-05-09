@@ -1,7 +1,7 @@
 package corehub
 
 import (
-	"github.com/temphia/temphia/code/backend/services/corehub/scoper"
+	"github.com/temphia/temphia/code/backend/services/corehub/authz"
 	"github.com/temphia/temphia/code/backend/xtypes"
 
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
@@ -15,7 +15,7 @@ type CoreHub struct {
 	coredb   store.CoreDB
 	notifier sockdx.UserSyncer
 	cplane   xplane.ControlPlane
-	smanager scoper.Manager
+	smanager authz.Manager
 }
 
 func New(coredb store.CoreDB) *CoreHub {
@@ -23,7 +23,7 @@ func New(coredb store.CoreDB) *CoreHub {
 		coredb: coredb,
 		//		sockdhub: nil,
 		cplane:   nil,
-		smanager: scoper.New(),
+		smanager: authz.New(),
 	}
 }
 
@@ -39,7 +39,7 @@ func (c *CoreHub) Ping() error {
 	return c.coredb.Ping()
 }
 
-func (c *CoreHub) GetScopper(tenantId, group string) store.Scoper {
+func (c *CoreHub) GetAuthZ(tenantId, group string) store.AuthZ {
 
 	key := tenantId + group
 

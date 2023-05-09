@@ -1,7 +1,10 @@
 package admin
 
 import (
+	"fmt"
+
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -43,4 +46,17 @@ func New(
 		log:       log,
 		plugState: plugState,
 	}
+}
+
+func (c *Controller) HasScope(uclaim *claim.Session, sub string) bool {
+	if uclaim.IsSuperAdmin() {
+		return true
+	}
+
+	scoper := c.coredb.GetAuthZ(uclaim.TenantId, uclaim.UserGroup)
+	if scoper != nil && (scoper.CheckScope("admin.*") || scoper.CheckScope(fmt.Sprintf("admin.%s", sub))) {
+		return true
+	}
+
+	return false
 }

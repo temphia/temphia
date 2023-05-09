@@ -1,25 +1,24 @@
-package scoper
+package authz
 
 import (
-	"strings"
 	"sync"
 
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
 type Manager struct {
-	scopes map[string]*GroupScoper
+	scopes map[string]*AuthZ
 	mLock  sync.RWMutex
 }
 
 func New() Manager {
 	return Manager{
-		scopes: make(map[string]*GroupScoper),
+		scopes: make(map[string]*AuthZ),
 		mLock:  sync.RWMutex{},
 	}
 }
 
-func (s *Manager) Get(key string) *GroupScoper {
+func (s *Manager) Get(key string) *AuthZ {
 	s.mLock.RLock()
 	gs := s.scopes[key]
 	s.mLock.RUnlock()
@@ -28,13 +27,13 @@ func (s *Manager) Get(key string) *GroupScoper {
 
 func (s *Manager) Set(key string, model *entities.UserGroup) {
 
-	gs := &GroupScoper{
-		scopes: make(map[string]struct{}),
+	gs := &AuthZ{
+		scoper: scoper{
+			scopes: make(map[string]struct{}),
+		},
 	}
 
-	for _, scope := range strings.Split(model.Scopes, ",") {
-		gs.scopes[scope] = struct{}{}
-	}
+	gs.scoper.build(model.Scopes)
 
 	s.scopes[key] = gs
 }

@@ -8,7 +8,7 @@ import (
 type CoreHub interface {
 	CoreDB
 
-	GetScopper(tenantId, group string) Scoper
+	GetAuthZ(tenantId, group string) AuthZ
 
 	Inject(app xtypes.App)
 }
