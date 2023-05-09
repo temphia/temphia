@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/app/registry"
+	"github.com/temphia/temphia/code/backend/app/server/notz/adapter"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
@@ -25,7 +26,7 @@ type AdapterManager struct {
 	corehub           store.CoreHub
 	cabinethub        store.CabinetHub
 	adapterBuilders   map[string]httpx.Builder
-	activeDomains     map[int64]*DomainInstance
+	activeDomains     map[int64]*adapter.Adapter
 	tenantInits       map[string]bool
 	domainTenantIndex map[string]int64
 
@@ -43,7 +44,7 @@ func newAdapterManager(app xtypes.App) AdapterManager {
 
 	return AdapterManager{
 		app:               app,
-		activeDomains:     make(map[int64]*DomainInstance),
+		activeDomains:     make(map[int64]*adapter.Adapter),
 		tenantInits:       make(map[string]bool),
 		cReInstance:       make(chan DomainIdent),
 		cInstanceTenant:   make(chan string),
@@ -81,7 +82,7 @@ func (am *AdapterManager) serveEditorFile(tenantId string, did int64, file strin
 		return nil, easyerr.NotFound("domain instance")
 	}
 
-	out, err := instance.serveEditorFile(file)
+	out, err := instance.ServeEditorFile(file)
 	if err != nil {
 		am.applogger.Error().
 			Str("tenant_id", tenantId).
@@ -108,7 +109,7 @@ func (am *AdapterManager) preformEditorAction(tenantId, name string, did int64, 
 		return nil, easyerr.NotFound("domain instance")
 	}
 
-	resp, err := instance.preformEditorAction(name, data)
+	resp, err := instance.PreformEditorAction(name, data)
 	if err != nil {
 		am.applogger.Error().
 			Str("tenant_id", tenantId).
@@ -136,12 +137,12 @@ func (am *AdapterManager) Handle(tenantId, host string, ctx *gin.Context) {
 		return
 	}
 
-	instance.handle(ctx)
+	instance.Handle(ctx)
 }
 
 // private
 
-func (am *AdapterManager) get(tenantId string, did int64) *DomainInstance {
+func (am *AdapterManager) get(tenantId string, did int64) *adapter.Adapter {
 	instance := am.activeDomains[did]
 
 	if instance == nil {

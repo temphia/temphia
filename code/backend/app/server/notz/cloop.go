@@ -2,11 +2,19 @@ package notz
 
 import (
 	"fmt"
+	"net"
+	"net/http"
+	"strings"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	lru "github.com/hashicorp/golang-lru"
 	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/backend/app/server/notz/adapter"
 	"github.com/temphia/temphia/code/backend/app/server/notz/ahandle"
+	"github.com/temphia/temphia/code/backend/app/server/notz/dnstoken"
+	"github.com/temphia/temphia/code/backend/app/server/static"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -144,12 +152,63 @@ func (am *AdapterManager) build(tenantId string, model *entities.TenantDomain) {
 			Msg(logid.NotzAdapterBuildOk)
 	}
 
-	am.activeDomains[model.Id] = &DomainInstance{
-		adapter: adpr,
-		model:   model,
-	}
+	am.activeDomains[model.Id] = adapter.New(adpr, model)
+
 	// "<host>|<tenant>"
 
 	am.domainTenantIndex[model.Name+"|"+tenantId] = model.Id
 
+}
+
+func (m *Notz) extract(c *gin.Context) (string, string, error) {
+	hostname, _, _ := net.SplitHostPort(c.Request.Host)
+
+	tenantId := ""
+	if m.resolveHostTenantFn != nil {
+		tenantId = m.resolveHostTenantFn(hostname)
+	}
+
+	if m.app.SingleTenant() {
+		return m.app.StaticTenants()[0], hostname, nil
+	}
+
+	if m.tenantHostBase != "" && strings.HasSuffix(hostname, m.tenantHostBase) {
+		// tenant1.example.com
+		tenantId := strings.TrimRight(strings.TrimRight(hostname, m.tenantHostBase), ".")
+		return tenantId, hostname, nil
+	}
+
+	if hostname == "" || hostname == "localhost" || hostname == m.rootHost {
+		c.Writer.Write(static.Root)
+		return "", "", easyerr.NotFound("host")
+	}
+
+	if tenantId == "" {
+		tenantId = m.staticHosts[hostname]
+	}
+
+	if tenantId == "" {
+		tenantId = m.resolveTenant(hostname, c)
+	}
+
+	if tenantId == "" {
+		c.AbortWithStatus(http.StatusNotFound)
+		return "", "", easyerr.NotFound("tenant")
+	}
+
+	return tenantId, hostname, nil
+
+}
+
+func (m *Notz) resolveTenant(host string, c *gin.Context) string {
+	tenantId := ""
+	if tenantId == "" {
+		tenantId, _ = c.Cookie("tenant_id")
+	}
+
+	if tenantId == "" {
+		tenantId, _ = dnstoken.DNSReverseResolve(m.app.ClusterId(), host)
+	}
+
+	return tenantId
 }
