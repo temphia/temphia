@@ -43,3 +43,5 @@ func (e *EasyPage) PreformEditorAction(name string, data []byte) (any, error) {
 func (e *EasyPage) Handle(ctx httpx.Context) {
 	e.handle(ctx)
 }
+
+func (e *EasyPage) Close() error { return nil }

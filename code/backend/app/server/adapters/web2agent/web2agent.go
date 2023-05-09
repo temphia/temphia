@@ -74,3 +74,5 @@ func (w *Web2Agent) Handle(ctx httpx.Context) {
 
 	target.handle()
 }
+
+func (w *Web2Agent) Close() error { return nil }

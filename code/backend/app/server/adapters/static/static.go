@@ -36,3 +36,7 @@ func (s *static) Handle(ctx httpx.Context) {
 
 	ctx.Http.Writer.Write(out)
 }
+
+func (s *static) Close() error {
+	return nil
+}
