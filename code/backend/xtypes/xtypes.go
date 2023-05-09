@@ -66,4 +66,6 @@ type GlobalVar interface {
 type Server interface {
 	Listen() error
 	Close() error
+	BuildRoutes() error
+	GetAdapterHub() any
 }

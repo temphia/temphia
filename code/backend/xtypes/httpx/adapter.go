@@ -23,26 +23,38 @@ type Context struct {
 
 type Adapter interface {
 	ServeEditorFile(file string) ([]byte, error)
+
 	PreformEditorAction(name string, data []byte) (any, error)
 
 	Handle(ctx Context)
+
+	Close() error
+}
+
+type AdapterHub interface {
+	Serve(ctx *gin.Context)
+
+	IsAllowed(tenantId, host string) bool
+
+	ApplyTargetHook(tenantId string, id int64, data *entities.TargetHook)
+
+	ApplyAdapter(tenantId string, id int64, data *entities.TenantDomain)
+
+	ListAdapters() []string
 }
 
 // handle
 
 type AdapterHandle interface {
+	GetLogger() *zerolog.Logger
 
-	// kv
-	KvAdd(key, value string) error
-	KvUpdate(key, value string) error
-	KvGet(key string) (string, error)
-	KvRemove(key string) error
-	KvList(prefix string) ([]string, error)
+	LogInfo(rid int64) *zerolog.Event
+
+	LogError(rid int64) *zerolog.Event
 
 	SelfReset()
 
-	// log
-	GetLogger() *zerolog.Logger
-	LogInfo(rid int64) *zerolog.Event
-	LogError(rid int64) *zerolog.Event
+	GetKvToken() (string, error)
+
+	Init() error
 }

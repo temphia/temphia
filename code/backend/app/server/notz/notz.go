@@ -9,6 +9,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
@@ -19,6 +20,8 @@ type NotzOptions struct {
 	RootHost          string
 	TenantHostBase    string
 }
+
+var _ httpx.AdapterHub = (*Notz)(nil)
 
 type Notz struct {
 	app                 xtypes.App
@@ -107,3 +110,11 @@ func (m *Notz) PreformEditorAction(tenantId, name string, did int64, ctx *gin.Co
 	resp, err := m.adapterManager.preformEditorAction(tenantId, name, did, out)
 	httpx.WriteJSON(ctx, resp, err)
 }
+
+func (m *Notz) IsAllowed(tenantId, host string) bool {
+	return m.isAllowed(tenantId, host)
+}
+
+func (m *Notz) ApplyTargetHook(tenantId string, id int64, data *entities.TargetHook) {}
+
+func (m *Notz) ApplyAdapter(tenantId string, id int64, data *entities.TenantDomain) {}

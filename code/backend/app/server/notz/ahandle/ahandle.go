@@ -22,64 +22,20 @@ type Options struct {
 }
 
 type AHandle struct {
-	corehub    store.CoreHub
-	logger     *zerolog.Logger
-	tenantId   string
-	keyTypeKey string
-	resetFunc  func()
+	corehub   store.CoreHub
+	logger    *zerolog.Logger
+	domainId  int64
+	tenantId  string
+	resetFunc func()
 }
 
 func New(opts Options) *AHandle {
 	return &AHandle{
-		corehub:    opts.Corehub,
-		logger:     opts.Logger,
-		tenantId:   opts.TenantId,
-		keyTypeKey: fmt.Sprintf("adapter-%d", opts.DomainId),
-		resetFunc:  opts.ResetDomain,
+		corehub:   opts.Corehub,
+		logger:    opts.Logger,
+		tenantId:  opts.TenantId,
+		resetFunc: opts.ResetDomain,
 	}
-}
-
-func (ah *AHandle) KvAdd(key, value string) error {
-	return ah.corehub.AddSystemKV(ah.tenantId, &entities.SystemKV{
-		Key:      key,
-		Type:     ah.keyTypeKey,
-		Value:    value,
-		TenantId: ah.tenantId,
-	})
-}
-
-func (ah *AHandle) KvUpdate(key, value string) error {
-	return ah.corehub.UpdateSystemKV(ah.tenantId, key, ah.keyTypeKey, map[string]any{
-		"value": value,
-	})
-}
-
-func (ah *AHandle) KvGet(key string) (string, error) {
-	data, err := ah.corehub.GetSystemKV(ah.tenantId, key, ah.keyTypeKey)
-	if err != nil {
-		return "", err
-	}
-
-	return data.Value, err
-}
-
-func (ah *AHandle) KvRemove(key string) error {
-	return ah.corehub.RemoveSystemKV(ah.tenantId, key, ah.keyTypeKey)
-}
-
-func (ah *AHandle) KvList(prefix string) ([]string, error) {
-	resps, err := ah.corehub.ListSystemKV(ah.tenantId, ah.keyTypeKey, prefix, 0)
-	if err != nil {
-		return nil, err
-	}
-
-	final := make([]string, 0, len(resps))
-
-	for _, sk := range resps {
-		final = append(final, sk.Value)
-	}
-
-	return final, nil
 }
 
 func (ah *AHandle) SelfReset() {
@@ -97,4 +53,42 @@ func (ah *AHandle) LogInfo(rid int64) *zerolog.Event {
 
 func (ah *AHandle) LogError(rid int64) *zerolog.Event {
 	return ah.logger.Error().Int64("rid", rid)
+}
+
+func (ah *AHandle) GetKvToken() (string, error) {
+
+	return "", nil
+}
+
+func (ah *AHandle) Init() error {
+	key := fmt.Sprintf("adapter-%d", ah.domainId)
+
+	bp, _ := ah.corehub.BprintGet(ah.tenantId, key)
+	if bp == nil {
+		return ah.corehub.BprintNew(ah.tenantId, &entities.BPrint{
+			ID:          key,
+			Name:        "Domain Adpter Container",
+			Slug:        "domain-adapter",
+			Type:        "container",
+			Description: fmt.Sprintf("This is a bprint controlled by adapter %d", ah.domainId),
+			TenantID:    ah.tenantId,
+			Tags:        entities.JsonArray{},
+			Files:       entities.JsonArray{},
+			ExtraMeta:   entities.JsonMap{},
+		})
+	}
+
+	plug, _ := ah.corehub.PlugGet(ah.tenantId, key)
+	if plug == nil {
+		ah.corehub.PlugNew(ah.tenantId, &entities.Plug{
+			Id:        key,
+			Name:      fmt.Sprintf("Domain Adpter plug %d", ah.domainId),
+			Live:      true,
+			BprintId:  key,
+			ExtraMeta: entities.JsonStrMap{},
+			TenantId:  ah.tenantId,
+		})
+	}
+
+	return nil
 }

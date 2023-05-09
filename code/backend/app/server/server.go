@@ -136,7 +136,7 @@ func (s *Server) Close() error {
 	return s.listener.Close()
 }
 
-func (s *Server) BuildRoutes() {
+func (s *Server) BuildRoutes() error {
 
 	if s.ginEngine == nil {
 
@@ -150,4 +150,10 @@ func (s *Server) BuildRoutes() {
 	}
 
 	s.buildRoutes()
+
+	return nil
+}
+
+func (s *Server) GetAdapterHub() any {
+	return s.notz
 }
