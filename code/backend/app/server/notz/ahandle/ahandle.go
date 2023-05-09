@@ -21,6 +21,7 @@ type Options struct {
 	ResetDomain func()
 }
 
+// Ahandle is a common adapter utils handle
 type AHandle struct {
 	corehub   store.CoreHub
 	logger    *zerolog.Logger

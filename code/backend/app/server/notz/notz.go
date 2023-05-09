@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
-	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
@@ -53,31 +52,27 @@ func New(opts NotzOptions) *Notz {
 }
 
 func (m *Notz) Serve(ctx *gin.Context) {
-
-	tenantId, hostname, err := m.extract(ctx)
-	if err != nil {
-		m.adapterManager.applogger.Error().
-			Str("tenant_id", tenantId).
-			Msg(logid.NotzHostExtractErr)
-		return
-	}
-
-	m.adapterManager.Handle(tenantId, hostname, ctx)
+	m.serve(ctx)
 }
 
 func (m *Notz) ServePublic(c *gin.Context, file string) {
-	tenantId, _, err := m.extract(c)
-	if err != nil {
-		return
-	}
+	m.servePublic(c, file)
+}
 
-	source := m.cabinethub.Default(tenantId)
-	out, err := source.GetBlob(c.Request.Context(), "public", file)
-	if err != nil {
-		return
-	}
+func (m *Notz) IsAllowed(tenantId, host string) bool {
+	return m.isAllowed(tenantId, host)
+}
 
-	c.Writer.Write(out)
+func (m *Notz) ApplyTargetHook(tenantId string, id int64, data *entities.TargetHook) {
+
+}
+
+func (m *Notz) ApplyAdapter(tenantId string, id int64, data *entities.TenantDomain) {
+
+}
+
+func (m *Notz) ListAdapters() []string {
+	return m.adapterManager.ListAdapters()
 }
 
 func (m *Notz) Reset(tenantId string, domainId int64) {
@@ -85,10 +80,6 @@ func (m *Notz) Reset(tenantId string, domainId int64) {
 		tenantId: tenantId,
 		domainId: domainId,
 	}
-}
-
-func (m *Notz) ListAdapters() []string {
-	return m.adapterManager.ListAdapters()
 }
 
 func (m *Notz) ServeEditorFile(tenantId, file string, did int64, ctx *gin.Context) {
@@ -110,11 +101,3 @@ func (m *Notz) PreformEditorAction(tenantId, name string, did int64, ctx *gin.Co
 	resp, err := m.adapterManager.preformEditorAction(tenantId, name, did, out)
 	httpx.WriteJSON(ctx, resp, err)
 }
-
-func (m *Notz) IsAllowed(tenantId, host string) bool {
-	return m.isAllowed(tenantId, host)
-}
-
-func (m *Notz) ApplyTargetHook(tenantId string, id int64, data *entities.TargetHook) {}
-
-func (m *Notz) ApplyAdapter(tenantId string, id int64, data *entities.TenantDomain) {}
