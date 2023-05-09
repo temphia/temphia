@@ -8,6 +8,8 @@ import (
 type CoreHub interface {
 	CoreDB
 
+	GetScopper(tenantId, group string) Scoper
+
 	Inject(app xtypes.App)
 }
 
