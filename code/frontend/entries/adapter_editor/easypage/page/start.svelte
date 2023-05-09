@@ -14,19 +14,20 @@
 
   const load = async () => {
     loading = true;
-    const resp = await service.load();
-    if (!resp.ok) {
-      message = resp.data;
-      console.log("Err", resp.data);
-      return;
-    }
 
-    datas = resp.data["pages"] || [];
+    // fixme here => 
+
+    return
+
+    
+
     loading = false;
   };
 
   const action_visit = (id: string) => {
-    const u = new URL(service.api.base.api_base_url || "");
+    const url = "http://localhost"
+
+    const u = new URL(url || "");
 
     let domain_name = service.env.domain_name;
     if (!domain_name || domain_name === "*") {
@@ -56,9 +57,8 @@
 
   const action_delete = async (id: string) => {
     loading = true;
-    const newDatas = datas.filter((v) => v["slug"] !== id);
-    await service.updatePages(newDatas);
-    await service.deletePageData(id);
+
+    await service.deletePage(id);
 
     load();
   };
@@ -76,11 +76,12 @@
       load();
     }}
     onSave={async (data) => {
-      const resp = await service.updatePages([...datas, data]);
+      const resp = await service.addPage(data["slug"], data);
       if (!resp.ok) {
         console.log(resp);
         return;
       }
+
       service.modal.small_close();
 
       load();

@@ -51,8 +51,18 @@ func (s *EasyPage) handleImg(ctx httpx.Context, file string) {
 
 // private
 
+func (s *EasyPage) kvGet(string) (string, error) {
+	// val, err := s.ahandle.KvGet(pageKey(path))
+	// if err != nil {
+	// 	return "", err
+	// }
+	return "", nil
+
+}
+
 func (s *EasyPage) fetch(path string) ([]byte, error) {
-	val, err := s.ahandle.KvGet(pageKey(path))
+
+	val, err := s.kvGet(path)
 	if err != nil {
 		return nil, err
 	}

@@ -54,3 +54,5 @@ func (l *NoOp) PreformEditorAction(name string, data []byte) (any, error) {
 func (l *NoOp) Handle(ctx httpx.Context) {
 	ctx.Http.Writer.Write(l.rendered)
 }
+
+func (l *NoOp) Close() error { return nil }
