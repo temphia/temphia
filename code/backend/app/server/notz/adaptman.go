@@ -13,6 +13,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
@@ -95,12 +96,12 @@ func (am *AdapterManager) serveEditorFile(tenantId string, did int64, file strin
 	return out, nil
 }
 
-func (am *AdapterManager) preformEditorAction(tenantId, name string, did int64, data []byte) (any, error) {
+func (am *AdapterManager) preformEditorAction(aclaim *claim.AdapterEditor, name string, did int64, data []byte) (any, error) {
 
-	instance := am.get(tenantId, did)
+	instance := am.get(aclaim.TenantId, did)
 	if instance == nil {
 		am.applogger.Error().
-			Str("tenant_id", tenantId).
+			Str("tenant_id", aclaim.TenantId).
 			Int64("domain_id", did).
 			Str("handler", "perform_editor_action").
 			Str("action", name).
@@ -109,10 +110,10 @@ func (am *AdapterManager) preformEditorAction(tenantId, name string, did int64, 
 		return nil, easyerr.NotFound("domain instance")
 	}
 
-	resp, err := instance.PreformEditorAction(name, data)
+	resp, err := instance.PreformEditorAction(nil, name, data)
 	if err != nil {
 		am.applogger.Error().
-			Str("tenant_id", tenantId).
+			Str("tenant_id", aclaim.TenantId).
 			Int64("domain_id", did).
 			Msg(logid.NotzAdapterEditorActionErr)
 

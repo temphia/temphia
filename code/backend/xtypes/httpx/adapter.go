@@ -3,7 +3,10 @@ package httpx
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
+	"github.com/temphia/temphia/code/backend/engine/modules/bprint"
+	"github.com/temphia/temphia/code/backend/engine/modules/pstate"
 	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
@@ -24,7 +27,7 @@ type Context struct {
 type Adapter interface {
 	ServeEditorFile(file string) ([]byte, error)
 
-	PreformEditorAction(name string, data []byte) (any, error)
+	PreformEditorAction(uclaim *claim.AdapterEditor, name string, data []byte) (any, error)
 
 	Handle(ctx Context)
 
@@ -54,7 +57,9 @@ type AdapterHandle interface {
 
 	SelfReset()
 
-	GetKvToken() (string, error)
-
 	Init() error
+
+	GetPStateMod() *pstate.PStateMod
+
+	GetBprintMod() *bprint.BprintMod
 }

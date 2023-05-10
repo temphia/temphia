@@ -6,6 +6,7 @@ import (
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 func (e *EasyPage) serveEditorFile(file string) ([]byte, error) {
@@ -23,20 +24,18 @@ func (e *EasyPage) serveEditorFile(file string) ([]byte, error) {
 
 }
 
-func (e *EasyPage) preformEditorAction(name string, data []byte) (any, error) {
-
-	switch name {
-	// case "load":
-	// 	return e.load()
-	// case "update_pages":
-	// 	return nil, e.updatePages(data)
-	// case "get_page_data":
-	// 	return e.getPageData(data)
-	// case "set_page_data":
-	// 	return nil, e.setPageData(data)
-	// case "delete_page_data":
-	// 	return nil, e.delPageData(data)
-	default:
-		return nil, easyerr.NotImpl()
+func (e *EasyPage) preformEditorAction(uclaim *claim.AdapterEditor, name string, data []byte) (any, error) {
+	if name != "load" {
+		return nil, easyerr.NotFound("editor perform action")
 	}
+
+	return e.signer.SignPlugState(e.options.TenantId, &claim.PlugState{
+		TenantId:  e.options.TenantId,
+		UserId:    uclaim.UserID,
+		DeviceId:  uclaim.DeviceId,
+		SessionId: uclaim.SessionID,
+		ExecId:    0,
+		PlugId:    fmt.Sprintf("adapter-%d", uclaim.AdapterId),
+		AgentId:   "default",
+	})
 }

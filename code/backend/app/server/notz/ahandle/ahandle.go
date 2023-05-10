@@ -4,6 +4,9 @@ import (
 	"fmt"
 
 	"github.com/rs/zerolog"
+	"github.com/temphia/temphia/code/backend/engine/modules/bprint"
+	"github.com/temphia/temphia/code/backend/engine/modules/pstate"
+	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -14,7 +17,7 @@ var (
 )
 
 type Options struct {
-	Corehub     store.CoreHub
+	App         xtypes.App
 	Logger      *zerolog.Logger
 	DomainId    int64
 	TenantId    string
@@ -23,6 +26,7 @@ type Options struct {
 
 // Ahandle is a common adapter utils handle
 type AHandle struct {
+	app       xtypes.App
 	corehub   store.CoreHub
 	logger    *zerolog.Logger
 	domainId  int64
@@ -31,8 +35,11 @@ type AHandle struct {
 }
 
 func New(opts Options) *AHandle {
+
 	return &AHandle{
-		corehub:   opts.Corehub,
+		app:       opts.App,
+		domainId:  opts.DomainId,
+		corehub:   opts.App.GetDeps().CoreHub().(store.CoreHub),
 		logger:    opts.Logger,
 		tenantId:  opts.TenantId,
 		resetFunc: opts.ResetDomain,
@@ -56,13 +63,16 @@ func (ah *AHandle) LogError(rid int64) *zerolog.Event {
 	return ah.logger.Error().Int64("rid", rid)
 }
 
-func (ah *AHandle) GetKvToken() (string, error) {
+func (ah *AHandle) GetPStateMod() *pstate.PStateMod {
+	return pstate.New(ah.tenantId, ah.key(), ah.app)
+}
 
-	return "", nil
+func (ah *AHandle) GetBprintMod() *bprint.BprintMod {
+	return bprint.New(ah.tenantId, ah.key(), ah.app)
 }
 
 func (ah *AHandle) Init() error {
-	key := fmt.Sprintf("adapter-%d", ah.domainId)
+	key := ah.key()
 
 	bp, _ := ah.corehub.BprintGet(ah.tenantId, key)
 	if bp == nil {
@@ -92,4 +102,10 @@ func (ah *AHandle) Init() error {
 	}
 
 	return nil
+}
+
+// private
+
+func (ah *AHandle) key() string {
+	return fmt.Sprintf("adapter-%d", ah.domainId)
 }

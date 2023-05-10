@@ -140,7 +140,7 @@ func (a *ApiAdmin) adapterDeleteHook(aclaim *claim.AdapterEditor, ctx *gin.Conte
 }
 
 func (a *ApiAdmin) adapterPreformAction(aclaim *claim.AdapterEditor, ctx *gin.Context) {
-	a.notz.PreformEditorAction(aclaim.TenantId, ctx.Param("name"), aclaim.AdapterId, ctx)
+	a.notz.PreformEditorAction(aclaim, ctx.Param("name"), aclaim.AdapterId, ctx)
 }
 
 // private

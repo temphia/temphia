@@ -129,7 +129,7 @@ func (am *AdapterManager) build(tenantId string, model *entities.TenantDomain) {
 		TenantId: tenantId,
 		Domain:   model,
 		Handle: ahandle.New(ahandle.Options{
-			Corehub:  am.corehub,
+			App:      am.app,
 			Logger:   &logger,
 			DomainId: model.Id,
 			TenantId: tenantId,

@@ -24,11 +24,12 @@ func (p *PStateBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, erro
 }
 
 func New(tenantId, plugId string, app xtypes.App) *PStateMod {
+	deps := app.GetDeps()
 
 	ps := &PStateMod{
 		tenantId: tenantId,
 		plugId:   plugId,
-		pkv:      app.GetDeps().PlugKV().(store.PlugStateKV),
+		pkv:      deps.PlugKV().(store.PlugStateKV),
 		modipc:   nil,
 	}
 

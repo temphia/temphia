@@ -5,6 +5,7 @@ import (
 
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 type NoOp struct {
@@ -47,7 +48,7 @@ func (l *NoOp) ServeEditorFile(file string) ([]byte, error) {
 	return []byte(``), nil
 }
 
-func (l *NoOp) PreformEditorAction(name string, data []byte) (any, error) {
+func (l *NoOp) PreformEditorAction(uclaim *claim.AdapterEditor, name string, data []byte) (any, error) {
 	return nil, nil
 }
 
