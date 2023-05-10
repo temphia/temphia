@@ -4,14 +4,14 @@ import (
 	"time"
 
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
-	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/scopes"
 )
 
 func (c *Controller) AddUser(uclaim *claim.Session, user *entities.User) error {
-	if !uclaim.IsSuperAdmin() {
-		return easyerr.NotImpl()
+	if !c.HasScope(uclaim, "user") {
+		return scopes.ErrNoAdminUserScope
 	}
 
 	user.TenantID = uclaim.TenantId
@@ -32,66 +32,82 @@ func (c *Controller) AddUser(uclaim *claim.Session, user *entities.User) error {
 }
 
 func (c *Controller) UpdateUser(uclaim *claim.Session, user map[string]any) error {
-	if !uclaim.IsSuperAdmin() {
-		return easyerr.NotImpl()
+	if !c.HasScope(uclaim, "user") {
+		return scopes.ErrNoAdminUserScope
 	}
 
 	return c.coredb.UpdateUser(uclaim.TenantId, uclaim.UserID, user)
 }
 
 func (c *Controller) RemoveUser(uclaim *claim.Session, username string) error {
-	if !uclaim.IsSuperAdmin() {
-		return easyerr.NotImpl()
+	if !c.HasScope(uclaim, "user") {
+		return scopes.ErrNoAdminUserScope
 	}
 
 	return c.coredb.RemoveUser(uclaim.TenantId, username)
 }
 
 func (c *Controller) GetUserByID(uclaim *claim.Session, username string) (*entities.User, error) {
-	if !uclaim.IsSuperAdmin() {
-		return nil, easyerr.NotImpl()
+	if !c.HasScope(uclaim, "user") {
+		return nil, scopes.ErrNoAdminUserScope
 	}
 
 	return c.coredb.GetUserByID(uclaim.TenantId, username)
 }
 
 func (c *Controller) GetUserByEmail(uclaim *claim.Session, email string) (*entities.User, error) {
-	if !uclaim.IsSuperAdmin() {
-		return nil, easyerr.NotImpl()
+	if !c.HasScope(uclaim, "user") {
+		return nil, scopes.ErrNoAdminUserScope
 	}
 
 	return c.coredb.GetUserByEmail(uclaim.TenantId, email)
 }
 
 func (c *Controller) ListUsers(uclaim *claim.Session) ([]*entities.User, error) {
-	if !uclaim.IsSuperAdmin() {
-		return nil, easyerr.NotImpl()
+	if !c.HasScope(uclaim, "user") {
+		return nil, scopes.ErrNoAdminUserScope
 	}
 
 	return c.coredb.ListUsers(uclaim.TenantId)
 }
 
 func (c *Controller) ListUsersByGroup(uclaim *claim.Session, group string) ([]*entities.User, error) {
-	if !uclaim.IsSuperAdmin() {
-		return nil, easyerr.NotImpl()
+	if !c.HasScope(uclaim, "user") {
+		return nil, scopes.ErrNoAdminUserScope
 	}
 
 	return c.coredb.ListUsersByGroup(uclaim.TenantId, group)
 }
 
 func (c *Controller) UpdateUserDevice(uclaim *claim.Session, user string, id int64, data map[string]any) error {
+	if !c.HasScope(uclaim, "user") {
+		return scopes.ErrNoAdminUserScope
+	}
+
 	return c.coredb.UpdateUserDevice(uclaim.TenantId, user, id, data)
 }
 
 func (c *Controller) GetUserDevice(uclaim *claim.Session, user string, id int64) (*entities.UserDevice, error) {
+	if !c.HasScope(uclaim, "user") {
+		return nil, scopes.ErrNoAdminUserScope
+	}
+
 	return c.coredb.GetUserDevice(uclaim.TenantId, user, id)
 }
 
 func (c *Controller) ListUserDevice(uclaim *claim.Session, user string) ([]*entities.UserDevice, error) {
+	if !c.HasScope(uclaim, "user") {
+		return nil, scopes.ErrNoAdminUserScope
+	}
+
 	return c.coredb.ListUserDevice(uclaim.TenantId, user)
 }
 
 func (c *Controller) RemoveUserDevice(uclaim *claim.Session, user string, id int64) error {
+	if !c.HasScope(uclaim, "user") {
+		return scopes.ErrNoAdminUserScope
+	}
+
 	return c.coredb.RemoveUserDevice(uclaim.TenantId, user, id)
 }
 
@@ -104,6 +120,9 @@ type NewUserDevice struct {
 }
 
 func (c *Controller) AddUserDevice(uclaim *claim.Session, user string, data *NewUserDevice) error {
+	if !c.HasScope(uclaim, "user") {
+		return scopes.ErrNoAdminUserScope
+	}
 
 	// fixme => more user device user paring options
 	// fixme => return id

@@ -5,6 +5,7 @@ import (
 
 	"github.com/temphia/temphia/code/backend/controllers/admin/devtoken"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/scopes"
 )
 
 type DevIssueReq struct {
@@ -14,6 +15,11 @@ type DevIssueReq struct {
 }
 
 func (c *Controller) DevIssueTktEncoded(uclaim *claim.Session, host string, req DevIssueReq) (string, error) {
+	if !c.HasScope(uclaim, "engine") {
+		return "", scopes.ErrNoAdminEngineScope
+	}
+
+	// ErrNoAdminLensScope
 
 	pd, err := c.DevIssueTkt(uclaim, host, req)
 	if err != nil {
@@ -29,6 +35,9 @@ func (c *Controller) DevIssueTktEncoded(uclaim *claim.Session, host string, req 
 }
 
 func (c *Controller) DevIssueTkt(uclaim *claim.Session, host string, req DevIssueReq) (*devtoken.Plug, error) {
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminEngineScope
+	}
 
 	// fixme => check perms
 

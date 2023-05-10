@@ -3,6 +3,7 @@ package admin
 import (
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/scopes"
 )
 
 type LogQuery struct {
@@ -14,6 +15,10 @@ type LogQuery struct {
 }
 
 func (c *Controller) LensQuery(uclaim *claim.Session, query LogQuery) ([]logx.Log, error) {
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminLensScope
+	}
+
 	return c.log.Query(uclaim.TenantId, logx.QueryRequest{
 		From:    query.From,
 		To:      query.To,

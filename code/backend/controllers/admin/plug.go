@@ -7,55 +7,96 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/models/vmodels"
+	"github.com/temphia/temphia/code/backend/xtypes/scopes"
 )
 
 // plug
 func (c *Controller) PlugNew(uclaim *claim.Session, pg *entities.Plug) error {
+	if !c.HasScope(uclaim, "engine") {
+		return scopes.ErrNoAdminEngineScope
+	}
+
 	return c.coredb.PlugNew(uclaim.TenantId, pg)
 }
 
 func (c *Controller) PlugUpdate(uclaim *claim.Session, pid string, data map[string]any) error {
+	if !c.HasScope(uclaim, "engine") {
+		return scopes.ErrNoAdminEngineScope
+	}
+
 	return c.coredb.PlugUpdate(uclaim.TenantId, pid, data)
 }
 
 func (c *Controller) PlugGet(uclaim *claim.Session, pid string) (*entities.Plug, error) {
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminEngineScope
+	}
+
 	return c.coredb.PlugGet(uclaim.TenantId, pid)
 }
 
 func (c *Controller) PlugDel(uclaim *claim.Session, pid string) error {
+	if !c.HasScope(uclaim, "engine") {
+		return scopes.ErrNoAdminEngineScope
+	}
+
 	return c.coredb.PlugDel(uclaim.TenantId, pid)
 }
 
 func (c *Controller) PlugList(uclaim *claim.Session) ([]*entities.Plug, error) {
-	// fixme
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminEngineScope
+	}
 
 	return c.coredb.PlugList(uclaim.TenantId)
 }
 
 func (c *Controller) PlugListByBprint(uclaim *claim.Session, bid string) ([]*entities.Plug, error) {
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminEngineScope
+	}
+
 	return c.coredb.PlugListByBprint(uclaim.TenantId, bid)
 }
 
 // agent
 
 func (c *Controller) AgentNew(uclaim *claim.Session, data *entities.Agent) error {
+	if !c.HasScope(uclaim, "engine") {
+		return scopes.ErrNoAdminEngineScope
+	}
+
 	return c.coredb.AgentNew(uclaim.TenantId, data)
 }
 
 func (c *Controller) AgentUpdate(uclaim *claim.Session, pid string, aid string, data map[string]any) error {
+	if !c.HasScope(uclaim, "engine") {
+		return scopes.ErrNoAdminEngineScope
+	}
+
 	return c.coredb.AgentUpdate(uclaim.TenantId, pid, aid, data)
 }
 
 func (c *Controller) AgentGet(uclaim *claim.Session, pid, agentId string) (*entities.Agent, error) {
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminEngineScope
+	}
+
 	return c.coredb.AgentGet(uclaim.TenantId, pid, agentId)
 }
 
 func (c *Controller) AgentDel(uclaim *claim.Session, pid, agentId string) error {
+	if !c.HasScope(uclaim, "engine") {
+		return scopes.ErrNoAdminEngineScope
+	}
+
 	return c.coredb.AgentDel(uclaim.TenantId, pid, agentId)
 }
 
 func (c *Controller) AgentList(uclaim *claim.Session, pid string) ([]*entities.Agent, error) {
-	// fixme =>
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminEngineScope
+	}
 
 	return c.coredb.AgentList(uclaim.TenantId, pid)
 }
@@ -63,22 +104,42 @@ func (c *Controller) AgentList(uclaim *claim.Session, pid string) ([]*entities.A
 // resource
 
 func (c *Controller) ResourceNew(uclaim *claim.Session, data *entities.Resource) error {
+	if !c.HasScope(uclaim, "engine") {
+		return scopes.ErrNoAdminEngineScope
+	}
+
 	return c.coredb.ResourceNew(uclaim.TenantId, data)
 }
 
 func (c *Controller) ResourceUpdate(uclaim *claim.Session, rid string, data map[string]any) error {
+	if !c.HasScope(uclaim, "engine") {
+		return scopes.ErrNoAdminEngineScope
+	}
+
 	return c.coredb.ResourceUpdate(uclaim.TenantId, rid, data)
 }
 
 func (c *Controller) ResourceGet(uclaim *claim.Session, rid string) (*entities.Resource, error) {
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminEngineScope
+	}
+
 	return c.coredb.ResourceGet(uclaim.TenantId, rid)
 }
 
 func (c *Controller) ResourceDel(uclaim *claim.Session, rid string) error {
+	if !c.HasScope(uclaim, "engine") {
+		return scopes.ErrNoAdminEngineScope
+	}
+
 	return c.coredb.ResourceDel(uclaim.TenantId, rid)
 }
 
 func (c *Controller) ResourceList(uclaim *claim.Session) ([]*entities.Resource, error) {
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminEngineScope
+	}
+
 	return c.coredb.ResourceList(uclaim.TenantId)
 }
 
@@ -94,6 +155,9 @@ type FlowmapData struct {
 }
 
 func (c *Controller) PlugFlowmap(uclaim *claim.Session, plugId string) (*FlowmapData, error) {
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminEngineScope
+	}
 
 	data := FlowmapData{
 		Plug:           nil,
@@ -106,23 +170,21 @@ func (c *Controller) PlugFlowmap(uclaim *claim.Session, plugId string) (*Flowmap
 	}
 
 	var wg sync.WaitGroup
+	wg.Add(7)
 
-	func() {
-		wg.Add(1)
+	go func() {
 		defer wg.Done()
 		plug, _ := c.coredb.PlugGet(uclaim.TenantId, plugId)
 		data.Plug = plug
 	}()
 
-	func() {
-		wg.Add(1)
+	go func() {
 		defer wg.Done()
 		agents, _ := c.coredb.AgentList(uclaim.TenantId, plugId)
 		data.Agents = agents
 	}()
 
-	func() {
-		wg.Add(1)
+	go func() {
 		defer wg.Done()
 		links, err := c.coredb.AgentLinkListByPlug(uclaim.TenantId, plugId)
 		if err != nil {
@@ -134,8 +196,7 @@ func (c *Controller) PlugFlowmap(uclaim *claim.Session, plugId string) (*Flowmap
 		}
 	}()
 
-	func() {
-		wg.Add(1)
+	go func() {
 		defer wg.Done()
 		exts, err := c.coredb.AgentExtensionListByPlug(uclaim.TenantId, plugId)
 		if err != nil {
@@ -147,22 +208,19 @@ func (c *Controller) PlugFlowmap(uclaim *claim.Session, plugId string) (*Flowmap
 		}
 	}()
 
-	func() {
-		wg.Add(1)
+	go func() {
 		defer wg.Done()
 		hooks, _ := c.coredb.ListTargetHookByPlug(uclaim.TenantId, plugId)
 		data.TargetHooks = hooks
 	}()
 
-	func() {
-		wg.Add(1)
+	go func() {
 		defer wg.Done()
 		apps, _ := c.coredb.ListTargetAppByPlug(uclaim.TenantId, plugId)
 		data.TargetApps = apps
 	}()
 
-	func() {
-		wg.Add(1)
+	go func() {
 		defer wg.Done()
 		data.AgentResources = map[string]*entities.Resource{} // fixme
 	}()
@@ -176,6 +234,10 @@ func (c *Controller) PlugFlowmap(uclaim *claim.Session, plugId string) (*Flowmap
 }
 
 func (c *Controller) ResourceAgentList(uclaim *claim.Session, req *vmodels.ResourceQuery) ([]*entities.Resource, error) {
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminEngineScope
+	}
+
 	// agent, err := c.coredb.AgentGet(uclaim.TenantId, req.PlugId, req.AgentId)
 	// if err != nil {
 	// 	return nil, err

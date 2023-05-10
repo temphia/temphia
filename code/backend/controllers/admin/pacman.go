@@ -3,29 +3,28 @@ package admin
 import (
 	"archive/zip"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"mime/multipart"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/scopes"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 )
 
 func (c *Controller) BprintList(uclaim *claim.Session, group string) ([]*entities.BPrint, error) {
-
-	if !uclaim.IsSuperAdmin() {
-		return nil, easyerr.NotImpl()
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminEngineScope
 	}
 
 	return c.pacman.BprintList(uclaim.TenantId, group)
 }
 
 func (c *Controller) BprintCreate(uclaim *claim.Session, bp *entities.BPrint) (string, error) {
-	if !uclaim.IsSuperAdmin() {
-		return "", easyerr.NotImpl()
+	if !c.HasScope(uclaim, "engine") {
+		return "", scopes.ErrNoAdminEngineScope
 	}
 
 	bp.TenantID = uclaim.TenantId
@@ -33,69 +32,74 @@ func (c *Controller) BprintCreate(uclaim *claim.Session, bp *entities.BPrint) (s
 }
 
 func (c *Controller) BprintUpdate(uclaim *claim.Session, bp *entities.BPrint) error {
-	if !uclaim.IsSuperAdmin() {
-		return easyerr.NotImpl()
+	if !c.HasScope(uclaim, "engine") {
+		return scopes.ErrNoAdminEngineScope
 	}
 
 	return c.pacman.BprintUpdate(uclaim.TenantId, bp)
 }
 
 func (c *Controller) BprintGet(uclaim *claim.Session, bid string) (*entities.BPrint, error) {
-	if !uclaim.IsSuperAdmin() {
-		return nil, easyerr.NotImpl()
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminEngineScope
 	}
 
 	return c.pacman.BprintGet(uclaim.TenantId, bid)
 }
 
 func (c *Controller) BprintRemove(uclaim *claim.Session, bid string) error {
-	if !uclaim.IsSuperAdmin() {
-		return easyerr.NotImpl()
+	if !c.HasScope(uclaim, "engine") {
+		return scopes.ErrNoAdminEngineScope
 	}
 
 	return c.pacman.BprintRemove(uclaim.TenantId, bid)
 }
 
 func (c *Controller) BprintListBlobs(uclaim *claim.Session, bid string) (any, error) {
-	if !uclaim.IsSuperAdmin() {
-		return nil, easyerr.NotImpl()
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminEngineScope
 	}
 
 	return c.pacman.BprintListBlobs(uclaim.TenantId, bid)
 }
 
 func (c *Controller) BprintNewBlob(uclaim *claim.Session, bid, file string, payload []byte) error {
-	if !uclaim.IsSuperAdmin() {
-		return easyerr.NotImpl()
+	if !c.HasScope(uclaim, "engine") {
+		return scopes.ErrNoAdminEngineScope
 	}
 
 	return c.pacman.BprintNewBlob(uclaim.TenantId, bid, file, payload, true)
 }
 
 func (c *Controller) BprintUpdateBlob(uclaim *claim.Session, bid, file string, payload []byte) error {
-	if !uclaim.IsSuperAdmin() {
-		return easyerr.NotImpl()
+	if !c.HasScope(uclaim, "engine") {
+		return scopes.ErrNoAdminEngineScope
 	}
+
 	return c.pacman.BprintUpdateBlob(uclaim.TenantId, bid, file, payload)
 }
 
 func (c *Controller) BprintGetBlob(uclaim *claim.Session, bid, file string) ([]byte, error) {
-	if !uclaim.IsSuperAdmin() {
-		return nil, easyerr.NotImpl()
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminEngineScope
 	}
 
 	return c.pacman.BprintGetBlob(uclaim.TenantId, bid, file)
 }
 
 func (c *Controller) BprintDeleteBlob(uclaim *claim.Session, bid, file string) error {
-	if !uclaim.IsSuperAdmin() {
-		return easyerr.NotImpl()
+	if !c.HasScope(uclaim, "engine") {
+		return scopes.ErrNoAdminEngineScope
 	}
 
 	return c.pacman.BprintDeleteBlob(uclaim.TenantId, bid, file)
 }
 
 func (c *Controller) BprintCreateFromZip(uclaim *claim.Session, form *multipart.Form) error {
+	if !c.HasScope(uclaim, "engine") {
+		return scopes.ErrNoAdminEngineScope
+	}
+
 	zfile := form.File["file"][0]
 	zipfile, err := zfile.Open()
 	if err != nil {
@@ -139,7 +143,7 @@ func (c *Controller) BprintCreateFromZip(uclaim *claim.Session, form *multipart.
 			return err
 		}
 
-		out, err := ioutil.ReadAll(rfile)
+		out, err := io.ReadAll(rfile)
 		if err != nil {
 			return err
 		}
@@ -163,6 +167,10 @@ func (c *Controller) BprintCreateFromZip(uclaim *claim.Session, form *multipart.
 // repo
 
 func (c *Controller) BprintImport(uclaim *claim.Session, opts *repox.RepoImportOpts) (string, error) {
+	if !c.HasScope(uclaim, "engine") {
+		return "", scopes.ErrNoAdminEngineScope
+	}
+
 	return c.pacman.RepoSourceImport(uclaim.TenantId, opts)
 }
 
@@ -174,6 +182,9 @@ type InstanceOptions struct {
 }
 
 func (c *Controller) BprintInstance(uclaim *claim.Session, bid string, opts *InstanceOptions) (any, error) {
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminEngineScope
+	}
 
 	pp.Println(" ||>>", opts)
 	pp.Println(" ||>>", string(opts.UserConfigData))
