@@ -13,7 +13,7 @@ var (
 func (c *Controller) AddTargetHook(uclaim *claim.Session, data *entities.TargetHook) error {
 	data.TenantId = uclaim.TenantId
 
-	if c.HasScope(uclaim, "target") {
+	if !c.HasScope(uclaim, "target") {
 		return ErrNoTargetScope
 	}
 
@@ -21,7 +21,7 @@ func (c *Controller) AddTargetHook(uclaim *claim.Session, data *entities.TargetH
 }
 
 func (c *Controller) UpdateTargetHook(uclaim *claim.Session, ttype string, id int64, data map[string]any) error {
-	if c.HasScope(uclaim, "target") {
+	if !c.HasScope(uclaim, "target") {
 		return ErrNoTargetScope
 	}
 
@@ -29,7 +29,7 @@ func (c *Controller) UpdateTargetHook(uclaim *claim.Session, ttype string, id in
 }
 
 func (c *Controller) ListTargetHook(uclaim *claim.Session) ([]*entities.TargetHook, error) {
-	if c.HasScope(uclaim, "target") {
+	if !c.HasScope(uclaim, "target") {
 		return nil, ErrNoTargetScope
 	}
 
@@ -37,7 +37,7 @@ func (c *Controller) ListTargetHook(uclaim *claim.Session) ([]*entities.TargetHo
 }
 
 func (c *Controller) ListTargetHookByType(uclaim *claim.Session, ttype, target string) ([]*entities.TargetHook, error) {
-	if c.HasScope(uclaim, "target") {
+	if !c.HasScope(uclaim, "target") {
 		return nil, ErrNoTargetScope
 	}
 
@@ -45,7 +45,7 @@ func (c *Controller) ListTargetHookByType(uclaim *claim.Session, ttype, target s
 }
 
 func (c *Controller) GetTargetHook(uclaim *claim.Session, ttype string, id int64) (*entities.TargetHook, error) {
-	if c.HasScope(uclaim, "target") {
+	if !c.HasScope(uclaim, "target") {
 		return nil, ErrNoTargetScope
 	}
 
@@ -53,7 +53,7 @@ func (c *Controller) GetTargetHook(uclaim *claim.Session, ttype string, id int64
 }
 
 func (c *Controller) RemoveTargetHook(uclaim *claim.Session, ttype string, id int64) error {
-	if c.HasScope(uclaim, "target") {
+	if !c.HasScope(uclaim, "target") {
 		return ErrNoTargetScope
 	}
 
@@ -61,7 +61,7 @@ func (c *Controller) RemoveTargetHook(uclaim *claim.Session, ttype string, id in
 }
 
 func (c *Controller) AddTargetApp(uclaim *claim.Session, data *entities.TargetApp) error {
-	if c.HasScope(uclaim, "target") {
+	if !c.HasScope(uclaim, "target") {
 		return ErrNoTargetScope
 	}
 
@@ -70,7 +70,7 @@ func (c *Controller) AddTargetApp(uclaim *claim.Session, data *entities.TargetAp
 }
 
 func (c *Controller) UpdateTargetApp(uclaim *claim.Session, ttype string, id int64, data map[string]any) error {
-	if c.HasScope(uclaim, "target") {
+	if !c.HasScope(uclaim, "target") {
 		return ErrNoTargetScope
 	}
 
@@ -78,7 +78,7 @@ func (c *Controller) UpdateTargetApp(uclaim *claim.Session, ttype string, id int
 }
 
 func (c *Controller) ListTargetApp(uclaim *claim.Session) ([]*entities.TargetApp, error) {
-	if c.HasScope(uclaim, "target") {
+	if !c.HasScope(uclaim, "target") {
 		return nil, ErrNoTargetScope
 	}
 
@@ -86,7 +86,7 @@ func (c *Controller) ListTargetApp(uclaim *claim.Session) ([]*entities.TargetApp
 }
 
 func (c *Controller) ListTargetAppByType(uclaim *claim.Session, ttype, target string) ([]*entities.TargetApp, error) {
-	if c.HasScope(uclaim, "target") {
+	if !c.HasScope(uclaim, "target") {
 		return nil, ErrNoTargetScope
 	}
 
@@ -94,7 +94,7 @@ func (c *Controller) ListTargetAppByType(uclaim *claim.Session, ttype, target st
 }
 
 func (c *Controller) GetTargetApp(uclaim *claim.Session, ttype string, id int64) (*entities.TargetApp, error) {
-	if c.HasScope(uclaim, "target") {
+	if !c.HasScope(uclaim, "target") {
 		return nil, ErrNoTargetScope
 	}
 
@@ -102,7 +102,7 @@ func (c *Controller) GetTargetApp(uclaim *claim.Session, ttype string, id int64)
 }
 
 func (c *Controller) RemoveTargetApp(uclaim *claim.Session, ttype string, id int64) error {
-	if c.HasScope(uclaim, "target") {
+	if !c.HasScope(uclaim, "target") {
 		return ErrNoTargetScope
 	}
 
