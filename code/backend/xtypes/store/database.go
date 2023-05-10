@@ -8,6 +8,8 @@ import (
 type CoreHub interface {
 	CoreDB
 
+	GetAuthZ(tenantId, group string) AuthZ
+
 	Inject(app xtypes.App)
 }
 

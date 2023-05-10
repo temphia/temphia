@@ -31,20 +31,13 @@ func (c *Controller) AddFolder(uclaim *claim.Session, source, folder string) err
 }
 
 func (c *Controller) AddBlob(uclaim *claim.Session, source, folder, file string, contents []byte) error {
-	err := c.canAction(uclaim, "add_blob", (folder))
-	if err != nil {
-		return err
-	}
+
 	sourced := c.hub.GetSource(source, uclaim.TenantId)
 
 	return sourced.AddBlob(context.TODO(), folder, file, contents)
 }
 
 func (c *Controller) ListFolder(uclaim *claim.Session, source, folder string) ([]*store.BlobInfo, error) {
-	err := c.canAction(uclaim, "list_folder", folder)
-	if err != nil {
-		return nil, err
-	}
 
 	sourced := c.hub.GetSource(source, uclaim.TenantId)
 
@@ -52,20 +45,13 @@ func (c *Controller) ListFolder(uclaim *claim.Session, source, folder string) ([
 }
 
 func (c *Controller) GetBlob(uclaim *claim.Session, source, folder, file string) ([]byte, error) {
-	err := c.canAction(uclaim, "get_blob", folder)
-	if err != nil {
-		return nil, err
-	}
 	sourced := c.hub.GetSource(source, uclaim.TenantId)
 
 	return sourced.GetBlob(context.TODO(), folder, file)
 }
 
 func (c *Controller) DeleteBlob(uclaim *claim.Session, source, folder, file string) error {
-	err := c.canAction(uclaim, "del_blob", folder)
-	if err != nil {
-		return err
-	}
+
 	sourced := c.hub.GetSource(source, uclaim.TenantId)
 
 	return sourced.DeleteBlob(context.TODO(), folder, file)
