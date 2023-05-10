@@ -6,7 +6,9 @@
 [Docs](./docs/readme.md) |
 [FAQ](./docs/faq.md) |
 [Architecture](./docs/arch.md) |
-[Glossary](./docs/glossary.md) 
+[Glossary](./docs/glossary.md) |
+[Demo video](https://youtu.be/NGPT5krw1RI)
+    
 
 > **🚨🚨🚨Alpha software🚨🚨🚨**
 </div>
