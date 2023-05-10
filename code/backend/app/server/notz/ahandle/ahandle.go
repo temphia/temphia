@@ -71,8 +71,15 @@ func (ah *AHandle) GetBprintMod() *bprint.BprintMod {
 	return bprint.New(ah.tenantId, ah.key(), ah.app)
 }
 
+func (ah *AHandle) Reset() error {
+	return nil
+}
+
 func (ah *AHandle) Init() error {
 	key := ah.key()
+
+	// fixme => check if target_hook is set ??
+	// else createone
 
 	bp, _ := ah.corehub.BprintGet(ah.tenantId, key)
 	if bp == nil {
