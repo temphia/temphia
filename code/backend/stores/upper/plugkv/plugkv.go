@@ -165,6 +165,10 @@ func (p *PlugKV) Query(txid uint32, tenantId, plugId string, query *store.PkvQue
 			db.Or(db.Cond{"ttl": nil}, db.Cond{"ttl >": time.Now()}),
 		)
 
+		if query.NoValue {
+			slect = slect.Columns("key", "version", "tag1", "tag2", "tag3", "ttl", "plug_id", "tenant_id")
+		}
+
 		err := slect.Paginate(query.PageCount).Page(query.Page + 1).All(&data)
 		return err
 	})

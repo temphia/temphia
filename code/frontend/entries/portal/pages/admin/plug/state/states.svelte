@@ -19,6 +19,7 @@
     const resp = await api.list_plug_state(pid, {
       key_cursor,
       page,
+      no_value: true,
     });
     if (!resp.ok) {
       console.log("Err", resp);
@@ -34,7 +35,7 @@
 {#if loading}
   <LoadingSpinner />
 {:else}
-  <div class="overflow-auto p-4 ">
+  <div class="overflow-auto p-4">
     <table class="min-w-full shadow rounded-lg">
       <thead class="bg-gray-50 border-b">
         <tr>
@@ -43,12 +44,6 @@
             class="text-sm font-medium text-gray-900 px-2 py-2 text-left"
           >
             Key
-          </th>
-          <th
-            scope="col"
-            class="text-sm font-medium text-gray-900 px-2 py-2 text-left"
-          >
-            Value
           </th>
           <th
             scope="col"
@@ -98,11 +93,6 @@
               class="px-2 py-2 whitespace-nowrap text-sm font-medium text-gray-900"
               >{data["key"] || ""}</td
             >
-            <td
-              class="text-sm text-gray-900 font-light px-2 py-2 whitespace-nowrap"
-            >
-              {data["value"] || ""}
-            </td>
             <td
               class="text-sm text-gray-900 font-light px-2 py-2 whitespace-nowrap"
             >

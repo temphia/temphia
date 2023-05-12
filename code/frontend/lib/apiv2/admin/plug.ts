@@ -123,7 +123,7 @@ export class AdminPlugAPI {
 
   // state
 
-  list_plug_state(pid: string, qparms: { key_cursor?: string; page?: number }) {
+  list_plug_state(pid: string, qparms: { key_cursor?: string; no_value?: boolean, page?: number }) {
     const u = new URLSearchParams();
 
     u.set("page", String(qparms.page || 0));

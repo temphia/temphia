@@ -45,4 +45,5 @@ type PkvQuery struct {
 	PageCount uint     `json:"page_count,omitempty"`
 	Page      uint     `json:"page,omitempty"`
 	KeyCursor string   `json:"key_cursor,omitempty"`
+	NoValue   bool     `json:"no_value,omitempty"`
 }
