@@ -16,7 +16,7 @@ func (s *static) ServeEditorFile(file string) ([]byte, error) {
 	return nil, nil
 }
 
-func (d *static) PreformEditorAction(uclaim *claim.AdapterEditor, name string, data []byte) (any, error) {
+func (d *static) PreformEditorAction(uclaim *claim.UserContext, name string, data []byte) (any, error) {
 	return nil, nil
 }
 

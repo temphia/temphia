@@ -61,7 +61,7 @@ func (w *Web2Agent) ServeEditorFile(file string) ([]byte, error) {
 	return []byte(``), nil
 }
 
-func (w *Web2Agent) PreformEditorAction(uclaim *claim.AdapterEditor, name string, data []byte) (any, error) {
+func (w *Web2Agent) PreformEditorAction(uclaim *claim.UserContext, name string, data []byte) (any, error) {
 	return nil, nil
 }
 

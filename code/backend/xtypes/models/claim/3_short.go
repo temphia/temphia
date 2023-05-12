@@ -49,3 +49,11 @@ type AdapterEditor struct {
 	SessionID  int64  `json:"session_id,omitempty"`
 	DeviceId   int64  `json:"device_id,omitempty"`
 }
+
+type UserContext struct {
+	TenantId  string `json:"-"`
+	UserID    string `json:"user_id,omitempty"`
+	UserGroup string `json:"ugroup,omitempty"`
+	SessionID int64  `json:"session_id,omitempty"`
+	DeviceId  int64  `json:"device_id,omitempty"`
+}

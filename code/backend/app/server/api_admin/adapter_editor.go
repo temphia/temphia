@@ -1,6 +1,7 @@
 package apiadmin
 
 import (
+	"io"
 	"strconv"
 	"time"
 
@@ -140,7 +141,21 @@ func (a *ApiAdmin) adapterDeleteHook(aclaim *claim.AdapterEditor, ctx *gin.Conte
 }
 
 func (a *ApiAdmin) adapterPreformAction(aclaim *claim.AdapterEditor, ctx *gin.Context) {
-	a.notz.PreformEditorAction(aclaim, ctx.Param("name"), aclaim.AdapterId, ctx)
+	out, err := io.ReadAll(ctx.Request.Body)
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	resp, err := a.notz.PreformEditorAction(&claim.UserContext{
+		UserID:    aclaim.UserID,
+		UserGroup: aclaim.UserGroup,
+		SessionID: aclaim.SessionID,
+		DeviceId:  aclaim.DeviceId,
+	}, aclaim.AdapterId, ctx.Param("name"), out)
+
+	httpx.WriteJSON(ctx, resp, err)
+
 }
 
 // private

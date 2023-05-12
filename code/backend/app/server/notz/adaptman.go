@@ -96,7 +96,7 @@ func (am *AdapterManager) serveEditorFile(tenantId string, did int64, file strin
 	return out, nil
 }
 
-func (am *AdapterManager) preformEditorAction(aclaim *claim.AdapterEditor, name string, did int64, data []byte) (any, error) {
+func (am *AdapterManager) preformEditorAction(aclaim *claim.UserContext, name string, did int64, data []byte) (any, error) {
 
 	instance := am.get(aclaim.TenantId, did)
 	if instance == nil {
@@ -110,7 +110,13 @@ func (am *AdapterManager) preformEditorAction(aclaim *claim.AdapterEditor, name 
 		return nil, easyerr.NotFound("domain instance")
 	}
 
-	resp, err := instance.PreformEditorAction(nil, name, data)
+	resp, err := instance.PreformEditorAction(&claim.UserContext{
+		TenantId:  aclaim.TenantId,
+		UserID:    aclaim.UserID,
+		UserGroup: aclaim.UserGroup,
+		SessionID: aclaim.SessionID,
+		DeviceId:  aclaim.DeviceId,
+	}, name, data)
 	if err != nil {
 		am.applogger.Error().
 			Str("tenant_id", aclaim.TenantId).

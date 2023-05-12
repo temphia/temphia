@@ -15,8 +15,9 @@ type EasyPage struct {
 	dataBox xtypes.DataBox
 	ahandle httpx.AdapterHandle
 	cabHub  store.CabinetHub
+	signer  service.Signer
 
-	signer service.Signer
+	DomainId int64
 
 	pageCache map[string][]byte
 	pLock     sync.Mutex
@@ -34,6 +35,7 @@ func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 		pLock:     sync.Mutex{},
 		cabHub:    deps.Cabinet().(store.CabinetHub),
 		signer:    deps.Signer().(service.Signer),
+		DomainId:  opts.Domain.Id,
 	}, nil
 }
 
@@ -41,7 +43,7 @@ func (e *EasyPage) ServeEditorFile(file string) ([]byte, error) {
 	return e.serveEditorFile(file)
 }
 
-func (e *EasyPage) PreformEditorAction(uclaim *claim.AdapterEditor, name string, data []byte) (any, error) {
+func (e *EasyPage) PreformEditorAction(uclaim *claim.UserContext, name string, data []byte) (any, error) {
 	return e.preformEditorAction(uclaim, name, data)
 }
 

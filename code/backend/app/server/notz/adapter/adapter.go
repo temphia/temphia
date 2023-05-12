@@ -23,7 +23,7 @@ func (d *Adapter) ServeEditorFile(file string) ([]byte, error) {
 	return d.inner.ServeEditorFile(file)
 }
 
-func (d *Adapter) PreformEditorAction(uclaim *claim.AdapterEditor, name string, data []byte) (any, error) {
+func (d *Adapter) PreformEditorAction(uclaim *claim.UserContext, name string, data []byte) (any, error) {
 	return d.inner.PreformEditorAction(uclaim, name, data)
 }
 

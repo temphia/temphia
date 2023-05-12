@@ -48,7 +48,7 @@ func (l *NoOp) ServeEditorFile(file string) ([]byte, error) {
 	return []byte(``), nil
 }
 
-func (l *NoOp) PreformEditorAction(uclaim *claim.AdapterEditor, name string, data []byte) (any, error) {
+func (l *NoOp) PreformEditorAction(uclaim *claim.UserContext, name string, data []byte) (any, error) {
 	return nil, nil
 }
 

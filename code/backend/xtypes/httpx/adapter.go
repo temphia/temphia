@@ -27,7 +27,7 @@ type Context struct {
 type Adapter interface {
 	ServeEditorFile(file string) ([]byte, error)
 
-	PreformEditorAction(uclaim *claim.AdapterEditor, name string, data []byte) (any, error)
+	PreformEditorAction(uclaim *claim.UserContext, name string, data []byte) (any, error)
 
 	Handle(ctx Context)
 
@@ -42,6 +42,8 @@ type AdapterHub interface {
 	ApplyTargetHook(tenantId string, id int64, data *entities.TargetHook)
 
 	ApplyAdapter(tenantId string, id int64, data *entities.TenantDomain)
+
+	PreformEditorAction(uclaim *claim.UserContext, id int64, name string, data []byte) (any, error)
 
 	ListAdapters() []string
 }

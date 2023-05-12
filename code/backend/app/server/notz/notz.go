@@ -3,8 +3,6 @@ package notz
 // notz handles all routes except /z/
 
 import (
-	"io"
-
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
@@ -92,13 +90,6 @@ func (m *Notz) ServeEditorFile(tenantId, file string, did int64, ctx *gin.Contex
 	httpx.WriteFile(file, out, ctx)
 }
 
-func (m *Notz) PreformEditorAction(aclaim *claim.AdapterEditor, name string, did int64, ctx *gin.Context) {
-	out, err := io.ReadAll(ctx.Request.Body)
-	if err != nil {
-		httpx.WriteErr(ctx, err)
-		return
-	}
-
-	resp, err := m.adapterManager.preformEditorAction(aclaim, name, did, out)
-	httpx.WriteJSON(ctx, resp, err)
+func (m *Notz) PreformEditorAction(aclaim *claim.UserContext, did int64, name string, data []byte) (any, error) {
+	return m.adapterManager.preformEditorAction(aclaim, name, did, data)
 }

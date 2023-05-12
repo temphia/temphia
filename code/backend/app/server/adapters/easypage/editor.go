@@ -24,7 +24,7 @@ func (e *EasyPage) serveEditorFile(file string) ([]byte, error) {
 
 }
 
-func (e *EasyPage) preformEditorAction(uclaim *claim.AdapterEditor, name string, data []byte) (any, error) {
+func (e *EasyPage) preformEditorAction(uclaim *claim.UserContext, name string, data []byte) (any, error) {
 	if name != "load" {
 		return nil, easyerr.NotFound("editor perform action")
 	}
@@ -35,7 +35,7 @@ func (e *EasyPage) preformEditorAction(uclaim *claim.AdapterEditor, name string,
 		DeviceId:  uclaim.DeviceId,
 		SessionId: uclaim.SessionID,
 		ExecId:    0,
-		PlugId:    fmt.Sprintf("adapter-%d", uclaim.AdapterId),
+		PlugId:    fmt.Sprintf("adapter-%d", e.DomainId),
 		AgentId:   "default",
 	})
 }
