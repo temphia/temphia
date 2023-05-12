@@ -63,7 +63,7 @@ func (ah *AHandle) LogError(rid int64) *zerolog.Event {
 	return ah.logger.Error().Int64("rid", rid)
 }
 
-func (ah *AHandle) GetPStateMod() *pstate.PStateMod {
+func (ah *AHandle) GetPlugStateMod() *pstate.PlugStateMod {
 	return pstate.New(ah.tenantId, ah.key(), ah.app)
 }
 

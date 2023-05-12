@@ -59,7 +59,7 @@ type AdapterHandle interface {
 
 	Init() error
 
-	GetPStateMod() *pstate.PStateMod
+	GetPlugStateMod() *pstate.PlugStateMod
 
 	GetBprintMod() *bprint.BprintMod
 }

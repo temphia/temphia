@@ -23,10 +23,10 @@ func (p *PStateBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, erro
 	), nil
 }
 
-func New(tenantId, plugId string, app xtypes.App) *PStateMod {
+func New(tenantId, plugId string, app xtypes.App) *PlugStateMod {
 	deps := app.GetDeps()
 
-	ps := &PStateMod{
+	ps := &PlugStateMod{
 		tenantId: tenantId,
 		plugId:   plugId,
 		pkv:      deps.PlugKV().(store.PlugStateKV),
