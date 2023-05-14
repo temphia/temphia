@@ -2,7 +2,9 @@ package statehub
 
 import (
 	"github.com/k0kubun/pp"
+	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
@@ -17,6 +19,7 @@ type StateHub struct {
 	datahub dyndb.DataHub
 	corehub store.CoreHub
 	msgbus  xplane.MsgBus
+	logger  zerolog.Logger
 }
 
 func New() StateHub {
@@ -31,9 +34,12 @@ func (r *StateHub) Start(app xtypes.App) error {
 
 	deps := app.GetDeps()
 
+	logsvc := app.GetDeps().LogService().(logx.Service)
+
 	r.datahub = deps.DataHub().(dyndb.DataHub)
 	r.corehub = deps.CoreHub().(store.CoreHub)
 	r.msgbus = deps.ControlPlane().(xplane.ControlPlane).GetMsgBus()
+	r.logger = logsvc.GetServiceLogger("statehub")
 
 	go r.run()
 

@@ -1,10 +1,12 @@
 package corehub
 
 import (
+	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/services/corehub/authz"
 	"github.com/temphia/temphia/code/backend/services/corehub/statehub"
 	"github.com/temphia/temphia/code/backend/xtypes"
 
+	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
@@ -18,6 +20,7 @@ type CoreHub struct {
 	cplane   xplane.ControlPlane
 	smanager authz.Manager
 	stateHub statehub.StateHub
+	logger   zerolog.Logger
 }
 
 func New(coredb store.CoreDB) *CoreHub {
@@ -32,9 +35,11 @@ func New(coredb store.CoreDB) *CoreHub {
 func (c *CoreHub) Inject(app xtypes.App) {
 
 	deps := app.GetDeps()
+	logsvc := app.GetDeps().LogService().(logx.Service)
 
 	c.notifier = deps.SockdHub().(sockdx.Hub).GetUserSyncer()
 	c.cplane = deps.ControlPlane().(xplane.ControlPlane)
+	c.logger = logsvc.GetServiceLogger("corehub")
 
 	err := c.stateHub.Start(app)
 	if err != nil {

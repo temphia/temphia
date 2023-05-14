@@ -1,6 +1,8 @@
 package corehub
 
-import "github.com/temphia/temphia/code/backend/xtypes/models/entities"
+import (
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+)
 
 func (c *CoreHub) AddTargetHook(data *entities.TargetHook) (int64, error) {
 
@@ -9,8 +11,9 @@ func (c *CoreHub) AddTargetHook(data *entities.TargetHook) (int64, error) {
 		return 0, err
 	}
 
-	c.stateHub.OnTargetHookChange(data.TenantId, id, data)
+	data.Id = id
 
+	c.stateHub.OnTargetHookChange(data.TenantId, 0, data)
 	return id, nil
 }
 
