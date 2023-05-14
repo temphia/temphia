@@ -46,6 +46,10 @@ type AdapterHub interface {
 	PreformEditorAction(uclaim *claim.UserContext, id int64, name string, data []byte) (any, error)
 
 	ListAdapters() []string
+
+	ServeEditorFile(tenantId, file string, did int64, ctx *gin.Context)
+
+	ServePublic(file string, ctx *gin.Context)
 }
 
 // handle

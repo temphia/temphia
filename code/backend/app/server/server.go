@@ -21,6 +21,7 @@ import (
 	"github.com/temphia/temphia/code/backend/controllers/sockd"
 	"github.com/temphia/temphia/code/backend/controllers/user"
 	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
@@ -43,7 +44,7 @@ type Server struct {
 	admin     apiadmin.ApiAdmin
 	log       logx.Service
 	signer    service.Signer
-	notz      *notz.Notz
+	notz      httpx.AdapterHub
 	data      xtypes.DataBox
 	port      string
 

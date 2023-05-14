@@ -34,7 +34,7 @@ func (s *Server) serveLibAssets() func(c *gin.Context) {
 // bashed on public folder in tenant's root cabinet source
 func (s *Server) servePublicAssets() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		s.notz.ServePublic(c, c.Param("file"))
+		s.notz.ServePublic(c.Param("file"), c)
 	}
 }
 

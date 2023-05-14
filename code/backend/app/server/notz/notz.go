@@ -54,7 +54,7 @@ func (m *Notz) Serve(ctx *gin.Context) {
 	m.serve(ctx)
 }
 
-func (m *Notz) ServePublic(c *gin.Context, file string) {
+func (m *Notz) ServePublic(file string, c *gin.Context) {
 	m.servePublic(c, file)
 }
 
