@@ -17,7 +17,10 @@ type EasyPage struct {
 	cabHub  store.CabinetHub
 	signer  service.Signer
 
-	DomainId int64
+	domainId int64
+
+	// mainApp  *entities.TargetApp
+	// mainHook *entities.TargetHook
 
 	pageCache map[string][]byte
 	pLock     sync.Mutex
@@ -35,7 +38,7 @@ func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 		pLock:     sync.Mutex{},
 		cabHub:    deps.Cabinet().(store.CabinetHub),
 		signer:    deps.Signer().(service.Signer),
-		DomainId:  opts.Domain.Id,
+		domainId:  opts.Domain.Id,
 	}, nil
 }
 
@@ -52,3 +55,15 @@ func (e *EasyPage) Handle(ctx httpx.Context) {
 }
 
 func (e *EasyPage) Close() error { return nil }
+
+/*
+
+	events
+		on:page_add
+		on:page_modify
+		on:load_data
+		on:before_build
+		on:after_build
+
+
+*/
