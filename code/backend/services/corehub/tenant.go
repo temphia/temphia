@@ -49,7 +49,7 @@ func (c *CoreHub) ListTenant() ([]*entities.Tenant, error) {
 
 // domain
 
-func (c *CoreHub) AddDomain(domain *entities.TenantDomain) error {
+func (c *CoreHub) AddDomain(domain *entities.TenantDomain) (int64, error) {
 	return c.coredb.AddDomain(domain)
 }
 

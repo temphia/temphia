@@ -41,9 +41,13 @@ func (d *DB) ListTenant() ([]*entities.Tenant, error) {
 
 // domain
 
-func (d *DB) AddDomain(domain *entities.TenantDomain) error {
-	_, err := d.tenantDomainTable().Insert(domain)
-	return err
+func (d *DB) AddDomain(domain *entities.TenantDomain) (int64, error) {
+	r, err := d.tenantDomainTable().Insert(domain)
+	if err != nil {
+		return 0, err
+	}
+
+	return r.ID().(int64), nil
 }
 
 func (d *DB) UpdateDomain(tenantId string, id int64, data map[string]interface{}) error {

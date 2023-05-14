@@ -32,7 +32,8 @@ func (c *Controller) AddDomain(uclaim *claim.Session, domain *entities.TenantDom
 	}
 
 	domain.TenantId = uclaim.TenantId
-	return c.coredb.AddDomain(domain)
+	_, err := c.coredb.AddDomain(domain)
+	return err
 }
 
 func (c *Controller) UpdateDomain(uclaim *claim.Session, id int64, data map[string]any) error {

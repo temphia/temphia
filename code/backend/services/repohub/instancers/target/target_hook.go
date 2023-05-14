@@ -58,7 +58,7 @@ func (th *TargetHookInstancer) Instance(opts xinstance.Options) (*xinstance.Resp
 		plugId = resp.Slug
 	}
 
-	err = th.corehub.AddTargetHook(&entities.TargetHook{
+	_, err = th.corehub.AddTargetHook(&entities.TargetHook{
 		Id:         0,
 		Name:       thook.Name,
 		Policy:     thook.Policy,

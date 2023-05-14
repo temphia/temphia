@@ -61,7 +61,7 @@ type TenantOps interface {
 	RemoveTenant(slug string) error
 	ListTenant() ([]*entities.Tenant, error)
 
-	AddDomain(domain *entities.TenantDomain) error
+	AddDomain(domain *entities.TenantDomain) (int64, error)
 	UpdateDomain(tenantId string, id int64, data map[string]any) error
 	GetDomain(tenantId string, id int64) (*entities.TenantDomain, error)
 	GetDomainByName(tenantId string, name string) (*entities.TenantDomain, error)
@@ -71,7 +71,7 @@ type TenantOps interface {
 }
 
 type TargetOps interface {
-	AddTargetHook(data *entities.TargetHook) error
+	AddTargetHook(data *entities.TargetHook) (int64, error)
 	UpdateTargetHook(tenantId, ttype string, id int64, data map[string]any) error
 	ListTargetHook(tenantId string) ([]*entities.TargetHook, error)
 	ListTargetHookByType(tenantId, ttype, target string) ([]*entities.TargetHook, error)
@@ -79,7 +79,7 @@ type TargetOps interface {
 	GetTargetHook(tenantId, ttype string, id int64) (*entities.TargetHook, error)
 	RemoveTargetHook(tenantId, ttype string, id int64) error
 
-	AddTargetApp(data *entities.TargetApp) error
+	AddTargetApp(data *entities.TargetApp) (int64, error)
 	UpdateTargetApp(tenantId, ttype string, id int64, data map[string]any) error
 	ListTargetApp(tenantId string) ([]*entities.TargetApp, error)
 	ListTargetAppByType(tenantId, ttype, target string) ([]*entities.TargetApp, error)

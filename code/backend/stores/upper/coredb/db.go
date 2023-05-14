@@ -3,9 +3,12 @@ package coredb
 import (
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/stores/upper/ucore"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/thoas/go-funk"
 	"github.com/upper/db/v4"
 )
+
+var _ store.CoreDB = (*DB)(nil)
 
 type DB struct {
 	session          db.Session

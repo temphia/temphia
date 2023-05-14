@@ -17,7 +17,8 @@ func (c *Controller) AddTargetHook(uclaim *claim.Session, data *entities.TargetH
 		return ErrNoTargetScope
 	}
 
-	return c.coredb.AddTargetHook(data)
+	_, err := c.coredb.AddTargetHook(data)
+	return err
 }
 
 func (c *Controller) UpdateTargetHook(uclaim *claim.Session, ttype string, id int64, data map[string]any) error {
@@ -66,7 +67,8 @@ func (c *Controller) AddTargetApp(uclaim *claim.Session, data *entities.TargetAp
 	}
 
 	data.TenantId = uclaim.TenantId
-	return c.coredb.AddTargetApp(data)
+	_, err := c.coredb.AddTargetApp(data)
+	return err
 }
 
 func (c *Controller) UpdateTargetApp(uclaim *claim.Session, ttype string, id int64, data map[string]any) error {

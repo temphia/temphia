@@ -2,11 +2,20 @@ package corehub
 
 import "github.com/temphia/temphia/code/backend/xtypes/models/entities"
 
-func (c *CoreHub) AddTargetHook(data *entities.TargetHook) error {
-	return c.coredb.AddTargetHook(data)
+func (c *CoreHub) AddTargetHook(data *entities.TargetHook) (int64, error) {
+
+	id, err := c.coredb.AddTargetHook(data)
+	if err != nil {
+		return 0, err
+	}
+
+	c.stateHub.OnTargetHookChange(data.TenantId, id, data)
+
+	return id, nil
 }
 
 func (c *CoreHub) UpdateTargetHook(tenantId, ttype string, id int64, data map[string]any) error {
+
 	return c.coredb.UpdateTargetHook(tenantId, ttype, id, data)
 }
 
@@ -26,7 +35,7 @@ func (c *CoreHub) RemoveTargetHook(tenantId, ttype string, id int64) error {
 	return c.coredb.RemoveTargetHook(tenantId, ttype, id)
 }
 
-func (c *CoreHub) AddTargetApp(data *entities.TargetApp) error {
+func (c *CoreHub) AddTargetApp(data *entities.TargetApp) (int64, error) {
 	return c.coredb.AddTargetApp(data)
 }
 

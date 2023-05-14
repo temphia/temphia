@@ -67,7 +67,7 @@ func (a *AppSeeder) IsDomainSeeded() (bool, error) {
 }
 
 func (a *AppSeeder) SeedWildcardDomain() error {
-	return a.CoreHub.AddDomain(&entities.TenantDomain{
+	_, err := a.CoreHub.AddDomain(&entities.TenantDomain{
 		Name:           "*",
 		About:          "Fallback Domain",
 		AdapterType:    "easypage",
@@ -75,6 +75,8 @@ func (a *AppSeeder) SeedWildcardDomain() error {
 		TenantId:       a.TenantSlug,
 		ExtraMeta:      entities.JsonStrMap{},
 	})
+
+	return err
 }
 
 func (a *AppSeeder) SeedRepo() error {

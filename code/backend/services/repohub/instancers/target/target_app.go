@@ -59,7 +59,7 @@ func (ta *TargetAppInstancer) Instance(opts xinstance.Options) (*xinstance.Respo
 		plugId = resp.Slug
 	}
 
-	err = ta.corehub.AddTargetApp(&entities.TargetApp{
+	_, err = ta.corehub.AddTargetApp(&entities.TargetApp{
 		Id:          0,
 		Name:        tapp.Name,
 		Icon:        tapp.Icon,

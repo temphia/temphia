@@ -5,9 +5,14 @@ import (
 	"github.com/upper/db/v4"
 )
 
-func (d *DB) AddTargetHook(data *entities.TargetHook) error {
-	_, err := d.targetHookTable().Insert(data)
-	return err
+func (d *DB) AddTargetHook(data *entities.TargetHook) (int64, error) {
+	r, err := d.targetHookTable().Insert(data)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return r.ID().(int64), nil
 }
 
 func (d *DB) UpdateTargetHook(tenantId, ttype string, id int64, data map[string]any) error {
@@ -69,9 +74,15 @@ func (d *DB) RemoveTargetHook(tenantId, ttype string, id int64) error {
 
 // target app
 
-func (d *DB) AddTargetApp(data *entities.TargetApp) error {
-	_, err := d.targetAppTable().Insert(data)
-	return err
+func (d *DB) AddTargetApp(data *entities.TargetApp) (int64, error) {
+	r, err := d.targetAppTable().Insert(data)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return r.ID().(int64), nil
+
 }
 
 func (d *DB) UpdateTargetApp(tenantId, ttype string, id int64, data map[string]any) error {

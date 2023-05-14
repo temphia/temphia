@@ -20,7 +20,7 @@ func (c *Controller) AdapterListApps(aclaim *claim.AdapterEditor) ([]*entities.T
 
 func (c *Controller) AdapterNewApp(aclaim *claim.AdapterEditor, data *entities.TargetApp) error {
 
-	return c.coredb.AddTargetApp(&entities.TargetApp{
+	_, err := c.coredb.AddTargetApp(&entities.TargetApp{
 		Id:          0,
 		Name:        data.Name,
 		Icon:        data.Icon,
@@ -35,6 +35,8 @@ func (c *Controller) AdapterNewApp(aclaim *claim.AdapterEditor, data *entities.T
 		ExtraMeta:   data.ExtraMeta,
 		TenantId:    aclaim.TenantId,
 	})
+
+	return err
 
 }
 
@@ -74,7 +76,7 @@ func (c *Controller) AdapterListHooks(aclaim *claim.AdapterEditor) ([]*entities.
 }
 
 func (c *Controller) AdapterNewHook(aclaim *claim.AdapterEditor, data *entities.TargetHook) error {
-	return c.coredb.AddTargetHook(&entities.TargetHook{
+	_, err := c.coredb.AddTargetHook(&entities.TargetHook{
 		Id:         0,
 		Name:       data.Name,
 		Policy:     data.Policy,
@@ -88,6 +90,8 @@ func (c *Controller) AdapterNewHook(aclaim *claim.AdapterEditor, data *entities.
 		TenantId:   aclaim.TenantId,
 		Handler:    data.Handler,
 	})
+
+	return err
 }
 
 func (c *Controller) AdapterGetHook(aclaim *claim.AdapterEditor, id int64) (*entities.TargetHook, error) {
