@@ -25,8 +25,6 @@ func (s *Server) zRoutes(z *gin.RouterGroup) {
 	z.GET("/interface/:name", s.serveInterface)
 	s.assets(z.Group("/assets"))
 
-	s.dev(z.Group("/dev"))
-
 	// 	z.POST("/operator/login", s.operatorLogin)
 
 	s.operatorAPI(z.Group("/operator/api"))
