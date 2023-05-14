@@ -1,17 +1,15 @@
 package store
 
-import "github.com/temphia/temphia/code/backend/xtypes/models/entities"
-
 type StateHub interface {
-	OnTargetAppChange(tenantId string, id int64, data *entities.TargetApp)
-	OnTargetHookChange(tenantId string, id int64, data *entities.TargetHook)
-	OnResourceChange(tenantId, id string, data *entities.Resource)
-	OnUserGroupChange(tenantId, id string, data *entities.UserGroup)
+	OnTargetAppChange(tenantId string, id int64, data any)
+	OnTargetHookChange(tenantId string, id int64, data any)
+	OnResourceChange(tenantId, id string, data any)
+	OnUserGroupChange(tenantId, id string, data any)
 
-	OnDataGroupChange(tenantId, gid string, data *entities.TableGroup)
-	OnDataTableChange(tenantId, gid, tid string, data *entities.Table)
-	OnDataColumnChange(tenantId, gid, tid, cid string, data *entities.Column)
+	OnDataGroupChange(tenantId, gid string, data any)
+	OnDataTableChange(tenantId, gid, tid string, data any)
+	OnDataColumnChange(tenantId, gid, tid, cid string, data any)
 
-	OnTenantChange(id string, data *entities.Tenant)
-	OnDomainChange(tenantId string, id int64, data *entities.TenantDomain)
+	OnTenantChange(id string, data any)
+	OnDomainChange(tenantId string, id int64, data any)
 }

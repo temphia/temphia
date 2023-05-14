@@ -5,26 +5,6 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
-func (c *CoreHub) AddUserGroup(ug *entities.UserGroup) error {
-	return c.coredb.AddUserGroup(ug)
-}
-
-func (c *CoreHub) GetUserGroup(tenantId string, slug string) (*entities.UserGroup, error) {
-	return c.coredb.GetUserGroup(tenantId, slug)
-}
-
-func (c *CoreHub) ListUserGroups(tenantId string) ([]*entities.UserGroup, error) {
-	return c.coredb.ListUserGroups(tenantId)
-}
-
-func (c *CoreHub) UpdateUserGroup(tenantId, slug string, data map[string]any) error {
-	return c.coredb.UpdateUserGroup(tenantId, slug, data)
-}
-
-func (c *CoreHub) RemoveUserGroup(tenantId string, ugslug string) error {
-	return c.coredb.RemoveUserGroup(tenantId, ugslug)
-}
-
 func (c *CoreHub) AddUser(user *entities.User, data *entities.UserData) error {
 	return c.coredb.AddUser(user, data)
 }

@@ -1,10 +1,7 @@
 package corehub
 
 import (
-	"encoding/json"
-
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
 func (c *CoreHub) AddTenant(tenant *entities.Tenant) error {
@@ -13,26 +10,21 @@ func (c *CoreHub) AddTenant(tenant *entities.Tenant) error {
 		return err
 	}
 
-	if c.cplane != nil && c.cplane.GetMsgBus() != nil {
-		msgbus := c.cplane.GetMsgBus()
-
-		out, err := json.Marshal(tenant)
-		if err != nil {
-			return err
-		}
-
-		msgbus.Submit("tenant", xplane.Message{
-			Data:  string(out),
-			Path:  "create",
-			Topic: "tenant",
-		})
-	}
+	c.stateHub.OnTenantChange(tenant.Slug, tenant)
 
 	return nil
 }
 
 func (c *CoreHub) UpdateTenant(slug string, data map[string]any) error {
-	return c.coredb.UpdateTenant(slug, data)
+	err := c.coredb.UpdateTenant(slug, data)
+	if err != nil {
+		return err
+	}
+
+	c.stateHub.OnTenantChange(slug, data)
+
+	return nil
+
 }
 
 func (c *CoreHub) GetTenant(tenant string) (*entities.Tenant, error) {
@@ -40,7 +32,13 @@ func (c *CoreHub) GetTenant(tenant string) (*entities.Tenant, error) {
 }
 
 func (c *CoreHub) RemoveTenant(slug string) error {
-	return c.coredb.RemoveTenant(slug)
+	err := c.coredb.RemoveTenant(slug)
+	if err != nil {
+		return err
+	}
+
+	c.stateHub.OnTenantChange(slug, nil)
+	return nil
 }
 
 func (c *CoreHub) ListTenant() ([]*entities.Tenant, error) {

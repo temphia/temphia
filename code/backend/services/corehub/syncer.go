@@ -94,11 +94,25 @@ func (c *CoreHub) AgentList(tenantId, pid string) ([]*entities.Agent, error) {
 
 // resource
 func (c *CoreHub) ResourceNew(tenantId string, obj *entities.Resource) error {
-	return c.coredb.ResourceNew(tenantId, obj)
+	err := c.coredb.ResourceNew(tenantId, obj)
+	if err != nil {
+		return err
+	}
+
+	c.stateHub.OnResourceChange(tenantId, "", obj)
+
+	return nil
 }
 
 func (c *CoreHub) ResourceUpdate(tenantId string, id string, data map[string]any) error {
-	return c.coredb.ResourceUpdate(tenantId, id, data)
+
+	err := c.coredb.ResourceUpdate(tenantId, id, data)
+	if err != nil {
+		return err
+	}
+
+	c.stateHub.OnResourceChange(tenantId, "", data)
+	return nil
 }
 
 func (c *CoreHub) ResourceGet(tenantId, rid string) (*entities.Resource, error) {
@@ -106,7 +120,13 @@ func (c *CoreHub) ResourceGet(tenantId, rid string) (*entities.Resource, error) 
 }
 
 func (c *CoreHub) ResourceDel(tenantId, rid string) error {
-	return c.coredb.ResourceDel(tenantId, rid)
+	err := c.coredb.ResourceDel(tenantId, rid)
+	if err != nil {
+		return err
+	}
+
+	c.stateHub.OnResourceChange(tenantId, rid, nil)
+	return nil
 }
 
 func (c *CoreHub) ResourceList(tenantId string) ([]*entities.Resource, error) {

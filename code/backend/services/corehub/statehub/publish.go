@@ -5,39 +5,38 @@ import (
 	"fmt"
 
 	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
-	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
-func (r *StateHub) OnTargetAppChange(tenantId string, id int64, data *entities.TargetApp) {
+func (r *StateHub) OnTargetAppChange(tenantId string, id int64, data any) {
 	r.publishIntId(tenantId, "target_app", id, data)
 }
 
-func (r *StateHub) OnTargetHookChange(tenantId string, id int64, data *entities.TargetHook) {
+func (r *StateHub) OnTargetHookChange(tenantId string, id int64, data any) {
 	r.publishIntId(tenantId, "target_hook", id, data)
 }
 
-func (r *StateHub) OnResourceChange(tenantId, id string, data *entities.Resource) {
+func (r *StateHub) OnResourceChange(tenantId, id string, data any) {
 	r.publish(tenantId, "resource", id, data)
 }
 
-func (r *StateHub) OnUserGroupChange(tenantId, id string, data *entities.UserGroup) {
+func (r *StateHub) OnUserGroupChange(tenantId, id string, data any) {
 	r.publish(tenantId, "user_group", id, data)
 }
 
-func (r *StateHub) OnDataGroupChange(tenantId, gid string, data *entities.TableGroup) {
+func (r *StateHub) OnDataGroupChange(tenantId, gid string, data any) {
 	r.publish(tenantId, "user_group", gid, data)
 }
 
-func (r *StateHub) OnDataTableChange(tenantId, gid, tid string, data *entities.Table) {
+func (r *StateHub) OnDataTableChange(tenantId, gid, tid string, data any) {
 
 }
 
-func (r *StateHub) OnDataColumnChange(tenantId, gid, tid, cid string, data *entities.Column) {
+func (r *StateHub) OnDataColumnChange(tenantId, gid, tid, cid string, data any) {
 
 }
 
-func (r *StateHub) OnTenantChange(id string, data *entities.Tenant) {
+func (r *StateHub) OnTenantChange(id string, data any) {
 
 	msg := xplane.Message{
 		Data:  "",
@@ -73,7 +72,7 @@ func (r *StateHub) OnTenantChange(id string, data *entities.Tenant) {
 
 }
 
-func (r *StateHub) OnDomainChange(tenantId string, id int64, data *entities.TenantDomain) {
+func (r *StateHub) OnDomainChange(tenantId string, id int64, data any) {
 	r.publishIntId(tenantId, "domain", id, data)
 }
 
