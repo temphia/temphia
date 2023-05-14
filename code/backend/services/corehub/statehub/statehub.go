@@ -2,9 +2,14 @@ package statehub
 
 import (
 	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
+)
+
+var (
+	_ store.StateHub = (*StateHub)(nil)
 )
 
 // statehub subscribes to msgbus event and apply/push that to other hub
@@ -14,15 +19,28 @@ type StateHub struct {
 	msgbus  xplane.MsgBus
 }
 
-func New(datahub dyndb.DataHub, corehub store.CoreHub, msgbus xplane.MsgBus) *StateHub {
-	return &StateHub{
-		corehub: corehub,
-		datahub: datahub,
-		msgbus:  msgbus,
+func New() StateHub {
+	return StateHub{
+		corehub: nil,
+		datahub: nil,
+		msgbus:  nil,
 	}
 }
 
-func (r *StateHub) Run() {
+func (r *StateHub) Start(app xtypes.App) error {
+
+	deps := app.GetDeps()
+
+	r.datahub = deps.DataHub().(dyndb.DataHub)
+	r.corehub = deps.CoreHub().(store.CoreHub)
+	r.msgbus = deps.ControlPlane().(xplane.ControlPlane).GetMsgBus()
+
+	go r.run()
+
+	return nil
+}
+
+func (r *StateHub) run() {
 
 	mchan := make(chan xplane.Message)
 

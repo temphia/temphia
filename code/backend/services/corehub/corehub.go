@@ -2,6 +2,7 @@ package corehub
 
 import (
 	"github.com/temphia/temphia/code/backend/services/corehub/authz"
+	"github.com/temphia/temphia/code/backend/services/corehub/statehub"
 	"github.com/temphia/temphia/code/backend/xtypes"
 
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
@@ -16,14 +17,15 @@ type CoreHub struct {
 	notifier sockdx.UserSyncer
 	cplane   xplane.ControlPlane
 	smanager authz.Manager
+	stateHub statehub.StateHub
 }
 
 func New(coredb store.CoreDB) *CoreHub {
 	return &CoreHub{
-		coredb: coredb,
-		//		sockdhub: nil,
+		coredb:   coredb,
 		cplane:   nil,
 		smanager: authz.New(),
+		stateHub: statehub.New(),
 	}
 }
 
@@ -33,6 +35,12 @@ func (c *CoreHub) Inject(app xtypes.App) {
 
 	c.notifier = deps.SockdHub().(sockdx.Hub).GetUserSyncer()
 	c.cplane = deps.ControlPlane().(xplane.ControlPlane)
+
+	err := c.stateHub.Start(app)
+	if err != nil {
+		panic(err)
+	}
+
 }
 
 func (c *CoreHub) Ping() error {
