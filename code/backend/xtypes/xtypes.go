@@ -48,7 +48,7 @@ type Deps interface {
 	PlugKV() any
 	Cabinet() any
 	DataHub() any
-	Engine() any
+	EngineHub() any
 	SockdHub() any
 	RepoHub() any
 

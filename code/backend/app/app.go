@@ -74,7 +74,7 @@ func (a *App) run() error {
 		return err
 	}
 
-	err = a.deps.engine.Run()
+	err = a.deps.engine.Start()
 	if err != nil {
 		return err
 	}

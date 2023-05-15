@@ -3,9 +3,9 @@ package app
 import (
 	"github.com/temphia/temphia/code/backend/app/server"
 	"github.com/temphia/temphia/code/backend/controllers"
-	"github.com/temphia/temphia/code/backend/engine"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/services/courierhub/courier"
+	"github.com/temphia/temphia/code/backend/services/enginehub"
 	"github.com/temphia/temphia/code/backend/services/repohub"
 	"github.com/temphia/temphia/code/backend/services/shared/nodecache"
 	"github.com/temphia/temphia/code/backend/services/shared/signer"
@@ -83,7 +83,7 @@ func (b *Builder) buildServices() error {
 	deps.dataHub = b.sbuilder.DataHub()
 
 	deps.signer = signer.New([]byte(b.config.MasterKey), "temphia")
-	deps.engine = engine.New(b.app, *deps.logService.GetEngineLogger())
+	deps.engine = enginehub.New(b.app, deps.logService)
 
 	deps.sockdhub = sockdhub.New(sockdx.Options{
 		ServerIdent: b.app.clusterId,

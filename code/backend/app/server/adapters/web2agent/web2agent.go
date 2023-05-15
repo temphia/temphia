@@ -26,13 +26,14 @@ type Web2Agent struct {
 func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 
 	deps := opts.App.GetDeps()
+	ehub := deps.EngineHub().(etypes.EngineHub)
 
 	wa := &Web2Agent{
 		app:       opts.App,
 		tenantId:  opts.TenantId,
 		domain:    opts.Domain,
 		handle:    opts.Handle,
-		engine:    deps.Engine().(etypes.Engine),
+		engine:    ehub.GetEngine(),
 		databox:   opts.App.Data(),
 		intOk:     false,
 		initError: "Not initilized",

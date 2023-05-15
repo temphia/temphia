@@ -61,7 +61,7 @@ func New(opts Options) *RootController {
 	signer := deps.Signer().(service.Signer)
 	cab := deps.Cabinet().(store.CabinetHub)
 	dynhub := deps.DataHub().(dyndb.DataHub)
-	egine := deps.Engine().(etypes.Engine)
+	ehub := deps.EngineHub().(etypes.EngineHub)
 	logservice := deps.LogService().(logx.Service)
 	pstate := deps.PlugKV().(store.PlugStateKV)
 
@@ -79,7 +79,7 @@ func New(opts Options) *RootController {
 			opts.OperatorUser,
 			opts.OperatorPassword),
 		cDev:    dev.New(pacman, corehub),
-		cEngine: engine.New(egine, signer, corehub),
+		cEngine: engine.New(ehub, corehub),
 		cUser:   user.New(corehub),
 		cSockd:  sockd.New(deps.SockdHub().(sockdx.Hub).GetSockd()),
 	}

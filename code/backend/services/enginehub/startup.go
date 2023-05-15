@@ -1,4 +1,4 @@
-package engine
+package enginehub
 
 import (
 	"sync"
@@ -9,7 +9,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
-func (c *Controller) RunStartupHooks(tenants []string, minwait time.Duration) {
+func (e *EngineHub) runStartupHooks(tenants []string, minwait time.Duration) {
 
 	var wg sync.WaitGroup
 
@@ -19,9 +19,9 @@ func (c *Controller) RunStartupHooks(tenants []string, minwait time.Duration) {
 		go func(tenantId string) {
 			defer wg.Done()
 
-			hooks, err := c.corehub.ListTargetHookByType(tenantId, entities.TargetHookTypeStartUp, "app")
+			hooks, err := e.corehub.ListTargetHookByType(tenantId, entities.TargetHookTypeStartUp, "app")
 			if err != nil {
-				c.logger.
+				e.logger.
 					Err(err).
 					Str("tenant_id", tenantId).Msg(logid.EngineStartupHookLoadErr)
 
@@ -30,7 +30,7 @@ func (c *Controller) RunStartupHooks(tenants []string, minwait time.Duration) {
 
 			for _, hook := range hooks {
 				go func(hook *entities.TargetHook) {
-					_, err := c.engine.Execute(etypes.Execution{
+					_, err := e.engine.Execute(etypes.Execution{
 						TenantId: tenantId,
 						PlugId:   hook.PlugId,
 						AgentId:  hook.AgentId,
@@ -40,7 +40,7 @@ func (c *Controller) RunStartupHooks(tenants []string, minwait time.Duration) {
 					})
 
 					if err != nil {
-						c.logger.
+						e.logger.
 							Err(err).
 							Str("tenant_id", tenantId).
 							Interface("hook", hook).

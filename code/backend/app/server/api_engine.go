@@ -8,9 +8,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/backend/controllers/engine"
 	"github.com/temphia/temphia/code/backend/controllers/sockd"
 	"github.com/temphia/temphia/code/backend/services/sockdhub/transports"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 )
 
@@ -22,7 +22,7 @@ func (s *Server) engineAPI(rg *gin.RouterGroup) {
 	rg.POST("/launch/auth", s.launchAuth)
 	rg.POST("/reset", s.X(s.reset))
 
-	rg.GET("/boot/:pid/:aid", s.bootAgent())
+	rg.GET("/launch/domain_target/:pid/:aid", s.domainTargetLaunch())
 
 	// execute action
 	rg.POST("/execute/:action", s.execute)
@@ -83,7 +83,7 @@ func (s *Server) executorFile(ctx *gin.Context) {
 
 func (s *Server) launchTarget(ctx httpx.Request) {
 
-	data := engine.TargetLaunchData{}
+	data := etypes.TargetLaunchData{}
 
 	err := ctx.Http.BindJSON(&data)
 	if err != nil {
@@ -102,7 +102,7 @@ func (s *Server) launchTarget(ctx httpx.Request) {
 }
 
 func (s *Server) launchAdmin(ctx httpx.Request) {
-	data := engine.AdminLaunchData{}
+	data := etypes.AdminLaunchData{}
 
 	err := ctx.Http.BindJSON(&data)
 	if err != nil {
@@ -122,7 +122,7 @@ func (s *Server) launchAdmin(ctx httpx.Request) {
 }
 
 func (s *Server) launchAuth(ctx *gin.Context) {
-	data := engine.AuthLaunchData{}
+	data := etypes.AuthLaunchData{}
 
 	err := ctx.BindJSON(&data)
 	if err != nil {
@@ -163,7 +163,7 @@ func (s *Server) reset(ctx httpx.Request) {
 //go:embed static/agent_boot.html
 var agentBootTemplate []byte
 
-func (s *Server) bootAgent() func(ctx *gin.Context) {
+func (s *Server) domainTargetLaunch() func(ctx *gin.Context) {
 	tpl, err := template.New("agent_boot").
 		Parse(string(agentBootTemplate))
 	if err != nil {
@@ -171,7 +171,7 @@ func (s *Server) bootAgent() func(ctx *gin.Context) {
 	}
 
 	return func(ctx *gin.Context) {
-		data, err := s.cEngine.BootAgent(
+		data, err := s.cEngine.LaunchTargetWithDomain(
 			ctx.Param("tenant_id"),
 			ctx.Request.Host,
 			ctx.Param("pid"),

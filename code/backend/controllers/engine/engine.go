@@ -1,105 +1,89 @@
 package engine
 
 import (
-	"fmt"
-	"io"
-	"net/http"
-
-	"github.com/bwmarrin/snowflake"
 	"github.com/gin-gonic/gin"
-	"github.com/k0kubun/pp"
-	"github.com/rs/zerolog"
-	"github.com/temphia/temphia/code/backend/engine/invokers/bundled"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/thoas/go-funk"
 )
 
 type Controller struct {
-	engine  etypes.Engine
-	signer  service.Signer
-	corehub store.CoreHub
-	idgen   *snowflake.Node
-	logger  *zerolog.Logger
+	enginehub etypes.EngineHub
+	corehub   store.CoreHub
 }
 
-func New(engine etypes.Engine, signer service.Signer, corehub store.CoreHub) *Controller {
-
-	idgen, err := snowflake.NewNode(1)
-	if err != nil {
-		panic(err)
-	}
+func New(enginehub etypes.EngineHub, corehub store.CoreHub) *Controller {
 
 	return &Controller{
-		engine:  engine,
-		signer:  signer,
-		corehub: corehub,
-		idgen:   idgen,
-		logger:  nil,
+		enginehub: enginehub,
+		corehub:   corehub,
 	}
-
 }
 
 func (c *Controller) Execute(tenantId, action string, ctx *gin.Context) {
-
-	payload, err := io.ReadAll(ctx.Request.Body)
-	if err != nil {
-		ctx.AbortWithError(http.StatusBadRequest, err)
-		return
-	}
-
-	eclaim, err := c.signer.ParseExecutor(tenantId, ctx.GetHeader("Authorization"))
-	if err != nil {
-		ctx.AbortWithError(http.StatusUnauthorized, err)
-		return
-	}
-
-	pp.Println("@here_payload_before", string(payload))
-
-	out, err := c.engine.Execute(etypes.Execution{
-		TenantId: tenantId,
-		PlugId:   eclaim.PlugId,
-		AgentId:  eclaim.AgentId,
-		Action:   action,
-		Payload:  payload,
-		Invoker:  bundled.NewWeb(ctx, nil, eclaim),
-	})
-
-	if err != nil {
-		pp.Println("@here_err_after", string(payload))
-		fmt.Println("@exec_err", err)
-
-		ctx.Writer.WriteHeader(http.StatusBadRequest)
-		ctx.Writer.WriteString(err.Error())
-		return
-	}
-
-	ctx.Writer.Write(out)
+	c.enginehub.Execute(tenantId, action, ctx)
 }
 
 func (c *Controller) Reset(tenantId, plugId, agentId string) error {
-	c.engine.GetRuntime().ResetAgents(tenantId, plugId, []string{agentId})
-	return nil
+	return c.enginehub.Reset(tenantId, plugId, agentId)
 }
 
 func (c *Controller) ServeAgentFile(tenantId, plugId, agentId, file string) ([]byte, error) {
-	return c.engine.ServeAgentFile(tenantId, plugId, agentId, file)
+	return c.enginehub.ServeAgentFile(tenantId, plugId, agentId, file)
 }
 
 func (c *Controller) ServeExecutorFile(tenantId, plugId, agentId, file string) ([]byte, error) {
-	return c.engine.ServeExecutorFile(tenantId, plugId, agentId, file)
+	return c.enginehub.ServeExecutorFile(tenantId, plugId, agentId, file)
 }
 
 func (c *Controller) ListExecutors(uclaim *claim.Session) ([]string, error) {
 	// fixme => check perm?
-	execs := c.engine.ListExecutors()
-	return execs, nil
+	return c.enginehub.ListExecutors()
+
 }
 
 func (c *Controller) ListModules(uclaim *claim.Session) ([]string, error) {
 	// fixme => check perm?
+	return c.enginehub.ListModules()
+}
 
-	mods := c.engine.ListModules()
-	return mods, nil
+// launch stuff
+
+func (c *Controller) LaunchTargetWithDomain(tenantId, host, plugId, agentId string) (*etypes.LaunchDomainOptions, error) {
+	// check scope here
+
+	return c.enginehub.LaunchTargetDomain(tenantId, host, plugId, agentId)
+}
+
+func (c *Controller) LaunchTarget(uclaim *claim.Session, data etypes.TargetLaunchData) (*etypes.LaunchOptions, error) {
+	// check scope here
+
+	return c.enginehub.LaunchTarget(uclaim, data)
+}
+
+func (c *Controller) LaunchAuth(data etypes.AuthLaunchData) (string, error) {
+	return "", nil
+}
+
+func (c *Controller) LaunchAdmin(uclaim *claim.Session, data etypes.AdminLaunchData) (*etypes.LaunchOptions, error) {
+
+	// check scope here
+
+	return c.enginehub.LaunchAdmin(uclaim, data)
+}
+
+func (c *Controller) ExecuteDev(dclaim *claim.PlugDevTkt, plug, agent, action string, body []byte) ([]byte, error) {
+
+	if !dclaim.AllPlugs && !funk.ContainsString(dclaim.PlugIds, plug) {
+		return nil, easyerr.NotAuthorized()
+	}
+
+	return c.enginehub.ExecuteDev(&claim.UserContext{
+		TenantId:  dclaim.TenantId,
+		UserID:    dclaim.UserId,
+		UserGroup: dclaim.UserGroup,
+	}, plug, agent, action, body)
+
 }

@@ -27,13 +27,13 @@ func NewWeb(http *gin.Context, app xtypes.App, eclaim *claim.Executor) invoker.I
 	return builder.Build()
 }
 
-func NewAdmin(dclaim *claim.PlugDevTkt) invoker.Invoker {
+func NewAdmin(dclaim *claim.UserContext) invoker.Invoker {
 
 	builder := NewBuilder(invokers.UserApp)
 
 	builder.SetUserContextProvider(func() *invoker.User {
 		return &invoker.User{
-			Id:        dclaim.UserId,
+			Id:        dclaim.UserID,
 			Group:     dclaim.UserGroup,
 			SessionId: 0,
 			DeviceId:  0,
