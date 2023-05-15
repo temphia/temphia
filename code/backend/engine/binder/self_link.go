@@ -2,6 +2,7 @@ package binder
 
 import (
 	"github.com/rs/xid"
+	"github.com/temphia/temphia/code/backend/engine/invokers/linked"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/libx/lazydata"
 	"github.com/temphia/temphia/code/backend/xtypes"
@@ -54,6 +55,11 @@ func (b *SelfBindings) selfLinkExec(name, method string, data xtypes.LazyData, a
 		return nil, easyerr.Error(etypes.LinkNotFound)
 	}
 
+	out, err := data.AsJsonBytes()
+	if err != nil {
+		return nil, err
+	}
+
 	if async {
 		resp, err := b.runtime.Preform(&job.Job{
 			PlugId:      alink.ToPlug,
@@ -61,7 +67,8 @@ func (b *SelfBindings) selfLinkExec(name, method string, data xtypes.LazyData, a
 			EventId:     xid.New().String(),
 			EventAction: method,
 			Namespace:   b.handle.Namespace,
-			Payload:     nil,
+			Payload:     out,
+			Invoker:     linked.New(b.handle.EventId, b.handle.PlugId, b.handle.AgentId, nil),
 		})
 
 		if err != nil {
