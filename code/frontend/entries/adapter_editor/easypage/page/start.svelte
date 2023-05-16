@@ -15,14 +15,17 @@
   const load = async () => {
     loading = true;
 
-    await service.load()
-    
+    await service.load();
+
+    datas = await service.loadPages();
+
+    console.log("@@@datas", datas)
 
     loading = false;
   };
 
   const action_visit = (id: string) => {
-    const url = "http://localhost"
+    const url = "http://localhost";
 
     const u = new URL(url || "");
 

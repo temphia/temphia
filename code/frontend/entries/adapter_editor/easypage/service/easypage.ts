@@ -71,6 +71,7 @@ export class EasypageService {
 
 export const formatData = (data) => {
   const slug = data["slug"];
-  const value = data["value"] || {};
+  const value = JSON.parse(data["value"] || "{}");
+
   return { slug, ...value };
 };
