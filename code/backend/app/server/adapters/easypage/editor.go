@@ -35,7 +35,7 @@ func (e *EasyPage) preformEditorAction(uclaim *claim.UserContext, name string, d
 		DeviceId:  uclaim.DeviceId,
 		SessionId: uclaim.SessionID,
 		ExecId:    0,
-		PlugId:    fmt.Sprintf("adapter-%d", e.domainId),
-		AgentId:   "default",
+		PlugId:    e.editorHook.PlugId,
+		AgentId:   e.editorHook.AgentId,
 	})
 }

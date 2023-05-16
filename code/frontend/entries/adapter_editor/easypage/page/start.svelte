@@ -15,10 +15,7 @@
   const load = async () => {
     loading = true;
 
-    // fixme here => 
-
-    return
-
+    await service.load()
     
 
     loading = false;

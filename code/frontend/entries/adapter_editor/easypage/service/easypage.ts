@@ -23,7 +23,7 @@ export class EasypageService {
     }
     this.papi = new AdminPlugStateTktAPI(
       this.env.api.base.api_base_url,
-      resp.data["plug_state_token"]
+      resp.data
     );
 
     return null;

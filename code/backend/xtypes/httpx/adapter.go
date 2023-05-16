@@ -3,8 +3,6 @@ package httpx
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
-	"github.com/temphia/temphia/code/backend/engine/modules/bprint"
-	"github.com/temphia/temphia/code/backend/engine/modules/pstate"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -62,10 +60,4 @@ type AdapterHandle interface {
 	LogError(rid int64) *zerolog.Event
 
 	SelfReset()
-
-	Init() error
-
-	GetPlugStateMod() *pstate.PlugStateMod
-
-	GetBprintMod() *bprint.BprintMod
 }

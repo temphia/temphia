@@ -24,6 +24,7 @@ const (
 	TargetAppTypeDataTableWidget = "datatable_widget"
 	TargetAppTypeDataSheetWidget = "datasheet_widget"
 	TargetAppTypeDomainWidget    = "domain_widget"
+	TargetAppTypeDomainEditor    = "domain_editor"
 )
 
 const (
@@ -31,6 +32,7 @@ const (
 	TargetHookTypeDataSheetHook = "datasheet_hook"
 	TargetHookTypeDomainHook    = "domain_hook"
 	TargetHookTypeStartUp       = "startup"
+	TargetHookDomainEditor      = "domain_editor"
 )
 
 /*
