@@ -1,7 +1,7 @@
 # Temphia
 
 <div align="center">
-    <img src="contrib/temphia.svg" >
+    <img src="contrib/temphia.png" >
     
 [Docs](./docs/readme.md) |
 [FAQ](./docs/faq.md) |
