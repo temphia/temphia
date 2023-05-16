@@ -29,8 +29,8 @@ func (e *EasyPage) preformEditorAction(uclaim *claim.UserContext, name string, d
 		return nil, easyerr.NotFound("editor perform action")
 	}
 
-	return e.signer.SignPlugState(e.options.TenantId, &claim.PlugState{
-		TenantId:  e.options.TenantId,
+	return e.signer.SignPlugState(e.tenantId, &claim.PlugState{
+		TenantId:  e.tenantId,
 		UserId:    uclaim.UserID,
 		DeviceId:  uclaim.DeviceId,
 		SessionId: uclaim.SessionID,

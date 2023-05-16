@@ -1,6 +1,8 @@
 package httpx
 
 import (
+	"io"
+
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/xtypes"
@@ -13,6 +15,7 @@ type BuilderOptions struct {
 	TenantId string
 	Domain   *entities.TenantDomain
 	Handle   AdapterHandle
+	Cache    GlobalCache
 }
 
 type Builder func(opts BuilderOptions) (Adapter, error)
@@ -60,4 +63,19 @@ type AdapterHandle interface {
 	LogError(rid int64) *zerolog.Event
 
 	SelfReset()
+}
+
+type GlobalCache interface {
+	GetSubCache(key string, loader CacheLoader) (SubCache, error)
+}
+
+type SubCache interface {
+	Has(key string) (bool, error)
+	Get(dst io.Writer, key string) error
+}
+
+type CacheLoader interface {
+	Has(key string) (bool, error)
+	Get(dst io.Writer, key string) error
+	Put(key string, src io.Reader) error
 }

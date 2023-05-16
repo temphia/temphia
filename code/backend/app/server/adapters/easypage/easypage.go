@@ -1,19 +1,20 @@
 package easypage
 
 import (
-	"sync"
+	"fmt"
 
 	"github.com/temphia/temphia/code/backend/app/server/adapters/common/autotarget"
+	"github.com/temphia/temphia/code/backend/app/server/adapters/common/cache"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 type EasyPage struct {
-	options httpx.BuilderOptions
 	dataBox xtypes.DataBox
 	ahandle httpx.AdapterHandle
 	cabHub  store.CabinetHub
@@ -21,12 +22,12 @@ type EasyPage struct {
 	corehub store.CoreHub
 
 	domainId int64
+	tenantId string
 
 	bpintId    string
 	editorHook *entities.TargetHook
 
-	pageCache map[string][]byte
-	pLock     sync.Mutex
+	filecache httpx.SubCache
 }
 
 func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
@@ -47,19 +48,31 @@ func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 		}
 	}
 
-	return &EasyPage{
-		options:    opts,
+	ep := &EasyPage{
 		dataBox:    opts.App.Data(),
 		ahandle:    opts.Handle,
-		pageCache:  make(map[string][]byte),
-		pLock:      sync.Mutex{},
 		cabHub:     deps.Cabinet().(store.CabinetHub),
 		signer:     deps.Signer().(service.Signer),
 		domainId:   opts.Domain.Id,
 		corehub:    deps.CoreHub().(store.CoreHub),
 		bpintId:    target.BprintId(),
 		editorHook: target.EditorHooks(),
-	}, nil
+		tenantId:   opts.TenantId,
+		filecache:  nil,
+	}
+
+	subcache, err := opts.Cache.GetSubCache(
+		fmt.Sprintf("adapter-%d", opts.Domain.Id),
+		cache.NewBprintLoader(ep.tenantId, ep.bpintId, deps.RepoHub().(repox.Hub)),
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	ep.filecache = subcache
+
+	return ep, nil
 }
 
 func (e *EasyPage) ServeEditorFile(file string) ([]byte, error) {

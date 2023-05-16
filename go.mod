@@ -21,7 +21,6 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/hako/branca v0.0.0-20200807062402-6052ac720505
 	github.com/hashicorp/golang-lru v0.5.4
-	github.com/jellydator/ttlcache/v3 v3.0.0
 	github.com/joho/godotenv v1.5.1
 	github.com/k0kubun/pp v3.0.1+incompatible
 	github.com/lib/pq v1.10.7
@@ -47,6 +46,7 @@ require (
 	golang.org/x/crypto v0.6.0
 	golang.org/x/oauth2 v0.0.0-20220808172628-8227340efae7
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
+	gopkg.in/hypirion/go-filecache.v1 v1.0.0-20160810125507-e3e6ef6981f0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gopkg.in/yaml.v2 v2.4.0
 )
@@ -110,7 +110,6 @@ require (
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	github.com/xi2/xz v0.0.0-20171230120015-48954b6210f8 // indirect
 	golang.org/x/net v0.7.0 // indirect
-	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
