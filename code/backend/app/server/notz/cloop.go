@@ -142,6 +142,7 @@ func (am *AdapterManager) build(tenantId string, model *entities.TenantDomain) {
 		am.applogger.Error().
 			Str("tenant_id", tenantId).
 			Str("domain", model.Name).
+			Err(err).
 			Int64("domain_id", model.Id).
 			Msg(logid.NotzAdapterBuildErr)
 	} else {

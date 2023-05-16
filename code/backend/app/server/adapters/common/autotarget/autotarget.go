@@ -38,6 +38,7 @@ func (a *AutoTarget) IsInit() (bool, error) {
 	if err != nil {
 		return false, err
 	}
+
 	if len(hooks) == 0 {
 		return false, nil
 	}
@@ -52,7 +53,7 @@ func (a *AutoTarget) IsInit() (bool, error) {
 	a.bprintid = plug.BprintId
 	a.editorHook = hook
 
-	return false, nil
+	return true, nil
 }
 
 func (a *AutoTarget) InitWithZip() error {
@@ -114,7 +115,7 @@ func (a *AutoTarget) AutoInit() error {
 		Name:        "Adapter Editor",
 		ContextType: "editor.main",
 		TargetType:  entities.TargetAppTypeDomainEditor,
-		Target:      key,
+		Target:      fmt.Sprint(a.domainId),
 		PlugId:      key,
 		ExecMeta:    entities.JsonStrMap{},
 		ExtraMeta:   entities.JsonStrMap{},
@@ -127,7 +128,7 @@ func (a *AutoTarget) AutoInit() error {
 		TargetType: entities.TargetAppTypeDomainEditor,
 		EventType:  "editor.main",
 		Handler:    "",
-		Target:     key,
+		Target:     fmt.Sprint(a.domainId),
 		PlugId:     key,
 		ExecMeta:   entities.JsonStrMap{},
 		ExtraMeta:  entities.JsonStrMap{},
