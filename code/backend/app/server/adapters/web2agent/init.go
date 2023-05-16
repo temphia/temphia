@@ -6,7 +6,7 @@ import (
 
 	"github.com/Masterminds/sprig/v3"
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/backend/app/server/adapters/common"
+	"github.com/temphia/temphia/code/backend/app/server/adapters/common/lazyfs"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -78,7 +78,7 @@ func (w *Web2Agent) init() {
 		w.state.routes[defkey] = def.String()
 	}
 
-	fs := common.NewLazyFS(common.LazyFSOptions{
+	fs := lazyfs.NewLazyFS(lazyfs.LazyFSOptions{
 		Tenant: w.tenantId,
 		Files:  make(map[string]struct{}),
 		Handler: func(tenantId, file string) ([]byte, error) {
