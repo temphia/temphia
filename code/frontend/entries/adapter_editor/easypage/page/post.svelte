@@ -21,12 +21,9 @@
       loading = false;
       return;
     }
-    
-    if (typeof resp.data === "object") {
-      code = resp.data["code"] || "## test";
-    } else if (typeof resp.data === "string") {
-      code = JSON.parse(resp.data)["code"] || "## test";
-    }
+
+    const data = JSON.parse(resp.data["value"] || "{}");
+    code = data["code"] || "## test";
 
     loading = false;
   };
@@ -72,7 +69,10 @@
           on:click={async () => {
             loading = true;
             code = editor.getValue();
-            await service.setPageData(pid, JSON.stringify({ code, type: "post" }));
+            await service.setPageData(
+              pid,
+              JSON.stringify({ code, type: "post" })
+            );
             loading = false;
           }}
         >

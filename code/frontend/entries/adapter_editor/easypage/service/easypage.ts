@@ -31,7 +31,7 @@ export class EasypageService {
 
   loadPages = async () => {
     const resp = await this.papi.query({
-      tag1: "page",
+      tag1s: ["page"],
     });
 
     return resp.data.map((elem) => formatData(elem));
@@ -45,7 +45,7 @@ export class EasypageService {
       return resp;
     }
 
-    const resp1 = await this.papi.add(`pdata-${slug}`, JSON.stringify(data), {
+    const resp1 = await this.papi.add(`pdata-${slug}`, "{}", {
       tag1: "pdata",
     });
     if (!resp1.ok) {
@@ -60,7 +60,7 @@ export class EasypageService {
   };
 
   setPageData = (slug: string, data: string) => {
-    return this.papi.add(`pdata-${slug}`, JSON.stringify(data));
+    return this.papi.update(`pdata-${slug}`, (data));
   };
 
   deletePage = async (slug: string) => {
