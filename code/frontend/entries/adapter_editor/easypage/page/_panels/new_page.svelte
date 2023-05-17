@@ -58,6 +58,7 @@
     >
       <option value="page">Page</option>
       <option value="post">Post</option>
+      <option value="template">Template</option>
     </select>
   </div>
 

@@ -3,7 +3,6 @@
   import { Autotable, LoadingSpinner } from "../core";
   import type { EasypageService } from "../service/easypage";
   import Layout from "./_layout.svelte";
-  import Link from "./_panels/link.svelte";
 
   const service = getContext("__easypage_service__") as EasypageService;
 
@@ -19,39 +18,22 @@
 
     datas = await service.loadPages();
 
-    console.log("@@@datas", datas)
+    console.log("@@@datas", datas);
 
     loading = false;
   };
 
-  const action_visit = (id: string) => {
-    const url = "http://localhost";
-
-    const u = new URL(url || "");
-
-    let domain_name = service.env.domain_name;
-    if (!domain_name || domain_name === "*") {
-      domain_name = location.hostname;
-    }
-
-    if (!domain_name) {
-      domain_name = u.hostname;
-    }
-
-    console.log("@domain_name", domain_name);
-
-    service.modal.small_open(Link, {
-      domain: `http://${domain_name}:${u.port || "80"}`,
-      slug: id,
-      service,
-    });
-  };
-
   const action_edit = (id: string, data: object) => {
-    if (data["type"] === "post") {
-      location.hash = `/post/${id}`;
-    } else {
-      location.hash = `/page/${id}`;
+    switch (data["type"]) {
+      case "post":
+        location.hash = `/post/${id}`;
+        break;
+      case "page":
+        location.hash = `/page/${id}`;
+        break;
+      default:
+        location.hash = `/raw/${id}`;
+        break;
     }
   };
 
@@ -89,23 +71,33 @@
   >
     <Autotable
       action_key={"slug"}
+      show_drop={true}
       actions={[
-        {
-          Name: "Visit",
-          Action: action_visit,
-          Class: "bg-green-400",
-          icon: "link",
-        },
-
         {
           Name: "Edit",
           Action: action_edit,
           icon: "pencil-alt",
         },
         {
+          Name: "Visual Editor",
+          Action: (id) => {
+            location.hash = `/visual/${id}`;
+          },
+          icon: "pencil-alt",
+          drop: true,
+        },
+        {
+          Name: "Raw Editor",
+          Action: (id) => {
+            location.hash = `/raw/${id}`;
+          },
+          icon: "pencil-alt",
+          drop: true,
+        },
+        {
           Name: "Delete",
-          Class: "bg-red-400",
           Action: action_delete,
+          drop: true,
           icon: "trash",
         },
       ]}

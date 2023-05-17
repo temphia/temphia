@@ -9,6 +9,8 @@
   import Start from "./page/start.svelte";
   import Page from "./page/page.svelte";
   import Post from "./page/post.svelte";
+  import RawEdit from "./page/raw_edit.svelte";
+  import Visual from "./page/visual.svelte";
 
   export let env: any;
 
@@ -16,6 +18,8 @@
     "/": Start,
     "/page/:pid": Page,
     "/post/:pid": Post,
+    "/raw/:pid": RawEdit,
+    "/visual/:pid": Visual,
   });
 
   let big_open;

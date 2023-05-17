@@ -1,7 +1,8 @@
 import type { EasypageService } from "../../service/easypage";
 import type grapesjs from "grapesjs";
+import { extractHtml } from "./core";
 
-export const easyPageStore =
+export const page_ext =
   (service: EasypageService) => (editor: grapesjs.Editor) => {
     console.log("@grapejs_editor", editor);
 
@@ -46,7 +47,7 @@ export const easyPageStore =
 
       async store(data, options = {}) {
         data["gen_html"] = extractHtml(editor);
-        data["type"] = "page"
+        data["type"] = "page";
 
         const resp = await service.setPageData(
           options["page_slug"],
@@ -60,12 +61,4 @@ export const easyPageStore =
     });
   };
 
-const extractHtml = (editor: grapesjs.Editor) => {
-  return editor.Pages.getAll().map((page) => {
-    const component = page.getMainComponent();
-    return {
-      html: editor.getHtml({ component }),
-      css: editor.getCss({ component }),
-    };
-  });
-};
+
