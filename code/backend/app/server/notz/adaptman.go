@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/app/registry"
+	"github.com/temphia/temphia/code/backend/app/server/adapters/common/cache"
 	"github.com/temphia/temphia/code/backend/app/server/notz/adapter"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes"
@@ -30,6 +31,7 @@ type AdapterManager struct {
 	activeDomains     map[int64]*adapter.Adapter
 	tenantInits       map[string]bool
 	domainTenantIndex map[string]int64
+	cache             httpx.GlobalCache
 
 	// cloop chan
 	cReInstance     chan DomainIdent
@@ -55,6 +57,7 @@ func newAdapterManager(app xtypes.App) AdapterManager {
 		domainTenantIndex: make(map[string]int64),
 		applogger:         ls.GetAppLogger(),
 		logService:        ls,
+		cache:             cache.New(),
 	}
 
 }

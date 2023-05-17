@@ -137,6 +137,7 @@ func (am *AdapterManager) build(tenantId string, model *entities.TenantDomain) {
 				am.resetDomain(tenantId, model.Id)
 			},
 		}),
+		Cache: am.cache,
 	})
 	if err != nil {
 		am.applogger.Error().
