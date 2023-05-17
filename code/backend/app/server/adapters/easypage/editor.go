@@ -25,17 +25,22 @@ func (e *EasyPage) serveEditorFile(file string) ([]byte, error) {
 }
 
 func (e *EasyPage) preformEditorAction(uclaim *claim.UserContext, name string, data []byte) (any, error) {
-	if name != "load" {
+
+	switch name {
+	case "load":
+		return e.signer.SignPlugState(e.tenantId, &claim.PlugState{
+			TenantId:  e.tenantId,
+			UserId:    uclaim.UserID,
+			DeviceId:  uclaim.DeviceId,
+			SessionId: uclaim.SessionID,
+			ExecId:    0,
+			PlugId:    e.editorHook.PlugId,
+			AgentId:   e.editorHook.AgentId,
+		})
+	case "build":
+		return e.build()
+	default:
 		return nil, easyerr.NotFound("editor perform action")
 	}
 
-	return e.signer.SignPlugState(e.tenantId, &claim.PlugState{
-		TenantId:  e.tenantId,
-		UserId:    uclaim.UserID,
-		DeviceId:  uclaim.DeviceId,
-		SessionId: uclaim.SessionID,
-		ExecId:    0,
-		PlugId:    e.editorHook.PlugId,
-		AgentId:   e.editorHook.AgentId,
-	})
 }

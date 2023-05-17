@@ -21,6 +21,8 @@ type EasyPage struct {
 	signer  service.Signer
 	corehub store.CoreHub
 
+	pkv store.PlugStateKV
+
 	domainId int64
 	tenantId string
 
@@ -58,6 +60,7 @@ func New(opts httpx.BuilderOptions) (httpx.Adapter, error) {
 		bpintId:    target.BprintId(),
 		editorHook: target.EditorHooks(),
 		tenantId:   opts.TenantId,
+		pkv:        deps.PlugKV().(store.PlugStateKV),
 		filecache:  nil,
 	}
 
@@ -87,7 +90,9 @@ func (e *EasyPage) Handle(ctx httpx.Context) {
 	e.handle(ctx)
 }
 
-func (e *EasyPage) Close() error { return nil }
+func (e *EasyPage) Close() error {
+	return nil
+}
 
 /*
 

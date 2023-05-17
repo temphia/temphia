@@ -16,20 +16,22 @@ func NewBuilder(app any) (etypes.ModuleBuilder, error) {
 type PStateBuilder struct{}
 
 func (p *PStateBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, error) {
+	app := opts.Binder.GetApp().(xtypes.App)
+	deps := app.GetDeps()
+
 	return New(
 		opts.Resource.TenantId,
 		opts.Resource.Target,
-		opts.Binder.GetApp().(xtypes.App),
+		deps.PlugKV().(store.PlugStateKV),
 	), nil
 }
 
-func New(tenantId, plugId string, app xtypes.App) *PlugStateMod {
-	deps := app.GetDeps()
+func New(tenantId, plugId string, kv store.PlugStateKV) *PlugStateMod {
 
 	ps := &PlugStateMod{
 		tenantId: tenantId,
 		plugId:   plugId,
-		pkv:      deps.PlugKV().(store.PlugStateKV),
+		pkv:      kv,
 		modipc:   nil,
 	}
 

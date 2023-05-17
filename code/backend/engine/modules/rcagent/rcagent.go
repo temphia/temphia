@@ -23,12 +23,12 @@ type RCAgent struct {
 	engine  etypes.Engine
 }
 
-func NewRCAgent(tenantId, agentId string, plugId string) *RCAgent {
+func NewRCAgent(tenantId, plugId, agentId string, corehub store.CoreHub) *RCAgent {
 	return &RCAgent{
 		tenantId: tenantId,
 		agentId:  agentId,
 		plugId:   plugId,
-		corehub:  nil,
+		corehub:  corehub,
 		loaded:   false,
 	}
 
