@@ -3,6 +3,7 @@ package store
 import "github.com/temphia/temphia/code/backend/xtypes/models/entities"
 
 type PlugStateKV interface {
+	SetBatch(txid uint32, tenantId, plugId string, opts *SetBatchOptions) error
 	Set(txid uint32, tenantId, plugId, key, value string, opts *SetOptions) error
 	Update(txid uint32, tenantId, plugId, key, value string, opts *UpdateOptions) error
 	Get(txid uint32, tenantId, plugId, key string) (*entities.PlugKV, error)
@@ -13,6 +14,11 @@ type PlugStateKV interface {
 	NewTxn() (uint32, error)
 	RollBack(txid uint32) error
 	Commit(txid uint32) error
+}
+
+type SetBatchOptions struct {
+	ClearBefore bool             `json:"clear_before,omitempty"`
+	Records     []map[string]any `json:"records,omitempty"`
 }
 
 type SetOptions struct {

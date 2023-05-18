@@ -28,6 +28,58 @@ func New(db db.Session, txn dbutils.TxManager, vendor string) *PlugKV {
 
 }
 
+func (p *PlugKV) SetBatch(txid uint32, tenantId, plugId string, opts *store.SetBatchOptions) error {
+	for _, record := range opts.Records {
+		record["tenant_id"] = tenantId
+		record["plug_id"] = plugId
+
+		if _, ok := record["tag1"]; !ok {
+			record["tag1"] = ""
+		}
+		if _, ok := record["tag2"]; !ok {
+			record["tag2"] = ""
+		}
+		if _, ok := record["tag3"]; !ok {
+			record["tag3"] = ""
+		}
+	}
+
+	if txid == 0 {
+		_txid, err := p.txn.NewTxn(p.db, 10)
+		if err != nil {
+			return err
+		}
+
+		txid = _txid
+	}
+
+	return p.stateTx(txid, func(tbl db.Collection) error {
+
+		if opts.ClearBefore {
+			err := tbl.Find(db.Cond{
+				"tenant_id": tenantId,
+				"plug_id":   plugId,
+			}).Delete()
+			if err != nil {
+				return err
+			}
+		}
+
+		inserter := tbl.Session().
+			SQL().
+			InsertInto(tableName).
+			Batch(len(opts.Records))
+
+		for _, data := range opts.Records {
+			inserter.Values(data)
+		}
+
+		inserter.Done()
+		return inserter.Err()
+	})
+
+}
+
 func (p *PlugKV) Set(txid uint32, tenantId, plugId, key, value string, opts *store.SetOptions) error {
 	return p.stateTx(txid, func(tbl db.Collection) error {
 
