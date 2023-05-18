@@ -136,6 +136,14 @@ export class AdminPlugAPI {
     return this.base.post(`/admin/plug/${pid}/state/`, data);
   }
 
+  export_plug_state(pid: string) {
+    return this.base.get(`/admin/plug/${pid}/state_export`);
+  }
+
+  import_plug_state(pid: string, data: any) {
+    return this.base.post(`/admin/plug/${pid}/state_import`, data);
+  }
+
   get_plug_state(pid: string, skey: string) {
     return this.base.get(`/admin/plug/${pid}/state/${skey}`);
   }

@@ -1,12 +1,14 @@
 package apiadmin
 
 import (
+	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/controllers/admin"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 func (a *ApiAdmin) plugAPI(rg *gin.RouterGroup) {
@@ -28,6 +30,9 @@ func (a *ApiAdmin) plugAPI(rg *gin.RouterGroup) {
 	rg.GET("/:plug_id/state/:key", a.X(a.GetPlugState))
 	rg.POST("/:plug_id/state/:key", a.X(a.UpdatePlugState))
 	rg.DELETE("/:plug_id/state/:key", a.X(a.DelPlugState))
+
+	rg.GET("/:plug_id/state_export", a.X(a.ExportPlugState))
+	rg.POST("/:plug_id/state_import", a.X(a.ImportPlugState))
 
 	rg.GET("/:plug_id/flowmap", a.X(a.PlugFlowmap))
 
@@ -176,6 +181,30 @@ func (r *ApiAdmin) GetPlugState(ctx httpx.Request) {
 
 func (r *ApiAdmin) DelPlugState(ctx httpx.Request) {
 	err := r.cAdmin.PlugStateDel(ctx.Session, ctx.MustParam("plug_id"), ctx.MustParam("key"))
+	r.rutil.WriteFinal(ctx.Http, err)
+}
+
+func (r *ApiAdmin) ExportPlugState(ctx httpx.Request) {
+	file, err := r.cAdmin.PlugKvExport(ctx.Session, ctx.MustParam("plug_id"))
+	if err != nil {
+		r.rutil.WriteErr(ctx.Http, err.Error())
+		return
+	}
+
+	ctx.Http.File(file)
+	os.Remove(file)
+}
+
+func (r *ApiAdmin) ImportPlugState(ctx httpx.Request) {
+
+	opts := store.SetBatchOptions{}
+	err := ctx.Http.BindJSON(&opts)
+	if err != nil {
+		r.rutil.WriteErr(ctx.Http, err.Error())
+		return
+	}
+
+	err = r.cAdmin.PlugKvImport(ctx.Session, ctx.MustParam("plug_id"), opts)
 	r.rutil.WriteFinal(ctx.Http, err)
 }
 
