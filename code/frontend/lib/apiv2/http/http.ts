@@ -88,6 +88,14 @@ export class Http {
     });
   }
 
+  async rawFetch(path: string, method: string, auth: boolean, build_path: boolean, data: any) {
+    return await fetch(build_path ? `${this.baseURL}${path}` : path, {
+      method: method,
+      headers: auth ? { Authorization: this.headers["Authorization"] } : {},
+      body: data,
+    });
+  }
+
   async postForm(path: string, auth: boolean, data: any) {
     return await fetch(`${this.baseURL}${path}`, {
       method: "POST",

@@ -12,7 +12,7 @@ export class ApiBase {
     this.tenant_id = tenant_id;
     this.user_token = token;
 
-    console.log("@api_base =>", this)
+    console.log("@api_base =>", this);
 
     this.http = new Http(api_base_url, {
       "Content-Type": "application/json",
@@ -21,7 +21,7 @@ export class ApiBase {
   }
 
   async init() {
-    // fixme => it should not create apiurl instead it should be passed 
+    // fixme => it should not create apiurl instead it should be passed
     // base_url or sth and build api_base_url from it
     const resp = await fetch(`${apiURL(this.tenant_id)}/auth/refresh`, {
       method: "POST",
@@ -30,8 +30,12 @@ export class ApiBase {
         user_token: this.user_token,
       }),
     });
-    
+
     const rdata = await resp.json();
+  }
+
+  async raw_fetch(path: string, method: string, auth: boolean, build_path: boolean, data: any) {
+    this.http.rawFetch(path, method, auth, build_path, data);
   }
 
   async get(path: string) {
@@ -53,7 +57,6 @@ export class ApiBase {
   async put(path: string, data: any) {
     return this.http.put(path, data);
   }
-
 
   async patch(path: string, data: any) {
     return this.http.patch(path, data);
