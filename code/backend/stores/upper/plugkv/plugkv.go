@@ -44,16 +44,19 @@ func (p *PlugKV) SetBatch(txid uint32, tenantId, plugId string, opts *store.SetB
 		}
 	}
 
+	needsclose := false
+
 	if txid == 0 {
-		_txid, err := p.txn.NewTxn(p.db, 10)
+		_txid, err := p.txn.NewTxn(p.db, 100000)
 		if err != nil {
 			return err
 		}
 
+		needsclose = true
 		txid = _txid
 	}
 
-	return p.stateTx(txid, func(tbl db.Collection) error {
+	err := p.stateTx(txid, func(tbl db.Collection) error {
 
 		if opts.ClearBefore {
 			err := tbl.Find(db.Cond{
@@ -75,8 +78,23 @@ func (p *PlugKV) SetBatch(txid uint32, tenantId, plugId string, opts *store.SetB
 		}
 
 		inserter.Done()
-		return inserter.Err()
+
+		return inserter.Wait()
+
 	})
+
+	if err != nil {
+		if needsclose {
+			p.txn.RollbackTx(txid)
+		}
+		return err
+	}
+
+	if needsclose {
+		return p.txn.CommitTx(txid)
+	}
+
+	return nil
 
 }
 

@@ -123,7 +123,10 @@ export class AdminPlugAPI {
 
   // state
 
-  list_plug_state(pid: string, qparms: { key_cursor?: string; no_value?: boolean, page?: number }) {
+  list_plug_state(
+    pid: string,
+    qparms: { key_cursor?: string; no_value?: boolean; page?: number }
+  ) {
     const u = new URLSearchParams();
 
     u.set("page", String(qparms.page || 0));
@@ -140,8 +143,14 @@ export class AdminPlugAPI {
     return this.base.get(`/admin/plug/${pid}/state_export`);
   }
 
-  import_plug_state(pid: string, data: any) {
-    return this.base.post(`/admin/plug/${pid}/state_import`, data);
+  import_plug_state(pid: string, clear: boolean , data: any) {
+    return this.base.raw_fetch(
+      `/admin/plug/${pid}/state_import?clear=${clear}`,
+      "POST",
+      true,
+      true,
+      data
+    );
   }
 
   get_plug_state(pid: string, skey: string) {

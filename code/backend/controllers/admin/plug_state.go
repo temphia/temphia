@@ -2,8 +2,8 @@ package admin
 
 import (
 	"encoding/json"
+	"io"
 	"os"
-	"path"
 
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -52,8 +52,17 @@ func (c *Controller) PlugStateList(uclaim *claim.Session, pid, key_cursor string
 	})
 }
 
-func (c *Controller) PlugKvImport(uclaim *claim.Session, pid string, opts store.SetBatchOptions) error {
-	return c.plugState.SetBatch(0, uclaim.TenantId, pid, &opts)
+func (c *Controller) PlugKvImport(uclaim *claim.Session, pid string, clear bool, data io.Reader) error {
+	records := make([]map[string]any, 0)
+	err := json.NewDecoder(data).Decode(&records)
+	if err != nil {
+		return err
+	}
+
+	return c.plugState.SetBatch(0, uclaim.TenantId, pid, &store.SetBatchOptions{
+		ClearBefore: clear,
+		Records:     records,
+	})
 }
 
 func (c *Controller) PlugKvExport(uclaim *claim.Session, pid string) (string, error) {
@@ -63,13 +72,13 @@ func (c *Controller) PlugKvExport(uclaim *claim.Session, pid string) (string, er
 		return "", err
 	}
 
-	fileName := path.Join(os.TempDir(), file.Name())
+	fileName := file.Name()
 
 	clearFile := func() {
 		os.Remove(fileName)
 	}
 
-	file.Write([]byte("["))
+	file.Write([]byte("[\n"))
 
 	keyCursor := ""
 
@@ -90,7 +99,7 @@ func (c *Controller) PlugKvExport(uclaim *claim.Session, pid string) (string, er
 		if len(plugs) == 0 {
 			break
 		}
-		keyCursor = plugs[len(plugs)+1].Key
+		keyCursor = plugs[len(plugs)-1].Key
 
 		for _, pk := range plugs {
 
@@ -98,11 +107,12 @@ func (c *Controller) PlugKvExport(uclaim *claim.Session, pid string) (string, er
 			pk.PlugsID = ""
 
 			if !first {
+				file.Write([]byte(",\n"))
+			} else {
 				first = false
-				file.Write([]byte(","))
 			}
 
-			out, err := json.Marshal(pk)
+			out, err := json.MarshalIndent(pk, "", "    ")
 			if err != nil {
 				clearFile()
 				return "", err
@@ -116,7 +126,7 @@ func (c *Controller) PlugKvExport(uclaim *claim.Session, pid string) (string, er
 		}
 	}
 
-	file.Write([]byte("]"))
+	file.Write([]byte("\n]"))
 
 	return fileName, nil
 }

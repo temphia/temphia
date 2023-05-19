@@ -8,7 +8,6 @@ import (
 	"github.com/temphia/temphia/code/backend/controllers/admin"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 func (a *ApiAdmin) plugAPI(rg *gin.RouterGroup) {
@@ -196,15 +195,7 @@ func (r *ApiAdmin) ExportPlugState(ctx httpx.Request) {
 }
 
 func (r *ApiAdmin) ImportPlugState(ctx httpx.Request) {
-
-	opts := store.SetBatchOptions{}
-	err := ctx.Http.BindJSON(&opts)
-	if err != nil {
-		r.rutil.WriteErr(ctx.Http, err.Error())
-		return
-	}
-
-	err = r.cAdmin.PlugKvImport(ctx.Session, ctx.MustParam("plug_id"), opts)
+	err := r.cAdmin.PlugKvImport(ctx.Session, ctx.MustParam("plug_id"), ctx.Http.Query("clear") == "true", ctx.Http.Request.Body)
 	r.rutil.WriteFinal(ctx.Http, err)
 }
 

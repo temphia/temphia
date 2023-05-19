@@ -34,8 +34,14 @@ export class ApiBase {
     const rdata = await resp.json();
   }
 
-  async raw_fetch(path: string, method: string, auth: boolean, build_path: boolean, data: any) {
-    this.http.rawFetch(path, method, auth, build_path, data);
+  async raw_fetch(
+    path: string,
+    method: string,
+    auth: boolean,
+    build_path: boolean,
+    data: any
+  ) {
+    return this.http.rawFetch(path, method, auth, build_path, data);
   }
 
   async get(path: string) {

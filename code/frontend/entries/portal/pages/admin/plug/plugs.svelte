@@ -6,6 +6,8 @@
     FloatingAdd,
     PortalService,
   } from "../core";
+  import StateExport from "./state/state_export.svelte";
+  import StateImport from "./state/state_import.svelte";
 
   let datas = [];
   let loading = true;
@@ -74,6 +76,14 @@
 
   const action_goto_files = (id, data) =>
     app.nav.admin_bprint_files(data["bprint_id"]);
+
+  const action_state_export = (id) => {
+    app.utils.small_modal_open(StateExport, { app, id });
+  };
+
+  const action_state_import = (id) => {
+    app.utils.small_modal_open(StateImport, { app, id });
+  };
 </script>
 
 {#if loading}
@@ -106,6 +116,20 @@
         Action: action_list_states,
         drop: true,
         icon: "database",
+      },
+
+      {
+        Name: "Export States",
+        Action: action_state_export,
+        drop: true,
+        icon: "download",
+      },
+
+      {
+        Name: "Import States",
+        Action: action_state_import,
+        drop: true,
+        icon: "upload",
       },
 
       {
