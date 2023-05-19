@@ -75,6 +75,19 @@ func (d *DB) AgentLinkListReverse(tenantId, pid, aid string) ([]*entities.AgentL
 	return data, nil
 }
 
+func (d *DB) AgentLinkListByPlug(tenantId, pid string) ([]*entities.AgentLink, error) {
+	data := make([]*entities.AgentLink, 0)
+
+	err := d.agentLinkTable().Find(db.Cond{
+		"tenant_id":    tenantId,
+		"from_plug_id": pid,
+	}).All(&data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
 // extension
 
 func (d *DB) AgentExtensionNew(tenantId string, data *entities.AgentExtension) error {
@@ -236,19 +249,6 @@ func (d *DB) AgentExtensionListByPlug(tenantId, pid string) ([]*entities.AgentEx
 	data := make([]*entities.AgentExtension, 0)
 
 	err := d.agentExtensionTable().Find(db.Cond{
-		"tenant_id": tenantId,
-		"plug_id":   pid,
-	}).All(&data)
-	if err != nil {
-		return nil, err
-	}
-	return data, nil
-}
-
-func (d *DB) AgentLinkListByPlug(tenantId, pid string) ([]*entities.AgentLink, error) {
-	data := make([]*entities.AgentLink, 0)
-
-	err := d.agentLinkTable().Find(db.Cond{
 		"tenant_id": tenantId,
 		"plug_id":   pid,
 	}).All(&data)
