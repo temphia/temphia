@@ -428,6 +428,6 @@ func (r *ApiAdmin) AgentResourceList(ctx httpx.Request) {
 }
 
 func (r *ApiAdmin) PlugFlowmap(ctx httpx.Request) {
-	resp, err := r.cAdmin.PlugFlowmap(ctx.Session, ctx.MustParam("plug_id"))
+	resp, err := r.cAdmin.PlugFlowmap2(ctx.Session, ctx.MustParam("plug_id"))
 	r.rutil.WriteJSON(ctx.Http, resp, err)
 }

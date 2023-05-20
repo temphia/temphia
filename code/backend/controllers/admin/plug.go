@@ -6,6 +6,7 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities/flowmap"
 	"github.com/temphia/temphia/code/backend/xtypes/models/vmodels"
 	"github.com/temphia/temphia/code/backend/xtypes/scopes"
 )
@@ -152,6 +153,14 @@ type FlowmapData struct {
 	TargetApps     []*entities.TargetApp         `json:"target_apps,omitempty"`
 	TargetHooks    []*entities.TargetHook        `json:"target_hooks,omitempty"`
 	AgentResources map[string]*entities.Resource `json:"agent_resources,omitempty"`
+}
+
+func (c *Controller) PlugFlowmap2(uclaim *claim.Session, plugId string) (*flowmap.Data, error) {
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminEngineScope
+	}
+
+	return c.coredb.GetFlowMap(uclaim.TenantId)
 }
 
 func (c *Controller) PlugFlowmap(uclaim *claim.Session, plugId string) (*FlowmapData, error) {
