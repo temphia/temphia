@@ -305,6 +305,11 @@ func (d *DB) GetFlowMap(tenantId string) (*flowmap.Data, error) {
 		return nil, err
 	}
 
+	err = d.agentResourceTable().Find().All(&data.AgentResources)
+	if err != nil {
+		return nil, err
+	}
+
 	return &data, nil
 }
 
