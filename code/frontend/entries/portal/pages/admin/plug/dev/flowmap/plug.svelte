@@ -1,54 +1,16 @@
 <script lang="ts">
-  export let plug = {
-    id: "chc50lom4q7efu3enuq0",
-    name: "Simpledoc App",
-    live: true,
-    dev: true,
-    bprint_id: "chc50kom4q7efu3enul0",
-    tenant_id: "default0",
-  };
-  export let agents = [
-    {
-      id: "default",
-      name: "default",
-      type: "web",
-      executor: "javascript1",
-      plug_id: "chc50lom4q7efu3enuq0",
-    },
-    {
-      id: "default2",
-      name: "default2",
-      type: "web",
-      executor: "javascript1",
-      plug_id: "chc50lom4q7efu3enuq0",
-    },
-  ];
+  import type { FormatedPlug } from "./formatter";
 
-  export let extensions: { [_: string]: string[] } = {
-    default: ["xyz", "mno"],
-  };
-  export let resources: { [_: string]: string[] } = {
-    default: ["xyz1", "mno2"],
-  };
+  export let data: FormatedPlug;
+
+  const plug = data.plug;
 </script>
 
 <div
   class="bg-white p-4 w-full overflow-auto"
   style="height: calc(100% - 1rem)"
 >
-  <div class="absolute -top-1 right-1/2">
-    <div
-      id="top-plug-${plug.id}"
-      class="h-2 w-2 rounded-full bg-blue-400 hover:scale-150 hover:bg-blue-600"
-    />
-  </div>
 
-  <div class="absolute -bottom-1 right-1/2">
-    <div
-      id="bottom-plug-${plug.id}"
-      class="h-2 w-2 rounded-full bg-red-400 hover:scale-150 hover:bg-red-600"
-    />
-  </div>
 
   <div class="flex justify-center">
     <div class="inline-flex items-center p-1">
@@ -62,7 +24,7 @@
   </div>
 
   <div class="flex flex-col gap-2">
-    {#each agents as agent}
+    {#each data.agents as agent}
       <div class="relative flex h-32 justify-center rounded-lg">
         <div
           class="w-full transform transition-transform duration-500 ease-in-out hover:scale-110"
@@ -71,7 +33,7 @@
             class="absolute inset-0 flex justify-center bg-yellow-400 opacity-50"
           >
             <div class="inline-flex items-start">
-              <h3 class="uppercase">{agent.name}</h3>
+              <h3 class="uppercase">{agent.name || ""}</h3>
               <span
                 class="ml-1 mt-1 rounded bg-gray-100 p-0.5 text-xs text-gray-800"
                 >{agent.id}</span
@@ -80,7 +42,7 @@
           </div>
         </div>
         <!-- EXTENSIONS -->
-        <div class="absolute -left-2 top-5 flex flex-col items-start space-y-2">
+        <!-- <div class="absolute -left-2 top-5 flex flex-col items-start space-y-2">
           {#each extensions[agent.id] || [] as extkey}
             <div class="flex space-x-5">
               <button
@@ -89,12 +51,12 @@
               >
             </div>
           {/each}
-        </div>
+        </div> -->
 
         <!-- RESOURCES -->
 
-        <div class="absolute -right-2 top-5 flex flex-col items-end space-y-2">
-          {#each resources[agent.id] || [] as rkey}
+         <div class="absolute -right-2 top-5 flex flex-col items-end space-y-2">
+          {#each Object.keys(data.resources[agent.id] || [])  || [] as [rkey, rdata]}
             <div class="flex space-x-5">
               <button
                 class="flex items-center rounded-lg bg-white px-2 py-1 font-medium text-gray-600 shadow hover:bg-gray-300"
@@ -102,7 +64,7 @@
               >
             </div>
           {/each}
-        </div>
+        </div> 
 
         <div
           id="agent-in-port-{agent.id}"

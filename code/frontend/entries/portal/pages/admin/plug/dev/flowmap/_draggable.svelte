@@ -90,9 +90,9 @@
       </svg>
     </div>
 
-    <div class="flex-none flex bg-yellow-100 gap-x-2 px-1 rounded">
+    <!-- <div class="flex-none flex bg-yellow-100 gap-x-2 px-1 rounded">
       <Icon name="code" class="w-4 h-4 hover:p-0.5 hover:bg-yellow-300" />
-    </div>
+    </div> -->
   </div>
 
   <!-- debug middle point -->
