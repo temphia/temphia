@@ -11,13 +11,13 @@ type Data struct {
 }
 
 type Plug struct {
-	Id       int64  `json:"id,omitempty" db:"id,omitempty"`
+	Id       string `json:"id,omitempty" db:"id,omitempty"`
 	Name     string `json:"name,omitempty" db:"name,omitempty"`
 	BprintId string `json:"bprint_id,omitempty"  db:"bprint_id,omitempty"`
 }
 
 type Agent struct {
-	Id     int64  `json:"id,omitempty" db:"id,omitempty"`
+	Id     string `json:"id,omitempty" db:"id,omitempty"`
 	Name   string `json:"name,omitempty" db:"name,omitempty"`
 	Type   string `json:"type,omitempty" db:"type,omitempty"`
 	PlugId string `json:"plug_id,omitempty" db:"plug_id,omitempty"`
