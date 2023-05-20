@@ -75,8 +75,8 @@
   on:mouseleave={() => {
     __mouse_over = false;
   }}
-  class="absolute  bg-white z-20 shadow rounded hover:border-2 border-sky-500 "
-  style="min-width: 5rem; min-height: 5rem;overflow: auto; top: {top}px; left: {left}px;"
+  class="absolute  bg-white z-20 hover:border-2 border-sky-500 shadow rounded-lg"
+  style="min-width: 15rem; min-height: 15rem; top: {top}px; left: {left}px; resize:both;"
 >
   <div class="h-4 cursor-pointer w-full bg-yellow-10 flex justify-between">
     <div
