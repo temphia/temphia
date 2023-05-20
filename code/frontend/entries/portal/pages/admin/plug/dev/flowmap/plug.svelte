@@ -7,10 +7,7 @@
 </script>
 
 <div
-  class="bg-white p-4 w-full overflow-auto"
-  style="height: calc(100% - 1rem)"
->
-
+  class="bg-white p-4 w-full overflow-auto">
 
   <div class="flex justify-center">
     <div class="inline-flex items-center p-1">
@@ -67,14 +64,14 @@
         </div> 
 
         <div
-          id="agent-in-port-{agent.id}"
+          id="agent-in-port-{plug.id}-{agent.id}"
           class="h-4 w-10 absolute -right-2 bottom-1 text-red-300 border rounded flex bg-white text-sm justify-between items-center"
         >
           IN
         </div>
 
         <div
-          id="agent-out-port-{agent.id}"
+          id="agent-out-port-{plug.id}-{agent.id}"
           class="h-4 w-10 absolute -left-2 bottom-1 text-red-300 border rounded flex bg-white text-sm justify-between items-center"
         >
           OUT
@@ -82,7 +79,7 @@
 
         <div class="absolute -bottom-1 right-1/2">
           <div
-            id="bottom-plug-${plug.id}"
+            id="tail-{plug.id}-{agent.id}"
             class="h-2 w-2 rounded-full bg-red-400 hover:scale-150 hover:bg-red-600"
           />
         </div>

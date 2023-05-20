@@ -5,7 +5,6 @@ export interface FormatedPlug {
   exts: { [_: string]: any[] };
 }
 
-
 export const formatFlowData = (rawdata: {
   [_: string]: any;
 }): FormatedPlug[] => {
@@ -47,9 +46,14 @@ export const formatFlowData = (rawdata: {
   return formattedPlugs;
 };
 
-
-export const hashedPosCalc = (hash: string, maxWidth: number, maxHeight: number, middlePoint: {left: number, top: number}, radius: number) => {
-  const hashValue = hash.split('').reduce((acc, char) => {
+export const hashedPosCalc = (
+  hash: string,
+  maxWidth: number,
+  maxHeight: number,
+  middlePoint: { left: number; top: number },
+  radius: number
+) => {
+  const hashValue = hash.split("").reduce((acc, char) => {
     acc = (acc << 5) - acc + char.charCodeAt(0);
     return acc & acc;
   }, 0);
@@ -63,5 +67,29 @@ export const hashedPosCalc = (hash: string, maxWidth: number, maxHeight: number,
   const limitedTop = Math.min(Math.max(0, top), maxHeight);
 
   return { top: limitedTop, left: limitedLeft };
-}
+};
 
+/*
+id="tail-{plug.id}-{agent.id}"
+id="agent-out-port-{plug.id}-{agent.id}"
+id="agent-in-port-{plug.id}-{agent.id}"
+
+  {
+    "agent_links": [
+      {
+        "id": 1,
+        "name": "link2adaper",
+        "from_plug_id": "chc50lom4q7efu3enuq0",
+        "from_agent_id": "default",
+        "to_plug_id": "adapter-1",
+        "to_agent_id": "default"
+      }
+    ]
+  }
+*/
+export const generateAgentLinkIds = (rawdata) => {
+  return (rawdata["agent_links"] || []).map((link) => [
+    `agent-out-port-${link.from_plug_id}-${link.from_agent_id}`,
+    `agent-in-port-${link.to_plug_id}-${link.to_agent_id}`,
+  ]);
+};
