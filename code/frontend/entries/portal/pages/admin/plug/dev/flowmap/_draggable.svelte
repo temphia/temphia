@@ -76,7 +76,7 @@
     __mouse_over = false;
   }}
   class="absolute  bg-white z-20 hover:border-2 border-sky-500 shadow rounded-lg"
-  style="min-width: 15rem; min-height: 15rem; top: {top}px; left: {left}px; resize:both;"
+  style="min-width: 7rem; min-height: 7rem; top: {top}px; left: {left}px; resize:both;"
 >
   <div class="h-4 cursor-pointer w-full bg-yellow-10 flex justify-between">
     <div

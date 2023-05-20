@@ -6,9 +6,7 @@
   const plug = data.plug;
 </script>
 
-<div
-  class="bg-white p-4 w-full overflow-auto">
-
+<div class="bg-white p-4 w-full overflow-auto">
   <div class="flex justify-center">
     <div class="inline-flex items-center p-1">
       <h2 class="line-clamp-1 text-lg font-light uppercase text-gray-800">
@@ -22,12 +20,19 @@
 
   <div class="flex flex-col gap-2">
     {#each data.agents as agent}
-      <div class="relative flex h-32 justify-center rounded-lg">
+      {@const resources = data.resources[agent.id] || []}
+      {@const exts = data.exts[agent.id] || []}
+      {@const height = Math.max(resources.length, exts.length) * 2 + 2}
+
+      <div
+        class="relative flex justify-center rounded-lg"
+        style="height: {height}rem;"
+      >
         <div
           class="w-full transform transition-transform duration-500 ease-in-out hover:scale-110"
         >
           <div
-            class="absolute inset-0 flex justify-center bg-yellow-400 opacity-50"
+            class="absolute inset-0 flex justify-center bg-red-400 opacity-50"
           >
             <div class="inline-flex items-start">
               <h3 class="uppercase">{agent.name || ""}</h3>
@@ -39,21 +44,21 @@
           </div>
         </div>
         <!-- EXTENSIONS -->
-        <!-- <div class="absolute -left-2 top-5 flex flex-col items-start space-y-2">
-          {#each extensions[agent.id] || [] as extkey}
+        <div class="absolute -left-2 top-5 flex flex-col items-start space-y-2">
+          {#each Object.keys(exts) || [] as [rkey, rdata]}
             <div class="flex space-x-5">
               <button
                 class="flex items-center rounded-lg bg-white px-2 py-1 font-medium text-gray-600 shadow hover:bg-gray-300"
-                >{extkey}</button
+                >{rdata}</button
               >
             </div>
           {/each}
-        </div> -->
+        </div>
 
         <!-- RESOURCES -->
 
-         <div class="absolute -right-2 top-5 flex flex-col items-end space-y-2">
-          {#each Object.keys(data.resources[agent.id] || [])  || [] as [rkey, rdata]}
+        <div class="absolute -right-2 top-5 flex flex-col items-end space-y-2">
+          {#each Object.keys(resources) || [] as [rkey, rdata]}
             <div class="flex space-x-5">
               <button
                 class="flex items-center rounded-lg bg-white px-2 py-1 font-medium text-gray-600 shadow hover:bg-gray-300"
@@ -61,11 +66,11 @@
               >
             </div>
           {/each}
-        </div> 
+        </div>
 
         <div
           id="agent-in-port-{plug.id}-{agent.id}"
-          class="h-4 w-10 absolute -right-2 bottom-1 text-red-300 border rounded flex bg-white text-sm justify-between items-center"
+          class="h-4 w-10 absolute -right-2 bottom-1 text-blue-300 border rounded flex bg-white text-sm justify-between items-center"
         >
           IN
         </div>
