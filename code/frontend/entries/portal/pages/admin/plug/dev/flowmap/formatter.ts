@@ -46,3 +46,22 @@ export const formatFlowData = (rawdata: {
 
   return formattedPlugs;
 };
+
+
+export const hashedPosCalc = (hash: string, maxWidth: number, maxHeight: number, middlePoint: {left: number, top: number}, radius: number) => {
+  const hashValue = hash.split('').reduce((acc, char) => {
+    acc = (acc << 5) - acc + char.charCodeAt(0);
+    return acc & acc;
+  }, 0);
+
+  const angle = (Math.abs(hashValue) % 360) * (Math.PI / 180); // Convert angle to radians
+  const left = middlePoint.left + radius * Math.cos(angle);
+  const top = middlePoint.top + radius * Math.sin(angle);
+
+  // Limit the position within the max width and height
+  const limitedLeft = Math.min(Math.max(0, left), maxWidth);
+  const limitedTop = Math.min(Math.max(0, top), maxHeight);
+
+  return { top: limitedTop, left: limitedLeft };
+}
+

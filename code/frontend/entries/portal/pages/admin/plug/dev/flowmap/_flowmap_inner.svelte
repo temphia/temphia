@@ -2,7 +2,7 @@
   import { LoadingSpinner } from "../../../core";
   import type { PortalService } from "../../../core";
   import Draggable from "./_draggable.svelte";
-  import { FormatedPlug, formatFlowData } from "./formatter";
+  import { FormatedPlug, formatFlowData, hashedPosCalc } from "./formatter";
   import Plug from "./plug.svelte";
   import { getContext } from "svelte";
 
@@ -25,8 +25,12 @@
     data = formatFlowData(resp.data);
     loading = false;
 
-    console.log("@@FORMATED_FLOWDATA", data)
+    console.log("@@FORMATED_FLOWDATA", data);
   };
+
+  const middle = { top: 2500, left: 2500 };
+
+  $: _zoom_level = 1;
 
   load();
 </script>
@@ -35,19 +39,54 @@
   <div
     class="h-full w-full rounded overflow-scroll border border-slate-900 bg-white"
   >
+    <div class="fixed z-50 bottom-8 md:bottom-1 right-5 p-1">
+      <div class="flex gap-1 p-0.5 text-xs bg-gray-100 rounded">
+        <button
+          class="p-1 rounded text-white bg-gray-600 hover:bg-blue-600"
+          on:click={() => {
+            if (_zoom_level < 0.2) {
+              return;
+            }
+            _zoom_level = _zoom_level - 0.1;
+          }}>-</button
+        >
+        <button
+          class="p-1 rounded text-white bg-gray-600"
+          on:click={() => (_zoom_level = 1)}
+        >
+          {(_zoom_level * 100).toFixed(0)}%
+        </button>
+
+        <button
+          class="p-1 rounded text-white bg-gray-600 hover:bg-blue-600"
+          on:click={() => {
+            if (_zoom_level > 3) {
+              return;
+            }
+            _zoom_level = _zoom_level + 0.1;
+          }}>+</button
+        >
+      </div>
+    </div>
+
     {#if loading}
       <LoadingSpinner />
     {:else}
       <div
         class="relative"
-        style="min-width:5000px; min-height:5000px; transform: scale(1); 
+        style="min-width:5000px; min-height:5000px; transform: scale({_zoom_level}); 
     transform-origin: 0% 0% 0px;
     background-image: radial-gradient(rgba(15, 15, 16, 0.33) 1px, transparent 1px); 
           background-size: 13px 13px; background-color: rgba(71, 211, 255, 0.06);
     "
       >
         {#each data as fdata}
-          <Draggable>
+          {@const hash = pid + fdata.plug.id}
+          {@const pos =
+            fdata.plug.id === pid
+              ? middle
+              : hashedPosCalc(hash, 5000, 5000, middle, 500)}
+          <Draggable left={pos.left} top={pos.top}>
             <Plug data={fdata} />
           </Draggable>
         {/each}
