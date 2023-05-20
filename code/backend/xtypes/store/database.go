@@ -3,6 +3,7 @@ package store
 import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities/flowmap"
 )
 
 type CoreHub interface {
@@ -172,6 +173,8 @@ type PlugOps interface {
 	ResourceList(tenantId string) ([]*entities.Resource, error)
 	ResourcesMulti(tenantId string, rids ...string) ([]*entities.Resource, error)
 	ResourcesByTarget(tenantId string, target string) ([]*entities.Resource, error)
+
+	GetFlowMap(tenantId string) (*flowmap.Data, error)
 }
 
 type AgentOps interface {

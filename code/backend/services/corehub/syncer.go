@@ -1,6 +1,9 @@
 package corehub
 
-import "github.com/temphia/temphia/code/backend/xtypes/models/entities"
+import (
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities/flowmap"
+)
 
 // repo
 
@@ -228,4 +231,8 @@ func (c *CoreHub) ListTargetAppByPlug(tenantId, plug string) ([]*entities.Target
 
 func (c *CoreHub) AgentExtensionListByPlug(tenantId, pid string) ([]*entities.AgentExtension, error) {
 	return c.coredb.AgentExtensionListByPlug(tenantId, pid)
+}
+
+func (c *CoreHub) GetFlowMap(tenantId string) (*flowmap.Data, error) {
+	return c.coredb.GetFlowMap(tenantId)
 }

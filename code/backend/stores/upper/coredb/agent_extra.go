@@ -3,6 +3,7 @@ package coredb
 import (
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities/flowmap"
 	"github.com/upper/db/v4"
 )
 
@@ -256,6 +257,55 @@ func (d *DB) AgentExtensionListByPlug(tenantId, pid string) ([]*entities.AgentEx
 		return nil, err
 	}
 	return data, nil
+}
+
+func (d *DB) GetFlowMap(tenantId string) (*flowmap.Data, error) {
+
+	data := flowmap.Data{
+		Plugs:          make([]*flowmap.Plug, 0),
+		Agents:         make([]*flowmap.Agent, 0),
+		AgentLinks:     make([]*flowmap.AgentLink, 0),
+		AgentExts:      make([]*flowmap.AgentExt, 0),
+		TargetApps:     make([]*flowmap.App, 0),
+		TargetHooks:    make([]*flowmap.Hook, 0),
+		AgentResources: make([]*flowmap.AgentResource, 0),
+	}
+
+	cond := db.Cond{
+		"tenant_id": tenantId,
+	}
+
+	err := d.plugTable().Find(cond).All(&data.Plugs)
+	if err != nil {
+		return nil, err
+	}
+
+	err = d.agentTable().Find(cond).All(&data.Agents)
+	if err != nil {
+		return nil, err
+	}
+
+	err = d.agentLinkTable().Find().All(&data.AgentLinks)
+	if err != nil {
+		return nil, err
+	}
+
+	err = d.agentExtensionTable().Find().All(&data.AgentExts)
+	if err != nil {
+		return nil, err
+	}
+
+	err = d.targetAppTable().Find().All(&data.TargetApps)
+	if err != nil {
+		return nil, err
+	}
+
+	err = d.targetHookTable().Find().All(&data.TargetHooks)
+	if err != nil {
+		return nil, err
+	}
+
+	return &data, nil
 }
 
 // private
