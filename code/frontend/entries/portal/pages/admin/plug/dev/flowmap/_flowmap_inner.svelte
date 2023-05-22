@@ -10,6 +10,7 @@
   } from "./formatter";
   import Plug from "./plug.svelte";
   import { getContext, onMount, tick } from "svelte";
+  import Target from "./target.svelte";
 
   export let pid: string;
 
@@ -19,8 +20,9 @@
 
   let loading = true;
   let data: FormatedPlug[];
-
   let links: [string, string][] = [];
+  let target_hooks = [];
+  let target_apps = [];
 
   const papi = app.api_manager.get_admin_plug_api();
 
@@ -31,11 +33,13 @@
       return;
     }
     data = formatFlowData(resp.data);
+    links = generateAgentLinkIds(resp.data);
+    target_apps = resp.data["target_apps"] || [];
+    target_hooks = resp.data["target_hooks"] || [];
+
     loading = false;
 
-    console.log("@@FORMATED_FLOWDATA", data);
-
-    links = generateAgentLinkIds(resp.data);
+    console.log("@@Target", target_apps, target_hooks);
   };
 
   const middle = { top: 1000, left: 2500 };
@@ -79,15 +83,14 @@
     });
   };
 
-  const rePositionLinks = () => instances.forEach((ln) => ln.position())
-
+  const rePositionLinks = () => instances.forEach((ln) => ln.position());
 </script>
 
 <div class="h-full w-full max-h-screen p-2" bind:this={rootElem}>
   <div
     class="h-full w-full rounded border border-slate-900 bg-white overflow-auto"
     on:scroll={rePositionLinks}
-    >
+  >
     <div class="fixed z-50 bottom-8 md:bottom-1 right-5 p-1">
       <div class="flex gap-1 p-0.5 text-xs bg-gray-100 rounded">
         <button
@@ -97,7 +100,7 @@
               return;
             }
             _zoom_level = _zoom_level - 0.1;
-            rePositionLinks()
+            rePositionLinks();
           }}>-</button
         >
         <button
@@ -136,8 +139,24 @@
             fdata.plug.id === pid
               ? middle
               : hashedPosCalc(hash, 5000, 5000, middle, 500)}
-          <Draggable left={pos.left} top={pos.top} on:card_pos={rePositionLinks}>
+          <Draggable
+            left={pos.left}
+            top={pos.top}
+            on:card_pos={rePositionLinks}
+          >
             <Plug data={fdata} />
+          </Draggable>
+        {/each}
+
+        {#each target_apps as tapp}
+          <Draggable top={1200} on:card_pos={rePositionLinks}>
+            <Target data={tapp} />
+          </Draggable>
+        {/each}
+
+        {#each target_hooks as thook}
+          <Draggable top={1200} on:card_pos={rePositionLinks}>
+            <Target data={thook} />
           </Draggable>
         {/each}
       </div>
