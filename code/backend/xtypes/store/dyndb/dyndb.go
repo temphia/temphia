@@ -6,6 +6,8 @@ import (
 )
 
 type DynDB interface {
+	MigrateSchema(tenantId string, opts MigrateOptions) error
+
 	NewGroup(tenantId string, model *xbprint.NewTableGroup) error
 	EditGroup(tenantId string, gslug string, model *entities.TableGroupPartial) error
 	ListGroup(tenantId string) ([]*entities.TableGroup, error)

@@ -44,30 +44,6 @@ func New(opts ucore.DynDBOptions) *DynDB {
 	return d
 }
 
-func (d *DynDB) txOr(txid uint32, fn func(sess db.Session) error) error {
-	return d.txn.TxOr(txid, d.session, fn)
-}
-
-func (d *DynDB) dataTableGroups() db.Collection {
-	return dyncore.GroupTable(d.session)
-}
-
-func (d *DynDB) dataTables() db.Collection {
-	return dyncore.Table(d.session)
-}
-
-func (d *DynDB) dataTableColumns() db.Collection {
-	return dyncore.TableColumn(d.session)
-}
-
-func (d *DynDB) viewTable() db.Collection {
-	return d.session.Collection("data_views")
-}
-
-func (d *DynDB) hookTable() db.Collection {
-	return d.session.Collection("data_hooks")
-}
-
 func (d *DynDB) NewRow(txid uint32, req dyndb.NewRowReq) (int64, error) {
 	return d.newRow(txid, req)
 }
@@ -110,6 +86,10 @@ func (d *DynDB) MultiJoinQuery(txid uint32, req dyndb.MultiJoinReq) (*dyndb.Mult
 
 func (d *DynDB) TemplateQuery(txid uint32, req dyndb.TemplateQueryReq) (*dyndb.QueryResult, error) {
 	return d.templateQuery(txid, req)
+}
+
+func (d *DynDB) MigrateSchema(tenantId string, opts dyndb.MigrateOptions) error {
+	return d.migrateSchema(tenantId, opts)
 }
 
 func (d *DynDB) SqlQueryRaw(txid uint32, tenantId, group, qstr string) (any, error) {
@@ -180,6 +160,32 @@ func (d *DynDB) ReverseRefLoad(txid uint32, tenantId, gslug string, req *dyndb.R
 func (d *DynDB) GetCache() dyndb.DCache {
 
 	return nil
+}
+
+// private
+
+func (d *DynDB) txOr(txid uint32, fn func(sess db.Session) error) error {
+	return d.txn.TxOr(txid, d.session, fn)
+}
+
+func (d *DynDB) dataTableGroups() db.Collection {
+	return dyncore.GroupTable(d.session)
+}
+
+func (d *DynDB) dataTables() db.Collection {
+	return dyncore.Table(d.session)
+}
+
+func (d *DynDB) dataTableColumns() db.Collection {
+	return dyncore.TableColumn(d.session)
+}
+
+func (d *DynDB) viewTable() db.Collection {
+	return d.session.Collection("data_views")
+}
+
+func (d *DynDB) hookTable() db.Collection {
+	return d.session.Collection("data_hooks")
 }
 
 func removeSQLComments(query string) string {

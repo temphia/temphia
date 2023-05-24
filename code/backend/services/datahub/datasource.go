@@ -116,6 +116,10 @@ func (ds *DataSource) NewActivity(tenantId, group, table string, record *entitie
 	return err
 }
 
+func (ds *DataSource) MigrateSchema(tenantId string, opts dyndb.MigrateOptions) error {
+	return ds.inner.MigrateSchema(tenantId, opts)
+}
+
 func (ds *DataSource) ListDataUsers(source, tenantId, group, ttype, target string) ([]entities.UserInfo, error) {
 
 	// fixme use ttype and target
