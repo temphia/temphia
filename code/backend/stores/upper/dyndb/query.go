@@ -2,9 +2,11 @@ package dyndb
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/k0kubun/pp"
 
+	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/filter"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/processer"
@@ -378,4 +380,61 @@ func (d *DynDB) reverseRefLoad(txid uint32, tenantId, gslug string, req *dyndb.R
 		Rows:    rows,
 	}, nil
 
+}
+
+func (d *DynDB) sqlQueryRaw(txid uint32, tenantId, group, qstr string) (any, error) {
+	var rs []map[string]any
+
+	err := d.txOr(txid, func(sess db.Session) error {
+		rows, err := sess.SQL().Query(qstr)
+		if err != nil {
+			return err
+		}
+
+		rs, err = dbutils.SelectScan(rows)
+		return err
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return rs, nil
+}
+
+func (d *DynDB) sqlQueryScopped(txid uint32, tenantId, group, qstr string) (any, error) {
+	qstr = strings.TrimSpace(removeSQLComments(qstr))
+
+	if strings.HasPrefix(qstr, "FETCH syetem_tables") {
+		return d.ListTables(tenantId, group)
+	} else if strings.HasPrefix(qstr, "FETCH syetem_columns") {
+		tname, err := extractTableName(qstr)
+		if err != nil {
+			return nil, err
+		}
+		return d.ListColumns(tenantId, group, tname)
+	}
+
+	result, err := d.hsql.Transform(tenantId, group, nil, qstr)
+	if err != nil {
+		return nil, err
+	}
+
+	var rs []map[string]any
+
+	err = d.txOr(txid, func(sess db.Session) error {
+
+		rows, err := sess.SQL().Query(result.TransformedQuery)
+		if err != nil {
+			return err
+		}
+		rs, err = dbutils.SelectScan(rows)
+		return err
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return rs, nil
 }

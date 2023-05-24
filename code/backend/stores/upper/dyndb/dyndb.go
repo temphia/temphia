@@ -3,7 +3,6 @@ package dyndb
 import (
 	"fmt"
 	"regexp"
-	"strings"
 
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/libx/dbutils/hsql"
@@ -93,60 +92,11 @@ func (d *DynDB) MigrateSchema(tenantId string, opts dyndb.MigrateOptions) error 
 }
 
 func (d *DynDB) SqlQueryRaw(txid uint32, tenantId, group, qstr string) (any, error) {
-	var rs []map[string]any
-
-	err := d.txOr(txid, func(sess db.Session) error {
-		rows, err := sess.SQL().Query(qstr)
-		if err != nil {
-			return err
-		}
-
-		rs, err = dbutils.SelectScan(rows)
-		return err
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	return rs, nil
+	return d.sqlQueryRaw(txid, tenantId, group, qstr)
 }
 
 func (d *DynDB) SqlQueryScopped(txid uint32, tenantId, group, qstr string) (any, error) {
-	qstr = strings.TrimSpace(removeSQLComments(qstr))
-
-	if strings.HasPrefix(qstr, "FETCH syetem_tables") {
-		return d.ListTables(tenantId, group)
-	} else if strings.HasPrefix(qstr, "FETCH syetem_columns") {
-		tname, err := extractTableName(qstr)
-		if err != nil {
-			return nil, err
-		}
-		return d.ListColumns(tenantId, group, tname)
-	}
-
-	result, err := d.hsql.Transform(tenantId, group, nil, qstr)
-	if err != nil {
-		return nil, err
-	}
-
-	var rs []map[string]any
-
-	err = d.txOr(txid, func(sess db.Session) error {
-
-		rows, err := sess.SQL().Query(result.TransformedQuery)
-		if err != nil {
-			return err
-		}
-		rs, err = dbutils.SelectScan(rows)
-		return err
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	return rs, nil
+	return d.sqlQueryScopped(txid, tenantId, group, qstr)
 }
 
 func (d *DynDB) RefLoad(txid uint32, tenantId, gslug string, req *dyndb.RefLoadReq) (*dyndb.QueryResult, error) {
@@ -158,8 +108,7 @@ func (d *DynDB) ReverseRefLoad(txid uint32, tenantId, gslug string, req *dyndb.R
 }
 
 func (d *DynDB) GetCache() dyndb.DCache {
-
-	return nil
+	return d.cache
 }
 
 // private
