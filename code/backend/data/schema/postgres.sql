@@ -231,6 +231,7 @@ create table data_table_groups (
     renderer text not null default '',
     cabinet_source TEXT not null default '',
     cabinet_folder TEXT not null default '',
+    migration_head text not null default '',
     extra_meta json not null default '{}',
     active BOOLEAN not null default false,
     primary KEY(slug, tenant_id)
@@ -395,6 +396,7 @@ create table bprints(
     source_id text not null default '',
     files text not null default '',
     tags text not null default '',
+    steps_head text not null default '',
     extra_meta json not null default '{}',
     tenant_id text not null,
     primary KEY(id, tenant_id)
