@@ -1,7 +1,7 @@
 package sheet
 
 import (
-	"github.com/temphia/temphia/code/backend/services/repohub/instancers/dtable"
+	"github.com/temphia/temphia/code/backend/services/repohub/instancerhub/instancers/dtable"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 )
 

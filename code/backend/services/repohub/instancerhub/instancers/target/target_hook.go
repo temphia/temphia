@@ -58,7 +58,7 @@ func (th *TargetHookInstancer) Instance(opts xinstance.Options) (*xinstance.Resp
 		plugId = resp.Slug
 	}
 
-	_, err = th.corehub.AddTargetHook(&entities.TargetHook{
+	id, err := th.corehub.AddTargetHook(&entities.TargetHook{
 		Id:         0,
 		Name:       thook.Name,
 		Policy:     thook.Policy,
@@ -79,7 +79,7 @@ func (th *TargetHookInstancer) Instance(opts xinstance.Options) (*xinstance.Resp
 	return &xinstance.Response{
 		Ok:      false,
 		Message: "",
-		Slug:    fmt.Sprintf("%d", 0), // fixme => return newly created id
+		Slug:    fmt.Sprintf("%d", id), // fixme => return newly created id
 		Data:    nil,
 	}, nil
 
