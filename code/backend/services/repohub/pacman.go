@@ -4,7 +4,8 @@ import (
 	"sync"
 
 	"github.com/temphia/temphia/code/backend/app/registry"
-	"github.com/temphia/temphia/code/backend/services/repohub/instancers"
+	"github.com/temphia/temphia/code/backend/services/repohub/instancerhub/hubv1"
+	"github.com/temphia/temphia/code/backend/services/repohub/instancerhub/instancers"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
@@ -28,7 +29,8 @@ type PacMan struct {
 	activeRepo      map[string]map[int64]repox.Repository
 	activeRepoMutex sync.Mutex
 
-	instancer InstancHub
+	ihubV1 repox.InstancerHubV1
+	ihubV2 repox.InstancerHubV2
 }
 
 func New(_app xtypes.App) *PacMan {
@@ -46,10 +48,6 @@ func New(_app xtypes.App) *PacMan {
 		activeRepo:      make(map[string]map[int64]repox.Repository),
 	}
 
-	pm.instancer = InstancHub{
-		pacman: pm,
-	}
-
 	return pm
 }
 
@@ -58,10 +56,15 @@ func (p *PacMan) blobStore(tenantId string) store.CabinetSourced {
 }
 
 func (p *PacMan) Start() error {
-	p.instancers = instancers.GetInstancers(p.app)
 
 	reg := p.app.GetDeps().Registry().(*registry.Registry)
 	p.repoBuilders = reg.GetRepoBuilders()
 
+	p.ihubV1 = hubv1.New(instancers.GetInstancers(p.app), p)
+
 	return nil
 }
+
+func (p *PacMan) GetInstancerHubV1() repox.InstancerHubV1 { return p.ihubV1 }
+
+func (p *PacMan) GetInstancerHubV2() repox.InstancerHubV2 { return p.ihubV2 }

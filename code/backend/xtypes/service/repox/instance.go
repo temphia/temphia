@@ -6,19 +6,38 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
 )
 
-type InstanceOptions struct {
-	BprintId       string         `json:"bprint_id,omitempty"`
-	InstancerType  string         `json:"instancer_type,omitempty"`
-	File           string         `json:"file,omitempty"`
-	UserConfigData []byte         `json:"data,omitempty"`
-	Auto           bool           `json:"auto,omitempty"`
-	UserSession    *claim.Session `json:"-"`
+type InstanceOptionsV1 struct {
+	BprintId       string             `json:"bprint_id,omitempty"`
+	InstancerType  string             `json:"instancer_type,omitempty"`
+	File           string             `json:"file,omitempty"`
+	UserConfigData []byte             `json:"data,omitempty"`
+	Auto           bool               `json:"auto,omitempty"`
+	UserContext    *claim.UserContext `json:"-"`
 }
 
-type InstancHub interface {
-	SheetTemplate(tenantId, source, gslug string, template *xbprint.NewSheetGroup) (*xinstance.Response, error)
-	ManualSingle(opt InstanceOptions) (any, error)
-	ManualBundleItem(opts InstanceOptions) (any, error)
-	AutomaticBundle(opt InstanceOptions) (any, error)
-	AutomaticSingle(opt InstanceOptions) (any, error)
+type InstanceSheetOptions struct {
+	Source      string                 `json:"source,omitempty"`
+	Group       string                 `json:"group,omitempty"`
+	Template    *xbprint.NewSheetGroup `json:"template,omitempty"`
+	UserContext *claim.UserContext     `json:"-"`
+}
+
+type InstancerHubV1 interface {
+	Instance(opts InstanceOptionsV1) (any, error)
+	InstanceSheetDirect(opts InstanceSheetOptions) (*xinstance.Response, error)
+}
+
+type InstanceOptionsV2 struct {
+	BprintId    string             `json:"bprint_id,omitempty"`
+	File        string             `json:"file,omitempty"`
+	UserSession *claim.UserContext `json:"-"`
+}
+
+type InstanceResponseV2 struct {
+	Ok bool `json:"ok,omitempty"`
+}
+
+type InstancerHubV2 interface {
+	Instance(opts InstanceOptionsV2) (any, error)
+	InstanceSheetDirect() (any, error)
 }

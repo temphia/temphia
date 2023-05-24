@@ -1,22 +1,24 @@
-package repohub
+package hubv1
 
 import (
 	"encoding/json"
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/backend/services/repohub/instancers/sheet"
+	"github.com/temphia/temphia/code/backend/services/repohub/instancerhub/instancers/sheet"
+
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
 )
 
-func (p *PacMan) GetInstanceHub() repox.InstancHub {
-	return &p.instancer
-}
+var (
+	_ repox.InstancerHubV1 = (*InstancHub)(nil)
+)
 
 type InstancHub struct {
-	pacman *PacMan
+	instancers map[string]xinstance.Instancer
+	pacman     repox.RepoBprintOps
 }
 
 /*
@@ -31,26 +33,55 @@ type InstancHub struct {
 
 */
 
-func (i *InstancHub) SheetTemplate(tenantId, source, gslug string, template *xbprint.NewSheetGroup) (*xinstance.Response, error) {
-	sintancer := i.pacman.instancers[xbprint.TypeDataSheet].(*sheet.SheetInstancer)
+func New(instancers map[string]xinstance.Instancer, pacman repox.RepoBprintOps) *InstancHub {
+	return &InstancHub{
+		instancers: instancers,
+		pacman:     pacman,
+	}
+}
+
+func (i *InstancHub) Instance(opts repox.InstanceOptionsV1) (any, error) {
+
+	switch opts.InstancerType {
+	case xbprint.TypeBundle:
+		if opts.Auto {
+			return i.automaticBundle(opts)
+		}
+		return i.manualBundleItem(opts)
+
+	default:
+		if opts.Auto {
+			return i.automaticSingle(opts)
+		}
+		return i.manualSingle(opts)
+	}
+
+}
+
+func (i *InstancHub) InstanceSheetDirect(opts repox.InstanceSheetOptions) (*xinstance.Response, error) {
+	return i.sheetTemplate(opts.UserContext.TenantId, opts.Source, opts.Group, opts.Template)
+}
+
+func (i *InstancHub) sheetTemplate(tenantId, source, gslug string, template *xbprint.NewSheetGroup) (*xinstance.Response, error) {
+	sintancer := i.instancers[xbprint.TypeDataSheet].(*sheet.SheetInstancer)
 	return sintancer.DirectInstance(tenantId, source, gslug, template)
 }
 
-func (i *InstancHub) ManualSingle(opts repox.InstanceOptions) (any, error) {
+func (i *InstancHub) manualSingle(opts repox.InstanceOptionsV1) (any, error) {
 
 	pp.Println("INSTANCE OPTS |>", opts)
 
-	instancer, ok := i.pacman.instancers[opts.InstancerType]
+	instancer, ok := i.instancers[opts.InstancerType]
 	if !ok {
 		return nil, easyerr.NotFound("instancer1")
 	}
 
 	return instancer.Instance(xinstance.Options{
-		TenantId:     opts.UserSession.TenantId,
+		TenantId:     opts.UserContext.TenantId,
 		BprintId:     opts.BprintId,
 		InstanceType: opts.InstancerType,
 		File:         opts.File,
-		UserId:       opts.UserSession.UserID,
+		UserId:       opts.UserContext.UserID,
 		UserData:     opts.UserConfigData,
 		Automatic:    false,
 		Handle: &Handle{
@@ -61,19 +92,19 @@ func (i *InstancHub) ManualSingle(opts repox.InstanceOptions) (any, error) {
 	})
 }
 
-func (i *InstancHub) ManualBundleItem(opts repox.InstanceOptions) (any, error) {
+func (i *InstancHub) manualBundleItem(opts repox.InstanceOptionsV1) (any, error) {
 
-	instancer, ok := i.pacman.instancers[opts.InstancerType]
+	instancer, ok := i.instancers[opts.InstancerType]
 	if !ok {
 		return nil, easyerr.NotFound("instancer2")
 	}
 
 	return instancer.Instance(xinstance.Options{
-		TenantId:     opts.UserSession.TenantId,
+		TenantId:     opts.UserContext.TenantId,
 		BprintId:     opts.BprintId,
 		InstanceType: opts.InstancerType,
 		File:         opts.File,
-		UserId:       opts.UserSession.UserID,
+		UserId:       opts.UserContext.UserID,
 		UserData:     opts.UserConfigData,
 		Automatic:    false,
 		Handle: &Handle{
@@ -85,9 +116,9 @@ func (i *InstancHub) ManualBundleItem(opts repox.InstanceOptions) (any, error) {
 
 }
 
-func (i *InstancHub) AutomaticBundle(opts repox.InstanceOptions) (any, error) {
-	bundle := xbprint.Install{}
-	err := i.pacman.loadFile(opts.UserSession.TenantId, opts.BprintId, opts.File, &bundle)
+func (i *InstancHub) automaticBundle(opts repox.InstanceOptionsV1) (any, error) {
+	bundle := xbprint.BundleV1{}
+	err := i.loadFile(opts.UserContext.TenantId, opts.BprintId, opts.File, &bundle)
 	if err != nil {
 		return nil, err
 	}
@@ -101,18 +132,18 @@ func (i *InstancHub) AutomaticBundle(opts repox.InstanceOptions) (any, error) {
 	for _, bitem := range bundle.Items {
 		pp.Println("INSTANCING BITEM", bitem)
 
-		instancer, ok := i.pacman.instancers[bitem.Type]
+		instancer, ok := i.instancers[bitem.Type]
 		if !ok {
 			pp.Println("NOT FOUND", bitem.Type)
 			return nil, easyerr.NotFound("instancer3")
 		}
 
 		resp, err := instancer.Instance(xinstance.Options{
-			TenantId:     opts.UserSession.TenantId,
+			TenantId:     opts.UserContext.TenantId,
 			BprintId:     opts.BprintId,
 			InstanceType: bitem.Type,
 			File:         bitem.File,
-			UserId:       opts.UserSession.UserID,
+			UserId:       opts.UserContext.UserID,
 			UserData:     nil,
 			Automatic:    true,
 			Handle: &Handle{
@@ -143,19 +174,19 @@ func (i *InstancHub) AutomaticBundle(opts repox.InstanceOptions) (any, error) {
 	}, nil
 }
 
-func (i *InstancHub) AutomaticSingle(opts repox.InstanceOptions) (any, error) {
+func (i *InstancHub) automaticSingle(opts repox.InstanceOptionsV1) (any, error) {
 
-	instancer, ok := i.pacman.instancers[opts.InstancerType]
+	instancer, ok := i.instancers[opts.InstancerType]
 	if !ok {
 		return nil, easyerr.NotFound("instancer4")
 	}
 
 	iresp, err := instancer.Instance(xinstance.Options{
-		TenantId:     opts.UserSession.TenantId,
+		TenantId:     opts.UserContext.TenantId,
 		BprintId:     opts.BprintId,
 		InstanceType: opts.InstancerType,
 		File:         opts.File,
-		UserId:       opts.UserSession.UserID,
+		UserId:       opts.UserContext.UserID,
 		UserData:     opts.UserConfigData,
 		Automatic:    true,
 		Handle: &Handle{
@@ -180,16 +211,13 @@ func (i *InstancHub) AutomaticSingle(opts repox.InstanceOptions) (any, error) {
 
 }
 
-func (p *PacMan) loadFile(tenantId, bid string, file string, target any) error {
+// private
 
-	out, err := p.BprintGetBlob(tenantId, bid, file)
+func (i *InstancHub) loadFile(tenantId, bid string, file string, target any) error {
+	out, err := i.pacman.BprintGetBlob(tenantId, bid, file)
 	if err != nil {
 		return err
 	}
-	return json.Unmarshal(out, target)
-}
 
-type AutoResp struct {
-	AllOk   bool                           `json:"all_ok"`
-	Objects map[string]*xinstance.Response `json:"objects"`
+	return json.Unmarshal(out, target)
 }

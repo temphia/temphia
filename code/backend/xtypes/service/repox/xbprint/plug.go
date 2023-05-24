@@ -1,5 +1,11 @@
 package xbprint
 
+import "encoding/json"
+
+type PlugSchemaV1 struct {
+	NewPlug
+}
+
 type NewPlug struct {
 	Slug   string     `json:"slug,omitempty"`
 	Name   string     `json:"name,omitempty"`
@@ -27,4 +33,14 @@ type NewAgentResource struct {
 	Type    string       `json:"type,omitempty"`
 	RefName string       `json:"ref_name,omitempty"`
 	RefData *NewResource `json:"ref_data,omitempty"`
+}
+
+type PlugSchemaV2 struct {
+	Steps []Step `json:"steps,omitempty"`
+}
+
+type Step struct {
+	Name string          `json:"name,omitempty" yaml:"name,omitempty"`
+	Type string          `json:"type,omitempty" yaml:"type,omitempty"`
+	Data json.RawMessage `json:"data,omitempty" yaml:"data,omitempty"`
 }

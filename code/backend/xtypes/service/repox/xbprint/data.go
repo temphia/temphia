@@ -1,6 +1,14 @@
 package xbprint
 
-import "github.com/temphia/temphia/code/backend/xtypes/models/entities"
+import (
+	"encoding/json"
+
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+)
+
+type DataSchemaV1 struct {
+	NewTableGroup
+}
 
 type NewTableGroup struct {
 	Name          string      `json:"name,omitempty" yaml:"name,omitempty"`
@@ -54,4 +62,14 @@ type NewTargetApp struct {
 type SeedData struct {
 	Data         []map[string]any `json:"data,omitempty" yaml:"data,omitempty"`
 	LinkedImages []string         `json:"linked_images,omitempty" yaml:"linked_images,omitempty"`
+}
+
+type DataSchemaV2 struct {
+	Steps []MigrationStep `json:"steps,omitempty" yaml:"steps,omitempty"`
+}
+
+type MigrationStep struct {
+	Name string          `json:"name,omitempty" yaml:"name,omitempty"`
+	Type string          `json:"type,omitempty" yaml:"type,omitempty"`
+	Data json.RawMessage `json:"data,omitempty" yaml:"data,omitempty"`
 }

@@ -11,7 +11,6 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/scopes"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 )
 
 func (c *Controller) BprintList(uclaim *claim.Session, group string) ([]*entities.BPrint, error) {
@@ -189,28 +188,22 @@ func (c *Controller) BprintInstance(uclaim *claim.Session, bid string, opts *Ins
 	pp.Println(" ||>>", opts)
 	pp.Println(" ||>>", string(opts.UserConfigData))
 
-	instancer := c.pacman.GetInstanceHub()
+	instancer := c.pacman.GetInstancerHubV1()
 
-	fopt := repox.InstanceOptions{
+	fopt := repox.InstanceOptionsV1{
 		BprintId:       bid,
 		InstancerType:  opts.InstancerType,
 		File:           opts.File,
 		UserConfigData: opts.UserConfigData,
 		Auto:           opts.Auto,
-		UserSession:    uclaim,
+		UserContext: &claim.UserContext{
+			TenantId:  uclaim.TenantId,
+			UserID:    uclaim.UserID,
+			UserGroup: uclaim.UserGroup,
+			SessionID: uclaim.SessionID,
+			DeviceId:  uclaim.DeviceId,
+		},
 	}
 
-	switch opts.InstancerType {
-	case xbprint.TypeBundle:
-		if opts.Auto {
-			return instancer.AutomaticBundle(fopt)
-		}
-		return instancer.ManualBundleItem(fopt)
-
-	default:
-		if opts.Auto {
-			return instancer.AutomaticSingle(fopt)
-		}
-		return instancer.ManualSingle(fopt)
-	}
+	return instancer.Instance(fopt)
 }

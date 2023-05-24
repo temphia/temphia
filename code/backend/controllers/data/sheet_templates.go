@@ -6,6 +6,7 @@ import (
 
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
 )
@@ -45,5 +46,11 @@ func (c *Controller) InstanceSheet(uclaim *claim.Session, req QuickSheetInstance
 	tpl.Name = req.Name
 	tpl.Info = req.Info
 
-	return c.repoman.GetInstanceHub().SheetTemplate(uclaim.TenantId, req.Source, "", &tpl)
+	return c.repoman.GetInstancerHubV1().InstanceSheetDirect(repox.InstanceSheetOptions{
+		Source:      req.Source,
+		Group:       "",
+		Template:    &tpl,
+		UserContext: uclaim.AsUserCtx(),
+	})
+
 }

@@ -12,7 +12,9 @@ type Hub interface {
 	RepoCore
 	RepoBprintOps
 
-	GetInstanceHub() InstancHub
+	GetInstancerHubV1() InstancerHubV1
+
+	GetInstancerHubV2() InstancerHubV2
 }
 
 type RepoImportOpts struct {
