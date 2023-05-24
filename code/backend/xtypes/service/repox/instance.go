@@ -29,15 +29,22 @@ type InstancerHubV1 interface {
 
 type InstanceOptionsV2 struct {
 	BprintId    string             `json:"bprint_id,omitempty"`
-	File        string             `json:"file,omitempty"`
+	UserSession *claim.UserContext `json:"-"`
+}
+
+type UpdateOptionsV2 struct {
+	BprintId    string             `json:"bprint_id,omitempty"`
+	Items       map[string]string  `json:"items,omitempty"`
 	UserSession *claim.UserContext `json:"-"`
 }
 
 type InstanceResponseV2 struct {
-	Ok bool `json:"ok,omitempty"`
+	Items map[string]string `json:"items,omitempty"`
 }
 
 type InstancerHubV2 interface {
-	Instance(opts InstanceOptionsV2) (any, error)
-	InstanceSheetDirect() (any, error)
+	Instance(opts InstanceOptionsV2) (*InstanceResponseV2, error)
+	Upgrade(opts UpdateOptionsV2) error
+
+	InstanceSheetDirect(opts InstanceSheetOptions) (*xinstance.Response, error)
 }
