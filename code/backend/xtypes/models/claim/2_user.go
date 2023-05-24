@@ -83,3 +83,13 @@ func (u *Session) IsSuperAdmin() bool {
 func (u *Session) IsGuest() bool {
 	return u.UserGroup == xtypes.UserGroupGuest
 }
+
+func (u *Session) AsUserCtx() *UserContext {
+	return &UserContext{
+		TenantId:  u.TenantId,
+		UserID:    u.UserID,
+		UserGroup: u.UserGroup,
+		SessionID: u.SessionID,
+		DeviceId:  u.DeviceId,
+	}
+}
