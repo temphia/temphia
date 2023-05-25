@@ -30,6 +30,7 @@ type InstancerHubV1 interface {
 type InstanceOptionsV2 struct {
 	BprintId    string             `json:"bprint_id,omitempty"`
 	UserSession *claim.UserContext `json:"-"`
+	InstanceId  string             `json:"instance_id,omitempty"`
 }
 
 type UpdateOptionsV2 struct {

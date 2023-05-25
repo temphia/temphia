@@ -22,13 +22,21 @@ func (h *HubV2) instanceData(handle Handle, item xbprint.InstallItem) error {
 		return err
 	}
 
-	dsrc.MigrateSchema(tenantId, step.MigrateOptions{
-		Steps: schema.Steps,
-		New:   true,
-		Slug:  "",
-	})
+	gslug := item.Name + handle.opts.InstanceId
 
-	// handle.opts
+	err = dsrc.MigrateSchema(tenantId, step.MigrateOptions{
+		Steps:            schema.Steps,
+		New:              true,
+		Slug:             gslug,
+		BprintId:         handle.opts.BprintId,
+		BprintItemId:     item.Name,
+		BprintInstanceId: handle.opts.InstanceId,
+	})
+	if err != nil {
+		return err
+	}
+
+	handle.dataGroups[item.Name] = gslug
 
 	return nil
 }

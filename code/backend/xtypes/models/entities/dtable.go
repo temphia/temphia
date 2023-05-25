@@ -5,17 +5,21 @@ import (
 )
 
 type TableGroup struct {
-	Name          string     `json:"name,omitempty" db:"name"`
-	Slug          string     `json:"slug,omitempty" db:"slug"`
-	Description   string     `json:"description,omitempty" db:"description"`
-	SourceDb      string     `json:"source_db,omitempty" db:"source_db"`
-	TenantID      string     `json:"tenant_id,omitempty" db:"tenant_id"`
-	CabinetSource string     `json:"cabinet_source,omitempty" db:"cabinet_source"`
-	CabinetFolder string     `json:"cabinet_folder,omitempty" db:"cabinet_folder"`
-	Renderer      string     `json:"renderer,omitempty" db:"renderer"`
-	BprintId      string     `json:"bprint_id,omitempty"  db:"bprint_id,omitempty"`
-	ExtraMeta     JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
-	Active        bool       `json:"active,omitempty" db:"active"`
+	Name          string `json:"name,omitempty" db:"name"`
+	Slug          string `json:"slug,omitempty" db:"slug"`
+	Description   string `json:"description,omitempty" db:"description"`
+	SourceDb      string `json:"source_db,omitempty" db:"source_db"`
+	TenantID      string `json:"tenant_id,omitempty" db:"tenant_id"`
+	CabinetSource string `json:"cabinet_source,omitempty" db:"cabinet_source"`
+	CabinetFolder string `json:"cabinet_folder,omitempty" db:"cabinet_folder"`
+	Renderer      string `json:"renderer,omitempty" db:"renderer"`
+
+	BprintId         string `json:"bprint_id,omitempty"  db:"bprint_id,omitempty"`
+	BprintItemId     string `json:"bprint_item_id,omitempty"  db:"bprint_item_id,omitempty"`
+	BprintInstanceId string `json:"bprint_instance_id,omitempty"  db:"bprint_instance_id,omitempty"`
+
+	ExtraMeta JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
+	Active    bool       `json:"active,omitempty" db:"active"`
 }
 
 type Table struct {

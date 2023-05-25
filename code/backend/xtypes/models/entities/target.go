@@ -3,19 +3,24 @@ package entities
 // syncme => target/target.ts
 
 type TargetApp struct {
-	Id          int64      `json:"id,omitempty" db:"id,omitempty"`
-	Name        string     `json:"name,omitempty" db:"name,omitempty"`
-	Icon        string     `json:"icon,omitempty" db:"icon,omitempty"`
-	Policy      string     `json:"policy,omitempty" db:"policy,omitempty"`
-	TargetType  string     `json:"target_type,omitempty" db:"target_type,omitempty"`
-	Target      string     `json:"target,omitempty" db:"target,omitempty"`
-	ContextType string     `json:"context_type,omitempty" db:"context_type,omitempty"`
-	PlugId      string     `json:"plug_id,omitempty" db:"plug_id,omitempty"`
-	AgentId     string     `json:"agent_id,omitempty" db:"agent_id,omitempty"`
-	ExecDomain  int64      `json:"exec_domain,omitempty" db:"exec_domain,omitempty"`
-	ExecMeta    JsonStrMap `json:"exec_meta,omitempty" db:"exec_meta,omitempty"`
-	ExtraMeta   JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
-	TenantId    string     `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`
+	Id          int64  `json:"id,omitempty" db:"id,omitempty"`
+	Name        string `json:"name,omitempty" db:"name,omitempty"`
+	Icon        string `json:"icon,omitempty" db:"icon,omitempty"`
+	Policy      string `json:"policy,omitempty" db:"policy,omitempty"`
+	TargetType  string `json:"target_type,omitempty" db:"target_type,omitempty"`
+	Target      string `json:"target,omitempty" db:"target,omitempty"`
+	ContextType string `json:"context_type,omitempty" db:"context_type,omitempty"`
+	PlugId      string `json:"plug_id,omitempty" db:"plug_id,omitempty"`
+	AgentId     string `json:"agent_id,omitempty" db:"agent_id,omitempty"`
+
+	BprintId         string `json:"bprint_id,omitempty"  db:"bprint_id,omitempty"`
+	BprintItemId     string `json:"bprint_item_id,omitempty"  db:"bprint_item_id,omitempty"`
+	BprintInstanceId string `json:"bprint_instance_id,omitempty"  db:"bprint_instance_id,omitempty"`
+
+	ExecDomain int64      `json:"exec_domain,omitempty" db:"exec_domain,omitempty"`
+	ExecMeta   JsonStrMap `json:"exec_meta,omitempty" db:"exec_meta,omitempty"`
+	ExtraMeta  JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
+	TenantId   string     `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`
 }
 
 const (
@@ -45,18 +50,23 @@ const (
 */
 
 type TargetHook struct {
-	Id         int64      `json:"id,omitempty" db:"id,omitempty"`
-	Name       string     `json:"name,omitempty" db:"name,omitempty"`
-	TargetType string     `json:"target_type,omitempty" db:"target_type,omitempty"`
-	Target     string     `json:"target,omitempty" db:"target,omitempty"`
-	EventType  string     `json:"event_type,omitempty" db:"event_type,omitempty"`
-	Policy     string     `json:"policy,omitempty" db:"policy,omitempty"`
-	PlugId     string     `json:"plug_id,omitempty" db:"plug_id,omitempty"`
-	AgentId    string     `json:"agent_id,omitempty" db:"agent_id,omitempty"`
-	Handler    string     `json:"handler,omitempty" db:"handler,omitempty"`
-	ExecMeta   JsonStrMap `json:"exec_meta,omitempty" db:"exec_meta,omitempty"`
-	ExtraMeta  JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
-	TenantId   string     `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`
+	Id         int64  `json:"id,omitempty" db:"id,omitempty"`
+	Name       string `json:"name,omitempty" db:"name,omitempty"`
+	TargetType string `json:"target_type,omitempty" db:"target_type,omitempty"`
+	Target     string `json:"target,omitempty" db:"target,omitempty"`
+	EventType  string `json:"event_type,omitempty" db:"event_type,omitempty"`
+	Policy     string `json:"policy,omitempty" db:"policy,omitempty"`
+	PlugId     string `json:"plug_id,omitempty" db:"plug_id,omitempty"`
+	AgentId    string `json:"agent_id,omitempty" db:"agent_id,omitempty"`
+	Handler    string `json:"handler,omitempty" db:"handler,omitempty"`
+
+	BprintId         string `json:"bprint_id,omitempty"  db:"bprint_id,omitempty"`
+	BprintItemId     string `json:"bprint_item_id,omitempty"  db:"bprint_item_id,omitempty"`
+	BprintInstanceId string `json:"bprint_instance_id,omitempty"  db:"bprint_instance_id,omitempty"`
+
+	ExecMeta  JsonStrMap `json:"exec_meta,omitempty" db:"exec_meta,omitempty"`
+	ExtraMeta JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
+	TenantId  string     `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`
 }
 
 /*

@@ -1,11 +1,15 @@
 package entities
 
 type Plug struct {
-	Id           string     `json:"id,omitempty" db:"id,omitempty"`
-	Name         string     `json:"name,omitempty" db:"name,omitempty"`
-	Live         bool       `json:"live,omitempty" db:"live,omitempty"`
-	Dev          bool       `json:"dev,omitempty"  db:"dev,omitempty"`
-	BprintId     string     `json:"bprint_id,omitempty"  db:"bprint_id,omitempty"`
+	Id   string `json:"id,omitempty" db:"id,omitempty"`
+	Name string `json:"name,omitempty" db:"name,omitempty"`
+	Live bool   `json:"live,omitempty" db:"live,omitempty"`
+	Dev  bool   `json:"dev,omitempty"  db:"dev,omitempty"`
+
+	BprintId         string `json:"bprint_id,omitempty"  db:"bprint_id,omitempty"`
+	BprintItemId     string `json:"bprint_item_id,omitempty"  db:"bprint_item_id,omitempty"`
+	BprintInstanceId string `json:"bprint_instance_id,omitempty"  db:"bprint_instance_id,omitempty"`
+
 	InvokePolicy string     `json:"invoke_policy,omitempty" db:"invoke_policy,omitempty"`
 	ExtraMeta    JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
 	TenantId     string     `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`

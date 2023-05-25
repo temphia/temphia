@@ -3,6 +3,7 @@ package hubv2
 import (
 	"encoding/json"
 
+	"github.com/jaevor/go-nanoid"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
@@ -11,7 +12,8 @@ import (
 )
 
 var (
-	_ repox.InstancerHubV2 = (*HubV2)(nil)
+	_        repox.InstancerHubV2 = (*HubV2)(nil)
+	gFunc, _                      = nanoid.CustomASCII("abcdefghijklmnopqrstuvwxyz1234567890", 5)
 )
 
 type HubV2 struct {
@@ -27,6 +29,10 @@ func New(pacman repox.RepoBprintOps, dtable dyndb.DataHub) *HubV2 {
 }
 
 func (h *HubV2) Instance(opts repox.InstanceOptionsV2) (*repox.InstanceResponseV2, error) {
+
+	if opts.InstanceId == "" {
+		opts.InstanceId = gFunc()
+	}
 
 	out, err := h.pacman.BprintGetBlob(opts.UserSession.TenantId, opts.BprintId, "schema.json")
 	if err != nil {

@@ -60,6 +60,11 @@ create table target_apps(
     policy text not null default '',
     plug_id text not null,
     agent_id text not null,
+
+    bprint_id text not null default '',
+    bprint_item_id text not null default '',
+    bprint_instance_id text not null default '',
+
     extra_meta json not null default '{}',
     exec_meta json not null default '{}',
     tenant_id text not null,
@@ -76,6 +81,11 @@ create table target_hooks(
     policy text not null default '',
     plug_id text not null default '',
     agent_id text not null default '',
+
+    bprint_id text not null default '',
+    bprint_item_id text not null default '',
+    bprint_instance_id text not null default '',
+
     extra_meta json not null default '{}',
     exec_meta json not null default '{}',
     tenant_id text not null,
@@ -226,7 +236,11 @@ create table data_table_groups (
     description TEXT not null,
     source_db TEXT not null,
     tenant_id TEXT not null,
+
     bprint_id text not null default '',
+    bprint_item_id text not null default '',
+    bprint_instance_id text not null default '',        
+    
     renderer text not null default '',
     cabinet_source TEXT not null default '',
     cabinet_folder TEXT not null default '',
@@ -332,7 +346,11 @@ create table plugs(
     name text not null default '',
     live boolean not null default false,
     dev boolean not null default false,
+
     bprint_id text not null default '',
+    bprint_item_id text not null default '',
+    bprint_instance_id text not null default '',    
+    
     invoke_policy text not null default '',
     steps_head text not null default '',
     extra_meta json not null default '{}',
@@ -367,7 +385,11 @@ create table resources(
     payload text not null default '',
     target text not null default '',
     policy text not null default '',
+
     bprint_id text not null default '',
+    bprint_item_id text not null default '',
+    bprint_instance_id text not null default '',
+    
     extra_meta json not null default '{}',
     tenant_id text not null,
     primary KEY(id, tenant_id)

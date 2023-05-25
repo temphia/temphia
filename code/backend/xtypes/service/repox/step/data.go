@@ -1,9 +1,12 @@
 package step
 
 type MigrateOptions struct {
-	Steps []Step `json:"steps,omitempty" yaml:"steps,omitempty"`
-	New   bool   `json:"new,omitempty" yaml:"new,omitempty"`
-	Slug  string `json:"slug,omitempty" yaml:"slug,omitempty"`
+	Steps            []Step `json:"steps,omitempty" yaml:"steps,omitempty"`
+	New              bool   `json:"new,omitempty" yaml:"new,omitempty"`
+	Slug             string `json:"slug,omitempty" yaml:"slug,omitempty"`
+	BprintId         string `json:"bprint_id,omitempty" yaml:"bprint_id,omitempty"`
+	BprintItemId     string `json:"bprint_item_id,omitempty" yaml:"bprint_item_id,omitempty"`
+	BprintInstanceId string `json:"bprint_instance_id,omitempty" yaml:"bprint_instance_id,omitempty"`
 }
 
 const (
