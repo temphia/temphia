@@ -41,9 +41,14 @@ type NewTable struct {
 	TargetApps []NewTargetApp `json:"target_apps,omitempty" yaml:"target_apps,omitempty"`
 }
 
+type RemoveTable struct {
+	Slug string `json:"slug,omitempty" yaml:"slug,omitempty"`
+}
+
 type NewColumn struct {
 	Name          string   `json:"name,omitempty" yaml:"name,omitempty"`
 	Slug          string   `json:"slug,omitempty" yaml:"slug,omitempty"`
+	Table         string   `json:"table,omitempty" yaml:"table,omitempty"`
 	Ctype         string   `json:"ctype,omitempty" yaml:"ctype,omitempty"`
 	Description   string   `json:"description,omitempty" yaml:"description,omitempty"`
 	Icon          string   `json:"icon,omitempty" yaml:"icon,omitempty"`
@@ -51,6 +56,11 @@ type NewColumn struct {
 	NotNullable   bool     `json:"not_nullable,omitempty" yaml:"not_nullable,omitempty"`
 	Pattern       string   `json:"pattern,omitempty" yaml:"pattern,omitempty"`
 	StrictPattern bool     `json:"strict_pattern,omitempty" yaml:"strict_pattern,omitempty"`
+}
+
+type RemoveColumn struct {
+	Slug  string `json:"slug,omitempty" yaml:"slug,omitempty"`
+	Table string `json:"table,omitempty" yaml:"table,omitempty"`
 }
 
 type NewTargetApp struct {

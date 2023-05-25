@@ -5,7 +5,7 @@ import "encoding/json"
 type MigrateOptions struct {
 	Steps []MigrationStep `json:"steps,omitempty" yaml:"steps,omitempty"`
 	New   bool            `json:"new,omitempty" yaml:"new,omitempty"`
-	Slug  bool            `json:"slug,omitempty" yaml:"slug,omitempty"`
+	Slug  string          `json:"slug,omitempty" yaml:"slug,omitempty"`
 }
 
 type MigrationStep struct {
@@ -18,8 +18,6 @@ const (
 	MigTypeNewGroup              = "new_group"
 	MigTypeAddTable              = "add_table"
 	MigTypeRemoveTable           = "remove_table"
-	MigTypeAddNullColumn         = "add_null_column"
-	MigTypeRemoveNullColumn      = "remove_null_column"
 	MigTypeAddColumn             = "add_column"
 	MigTypeRemoveColumn          = "remove_column"
 	MigTypeAddUniqueConstrain    = "add_unique_constrain"
