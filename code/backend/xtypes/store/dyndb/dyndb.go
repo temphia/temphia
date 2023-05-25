@@ -2,11 +2,12 @@ package dyndb
 
 import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 )
 
 type DynDB interface {
-	MigrateSchema(tenantId string, opts MigrateOptions) error
+	MigrateSchema(tenantId string, opts step.MigrateOptions) error
 
 	NewGroup(tenantId string, model *xbprint.NewTableGroup) error
 	EditGroup(tenantId string, gslug string, model *entities.TableGroupPartial) error

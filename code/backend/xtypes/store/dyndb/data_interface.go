@@ -3,6 +3,7 @@ package dyndb
 import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
@@ -22,7 +23,7 @@ type DataHub interface {
 type DynSource interface {
 	Name() string
 
-	MigrateSchema(tenantId string, opts MigrateOptions) error
+	MigrateSchema(tenantId string, opts step.MigrateOptions) error
 
 	NewGroup(tenantId string, model *xbprint.NewTableGroup) error
 	EditGroup(tenantId, gslug string, model *entities.TableGroupPartial) error

@@ -3,8 +3,8 @@ package hubv2
 import (
 	"encoding/json"
 
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
-	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
 func (h *HubV2) instanceData(handle Handle, item xbprint.InstallItem) error {
@@ -16,13 +16,13 @@ func (h *HubV2) instanceData(handle Handle, item xbprint.InstallItem) error {
 		return err
 	}
 
-	schema := DataSchemaV2{}
+	schema := step.Schema{}
 	err = json.Unmarshal(out, &schema)
 	if err != nil {
 		return err
 	}
 
-	dsrc.MigrateSchema(tenantId, dyndb.MigrateOptions{
+	dsrc.MigrateSchema(tenantId, step.MigrateOptions{
 		Steps: schema.Steps,
 		New:   true,
 		Slug:  "",

@@ -40,8 +40,10 @@ func (h *HubV2) Instance(opts repox.InstanceOptionsV2) (*repox.InstanceResponseV
 	}
 
 	handle := Handle{
-		items: make(map[string]string),
-		opts:  opts,
+		dataSource: "",
+		dataGroups: make(map[string]string),
+		plugs:      make(map[string]string),
+		opts:       opts,
 	}
 
 	for _, item := range schema.Items {

@@ -1,4 +1,4 @@
-package hubv2
+package step
 
 const (
 	PlugStepAddResourceModule    = "add_resource"

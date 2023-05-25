@@ -1,4 +1,4 @@
-package hubv2
+package step
 
 const (
 	PlugStepAddTargetApp    = "add_target_app"

@@ -8,6 +8,7 @@ import (
 	"github.com/temphia/temphia/code/backend/services/datahub/table"
 
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
@@ -116,7 +117,7 @@ func (ds *DataSource) NewActivity(tenantId, group, table string, record *entitie
 	return err
 }
 
-func (ds *DataSource) MigrateSchema(tenantId string, opts dyndb.MigrateOptions) error {
+func (ds *DataSource) MigrateSchema(tenantId string, opts step.MigrateOptions) error {
 	return ds.inner.MigrateSchema(tenantId, opts)
 }
 

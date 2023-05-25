@@ -1,8 +1,4 @@
-package hubv2
-
-type PlugSchema struct {
-	Steps []Step `json:"steps,omitempty" yaml:"steps,omitempty"`
-}
+package step
 
 const (
 	PlugStepNewPlug       = "new_plug"

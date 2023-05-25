@@ -5,21 +5,22 @@ import (
 	"strings"
 
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
-	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
-func (d *DynDB) migrateSchema(tenantId string, opts dyndb.MigrateOptions) error {
+func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 
 	var baseSchema *xbprint.NewTableGroup
 	var buf strings.Builder
+	//	var rollbackBuf strings.Builder
 
 	postitems := make([]postDDLItem, 0)
 
 	if opts.New {
 		firstStep := opts.Steps[0]
 
-		if firstStep.Type != dyndb.MigTypeNewGroup {
+		if firstStep.Type != step.MigTypeNewGroup {
 			return easyerr.Error("wrong type as first migration step")
 		}
 
@@ -58,7 +59,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts dyndb.MigrateOptions) error 
 	for _, mstep := range opts.Steps {
 
 		switch mstep.Type {
-		case dyndb.MigTypeAddTable:
+		case step.MigTypeAddTable:
 
 			tschema := &xbprint.NewTable{}
 			err := json.Unmarshal(mstep.Data, baseSchema)
@@ -76,9 +77,19 @@ func (d *DynDB) migrateSchema(tenantId string, opts dyndb.MigrateOptions) error 
 
 			addPostItem(mstep.Type, tschema)
 
-			// fixme => add table to base schema
+			if opts.New {
+				// fixme => think of other validation ? also check when not new load siblings
 
-		case dyndb.MigTypeRemoveTable:
+				for _, nt := range baseSchema.Tables {
+					if nt.Slug == tschema.Slug {
+						return easyerr.Error("dup table name")
+					}
+				}
+
+				baseSchema.Tables = append(baseSchema.Tables, tschema)
+			}
+
+		case step.MigTypeRemoveTable:
 			tschema := xbprint.RemoveTable{}
 			err := json.Unmarshal(mstep.Data, baseSchema)
 			if err != nil {
@@ -96,7 +107,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts dyndb.MigrateOptions) error 
 
 			// fixme => remove column, baseschema
 
-		case dyndb.MigTypeAddColumn:
+		case step.MigTypeAddColumn:
 			tschema := xbprint.NewColumn{}
 			err := json.Unmarshal(mstep.Data, baseSchema)
 			if err != nil {
@@ -114,7 +125,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts dyndb.MigrateOptions) error 
 
 			// fixme add to baseschema
 
-		case dyndb.MigTypeRemoveColumn:
+		case step.MigTypeRemoveColumn:
 
 			tschema := xbprint.RemoveColumn{}
 			err := json.Unmarshal(mstep.Data, baseSchema)
@@ -147,7 +158,7 @@ type postDDLItem struct {
 	data  any
 }
 
-func (d *DynDB) postDDLCreate(tenantId string, opts dyndb.MigrateOptions, items []postDDLItem) error {
+func (d *DynDB) postDDLCreate(tenantId string, opts step.MigrateOptions, items []postDDLItem) error {
 
 	return nil
 }
