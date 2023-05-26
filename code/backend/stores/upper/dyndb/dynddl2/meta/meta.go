@@ -22,20 +22,16 @@ const (
 	GroupCleanupErr           = "group_cleanup_err"
 )
 
-type DynMeta interface {
-	NewGroupMeta(tenantId string, model *xbprint.NewTableGroup) error
-	RollbackGroupMeta(tenantId, gslug string)
-
-	NewTableMeta(tenantId, gslug string, model *xbprint.NewTable) error
-	RollbackTableMeta(tenantId, gslug, tslug string)
-
-	NewColumnMeta(tenantId, gslug, tslug string, model *entities.Column) error
-	RollbackColumnMeta(tenantId, gslug, tslug, cslug string)
-}
-
 type dynMeta struct {
 	session db.Session
 	logger  zerolog.Logger
+}
+
+func New(session db.Session, logger zerolog.Logger) *dynMeta {
+	return &dynMeta{
+		session: session,
+		logger:  logger,
+	}
 }
 
 func (d *dynMeta) NewGroupMeta(tenantId string, model *xbprint.NewTableGroup) (err error) {

@@ -2,8 +2,10 @@ package dyndb
 
 import (
 	"encoding/json"
+	"os"
 	"strings"
 
+	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dynddl2"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -263,6 +265,9 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 		}
 	}
 
+	// fixme use txn
+	runner := dynddl2.New(d.session, d.sharedLock, zerolog.New(os.Stdout))
+
 	mctx := dynddl2.MigrateContext{
 		BaseSchema:  baseSchema,
 		StmtString:  buf.String(),
@@ -273,9 +278,8 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 	}
 
 	if opts.New {
-		return d.performNewMigrate(tenantId, mctx)
+		runner.RunNew(tenantId, mctx)
 	}
 
-	return nil
-
+	return runner.RunUpdate(tenantId, mctx)
 }
