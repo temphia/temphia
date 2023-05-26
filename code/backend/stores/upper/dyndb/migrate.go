@@ -274,6 +274,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 		PostItems:   postitems,
 		Siblings:    siblings,
 		LastMigHead: lastMigHead,
+		Options:     opts,
 		NextMigHead: opts.Steps[len(opts.Steps)-1].Name,
 	}
 

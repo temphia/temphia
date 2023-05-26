@@ -1,8 +1,9 @@
 package logid
 
 const (
-	DyndbMigrationErr = "dyndb_migration_err"
-	DyndbMigrationOk  = "dyndb_migration_ok"
+	DyndbMigrationErr  = "dyndb_migration_err"
+	DyndbMigrationOk   = "dyndb_migration_ok"
+	DyndbSetMigHeadErr = "dyndb_set_mighead_err"
 
 	DyndbNewGroupRollBack = "new_group_rollback"
 	DyndbGlobalLockErr    = "global_lock_err"
