@@ -5,27 +5,11 @@ import (
 	"strings"
 
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dynddl2"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/upper/db/v4"
-)
-
-type (
-	migrateContext struct {
-		baseSchema *xbprint.NewTableGroup
-		stmtString string
-		postItems  []postDDLItem
-		siblings   map[string]map[string]string
-
-		lastMigHead string
-		nextMigHead string
-	}
-
-	postDDLItem struct {
-		mtype string
-		data  any
-	}
 )
 
 func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
@@ -36,7 +20,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 		lastMigHead = ""
 	)
 
-	postitems := make([]postDDLItem, 0)
+	postitems := make([]dynddl2.PostDDLItem, 0)
 
 	siblings := make(map[string]map[string]string)
 
@@ -62,9 +46,9 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 		buf.WriteString(stmt.String())
 		opts.Steps = opts.Steps[1:]
 
-		postitems = append(postitems, postDDLItem{
-			mtype: firstStep.Type,
-			data:  baseSchema,
+		postitems = append(postitems, dynddl2.PostDDLItem{
+			Mtype: firstStep.Type,
+			Data:  baseSchema,
 		})
 
 		for _, table := range baseSchema.Tables {
@@ -147,9 +131,9 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 			if opts.New {
 				baseSchema.Tables = append(baseSchema.Tables, tschema)
 			} else {
-				postitems = append(postitems, postDDLItem{
-					mtype: mstep.Type,
-					data:  tschema,
+				postitems = append(postitems, dynddl2.PostDDLItem{
+					Mtype: mstep.Type,
+					Data:  tschema,
 				})
 			}
 
@@ -184,9 +168,9 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 				}
 				baseSchema.Tables = newtables
 			} else {
-				postitems = append(postitems, postDDLItem{
-					mtype: mstep.Type,
-					data:  tschema,
+				postitems = append(postitems, dynddl2.PostDDLItem{
+					Mtype: mstep.Type,
+					Data:  tschema,
 				})
 			}
 
@@ -219,9 +203,9 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 				}
 			} else {
 
-				postitems = append(postitems, postDDLItem{
-					mtype: mstep.Type,
-					data:  tschema,
+				postitems = append(postitems, dynddl2.PostDDLItem{
+					Mtype: mstep.Type,
+					Data:  tschema,
 				})
 
 			}
@@ -267,9 +251,9 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 
 			} else {
 
-				postitems = append(postitems, postDDLItem{
-					mtype: mstep.Type,
-					data:  tschema,
+				postitems = append(postitems, dynddl2.PostDDLItem{
+					Mtype: mstep.Type,
+					Data:  tschema,
 				})
 
 			}
@@ -279,19 +263,19 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 		}
 	}
 
-	mctx := migrateContext{
-		baseSchema:  baseSchema,
-		stmtString:  buf.String(),
-		postItems:   postitems,
-		siblings:    siblings,
-		lastMigHead: lastMigHead,
-		nextMigHead: opts.Steps[len(opts.Steps)-1].Name,
+	mctx := dynddl2.MigrateContext{
+		BaseSchema:  baseSchema,
+		StmtString:  buf.String(),
+		PostItems:   postitems,
+		Siblings:    siblings,
+		LastMigHead: lastMigHead,
+		NextMigHead: opts.Steps[len(opts.Steps)-1].Name,
 	}
 
 	if opts.New {
 		return d.performNewMigrate(tenantId, mctx)
 	}
 
-	return d.performUpdateMigrate(tenantId, mctx)
+	return nil
 
 }
