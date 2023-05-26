@@ -33,7 +33,7 @@ type DDLGroupStmt struct {
 
 // this concats ddl stmt of table using proper ordering
 // bashed on which table has foreign reference to another
-// t2 references t1 then first t1 should be created
+// t2 references t1 then first t1 should be created first
 func (d *DDLGroupStmt) String() string {
 	remaining := make(map[string]struct{}, len(d.TableStmts))
 	for k := range d.TableStmts {
