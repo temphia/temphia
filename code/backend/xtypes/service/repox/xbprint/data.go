@@ -35,10 +35,6 @@ type NewTable struct {
 	FTSIndex      *entities.FTSIndex      `json:"fts_index,omitempty" yaml:"fts_index,omitempty"`
 	ColumnRef     []*entities.ColumnFKRef `json:"column_refs,omitempty" yaml:"column_refs,omitempty"`
 	Views         []entities.View         `json:"views,omitempty" yaml:"views,omitempty"`
-	SeedData      SeedData                `json:"seed_data,omitempty" yaml:"seed_data,omitempty"`
-
-	// secondary objects
-	TargetApps []NewTargetApp `json:"target_apps,omitempty" yaml:"target_apps,omitempty"`
 }
 
 type RemoveTable struct {
@@ -67,11 +63,6 @@ type NewTargetApp struct {
 	Name        string `json:"name,omitempty" yaml:"name,omitempty"`
 	Agent       string `json:"agent,omitempty" yaml:"agent,omitempty"`
 	ContextType string `json:"context_type,omitempty" yaml:"context_type,omitempty"`
-}
-
-type SeedData struct {
-	Data         []map[string]any `json:"data,omitempty" yaml:"data,omitempty"`
-	LinkedImages []string         `json:"linked_images,omitempty" yaml:"linked_images,omitempty"`
 }
 
 type DataSchemaV2 struct {
