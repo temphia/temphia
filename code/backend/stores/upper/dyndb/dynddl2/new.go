@@ -11,7 +11,7 @@ func (d *DynDDL) newGroup(tenantId, stmt string, model *xbprint.NewTableGroup) e
 
 	utok, err := d.sharedLock.GlobalLock(tenantId)
 	if err != nil {
-		d.logger.Err(err).Send()
+		d.logger.Err(err).Msg(logid.DyndbGlobalLockErr)
 		return err
 	}
 
@@ -29,7 +29,7 @@ func (d *DynDDL) newGroup(tenantId, stmt string, model *xbprint.NewTableGroup) e
 		return err
 	}
 
-	d.logger.Info().Msg("NewGroupMetadataCreated")
+	d.logger.Info().Msg(logid.DyndbNewGroupMetadataCreated)
 	err = dbutils.Execute(ucore.GetDriver(d.session), stmt)
 	if err != nil {
 		d.logger.
