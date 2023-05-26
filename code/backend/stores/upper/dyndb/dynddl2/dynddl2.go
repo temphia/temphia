@@ -6,6 +6,7 @@ import (
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dyncore"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dynddl2/meta"
 	"github.com/temphia/temphia/code/backend/stores/upper/ucore"
+	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/upper/db/v4"
@@ -49,7 +50,7 @@ func (d *DynDDL) newGroup(tenantId, stmt string, model *xbprint.NewTableGroup) e
 			Interface("model", model).
 			Str("stmt", stmt).
 			Caller().
-			Msg("NewGroupMetadataCreateErr")
+			Msg(logid.DyndbNewGroupMetadataCreateErr)
 
 		return err
 	}
@@ -62,7 +63,7 @@ func (d *DynDDL) newGroup(tenantId, stmt string, model *xbprint.NewTableGroup) e
 			Interface("model", model).
 			Str("stmt", stmt).
 			Caller().
-			Msg("NewGroupSchemaExecErr")
+			Msg(logid.DyndbNewGroupSchemaExecErr)
 
 		d.meta.RollbackGroupMeta(tenantId, model.Slug)
 	}

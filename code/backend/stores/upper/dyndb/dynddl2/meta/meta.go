@@ -4,22 +4,15 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dyncore"
+	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/upper/db/v4"
 )
 
-const (
-	NewGroupRollBack          = "new_group_rollback"
-	GlobalLockErr             = "global_lock_err"
-	NewGroupMetadataCreated   = "new_group_metadata_created"
-	NewGroupMetadataCreateErr = "new_group_metadata_created_err"
-	NewGroupSchemaExecErr     = "new_group_schema_exec_err"
-	ColumnsCleanupErr         = "columns_cleanup_err"
-	TablesCleanupErr          = "tables_cleanup_err"
-	TableCleanupErr           = "tables_cleanup_err"
-	GroupCleanupErr           = "group_cleanup_err"
+var (
+	_ dyncore.DynMeta = (*dynMeta)(nil)
 )
 
 type dynMeta struct {
@@ -72,7 +65,7 @@ func (d *dynMeta) RollbackGroupMeta(tenantId, gslug string) {
 		d.logger.Err(err).
 			Str("gslug", gslug).
 			Caller().
-			Msg(ColumnsCleanupErr)
+			Msg(logid.DyndbColumnsCleanupErr)
 	}
 
 	err = d.dataTables().Find(db.Cond{
@@ -83,7 +76,7 @@ func (d *dynMeta) RollbackGroupMeta(tenantId, gslug string) {
 		d.logger.Err(err).
 			Str("gslug", gslug).
 			Caller().
-			Msg(TablesCleanupErr)
+			Msg(logid.DyndbTablesCleanupErr)
 	}
 
 	err = d.dataTableGroups().Find(db.Cond{
@@ -94,7 +87,7 @@ func (d *dynMeta) RollbackGroupMeta(tenantId, gslug string) {
 		d.logger.Err(err).
 			Str("gslug", gslug).
 			Caller().
-			Msg(GroupCleanupErr)
+			Msg(logid.DyndbGroupCleanupErr)
 	}
 }
 
