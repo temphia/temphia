@@ -17,6 +17,7 @@ type TableGroup struct {
 	BprintId         string `json:"bprint_id,omitempty"  db:"bprint_id,omitempty"`
 	BprintItemId     string `json:"bprint_item_id,omitempty"  db:"bprint_item_id,omitempty"`
 	BprintInstanceId string `json:"bprint_instance_id,omitempty"  db:"bprint_instance_id,omitempty"`
+	MigrationHead    string `json:"migration_head,omitempty"  db:"migration_head,omitempty"`
 
 	ExtraMeta JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
 	Active    bool       `json:"active,omitempty" db:"active"`

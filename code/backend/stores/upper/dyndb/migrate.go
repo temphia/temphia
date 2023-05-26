@@ -17,6 +17,9 @@ type (
 		stmtString string
 		postItems  []postDDLItem
 		siblings   map[string]map[string]string
+
+		lastMigHead string
+		nextMigHead string
 	}
 
 	postDDLItem struct {
@@ -27,8 +30,11 @@ type (
 
 func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 
-	var baseSchema *xbprint.NewTableGroup
-	var buf strings.Builder
+	var (
+		baseSchema  *xbprint.NewTableGroup
+		buf         = strings.Builder{}
+		lastMigHead = ""
+	)
 
 	postitems := make([]postDDLItem, 0)
 
@@ -77,9 +83,29 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 		}
 
 	} else {
+
+		group, err := d.GetGroup(tenantId, opts.Gslug)
+		if err != nil {
+			return err
+		}
+
+		lastMigHead = group.MigrationHead
+		found := false
+		for idx, step := range opts.Steps {
+			if step.Name == lastMigHead {
+				found = true
+				opts.Steps = opts.Steps[idx:]
+				break
+			}
+		}
+
+		if !found {
+			return easyerr.Error("migration_head not found")
+		}
+
 		cols := make([]*entities.Column, 0)
-		err := d.dataTableColumns().Find(db.Cond{
-			"group_id":  opts.Slug,
+		err = d.dataTableColumns().Find(db.Cond{
+			"group_id":  opts.Gslug,
 			"tenant_id": tenantId,
 		}).All(&cols)
 		if err != nil {
@@ -110,7 +136,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 				return err
 			}
 
-			tstmt, err := d.dyngen.NewTable(tenantId, opts.Slug, tschema, []string{})
+			tstmt, err := d.dyngen.NewTable(tenantId, opts.Gslug, tschema, []string{})
 			if err != nil {
 				return err
 			}
@@ -134,7 +160,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 				return err
 			}
 
-			stmt, err := d.dyngen.DropTable(tenantId, opts.Slug, tschema.Slug)
+			stmt, err := d.dyngen.DropTable(tenantId, opts.Gslug, tschema.Slug)
 			if err != nil {
 				return err
 			}
@@ -171,7 +197,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 				return err
 			}
 
-			sout, err := d.dyngen.AddColumn(tenantId, opts.Slug, tschema.Table, tschema.Slug, &tschema)
+			sout, err := d.dyngen.AddColumn(tenantId, opts.Gslug, tschema.Table, tschema.Slug, &tschema)
 			if err != nil {
 				return err
 			}
@@ -208,7 +234,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 				return err
 			}
 
-			sout, err := d.dyngen.DropColumn(tenantId, opts.Slug, tschema.Table, tschema.Slug)
+			sout, err := d.dyngen.DropColumn(tenantId, opts.Gslug, tschema.Table, tschema.Slug)
 			if err != nil {
 				return err
 			}
@@ -254,10 +280,12 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 	}
 
 	mctx := migrateContext{
-		baseSchema: baseSchema,
-		stmtString: buf.String(),
-		postItems:  postitems,
-		siblings:   siblings,
+		baseSchema:  baseSchema,
+		stmtString:  buf.String(),
+		postItems:   postitems,
+		siblings:    siblings,
+		lastMigHead: lastMigHead,
+		nextMigHead: opts.Steps[len(opts.Steps)-1].Name,
 	}
 
 	if opts.New {
