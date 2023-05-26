@@ -5,17 +5,34 @@ import (
 	"strings"
 
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/upper/db/v4"
+)
+
+type (
+	migrateContext struct {
+		baseSchema *xbprint.NewTableGroup
+		stmtString string
+		postItems  []postDDLItem
+		siblings   map[string]map[string]string
+	}
+
+	postDDLItem struct {
+		mtype string
+		data  any
+	}
 )
 
 func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 
 	var baseSchema *xbprint.NewTableGroup
 	var buf strings.Builder
-	//	var rollbackBuf strings.Builder
 
 	postitems := make([]postDDLItem, 0)
+
+	siblings := make(map[string]map[string]string)
 
 	if opts.New {
 		firstStep := opts.Steps[0]
@@ -43,15 +60,41 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 			mtype: firstStep.Type,
 			data:  baseSchema,
 		})
-	}
 
-	addPostItem := func(mtype string, data any) {
+		for _, table := range baseSchema.Tables {
+			if _, ok := siblings[table.Slug]; ok {
+				return easyerr.Error("duplicate tables")
+			}
 
-		if !opts.New {
-			postitems = append(postitems, postDDLItem{
-				mtype: mtype,
-				data:  data,
-			})
+			cols := make(map[string]string, len(table.Columns))
+			for _, col := range table.Columns {
+				if _, ok := cols[col.Slug]; ok {
+					return easyerr.Error("duplicate columns")
+				}
+
+				cols[col.Slug] = col.Ctype
+			}
+		}
+
+	} else {
+		cols := make([]*entities.Column, 0)
+		err := d.dataTableColumns().Find(db.Cond{
+			"group_id":  opts.Slug,
+			"tenant_id": tenantId,
+		}).All(&cols)
+		if err != nil {
+			return err
+		}
+
+		for _, col := range cols {
+
+			scols, ok := siblings[col.TableID]
+			if !ok {
+				scols = make(map[string]string)
+				siblings[col.TableID] = scols
+			}
+
+			scols[col.Slug] = col.Ctype
 		}
 
 	}
@@ -75,18 +118,13 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 			baseSchema.Tables = append(baseSchema.Tables, tschema)
 			buf.WriteString(tstmt.String())
 
-			addPostItem(mstep.Type, tschema)
-
 			if opts.New {
-				// fixme => think of other validation ? also check when not new load siblings
-
-				for _, nt := range baseSchema.Tables {
-					if nt.Slug == tschema.Slug {
-						return easyerr.Error("dup table name")
-					}
-				}
-
 				baseSchema.Tables = append(baseSchema.Tables, tschema)
+			} else {
+				postitems = append(postitems, postDDLItem{
+					mtype: mstep.Type,
+					data:  tschema,
+				})
 			}
 
 		case step.MigTypeRemoveTable:
@@ -103,9 +141,28 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 
 			buf.WriteString(stmt)
 
-			addPostItem(mstep.Type, tschema)
+			if opts.New {
 
-			// fixme => remove column, baseschema
+				newtables := make([]*xbprint.NewTable, 0, len(baseSchema.Tables))
+
+				found := false
+				for _, tbl := range baseSchema.Tables {
+					if tbl.Slug == tschema.Slug {
+						found = true
+						continue
+					}
+					newtables = append(newtables, tbl)
+				}
+				if !found {
+					return easyerr.Error("table to remove not found")
+				}
+				baseSchema.Tables = newtables
+			} else {
+				postitems = append(postitems, postDDLItem{
+					mtype: mstep.Type,
+					data:  tschema,
+				})
+			}
 
 		case step.MigTypeAddColumn:
 			tschema := xbprint.NewColumn{}
@@ -121,9 +178,27 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 
 			buf.WriteString(sout)
 
-			addPostItem(mstep.Type, tschema)
+			if opts.New {
+				found := false
 
-			// fixme add to baseschema
+				for _, table := range baseSchema.Tables {
+					if table.Slug == tschema.Table {
+						found = true
+						table.Columns = append(table.Columns, &tschema)
+					}
+				}
+
+				if !found {
+					return easyerr.Error("table not found to add column")
+				}
+			} else {
+
+				postitems = append(postitems, postDDLItem{
+					mtype: mstep.Type,
+					data:  tschema,
+				})
+
+			}
 
 		case step.MigTypeRemoveColumn:
 
@@ -140,25 +215,55 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 
 			buf.WriteString(sout)
 
-			addPostItem(mstep.Type, tschema)
+			if opts.New {
+				found := false
 
-			// fixme remove column from baseschema
+				for _, table := range baseSchema.Tables {
+					if table.Slug == tschema.Table {
+						found = true
+						newcols := make([]*xbprint.NewColumn, 0, len(table.Columns))
+
+						for _, nc := range table.Columns {
+							if nc.Slug == tschema.Slug {
+								continue
+							}
+
+							newcols = append(newcols, nc)
+						}
+
+						table.Columns = newcols
+					}
+				}
+
+				if !found {
+					return easyerr.Error("table not found to remove column")
+				}
+
+			} else {
+
+				postitems = append(postitems, postDDLItem{
+					mtype: mstep.Type,
+					data:  tschema,
+				})
+
+			}
 
 		default:
 			panic("not implemented")
 		}
-
 	}
 
-	return d.postDDLCreate(tenantId, opts, postitems)
-}
+	mctx := migrateContext{
+		baseSchema: baseSchema,
+		stmtString: buf.String(),
+		postItems:  postitems,
+		siblings:   siblings,
+	}
 
-type postDDLItem struct {
-	mtype string
-	data  any
-}
+	if opts.New {
+		return d.performNewMigrate(tenantId, mctx)
+	}
 
-func (d *DynDB) postDDLCreate(tenantId string, opts step.MigrateOptions, items []postDDLItem) error {
+	return d.performUpdateMigrate(tenantId, mctx)
 
-	return nil
 }
