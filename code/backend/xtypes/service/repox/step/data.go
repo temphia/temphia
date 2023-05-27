@@ -7,6 +7,7 @@ type MigrateOptions struct {
 	BprintId         string `json:"bprint_id,omitempty" yaml:"bprint_id,omitempty"`
 	BprintItemId     string `json:"-"`
 	BprintInstanceId string `json:"-"`
+	DryRun           bool   `json:"-"`
 }
 
 const (

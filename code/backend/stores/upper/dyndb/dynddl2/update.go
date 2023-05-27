@@ -3,13 +3,17 @@ package dynddl2
 import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dyncore"
 	"github.com/temphia/temphia/code/backend/stores/upper/ucore"
 	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/upper/db/v4"
 )
 
 func (d *DynDDL) update(tenantId string, migctx MigrateContext) error {
+	nextHead := ""
 
 	utok, err := d.sharedLock.GlobalLock(tenantId)
 	if err != nil {
@@ -17,48 +21,106 @@ func (d *DynDDL) update(tenantId string, migctx MigrateContext) error {
 		return err
 	}
 
-	defer d.sharedLock.GlobalUnLock(tenantId, utok)
+	defer func() {
+		if nextHead != "" {
+			err = dyncore.GroupTable(d.session).Find(db.Cond{
+				"tenant_id": tenantId,
+				"slug":      migctx.BaseSchema.Slug,
+			}).Update(db.Cond{
+				"migration_head": nextHead,
+				"active":         true,
+			})
+		}
 
-	err = dbutils.Execute(ucore.GetDriver(d.session), migctx.StmtString)
-	if err != nil {
-		return err
-	}
+		d.sharedLock.GlobalUnLock(tenantId, utok)
+	}()
 
-	for idx, pd := range migctx.PostItems {
+	for _, pd := range migctx.PostItems {
 		pp.Println("@pd", pd)
 
 		switch pd.Mtype {
 
 		case step.MigTypeAddTable:
+
+			err = dbutils.Execute(ucore.GetDriver(d.session), pd.Stmt)
+			if err != nil {
+				return err
+			}
+
 			err = d.meta.NewTableMeta(
 				tenantId,
 				migctx.Options.Gslug,
 				pd.Data.(*xbprint.NewTable),
 			)
 			if err != nil {
-				d.tryRollbackUpdate(tenantId, idx, migctx)
+				return err
 			}
 
 		case step.MigTypeRemoveTable:
-		case step.MigTypeAddColumn:
-		case step.MigTypeRemoveColumn:
+			schema := pd.Data.(*xbprint.RemoveTable)
+			d.meta.RollbackTableMeta(tenantId, migctx.Options.Gslug, schema.Slug)
+			ok, err := dyncore.Table(d.session).Find(db.Cond{
+				"tenant_id": tenantId,
+				"slug":      schema.Slug,
+			}).Exists()
+			if err != nil {
+				return err
+			}
 
+			if ok {
+				return easyerr.Error("could not drop table meta")
+			}
+
+			err = dbutils.Execute(ucore.GetDriver(d.session), pd.Stmt)
+			if err != nil {
+				return err
+			}
+
+		case step.MigTypeAddColumn:
+			schema := pd.Data.(*xbprint.NewColumn)
+
+			err = dbutils.Execute(ucore.GetDriver(d.session), pd.Stmt)
+			if err != nil {
+				return err
+			}
+
+			err = d.meta.NewColumnMeta(
+				tenantId,
+				migctx.Options.Gslug,
+				schema.Table,
+				schema.To(tenantId, migctx.Options.Gslug, schema.Table),
+			)
+
+			if err != nil {
+				return err
+			}
+
+		case step.MigTypeRemoveColumn:
+			schema := pd.Data.(*xbprint.RemoveColumn)
+			d.meta.RollbackColumnMeta(tenantId, migctx.Options.Gslug, schema.Table, schema.Slug)
+
+			ok, err := dyncore.TableColumn(d.session).Find(db.Cond{
+				"tenant_id": tenantId,
+				"table_id":  schema.Table,
+				"slug":      schema.Slug,
+			}).Exists()
+			if err != nil {
+				return err
+			}
+
+			if ok {
+				return easyerr.Error("could not drop column meta")
+			}
+
+			err = dbutils.Execute(ucore.GetDriver(d.session), pd.Stmt)
+			if err != nil {
+				return err
+			}
 		}
+
+		nextHead = pd.Stmt
 
 	}
 
 	return nil
-}
-
-func (d *DynDDL) tryRollbackUpdate(tenantId string, currIdx int, migctx MigrateContext) {
-
-	items := migctx.PostItems[:currIdx]
-
-	for i := 0; i < len(items)-1; i = i + 1 {
-		item := items[i]
-
-		pp.Println("@item", item)
-
-	}
-
 }

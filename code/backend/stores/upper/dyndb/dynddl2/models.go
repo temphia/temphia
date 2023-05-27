@@ -17,7 +17,9 @@ type (
 	}
 
 	PostDDLItem struct {
+		Name  string
 		Mtype string
 		Data  any
+		Stmt  string
 	}
 )

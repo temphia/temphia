@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/k0kubun/pp"
 	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dynddl2"
@@ -45,12 +46,16 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 			return err
 		}
 
-		buf.WriteString(stmt.String())
+		stmtstr := stmt.String()
+
+		buf.WriteString(stmtstr)
 		opts.Steps = opts.Steps[1:]
 
 		postitems = append(postitems, dynddl2.PostDDLItem{
+			Name:  firstStep.Name,
 			Mtype: firstStep.Type,
 			Data:  baseSchema,
+			Stmt:  stmtstr,
 		})
 
 		for _, table := range baseSchema.Tables {
@@ -128,14 +133,19 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 			}
 
 			baseSchema.Tables = append(baseSchema.Tables, tschema)
-			buf.WriteString(tstmt.String())
+
+			stmtstr := tstmt.String()
+
+			buf.WriteString(stmtstr)
 
 			if opts.New {
 				baseSchema.Tables = append(baseSchema.Tables, tschema)
 			} else {
 				postitems = append(postitems, dynddl2.PostDDLItem{
+					Name:  mstep.Name,
 					Mtype: mstep.Type,
 					Data:  tschema,
+					Stmt:  stmtstr,
 				})
 			}
 
@@ -171,8 +181,10 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 				baseSchema.Tables = newtables
 			} else {
 				postitems = append(postitems, dynddl2.PostDDLItem{
+					Name:  mstep.Name,
 					Mtype: mstep.Type,
 					Data:  tschema,
+					Stmt:  stmt,
 				})
 			}
 
@@ -183,12 +195,12 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 				return err
 			}
 
-			sout, err := d.dyngen.AddColumn(tenantId, opts.Gslug, tschema.Table, tschema.Slug, &tschema)
+			stmtstr, err := d.dyngen.AddColumn(tenantId, opts.Gslug, tschema.Table, tschema.Slug, &tschema)
 			if err != nil {
 				return err
 			}
 
-			buf.WriteString(sout)
+			buf.WriteString(stmtstr)
 
 			if opts.New {
 				found := false
@@ -206,8 +218,10 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 			} else {
 
 				postitems = append(postitems, dynddl2.PostDDLItem{
+					Name:  mstep.Name,
 					Mtype: mstep.Type,
 					Data:  tschema,
+					Stmt:  stmtstr,
 				})
 
 			}
@@ -220,12 +234,12 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 				return err
 			}
 
-			sout, err := d.dyngen.DropColumn(tenantId, opts.Gslug, tschema.Table, tschema.Slug)
+			stmtstr, err := d.dyngen.DropColumn(tenantId, opts.Gslug, tschema.Table, tschema.Slug)
 			if err != nil {
 				return err
 			}
 
-			buf.WriteString(sout)
+			buf.WriteString(stmtstr)
 
 			if opts.New {
 				found := false
@@ -254,8 +268,10 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 			} else {
 
 				postitems = append(postitems, dynddl2.PostDDLItem{
+					Name:  mstep.Name,
 					Mtype: mstep.Type,
 					Data:  tschema,
+					Stmt:  stmtstr,
 				})
 
 			}
@@ -264,9 +280,6 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 			panic("not implemented")
 		}
 	}
-
-	// fixme use txn
-	runner := dynddl2.New(d.session, d.sharedLock, zerolog.New(os.Stdout))
 
 	mctx := dynddl2.MigrateContext{
 		BaseSchema:  baseSchema,
@@ -277,6 +290,14 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 		Options:     opts,
 		NextMigHead: opts.Steps[len(opts.Steps)-1].Name,
 	}
+
+	if opts.DryRun {
+		pp.Println("@dry_run_mctx", mctx)
+		return nil
+	}
+
+	// fixme use txn
+	runner := dynddl2.New(d.session, d.sharedLock, zerolog.New(os.Stdout))
 
 	if opts.New {
 		runner.RunNew(tenantId, mctx)
