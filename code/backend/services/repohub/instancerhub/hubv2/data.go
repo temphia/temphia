@@ -7,7 +7,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 )
 
-func (h *HubV2) instanceData(handle Handle, item xbprint.InstallItem) error {
+func (h *HubV2) instanceData(handle Handle, item xbprint.BundleItem) error {
 	tenantId := handle.opts.UserSession.TenantId
 	dsrc := h.dtable.DefaultSource(tenantId)
 

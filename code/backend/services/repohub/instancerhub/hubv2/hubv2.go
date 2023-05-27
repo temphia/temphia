@@ -8,6 +8,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
@@ -19,12 +20,14 @@ var (
 type HubV2 struct {
 	pacman repox.RepoBprintOps
 	dtable dyndb.DataHub
+	syncdb store.SyncDB
 }
 
-func New(pacman repox.RepoBprintOps, dtable dyndb.DataHub) *HubV2 {
+func New(pacman repox.RepoBprintOps, dtable dyndb.DataHub, syncdb store.SyncDB) *HubV2 {
 	return &HubV2{
 		pacman: pacman,
 		dtable: dtable,
+		syncdb: syncdb,
 	}
 }
 
