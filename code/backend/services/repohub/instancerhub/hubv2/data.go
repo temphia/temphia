@@ -27,7 +27,7 @@ func (h *HubV2) instanceData(handle Handle, item xbprint.InstallItem) error {
 	err = dsrc.MigrateSchema(tenantId, step.MigrateOptions{
 		Steps:            schema.Steps,
 		New:              true,
-		Slug:             gslug,
+		Gslug:            gslug,
 		BprintId:         handle.opts.BprintId,
 		BprintItemId:     item.Name,
 		BprintInstanceId: handle.opts.InstanceId,

@@ -1,7 +1,6 @@
 package dynddl2
 
 import (
-	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/stores/upper/ucore"
@@ -11,8 +10,9 @@ import (
 	"github.com/upper/db/v4"
 )
 
-func (d *DynDDL) update(tenantId string, migctx MigrateContext) error {
+func (d *DynDDL) update(tenantId string, migctx MigrateContext) (err error) {
 	nextHead := ""
+	var currentPd *PostDDLItem
 
 	utok, err := d.sharedLock.GlobalLock(tenantId)
 	if err != nil {
@@ -21,6 +21,14 @@ func (d *DynDDL) update(tenantId string, migctx MigrateContext) error {
 	}
 
 	defer func() {
+		if err != nil {
+			d.logger.
+				Err(err).
+				Str("current_item", currentPd.Name).
+				Interface("mig_ctx_data", migctx).
+				Msg(logid.DyndbUpdateMigHeadErr)
+		}
+
 		if nextHead != "" {
 			err = d.dataTableGroups().Find(db.Cond{
 				"tenant_id": tenantId,
@@ -29,13 +37,18 @@ func (d *DynDDL) update(tenantId string, migctx MigrateContext) error {
 				"migration_head": nextHead,
 				"active":         true,
 			})
+
+			d.logger.
+				Err(err).
+				Interface("mig_ctx_data", migctx).
+				Msg(logid.DyndbSetMigHeadErr)
 		}
 
 		d.sharedLock.GlobalUnLock(tenantId, utok)
 	}()
 
 	for _, pd := range migctx.PostItems {
-		pp.Println("@pd", pd)
+		currentPd = &pd
 
 		switch pd.Mtype {
 
