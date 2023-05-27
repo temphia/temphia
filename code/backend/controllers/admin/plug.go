@@ -141,7 +141,7 @@ func (c *Controller) ResourceList(uclaim *claim.Session) ([]*entities.Resource, 
 		return nil, scopes.ErrNoAdminEngineScope
 	}
 
-	return c.coredb.ResourceList(uclaim.TenantId)
+	return c.coredb.ResourceList(uclaim.TenantId, nil)
 }
 
 type FlowmapData struct {

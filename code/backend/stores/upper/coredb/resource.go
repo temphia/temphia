@@ -37,10 +37,18 @@ func (d *DB) ResourceDel(tenantId, rid string) error {
 	return d.resTable().Find(db.Cond{"tenant_id": tenantId, "id": rid}).Delete()
 }
 
-func (d *DB) ResourceList(tenantId string) ([]*entities.Resource, error) {
+func (d *DB) ResourceList(tenantId string, cond map[string]any) ([]*entities.Resource, error) {
 	ress := make([]*entities.Resource, 0)
 
-	err := d.resTable().Find(db.Cond{"tenant_id": tenantId}).All(&ress)
+	fcond := db.Cond{"tenant_id": tenantId}
+
+	if len(cond) != 0 {
+		for k, v := range cond {
+			fcond[k] = v
+		}
+	}
+
+	err := d.resTable().Find(fcond).All(&ress)
 	if err != nil {
 		return nil, err
 	}

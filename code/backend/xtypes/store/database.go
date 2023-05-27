@@ -170,11 +170,9 @@ type PlugOps interface {
 	ResourceUpdate(tenantId string, id string, data map[string]any) error
 	ResourceGet(tenantId, rid string) (*entities.Resource, error)
 	ResourceDel(tenantId, rid string) error
-	ResourceList(tenantId string) ([]*entities.Resource, error)
+	ResourceList(tenantId string, cond map[string]any) ([]*entities.Resource, error)
 	ResourcesMulti(tenantId string, rids ...string) ([]*entities.Resource, error)
 	ResourcesByTarget(tenantId string, target string) ([]*entities.Resource, error)
-
-	// ResourcesList(tenantId string) ([]*entities.Resource, error)
 
 	GetFlowMap(tenantId string) (*flowmap.Data, error)
 }

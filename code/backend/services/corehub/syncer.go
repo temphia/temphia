@@ -132,8 +132,8 @@ func (c *CoreHub) ResourceDel(tenantId, rid string) error {
 	return nil
 }
 
-func (c *CoreHub) ResourceList(tenantId string) ([]*entities.Resource, error) {
-	return c.coredb.ResourceList(tenantId)
+func (c *CoreHub) ResourceList(tenantId string, cond map[string]any) ([]*entities.Resource, error) {
+	return c.coredb.ResourceList(tenantId, cond)
 }
 
 func (c *CoreHub) ResourcesMulti(tenantId string, rids ...string) ([]*entities.Resource, error) {
