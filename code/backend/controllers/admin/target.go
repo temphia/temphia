@@ -34,7 +34,7 @@ func (c *Controller) ListTargetHook(uclaim *claim.Session) ([]*entities.TargetHo
 		return nil, ErrNoTargetScope
 	}
 
-	return c.coredb.ListTargetHook(uclaim.TenantId)
+	return c.coredb.ListTargetHook(uclaim.TenantId, nil)
 }
 
 func (c *Controller) ListTargetHookByType(uclaim *claim.Session, ttype, target string) ([]*entities.TargetHook, error) {
@@ -84,7 +84,7 @@ func (c *Controller) ListTargetApp(uclaim *claim.Session) ([]*entities.TargetApp
 		return nil, ErrNoTargetScope
 	}
 
-	return c.coredb.ListTargetApp(uclaim.TenantId)
+	return c.coredb.ListTargetApp(uclaim.TenantId, nil)
 }
 
 func (c *Controller) ListTargetAppByType(uclaim *claim.Session, ttype, target string) ([]*entities.TargetApp, error) {

@@ -21,10 +21,18 @@ func (d *DB) UpdateTargetHook(tenantId, ttype string, id int64, data map[string]
 		"target_type": ttype}).Update(data)
 }
 
-func (d *DB) ListTargetHook(tenantId string) ([]*entities.TargetHook, error) {
+func (d *DB) ListTargetHook(tenantId string, cond map[string]any) ([]*entities.TargetHook, error) {
 	ws := make([]*entities.TargetHook, 0)
 
-	err := d.targetHookTable().Find(db.Cond{"tenant_id": tenantId}).All(&ws)
+	fcond := db.Cond{"tenant_id": tenantId}
+
+	if len(cond) != 0 {
+		for k, v := range cond {
+			fcond[k] = v
+		}
+	}
+
+	err := d.targetHookTable().Find(fcond).All(&ws)
 	if err != nil {
 		return nil, err
 	}
@@ -91,10 +99,18 @@ func (d *DB) UpdateTargetApp(tenantId, ttype string, id int64, data map[string]a
 		"target_type": ttype}).Update(data)
 }
 
-func (d *DB) ListTargetApp(tenantId string) ([]*entities.TargetApp, error) {
+func (d *DB) ListTargetApp(tenantId string, cond map[string]any) ([]*entities.TargetApp, error) {
 	ws := make([]*entities.TargetApp, 0)
 
-	err := d.targetAppTable().Find(db.Cond{"tenant_id": tenantId}).All(&ws)
+	fcond := db.Cond{"tenant_id": tenantId}
+
+	if len(cond) != 0 {
+		for k, v := range cond {
+			fcond[k] = v
+		}
+	}
+
+	err := d.targetAppTable().Find(fcond).All(&ws)
 	if err != nil {
 		return nil, err
 	}

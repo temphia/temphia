@@ -28,8 +28,8 @@ func (c *CoreHub) UpdateTargetHook(tenantId, ttype string, id int64, data map[st
 	return nil
 }
 
-func (c *CoreHub) ListTargetHook(tenantId string) ([]*entities.TargetHook, error) {
-	return c.coredb.ListTargetHook(tenantId)
+func (c *CoreHub) ListTargetHook(tenantId string, cond map[string]any) ([]*entities.TargetHook, error) {
+	return c.coredb.ListTargetHook(tenantId, cond)
 }
 
 func (c *CoreHub) ListTargetHookByType(tenantId, ttype, target string) ([]*entities.TargetHook, error) {
@@ -74,8 +74,8 @@ func (c *CoreHub) UpdateTargetApp(tenantId, ttype string, id int64, data map[str
 	return nil
 }
 
-func (c *CoreHub) ListTargetApp(tenantId string) ([]*entities.TargetApp, error) {
-	return c.coredb.ListTargetApp(tenantId)
+func (c *CoreHub) ListTargetApp(tenantId string, cond map[string]any) ([]*entities.TargetApp, error) {
+	return c.coredb.ListTargetApp(tenantId, cond)
 }
 
 func (c *CoreHub) ListTargetAppByType(tenantId, ttype, target string) ([]*entities.TargetApp, error) {

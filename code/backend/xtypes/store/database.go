@@ -74,7 +74,7 @@ type TenantOps interface {
 type TargetOps interface {
 	AddTargetHook(data *entities.TargetHook) (int64, error)
 	UpdateTargetHook(tenantId, ttype string, id int64, data map[string]any) error
-	ListTargetHook(tenantId string) ([]*entities.TargetHook, error)
+	ListTargetHook(tenantId string, cond map[string]any) ([]*entities.TargetHook, error)
 	ListTargetHookByType(tenantId, ttype, target string) ([]*entities.TargetHook, error)
 	ListTargetHookByPlug(tenantId, plug string) ([]*entities.TargetHook, error)
 	GetTargetHook(tenantId, ttype string, id int64) (*entities.TargetHook, error)
@@ -82,7 +82,7 @@ type TargetOps interface {
 
 	AddTargetApp(data *entities.TargetApp) (int64, error)
 	UpdateTargetApp(tenantId, ttype string, id int64, data map[string]any) error
-	ListTargetApp(tenantId string) ([]*entities.TargetApp, error)
+	ListTargetApp(tenantId string, cond map[string]any) ([]*entities.TargetApp, error)
 	ListTargetAppByType(tenantId, ttype, target string) ([]*entities.TargetApp, error)
 	ListTargetAppByPlug(tenantId, plug string) ([]*entities.TargetApp, error)
 	GetTargetApp(tenantId, ttype string, id int64) (*entities.TargetApp, error)
@@ -173,6 +173,8 @@ type PlugOps interface {
 	ResourceList(tenantId string) ([]*entities.Resource, error)
 	ResourcesMulti(tenantId string, rids ...string) ([]*entities.Resource, error)
 	ResourcesByTarget(tenantId string, target string) ([]*entities.Resource, error)
+
+	// ResourcesList(tenantId string) ([]*entities.Resource, error)
 
 	GetFlowMap(tenantId string) (*flowmap.Data, error)
 }
