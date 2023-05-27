@@ -1,8 +1,7 @@
-package meta
+package dynddl2
 
 import (
 	"github.com/k0kubun/pp"
-	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dyncore"
 	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -11,28 +10,12 @@ import (
 	"github.com/upper/db/v4"
 )
 
-var (
-	_ dyncore.DynMeta = (*dynMeta)(nil)
-)
-
-type dynMeta struct {
-	session db.Session
-	logger  zerolog.Logger
-}
-
-func New(session db.Session, logger zerolog.Logger) *dynMeta {
-	return &dynMeta{
-		session: session,
-		logger:  logger,
-	}
-}
-
-func (d *dynMeta) NewGroupMeta(tenantId string, model *xbprint.NewTableGroup) (err error) {
+func (d *DynDDL) MetaNewGroup(tenantId string, model *xbprint.NewTableGroup) (err error) {
 
 	clear := false
 	defer func() {
 		if clear {
-			d.RollbackGroupMeta(tenantId, model.Slug)
+			d.MetaRollbackGroup(tenantId, model.Slug)
 		}
 	}()
 
@@ -44,7 +27,7 @@ func (d *dynMeta) NewGroupMeta(tenantId string, model *xbprint.NewTableGroup) (e
 	clear = true
 
 	for _, tbl := range model.Tables {
-		err = d.NewTableMeta(tenantId, model.Slug, tbl)
+		err = d.MetaNewTable(tenantId, model.Slug, tbl)
 		if err != nil {
 			pp.Println(err)
 			return err
@@ -55,7 +38,7 @@ func (d *dynMeta) NewGroupMeta(tenantId string, model *xbprint.NewTableGroup) (e
 	return
 }
 
-func (d *dynMeta) RollbackGroupMeta(tenantId, gslug string) {
+func (d *DynDDL) MetaRollbackGroup(tenantId, gslug string) {
 
 	err := d.dataTableColumns().Find(db.Cond{
 		"tenant_id": tenantId,
@@ -91,7 +74,7 @@ func (d *dynMeta) RollbackGroupMeta(tenantId, gslug string) {
 	}
 }
 
-func (d *dynMeta) NewTableMeta(tenantId, gslug string, model *xbprint.NewTable) error {
+func (d *DynDDL) MetaNewTable(tenantId, gslug string, model *xbprint.NewTable) error {
 	_, err := d.dataTables().Insert(model.To(tenantId, gslug))
 	if err != nil {
 		return err
@@ -99,7 +82,7 @@ func (d *dynMeta) NewTableMeta(tenantId, gslug string, model *xbprint.NewTable) 
 
 	columns := dyndb.ExtractColumns(model, tenantId, gslug)
 	for _, col := range columns {
-		err = d.NewColumnMeta(tenantId, gslug, model.Slug, col)
+		err = d.MetaNewColumn(tenantId, gslug, model.Slug, col)
 		if err != nil {
 
 			d.dataTableColumns().Find(db.Cond{
@@ -115,7 +98,7 @@ func (d *dynMeta) NewTableMeta(tenantId, gslug string, model *xbprint.NewTable) 
 	return nil
 }
 
-func (d *dynMeta) RollbackTableMeta(tenantId, gslug, tslug string) {
+func (d *DynDDL) MetaRollbackTable(tenantId, gslug, tslug string) {
 
 	d.dataTables().Find(db.Cond{
 		"tenant_id": tenantId,
@@ -130,7 +113,7 @@ func (d *dynMeta) RollbackTableMeta(tenantId, gslug, tslug string) {
 	}).Delete()
 }
 
-func (d *dynMeta) RollbackColumnMeta(tenantId, gslug, tslug, cslug string) {
+func (d *DynDDL) MetaRollbackColumn(tenantId, gslug, tslug, cslug string) {
 	d.dataTableColumns().Find(db.Cond{
 		"tenant_id": tenantId,
 		"group_id":  gslug,
@@ -139,19 +122,19 @@ func (d *dynMeta) RollbackColumnMeta(tenantId, gslug, tslug, cslug string) {
 	}).Delete()
 }
 
-func (d *dynMeta) NewColumnMeta(tenantId, gslug, tslug string, model *entities.Column) (err error) {
+func (d *DynDDL) MetaNewColumn(tenantId, gslug, tslug string, model *entities.Column) (err error) {
 	_, err = d.dataTableColumns().Insert(model)
 	return
 }
 
-func (d *dynMeta) dataTableGroups() db.Collection {
+func (d *DynDDL) dataTableGroups() db.Collection {
 	return dyncore.GroupTable(d.session)
 }
 
-func (d *dynMeta) dataTables() db.Collection {
+func (d *DynDDL) dataTables() db.Collection {
 	return dyncore.Table(d.session)
 }
 
-func (d *dynMeta) dataTableColumns() db.Collection {
+func (d *DynDDL) dataTableColumns() db.Collection {
 	return dyncore.TableColumn(d.session)
 }

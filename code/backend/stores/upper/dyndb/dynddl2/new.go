@@ -47,7 +47,7 @@ func (d *DynDDL) newGroup(tenantId, stmt string, model *xbprint.NewTableGroup) e
 
 	defer d.sharedLock.GlobalUnLock(tenantId, utok)
 
-	err = d.meta.NewGroupMeta(tenantId, model)
+	err = d.MetaNewGroup(tenantId, model)
 	if err != nil {
 		d.logger.
 			Err(err).
@@ -69,7 +69,7 @@ func (d *DynDDL) newGroup(tenantId, stmt string, model *xbprint.NewTableGroup) e
 			Caller().
 			Msg(logid.DyndbNewGroupSchemaExecErr)
 
-		d.meta.RollbackGroupMeta(tenantId, model.Slug)
+		d.MetaRollbackGroup(tenantId, model.Slug)
 	}
 
 	return nil

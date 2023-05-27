@@ -2,8 +2,7 @@ package dynddl2
 
 import (
 	"github.com/rs/zerolog"
-	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dyncore"
-	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dynddl2/meta"
+
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/upper/db/v4"
 )
@@ -12,7 +11,6 @@ type DynDDL struct {
 	session    db.Session
 	sharedLock service.DyndbLock
 	logger     zerolog.Logger
-	meta       dyncore.DynMeta
 }
 
 func New(session db.Session, sharedLock service.DyndbLock, logger zerolog.Logger) *DynDDL {
@@ -21,7 +19,6 @@ func New(session db.Session, sharedLock service.DyndbLock, logger zerolog.Logger
 		session:    session,
 		sharedLock: sharedLock,
 		logger:     logger,
-		meta:       meta.New(session, logger),
 	}
 }
 

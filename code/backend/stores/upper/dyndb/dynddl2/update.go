@@ -4,7 +4,6 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dyncore"
 	"github.com/temphia/temphia/code/backend/stores/upper/ucore"
 	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
@@ -23,7 +22,7 @@ func (d *DynDDL) update(tenantId string, migctx MigrateContext) error {
 
 	defer func() {
 		if nextHead != "" {
-			err = dyncore.GroupTable(d.session).Find(db.Cond{
+			err = d.dataTableGroups().Find(db.Cond{
 				"tenant_id": tenantId,
 				"slug":      migctx.BaseSchema.Slug,
 			}).Update(db.Cond{
@@ -47,7 +46,7 @@ func (d *DynDDL) update(tenantId string, migctx MigrateContext) error {
 				return err
 			}
 
-			err = d.meta.NewTableMeta(
+			err = d.MetaNewTable(
 				tenantId,
 				migctx.Options.Gslug,
 				pd.Data.(*xbprint.NewTable),
@@ -58,8 +57,8 @@ func (d *DynDDL) update(tenantId string, migctx MigrateContext) error {
 
 		case step.MigTypeRemoveTable:
 			schema := pd.Data.(*xbprint.RemoveTable)
-			d.meta.RollbackTableMeta(tenantId, migctx.Options.Gslug, schema.Slug)
-			ok, err := dyncore.Table(d.session).Find(db.Cond{
+			d.MetaRollbackTable(tenantId, migctx.Options.Gslug, schema.Slug)
+			ok, err := d.dataTables().Find(db.Cond{
 				"tenant_id": tenantId,
 				"slug":      schema.Slug,
 			}).Exists()
@@ -84,7 +83,7 @@ func (d *DynDDL) update(tenantId string, migctx MigrateContext) error {
 				return err
 			}
 
-			err = d.meta.NewColumnMeta(
+			err = d.MetaNewColumn(
 				tenantId,
 				migctx.Options.Gslug,
 				schema.Table,
@@ -97,13 +96,14 @@ func (d *DynDDL) update(tenantId string, migctx MigrateContext) error {
 
 		case step.MigTypeRemoveColumn:
 			schema := pd.Data.(*xbprint.RemoveColumn)
-			d.meta.RollbackColumnMeta(tenantId, migctx.Options.Gslug, schema.Table, schema.Slug)
+			d.MetaRollbackColumn(tenantId, migctx.Options.Gslug, schema.Table, schema.Slug)
 
-			ok, err := dyncore.TableColumn(d.session).Find(db.Cond{
+			ok, err := d.dataTableColumns().Find(db.Cond{
 				"tenant_id": tenantId,
 				"table_id":  schema.Table,
 				"slug":      schema.Slug,
 			}).Exists()
+
 			if err != nil {
 				return err
 			}
