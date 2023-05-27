@@ -19,16 +19,16 @@ var (
 )
 
 type HubV2 struct {
-	pacman repox.RepoBprintOps
-	dtable dyndb.DataHub
-	syncdb store.SyncDB
+	pacman  repox.RepoBprintOps
+	dtable  dyndb.DataHub
+	corehub store.CoreHub
 }
 
-func New(pacman repox.RepoBprintOps, dtable dyndb.DataHub, syncdb store.SyncDB) *HubV2 {
+func New(pacman repox.RepoBprintOps, dtable dyndb.DataHub, corehub store.CoreHub) *HubV2 {
 	return &HubV2{
-		pacman: pacman,
-		dtable: dtable,
-		syncdb: syncdb,
+		pacman:  pacman,
+		dtable:  dtable,
+		corehub: corehub,
 	}
 }
 
@@ -55,7 +55,7 @@ func (h *HubV2) Instance(opts repox.InstanceOptionsV2) (*repox.InstanceResponseV
 		dataGroups: make(map[string]string),
 		plugs:      make(map[string]string),
 		resources:  make(map[string]string),
-		targets:    make(map[string]string),
+		targets:    make(map[string]int64),
 		opts:       opts,
 	}
 
@@ -79,11 +79,19 @@ func (h *HubV2) Instance(opts repox.InstanceOptionsV2) (*repox.InstanceResponseV
 				return nil, err
 			}
 
-		case xbprint.TypeDataSheet:
-			fallthrough
 		case xbprint.TypeTargetApp:
-			fallthrough
+			err = h.instanceTargetApp(handle, item)
+			if err != nil {
+				return nil, err
+			}
+
 		case xbprint.TypeTargetHook:
+			err = h.instanceTargetHook(handle, item)
+			if err != nil {
+				return nil, err
+			}
+
+		case xbprint.TypeDataSheet:
 			fallthrough
 
 		default:

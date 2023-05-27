@@ -8,7 +8,7 @@ type Handle struct {
 	dataGroups map[string]string
 	plugs      map[string]string
 	resources  map[string]string
-	targets    map[string]string
+	targets    map[string]int64
 
 	opts repox.InstanceOptionsV2
 }

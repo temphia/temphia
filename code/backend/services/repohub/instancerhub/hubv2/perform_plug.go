@@ -108,7 +108,7 @@ func (h *HubV2) applyNewPlug(tenantId, pid, itemid string, handle Handle, data x
 		BprintInstanceId: handle.opts.InstanceId,
 	}
 
-	err := h.syncdb.PlugNew(tenantId, plug)
+	err := h.corehub.PlugNew(tenantId, plug)
 	if err != nil {
 		return err
 	}
@@ -130,16 +130,16 @@ func (h *HubV2) applyUpdateAgent(tenantId, pid string, data map[string]any) erro
 	id := data["id"].(string)
 	delete(data, "id")
 
-	return h.syncdb.AgentUpdate(tenantId, pid, id, data)
+	return h.corehub.AgentUpdate(tenantId, pid, id, data)
 }
 
 func (h *HubV2) applyRemoveAgent(tenantId, pid, id string) error {
-	return h.syncdb.AgentDel(tenantId, pid, id)
+	return h.corehub.AgentDel(tenantId, pid, id)
 }
 
 func (h *HubV2) applyAddAgent(tenantId, pid string, data xbprint.NewAgent) error {
 
-	return h.syncdb.AgentNew(tenantId, &entities.Agent{
+	return h.corehub.AgentNew(tenantId, &entities.Agent{
 		Id:         data.Name,
 		Name:       data.Name,
 		Type:       data.Type,
@@ -159,7 +159,7 @@ func (h *HubV2) applyAddAgent(tenantId, pid string, data xbprint.NewAgent) error
 
 func (h *HubV2) applyPlugStepAddInnerLink(tenantId, pid string, data xbprint.NewInnerLink) error {
 
-	return h.syncdb.AgentLinkNew(tenantId, &entities.AgentLink{
+	return h.corehub.AgentLinkNew(tenantId, &entities.AgentLink{
 		Name:      data.Slug,
 		FromPlug:  pid,
 		FromAgent: data.From,
@@ -171,14 +171,14 @@ func (h *HubV2) applyPlugStepAddInnerLink(tenantId, pid string, data xbprint.New
 
 func (h *HubV2) applyPlugStepRemoveInnerLink(tenantId, pid, agentId, name string) error {
 
-	links, err := h.syncdb.AgentLinkList(tenantId, pid, agentId)
+	links, err := h.corehub.AgentLinkList(tenantId, pid, agentId)
 	if err != nil {
 		return err
 	}
 
 	for _, al := range links {
 		if al.Name == agentId {
-			return h.syncdb.AgentLinkDel(tenantId, pid, agentId, al.Id)
+			return h.corehub.AgentLinkDel(tenantId, pid, agentId, al.Id)
 		}
 	}
 

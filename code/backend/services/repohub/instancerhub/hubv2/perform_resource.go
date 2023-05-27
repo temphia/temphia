@@ -74,13 +74,13 @@ func (h *HubV2) applyNewResource(item string, handle Handle, data xbprint.NewRes
 		tparts := strings.Split(data.TargetRef, "/")
 
 		if len(tparts) != 2 {
-			return easyerr.Error("target has invalid target value")
+			return easyerr.Error("target has invalid value")
 		}
 
 		target = fmt.Sprintf("%s/%s/%s", handle.dataSource, handle.dataGroups[tparts[0]], tparts[1])
 	}
 
-	return h.syncdb.ResourceNew(handle.tenantId, &entities.Resource{
+	return h.corehub.ResourceNew(handle.tenantId, &entities.Resource{
 		TenantId:         handle.tenantId,
 		Name:             data.Name,
 		Type:             data.Type,
