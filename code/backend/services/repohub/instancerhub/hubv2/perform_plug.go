@@ -69,7 +69,25 @@ func (h *HubV2) instancePlug(handle Handle, item xbprint.BundleItem) error {
 				gjson.GetBytes(pstep.Data, "id").String(),
 			)
 		case step.PlugStepAddInnerLink:
+			data := xbprint.NewInnerLink{}
+			err = json.Unmarshal(pstep.Data, &data)
+			if err != nil {
+				return err
+			}
+			return h.applyPlugStepAddInnerLink(tenantId, pid, data)
+
 		case step.PlugStepAddRemoveLink:
+
+			agentId := gjson.GetBytes(pstep.Data, "agent_id").String()
+			name := gjson.GetBytes(pstep.Data, "name").String()
+
+			return h.applyPlugStepRemoveInnerLink(
+				tenantId,
+				pid,
+				agentId,
+				name,
+			)
+
 		default:
 
 			return easyerr.NotImpl()
@@ -144,4 +162,32 @@ func (h *HubV2) applyAddAgent(tenantId, pid string, data xbprint.NewAgent) error
 		PlugId:     pid,
 		TenantId:   tenantId,
 	})
+}
+
+func (h *HubV2) applyPlugStepAddInnerLink(tenantId, pid string, data xbprint.NewInnerLink) error {
+
+	return h.syncdb.AgentLinkNew(tenantId, &entities.AgentLink{
+		Name:      data.Slug,
+		FromPlug:  pid,
+		FromAgent: data.From,
+		ToPlug:    pid,
+		ToAgent:   data.To,
+		TenantId:  tenantId,
+	})
+}
+
+func (h *HubV2) applyPlugStepRemoveInnerLink(tenantId, pid, agentId, name string) error {
+
+	links, err := h.syncdb.AgentLinkList(tenantId, pid, agentId)
+	if err != nil {
+		return err
+	}
+
+	for _, al := range links {
+		if al.Name == agentId {
+			return h.syncdb.AgentLinkDel(tenantId, pid, agentId, al.Id)
+		}
+	}
+
+	return nil
 }

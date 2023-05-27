@@ -71,13 +71,19 @@ func (h *HubV2) Instance(opts repox.InstanceOptionsV2) (*repox.InstanceResponseV
 			if err != nil {
 				return nil, err
 			}
+		case xbprint.TypeResource:
+			err = h.instanceResource(handle, item)
+			if err != nil {
+				return nil, err
+			}
 
 		case xbprint.TypeDataSheet:
 			fallthrough
-		case xbprint.TypeResource:
+		case xbprint.TypeTargetApp:
 			fallthrough
-		case xbprint.TypeTarget:
+		case xbprint.TypeTargetHook:
 			fallthrough
+
 		default:
 			return nil, easyerr.NotImpl()
 		}

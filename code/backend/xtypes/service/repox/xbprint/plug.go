@@ -39,6 +39,13 @@ type PlugSchemaV2 struct {
 	Steps []Step `json:"steps,omitempty"`
 }
 
+type NewInnerLink struct {
+	Slug       string            `json:"slug,omitempty"`
+	From       string            `json:"from,omitempty"`
+	To         string            `json:"to,omitempty"`
+	HandlerMap map[string]string `json:"handler_map,omitempty"`
+}
+
 type Step struct {
 	Name string          `json:"name,omitempty" yaml:"name,omitempty"`
 	Type string          `json:"type,omitempty" yaml:"type,omitempty"`

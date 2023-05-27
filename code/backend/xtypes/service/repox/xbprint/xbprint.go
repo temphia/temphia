@@ -1,12 +1,13 @@
 package xbprint
 
 const (
-	TypeBundle    = "bundle"
-	TypeDataGroup = "data_group"
-	TypeDataSheet = "data_sheet"
-	TypePlug      = "plug"
-	TypeResource  = "resource"
-	TypeTarget    = "target"
+	TypeBundle     = "bundle"
+	TypeDataGroup  = "data_group"
+	TypeDataSheet  = "data_sheet"
+	TypePlug       = "plug"
+	TypeResource   = "resource"
+	TypeTargetApp  = "target_app"
+	TypeTargetHook = "target_hook"
 )
 
 type LocalBprint struct {
