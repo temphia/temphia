@@ -52,6 +52,8 @@ func (h *HubV2) Instance(opts repox.InstanceOptionsV2) (*repox.InstanceResponseV
 		dataSource: "",
 		dataGroups: make(map[string]string),
 		plugs:      make(map[string]string),
+		resources:  make(map[string]string),
+		targets:    make(map[string]string),
 		opts:       opts,
 	}
 
@@ -70,6 +72,12 @@ func (h *HubV2) Instance(opts repox.InstanceOptionsV2) (*repox.InstanceResponseV
 				return nil, err
 			}
 
+		case xbprint.TypeDataSheet:
+			fallthrough
+		case xbprint.TypeResource:
+			fallthrough
+		case xbprint.TypeTarget:
+			fallthrough
 		default:
 			return nil, easyerr.NotImpl()
 		}

@@ -6,5 +6,8 @@ type Handle struct {
 	dataSource string
 	dataGroups map[string]string
 	plugs      map[string]string
-	opts       repox.InstanceOptionsV2
+	resources  map[string]string
+	targets    map[string]string
+
+	opts repox.InstanceOptionsV2
 }

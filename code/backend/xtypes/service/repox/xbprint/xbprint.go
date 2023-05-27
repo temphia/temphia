@@ -6,6 +6,7 @@ const (
 	TypeDataSheet = "data_sheet"
 	TypePlug      = "plug"
 	TypeResource  = "resource"
+	TypeTarget    = "target"
 )
 
 type LocalBprint struct {
