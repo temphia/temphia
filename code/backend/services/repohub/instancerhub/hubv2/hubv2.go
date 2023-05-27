@@ -6,6 +6,7 @@ import (
 	"github.com/jaevor/go-nanoid"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -49,6 +50,7 @@ func (h *HubV2) Instance(opts repox.InstanceOptionsV2) (*repox.InstanceResponseV
 	}
 
 	handle := Handle{
+		tenantId:   opts.UserSession.TenantId,
 		dataSource: "",
 		dataGroups: make(map[string]string),
 		plugs:      make(map[string]string),
@@ -100,4 +102,21 @@ func (h *HubV2) Upgrade(opts repox.UpdateOptionsV2) error {
 func (h *HubV2) InstanceSheetDirect(opts repox.InstanceSheetOptions) (*xinstance.Response, error) {
 
 	return nil, nil
+}
+
+// private
+
+func (h *HubV2) readSchema(tenantId, bprintid, file string) (*step.Schema, error) {
+	out, err := h.pacman.BprintGetBlob(tenantId, bprintid, file)
+	if err != nil {
+		return nil, err
+	}
+
+	steps := step.Schema{}
+	err = json.Unmarshal(out, &steps)
+	if err != nil {
+		return nil, err
+	}
+
+	return &steps, nil
 }

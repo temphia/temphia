@@ -1,30 +1,22 @@
 package hubv2
 
 import (
-	"encoding/json"
-
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 )
 
 func (h *HubV2) instanceData(handle Handle, item xbprint.BundleItem) error {
-	tenantId := handle.opts.UserSession.TenantId
-	dsrc := h.dtable.DefaultSource(tenantId)
 
-	out, err := h.pacman.BprintGetBlob(tenantId, handle.opts.BprintId, item.File)
-	if err != nil {
-		return err
-	}
+	dsrc := h.dtable.DefaultSource(handle.tenantId)
 
-	schema := step.Schema{}
-	err = json.Unmarshal(out, &schema)
+	schema, err := h.readSchema(handle.tenantId, handle.opts.BprintId, item.File)
 	if err != nil {
 		return err
 	}
 
 	gslug := item.Name + handle.opts.InstanceId
 
-	err = dsrc.MigrateSchema(tenantId, step.MigrateOptions{
+	err = dsrc.MigrateSchema(handle.tenantId, step.MigrateOptions{
 		Steps:            schema.Steps,
 		New:              true,
 		Gslug:            gslug,

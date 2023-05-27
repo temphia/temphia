@@ -11,22 +11,16 @@ import (
 )
 
 func (h *HubV2) instancePlug(handle Handle, item xbprint.BundleItem) error {
-	tenantId := handle.opts.UserSession.TenantId
-
-	out, err := h.pacman.BprintGetBlob(tenantId, handle.opts.BprintId, item.File)
-	if err != nil {
-		return err
-	}
-
-	steps := step.Schema{}
-	err = json.Unmarshal(out, &steps)
-	if err != nil {
-		return err
-	}
+	tenantId := handle.tenantId
 
 	pid := item.Name + handle.opts.InstanceId
 
-	for _, pstep := range steps.Steps {
+	schema, err := h.readSchema(tenantId, handle.opts.BprintId, item.File)
+	if err != nil {
+		return err
+	}
+
+	for _, pstep := range schema.Steps {
 
 		switch pstep.Name {
 		case step.PlugStepNewPlug:
@@ -109,7 +103,6 @@ func (h *HubV2) applyNewPlug(tenantId, pid, itemid string, handle Handle, data x
 		Live:             false,
 		Dev:              true,
 		ExtraMeta:        entities.JsonStrMap{},
-		InvokePolicy:     "",
 		BprintId:         handle.opts.BprintId,
 		BprintItemId:     itemid,
 		BprintInstanceId: handle.opts.InstanceId,

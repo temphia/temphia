@@ -1,7 +1,7 @@
 package step
 
 const (
-	PlugStepAddResourceModule    = "add_resource"
+	PlugStepNewResourceModule    = "new_resource"
 	PlugStepUpdateResourceModule = "update_resource"
 	PlugStepRemoveResourceModule = "remove_resource"
 
