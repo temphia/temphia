@@ -15,9 +15,11 @@ import (
 )
 
 func init() {
-	registry.SetStoreBuilders(store.VendorSqlite, func(so *config.StoreSource) (store.Store, error) {
-		return upper.NewAdapter(&sl{})(so)
-	})
+	registry.SetStoreBuilders(store.VendorSqlite, NewVendor)
+}
+
+func NewVendor(so *config.StoreSource) (store.Store, error) {
+	return upper.NewAdapter(&sl{})(so)
 }
 
 type sl struct{}
