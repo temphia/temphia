@@ -49,7 +49,7 @@ func (c *Controller) PlugList(uclaim *claim.Session) ([]*entities.Plug, error) {
 		return nil, scopes.ErrNoAdminEngineScope
 	}
 
-	return c.coredb.PlugList(uclaim.TenantId)
+	return c.coredb.PlugList(uclaim.TenantId, nil)
 }
 
 func (c *Controller) PlugListByBprint(uclaim *claim.Session, bid string) ([]*entities.Plug, error) {

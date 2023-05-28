@@ -67,8 +67,8 @@ func (c *CoreHub) PlugDel(tenantId, pid string) error {
 	return c.coredb.PlugDel(tenantId, pid)
 }
 
-func (c *CoreHub) PlugList(tenantId string) ([]*entities.Plug, error) {
-	return c.coredb.PlugList(tenantId)
+func (c *CoreHub) PlugList(tenantId string, cond map[string]any) ([]*entities.Plug, error) {
+	return c.coredb.PlugList(tenantId, cond)
 }
 
 func (c *CoreHub) PlugListByBprint(tenantId, bid string) ([]*entities.Plug, error) {

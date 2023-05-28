@@ -156,7 +156,7 @@ type PlugOps interface {
 	PlugUpdate(tenantId string, id string, data map[string]any) error
 	PlugGet(tenantId, pid string) (*entities.Plug, error)
 	PlugDel(tenantId, pid string) error
-	PlugList(tenantId string) ([]*entities.Plug, error)
+	PlugList(tenantId string, cond map[string]any) ([]*entities.Plug, error)
 
 	PlugListByBprint(tenantId, bprint string) ([]*entities.Plug, error)
 

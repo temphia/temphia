@@ -77,10 +77,18 @@ func (d *DB) PlugDel(tenantId, pid string) error {
 	return d.plugTable().Find(db.Cond{"id": pid, "tenant_id": tenantId}).Delete()
 }
 
-func (d *DB) PlugList(tenantId string) ([]*entities.Plug, error) {
+func (d *DB) PlugList(tenantId string, cond map[string]any) ([]*entities.Plug, error) {
 	datas := make([]*entities.Plug, 0)
 
-	err := d.plugTable().Find(db.Cond{"tenant_id": tenantId}).All(&datas)
+	fcond := db.Cond{"tenant_id": tenantId}
+
+	if len(cond) != 0 {
+		for k, v := range cond {
+			fcond[k] = v
+		}
+	}
+
+	err := d.plugTable().Find(fcond).All(&datas)
 	if err != nil {
 		return nil, nil
 	}
