@@ -34,8 +34,8 @@ func (d *DynDDL) update(tenantId string, migctx MigrateContext) (err error) {
 				"tenant_id": tenantId,
 				"slug":      migctx.BaseSchema.Slug,
 			}).Update(db.Cond{
-				"migration_head": nextHead,
-				"active":         true,
+				"bprint_step_head": nextHead,
+				"active":           true,
 			})
 
 			d.logger.

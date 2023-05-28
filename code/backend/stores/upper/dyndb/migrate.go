@@ -80,7 +80,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 			return err
 		}
 
-		lastMigHead = group.MigrationHead
+		lastMigHead = group.BprintStepHead
 		found := false
 		for idx, step := range opts.Steps {
 			if step.Name == lastMigHead {
@@ -91,7 +91,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 		}
 
 		if !found {
-			return easyerr.Error("migration_head not found")
+			return easyerr.Error("bprint_step_head not found")
 		}
 
 		cols := make([]*entities.Column, 0)

@@ -36,6 +36,7 @@ type InstanceOptionsV2 struct {
 type UpdateOptionsV2 struct {
 	BprintId    string             `json:"bprint_id,omitempty"`
 	Items       map[string]string  `json:"items,omitempty"`
+	InstanceId  string             `json:"instance_id,omitempty"`
 	UserSession *claim.UserContext `json:"-"`
 }
 
