@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/rs/xid"
+	"github.com/jaevor/go-nanoid"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -12,13 +12,15 @@ import (
 	"github.com/thoas/go-funk"
 )
 
+var bprintIdFunc, _ = nanoid.CustomASCII("abcdefghijklmnopqrstuvwxyz1234567890", 5)
+
 func (c *PacMan) BprintList(tenantid, group string) ([]*entities.BPrint, error) {
 	return c.corehub.BprintList(tenantid, group)
 }
 
 func (c *PacMan) BprintCreate(tenantid string, bp *entities.BPrint) (string, error) {
 	if bp.ID == "" {
-		bp.ID = xid.New().String()
+		bp.ID = bprintIdFunc()
 	}
 
 	return bp.ID, c.corehub.BprintNew(tenantid, bp)
