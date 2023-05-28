@@ -1,5 +1,5 @@
 create table system_events(
-        id integer primary key autoincrement not null,
+    id integer primary key autoincrement not null,
     type text not null,
     data text not null,
     extra_meta json not null default '{}',
@@ -7,7 +7,7 @@ create table system_events(
 );
 
 create table system_kv(
-        id integer primary key autoincrement not null,
+    id integer primary key autoincrement not null,
     key text not null,
     type text not null default '',
     value text not null default '',
@@ -33,7 +33,7 @@ create table tenants(
 
 
 create table tenant_domains(
-        id integer primary key autoincrement not null,
+    id integer primary key autoincrement not null,
     name text not null default '',
     about text not null default '',
     default_ugroup text not null default '',
@@ -51,7 +51,7 @@ create table tenant_domains(
 
 
 create table target_apps(
-        id integer primary key autoincrement not null,
+    id integer primary key autoincrement not null,
     name text not null default '', 
     target_type text not null,
     target text not null, 
@@ -64,6 +64,7 @@ create table target_apps(
     bprint_id text not null default '',
     bprint_item_id text not null default '',
     bprint_instance_id text not null default '',
+    bprint_step_head text not null default '',
 
     extra_meta json not null default '{}',
     exec_meta json not null default '{}',
@@ -73,7 +74,7 @@ create table target_apps(
 );
 
 create table target_hooks(
-        id integer primary key autoincrement not null,
+    id integer primary key autoincrement not null,
     name text not null default '', 
     target_type text not null,
     target text not null,
@@ -85,6 +86,7 @@ create table target_hooks(
     bprint_id text not null default '',
     bprint_item_id text not null default '',
     bprint_instance_id text not null default '',
+    bprint_step_head text not null default '',
 
     extra_meta json not null default '{}',
     exec_meta json not null default '{}',
@@ -97,7 +99,7 @@ create table target_hooks(
 
 
 create table tenant_repos(
-        id integer primary key autoincrement not null,
+    id integer primary key autoincrement not null,
     name text not null default '',
     provider text not null default '',
     url text not null default '',
@@ -240,11 +242,11 @@ create table data_table_groups (
     bprint_id text not null default '',
     bprint_item_id text not null default '',
     bprint_instance_id text not null default '',        
-    
+    bprint_step_head text not null default '',
+
     renderer text not null default '',
     cabinet_source TEXT not null default '',
     cabinet_folder TEXT not null default '',
-    migration_head text not null default '',
     extra_meta json not null default '{}',
     active BOOLEAN not null default false,
     primary KEY(slug, tenant_id)
@@ -290,7 +292,7 @@ create table data_table_columns (
     primary KEY(slug, table_id, group_id, tenant_id)
 );
 create table data_views (
-        id integer primary key autoincrement not null,
+    id integer primary key autoincrement not null,
     name text not null default '',
     count integer not null default 0,
     filter_conds json not null default '[]',
@@ -350,9 +352,9 @@ create table plugs(
     bprint_id text not null default '',
     bprint_item_id text not null default '',
     bprint_instance_id text not null default '',    
-    
+    bprint_step_head text not null default '',
+
     invoke_policy text not null default '',
-    steps_head text not null default '',
     extra_meta json not null default '{}',
     tenant_id text not null,
     primary KEY(id, tenant_id)
@@ -389,6 +391,7 @@ create table resources(
     bprint_id text not null default '',
     bprint_item_id text not null default '',
     bprint_instance_id text not null default '',
+    bprint_step_head text not null default '',
     
     extra_meta json not null default '{}',
     tenant_id text not null,
@@ -433,7 +436,7 @@ create table agent_resources(
 );
 
 create table agent_extensions(
-        id integer primary key autoincrement not null,
+    id integer primary key autoincrement not null,
     name text not null default '',
     plug_id text not null,
     agent_id text not null,

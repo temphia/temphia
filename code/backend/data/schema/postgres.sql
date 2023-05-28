@@ -241,11 +241,11 @@ create table data_table_groups (
     bprint_id text not null default '',
     bprint_item_id text not null default '',
     bprint_instance_id text not null default '',
+    bprint_step_head text not null default '',
 
     renderer text not null default '',
     cabinet_source TEXT not null default '',
     cabinet_folder TEXT not null default '',
-    migration_head text not null default '',
     extra_meta json not null default '{}',
     active BOOLEAN not null default false,
     primary KEY(slug, tenant_id)
