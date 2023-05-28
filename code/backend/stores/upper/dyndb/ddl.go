@@ -155,9 +155,18 @@ func (d *DynDB) GetGroup(tenantId, gslug string) (*entities.TableGroup, error) {
 	return tg, err
 }
 
-func (d *DynDB) ListGroup(tenantId string) ([]*entities.TableGroup, error) {
+func (d *DynDB) ListGroup(tenantId string, cond map[string]any) ([]*entities.TableGroup, error) {
 	tgs := make([]*entities.TableGroup, 0, 10)
-	err := d.dataTableGroups().Find("tenant_id", tenantId).All(&tgs)
+
+	fcond := db.Cond{"tenant_id": tenantId}
+
+	if len(cond) != 0 {
+		for k, v := range cond {
+			fcond[k] = v
+		}
+	}
+
+	err := d.dataTableGroups().Find(fcond).All(&tgs)
 	return tgs, err
 }
 

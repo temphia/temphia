@@ -62,7 +62,7 @@ func (c *Controller) ListGroup(uclaim *claim.Session, source string) ([]*entitie
 	}
 
 	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
-	return dynDB.ListGroup(uclaim.TenantId)
+	return dynDB.ListGroup(uclaim.TenantId, nil)
 }
 
 func (c *Controller) DeleteGroup(uclaim *claim.Session, source, gslug string) error {

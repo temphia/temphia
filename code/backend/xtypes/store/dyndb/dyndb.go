@@ -11,7 +11,7 @@ type DynDB interface {
 
 	NewGroup(tenantId string, model *xbprint.NewTableGroup) error
 	EditGroup(tenantId string, gslug string, model *entities.TableGroupPartial) error
-	ListGroup(tenantId string) ([]*entities.TableGroup, error)
+	ListGroup(tenantId string, cond map[string]any) ([]*entities.TableGroup, error)
 	GetGroup(tenantId, gslug string) (*entities.TableGroup, error)
 	DeleteGroup(tenantId, gslug string) error
 

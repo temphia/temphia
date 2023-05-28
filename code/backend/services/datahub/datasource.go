@@ -33,8 +33,8 @@ func (ds *DataSource) EditGroup(tenantId, gslug string, model *entities.TableGro
 	return ds.inner.EditGroup(tenantId, gslug, model)
 }
 
-func (ds *DataSource) ListGroup(tenantId string) ([]*entities.TableGroup, error) {
-	return ds.inner.ListGroup(tenantId)
+func (ds *DataSource) ListGroup(tenantId string, cond map[string]any) ([]*entities.TableGroup, error) {
+	return ds.inner.ListGroup(tenantId, cond)
 }
 
 func (ds *DataSource) GetGroup(tenantId, gslug string) (*entities.TableGroup, error) {
