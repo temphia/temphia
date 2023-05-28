@@ -1,0 +1,16 @@
+{
+  "name": "Bundlev2 Example",
+  "slug": "bundlev2_example",
+  "type": "bundlev2",
+  "sub_type": "",
+  "description": "This bundlev2 example.",
+  "files": [
+    "schema.json",
+    "plug.schema.json",
+    "data.schema.json",
+    "todo_client.css",
+    "todo_client.js",
+    "todo_server.js",
+    "todo_iface.json"
+  ]
+}
