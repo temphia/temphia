@@ -39,7 +39,8 @@ func (s *Server) API(rg *gin.RouterGroup) {
 	s.dataWSAPI(rg.Group("/data_ws"))
 
 	s.cabinetAPI(rg.Group("/cabinet"))
-	s.folderTktAPI(rg.Group("/folder"))
+
+	s.ticketsAPI.Folder(rg.Group("/folder"))
 
 	s.devAPI(rg.Group("/dev"))
 	s.engineAPI(rg.Group("/engine"))

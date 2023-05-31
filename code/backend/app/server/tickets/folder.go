@@ -1,4 +1,4 @@
-package server
+package tickets
 
 import (
 	"github.com/gin-gonic/gin"
@@ -6,7 +6,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
-func (s *Server) folderTktAPI(rg *gin.RouterGroup) {
+func (s *TicketAPI) Folder(rg *gin.RouterGroup) {
 
 	rg.GET("/:ticket/", s.fx(s.folderTktList))
 	rg.GET("/:ticket/:name", s.fx(s.folderTktFile))
@@ -16,7 +16,7 @@ func (s *Server) folderTktAPI(rg *gin.RouterGroup) {
 
 }
 
-func (s *Server) folderTktList(uclaim *claim.Folder, ctx *gin.Context) {
+func (s *TicketAPI) folderTktList(uclaim *claim.Folder, ctx *gin.Context) {
 
 	resp, err := s.cCabinet.TicketList(uclaim)
 	if err != nil {
@@ -27,7 +27,7 @@ func (s *Server) folderTktList(uclaim *claim.Folder, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, resp, err)
 }
 
-func (s *Server) folderTktFile(uclaim *claim.Folder, ctx *gin.Context) {
+func (s *TicketAPI) folderTktFile(uclaim *claim.Folder, ctx *gin.Context) {
 
 	file := ctx.Param("name")
 
@@ -40,7 +40,7 @@ func (s *Server) folderTktFile(uclaim *claim.Folder, ctx *gin.Context) {
 	httpx.WriteBinary(ctx, out)
 }
 
-func (s *Server) folderTktPreview(uclaim *claim.Folder, ctx *gin.Context) {
+func (s *TicketAPI) folderTktPreview(uclaim *claim.Folder, ctx *gin.Context) {
 	file := ctx.Param("name")
 
 	out, err := s.cCabinet.TicketFile(uclaim, file)
@@ -52,7 +52,7 @@ func (s *Server) folderTktPreview(uclaim *claim.Folder, ctx *gin.Context) {
 	httpx.WriteBinary(ctx, out)
 }
 
-func (s *Server) folderTktUpload(uclaim *claim.Folder, ctx *gin.Context) {
+func (s *TicketAPI) folderTktUpload(uclaim *claim.Folder, ctx *gin.Context) {
 
 	file := ctx.Param("name")
 
@@ -66,10 +66,10 @@ func (s *Server) folderTktUpload(uclaim *claim.Folder, ctx *gin.Context) {
 	httpx.WriteFinal(ctx, err)
 }
 
-func (s *Server) folderTktDelete(uclaim *claim.Folder, ctx *gin.Context) {}
+func (s *TicketAPI) folderTktDelete(uclaim *claim.Folder, ctx *gin.Context) {}
 
 // utils
 
-func (s *Server) fx(fn func(uclaim *claim.Folder, ctx *gin.Context)) func(ctx *gin.Context) {
+func (s *TicketAPI) fx(fn func(uclaim *claim.Folder, ctx *gin.Context)) func(ctx *gin.Context) {
 	return s.middleware.FolderX(fn)
 }

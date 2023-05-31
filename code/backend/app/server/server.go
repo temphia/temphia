@@ -9,6 +9,7 @@ import (
 	apiadmin "github.com/temphia/temphia/code/backend/app/server/api_admin"
 	"github.com/temphia/temphia/code/backend/app/server/middleware"
 	"github.com/temphia/temphia/code/backend/app/server/notz"
+	"github.com/temphia/temphia/code/backend/app/server/tickets"
 	"github.com/temphia/temphia/code/backend/controllers"
 	"github.com/temphia/temphia/code/backend/controllers/authed"
 	"github.com/temphia/temphia/code/backend/controllers/basic"
@@ -64,6 +65,7 @@ type Server struct {
 	cEngine              *engine.Controller
 	cDev                 *dev.Controller
 	cSockd               *sockd.Controller
+	ticketsAPI           tickets.TicketAPI
 	sockdConnIdGenerator *snowflake.Node
 }
 
@@ -120,6 +122,7 @@ func New(opts Options) *Server {
 		cSockd:               root.SockdController(),
 		app:                  opts.App,
 		sockdConnIdGenerator: plane.GetIdService().NewNode("temphia.sockd"),
+		ticketsAPI:           tickets.New(mware, root),
 	}
 }
 
