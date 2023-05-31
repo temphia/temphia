@@ -104,6 +104,11 @@ func (h *HubV2) Instance(opts repox.InstanceOptionsV2) (*repox.InstanceResponseV
 
 func (h *HubV2) Upgrade(opts repox.UpdateOptionsV2) error {
 
+	// h.corehub.ListTargetApp(opts.UserSession.TenantId, map[string]any{
+	// 	"bprint_id":          opts.BprintId,
+	// 	"bprint_instance_id": opts.InstanceId,
+	// })
+
 	return nil
 }
 

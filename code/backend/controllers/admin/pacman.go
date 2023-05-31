@@ -188,22 +188,27 @@ func (c *Controller) BprintInstance(uclaim *claim.Session, bid string, opts *Ins
 	pp.Println(" ||>>", opts)
 	pp.Println(" ||>>", string(opts.UserConfigData))
 
-	instancer := c.pacman.GetInstancerHubV1()
+	switch opts.InstancerType {
+	case "bundlev2":
+		instancer := c.pacman.GetInstancerHubV2()
+		return instancer.Instance(repox.InstanceOptionsV2{
+			BprintId:    bid,
+			UserSession: uclaim.AsUserCtx(),
+			InstanceId:  "",
+		})
 
-	fopt := repox.InstanceOptionsV1{
-		BprintId:       bid,
-		InstancerType:  opts.InstancerType,
-		File:           opts.File,
-		UserConfigData: opts.UserConfigData,
-		Auto:           opts.Auto,
-		UserContext: &claim.UserContext{
-			TenantId:  uclaim.TenantId,
-			UserID:    uclaim.UserID,
-			UserGroup: uclaim.UserGroup,
-			SessionID: uclaim.SessionID,
-			DeviceId:  uclaim.DeviceId,
-		},
+	default:
+		fopt := repox.InstanceOptionsV1{
+			BprintId:       bid,
+			InstancerType:  opts.InstancerType,
+			File:           opts.File,
+			UserConfigData: opts.UserConfigData,
+			Auto:           opts.Auto,
+			UserContext:    uclaim.AsUserCtx(),
+		}
+
+		instancer := c.pacman.GetInstancerHubV1()
+		return instancer.Instance(fopt)
 	}
 
-	return instancer.Instance(fopt)
 }
