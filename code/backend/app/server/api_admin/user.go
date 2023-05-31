@@ -15,29 +15,12 @@ func (a *ApiAdmin) userAPI(rg *gin.RouterGroup) {
 	rg.POST("/:user_id", a.X(a.UpdateUser))
 	rg.DELETE("/:user_id", a.X(a.RemoveUser))
 
-	rg.GET("/perm", a.X(a.ListAllPerm))
-	rg.POST("/perm", a.X(a.AddPerm))
-	rg.GET("/perm/:perm", a.X(a.GetPerm))
-	rg.POST("/perm/:perm", a.X(a.UpdatePerm))
-	rg.DELETE("/perm/:perm", a.X(a.RemovePerm))
-
-	rg.GET("/role", a.X(a.ListAllRole))
-	rg.POST("/role", a.X(a.AddRole))
-	rg.GET("/role/:role", a.X(a.GetRole))
-	rg.POST("/role/:role", a.X(a.UpdateRole))
-	rg.DELETE("/role/:role", a.X(a.RemoveRole))
-
-	rg.GET("/user_role", a.X(a.ListAllUserRole))
-	rg.POST("/user_role", a.X(a.AddUserRole))
-	rg.DELETE("/user_role", a.X(a.RemoveUserRole))
-
 	rg.GET("/:user_id/device", a.X(a.ListUserDevices))
 	rg.GET("/:user_id/device/:id", a.X(a.GetUserDevice))
 	rg.POST("/:user_id/device/:id", a.X(a.UpdateUserDevice))
 	rg.DELETE("/:user_id/device/:id", a.X(a.RemoveUserDevices))
 	rg.POST("/:user_id/device", a.X(a.AddUserDevices))
 
-	// rg.GET("/user_perm", r.Authed(r.ListUserPerm)) // user query
 }
 
 func (r *ApiAdmin) AddUser(ctx httpx.Request) {
@@ -131,52 +114,4 @@ func (r *ApiAdmin) AddUserDevices(ctx httpx.Request) {
 
 	err = r.cAdmin.AddUserDevice(ctx.Session, ctx.MustParam("user_id"), &data)
 	r.rutil.WriteJSON(ctx.Http, nil, err)
-}
-
-// perm placeholder stuff
-
-func (r *ApiAdmin) AddPerm(ctx httpx.Request) {
-
-}
-func (r *ApiAdmin) UpdatePerm(ctx httpx.Request) {
-
-}
-func (r *ApiAdmin) GetPerm(ctx httpx.Request) {
-
-}
-func (r *ApiAdmin) RemovePerm(ctx httpx.Request) {
-
-}
-func (r *ApiAdmin) AddRole(ctx httpx.Request) {
-
-}
-func (r *ApiAdmin) GetRole(ctx httpx.Request) {
-
-}
-func (r *ApiAdmin) UpdateRole(ctx httpx.Request) {
-
-}
-func (r *ApiAdmin) RemoveRole(ctx httpx.Request) {
-
-}
-func (r *ApiAdmin) AddUserRole(ctx httpx.Request) {
-
-}
-func (r *ApiAdmin) RemoveUserRole(ctx httpx.Request) {
-
-}
-func (r *ApiAdmin) ListAllPerm(ctx httpx.Request) {
-
-}
-func (r *ApiAdmin) ListAllRole(ctx httpx.Request) {
-
-}
-func (r *ApiAdmin) ListAllUserRole(ctx httpx.Request) {
-
-}
-func (r *ApiAdmin) ListAllUserPerm(ctx httpx.Request) {
-
-}
-func (r *ApiAdmin) ListUserPerm(ctx httpx.Request) {
-
 }
