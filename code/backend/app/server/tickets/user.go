@@ -17,7 +17,7 @@ func (a *TicketAPI) User(rg *gin.RouterGroup) {
 }
 
 func (a *TicketAPI) ugListUser(uclaim *claim.UserMgmtTkt, http *gin.Context) {
-	resp, err := a.cAdmin.UgroupListUsersByGroup(uclaim)
+	resp, err := a.cTicket.UgroupListUsersByGroup(uclaim)
 
 	httpx.WriteJSON(http, resp, err)
 }
@@ -30,12 +30,12 @@ func (a *TicketAPI) ugAddUser(uclaim *claim.UserMgmtTkt, http *gin.Context) {
 		return
 	}
 
-	err = a.cAdmin.UgroupAddUser(uclaim, user)
+	err = a.cTicket.UgroupAddUser(uclaim, user)
 	httpx.WriteFinal(http, err)
 }
 
 func (a *TicketAPI) ugGetUser(uclaim *claim.UserMgmtTkt, http *gin.Context) {
-	resp, err := a.cAdmin.UgroupGetUserByID(uclaim, http.Param("user_id"))
+	resp, err := a.cTicket.UgroupGetUserByID(uclaim, http.Param("user_id"))
 	httpx.WriteJSON(http, resp, err)
 }
 
@@ -47,11 +47,11 @@ func (a *TicketAPI) ugUpdateUser(uclaim *claim.UserMgmtTkt, http *gin.Context) {
 		return
 	}
 
-	err = a.cAdmin.UgroupUpdateUser(uclaim, http.Param("user_id"), data)
+	err = a.cTicket.UgroupUpdateUser(uclaim, http.Param("user_id"), data)
 	httpx.WriteFinal(http, err)
 }
 
 func (a *TicketAPI) ugDeleteUser(uclaim *claim.UserMgmtTkt, http *gin.Context) {
-	err := a.cAdmin.UgroupDeleteUser(uclaim, http.Param("user_id"))
+	err := a.cTicket.UgroupDeleteUser(uclaim, http.Param("user_id"))
 	httpx.WriteFinal(http, err)
 }

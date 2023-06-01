@@ -1,4 +1,4 @@
-package admin
+package tickets
 
 import (
 	"time"
@@ -9,11 +9,11 @@ import (
 )
 
 func (c *Controller) UgroupGetUserByID(uclaim *claim.UserMgmtTkt, username string) (*entities.User, error) {
-	return c.coredb.GetUserByID(uclaim.TenantId, username)
+	return c.corehub.GetUserByID(uclaim.TenantId, username)
 }
 
 func (c *Controller) UgroupListUsersByGroup(uclaim *claim.UserMgmtTkt) ([]*entities.User, error) {
-	return c.coredb.ListUsersByGroup(uclaim.TenantId, uclaim.Group)
+	return c.corehub.ListUsersByGroup(uclaim.TenantId, uclaim.Group)
 }
 
 func (c *Controller) UgroupAddUser(uclaim *claim.UserMgmtTkt, data *entities.User) error {
@@ -23,7 +23,7 @@ func (c *Controller) UgroupAddUser(uclaim *claim.UserMgmtTkt, data *entities.Use
 		Inner: time.Now(),
 	}
 
-	return c.coredb.AddUser(data, &entities.UserData{
+	return c.corehub.AddUser(data, &entities.UserData{
 		UserId:             data.UserId,
 		MFAEnabled:         false,
 		MFAType:            "",
@@ -36,9 +36,9 @@ func (c *Controller) UgroupAddUser(uclaim *claim.UserMgmtTkt, data *entities.Use
 }
 
 func (c *Controller) UgroupUpdateUser(uclaim *claim.UserMgmtTkt, userid string, data map[string]any) error {
-	return c.coredb.UpdateUser(uclaim.TenantId, userid, data)
+	return c.corehub.UpdateUser(uclaim.TenantId, userid, data)
 }
 
 func (c *Controller) UgroupDeleteUser(uclaim *claim.UserMgmtTkt, userId string) error {
-	return c.coredb.RemoveUser(uclaim.TenantId, userId)
+	return c.corehub.RemoveUser(uclaim.TenantId, userId)
 }

@@ -18,7 +18,7 @@ func (s *TicketAPI) Folder(rg *gin.RouterGroup) {
 
 func (s *TicketAPI) folderTktList(uclaim *claim.Folder, ctx *gin.Context) {
 
-	resp, err := s.cCabinet.TicketList(uclaim)
+	resp, err := s.cTicket.TicketList(uclaim)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
 		return
@@ -31,7 +31,7 @@ func (s *TicketAPI) folderTktFile(uclaim *claim.Folder, ctx *gin.Context) {
 
 	file := ctx.Param("name")
 
-	out, err := s.cCabinet.TicketFile(uclaim, file)
+	out, err := s.cTicket.TicketFile(uclaim, file)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
 		return
@@ -43,7 +43,7 @@ func (s *TicketAPI) folderTktFile(uclaim *claim.Folder, ctx *gin.Context) {
 func (s *TicketAPI) folderTktPreview(uclaim *claim.Folder, ctx *gin.Context) {
 	file := ctx.Param("name")
 
-	out, err := s.cCabinet.TicketFile(uclaim, file)
+	out, err := s.cTicket.TicketFile(uclaim, file)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
 		return
@@ -62,7 +62,7 @@ func (s *TicketAPI) folderTktUpload(uclaim *claim.Folder, ctx *gin.Context) {
 		return
 	}
 
-	err = s.cCabinet.TicketUpload(uclaim, file, out)
+	err = s.cTicket.TicketUpload(uclaim, file, out)
 	httpx.WriteFinal(ctx, err)
 }
 
