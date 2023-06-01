@@ -3,7 +3,7 @@ package wazero
 import "encoding/json"
 
 func (e *Executor) getBytes(offset, count int32) []byte {
-	out, ok := e.mem.Read(e.context, uint32(offset), uint32(count))
+	out, ok := e.mem.Read(uint32(offset), uint32(count))
 	if !ok {
 		panic(ErrOutofIndex)
 	}
@@ -12,7 +12,7 @@ func (e *Executor) getBytes(offset, count int32) []byte {
 }
 
 func (e *Executor) getString(offset, count int32) string {
-	out, ok := e.mem.Read(e.context, uint32(offset), uint32(count))
+	out, ok := e.mem.Read(uint32(offset), uint32(count))
 	if !ok {
 		panic(ErrOutofIndex)
 	}

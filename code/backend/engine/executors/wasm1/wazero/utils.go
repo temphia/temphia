@@ -32,7 +32,7 @@ func (e *Executor) write(data []byte) (uint32, bool) {
 	offset := e.allocateBytes(uint64(len(data)))
 	mem := e.getMem()
 
-	return offset, mem.Write(e.context, offset, data)
+	return offset, mem.Write(offset, data)
 }
 
 func (e *Executor) allocateBytes(size uint64) uint32 {

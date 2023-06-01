@@ -16,7 +16,7 @@ type Builder struct {
 
 func NewBuilder(app any) (etypes.ExecutorBuilder, error) {
 
-	rt := wazero.NewRuntime()
+	rt := wazero.NewRuntime(context.Background())
 
 	tm, err := BuildTemphiaModule(rt)
 	if err != nil {
@@ -34,14 +34,18 @@ func NewBuilder(app any) (etypes.ExecutorBuilder, error) {
 
 func (b *Builder) Instance(opts etypes.ExecutorOption) (etypes.Executor, error) {
 	ctx := context.Background()
-	runtime := wazero.NewRuntime()
 
-	cmodule, err := runtime.CompileModule(ctx, nil, wazero.NewCompileConfig())
+	data, _, err := opts.Binder.GetFileWithMeta(opts.File)
 	if err != nil {
 		return nil, err
 	}
 
-	module, err := runtime.InstantiateModule(ctx, cmodule, wazero.NewModuleConfig())
+	cmodule, err := b.runtime.CompileModule(ctx, data)
+	if err != nil {
+		return nil, err
+	}
+
+	module, err := b.runtime.InstantiateModule(ctx, cmodule, wazero.NewModuleConfig())
 	if err != nil {
 		return nil, err
 	}

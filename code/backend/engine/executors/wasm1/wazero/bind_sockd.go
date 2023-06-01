@@ -12,7 +12,7 @@ func SendDirect(ctx context.Context, cid, roomPtr, roomLen, dataPtr, dataLen, re
 	e := getCtx(ctx)
 	e.getBytes((respOffset), (respLen))
 
-	contents, ok := e.instance.Memory().Read(e.context, uint32(dataPtr), uint32(dataLen))
+	contents, ok := e.mem.Read(uint32(dataPtr), uint32(dataLen))
 	if !ok {
 		panic(ErrOutofIndex)
 	}
@@ -34,7 +34,7 @@ func SendDirectBatch(ctx context.Context, roomPtr, roomLen, connIdsPtr, connIdsL
 	conns := make([]int64, connIdsLen)
 
 	for idx := range conns {
-		cid, ok := e.mem.ReadUint64Le(e.context, (uint32(connIdsPtr) + uint32(8*idx)))
+		cid, ok := e.mem.ReadUint64Le((uint32(connIdsPtr) + uint32(8*idx)))
 		if !ok {
 			panic(ErrOutofIndex)
 		}
@@ -55,7 +55,7 @@ func SockdSendBroadcast(ctx context.Context, roomPtr, roomLen, igPtr, igLen, pay
 	igconns := make([]int64, igLen)
 
 	for idx := range igconns {
-		cid, ok := e.mem.ReadUint64Le(e.context, (uint32(igPtr) + uint32(8*idx)))
+		cid, ok := e.mem.ReadUint64Le((uint32(igPtr) + uint32(8*idx)))
 		if !ok {
 			panic(ErrOutofIndex)
 		}
@@ -78,7 +78,7 @@ func SockdSendTagged(ctx context.Context, roomPtr, roomLen, tagsPtr, tagsLen, ig
 	igconns := make([]int64, igLen)
 
 	for idx := range igconns {
-		cid, ok := e.mem.ReadUint64Le(e.context, (uint32(igPtr) + uint32(8*idx)))
+		cid, ok := e.mem.ReadUint64Le((uint32(igPtr) + uint32(8*idx)))
 		if !ok {
 			panic(ErrOutofIndex)
 		}
