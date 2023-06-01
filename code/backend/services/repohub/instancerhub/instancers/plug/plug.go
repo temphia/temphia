@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 
 	"github.com/k0kubun/pp"
-	"github.com/rs/xid"
 	"github.com/temphia/temphia/code/backend/xtypes"
 
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -13,6 +12,10 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/ztrue/tracerr"
+)
+
+var (
+	gFunc = xtypes.GetSlugGenerator(5)
 )
 
 type PlugInstancer struct {
@@ -46,7 +49,7 @@ func (pi *PlugInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 	}
 
 	if uopts.Id == "" {
-		uopts.Id = xid.New().String()
+		uopts.Id = gFunc()
 	}
 
 	resp, err := pi.instance(uopts.Id, opts, schemaData)

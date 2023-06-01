@@ -1,13 +1,16 @@
 package resource
 
 import (
-	"github.com/rs/xid"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+)
+
+var (
+	gFunc = xtypes.GetSlugGenerator(5)
 )
 
 type ResInstancer struct {
@@ -34,7 +37,7 @@ func (pi *ResInstancer) Instance(opts xinstance.Options) (*xinstance.Response, e
 		return nil, err
 	}
 
-	id := xid.New().String()
+	id := gFunc()
 
 	target := ""
 	prevObj := opts.Handle.GetPrevObject(res.TargetRef)

@@ -3,8 +3,8 @@ package hubv2
 import (
 	"encoding/json"
 
-	"github.com/jaevor/go-nanoid"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
@@ -14,8 +14,8 @@ import (
 )
 
 var (
-	_        repox.InstancerHubV2 = (*HubV2)(nil)
-	gFunc, _                      = nanoid.CustomASCII("abcdefghijklmnopqrstuvwxyz1234567890", 5)
+	_     repox.InstancerHubV2 = (*HubV2)(nil)
+	gFunc                      = xtypes.GetSlugGenerator(5)
 )
 
 type HubV2 struct {
