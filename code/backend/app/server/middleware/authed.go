@@ -107,6 +107,19 @@ func (m *Middleware) PSX(fn func(aclaim *claim.PlugState, ctx *gin.Context)) fun
 	}
 }
 
+func (m *Middleware) UX(fn func(uclaim *claim.UserMgmtTkt, http *gin.Context)) func(ctx *gin.Context) {
+
+	return func(ctx *gin.Context) {
+		umClaim, err := m.Signer.ParseUserMgmtTkt(ctx.Param("tenant_id"), ctx.GetHeader("Authorization"))
+		if err != nil {
+			httpx.UnAuthorized(ctx)
+			return
+		}
+
+		fn(umClaim, ctx)
+	}
+}
+
 // private
 
 func funcName(fn interface{}) string {

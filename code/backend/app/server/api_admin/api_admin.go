@@ -44,7 +44,8 @@ func (a *ApiAdmin) API(rg *gin.RouterGroup) {
 
 	a.userAPI(rg.Group("/user"))
 	a.userGroupAPI(rg.Group("/ugroup"))
-	a.userTktAPI(rg.Group("/user_tkt"))
+
+	a.ticketAPI.User(rg.Group("/user_tkt"))
 
 	a.repoAPI(rg.Group("/repo"))
 	a.plugAPI(rg.Group("/plug"))
