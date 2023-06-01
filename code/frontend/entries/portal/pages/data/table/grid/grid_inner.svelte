@@ -54,7 +54,7 @@
         {#each columns as col}
           {@const coldata = columns_index[col]}
           <th
-            class="sticky top-0 border-b  px-6 py-1 font-bold tracking-wider uppercase text-base text-gray-700 bg-gray-100"
+            class="sticky top-0 border-b px-6 py-1 font-bold tracking-wider uppercase text-base text-gray-700 bg-gray-100"
           >
             <button class="inline-flex hover:bg-blue-200 rounded px-1">
               <Cicon ctype={coldata["ctype"]} classes="h-5 w-5 pt-1" />
@@ -122,20 +122,40 @@
                   {:else if celldata === false}
                     <Icon name="x" class="w-6 h-6 text-red-500" />
                   {/if}
-                {:else if (ctype === cf.CtypeSingleUser || ctype === cf.CtypeMultiUser) && celldata}
-                  <div class="inline-flex gap-1">
-                    {#each celldata.split(",") as cd}
-                      <div
-                        class="p-0.5 rounded bg-gray-50 flex border gap-0.5 text-xs items-center"
-                      >
-                        <UserAvatar
-                          name={cd}
-                          url={profile_generator && profile_generator(cd)}
-                        />
-                        <span>{cd}</span>
-                      </div>
-                    {/each}
-                  </div>
+                {:else if ctype === cf.CtypeLocation}
+                  {#if celldata}
+                    <div class="flex gap-1">
+                      <span class="bg-yellow-100 rounded p-0.5 text-gray-600">
+                        Lat
+                        <strong class="font-semibold text-gray-700"
+                          >{celldata[0].toFixed(3)}
+                        </strong>
+                      </span>
+
+                      <span class="bg-yellow-100 rounded p-0.5 text-gray-600">
+                        Long
+                        <strong class="font-semibold text-gray-700"
+                          >{celldata[1].toFixed(3)}</strong
+                        >
+                      </span>
+                    </div>
+                  {/if}
+                {:else if ctype === cf.CtypeSingleUser || ctype === cf.CtypeMultiUser}
+                  {#if celldata}
+                    <div class="inline-flex gap-1">
+                      {#each celldata.split(",") as cd}
+                        <div
+                          class="p-0.5 rounded bg-gray-50 flex border gap-0.5 text-xs items-center"
+                        >
+                          <UserAvatar
+                            name={cd}
+                            url={profile_generator && profile_generator(cd)}
+                          />
+                          <span>{cd}</span>
+                        </div>
+                      {/each}
+                    </div>
+                  {/if}
                 {:else}
                   {celldata || ""}
                 {/if}
@@ -157,3 +177,13 @@
 </div>
 
 <div class="hidden w-min md:w-full" />
+
+<style>
+  th,
+  td {
+    max-width: 20rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>
