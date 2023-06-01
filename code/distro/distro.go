@@ -29,7 +29,7 @@ func NewDistroApp(conf *config.Config, dev, singleTenantMode bool) xtypes.App {
 	lite := plane.NewLite(sbuilder.CoreHub())
 
 	logdSecret := os.Getenv("TEMPHIA_LOGD_SECRET")
-	logdPort := os.Getenv("TEMPHIA_PORT")
+	logdPort := os.Getenv("TEMPHIA_LOGD_PORT")
 
 	builder := app.NewBuilder()
 	builder.SetConfig(conf)
