@@ -13,8 +13,8 @@ type TicketAPI struct {
 	cCabinet   *cabinet.Controller
 }
 
-func New(middleware *middleware.Middleware, root *controllers.RootController) TicketAPI {
-	return TicketAPI{
+func New(middleware *middleware.Middleware, root *controllers.RootController) *TicketAPI {
+	return &TicketAPI{
 		middleware: middleware,
 		cAdmin:     root.AdminController(),
 		cCabinet:   root.CabinetController(),

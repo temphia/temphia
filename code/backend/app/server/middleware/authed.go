@@ -94,6 +94,19 @@ func (m *Middleware) ExecutorX(fn func(uclaim *claim.Executor, ctx *gin.Context)
 	}
 }
 
+func (m *Middleware) PSX(fn func(aclaim *claim.PlugState, ctx *gin.Context)) func(ctx *gin.Context) {
+
+	return func(ctx *gin.Context) {
+		aclaim, err := m.Signer.ParsePlugState(ctx.Param("tenant_id"), ctx.GetHeader("Authorization"))
+		if err != nil {
+			httpx.UnAuthorized(ctx)
+			return
+		}
+
+		fn(aclaim, ctx)
+	}
+}
+
 // private
 
 func funcName(fn interface{}) string {

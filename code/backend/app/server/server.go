@@ -65,7 +65,7 @@ type Server struct {
 	cEngine              *engine.Controller
 	cDev                 *dev.Controller
 	cSockd               *sockd.Controller
-	ticketsAPI           tickets.TicketAPI
+	ticketsAPI           *tickets.TicketAPI
 	sockdConnIdGenerator *snowflake.Node
 }
 
@@ -92,6 +92,8 @@ func New(opts Options) *Server {
 		TenantHostBase:    opts.TenantHostBase,
 	})
 
+	tktapi := tickets.New(mware, root)
+
 	return &Server{
 		ginEngine: opts.GinEngine,
 		admin: apiadmin.New(apiadmin.Options{
@@ -99,6 +101,7 @@ func New(opts Options) *Server {
 			MiddleWare: mware,
 			Notz:       nz,
 			Signer:     signer,
+			TicketAPI:  tktapi,
 		}),
 		log:    logsvc,
 		signer: signer,
@@ -122,7 +125,7 @@ func New(opts Options) *Server {
 		cSockd:               root.SockdController(),
 		app:                  opts.App,
 		sockdConnIdGenerator: plane.GetIdService().NewNode("temphia.sockd"),
-		ticketsAPI:           tickets.New(mware, root),
+		ticketsAPI:           tktapi,
 	}
 }
 

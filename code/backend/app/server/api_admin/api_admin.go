@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/app/server/middleware"
 	"github.com/temphia/temphia/code/backend/app/server/notz"
+	"github.com/temphia/temphia/code/backend/app/server/tickets"
 	"github.com/temphia/temphia/code/backend/controllers/admin"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
@@ -14,6 +15,7 @@ type Options struct {
 	MiddleWare *middleware.Middleware
 	Notz       *notz.Notz
 	Signer     service.Signer
+	TicketAPI  *tickets.TicketAPI
 }
 
 type ApiAdmin struct {
@@ -22,6 +24,7 @@ type ApiAdmin struct {
 	middleware *middleware.Middleware
 	notz       *notz.Notz
 	signer     service.Signer
+	ticketAPI  *tickets.TicketAPI
 }
 
 func New(opts Options) ApiAdmin {
@@ -31,6 +34,7 @@ func New(opts Options) ApiAdmin {
 		middleware: opts.MiddleWare,
 		notz:       opts.Notz,
 		signer:     opts.Signer,
+		ticketAPI:  opts.TicketAPI,
 	}
 }
 
@@ -46,11 +50,11 @@ func (a *ApiAdmin) API(rg *gin.RouterGroup) {
 	a.plugAPI(rg.Group("/plug"))
 	a.resourceAPI(rg.Group("/resource"))
 	a.tenantAPI(rg.Group("/tenant"))
-	a.checkAPI(rg.Group("/check"))
 	a.TargetAPI(rg.Group("/target"))
 	a.LensAPI(rg.Group("/lens"))
 	a.adapterEditorAPI(rg.Group("/adapter_editor"))
-	a.plugStateTKT(rg.Group("/plug_state"))
+
+	a.ticketAPI.PlugState(rg.Group("/plug_state"))
 
 }
 
