@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"regexp"
 
+	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/libx/dbutils/hsql"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dyncore"
@@ -26,18 +27,22 @@ type DynDB struct {
 	vendor     string
 	cache      dyndb.DCache
 	hsql       *hsql.Hsql
+
+	loggerBuilder func() zerolog.Logger
 }
 
 func New(opts ucore.DynDBOptions) *DynDB {
+
 	d := &DynDB{
-		session:    opts.Session,
-		sharedLock: opts.SharedLock,
-		txn:        opts.TxnManager,
-		dyngen:     opts.DynGen,
-		tns:        opts.TNS,
-		vendor:     opts.Vendor,
-		cache:      nil,
-		hsql:       hsql.New(opts.TNS),
+		session:       opts.Session,
+		sharedLock:    opts.SharedLock,
+		txn:           opts.TxnManager,
+		dyngen:        opts.DynGen,
+		tns:           opts.TNS,
+		vendor:        opts.Vendor,
+		cache:         nil,
+		hsql:          hsql.New(opts.TNS),
+		loggerBuilder: opts.LoggerBuilder,
 	}
 
 	d.cache = dyncore.NewCache(d.ListColumns)

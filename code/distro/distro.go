@@ -3,6 +3,7 @@ package distro
 import (
 	"os"
 
+	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/app"
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/app/log"
@@ -15,10 +16,15 @@ import (
 
 func NewDistroApp(conf *config.Config, dev, singleTenantMode bool) xtypes.App {
 
+	var lservice *log.LogService
+
 	reg := registry.New(true)
 	sbuilder := stores.NewBuilder(stores.Options{
 		Registry: reg,
 		Config:   conf,
+		LogBuilder: func() zerolog.Logger {
+			return lservice.GetServiceLogger("store")
+		},
 	})
 
 	err := sbuilder.Build()
@@ -31,15 +37,17 @@ func NewDistroApp(conf *config.Config, dev, singleTenantMode bool) xtypes.App {
 	logdSecret := os.Getenv("TEMPHIA_LOGD_SECRET")
 	logdPort := os.Getenv("TEMPHIA_LOGD_PORT")
 
-	builder := app.NewBuilder()
-	builder.SetConfig(conf)
-	builder.SetLogger(log.New(log.LogOptions{
+	lservice = log.New(log.LogOptions{
 		LogdSecret: logdSecret,
 		Folder:     conf.NodeOptions.LogFolder,
 		FilePrefix: conf.NodeOptions.LogFilePrefix,
 		LogdPort:   logdPort,
 		NodeId:     lite.GetNodeId(),
-	}))
+	})
+
+	builder := app.NewBuilder()
+	builder.SetConfig(conf)
+	builder.SetLogger(lservice)
 	builder.SetRegistry(reg)
 	builder.SetXplane(lite)
 	builder.SetStoreBuilder(sbuilder)

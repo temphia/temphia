@@ -1,7 +1,6 @@
 package upper
 
 import (
-	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/stores/upper/coredb"
 	udyndb "github.com/temphia/temphia/code/backend/stores/upper/dyndb"
@@ -25,14 +24,14 @@ type Adapter struct {
 	innerDynDB   dyndb.DynDB
 }
 
-func NewAdapter(upvendor ucore.UpperVendor) func(conf *config.StoreSource) (store.Store, error) {
+func NewAdapter(upvendor ucore.UpperVendor) func(opts store.BuilderOptions) (store.Store, error) {
 
-	return func(conf *config.StoreSource) (store.Store, error) {
+	return func(opts store.BuilderOptions) (store.Store, error) {
 
 		_tns := tns.New("shared")
-		ztr := zenerator.New(conf.Vendor, _tns)
+		ztr := zenerator.New(opts.Config.Vendor, _tns)
 
-		sess, err := upvendor.Db(conf)
+		sess, err := upvendor.Db(opts.Config)
 		if err != nil {
 			return nil, err
 		}
@@ -40,15 +39,16 @@ func NewAdapter(upvendor ucore.UpperVendor) func(conf *config.StoreSource) (stor
 		return &Adapter{
 			db:           sess,
 			uvendor:      upvendor,
-			innerCoreDB:  coredb.New(sess, conf.Vendor),
-			innerStateDb: plugkv.New(sess, dbutils.NewTxMgr(upvendor.NewTx), conf.Vendor),
+			innerCoreDB:  coredb.New(sess, opts.Config.Vendor),
+			innerStateDb: plugkv.New(sess, dbutils.NewTxMgr(upvendor.NewTx), opts.Config.Vendor),
 			innerDynDB: udyndb.New(ucore.DynDBOptions{
-				Session:    sess,
-				TxnManager: dbutils.NewTxMgr(upvendor.NewTx),
-				DynGen:     ztr,
-				TNS:        _tns,
-				SharedLock: dlock.New(""),
-				Vendor:     conf.Vendor,
+				Session:       sess,
+				TxnManager:    dbutils.NewTxMgr(upvendor.NewTx),
+				DynGen:        ztr,
+				TNS:           _tns,
+				SharedLock:    dlock.New(""),
+				Vendor:        opts.Config.Vendor,
+				LoggerBuilder: opts.LogBuilder,
 			}),
 		}, nil
 	}

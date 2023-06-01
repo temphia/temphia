@@ -18,8 +18,8 @@ func init() {
 	registry.SetStoreBuilders(store.VendorSqlite, NewVendor)
 }
 
-func NewVendor(so *config.StoreSource) (store.Store, error) {
-	return upper.NewAdapter(&sl{})(so)
+func NewVendor(opts store.BuilderOptions) (store.Store, error) {
+	return upper.NewAdapter(&sl{})(opts)
 }
 
 type sl struct{}

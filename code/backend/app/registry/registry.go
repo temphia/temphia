@@ -4,7 +4,6 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/invoker"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
@@ -13,7 +12,6 @@ import (
 )
 
 type (
-	StoreBuilder  func(*config.StoreSource) (store.Store, error)
 	DynamicScript func(ns string, ctx any) error
 )
 
@@ -22,7 +20,7 @@ type Registry struct {
 	executors           map[string]etypes.BuilderFactory
 	execModules         map[string]etypes.ModuleBuilderFunc
 	dynamicScripts      map[string]DynamicScript
-	storeBuilders       map[string]StoreBuilder
+	storeBuilders       map[string]store.Builder
 	httpAdapterBuilders map[string]httpx.Builder
 	devInvokers         map[string]invoker.DevInvokerBuilder
 
@@ -42,7 +40,7 @@ func New(fromGlobal bool) *Registry {
 		repoBuilders:        make(map[string]repox.Builder),
 		executors:           make(map[string]etypes.BuilderFactory),
 		execModules:         make(map[string]etypes.ModuleBuilderFunc),
-		storeBuilders:       make(map[string]StoreBuilder),
+		storeBuilders:       make(map[string]store.Builder),
 		httpAdapterBuilders: make(map[string]httpx.Builder),
 		mlock:               &sync.Mutex{},
 	}
@@ -141,7 +139,7 @@ func (r *Registry) SetDevInvokerBuilders(name string, rb invoker.DevInvokerBuild
 	r.devInvokers[name] = rb
 }
 
-func (r *Registry) SetStoreBuilder(name string, b StoreBuilder) {
+func (r *Registry) SetStoreBuilder(name string, b store.Builder) {
 	r.mlock.Lock()
 	defer r.mlock.Unlock()
 	if r.freezed {
@@ -188,7 +186,7 @@ func (r *Registry) GetDynamicScripts() map[string]DynamicScript {
 	return r.dynamicScripts
 }
 
-func (r *Registry) GetStoreBuilders() map[string]StoreBuilder {
+func (r *Registry) GetStoreBuilders() map[string]store.Builder {
 	r.mlock.Lock()
 	defer r.mlock.Unlock()
 	if !r.freezed {

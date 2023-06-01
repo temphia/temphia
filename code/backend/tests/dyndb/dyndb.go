@@ -31,10 +31,12 @@ func Run() {
 		panic(err)
 	}
 
-	store, err := sqlite.NewVendor(&config.StoreSource{
-		Name:     "",
-		Vendor:   store.VendorSqlite,
-		HostPath: testdb,
+	store, err := sqlite.NewVendor(store.BuilderOptions{
+		Config: &config.StoreSource{
+			Name:     "",
+			Vendor:   store.VendorSqlite,
+			HostPath: testdb,
+		},
 	})
 	if err != nil {
 		panic(err)

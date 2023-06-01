@@ -1,6 +1,10 @@
 package store
 
-import "github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
+import (
+	"github.com/rs/zerolog"
+	"github.com/temphia/temphia/code/backend/app/config"
+	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
+)
 
 type StoreType string
 
@@ -26,3 +30,10 @@ type Store interface {
 	CabinetSource() CabinetSource
 	Name() string
 }
+
+type BuilderOptions struct {
+	Config     *config.StoreSource
+	LogBuilder func() zerolog.Logger
+}
+
+type Builder func(opts BuilderOptions) (Store, error)

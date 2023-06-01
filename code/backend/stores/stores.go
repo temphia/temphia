@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/k0kubun/pp"
+	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/app/registry"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
@@ -16,13 +17,15 @@ import (
 )
 
 type Options struct {
-	Registry *registry.Registry
-	Config   *config.Config
+	Registry   *registry.Registry
+	Config     *config.Config
+	LogBuilder func() zerolog.Logger
 }
 
 type Builder struct {
-	registry *registry.Registry
-	config   *config.Config
+	registry   *registry.Registry
+	config     *config.Config
+	logBuilder func() zerolog.Logger
 
 	stores     map[string]store.Store
 	cdb        store.CoreDB
@@ -38,6 +41,7 @@ func NewBuilder(opts Options) *Builder {
 	return &Builder{
 		registry:   opts.Registry,
 		config:     opts.Config,
+		logBuilder: opts.LogBuilder,
 		stores:     make(map[string]store.Store),
 		cabSources: make(map[string]store.CabinetSource),
 		cdb:        nil,
@@ -63,7 +67,11 @@ func (b *Builder) Build() error {
 			return easyerr.Error(fmt.Sprintf("Provider %s not found", ss.Provider))
 		}
 
-		store, err := sBuilder(ss)
+		store, err := sBuilder(store.BuilderOptions{
+			Config:     ss,
+			LogBuilder: b.logBuilder,
+		})
+
 		if err != nil {
 			return easyerr.Wrap("err while building store", err)
 		}

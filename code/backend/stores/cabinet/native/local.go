@@ -27,7 +27,9 @@ func init() {
 		}, nil
 	})
 
-	registry.SetStoreBuilders("local_fs", storeBuilder)
+	registry.SetStoreBuilders("local_fs", func(opts store.BuilderOptions) (store.Store, error) {
+		return storeBuilder(opts.Config)
+	})
 }
 
 type NativeBlob struct {

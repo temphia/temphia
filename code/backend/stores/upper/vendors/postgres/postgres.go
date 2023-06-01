@@ -13,9 +13,11 @@ import (
 )
 
 func init() {
-	registry.SetStoreBuilders(store.VendorPostgres, func(so *config.StoreSource) (store.Store, error) {
-		return upper.NewAdapter(&pq{})(so)
-	})
+	registry.SetStoreBuilders(store.VendorPostgres, NewVendor)
+}
+
+func NewVendor(opts store.BuilderOptions) (store.Store, error) {
+	return upper.NewAdapter(&pq{})(opts)
 }
 
 type pq struct{}

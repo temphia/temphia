@@ -3,6 +3,7 @@ package ucore
 import (
 	"database/sql"
 
+	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/tns"
@@ -16,12 +17,13 @@ type UpperVendor interface {
 }
 
 type DynDBOptions struct {
-	Session    db.Session
-	SharedLock service.DyndbLock
-	TxnManager dbutils.TxManager
-	DynGen     Zenerator
-	TNS        tns.TNS
-	Vendor     string
+	Session       db.Session
+	SharedLock    service.DyndbLock
+	TxnManager    dbutils.TxManager
+	DynGen        Zenerator
+	TNS           tns.TNS
+	Vendor        string
+	LoggerBuilder func() zerolog.Logger
 }
 
 // upper throws timeout when it takes long to run query so get

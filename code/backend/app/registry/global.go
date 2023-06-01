@@ -4,6 +4,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 var G *Registry
@@ -19,7 +20,7 @@ func SetRepoBuilder(name string, builder repox.Builder) {
 	G.SetRepoBuilder(name, builder)
 }
 
-func SetStoreBuilders(name string, builder StoreBuilder) {
+func SetStoreBuilders(name string, builder store.Builder) {
 	G.SetStoreBuilder(name, builder)
 }
 
