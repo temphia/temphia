@@ -46,6 +46,29 @@ type PlugState struct {
 	KeyPrefix string `json:"key_prefix,omitempty"`
 }
 
+type BprintTkt struct {
+	TenantId  string `json:"-"`
+	Type      string `json:"type"`
+	UserId    string `json:"user_id"`
+	DeviceId  int64  `json:"device_id,omitempty"`
+	SessionId int64  `json:"session_id,omitempty"`
+	ExecId    int64  `json:"exec_id,omitempty"`
+	PlugId    string `json:"plug_id,omitempty"`
+	AgentId   string `json:"agent_id,omitempty"`
+}
+
+type ExecModTkt struct {
+	TenantId  string `json:"-"`
+	Type      string `json:"type"`
+	UserId    string `json:"user_id"`
+	DeviceId  int64  `json:"device_id,omitempty"`
+	SessionId int64  `json:"session_id,omitempty"`
+	ExecId    int64  `json:"exec_id,omitempty"`
+	PlugId    string `json:"plug_id,omitempty"`
+	AgentId   string `json:"agent_id,omitempty"`
+	ModName   string `json:"mod_name,omitempty"`
+}
+
 type AdviseryTkt struct {
 	Type   string `json:"type"`
 	XID    string `json:"xid"`

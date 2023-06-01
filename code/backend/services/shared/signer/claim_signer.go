@@ -326,3 +326,33 @@ func (cs *ClaimSigner) ParsePlugState(tenantId, payload string) (*claim.PlugStat
 	data.TenantId = tenantId
 	return data, nil
 }
+
+func (cs *ClaimSigner) SignBprintTkt(tenantId string, data *claim.BprintTkt) (string, error) {
+	return cs.signer.Sign(tenantId, data)
+}
+
+func (cs *ClaimSigner) ParseBprintTkt(tenantId, payload string) (*claim.BprintTkt, error) {
+	data := &claim.BprintTkt{}
+	err := cs.signer.Parse(tenantId, payload, data)
+	if err != nil {
+		return nil, err
+	}
+
+	data.TenantId = tenantId
+	return data, nil
+}
+
+func (cs *ClaimSigner) SignExecModTkt(tenantId string, data *claim.ExecModTkt) (string, error) {
+	return cs.signer.Sign(tenantId, data)
+}
+
+func (cs *ClaimSigner) ParseExecModTkt(tenantId, payload string) (*claim.ExecModTkt, error) {
+	data := &claim.ExecModTkt{}
+	err := cs.signer.Parse(tenantId, payload, data)
+	if err != nil {
+		return nil, err
+	}
+
+	data.TenantId = tenantId
+	return data, nil
+}

@@ -66,4 +66,10 @@ type ClaimSigner interface {
 
 	SignUserMgmtTkt(tenantId string, data *claim.UserMgmtTkt) (string, error)
 	ParseUserMgmtTkt(tenantId, payload string) (*claim.UserMgmtTkt, error)
+
+	SignBprintTkt(tenantId string, data *claim.BprintTkt) (string, error)
+	ParseBprintTkt(tenantId, payload string) (*claim.BprintTkt, error)
+
+	SignExecModTkt(tenantId string, data *claim.ExecModTkt) (string, error)
+	ParseExecModTkt(tenantId, payload string) (*claim.ExecModTkt, error)
 }

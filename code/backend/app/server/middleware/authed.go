@@ -120,6 +120,19 @@ func (m *Middleware) UX(fn func(uclaim *claim.UserMgmtTkt, http *gin.Context)) f
 	}
 }
 
+func (m *Middleware) BprintX(fn func(uclaim *claim.BprintTkt, http *gin.Context)) func(ctx *gin.Context) {
+
+	return func(ctx *gin.Context) {
+		umClaim, err := m.Signer.ParseBprintTkt(ctx.Param("tenant_id"), ctx.GetHeader("Authorization"))
+		if err != nil {
+			httpx.UnAuthorized(ctx)
+			return
+		}
+
+		fn(umClaim, ctx)
+	}
+}
+
 // private
 
 func funcName(fn interface{}) string {
