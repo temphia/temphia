@@ -53,6 +53,7 @@ type BootData struct {
 	ExecLoader string `json:"exec_loader,omitempty"`
 }
 
+// EngineHub is sits on top of Engine, Launch are related TargetApps, Run are related to TargetHooks.
 type EngineHub interface {
 	GetEngine() Engine
 	Start() error
@@ -69,5 +70,10 @@ type EngineHub interface {
 	ServeExecutorFile(tenantId, plugId, agentId, file string) ([]byte, error)
 	ListExecutors() ([]string, error)
 	ListModules() ([]string, error)
+
 	RunStartupHooks(tenants []string, minwait time.Duration)
+	// 	RunDyndbHooks(tenants string, opts map[string]any) error
+	// 	RunAdapterHooks(tenants string, opts map[string]any) error
+	// 	RunUserHooks(tenants string, opts map[string]any) error
+
 }
