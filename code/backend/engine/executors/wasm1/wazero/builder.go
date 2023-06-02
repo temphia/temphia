@@ -15,10 +15,10 @@ type Builder struct {
 }
 
 func NewBuilder(app any) (etypes.ExecutorBuilder, error) {
+	ctx := context.Background()
 
-	rt := wazero.NewRuntime(context.Background())
-
-	tm, err := BuildTemphiaModule(rt)
+	rt := wazero.NewRuntime(ctx)
+	tm, err := BuildTemphiaModule(ctx, rt)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,6 @@ func (b *Builder) Instance(opts etypes.ExecutorOption) (etypes.Executor, error) 
 		context: nil,
 		mem:     nil,
 
-		bindSockd: opts.Binder.SockdBindingsGet(),
-		bindSelf:  opts.Binder.SelfBindingsGet(),
+		bindSelf: opts.Binder.SelfBindingsGet(),
 	}, nil
 }

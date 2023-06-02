@@ -20,9 +20,8 @@ type Executor struct {
 	mem     api.Memory
 
 	// bindings cache
-	bindings  bindx.Bindings
-	bindSockd bindx.Sockd
-	bindSelf  bindx.Self
+	bindings bindx.Bindings
+	bindSelf bindx.Self
 }
 
 func (e *Executor) Process(req *event.Request) (*event.Response, error) {

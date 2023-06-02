@@ -13,7 +13,7 @@ func PlugKvSet(txid int32, key, value string, opts map[string]any) error {
 
 	var respOffset, respLen int32
 
-	ok := _plugkv_set(txid, keyPtr, keyLen, valuePtr, valueLen, int32(uintptr(optPtr)), optLen, intAddr(&respOffset), intAddr(&respLen))
+	ok := _plugkv_set(0, txid, keyPtr, keyLen, valuePtr, valueLen, int32(uintptr(optPtr)), optLen, intAddr(&respOffset), intAddr(&respLen))
 	if ok {
 		return nil
 	}
@@ -29,7 +29,7 @@ func PlugKvUpdate(txid int32, key, value string, opts map[string]any) error {
 
 	var respOffset, respLen int32
 
-	ok := _plugkv_update(txid, keyPtr, keyLen, valuePtr, valueLen, int32(uintptr(optPtr)), optLen, intAddr(&respOffset), intAddr(&respLen))
+	ok := _plugkv_update(0, txid, keyPtr, keyLen, valuePtr, valueLen, int32(uintptr(optPtr)), optLen, intAddr(&respOffset), intAddr(&respLen))
 	if ok {
 		return nil
 	}
@@ -41,7 +41,7 @@ func PlugKvGet(txid int32, key string) (map[string]any, error) {
 	keyPtr, keyLen := stringToPtr(key)
 	var respOffset, respLen int32
 
-	ok := _plugkv_get(txid, keyPtr, keyLen, intAddr(&respOffset), intAddr(&respLen))
+	ok := _plugkv_get(0, txid, keyPtr, keyLen, intAddr(&respOffset), intAddr(&respLen))
 	resp := getBytes(respOffset)
 	if !ok {
 		return nil, errors.New(string(resp))
@@ -60,7 +60,7 @@ func PlugKvDelete(txid int32, key string) error {
 	keyPtr, keyLen := stringToPtr(key)
 	var respOffset, respLen int32
 
-	ok := _plugkv_delete(txid, keyPtr, keyLen, intAddr(&respOffset), intAddr(&respLen))
+	ok := _plugkv_delete(0, txid, keyPtr, keyLen, intAddr(&respOffset), intAddr(&respLen))
 	if ok {
 		return nil
 	}
@@ -78,7 +78,7 @@ func PlugKvDeleteBatch(txid int32, keys []string) error {
 	keyPtr, keyLen := bytesToPtr(keysJson)
 	var respOffset, respLen int32
 
-	ok := _plugkv_delete_batch(txid, keyPtr, keyLen, intAddr(&respOffset), intAddr(&respLen))
+	ok := _plugkv_delete_batch(0, txid, keyPtr, keyLen, intAddr(&respOffset), intAddr(&respLen))
 	if ok {
 		return nil
 	}
@@ -92,7 +92,7 @@ func PlugKvQuery(txid int32, opt map[string]any) ([]map[string]any, error) {
 	optPtr, optLen := JsonPtr(opt)
 	var respOffset, respLen int32
 
-	ok := _plugkv_query(txid, int32(uintptr(optPtr)), optLen, intAddr(&respOffset), intAddr(&respLen))
+	ok := _plugkv_query(0, txid, int32(uintptr(optPtr)), optLen, intAddr(&respOffset), intAddr(&respLen))
 
 	resp := getBytes(respOffset)
 
@@ -150,27 +150,27 @@ func PlugKvTxnCommit(txid int32) error {
 
 //go:wasm-module temphia1
 //export plugkv_set
-func _plugkv_set(txid, keyPtr, keyLen, valuePtr, valueLen, optsPtr, optsLen, respOffset, respLen int32) bool
+func _plugkv_set(ctxid, txid, keyPtr, keyLen, valuePtr, valueLen, optsPtr, optsLen, respOffset, respLen int32) bool
 
 //go:wasm-module temphia1
 //export plugkv_update
-func _plugkv_update(txid, keyPtr, keyLen, valuePtr, valueLen, optsPtr, optsLen, respOffset, respLen int32) bool
+func _plugkv_update(ctxid, txid, keyPtr, keyLen, valuePtr, valueLen, optsPtr, optsLen, respOffset, respLen int32) bool
 
 //go:wasm-module temphia1
 //export plugkv_get
-func _plugkv_get(txid, keyPtr, keyLen, respOffset, respLen int32) bool
+func _plugkv_get(ctxid, txid, keyPtr, keyLen, respOffset, respLen int32) bool
 
 //go:wasm-module temphia1
 //export plugkv_del
-func _plugkv_delete(txid, keyPtr, keyLen, respOffset, respLen int32) bool
+func _plugkv_delete(ctxid, txid, keyPtr, keyLen, respOffset, respLen int32) bool
 
 //go:wasm-module temphia1
 //export plugkv_del_batch
-func _plugkv_delete_batch(txid, keyPtr, keyLen, respOffset, respLen int32) bool
+func _plugkv_delete_batch(ctxid, txid, keyPtr, keyLen, respOffset, respLen int32) bool
 
 //go:wasm-module temphia1
 //export plugkv_query
-func _plugkv_query(txid, optsPtr, optsLen, respOffset, respLen int32) bool
+func _plugkv_query(ctxid, txid, optsPtr, optsLen, respOffset, respLen int32) bool
 
 //go:wasm-module temphia1
 //export plugkv_txn_new

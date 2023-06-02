@@ -6,31 +6,31 @@ import (
 	"github.com/temphia/temphia/code/backend/libx/lazydata"
 )
 
-func SelfListResources(ctx context.Context, respOffset, respLen int32) int32 {
+func SelfListResources(ctx context.Context, ctxid, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
 	resp, err := e.bindSelf.SelfListResources()
 	return e.writeJSONFinal(respOffset, respLen, resp, err)
 }
 
-func SelfGetResource(ctx context.Context, nPtr, nLen, respOffset, respLen int32) int32 {
+func SelfGetResource(ctx context.Context, ctxid, nPtr, nLen, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
 	resp, err := e.bindSelf.SelfGetResource(e.getString(nPtr, nLen))
 	return e.writeJSONFinal(respOffset, respLen, resp, err)
 }
 
-func SelfInLinks(ctx context.Context, respOffset, respLen int32) int32 {
+func SelfInLinks(ctx context.Context, ctxid, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
 	resp, err := e.bindSelf.SelfInLinks()
 	return e.writeJSONFinal(respOffset, respLen, resp, err)
 }
 
-func SelfOutLinks(ctx context.Context, respOffset, respLen int32) int32 {
+func SelfOutLinks(ctx context.Context, ctxid, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
 	resp, err := e.bindSelf.SelfOutLinks()
 	return e.writeJSONFinal(respOffset, respLen, resp, err)
 }
 
-func SelfLinkExec(ctx context.Context, nPtr, nLen, mPtr, mLen, dPtr, dLen, async, detached, respOffset, respLen int32) int32 {
+func SelfLinkExec(ctx context.Context, ctxid, nPtr, nLen, mPtr, mLen, dPtr, dLen, async, detached, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
 
 	out, err := e.bindSelf.SelfLinkExec(
@@ -55,7 +55,7 @@ func SelfLinkExec(ctx context.Context, nPtr, nLen, mPtr, mLen, dPtr, dLen, async
 	return 1
 }
 
-func SelfNewModule(ctx context.Context, nPtr, nLen, dPtr, dLen, respOffset, respLen int32) int32 {
+func SelfNewModule(ctx context.Context, ctxid, nPtr, nLen, dPtr, dLen, respOffset, respLen int32) int32 {
 
 	e := getCtx(ctx)
 
@@ -72,7 +72,7 @@ func SelfNewModule(ctx context.Context, nPtr, nLen, dPtr, dLen, respOffset, resp
 	return out
 }
 
-func SelfModuleExec(ctx context.Context, mid int32, mPtr, mLen, dPtr, dLen, respOffset, respLen int32) int32 {
+func SelfModuleExec(ctx context.Context, ctxid, mid int32, mPtr, mLen, dPtr, dLen, respOffset, respLen int32) int32 {
 
 	e := getCtx(ctx)
 
@@ -98,7 +98,7 @@ func SelfModuleExec(ctx context.Context, mid int32, mPtr, mLen, dPtr, dLen, resp
 	return 1
 }
 
-func SelfForkExec(ctx context.Context, mPtr, mLen, dPtr, dLen, respOffset, respLen int32) int32 {
+func SelfForkExec(ctx context.Context, ctxid, mPtr, mLen, dPtr, dLen, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
 
 	err := e.bindSelf.SelfForkExec(

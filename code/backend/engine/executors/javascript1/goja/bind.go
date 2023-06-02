@@ -93,26 +93,6 @@ func (g *Goja) bind() {
 
 	}
 
-	if sbind := g.binder.SockdBindingsGet(); sbind != nil {
-
-		g.qbind("_sd_send_direct", func(room string, connId int64, payload []byte) any {
-			return resp(sbind.SendDirect(room, connId, payload))
-		})
-
-		g.qbind("_sd_send_direct_batch", func(room string, connIds []int64, payload []byte) any {
-			return resp(sbind.SendDirectBatch(room, connIds, payload))
-		})
-
-		g.qbind("_sd_send_broadcast", func(room string, ignores []int64, payload []byte) any {
-			return resp(sbind.SendBroadcast(room, ignores, payload))
-		})
-
-		g.qbind("_sd_send_tagged", func(room string, tags []string, ignoreConns []int64, payload []byte) any {
-			return resp(sbind.SendTagged(room, tags, ignoreConns, payload))
-		})
-
-	}
-
 	if ibind := g.binder.InvokerGet(); ibind != nil {
 		g.qbind("_invoker_name", func() any {
 			return ibind.Name()

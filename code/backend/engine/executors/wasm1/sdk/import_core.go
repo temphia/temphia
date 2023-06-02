@@ -29,14 +29,14 @@ func sleep(msec uint32) {
 
 //go:wasm-module temphia1
 //export get_self_file
-func _get_self_file(file_ptr, file_size, resp_ptr, resp_len, modPtr int32) bool
+func _get_self_file(ctxid, file_ptr, file_size, resp_ptr, resp_len, modPtr int32) bool
 
 func getSelfFile(file string) ([]byte, int64, error) {
 	var respOffset, respLen int32 // we are not respLen but other impl might
 	var mod int64
 	fptr, flen := stringToPtr(file)
 
-	ok := _get_self_file(fptr, flen, intAddr(&respOffset), intAddr(&respLen), int32(uintptr(unsafe.Pointer(&mod))))
+	ok := _get_self_file(0, fptr, flen, intAddr(&respOffset), intAddr(&respLen), int32(uintptr(unsafe.Pointer(&mod))))
 
 	resp := getBytes(respOffset)
 

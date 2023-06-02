@@ -4,125 +4,6 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 )
 
-func SelfAddFile(file string, data []byte) error {
-	var respOffset, respLen int32
-	fptr, flen := stringToPtr(file)
-	dPtr, dLen := bytesToPtr(data)
-
-	if _self_add_file(fptr, flen, dPtr, dLen, intAddr(&respOffset), intAddr(&respLen)) {
-		return nil
-	}
-
-	return getErr(respOffset)
-}
-
-func SelfUpdateFile(file string, data []byte) error {
-
-	var respOffset, respLen int32
-	fptr, flen := stringToPtr(file)
-	dPtr, dLen := bytesToPtr(data)
-
-	if _self_update_file(fptr, flen, dPtr, dLen, intAddr(&respOffset), intAddr(&respLen)) {
-		return nil
-	}
-
-	return getErr(respOffset)
-}
-
-func SelfAddDataFile(file string, data []byte) error {
-	var respOffset, respLen int32
-	fptr, flen := stringToPtr(file)
-	dPtr, dLen := bytesToPtr(data)
-
-	if _self_add_data_file(fptr, flen, dPtr, dLen, intAddr(&respOffset), intAddr(&respLen)) {
-		return nil
-	}
-
-	return getErr(respOffset)
-}
-
-func SelfUpdateDataFile(file string, data []byte) error {
-	var respOffset, respLen int32
-	fptr, flen := stringToPtr(file)
-	dPtr, dLen := bytesToPtr(data)
-
-	if _self_update_data_file(fptr, flen, dPtr, dLen, intAddr(&respOffset), intAddr(&respLen)) {
-		return nil
-	}
-
-	return getErr(respOffset)
-}
-
-func SelfGetDataFile(file string) ([]byte, error) {
-	var respOffset, respLen int32
-
-	fptr, flen := stringToPtr(file)
-
-	if _self_get_data_file(fptr, flen, intAddr(&respOffset), intAddr(&respLen)) {
-		return getBytes(respOffset), nil
-	}
-
-	return nil, getErr(respOffset)
-}
-
-func SelfListDataFiles() (map[string]string, error) {
-	var respOffset, respLen int32
-
-	if _self_list_data_file(intAddr(&respOffset), intAddr(&respLen)) {
-		resp := make(map[string]string)
-		err := getJSON(respOffset, &resp)
-		if err != nil {
-			return nil, err
-		}
-		return resp, nil
-	}
-
-	return nil, getErr(respOffset)
-}
-
-func SelfDeleteDataFile(file string) error {
-	var respOffset, respLen int32
-	fptr, flen := stringToPtr(file)
-
-	if _self_del_data_file(fptr, flen, intAddr(&respOffset), intAddr(&respLen)) {
-		return nil
-	}
-
-	return getErr(respOffset)
-}
-
-// private
-
-//go:wasm-module temphia1
-//export self_add_file
-func _self_add_file(fPtr, fLen, dPtr, dLen, respOffset, respLen int32) bool
-
-//go:wasm-module temphia1
-//export self_update_file
-func _self_update_file(fPtr, fLen, dPtr, dLen, respOffset, respLen int32) bool
-
-//go:wasm-module temphia1
-//export self_add_data_file
-func _self_add_data_file(fPtr, fLen, dPtr, dLen, respOffset, respLen int32) bool
-
-//go:wasm-module temphia1
-//export self_update_data_file
-func _self_update_data_file(fPtr, fLen, dPtr, dLen, respOffset, respLen int32) bool
-
-//go:wasm-module temphia1
-//export self_get_data_file
-func _self_get_data_file(fptr, flen, respOffset, respLen int32) bool
-
-//go:wasm-module temphia1
-//export self_list_data_file
-func _self_list_data_file(respOffset, respLen int32) bool
-
-//go:wasm-module temphia1
-//export self_del_data_file
-func _self_del_data_file(fptr, flen, respOffset, respLen int32) bool
-
-// other
-
 func SelfListResources() ([]*bindx.Resource, error) {
 	var respOffset, respLen int32
 
@@ -283,8 +164,12 @@ func _self_link_exec(nPtr, nLen, mPtr, mLen, dPtr, dLen, async, detached, respOf
 func _self_new_module(nPtr, nLen, dPtr, dLen, respOffset, respLen int32) int32
 
 //go:wasm-module temphia1
-//export self_new_module
+//export self_module_exec
 func _self_module_exec(mid, mPtr, mLen, dPtr, dLen, respOffset, respLen int32) bool
+
+//go:wasm-module temphia1
+//export self_module_ticket
+func _self_module_ticket(mid, mPtr, mLen, dPtr, dLen, respOffset, respLen int32) bool
 
 //go:wasm-module temphia1
 //export self_fork_exec

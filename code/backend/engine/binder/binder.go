@@ -27,9 +27,7 @@ type Binder struct {
 	Epoch        int64
 
 	// specific bind impl
-	plugKV PkvBindings
-	sockd  SockdBinding
-
+	plugKV  PkvBindings
 	self    SelfBindings
 	invoker InvokerBindings
 }
@@ -44,10 +42,6 @@ func (b *Binder) AttachJob(j *job.Job) {
 
 	// build specific binds
 	b.plugKV = NewPKV(b.Handle.Deps.PlugKV, b.plugKV.namespace, b.plugKV.plugId, b.plugKV.agentid)
-
-	b.sockd = SockdBinding{
-		sockd: b.Handle.Deps.Sockd,
-	}
 
 	b.self = NewSelfBindings(b.Handle, b)
 	b.invoker = NewInvoker(b.Handle)
@@ -105,9 +99,8 @@ func (b *Binder) Execute() (*event.Response, error) {
 
 func (b *Binder) PlugKVBindingsGet() bindx.PlugKV { return &b.plugKV }
 
-func (b *Binder) SelfBindingsGet() bindx.Self   { return &b.self }
-func (b *Binder) InvokerGet() bindx.Invoker     { return &b.invoker }
-func (b *Binder) SockdBindingsGet() bindx.Sockd { return &b.sockd }
+func (b *Binder) SelfBindingsGet() bindx.Self { return &b.self }
+func (b *Binder) InvokerGet() bindx.Invoker   { return &b.invoker }
 
 // private
 

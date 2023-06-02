@@ -24,14 +24,3 @@ func (e *Executor) getJSON(optPtr, optLen int32, target any) error {
 	out := e.getBytes(optPtr, optLen)
 	return json.Unmarshal(out, target)
 }
-
-func (e *Executor) getStrMap(optPtr, optLen int32) (map[string]string, error) {
-	m := make(map[string]string)
-
-	err := e.getJSON(optPtr, optLen, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	return m, nil
-}
