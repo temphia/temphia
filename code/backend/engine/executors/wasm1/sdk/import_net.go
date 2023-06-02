@@ -1,8 +1,10 @@
 package tasmsdk
 
-import "github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
+import (
+	"github.com/temphia/temphia/code/backend/engine/modules/http"
+)
 
-func HttpRaw(req *bindx.HttpRequest) (*bindx.HttpResponse, error) {
+func HttpRaw(req *http.HttpRequest) (*http.HttpResponse, error) {
 
 	mPtr, mLen := stringToPtr(req.Method)
 	pPtr, pLen := stringToPtr(req.Path)
@@ -24,7 +26,7 @@ func HttpRaw(req *bindx.HttpRequest) (*bindx.HttpResponse, error) {
 		intAddr(&risJson), intAddr(&rbodyPtr), intAddr(&rbodyLen),
 	) {
 
-		resp := &bindx.HttpResponse{
+		resp := &http.HttpResponse{
 			SatusCode: int(rStatus),
 			Headers:   map[string][]string{},
 			Body:      getBytes(rbodyLen),
@@ -41,12 +43,12 @@ func HttpRaw(req *bindx.HttpRequest) (*bindx.HttpResponse, error) {
 	return nil, getErr(rHeadPtr)
 }
 
-func HttpRawBatch(reqs []*bindx.HttpRequest) ([]bindx.HttpResponse, error) {
+func HttpRawBatch(reqs []*http.HttpRequest) ([]http.HttpResponse, error) {
 	var respOffset, respLen int32
 	rPtr, rLen := JsonPtr(reqs)
 
 	if _http_raw_batch(int32(uintptr(rPtr)), rLen, intAddr(&respOffset), intAddr(&respLen)) {
-		resp := make([]bindx.HttpResponse, 0)
+		resp := make([]http.HttpResponse, 0)
 		err := getJSON(respOffset, &resp)
 		if err != nil {
 			return nil, err

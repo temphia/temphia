@@ -91,6 +91,75 @@ func (b *SelfBindings) selfNewModule(name string, args xtypes.LazyData) (int32, 
 	return counter, nil
 }
 
+type PlugState struct {
+	KeyPrefix string `json:"key_prefix,omitempty"`
+}
+
+type CabinetFolder struct {
+	Prefix      string   `json:"prefix,omitempty"`
+	PinnedFiles []string `json:"pinned_files,omitempty"`
+	Operations  []string `json:"ops,omitempty"`
+}
+
+type SockdRoom struct {
+	AllowBroadcast string `json:"allow_broadcast,omitempty"`
+}
+
+type DataGroup struct {
+	ReadOnly bool `json:"read_only,omitempty"`
+}
+
+func (b *SelfBindings) SelfModuleTicket(name string, opts xtypes.LazyData) (string, error) {
+
+	// uctx := pkv.getUserCtx()
+	// if uctx == nil {
+	// 	return "", easyerr.Error(etypes.EmptyUserContext)
+	// }
+
+	// return pkv.signer.SignPlugState(pkv.namespace, &claim.PlugState{
+	// 	TenantId:  pkv.namespace,
+	// 	Type:      "",
+	// 	UserId:    uctx.UserID,
+	// 	DeviceId:  uctx.DeviceId,
+	// 	SessionId: uctx.SessionID,
+	// 	ExecId:    0,
+	// 	PlugId:    pkv.plugId,
+	// 	AgentId:   pkv.agentid,
+	// 	KeyPrefix: opts.KeyPrefix,
+	// })
+
+	// Ticket(room string, opts *ticket.SockdRoom) (string, error)
+
+	/*
+
+
+
+
+
+		uctx := s.handle.Job.Invoker.UserContext()
+		if uctx == nil {
+			return "", easyerr.Error(etypes.EmptyUserContext)
+		}
+
+		s.handle.LoadResources()
+
+		res := s.handle.Resources[room]
+		if res == nil {
+			return "", easyerr.NotFound("Resource room")
+		}
+
+		return s.handle.Deps.Signer.SignSockdTkt(s.tenantId, &claim.SockdTkt{
+			UserId:    uctx.UserID,
+			Room:      res.Id,
+			DeviceId:  uctx.DeviceId,
+			SessionId: uctx.SessionID,
+		})
+
+	*/
+
+	return "", nil
+}
+
 func (b *SelfBindings) selfModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error) {
 
 	fmt.Println("@", b.activeModules, mid)

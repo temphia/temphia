@@ -14,19 +14,6 @@ type Link struct {
 	AgentId string `json:"agent_id,omitempty"`
 }
 
-type HttpRequest struct {
-	Method  string            `json:"method,omitempty"`
-	Path    string            `json:"path,omitempty"`
-	Headers map[string]string `json:"headers,omitempty"`
-	Body    []byte            `json:"body,omitempty"`
-}
-
-type HttpResponse struct {
-	SatusCode int                 `json:"status_code,omitempty"`
-	Headers   map[string][]string `json:"headers,omitempty"`
-	Body      []byte              `json:"body,omitempty"`
-}
-
 type UserMessage struct {
 	Title            string `json:"title,omitempty"`
 	Contents         string `json:"contents,omitempty"`

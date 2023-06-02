@@ -6,7 +6,6 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/temphia/temphia/code/backend/engine/binder/handle"
-	plugkv "github.com/temphia/temphia/code/backend/engine/modules/plugkv2"
 
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
@@ -28,7 +27,7 @@ type Binder struct {
 	Epoch        int64
 
 	// specific bind impl
-	plugKV plugkv.Binding
+	plugKV PkvBindings
 	sockd  SockdBinding
 
 	self    SelfBindings
@@ -44,7 +43,8 @@ func (b *Binder) AttachJob(j *job.Job) {
 	b.Handle.Resp = nil
 
 	// build specific binds
-	b.plugKV = plugkv.New(b.Handle)
+	b.plugKV = NewPKV(b.Handle.Deps.PlugKV, b.plugKV.namespace, b.plugKV.plugId, b.plugKV.agentid)
+
 	b.sockd = SockdBinding{
 		sockd: b.Handle.Deps.Sockd,
 	}
@@ -103,7 +103,7 @@ func (b *Binder) Execute() (*event.Response, error) {
 
 // bindings
 
-func (b *Binder) PlugKVBindingsGet() any { return nil }
+func (b *Binder) PlugKVBindingsGet() bindx.PlugKV { return &b.plugKV }
 
 func (b *Binder) SelfBindingsGet() bindx.Self   { return &b.self }
 func (b *Binder) InvokerGet() bindx.Invoker     { return &b.invoker }

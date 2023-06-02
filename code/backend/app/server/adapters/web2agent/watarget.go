@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/xtypes"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes/invoker"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 type WATarget struct {
@@ -60,7 +60,7 @@ func (w *WATarget) ExecuteMethod(method, path string, data xtypes.LazyData) (xty
 	return w.executeMethod(method, path, data)
 }
 
-func (w *WATarget) UserContext() *invoker.User {
+func (w *WATarget) UserContext() *claim.UserContext {
 	return nil
 }
 

@@ -8,7 +8,7 @@ import (
 	"text/template"
 
 	"github.com/Masterminds/sprig/v3"
-	"github.com/temphia/temphia/code/backend/engine/modules/pstate"
+	"github.com/temphia/temphia/code/backend/engine/modules/plugkv"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
@@ -40,7 +40,7 @@ func (e *EasyPage) build() (any, error) {
 
 	// rc := rcagent.NewRCAgent(e.tenantId, e.editorHook.PlugId, e.editorHook.AgentId, e.corehub)
 
-	psmod := pstate.New(e.tenantId, e.editorHook.PlugId, e.pkv)
+	psmod := plugkv.New(e.tenantId, e.editorHook.PlugId, e.pkv)
 	psmod.Query(&store.PkvQuery{})
 
 	builder := EasyPageBuilder{

@@ -2,10 +2,6 @@ package binder
 
 import (
 	"github.com/temphia/temphia/code/backend/engine/binder/handle"
-	"github.com/temphia/temphia/code/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx/ticket"
-	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 )
 
@@ -41,27 +37,4 @@ func (s *SockdBinding) SendTagged(room string, tags []string, ignores []int64, p
 
 func (s *SockdBinding) RoomUpdateTags(room string, opts sockdx.UpdateTagOptions) error {
 	return s.sockd.RoomUpdateTags(s.tenantId, room, opts)
-}
-
-func (s *SockdBinding) Ticket(room string, opts *ticket.SockdRoom) (string, error) {
-
-	uctx := s.handle.Job.Invoker.UserContext()
-	if uctx == nil {
-		return "", easyerr.Error(etypes.EmptyUserContext)
-	}
-
-	s.handle.LoadResources()
-
-	res := s.handle.Resources[room]
-	if res == nil {
-		return "", easyerr.NotFound("Resource room")
-	}
-
-	return s.handle.Deps.Signer.SignSockdTkt(s.tenantId, &claim.SockdTkt{
-		UserId:    uctx.UserID,
-		Room:      res.Id,
-		DeviceId:  uctx.DeviceId,
-		SessionId: uctx.SessionID,
-	})
-
 }
