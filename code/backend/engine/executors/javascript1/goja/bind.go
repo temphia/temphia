@@ -5,10 +5,10 @@ import (
 
 	"github.com/dop251/goja"
 
+	"github.com/temphia/temphia/code/backend/engine/modules/http"
 	"github.com/temphia/temphia/code/backend/libx/lazydata"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx/ticket"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 func (g *Goja) qbind(name string, fn any) {
@@ -44,58 +44,58 @@ func (g *Goja) bind() {
 		})
 	}
 
-	if pbind := g.binder.PlugKVBindingsGet(); pbind != nil {
-		g.qbind("_pkv_set", func(txid uint32, key string, value string, opts *store.SetOptions) any {
-			return resp(pbind.Set(txid, key, value, opts))
-		})
+	// if pbind := g.binder.PlugKVBindingsGet(); pbind != nil {
+	// 	g.qbind("_pkv_set", func(txid uint32, key string, value string, opts *store.SetOptions) any {
+	// 		return resp(pbind.Set(txid, key, value, opts))
+	// 	})
 
-		g.qbind("_pkv_update", func(txid uint32, key string, value string, opts *store.UpdateOptions) any {
-			return resp(pbind.Update(txid, key, value, opts))
-		})
+	// 	g.qbind("_pkv_update", func(txid uint32, key string, value string, opts *store.UpdateOptions) any {
+	// 		return resp(pbind.Update(txid, key, value, opts))
+	// 	})
 
-		g.qbind("_pkv_get", func(txid uint32, key string) (any, any) {
-			r, err := pbind.Get(txid, key)
-			if err != nil {
-				return nil, err.Error()
-			}
+	// 	g.qbind("_pkv_get", func(txid uint32, key string) (any, any) {
+	// 		r, err := pbind.Get(txid, key)
+	// 		if err != nil {
+	// 			return nil, err.Error()
+	// 		}
 
-			return r, nil
-		})
+	// 		return r, nil
+	// 	})
 
-		g.qbind("_pkv_del", func(txid uint32, key string) any {
-			return resp(pbind.Del(txid, key))
-		})
-		g.qbind("_pkv_batch_del", func(txid uint32, keys []string) any {
-			return resp(pbind.DelBatch(txid, keys))
-		})
-		g.qbind("_pkv_query", func(txid uint32, query *store.PkvQuery) (any, any) {
-			r, err := pbind.Query(txid, query)
-			if err != nil {
-				return nil, err.Error()
-			}
+	// 	g.qbind("_pkv_del", func(txid uint32, key string) any {
+	// 		return resp(pbind.Del(txid, key))
+	// 	})
+	// 	g.qbind("_pkv_batch_del", func(txid uint32, keys []string) any {
+	// 		return resp(pbind.DelBatch(txid, keys))
+	// 	})
+	// 	g.qbind("_pkv_query", func(txid uint32, query *store.PkvQuery) (any, any) {
+	// 		r, err := pbind.Query(txid, query)
+	// 		if err != nil {
+	// 			return nil, err.Error()
+	// 		}
 
-			return r, nil
-		})
-		g.qbind("_pkv_new_txn", func() (uint32, any) {
-			txid, err := pbind.NewTxn()
-			if err != nil {
-				return 0, err.Error()
-			}
+	// 		return r, nil
+	// 	})
+	// 	g.qbind("_pkv_new_txn", func() (uint32, any) {
+	// 		txid, err := pbind.NewTxn()
+	// 		if err != nil {
+	// 			return 0, err.Error()
+	// 		}
 
-			return txid, nil
-		})
-		g.qbind("_pkv_rollback", func(txid uint32) any {
-			return resp(pbind.RollBack(txid))
-		})
-		g.qbind("_pkv_commit", func(txid uint32) any {
-			return resp(pbind.Commit(txid))
-		})
+	// 		return txid, nil
+	// 	})
+	// 	g.qbind("_pkv_rollback", func(txid uint32) any {
+	// 		return resp(pbind.RollBack(txid))
+	// 	})
+	// 	g.qbind("_pkv_commit", func(txid uint32) any {
+	// 		return resp(pbind.Commit(txid))
+	// 	})
 
-		g.qbind("_pkv_ticket", func(opts *ticket.PlugState) (any, any) {
-			return pbind.Ticket(opts)
-		})
+	// 	g.qbind("_pkv_ticket", func(opts *ticket.PlugState) (any, any) {
+	// 		return pbind.Ticket(opts)
+	// 	})
 
-	}
+	// }
 
 	if sbind := g.binder.SockdBindingsGet(); sbind != nil {
 
@@ -117,52 +117,6 @@ func (g *Goja) bind() {
 
 		g.qbind("_sd_ticket", func(room string, opts *ticket.SockdRoom) (any, any) {
 			return sbind.Ticket(room, opts)
-		})
-
-	}
-
-	if cbind := g.binder.CabinetBindingsGet(); cbind != nil {
-		g.qbind("_cab_add_file", func(folder, file string, payload []byte) any {
-			return resp(cbind.AddFile(folder, file, payload))
-		})
-
-		g.qbind("_cab_list_folder", func(folder, file string, payload []byte) (any, any) {
-			fr, err := cbind.ListFolder(folder)
-			if err != nil {
-				return nil, err.Error()
-			}
-			return fr, nil
-		})
-
-		g.qbind("_cab_get_file_str", func(folder, file string, payload []byte) (any, any) {
-			out, err := cbind.GetFile(folder, file)
-			if err != nil {
-				return nil, err.Error()
-			}
-
-			return string(out), nil
-		})
-
-		// fixme => actually TEST IT
-		g.qbind("_cab_get_file", func(folder, file string, payload []byte) (*goja.ArrayBuffer, any) {
-			out, err := cbind.GetFile(folder, file)
-			if err != nil {
-				return nil, err.Error()
-			}
-			arr := g.runtime.NewArrayBuffer(out)
-			return &arr, nil
-		})
-
-		g.qbind("_cab_del_file", func(folder, file string) any {
-			return resp(cbind.DeleteFile(folder, file))
-		})
-
-		g.qbind("_cab_generate_ticket", func(folder string, opts *ticket.CabinetFolder) (any, any) {
-			tok, err := cbind.Ticket(folder, opts)
-			if err != nil {
-				return nil, err.Error()
-			}
-			return tok, nil
 		})
 
 	}
@@ -210,7 +164,7 @@ func (g *Goja) bind() {
 
 	}
 
-	if nb := g.binder.NetGet(); nb != nil {
+	if nb := http.New(); nb != nil {
 
 		hfunc := http1(nb, g.runtime)
 		g.qbind("_http1", func(method string, url string, headers map[string]string, body any) (int, any, any) {
@@ -323,7 +277,7 @@ type HTTPResponse struct {
 	Body      any                 `json:"body,omitempty"`
 }
 
-func http1(nb bindx.Net, runtime *goja.Runtime) func(request *HTTPRequest) HTTPResponse {
+func http1(nb http.Http, runtime *goja.Runtime) func(request *HTTPRequest) HTTPResponse {
 	return func(request *HTTPRequest) HTTPResponse {
 
 		var bytes []byte
@@ -335,7 +289,7 @@ func http1(nb bindx.Net, runtime *goja.Runtime) func(request *HTTPRequest) HTTPR
 			bytes, _ = json.Marshal(request.Body)
 		}
 
-		resp := nb.HttpRaw(&bindx.HttpRequest{
+		resp := nb.HttpRaw(&http.HttpRequest{
 			Method:  request.Method,
 			Path:    request.Path,
 			Headers: request.Headers,

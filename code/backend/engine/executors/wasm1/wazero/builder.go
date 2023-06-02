@@ -65,10 +65,7 @@ func (b *Builder) Instance(opts etypes.ExecutorOption) (etypes.Executor, error) 
 		context: nil,
 		mem:     nil,
 
-		bindPluKV: opts.Binder.PlugKVBindingsGet(),
 		bindSockd: opts.Binder.SockdBindingsGet(),
-		bindCab:   opts.Binder.CabinetBindingsGet(),
 		bindSelf:  opts.Binder.SelfBindingsGet(),
-		bindNet:   opts.Binder.NetGet(),
 	}, nil
 }

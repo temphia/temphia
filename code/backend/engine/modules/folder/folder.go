@@ -1,4 +1,4 @@
-package cab
+package folder
 
 import (
 	"context"
@@ -82,9 +82,9 @@ func (b *Binding) Ticket(bucket string, opts *ticket.CabinetFolder) (string, err
 
 	return b.handle.Deps.Signer.SignFolder(b.tenantId, &claim.Folder{
 		TenantId:  b.tenantId,
-		UserId:    uctx.Id,
-		SessionID: uctx.SessionId,
-		DeviceId:  uctx.SessionId,
+		UserId:    uctx.UserID,
+		SessionID: uctx.SessionID,
+		DeviceId:  uctx.DeviceId,
 		Type:      "",
 		Expiry:    0,
 		Source:    source,

@@ -30,9 +30,9 @@ func (am *AdapterMod) Handle(method string, args xtypes.LazyData) (xtypes.LazyDa
 
 	resp, err := am.adapterHub.PreformEditorAction(&claim.UserContext{
 		TenantId:  am.tenantId,
-		UserID:    uctx.Id,
-		UserGroup: uctx.Group,
-		SessionID: uctx.SessionId,
+		UserID:    uctx.UserID,
+		UserGroup: uctx.UserGroup,
+		SessionID: uctx.SessionID,
 		DeviceId:  uctx.DeviceId,
 	}, am.adapterId, method, out)
 	if err != nil {

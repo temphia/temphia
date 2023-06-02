@@ -2,7 +2,7 @@ package bundled
 
 import (
 	"github.com/temphia/temphia/code/backend/xtypes"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes/invoker"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 type Module func(method, path string, data xtypes.LazyData) (xtypes.LazyData, error)
@@ -12,7 +12,7 @@ type Builder struct {
 	modules          map[string]Module
 	app              xtypes.App
 	attrs            map[string]any
-	get_user_context func() *invoker.User
+	get_user_context func() *claim.UserContext
 }
 
 func NewBuilder(name string) *Builder {
@@ -34,7 +34,7 @@ func (b *Builder) SetModule(name string, mod Module) {
 	b.modules[name] = mod
 }
 
-func (b *Builder) SetUserContextProvider(fn func() *invoker.User) {
+func (b *Builder) SetUserContextProvider(fn func() *claim.UserContext) {
 	b.get_user_context = fn
 }
 

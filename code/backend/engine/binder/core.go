@@ -41,8 +41,7 @@ func (b *Binder) Sleep(msec int32) {
 }
 
 func (b *Binder) GetFileWithMeta(file string) ([]byte, int64, error) {
-	out, err := b.self.SelfGetFile(file)
-
+	out, err := b.Handle.Deps.Pacman.BprintGetBlob(b.Handle.Namespace, b.Handle.BprintId, file)
 	return out, 0, err
 }
 

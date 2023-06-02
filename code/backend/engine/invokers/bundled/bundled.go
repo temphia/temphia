@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/temphia/temphia/code/backend/xtypes"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes/invoker"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 type Invoker struct {
@@ -12,7 +12,7 @@ type Invoker struct {
 	app              xtypes.App
 	modules          map[string]Module
 	arrts            map[string]any
-	get_user_context func() *invoker.User
+	get_user_context func() *claim.UserContext
 }
 
 func (i *Invoker) Type() string { return i.name }
@@ -29,7 +29,7 @@ func (i *Invoker) ExecuteMethod(method, path string, data xtypes.LazyData) (xtyp
 	return mod(mpath[1], path, data)
 }
 
-func (i *Invoker) UserContext() *invoker.User {
+func (i *Invoker) UserContext() *claim.UserContext {
 	if i.get_user_context == nil {
 		return nil
 	}

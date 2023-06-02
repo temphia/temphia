@@ -31,17 +31,8 @@ func (l *Linked) ExecuteMethod(module, action string, data xtypes.LazyData) (xty
 	return nil, easyerr.NotImpl()
 }
 
-func (l *Linked) UserContext() *invoker.User {
-	if l.userctx == nil {
-		return nil
-	}
-
-	return &invoker.User{
-		Id:        l.userctx.UserID,
-		Group:     l.userctx.UserGroup,
-		SessionId: l.userctx.SessionID,
-		DeviceId:  l.userctx.DeviceId,
-	}
+func (l *Linked) UserContext() *claim.UserContext {
+	return l.userctx
 }
 
 func (l *Linked) GetAttr(string) interface{} {

@@ -6,17 +6,10 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
-type User struct {
-	Id        string
-	Group     string
-	SessionId int64
-	DeviceId  int64
-}
-
 type Invoker interface {
 	Type() string
 	ExecuteMethod(method, path string, data xtypes.LazyData) (xtypes.LazyData, error)
-	UserContext() *User
+	UserContext() *claim.UserContext
 	GetAttr(string) interface{}
 	GetAttrs() map[string]interface{}
 }

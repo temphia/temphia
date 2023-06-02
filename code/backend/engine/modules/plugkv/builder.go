@@ -1,4 +1,4 @@
-package pstate
+package plugkv
 
 import (
 	"github.com/temphia/temphia/code/backend/engine/runtime/modipc"

@@ -4,6 +4,7 @@ import (
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/invoker"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 type Forked struct {
@@ -21,7 +22,7 @@ func (f *Forked) ExecuteMethod(module, action string, data xtypes.LazyData) (xty
 	return nil, easyerr.NotImpl()
 }
 
-func (f *Forked) UserContext() *invoker.User {
+func (f *Forked) UserContext() *claim.UserContext {
 	return nil
 }
 

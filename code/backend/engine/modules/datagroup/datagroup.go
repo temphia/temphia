@@ -32,9 +32,9 @@ func (d *DatagroupModule) Handle(method string, args xtypes.LazyData) (xtypes.La
 		tok, err := signer.SignData(d.tenantId, &claim.Data{
 			TenantId:   d.tenantId,
 			Type:       claim.CTypeData,
-			UserID:     uctx.Id,
-			UserGroup:  uctx.Group,
-			SessionID:  uctx.SessionId,
+			UserID:     uctx.UserID,
+			UserGroup:  uctx.UserGroup,
+			SessionID:  uctx.SessionID,
 			DeviceId:   uctx.DeviceId,
 			DataSource: d.dynsrc.Name(),
 			DataGroup:  d.group,

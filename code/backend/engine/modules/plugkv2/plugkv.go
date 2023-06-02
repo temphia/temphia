@@ -13,24 +13,24 @@ import (
 )
 
 type Binding struct {
-	stateKv   store.PlugStateKV
-	signer    service.Signer
-	namespace string
-	plugId    string
-	agentid   string
-	txns      []uint32
-	handle    *handle.Handle
+	stateKv    store.PlugStateKV
+	signer     service.Signer
+	namespace  string
+	plugId     string
+	agentid    string
+	txns       []uint32
+	getUserCtx func() *claim.UserContext
 }
 
 func New(handle *handle.Handle) Binding {
 	return Binding{
-		signer:    handle.Deps.Signer,
-		stateKv:   handle.Deps.PlugKV,
-		namespace: handle.Namespace,
-		plugId:    handle.PlugId,
-		agentid:   handle.AgentId,
-		txns:      make([]uint32, 0, 1),
-		handle:    handle,
+		signer:     handle.Deps.Signer,
+		stateKv:    handle.Deps.PlugKV,
+		namespace:  handle.Namespace,
+		plugId:     handle.PlugId,
+		agentid:    handle.AgentId,
+		txns:       make([]uint32, 0, 1),
+		getUserCtx: nil,
 	}
 }
 
@@ -122,7 +122,7 @@ func (pkv *Binding) Query(txid uint32, query *store.PkvQuery) ([]*entities.PlugK
 
 func (pkv *Binding) Ticket(opts *ticket.PlugState) (string, error) {
 
-	uctx := pkv.handle.Job.Invoker.UserContext()
+	uctx := pkv.getUserCtx()
 	if uctx == nil {
 		return "", easyerr.Error(etypes.EmptyUserContext)
 	}
@@ -130,9 +130,9 @@ func (pkv *Binding) Ticket(opts *ticket.PlugState) (string, error) {
 	return pkv.signer.SignPlugState(pkv.namespace, &claim.PlugState{
 		TenantId:  pkv.namespace,
 		Type:      "",
-		UserId:    uctx.Id,
+		UserId:    uctx.UserID,
 		DeviceId:  uctx.DeviceId,
-		SessionId: uctx.SessionId,
+		SessionId: uctx.SessionID,
 		ExecId:    0,
 		PlugId:    pkv.plugId,
 		AgentId:   pkv.agentid,

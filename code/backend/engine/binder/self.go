@@ -34,38 +34,6 @@ func NewSelfBindings(handle *handle.Handle, root *Binder) SelfBindings {
 	}
 }
 
-func (b *SelfBindings) SelfGetFile(file string) ([]byte, error) {
-	return b.selfGetFile(file)
-}
-
-func (b *SelfBindings) SelfAddFile(file string, data []byte) error {
-	return b.selfAddFile(file, data)
-}
-
-func (b *SelfBindings) SelfUpdateFile(file string, data []byte) error {
-	return b.selfUpdateFile(file, data)
-}
-
-func (b *SelfBindings) SelfAddDataFile(file string, data []byte) error {
-	return b.selfAddDataFile(file, data)
-}
-
-func (b *SelfBindings) SelfUpdateDataFile(file string, data []byte) error {
-	return b.selfUpdateDataFile(file, data)
-}
-
-func (b *SelfBindings) SelfGetDataFile(file string) ([]byte, error) {
-	return b.selfGetDataFile(file)
-}
-
-func (b *SelfBindings) SelfListDataFiles() (map[string]string, error) {
-	return b.selfListDataFiles()
-}
-
-func (b *SelfBindings) SelfDeleteDataFile(file string) error {
-	return b.selfDeleteDataFile(file)
-}
-
 func (b *SelfBindings) SelfNewModule(name string, data xtypes.LazyData) (int32, error) {
 	return b.selfNewModule(name, data)
 }

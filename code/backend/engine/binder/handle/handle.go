@@ -75,7 +75,7 @@ func (h *Handle) LoadResources() {
 	rh := make(map[string]*entities.Resource)
 
 	for _, rp := range agentRes {
-		// fixme => overlay exta_meta|actions|policy etc form agentResource on top of resource
+		// fixme => overlay exta_meta|actions|policy etc from agentResource on top of resource
 		rh[rp.AgentResource.Slug] = rp.Resource
 	}
 

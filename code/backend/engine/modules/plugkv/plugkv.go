@@ -1,4 +1,4 @@
-package pstate
+package plugkv
 
 import (
 	"github.com/temphia/temphia/code/backend/engine/runtime/modipc"
@@ -61,3 +61,7 @@ func (ps *PlugStateMod) Del(key string) error {
 func (ps *PlugStateMod) DelBatch(keys []string) error {
 	return ps.pkv.DelBatch(0, ps.tenantId, ps.plugId, keys)
 }
+
+// 	NewTxn() (uint32, error)
+// 	RollBack(txid uint32) error
+// 	Commit(txid uint32) error

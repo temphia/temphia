@@ -6,11 +6,8 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/temphia/temphia/code/backend/engine/binder/handle"
-	"github.com/temphia/temphia/code/backend/engine/binder/specific/cab"
-	"github.com/temphia/temphia/code/backend/engine/binder/specific/ncache"
-	"github.com/temphia/temphia/code/backend/engine/binder/specific/net"
-	"github.com/temphia/temphia/code/backend/engine/binder/specific/plugkv"
-	"github.com/temphia/temphia/code/backend/engine/binder/specific/sockd"
+	plugkv "github.com/temphia/temphia/code/backend/engine/modules/plugkv2"
+
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
@@ -31,11 +28,9 @@ type Binder struct {
 	Epoch        int64
 
 	// specific bind impl
-	plugKV  plugkv.Binding
-	sockd   sockd.Binding
-	cabinet cab.Binding
-	net     net.Binding
-	ncache  ncache.Binding
+	plugKV plugkv.Binding
+	sockd  SockdBinding
+
 	self    SelfBindings
 	invoker InvokerBindings
 }
@@ -50,10 +45,10 @@ func (b *Binder) AttachJob(j *job.Job) {
 
 	// build specific binds
 	b.plugKV = plugkv.New(b.Handle)
-	b.sockd = sockd.New(b.Handle)
-	b.cabinet = cab.New(b.Handle)
-	b.net = net.New()
-	b.ncache = ncache.New(b.Handle)
+	b.sockd = SockdBinding{
+		sockd: b.Handle.Deps.Sockd,
+	}
+
 	b.self = NewSelfBindings(b.Handle, b)
 	b.invoker = NewInvoker(b.Handle)
 }
@@ -108,12 +103,11 @@ func (b *Binder) Execute() (*event.Response, error) {
 
 // bindings
 
-func (b *Binder) PlugKVBindingsGet() bindx.PlugKV   { return &b.plugKV }
-func (b *Binder) SelfBindingsGet() bindx.Self       { return &b.self }
-func (b *Binder) NetGet() bindx.Net                 { return &b.net }
-func (b *Binder) InvokerGet() bindx.Invoker         { return &b.invoker }
-func (b *Binder) SockdBindingsGet() bindx.Sockd     { return &b.sockd }
-func (b *Binder) CabinetBindingsGet() bindx.Cabinet { return &b.cabinet }
+func (b *Binder) PlugKVBindingsGet() any { return nil }
+
+func (b *Binder) SelfBindingsGet() bindx.Self   { return &b.self }
+func (b *Binder) InvokerGet() bindx.Invoker     { return &b.invoker }
+func (b *Binder) SockdBindingsGet() bindx.Sockd { return &b.sockd }
 
 // private
 

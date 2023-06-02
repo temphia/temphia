@@ -1,9 +1,16 @@
-package binder
+package bprintself
 
-import (
-	"fmt"
-	"strings"
-)
+// SelfAddFile(file string, data []byte) error
+// SelfUpdateFile(file string, data []byte) error
+
+// SelfAddDataFile(file string, data []byte) error
+// SelfUpdateDataFile(file string, data []byte) error
+// SelfGetDataFile(file string) ([]byte, error)
+// SelfListDataFiles() (map[string]string, error)
+// SelfDeleteDataFile(file string) error
+
+/*
+
 
 func (b *SelfBindings) selfGetFile(file string) ([]byte, error) {
 	return b.pacman.BprintGetBlob(b.handle.Namespace, b.handle.BprintId, file)
@@ -56,3 +63,6 @@ func (b *SelfBindings) selfDeleteDataFile(file string) error {
 func dataFile(file string) string {
 	return fmt.Sprintf("data_%s", file)
 }
+
+
+*/

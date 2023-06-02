@@ -13,11 +13,12 @@ func NewWeb(http *gin.Context, app xtypes.App, eclaim *claim.Executor) invoker.I
 	builder := NewBuilder(invokers.UserApp)
 
 	builder.SetApp(app)
-	builder.SetUserContextProvider(func() *invoker.User {
-		return &invoker.User{
-			Id:        eclaim.UserId,
-			Group:     eclaim.UserGroup,
-			SessionId: eclaim.SessionId,
+	builder.SetUserContextProvider(func() *claim.UserContext {
+		return &claim.UserContext{
+			TenantId:  eclaim.TenantId,
+			UserID:    eclaim.UserId,
+			UserGroup: eclaim.UserGroup,
+			SessionID: eclaim.SessionId,
 			DeviceId:  eclaim.DeviceId,
 		}
 	})
@@ -31,12 +32,13 @@ func NewAdmin(dclaim *claim.UserContext) invoker.Invoker {
 
 	builder := NewBuilder(invokers.UserApp)
 
-	builder.SetUserContextProvider(func() *invoker.User {
-		return &invoker.User{
-			Id:        dclaim.UserID,
-			Group:     dclaim.UserGroup,
-			SessionId: 0,
-			DeviceId:  0,
+	builder.SetUserContextProvider(func() *claim.UserContext {
+		return &claim.UserContext{
+			TenantId:  dclaim.TenantId,
+			UserID:    dclaim.UserID,
+			UserGroup: dclaim.UserGroup,
+			SessionID: dclaim.SessionID,
+			DeviceId:  dclaim.DeviceId,
 		}
 	})
 

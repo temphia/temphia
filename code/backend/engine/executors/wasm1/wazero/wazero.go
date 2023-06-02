@@ -21,11 +21,8 @@ type Executor struct {
 
 	// bindings cache
 	bindings  bindx.Bindings
-	bindPluKV bindx.PlugKV
 	bindSockd bindx.Sockd
-	bindCab   bindx.Cabinet
 	bindSelf  bindx.Self
-	bindNet   bindx.Net
 }
 
 func (e *Executor) Process(req *event.Request) (*event.Response, error) {
