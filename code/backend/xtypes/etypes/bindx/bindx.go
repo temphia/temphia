@@ -29,8 +29,8 @@ type Self interface {
 
 	SelfInLinks() ([]Link, error)
 	SelfOutLinks() ([]Link, error)
-
 	SelfLinkExec(name, method string, data xtypes.LazyData, async, detached bool) (xtypes.LazyData, error)
+
 	SelfNewModule(name string, data xtypes.LazyData) (int32, error)
 	SelfModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error)
 	SelfModuleTicket(name string, opts xtypes.LazyData) (string, error)

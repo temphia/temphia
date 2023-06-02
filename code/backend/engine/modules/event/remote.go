@@ -1,4 +1,4 @@
-package plugkv
+package event
 
 import (
 	"encoding/json"
