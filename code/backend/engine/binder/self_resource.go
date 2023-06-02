@@ -2,11 +2,13 @@ package binder
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities/resource"
 )
 
@@ -111,53 +113,62 @@ type DataGroup struct {
 
 func (b *SelfBindings) SelfModuleTicket(name string, opts xtypes.LazyData) (string, error) {
 
-	// uctx := pkv.getUserCtx()
-	// if uctx == nil {
-	// 	return "", easyerr.Error(etypes.EmptyUserContext)
-	// }
+	signer := b.handle.Deps.Signer
+	uctx := b.root.invoker.ContextUser()
 
-	// return pkv.signer.SignPlugState(pkv.namespace, &claim.PlugState{
-	// 	TenantId:  pkv.namespace,
-	// 	Type:      "",
-	// 	UserId:    uctx.UserID,
-	// 	DeviceId:  uctx.DeviceId,
-	// 	SessionId: uctx.SessionID,
-	// 	ExecId:    0,
-	// 	PlugId:    pkv.plugId,
-	// 	AgentId:   pkv.agentid,
-	// 	KeyPrefix: opts.KeyPrefix,
-	// })
+	switch name {
+	case "self_plugstate":
 
-	// Ticket(room string, opts *ticket.SockdRoom) (string, error)
-
-	/*
-
-
-
-
-
-		uctx := s.handle.Job.Invoker.UserContext()
-		if uctx == nil {
-			return "", easyerr.Error(etypes.EmptyUserContext)
+		popts := PlugState{}
+		err := opts.AsObject(popts)
+		if err != nil {
+			return "", err
 		}
 
-		s.handle.LoadResources()
-
-		res := s.handle.Resources[room]
-		if res == nil {
-			return "", easyerr.NotFound("Resource room")
-		}
-
-		return s.handle.Deps.Signer.SignSockdTkt(s.tenantId, &claim.SockdTkt{
+		return signer.SignPlugState(b.handle.Namespace, &claim.PlugState{
+			TenantId:  b.handle.Namespace,
+			Type:      "",
 			UserId:    uctx.UserID,
-			Room:      res.Id,
 			DeviceId:  uctx.DeviceId,
 			SessionId: uctx.SessionID,
+			ExecId:    0,
+			PlugId:    b.handle.PlugId,
+			AgentId:   b.handle.AgentId,
+			KeyPrefix: popts.KeyPrefix,
+		})
+	case "self_bprint":
+		return "", easyerr.NotImpl()
+	}
+
+	b.handle.LoadResources()
+
+	res, ok := b.handle.Resources[name]
+	if !ok {
+		return "", easyerr.Error(etypes.ResourceNotFound)
+	}
+
+	switch res.Type {
+	case resource.DataGroup:
+		target := strings.Split(res.Target, "/")
+
+		return signer.SignData(b.handle.Namespace, &claim.Data{
+			TenantId:   b.handle.Namespace,
+			Type:       "",
+			UserID:     uctx.UserID,
+			UserGroup:  uctx.UserGroup,
+			SessionID:  uctx.SessionID,
+			DeviceId:   uctx.DeviceId,
+			DataSource: target[0],
+			DataGroup:  target[1],
+			DataTables: []string{"*"},
+			IsExec:     true,
 		})
 
-	*/
+	default:
+		return "", easyerr.NotImpl()
 
-	return "", nil
+	}
+
 }
 
 func (b *SelfBindings) selfModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error) {
