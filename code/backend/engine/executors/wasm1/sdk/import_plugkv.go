@@ -113,7 +113,7 @@ func PlugKvQuery(txid int32, opt map[string]any) ([]map[string]any, error) {
 func PlugKvTxnNew() (int32, error) {
 	var txid, respOffset, respLen int32
 
-	ok := _plugkv_txn_new(intAddr(&txid), intAddr(&respOffset), intAddr(&respLen))
+	ok := _plugkv_txn_new(0, intAddr(&txid), intAddr(&respOffset), intAddr(&respLen))
 	if !ok {
 		resp := getBytes(respOffset)
 		return 0, errors.New(string(resp))
@@ -125,7 +125,7 @@ func PlugKvTxnNew() (int32, error) {
 func PlugKvTxnRollback(txid int32) error {
 	var respOffset, respLen int32
 
-	ok := _plugkv_txn_rollback(txid, intAddr(&respOffset), intAddr(&respLen))
+	ok := _plugkv_txn_rollback(0, txid, intAddr(&respOffset), intAddr(&respLen))
 	if !ok {
 		resp := getBytes(respOffset)
 		return errors.New(string(resp))
@@ -137,7 +137,7 @@ func PlugKvTxnRollback(txid int32) error {
 func PlugKvTxnCommit(txid int32) error {
 	var respOffset, respLen int32
 
-	ok := _plugkv_txn_commit(txid, intAddr(&respOffset), intAddr(&respLen))
+	ok := _plugkv_txn_commit(0, txid, intAddr(&respOffset), intAddr(&respLen))
 	if !ok {
 		resp := getBytes(respOffset)
 		return errors.New(string(resp))
@@ -174,12 +174,12 @@ func _plugkv_query(ctxid, txid, optsPtr, optsLen, respOffset, respLen int32) boo
 
 //go:wasm-module temphia1
 //export plugkv_txn_new
-func _plugkv_txn_new(txidPtr, respOffset, respLen int32) bool
+func _plugkv_txn_new(ctxid, txidPtr, respOffset, respLen int32) bool
 
 //go:wasm-module temphia1
 //export plugkv_txn_rollback
-func _plugkv_txn_rollback(txid, respOffset, respLen int32) bool
+func _plugkv_txn_rollback(ctxid, txid, respOffset, respLen int32) bool
 
 //go:wasm-module temphia1
 //export plugkv_txn_commit
-func _plugkv_txn_commit(txid, respOffset, respLen int32) bool
+func _plugkv_txn_commit(ctxid, txid, respOffset, respLen int32) bool
