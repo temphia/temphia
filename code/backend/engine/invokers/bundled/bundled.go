@@ -17,7 +17,7 @@ type Invoker struct {
 
 func (i *Invoker) Type() string { return i.name }
 
-func (i *Invoker) ExecuteMethod(method, path string, data xtypes.LazyData) (xtypes.LazyData, error) {
+func (i *Invoker) ExecuteMethod(method string, data xtypes.LazyData) (xtypes.LazyData, error) {
 
 	mpath := strings.Split(method, ".")
 
@@ -26,7 +26,7 @@ func (i *Invoker) ExecuteMethod(method, path string, data xtypes.LazyData) (xtyp
 		panic("invoker module not found")
 	}
 
-	return mod(mpath[1], path, data)
+	return mod(mpath[1], data)
 }
 
 func (i *Invoker) UserContext() *claim.UserContext {

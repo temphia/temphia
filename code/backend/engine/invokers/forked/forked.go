@@ -18,7 +18,7 @@ func New(from string) invoker.Invoker {
 }
 
 func (f *Forked) Type() string { return "forked" }
-func (f *Forked) ExecuteMethod(module, action string, data xtypes.LazyData) (xtypes.LazyData, error) {
+func (f *Forked) ExecuteMethod(action string, data xtypes.LazyData) (xtypes.LazyData, error) {
 	return nil, easyerr.NotImpl()
 }
 

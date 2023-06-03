@@ -11,25 +11,13 @@ func GetSelfFile(file string) ([]byte, int64, error) { return getSelfFile(file) 
 
 // private
 
-//go:wasm-module temphia1
-//export log
-func _log(ptr, size int32)
-
 func log(msg string) {
 	_log(stringToPtr(msg))
 }
 
-//go:wasm-module temphia1
-//export sleep
-func _sleep(msec uint32)
-
 func sleep(msec uint32) {
 	_sleep(msec)
 }
-
-//go:wasm-module temphia1
-//export get_self_file
-func _get_self_file(ctxid, file_ptr, file_size, resp_ptr, resp_len, modPtr int32) bool
 
 func getSelfFile(file string) ([]byte, int64, error) {
 	var respOffset, respLen int32 // we are not respLen but other impl might
@@ -46,3 +34,15 @@ func getSelfFile(file string) ([]byte, int64, error) {
 
 	return resp, mod, nil
 }
+
+//go:wasm-module temphia1
+//export sleep
+func _sleep(msec uint32)
+
+//go:wasm-module temphia1
+//export log
+func _log(ptr, size int32)
+
+//go:wasm-module temphia1
+//export get_self_file
+func _get_self_file(ctxid, file_ptr, file_size, resp_ptr, resp_len, modPtr int32) bool

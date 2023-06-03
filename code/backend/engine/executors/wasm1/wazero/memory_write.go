@@ -6,38 +6,29 @@ import (
 	"github.com/temphia/temphia/code/backend/libx/xutils/kosher"
 )
 
-func (e *Executor) writeFinal(respOffset, respLen int32, err error) int32 {
+func (e *Executor) writeFinal(ctxid, respOffset, respLen int32, err error) int32 {
 	if err != nil {
-		e.writeError(respOffset, respLen, err)
+		e.writeError(ctxid, respOffset, respLen, err)
 		return 0
 	}
 
 	return 1
 }
 
-func (e *Executor) writeJSONFinal(respOffset, respLen int32, resp any, err error) int32 {
+func (e *Executor) writeJSONFinal(ctxid, respOffset, respLen int32, resp any, err error) int32 {
 	if err != nil {
-		e.writeError(respOffset, respLen, err)
+		e.writeError(ctxid, respOffset, respLen, err)
 		return 0
 	}
 
-	return e.writeJSON(respOffset, respLen, resp)
+	return e.writeJSON(ctxid, respOffset, respLen, resp)
 }
 
-func (e *Executor) writeBytesFinal(respOffset, respLen int32, resp []byte, err error) int32 {
-	if err != nil {
-		e.writeError(respOffset, respLen, err)
-		return 0
-	}
-	e.writeBytesNPtr(resp, respOffset, respLen)
-	return 1
-}
-
-func (e *Executor) writeJSON(respOffset, respLen int32, resp any) int32 {
+func (e *Executor) writeJSON(ctxid, respOffset, respLen int32, resp any) int32 {
 
 	out, err := json.Marshal(resp)
 	if err != nil {
-		e.writeError(respOffset, respLen, err)
+		e.writeError(ctxid, respOffset, respLen, err)
 		return 0
 	}
 
@@ -53,7 +44,7 @@ func (e *Executor) writeJSON(respOffset, respLen int32, resp any) int32 {
 	return 1
 }
 
-func (e *Executor) writeError(respOffset, respLen int32, err error) {
+func (e *Executor) writeError(ctxid, respOffset, respLen int32, err error) {
 
 	errstr := kosher.Byte(err.Error())
 	offset := e.guestAllocateBytes(uint64(len(errstr)))
@@ -67,7 +58,7 @@ func (e *Executor) writeError(respOffset, respLen int32, err error) {
 
 }
 
-func (e *Executor) writeBytesNPtr(data []byte, roffset, rlen int32) {
+func (e *Executor) writeBytesNPtr(data []byte, ctxid, roffset, rlen int32) {
 	offset := e.guestAllocateBytes(uint64(len(data)))
 
 	ok := e.mem.Write(offset, data)

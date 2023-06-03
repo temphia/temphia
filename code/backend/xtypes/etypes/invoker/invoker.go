@@ -8,7 +8,7 @@ import (
 
 type Invoker interface {
 	Type() string
-	ExecuteMethod(method, path string, data xtypes.LazyData) (xtypes.LazyData, error)
+	ExecuteMethod(method string, data xtypes.LazyData) (xtypes.LazyData, error)
 	UserContext() *claim.UserContext
 	GetAttr(string) interface{}
 	GetAttrs() map[string]interface{}

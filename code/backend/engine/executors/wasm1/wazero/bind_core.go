@@ -28,6 +28,14 @@ func BuildTemphiaModule(ctx context.Context, runtime wazero.Runtime) (api.Module
 	mb.NewFunctionBuilder().WithFunc(SelfModuleExec).Export("self_module_exec")
 	mb.NewFunctionBuilder().WithFunc(SelfForkExec).Export("self_fork_exec")
 
+	// invoker
+
+	mb.NewFunctionBuilder().WithFunc(InvokerName).Export("invoker_name")
+	mb.NewFunctionBuilder().WithFunc(InvokerExec).Export("invoker_exec")
+	mb.NewFunctionBuilder().WithFunc(InvokerContextUser).Export("invoker_ctx_user")
+	mb.NewFunctionBuilder().WithFunc(InvokerContextInfo).Export("invoker_ctx_user_info")
+	mb.NewFunctionBuilder().WithFunc(InvokerContextUserMessage).Export("invoker_ctx_message")
+
 	return mb.Instantiate(ctx)
 }
 
@@ -55,11 +63,11 @@ func getSelfFile(ctx context.Context, ctxid, filePtr, fileLen, respOffset, respL
 		e.getString((filePtr), (fileLen)),
 	)
 	if err != nil {
-		e.writeError(respOffset, respLen, err)
+		e.writeError(ctxid, respOffset, respLen, err)
 		return 0
 	}
 
-	e.writeBytesNPtr(fout, respOffset, respOffset)
+	e.writeBytesNPtr(fout, ctxid, respOffset, respOffset)
 	e.mem.WriteUint32Le(uint32(modPtr), uint32(mod))
 
 	return 1

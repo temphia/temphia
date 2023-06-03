@@ -51,8 +51,8 @@ func (b *InvokerBindings) ContextUserInfo() (*entities.UserInfo, error) {
 
 }
 
-func (b *InvokerBindings) ExecMethod(method, path string, data xtypes.LazyData) (xtypes.LazyData, error) {
-	return b.job.Invoker.ExecuteMethod(method, path, data)
+func (b *InvokerBindings) ExecMethod(method string, data xtypes.LazyData) (xtypes.LazyData, error) {
+	return b.job.Invoker.ExecuteMethod(method, data)
 }
 
 func (b *InvokerBindings) ContextUserMessage(opts *bindx.UserMessage) error {

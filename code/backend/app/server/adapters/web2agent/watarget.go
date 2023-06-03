@@ -56,8 +56,8 @@ func (w *WATarget) Type() string {
 	return "web2agent"
 }
 
-func (w *WATarget) ExecuteMethod(method, path string, data xtypes.LazyData) (xtypes.LazyData, error) {
-	return w.executeMethod(method, path, data)
+func (w *WATarget) ExecuteMethod(method string, data xtypes.LazyData) (xtypes.LazyData, error) {
+	return w.executeMethod(method, data)
 }
 
 func (w *WATarget) UserContext() *claim.UserContext {

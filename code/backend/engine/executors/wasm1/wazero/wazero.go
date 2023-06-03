@@ -21,6 +21,7 @@ type Executor struct {
 
 	// bindings cache
 	bindings bindx.Bindings
+	invoker  bindx.Invoker
 	bindSelf bindx.Self
 }
 

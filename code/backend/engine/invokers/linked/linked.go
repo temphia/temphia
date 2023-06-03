@@ -27,7 +27,7 @@ func (l *Linked) Type() string {
 	return "linked"
 }
 
-func (l *Linked) ExecuteMethod(module, action string, data xtypes.LazyData) (xtypes.LazyData, error) {
+func (l *Linked) ExecuteMethod(action string, data xtypes.LazyData) (xtypes.LazyData, error) {
 	return nil, easyerr.NotImpl()
 }
 

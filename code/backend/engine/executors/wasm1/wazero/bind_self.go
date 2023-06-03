@@ -9,25 +9,25 @@ import (
 func SelfListResources(ctx context.Context, ctxid, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
 	resp, err := e.bindSelf.SelfListResources()
-	return e.writeJSONFinal(respOffset, respLen, resp, err)
+	return e.writeJSONFinal(ctxid, respOffset, respLen, resp, err)
 }
 
 func SelfGetResource(ctx context.Context, ctxid, nPtr, nLen, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
 	resp, err := e.bindSelf.SelfGetResource(e.getString(nPtr, nLen))
-	return e.writeJSONFinal(respOffset, respLen, resp, err)
+	return e.writeJSONFinal(ctxid, respOffset, respLen, resp, err)
 }
 
 func SelfInLinks(ctx context.Context, ctxid, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
 	resp, err := e.bindSelf.SelfInLinks()
-	return e.writeJSONFinal(respOffset, respLen, resp, err)
+	return e.writeJSONFinal(ctxid, respOffset, respLen, resp, err)
 }
 
 func SelfOutLinks(ctx context.Context, ctxid, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
 	resp, err := e.bindSelf.SelfOutLinks()
-	return e.writeJSONFinal(respOffset, respLen, resp, err)
+	return e.writeJSONFinal(ctxid, respOffset, respLen, resp, err)
 }
 
 func SelfLinkExec(ctx context.Context, ctxid, nPtr, nLen, mPtr, mLen, dPtr, dLen, async, detached, respOffset, respLen int32) int32 {
@@ -41,17 +41,17 @@ func SelfLinkExec(ctx context.Context, ctxid, nPtr, nLen, mPtr, mLen, dPtr, dLen
 		detached == 1,
 	)
 	if err != nil {
-		e.writeError(respOffset, respLen, err)
+		e.writeError(ctxid, respOffset, respLen, err)
 		return 0
 	}
 
 	bytes, err := out.AsJsonBytes()
 	if err != nil {
-		e.writeError(respOffset, respLen, err)
+		e.writeError(ctxid, respOffset, respLen, err)
 		return 0
 	}
 
-	e.writeBytesNPtr(bytes, respOffset, respLen)
+	e.writeBytesNPtr(bytes, ctxid, respOffset, respLen)
 	return 1
 }
 
@@ -64,11 +64,10 @@ func SelfNewModule(ctx context.Context, ctxid, nPtr, nLen, dPtr, dLen, respOffse
 		lazydata.NewJsonData(e.getBytes(dPtr, dLen)),
 	)
 	if err != nil {
-		e.writeError(respOffset, respLen, err)
+		e.writeError(ctxid, respOffset, respLen, err)
 		return 0
 	}
 
-	e.writeBytesNPtr([]byte(`ok`), respOffset, respLen)
 	return out
 }
 
@@ -83,17 +82,17 @@ func SelfModuleExec(ctx context.Context, ctxid, mid int32, mPtr, mLen, dPtr, dLe
 	)
 
 	if err != nil {
-		e.writeError(respOffset, respLen, err)
+		e.writeError(ctxid, respOffset, respLen, err)
 		return 0
 	}
 
 	bytes, err := out.AsJsonBytes()
 	if err != nil {
-		e.writeError(respOffset, respLen, err)
+		e.writeError(ctxid, respOffset, respLen, err)
 		return 0
 	}
 
-	e.writeBytesNPtr(bytes, respOffset, respLen)
+	e.writeBytesNPtr(bytes, ctxid, respOffset, respLen)
 
 	return 1
 }
@@ -106,5 +105,5 @@ func SelfForkExec(ctx context.Context, ctxid, mPtr, mLen, dPtr, dLen, respOffset
 		e.getBytes(dPtr, dLen),
 	)
 
-	return e.writeFinal(respOffset, respLen, err)
+	return e.writeFinal(ctxid, respOffset, respLen, err)
 }

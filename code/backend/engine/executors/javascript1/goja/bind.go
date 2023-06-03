@@ -98,9 +98,9 @@ func (g *Goja) bind() {
 			return ibind.Name()
 		})
 
-		g.qbind("_invoker_exec_method", func(method, path string, data goja.Value) (any, any) {
+		g.qbind("_invoker_exec_method", func(method string, data goja.Value) (any, any) {
 
-			resp, err := ibind.ExecMethod(method, path, lazydata.NewGojaData(g.runtime, data))
+			resp, err := ibind.ExecMethod(method, lazydata.NewGojaData(g.runtime, data))
 			if err != nil {
 				return nil, err.Error()
 			}

@@ -107,8 +107,6 @@ func SelfNewModule(name string, data []byte) (int32, error) {
 		return 0, getErr(respOffset)
 	}
 
-	_ = getBytes(respOffset) // to force delete cached []byte
-
 	return mid, nil
 }
 

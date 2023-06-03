@@ -5,7 +5,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
-type Module func(method, path string, data xtypes.LazyData) (xtypes.LazyData, error)
+type Module func(method string, data xtypes.LazyData) (xtypes.LazyData, error)
 
 type Builder struct {
 	name             string
