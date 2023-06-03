@@ -3,6 +3,7 @@ declare function _self_get_resource(name: string): [any, string];
 declare function _self_inlinks(): [any, string];
 declare function _self_outlinks(): [any, string];
 declare function _self_new_module(name: string, data: any): [number, string];
+declare function _self_module_ticket(name: string, opts: any): [number, string];
 
 declare function _self_module_exec(
   mid: number,
@@ -26,6 +27,7 @@ export const self = {
   inlinks: () => _self_inlinks(),
   outlinks: () => _self_outlinks(),
   new_module: (name: string, data: any) => _self_new_module(name, data),
+  module_ticket: (name: string, opts: any) => _self_module_ticket(name, opts),
   module_execute: (mid: number, method: string, data: any) =>
   _self_module_exec(mid, method, data),
 

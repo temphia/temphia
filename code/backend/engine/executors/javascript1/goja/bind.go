@@ -192,6 +192,10 @@ func (g *Goja) bind() {
 			return self.SelfNewModule(name, lazydata.NewGojaData(g.runtime, data))
 		})
 
+		g.qbind("_self_module_ticket", func(name string, data goja.Value) (any, any) {
+			return self.SelfModuleTicket(name, lazydata.NewGojaData(g.runtime, data))
+		})
+
 		g.qbind("_self_module_exec", func(mid int32, name string, data goja.Value) (any, any) {
 			resp, err := self.SelfModuleExec(mid, name, lazydata.NewGojaData(g.runtime, data))
 			if err != nil {
