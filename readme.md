@@ -31,3 +31,8 @@ Additionally, app has an associated user interface (UI) written in JS, which is 
 - Extendable in native golang (custom resource/modules, custom executor).
 - Multi-Tenant
 - Single static binary (ui embed)
+
+## Why
+- Batteries included means it's much faster to develop apps, as well as developed apps will be leaner because you are developing on top of primitives provided by the runtime.
+- If everyone makes apps targeting a common runtime, then system management burden becomes much less. System operations like data backup and restore are standardized across all apps.
+- Apps developed this way are much more composable, apps can emit message for special events and other apps can react to that messages.
