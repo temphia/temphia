@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
@@ -53,7 +54,15 @@ type BootData struct {
 	ExecLoader string `json:"exec_loader,omitempty"`
 }
 
-// EngineHub is sits on top of Engine, Launch are related TargetApps, Run are related to TargetHooks.
+type ModExecOptions struct {
+	PlugId  string
+	AgentId string
+	Mod     string
+	Method  string
+	Data    xtypes.LazyData
+}
+
+// EngineHub is sits on top of Engine, Launch are related to TargetApps, Run are related to TargetHooks.
 type EngineHub interface {
 	GetEngine() Engine
 	Start() error
@@ -65,6 +74,7 @@ type EngineHub interface {
 	Execute(tenantId, action string, ctx *gin.Context)
 	ExecuteDev(dclaim *claim.UserContext, plug, agent, action string, body []byte) ([]byte, error)
 	Reset(tenantId, plugId, agentId string) error
+	// ExecuteMod(dclaim *claim.UserContext, opts ModExecOptions) (xtypes.LazyData, error)
 
 	ServeAgentFile(tenantId, plugId, agentId, file string) ([]byte, error)
 	ServeExecutorFile(tenantId, plugId, agentId, file string) ([]byte, error)
