@@ -36,3 +36,4 @@ Additionally, app has an associated user interface (UI) written in JS, which is 
 - Batteries included means it's much faster to develop apps, as well as developed apps will be leaner because you are developing on top of primitives provided by the runtime.
 - If everyone makes apps targeting a common runtime, then system management burden becomes much less. System operations like data backup and restore are standardized across all apps.
 - Apps developed this way are much more composable, apps can emit message for special events and other apps can react to that messages.
+- As an app developer, you're relieved from the responsibility of hosting your app and dealing with associated problems. Instead, users can import and install apps from a repository of their choice on hardware they own or choose vendor they like.
