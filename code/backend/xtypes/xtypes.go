@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/flosch/go-humanize"
+	"github.com/temphia/temphia/code/backend/xtypes/remote"
 )
 
 var Version string = "dev"
@@ -68,4 +69,5 @@ type Server interface {
 	Close() error
 	BuildRoutes() error
 	GetAdapterHub() any
+	HandleRemote(req *remote.Request) (*remote.Response, error)
 }
