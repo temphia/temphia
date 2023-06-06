@@ -4,8 +4,9 @@ import (
 	"errors"
 	"sync"
 
+	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes/invoker"
+	"github.com/temphia/temphia/code/backend/xtypes/extension"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -16,13 +17,9 @@ type (
 )
 
 type Registry struct {
-	repoBuilders        map[string]repox.Builder
-	executors           map[string]etypes.BuilderFactory
-	execModules         map[string]etypes.ModuleBuilderFunc
-	dynamicScripts      map[string]DynamicScript
-	storeBuilders       map[string]store.Builder
-	httpAdapterBuilders map[string]httpx.Builder
-	devInvokers         map[string]invoker.DevInvokerBuilder
+	repoBuilders  map[string]repox.Builder
+	storeBuilders map[string]store.Builder
+	extensions    map[string]extension.Builder
 
 	freezed bool
 	mlock   *sync.Mutex
@@ -35,14 +32,11 @@ var (
 
 func New(fromGlobal bool) *Registry {
 	reg := &Registry{
-		freezed:             false,
-		dynamicScripts:      make(map[string]DynamicScript),
-		repoBuilders:        make(map[string]repox.Builder),
-		executors:           make(map[string]etypes.BuilderFactory),
-		execModules:         make(map[string]etypes.ModuleBuilderFunc),
-		storeBuilders:       make(map[string]store.Builder),
-		httpAdapterBuilders: make(map[string]httpx.Builder),
-		mlock:               &sync.Mutex{},
+		freezed:       false,
+		repoBuilders:  make(map[string]repox.Builder),
+		storeBuilders: make(map[string]store.Builder),
+		extensions:    make(map[string]extension.Builder),
+		mlock:         &sync.Mutex{},
 	}
 
 	if !fromGlobal || G == nil {
@@ -60,18 +54,8 @@ func New(fromGlobal bool) *Registry {
 		reg.repoBuilders[k] = v
 	}
 
-	for k, v := range G.executors {
-		reg.executors[k] = v
-	}
-	for k, v := range G.execModules {
-		reg.execModules[k] = v
-	}
-	for k, v := range G.dynamicScripts {
-		reg.dynamicScripts[k] = v
-	}
-
-	for k, v := range G.httpAdapterBuilders {
-		reg.httpAdapterBuilders[k] = v
+	for k, v := range G.extensions {
+		reg.extensions[k] = v
 	}
 
 	return reg
@@ -98,7 +82,18 @@ func (r *Registry) SetExecutor(name string, builder etypes.BuilderFactory) {
 	if r.freezed {
 		panic(errTooLate)
 	}
-	r.executors[name] = builder
+
+	r.extensions[name] = func(app xtypes.App, handle extension.Handle) error {
+		eb, err := builder(app)
+		if err != nil {
+			return err
+		}
+
+		handle.SetExecutorBuilder(name, eb)
+
+		return nil
+	}
+
 }
 
 func (r *Registry) SetExecModule(name string, builder etypes.ModuleBuilderFunc) {
@@ -107,16 +102,16 @@ func (r *Registry) SetExecModule(name string, builder etypes.ModuleBuilderFunc) 
 	if r.freezed {
 		panic(errTooLate)
 	}
-	r.execModules[name] = builder
-}
 
-func (r *Registry) SetDynamicScript(name string, script func(ns string, ctx any) error) {
-	r.mlock.Lock()
-	defer r.mlock.Unlock()
-	if r.freezed {
-		panic(errTooLate)
+	r.extensions[name] = func(app xtypes.App, handle extension.Handle) error {
+		mod, err := builder(app)
+		if err != nil {
+			return err
+		}
+
+		handle.SetModuleBuilder(name, mod)
+		return nil
 	}
-	r.dynamicScripts[name] = script
 }
 
 func (r *Registry) SetAapterBuilder(name string, rb httpx.Builder) {
@@ -126,17 +121,21 @@ func (r *Registry) SetAapterBuilder(name string, rb httpx.Builder) {
 		panic(errTooLate)
 	}
 
-	r.httpAdapterBuilders[name] = rb
+	r.extensions[name] = func(app xtypes.App, handle extension.Handle) error {
+		handle.SetAdapterBuilder(name, rb)
+		return nil
+	}
+
 }
 
-func (r *Registry) SetDevInvokerBuilders(name string, rb invoker.DevInvokerBuilder) {
+func (r *Registry) SetExtensionBuilder(name string, builder extension.Builder) {
 	r.mlock.Lock()
 	defer r.mlock.Unlock()
 	if r.freezed {
 		panic(errTooLate)
 	}
 
-	r.devInvokers[name] = rb
+	r.extensions[name] = builder
 }
 
 func (r *Registry) SetStoreBuilder(name string, b store.Builder) {
@@ -158,34 +157,6 @@ func (r *Registry) GetRepoBuilders() map[string]repox.Builder {
 	return r.repoBuilders
 }
 
-func (r *Registry) GetExecutors() map[string]etypes.BuilderFactory {
-	r.mlock.Lock()
-	defer r.mlock.Unlock()
-	if !r.freezed {
-		panic(errTooSoon)
-	}
-	return r.executors
-}
-
-func (r *Registry) GetExecModules() map[string]etypes.ModuleBuilderFunc {
-	r.mlock.Lock()
-	defer r.mlock.Unlock()
-	if !r.freezed {
-		panic(errTooSoon)
-	}
-	return r.execModules
-}
-
-func (r *Registry) GetDynamicScripts() map[string]DynamicScript {
-	r.mlock.Lock()
-	defer r.mlock.Unlock()
-	if !r.freezed {
-		panic(errTooSoon)
-	}
-
-	return r.dynamicScripts
-}
-
 func (r *Registry) GetStoreBuilders() map[string]store.Builder {
 	r.mlock.Lock()
 	defer r.mlock.Unlock()
@@ -196,22 +167,12 @@ func (r *Registry) GetStoreBuilders() map[string]store.Builder {
 	return r.storeBuilders
 }
 
-func (r *Registry) GetAdapterBuilders() map[string]httpx.Builder {
+func (r *Registry) GetExecutorBuilder() map[string]extension.Builder {
 	r.mlock.Lock()
 	defer r.mlock.Unlock()
 	if !r.freezed {
 		panic(errTooSoon)
 	}
 
-	return r.httpAdapterBuilders
-}
-
-func (r *Registry) GetDevInvokerBuilders() map[string]invoker.DevInvokerBuilder {
-	r.mlock.Lock()
-	defer r.mlock.Unlock()
-	if !r.freezed {
-		panic(errTooSoon)
-	}
-
-	return r.devInvokers
+	return r.extensions
 }

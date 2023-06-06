@@ -3,10 +3,10 @@ package engine
 import (
 	"github.com/rs/zerolog"
 
-	"github.com/temphia/temphia/code/backend/app/registry"
 	"github.com/temphia/temphia/code/backend/engine/runtime"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/extension"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -93,30 +93,10 @@ func (e *Engine) run() error {
 	e.syncer = deps.CoreHub().(store.SyncDB)
 	e.pacman = deps.RepoHub().(repox.Hub)
 
-	reg := deps.Registry().(*registry.Registry)
+	accesser := deps.ExtensionAccesser().(extension.Accesser)
 
-	bfuncs := reg.GetExecutors()
-	e.execbuilders = make(map[string]etypes.ExecutorBuilder)
-
-	for k, ebf := range bfuncs {
-		bf, err := ebf(e.app)
-		if err != nil {
-			panic(err)
-		}
-
-		e.execbuilders[k] = bf
-	}
-
-	mfuncs := reg.GetExecModules()
-	e.modBuilders = make(map[string]etypes.ModuleBuilder)
-
-	for k, mbf := range mfuncs {
-		bf, err := mbf(e.app)
-		if err != nil {
-			panic(err)
-		}
-		e.modBuilders[k] = bf
-	}
+	e.execbuilders = accesser.GetExecutorBuilder()
+	e.modBuilders = accesser.GetModuleBuilder()
 
 	return e.runtime.Run(e.execbuilders, e.modBuilders)
 }

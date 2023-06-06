@@ -52,6 +52,7 @@ type Deps interface {
 	EngineHub() any
 	SockdHub() any
 	RepoHub() any
+	ExtensionAccesser() any
 
 	Courier() any
 	NodeCache() any

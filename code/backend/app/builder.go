@@ -20,13 +20,16 @@ type Builder struct {
 }
 
 func NewBuilder() *Builder {
+	exh := newHandle()
 	return &Builder{
 		app: &App{
 			global: Global{
 				globalVars: make(map[string]any),
 				gmutex:     sync.Mutex{},
 			},
-			deps:   AppDeps{},
+			deps: AppDeps{
+				extHandle: exh,
+			},
 			meshes: make([]xtypes.Mesh, 0, 2),
 		},
 	}

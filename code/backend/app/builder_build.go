@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/server"
 	"github.com/temphia/temphia/code/backend/controllers"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
@@ -96,5 +97,23 @@ func (b *Builder) buildServices() error {
 	deps.repoHub = repohub.New(b.app)
 	deps.courier = courier.New()
 	deps.plugKV = b.sbuilder.PlugKV()
-	return deps.repoHub.Start()
+	err = deps.repoHub.Start()
+	if err != nil {
+		return err
+	}
+
+	exts := deps.registry.GetExecutorBuilder()
+
+	exthub := b.app.deps.extHandle
+
+	for ename, extb := range exts {
+		err = extb(b.app, exthub)
+		if err != nil {
+			pp.Println("@extension_error", ename, err.Error())
+			return err
+		}
+
+	}
+
+	return nil
 }
