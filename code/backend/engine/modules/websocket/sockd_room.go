@@ -1,4 +1,4 @@
-package sockd
+package websocket
 
 import (
 	"github.com/temphia/temphia/code/backend/xtypes"
