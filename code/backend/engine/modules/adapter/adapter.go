@@ -28,13 +28,18 @@ func (am *AdapterMod) Handle(method string, args xtypes.LazyData) (xtypes.LazyDa
 		return nil, err
 	}
 
-	resp, err := am.adapterHub.PreformEditorAction(&claim.UserContext{
-		TenantId:  am.tenantId,
-		UserID:    uctx.UserID,
-		UserGroup: uctx.UserGroup,
-		SessionID: uctx.SessionID,
-		DeviceId:  uctx.DeviceId,
-	}, am.adapterId, method, out)
+	resp, err := am.adapterHub.PreformEditorAction(httpx.AdapterEditorContext{
+		Id: am.adapterId,
+		User: &claim.UserContext{
+			TenantId:  am.tenantId,
+			UserID:    uctx.UserID,
+			UserGroup: uctx.UserGroup,
+			SessionID: uctx.SessionID,
+			DeviceId:  uctx.DeviceId,
+		},
+		Name: method,
+		Data: out,
+	})
 	if err != nil {
 		return nil, err
 	}

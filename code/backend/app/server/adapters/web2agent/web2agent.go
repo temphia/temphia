@@ -4,7 +4,6 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
-	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
@@ -62,7 +61,7 @@ func (w *Web2Agent) ServeEditorFile(file string) ([]byte, error) {
 	return []byte(``), nil
 }
 
-func (w *Web2Agent) PreformEditorAction(uclaim *claim.UserContext, name string, data []byte) (any, error) {
+func (w *Web2Agent) PreformEditorAction(ctx httpx.AdapterEditorContext) (any, error) {
 	return nil, nil
 }
 

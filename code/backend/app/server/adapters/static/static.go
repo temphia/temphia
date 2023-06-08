@@ -2,7 +2,6 @@ package static
 
 import (
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
-	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 type static struct {
@@ -16,7 +15,7 @@ func (s *static) ServeEditorFile(file string) ([]byte, error) {
 	return nil, nil
 }
 
-func (d *static) PreformEditorAction(uclaim *claim.UserContext, name string, data []byte) (any, error) {
+func (d *static) PreformEditorAction(ctx httpx.AdapterEditorContext) (any, error) {
 	return nil, nil
 }
 

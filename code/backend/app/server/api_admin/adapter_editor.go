@@ -147,12 +147,19 @@ func (a *ApiAdmin) adapterPreformAction(aclaim *claim.AdapterEditor, ctx *gin.Co
 		return
 	}
 
-	resp, err := a.notz.PreformEditorAction(&claim.UserContext{
+	uctx := &claim.UserContext{
 		UserID:    aclaim.UserID,
 		UserGroup: aclaim.UserGroup,
 		SessionID: aclaim.SessionID,
 		DeviceId:  aclaim.DeviceId,
-	}, aclaim.AdapterId, ctx.Param("name"), out)
+	}
+
+	resp, err := a.notz.PreformEditorAction(httpx.AdapterEditorContext{
+		Id:   aclaim.AdapterId,
+		User: uctx,
+		Name: ctx.Param("name"),
+		Data: out,
+	})
 
 	httpx.WriteJSON(ctx, resp, err)
 

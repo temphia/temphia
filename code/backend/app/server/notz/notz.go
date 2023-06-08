@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
-	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
@@ -90,6 +89,6 @@ func (m *Notz) ServeEditorFile(tenantId, file string, did int64, ctx *gin.Contex
 	httpx.WriteFile(file, out, ctx)
 }
 
-func (m *Notz) PreformEditorAction(aclaim *claim.UserContext, did int64, name string, data []byte) (any, error) {
-	return m.adapterManager.preformEditorAction(aclaim, name, did, data)
+func (m *Notz) PreformEditorAction(ctx httpx.AdapterEditorContext) (any, error) {
+	return m.adapterManager.preformEditorAction(ctx)
 }

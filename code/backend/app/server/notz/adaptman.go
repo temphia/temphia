@@ -14,7 +14,6 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
-	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
@@ -99,31 +98,27 @@ func (am *AdapterManager) serveEditorFile(tenantId string, did int64, file strin
 	return out, nil
 }
 
-func (am *AdapterManager) preformEditorAction(aclaim *claim.UserContext, name string, did int64, data []byte) (any, error) {
+func (am *AdapterManager) preformEditorAction(ctx httpx.AdapterEditorContext) (any, error) {
 
-	instance := am.get(aclaim.TenantId, did)
+	aclaim := ctx.User
+
+	instance := am.get(ctx.User.TenantId, ctx.Id)
 	if instance == nil {
 		am.applogger.Error().
-			Str("tenant_id", aclaim.TenantId).
-			Int64("domain_id", did).
+			Str("tenant_id", ctx.User.TenantId).
+			Int64("domain_id", ctx.Id).
 			Str("handler", "perform_editor_action").
-			Str("action", name).
+			Str("action", ctx.Name).
 			Msg(logid.NotzAdapterNotFound)
 
 		return nil, easyerr.NotFound("domain instance")
 	}
 
-	resp, err := instance.PreformEditorAction(&claim.UserContext{
-		TenantId:  aclaim.TenantId,
-		UserID:    aclaim.UserID,
-		UserGroup: aclaim.UserGroup,
-		SessionID: aclaim.SessionID,
-		DeviceId:  aclaim.DeviceId,
-	}, name, data)
+	resp, err := instance.PreformEditorAction(ctx)
 	if err != nil {
 		am.applogger.Error().
 			Str("tenant_id", aclaim.TenantId).
-			Int64("domain_id", did).
+			Int64("domain_id", ctx.Id).
 			Msg(logid.NotzAdapterEditorActionErr)
 
 		return nil, err

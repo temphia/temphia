@@ -25,10 +25,17 @@ type Context struct {
 	Http *gin.Context
 }
 
+type AdapterEditorContext struct {
+	Id   int64
+	User *claim.UserContext
+	Name string
+	Data []byte
+}
+
 type Adapter interface {
 	ServeEditorFile(file string) ([]byte, error)
 
-	PreformEditorAction(uclaim *claim.UserContext, name string, data []byte) (any, error)
+	PreformEditorAction(ctx AdapterEditorContext) (any, error)
 
 	Handle(ctx Context)
 
@@ -44,7 +51,7 @@ type AdapterHub interface {
 
 	ApplyAdapter(tenantId string, id int64, data *entities.TenantDomain)
 
-	PreformEditorAction(uclaim *claim.UserContext, id int64, name string, data []byte) (any, error)
+	PreformEditorAction(ctx AdapterEditorContext) (any, error)
 
 	ListAdapters() []string
 

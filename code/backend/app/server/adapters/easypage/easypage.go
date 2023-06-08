@@ -7,7 +7,6 @@ import (
 	"github.com/temphia/temphia/code/backend/app/server/adapters/common/cache"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
-	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
@@ -82,8 +81,8 @@ func (e *EasyPage) ServeEditorFile(file string) ([]byte, error) {
 	return e.serveEditorFile(file)
 }
 
-func (e *EasyPage) PreformEditorAction(uclaim *claim.UserContext, name string, data []byte) (any, error) {
-	return e.preformEditorAction(uclaim, name, data)
+func (e *EasyPage) PreformEditorAction(ctx httpx.AdapterEditorContext) (any, error) {
+	return e.preformEditorAction(ctx.User, ctx.Name, ctx.Data)
 }
 
 func (e *EasyPage) Handle(ctx httpx.Context) {
