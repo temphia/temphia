@@ -19,8 +19,8 @@ type CLI struct {
 	} `cmd:"" help:"Push File in bprint."`
 
 	Exec struct {
-		Action string `arg:"" help:"File name to push"`
-		Data   string `arg:"" help:"File name to push"`
+		Action string `arg:"" help:"Action namme to run."`
+		Data   string `arg:"" help:"Data to pass to action."`
 	} `cmd:"" help:"Execute action on agent."`
 
 	Watch struct {
