@@ -62,5 +62,7 @@ type DynDB interface {
 	SqlQueryRaw(txid uint32, tenantId, group, qstr string) (any, error)
 	SqlQueryScopped(txid uint32, tenantId, group, qstr string) (any, error)
 
+	GetDriver() any
+
 	GetCache() DCache
 }

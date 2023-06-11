@@ -117,6 +117,10 @@ func (d *DynDB) GetCache() dyndb.DCache {
 	return d.cache
 }
 
+func (d *DynDB) GetDriver() any {
+	return d.session.Driver()
+}
+
 // private
 
 func (d *DynDB) txOr(txid uint32, fn func(sess db.Session) error) error {
