@@ -1,13 +1,16 @@
 package dyndbtest
 
 import (
+	"context"
+	"database/sql"
 	"encoding/json"
 	"os"
 
 	_ "embed"
 
-	"github.com/k0kubun/pp"
+	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/app/config"
+	"github.com/temphia/temphia/code/backend/data"
 	"github.com/temphia/temphia/code/backend/stores/upper/vendors/sqlite"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -16,14 +19,18 @@ import (
 //go:embed test_example.json
 var testex []byte
 
-func Run() {
-	testdb := "test.db"
+var testdb = "test.db"
 
-	defer func() {
-		os.Remove(testdb)
-		os.Remove("test.db-shm")
-		os.Remove("test.db-wal")
-	}()
+func clean() {
+	os.Remove(testdb)
+	os.Remove("test.db-shm")
+	os.Remove("test.db-wal")
+}
+
+func Run() {
+	clean()
+
+	//	defer clean()
 
 	opts := step.MigrateOptions{}
 	err := json.Unmarshal(testex, &opts)
@@ -37,6 +44,9 @@ func Run() {
 			Vendor:   store.VendorSqlite,
 			HostPath: testdb,
 		},
+		LogBuilder: func() zerolog.Logger {
+			return zerolog.New(os.Stdout)
+		},
 	})
 	if err != nil {
 		panic(err)
@@ -44,10 +54,24 @@ func Run() {
 
 	dyndb := store.DynDB()
 
-	opts.Gslug = "test1"
+	sdriver := dyndb.GetDriver().(*sql.DB)
 
-	pp.Println(
-		dyndb.MigrateSchema("default0", opts),
-	)
+	out, err := data.DataDir.ReadFile("schema/sqlite.sql")
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = sdriver.ExecContext(context.Background(), string(out))
+	if err != nil {
+		panic(err)
+	}
+
+	opts.Gslug = "test1"
+	opts.New = true
+
+	err = dyndb.MigrateSchema("default0", opts)
+	if err != nil {
+		panic(err)
+	}
 
 }

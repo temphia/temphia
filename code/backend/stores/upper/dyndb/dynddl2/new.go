@@ -1,6 +1,7 @@
 package dynddl2
 
 import (
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/stores/upper/dyndb/dyncore"
 	"github.com/temphia/temphia/code/backend/stores/upper/ucore"
@@ -10,6 +11,9 @@ import (
 )
 
 func (d *DynDDL) runNew(tenantId string, migctx MigrateContext) error {
+
+	pp.Println("@next_head", migctx.NextMigHead)
+
 	err := d.newGroup(tenantId, migctx.StmtString, migctx.BaseSchema)
 	if err != nil {
 		return err

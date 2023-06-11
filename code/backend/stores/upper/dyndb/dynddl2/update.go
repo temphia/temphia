@@ -131,7 +131,7 @@ func (d *DynDDL) update(tenantId string, migctx MigrateContext) (err error) {
 			}
 		}
 
-		nextHead = pd.Stmt
+		nextHead = pd.Name
 
 	}
 

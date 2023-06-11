@@ -15,10 +15,13 @@ import (
 
 func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 
+	// debug all this
+
 	var (
 		baseSchema  *xbprint.NewTableGroup
 		buf         = strings.Builder{}
 		lastMigHead = ""
+		nextMigHead = ""
 	)
 
 	postitems := make([]dynddl2.PostDDLItem, 0)
@@ -27,14 +30,15 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 
 	if opts.New {
 		firstStep := opts.Steps[0]
+		nextMigHead = firstStep.Name
 
 		if firstStep.Type != step.MigTypeNewGroup {
 			return easyerr.Error("wrong type as first migration step")
 		}
 
-		baseSchema := &xbprint.NewTableGroup{}
+		baseSchema = &xbprint.NewTableGroup{}
 
-		err := json.Unmarshal(opts.Steps[0].Data, baseSchema)
+		err := json.Unmarshal(firstStep.Data, baseSchema)
 		if err != nil {
 			return err
 		}
@@ -120,7 +124,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 		case step.MigTypeAddTable:
 
 			tschema := &xbprint.NewTable{}
-			err := json.Unmarshal(mstep.Data, baseSchema)
+			err := json.Unmarshal(mstep.Data, tschema)
 			if err != nil {
 				return err
 			}
@@ -129,8 +133,6 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 			if err != nil {
 				return err
 			}
-
-			baseSchema.Tables = append(baseSchema.Tables, tschema)
 
 			stmtstr := tstmt.String()
 
@@ -148,8 +150,8 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 			}
 
 		case step.MigTypeRemoveTable:
-			tschema := xbprint.RemoveTable{}
-			err := json.Unmarshal(mstep.Data, baseSchema)
+			tschema := &xbprint.RemoveTable{}
+			err := json.Unmarshal(mstep.Data, tschema)
 			if err != nil {
 				return err
 			}
@@ -187,13 +189,13 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 			}
 
 		case step.MigTypeAddColumn:
-			tschema := xbprint.NewColumn{}
-			err := json.Unmarshal(mstep.Data, baseSchema)
+			tschema := &xbprint.NewColumn{}
+			err := json.Unmarshal(mstep.Data, tschema)
 			if err != nil {
 				return err
 			}
 
-			stmtstr, err := d.dyngen.AddColumn(tenantId, opts.Gslug, tschema.Table, tschema.Slug, &tschema)
+			stmtstr, err := d.dyngen.AddColumn(tenantId, opts.Gslug, tschema.Table, tschema.Slug, tschema)
 			if err != nil {
 				return err
 			}
@@ -206,7 +208,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 				for _, table := range baseSchema.Tables {
 					if table.Slug == tschema.Table {
 						found = true
-						table.Columns = append(table.Columns, &tschema)
+						table.Columns = append(table.Columns, tschema)
 					}
 				}
 
@@ -226,8 +228,8 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 
 		case step.MigTypeRemoveColumn:
 
-			tschema := xbprint.RemoveColumn{}
-			err := json.Unmarshal(mstep.Data, baseSchema)
+			tschema := &xbprint.RemoveColumn{}
+			err := json.Unmarshal(mstep.Data, tschema)
 			if err != nil {
 				return err
 			}
@@ -279,6 +281,10 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 		}
 	}
 
+	if len(opts.Steps) > 0 {
+		nextMigHead = opts.Steps[len(opts.Steps)-1].Name
+	}
+
 	mctx := dynddl2.MigrateContext{
 		BaseSchema:  baseSchema,
 		StmtString:  buf.String(),
@@ -286,8 +292,10 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 		Siblings:    siblings,
 		LastMigHead: lastMigHead,
 		Options:     opts,
-		NextMigHead: opts.Steps[len(opts.Steps)-1].Name,
+		NextMigHead: nextMigHead,
 	}
+
+	pp.Println("@mctx", mctx)
 
 	if opts.DryRun {
 		pp.Println("@dry_run_mctx", mctx)
@@ -298,7 +306,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 	runner := dynddl2.New(d.session, d.sharedLock, d.loggerBuilder())
 
 	if opts.New {
-		runner.RunNew(tenantId, mctx)
+		return runner.RunNew(tenantId, mctx)
 	}
 
 	return runner.RunUpdate(tenantId, mctx)
