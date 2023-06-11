@@ -43,6 +43,8 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 			return err
 		}
 
+		baseSchema.Slug = opts.Gslug
+
 		stmt, err := d.dyngen.NewGroup(tenantId, baseSchema)
 		if err != nil {
 			return err
@@ -79,15 +81,38 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 
 		group, err := d.GetGroup(tenantId, opts.Gslug)
 		if err != nil {
+			pp.Println(tenantId, opts.Gslug)
+			pp.Println("@not_found")
 			return err
+		}
+
+		if group.BprintId != opts.BprintId {
+			return easyerr.Error("wrong bprint_id")
+		}
+
+		if group.BprintInstanceId != opts.BprintInstanceId {
+			return easyerr.Error("wrong bprint_instance_id")
+		}
+
+		if group.BprintItemId != opts.BprintItemId {
+			return easyerr.Error("wrong bprint_item_id")
+		}
+
+		if group.BprintStepHead == "" {
+			return easyerr.Error("bprint_step_head empty")
 		}
 
 		lastMigHead = group.BprintStepHead
 		found := false
 		for idx, step := range opts.Steps {
+			if idx+1 == len(opts.Steps) {
+				// "No more steps left"
+				return nil
+			}
+
 			if step.Name == lastMigHead {
 				found = true
-				opts.Steps = opts.Steps[idx:]
+				opts.Steps = opts.Steps[idx+1:]
 				break
 			}
 		}
@@ -95,6 +120,9 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 		if !found {
 			return easyerr.Error("bprint_step_head not found")
 		}
+
+		pp.Println("@found/last_head", lastMigHead)
+		pp.Println("@found/steps", opts.Steps)
 
 		cols := make([]*entities.Column, 0)
 		err = d.dataTableColumns().Find(db.Cond{
@@ -119,6 +147,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 	}
 
 	for _, mstep := range opts.Steps {
+		pp.Println(mstep.Type)
 
 		switch mstep.Type {
 		case step.MigTypeAddTable:
@@ -293,6 +322,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 		LastMigHead: lastMigHead,
 		Options:     opts,
 		NextMigHead: nextMigHead,
+		Gslug:       opts.Gslug,
 	}
 
 	pp.Println("@mctx", mctx)

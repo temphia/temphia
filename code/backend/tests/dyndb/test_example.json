@@ -38,6 +38,32 @@
         ],
         "exec_order": ["todoitems"]
       }
+    },
+    {
+      "type": "add_table",
+      "name": "0002_add_table",
+      "data": {
+        "name": "Todo2",
+        "slug": "todo2",
+        "main_column": "title",
+        "columns": [
+          {
+            "name": "Title",
+            "slug": "title",
+            "ctype": "shorttext",
+            "description": "Title of todo item",
+            "not_nullable": true
+          },
+          {
+            "name": "Contents",
+            "slug": "contents",
+            "ctype": "longtext",
+            "description": "Contents of todo item"
+          }
+        ]
+      }
     }
+
+
   ]
 }

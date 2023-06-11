@@ -38,6 +38,13 @@ func Run() {
 		panic(err)
 	}
 
+	fullstep := opts.Steps
+	opts.Steps = opts.Steps[:1]
+
+	opts.BprintId = "testbp1"
+	opts.BprintInstanceId = "inst1"
+	opts.BprintItemId = "data1"
+
 	store, err := sqlite.NewVendor(store.BuilderOptions{
 		Config: &config.StoreSource{
 			Name:     "",
@@ -74,4 +81,11 @@ func Run() {
 		panic(err)
 	}
 
+	opts.New = false
+	opts.Steps = fullstep
+
+	err = dyndb.MigrateSchema("default0", opts)
+	if err != nil {
+		panic(err)
+	}
 }

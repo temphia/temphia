@@ -32,16 +32,17 @@ func (d *DynDDL) update(tenantId string, migctx MigrateContext) (err error) {
 		if nextHead != "" {
 			err = d.dataTableGroups().Find(db.Cond{
 				"tenant_id": tenantId,
-				"slug":      migctx.BaseSchema.Slug,
+				"slug":      migctx.Gslug,
 			}).Update(db.Cond{
 				"bprint_step_head": nextHead,
 				"active":           true,
 			})
-
-			d.logger.
-				Err(err).
-				Interface("mig_ctx_data", migctx).
-				Msg(logid.DyndbSetMigHeadErr)
+			if err != nil {
+				d.logger.
+					Err(err).
+					Interface("mig_ctx_data", migctx).
+					Msg(logid.DyndbSetMigHeadErr)
+			}
 		}
 
 		d.sharedLock.GlobalUnLock(tenantId, utok)

@@ -12,6 +12,7 @@ type (
 		PostItems   []PostDDLItem
 		Siblings    map[string]map[string]string
 		Options     step.MigrateOptions
+		Gslug       string
 		LastMigHead string
 		NextMigHead string
 	}
