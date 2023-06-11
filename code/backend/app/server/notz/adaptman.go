@@ -10,7 +10,6 @@ import (
 	"github.com/temphia/temphia/code/backend/app/server/notz/adapter"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes"
-	"github.com/temphia/temphia/code/backend/xtypes/extension"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
@@ -50,7 +49,7 @@ func newAdapterManager(app xtypes.App) AdapterManager {
 		tenantInits:       make(map[string]bool),
 		cReInstance:       make(chan DomainIdent),
 		cInstanceTenant:   make(chan string),
-		adapterBuilders:   deps.ExtensionAccesser().(extension.Accesser).GetAdapterBuilder(),
+		adapterBuilders:   app.GetGlobalVar().Get("adapters").(map[string]httpx.Builder),
 		corehub:           deps.CoreHub().(store.CoreHub),
 		cabinethub:        deps.Cabinet().(store.CabinetHub),
 		domainTenantIndex: make(map[string]int64),

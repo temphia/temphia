@@ -83,15 +83,15 @@ func (r *Registry) SetExecutor(name string, builder etypes.BuilderFactory) {
 		panic(errTooLate)
 	}
 
-	r.extensions[name] = func(app xtypes.App, handle extension.Handle) error {
+	r.extensions[name] = func(app xtypes.App, handle extension.Handle) (any, error) {
 		eb, err := builder(app)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		handle.SetExecutorBuilder(name, eb)
 
-		return nil
+		return eb, nil
 	}
 
 }
@@ -103,14 +103,14 @@ func (r *Registry) SetExecModule(name string, builder etypes.ModuleBuilderFunc) 
 		panic(errTooLate)
 	}
 
-	r.extensions[name] = func(app xtypes.App, handle extension.Handle) error {
+	r.extensions[name] = func(app xtypes.App, handle extension.Handle) (any, error) {
 		mod, err := builder(app)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		handle.SetModuleBuilder(name, mod)
-		return nil
+		return mod, nil
 	}
 }
 
@@ -121,9 +121,9 @@ func (r *Registry) SetAapterBuilder(name string, rb httpx.Builder) {
 		panic(errTooLate)
 	}
 
-	r.extensions[name] = func(app xtypes.App, handle extension.Handle) error {
+	r.extensions[name] = func(app xtypes.App, handle extension.Handle) (any, error) {
 		handle.SetAdapterBuilder(name, rb)
-		return nil
+		return nil, nil
 	}
 
 }

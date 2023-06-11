@@ -6,7 +6,6 @@ import (
 	"github.com/temphia/temphia/code/backend/engine/runtime"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/backend/xtypes/extension"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -93,10 +92,8 @@ func (e *Engine) run() error {
 	e.syncer = deps.CoreHub().(store.SyncDB)
 	e.pacman = deps.RepoHub().(repox.Hub)
 
-	accesser := deps.ExtensionAccesser().(extension.Accesser)
-
-	e.execbuilders = accesser.GetExecutorBuilder()
-	e.modBuilders = accesser.GetModuleBuilder()
+	e.execbuilders = e.app.GetGlobalVar().Get("executors").(map[string]etypes.ExecutorBuilder)
+	e.modBuilders = e.app.GetGlobalVar().Get("modules").(map[string]etypes.ModuleBuilder)
 
 	return e.runtime.Run(e.execbuilders, e.modBuilders)
 }

@@ -23,4 +23,4 @@ type Accesser interface {
 	GetScript() map[string]func(tenantId string, ctx any) error
 }
 
-type Builder func(app xtypes.App, handle Handle) error
+type Builder func(app xtypes.App, handle Handle) (any, error)

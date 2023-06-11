@@ -5,7 +5,6 @@ import (
 	"github.com/temphia/temphia/code/backend/app/server"
 	"github.com/temphia/temphia/code/backend/controllers"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/backend/services/courierhub/courier"
 	"github.com/temphia/temphia/code/backend/services/enginehub"
 	"github.com/temphia/temphia/code/backend/services/repohub"
 	"github.com/temphia/temphia/code/backend/services/shared/nodecache"
@@ -95,7 +94,6 @@ func (b *Builder) buildServices() error {
 
 	deps.nodeCache = nodecache.New(b.config.NodeOptions.NodeCache)
 	deps.repoHub = repohub.New(b.app)
-	deps.courier = courier.New()
 	deps.plugKV = b.sbuilder.PlugKV()
 	err = deps.repoHub.Start()
 	if err != nil {
@@ -104,16 +102,22 @@ func (b *Builder) buildServices() error {
 
 	exts := deps.registry.GetExecutorBuilder()
 
-	exthub := b.app.deps.extHandle
+	exthub := b.extHandle
 
 	for ename, extb := range exts {
-		err = extb(b.app, exthub)
+		ext, err := extb(b.app, exthub)
 		if err != nil {
 			pp.Println("@extension_error", ename, err.Error())
 			return err
 		}
 
+		b.app.deps.extensions[ename] = ext
 	}
+
+	b.app.global.Set("executors", exthub.executors)
+	b.app.global.Set("modules", exthub.modules)
+	b.app.global.Set("adapters", exthub.adapters)
+	b.app.global.Set("scripts", exthub.adapters)
 
 	return nil
 }

@@ -17,18 +17,20 @@ type Builder struct {
 	config    *config.Config
 	ginEngine *gin.Engine
 	sbuilder  *stores.Builder
+
+	extHandle *extHandle
 }
 
 func NewBuilder() *Builder {
-	exh := newHandle()
 	return &Builder{
+		extHandle: newHandle(),
 		app: &App{
 			global: Global{
 				globalVars: make(map[string]any),
 				gmutex:     sync.Mutex{},
 			},
 			deps: AppDeps{
-				extHandle: exh,
+				extensions: make(map[string]any),
 			},
 			meshes: make([]xtypes.Mesh, 0, 2),
 		},
