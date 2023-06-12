@@ -46,7 +46,8 @@ func (s *Server) API(rg *gin.RouterGroup) {
 
 	s.devAPI(rg.Group("/dev"))
 	s.engineAPI(rg.Group("/engine"))
-	s.selfAPI(rg.Group("/self"))
+	s.apiself.API(rg.Group("/self"))
+
 	s.repoAPI(rg.Group("/repo"))
 
 	s.adapterEditorAPI(rg.Group("/adapter_editor"))

@@ -1,19 +1,63 @@
-package server
+package self
 
 import (
 	"io"
 	"strconv"
 
+	"github.com/bwmarrin/snowflake"
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/backend/app/server/middleware"
+	"github.com/temphia/temphia/code/backend/controllers"
+	"github.com/temphia/temphia/code/backend/controllers/basic"
+	"github.com/temphia/temphia/code/backend/controllers/cabinet"
 	"github.com/temphia/temphia/code/backend/controllers/data"
+	"github.com/temphia/temphia/code/backend/controllers/engine"
 	"github.com/temphia/temphia/code/backend/controllers/sockd"
+	"github.com/temphia/temphia/code/backend/controllers/user"
 	"github.com/temphia/temphia/code/backend/services/sockdhub/transports"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/tidwall/gjson"
 )
 
-func (s *Server) selfAPI(rg *gin.RouterGroup) {
+type Self struct {
+	signer service.Signer
+
+	cBasic   *basic.Controller
+	cUser    *user.Controller
+	cData    *data.Controller
+	cCabinet *cabinet.Controller
+	cEngine  *engine.Controller
+	cSockd   *sockd.Controller
+
+	notz httpx.AdapterHub
+
+	middleware *middleware.Middleware
+
+	sockdConnIdGenerator *snowflake.Node
+}
+
+func New(signer service.Signer, middleware *middleware.Middleware, notz httpx.AdapterHub, root *controllers.RootController, id *snowflake.Node) *Self {
+	return &Self{
+		signer:               signer,
+		middleware:           middleware,
+		notz:                 notz,
+		cBasic:               root.BasicController(),
+		cUser:                root.UserController(),
+		cData:                root.DtableController(),
+		cCabinet:             root.CabinetController(),
+		cEngine:              root.EngineController(),
+		cSockd:               root.SockdController(),
+		sockdConnIdGenerator: id,
+	}
+}
+
+func (s *Self) X(fn func(ctx httpx.Request)) func(*gin.Context) {
+	return s.middleware.LoggedX(fn)
+}
+
+func (s *Self) API(rg *gin.RouterGroup) {
 
 	rg.GET("/load", s.X(s.selfGetInfo))
 	rg.POST("/email/change", s.X(s.selfChangeEmail))
@@ -36,22 +80,22 @@ func (s *Server) selfAPI(rg *gin.RouterGroup) {
 
 }
 
-func (s *Server) self(ctx httpx.Request) {
+func (s *Self) self(ctx httpx.Request) {
 	resp, err := s.cBasic.Self(ctx.Session)
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) selfUpdate(ctx httpx.Request) {
+func (s *Self) selfUpdate(ctx httpx.Request) {
 	err := s.cBasic.SelfUpdate(ctx.Session)
 	httpx.WriteJSON(ctx.Http, nil, err)
 }
 
-func (s *Server) selfGetInfo(ctx httpx.Request) {
+func (s *Self) selfGetInfo(ctx httpx.Request) {
 	resp, err := s.cBasic.GetSelfInfo(ctx.Session)
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) selfModifyMessages(ctx httpx.Request) {
+func (s *Self) selfModifyMessages(ctx httpx.Request) {
 	opts := &entities.ModifyMessages{}
 	err := ctx.Http.BindJSON(opts)
 	if err != nil {
@@ -63,7 +107,7 @@ func (s *Server) selfModifyMessages(ctx httpx.Request) {
 	httpx.WriteFinal(ctx.Http, err)
 }
 
-func (s *Server) selfListMessages(ctx httpx.Request) {
+func (s *Self) selfListMessages(ctx httpx.Request) {
 	cursor, err := strconv.ParseInt(ctx.Http.Query("cursor"), 10, 64)
 	if err != nil {
 		cursor = 0
@@ -84,7 +128,7 @@ func (s *Server) selfListMessages(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) instanceSheetTemplate(ctx httpx.Request) {
+func (s *Self) instanceSheetTemplate(ctx httpx.Request) {
 	req := data.QuickSheetInstance{}
 
 	err := ctx.Http.BindJSON(&req)
@@ -97,18 +141,18 @@ func (s *Server) instanceSheetTemplate(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) listSheetTemplates(ctx httpx.Request) {
+func (s *Self) listSheetTemplates(ctx httpx.Request) {
 	resp, err := s.cData.ListSheetTemplates(ctx.Session)
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
 // fixme => impl placeholder
 
-func (s *Server) selfChangeEmail(ctx httpx.Request) {
+func (s *Self) selfChangeEmail(ctx httpx.Request) {
 
 }
 
-func (s *Server) issueFolderTkt(ctx httpx.Request) {
+func (s *Self) issueFolderTkt(ctx httpx.Request) {
 
 	req := &FolderIssueRequest{}
 	err := ctx.Http.BindJSON(req)
@@ -125,7 +169,7 @@ func (s *Server) issueFolderTkt(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, gin.H{"folder_token": resp}, err)
 }
 
-func (s *Server) issueDataTkt(ctx httpx.Request) {
+func (s *Self) issueDataTkt(ctx httpx.Request) {
 
 	req := &DataIssueRequest{}
 	err := ctx.Http.BindJSON(req)
@@ -143,7 +187,7 @@ func (s *Server) issueDataTkt(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, gin.H{"data_token": resp}, err)
 }
 
-func (s *Server) issueUgroup(ctx httpx.Request) {
+func (s *Self) issueUgroup(ctx httpx.Request) {
 
 	out, err := io.ReadAll(ctx.Http.Request.Body)
 	if err != nil {
@@ -156,7 +200,7 @@ func (s *Server) issueUgroup(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, gin.H{"ugroup_token": tok}, err)
 }
 
-func (s *Server) selfUserGet(ctx httpx.Request) {
+func (s *Self) selfUserGet(ctx httpx.Request) {
 	resp, err := s.cUser.Get(
 		ctx.Session,
 		ctx.MustParam("user_id"),
@@ -164,7 +208,7 @@ func (s *Server) selfUserGet(ctx httpx.Request) {
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) selfUserMessage(ctx httpx.Request) {
+func (s *Self) selfUserMessage(ctx httpx.Request) {
 	var out string
 
 	err := ctx.Http.BindJSON(&out)
@@ -177,7 +221,7 @@ func (s *Server) selfUserMessage(ctx httpx.Request) {
 	httpx.WriteFinal(ctx.Http, err)
 }
 
-func (s *Server) sockdUserWS(ctx *gin.Context) {
+func (s *Self) sockdUserWS(ctx *gin.Context) {
 
 	sclaim, err := s.signer.ParseSession(ctx.Param("tenant_id"), ctx.Query("token"))
 	if err != nil {

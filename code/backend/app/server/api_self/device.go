@@ -1,4 +1,4 @@
-package server
+package self
 
 import (
 	"github.com/gin-gonic/gin"
@@ -6,7 +6,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 )
 
-func (s *Server) selfDeviceAPI(rg *gin.RouterGroup) {
+func (s *Self) selfDeviceAPI(rg *gin.RouterGroup) {
 	rg.GET("/", s.X(s.selfListDevices))
 	rg.POST("/", s.X(s.selfAddDevices))
 	rg.GET("/:id", s.X(s.selfGetDevice))
@@ -14,22 +14,22 @@ func (s *Server) selfDeviceAPI(rg *gin.RouterGroup) {
 
 }
 
-func (s *Server) selfListDevices(ctx httpx.Request) {
+func (s *Self) selfListDevices(ctx httpx.Request) {
 	resp, err := s.cBasic.ListUserDevice(ctx.Session)
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) selfGetDevice(ctx httpx.Request) {
+func (s *Self) selfGetDevice(ctx httpx.Request) {
 	resp, err := s.cBasic.GetUserDevice(ctx.Session, ctx.MustParamInt("id"))
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) selfRemoveDevices(ctx httpx.Request) {
+func (s *Self) selfRemoveDevices(ctx httpx.Request) {
 	err := s.cBasic.RemoveUserDevice(ctx.Session, ctx.MustParamInt("id"))
 	httpx.WriteJSON(ctx.Http, nil, err)
 }
 
-func (s *Server) selfAddDevices(ctx httpx.Request) {
+func (s *Self) selfAddDevices(ctx httpx.Request) {
 	data := basic.NewUserDevice{}
 	err := ctx.Http.BindJSON(&data)
 	if err != nil {

@@ -20,19 +20,19 @@ import (
 
 */
 
-type AuthServer struct {
+type Auth struct {
 	cAuth  *authed.Controller
 	signer service.Signer
 }
 
-func New(cAuth *authed.Controller, signer service.Signer) *AuthServer {
-	return &AuthServer{
+func New(cAuth *authed.Controller, signer service.Signer) *Auth {
+	return &Auth{
 		cAuth:  cAuth,
 		signer: signer,
 	}
 }
 
-func (s *AuthServer) API(rg *gin.RouterGroup) {
+func (s *Auth) API(rg *gin.RouterGroup) {
 
 	rg.GET("/", s.authListMethods)
 
@@ -61,7 +61,7 @@ func (s *AuthServer) API(rg *gin.RouterGroup) {
 
 }
 
-func (s *AuthServer) authListMethods(c *gin.Context) {
+func (s *Auth) authListMethods(c *gin.Context) {
 	resp, err := s.cAuth.AuthListMethods(
 		c.GetHeader("Authorization"),
 		c.Query("ugroup"),
@@ -70,7 +70,7 @@ func (s *AuthServer) authListMethods(c *gin.Context) {
 	httpx.WriteJSON(c, resp, err)
 }
 
-func (s *AuthServer) authLoginNext(c *gin.Context) {
+func (s *Auth) authLoginNext(c *gin.Context) {
 	opts := authed.LoginNextRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
@@ -83,7 +83,7 @@ func (s *AuthServer) authLoginNext(c *gin.Context) {
 
 }
 
-func (s *AuthServer) authLoginSubmit(c *gin.Context) {
+func (s *Auth) authLoginSubmit(c *gin.Context) {
 	opts := authed.LoginSubmitRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
@@ -95,7 +95,7 @@ func (s *AuthServer) authLoginSubmit(c *gin.Context) {
 	httpx.WriteJSON(c, resp, err)
 }
 
-func (s *AuthServer) authedFinish(c *gin.Context) {
+func (s *Auth) authedFinish(c *gin.Context) {
 	opts := authed.AuthFinishRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
@@ -108,7 +108,7 @@ func (s *AuthServer) authedFinish(c *gin.Context) {
 
 }
 
-func (s *AuthServer) authGenerate(c *gin.Context) {
+func (s *Auth) authGenerate(c *gin.Context) {
 	opts := authed.AuthGenerateRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
@@ -129,7 +129,7 @@ func (s *AuthServer) authGenerate(c *gin.Context) {
 
 }
 
-func (s *AuthServer) authNext(c *gin.Context) {
+func (s *Auth) authNext(c *gin.Context) {
 	stage := c.Param("stage")
 	switch stage {
 	case "first":
@@ -166,7 +166,7 @@ func (s *AuthServer) authNext(c *gin.Context) {
 	}
 }
 
-func (s *AuthServer) authSubmit(c *gin.Context) {
+func (s *Auth) authSubmit(c *gin.Context) {
 	opts := authed.AuthSubmitRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
@@ -178,23 +178,23 @@ func (s *AuthServer) authSubmit(c *gin.Context) {
 	httpx.WriteJSON(c, resp, err)
 }
 
-func (s *AuthServer) authSignupSubmit(c *gin.Context) {
+func (s *Auth) authSignupSubmit(c *gin.Context) {
 
 }
 
-func (s *AuthServer) authSignupFinish(c *gin.Context) {
+func (s *Auth) authSignupFinish(c *gin.Context) {
 
 }
 
-func (s *AuthServer) authReset(c *gin.Context) {
+func (s *Auth) authReset(c *gin.Context) {
 
 }
 
-func (s *AuthServer) authResetSubmit(c *gin.Context) {
+func (s *Auth) authResetSubmit(c *gin.Context) {
 
 }
 
-func (s *AuthServer) authResetFinish(c *gin.Context) {
+func (s *Auth) authResetFinish(c *gin.Context) {
 	opts := authed.AuthFinishRequest{}
 	err := c.BindJSON(&opts)
 	if err != nil {
@@ -206,7 +206,7 @@ func (s *AuthServer) authResetFinish(c *gin.Context) {
 	httpx.WriteJSON(c, resp, err)
 }
 
-func (s *AuthServer) authRefresh(c *gin.Context) {
+func (s *Auth) authRefresh(c *gin.Context) {
 	opts := authed.RefreshReq{}
 	err := c.BindJSON(&opts)
 	if err != nil {
@@ -223,7 +223,7 @@ func (s *AuthServer) authRefresh(c *gin.Context) {
 	httpx.WriteJSON(c, resp, nil)
 }
 
-func (s *AuthServer) authAbout(c *gin.Context) {
+func (s *Auth) authAbout(c *gin.Context) {
 	uclaim, err := s.signer.ParseUser(c.Param("tenant_id"), c.GetHeader("Authorization"))
 	if err != nil {
 		httpx.UnAuthorized(c)

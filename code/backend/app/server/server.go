@@ -7,6 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 
 	apiadmin "github.com/temphia/temphia/code/backend/app/server/api_admin"
+	apiauth "github.com/temphia/temphia/code/backend/app/server/api_auth"
+
+	apiself "github.com/temphia/temphia/code/backend/app/server/api_self"
+
 	"github.com/temphia/temphia/code/backend/app/server/middleware"
 	"github.com/temphia/temphia/code/backend/app/server/notz"
 	"github.com/temphia/temphia/code/backend/app/server/tickets"
@@ -53,6 +57,9 @@ type Server struct {
 
 	listener net.Listener
 
+	authserver *apiauth.Auth
+	apiself    *apiself.Self
+
 	// controllers
 
 	cOperator            *operator.Controller
@@ -94,6 +101,8 @@ func New(opts Options) *Server {
 
 	tktapi := tickets.New(mware, root)
 
+	node := plane.GetIdService().NewNode("temphia.sockd")
+
 	return &Server{
 		ginEngine: opts.GinEngine,
 		admin: apiadmin.New(apiadmin.Options{
@@ -111,6 +120,9 @@ func New(opts Options) *Server {
 
 		middleware: mware,
 
+		authserver: apiauth.New(root.AuthController(), signer),
+		apiself:    apiself.New(signer, mware, nz, root, node),
+
 		// controllers
 
 		cOperator:            root.OperatorController(),
@@ -124,7 +136,7 @@ func New(opts Options) *Server {
 		cUser:                root.UserController(),
 		cSockd:               root.SockdController(),
 		app:                  opts.App,
-		sockdConnIdGenerator: plane.GetIdService().NewNode("temphia.sockd"),
+		sockdConnIdGenerator: node,
 		ticketsAPI:           tktapi,
 	}
 }

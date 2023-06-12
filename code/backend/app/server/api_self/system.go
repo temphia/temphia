@@ -1,11 +1,11 @@
-package server
+package self
 
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 )
 
-func (s *Server) selfSysAPI(rg *gin.RouterGroup) {
+func (s *Self) selfSysAPI(rg *gin.RouterGroup) {
 
 	rg.GET("/cabinet", s.X(s.ListCabinetSources))
 	rg.GET("/datatable", s.X(s.ListDtableSources))
@@ -17,38 +17,38 @@ func (s *Server) selfSysAPI(rg *gin.RouterGroup) {
 
 }
 
-func (s *Server) ListCabinetSources(ctx httpx.Request) {
+func (s *Self) ListCabinetSources(ctx httpx.Request) {
 	sources, err := s.cBasic.ListCabinetSources(ctx.Session)
 	httpx.WriteJSON(ctx.Http, sources, err)
 
 }
 
-func (s *Server) ListDtableSources(ctx httpx.Request) {
+func (s *Self) ListDtableSources(ctx httpx.Request) {
 	sources, err := s.cBasic.ListDyndbSources(ctx.Session)
 	httpx.WriteJSON(ctx.Http, sources, err)
 }
 
-func (s *Server) ListAdapters(ctx httpx.Request) {
+func (s *Self) ListAdapters(ctx httpx.Request) {
 	resp := s.notz.ListAdapters()
 	httpx.WriteJSON(ctx.Http, resp, nil)
 }
 
-func (s *Server) ListRepoSources(ctx httpx.Request) {
+func (s *Self) ListRepoSources(ctx httpx.Request) {
 	resp, err := s.cBasic.ListRepoSources(ctx.Session)
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) ListExecutor(ctx httpx.Request) {
+func (s *Self) ListExecutor(ctx httpx.Request) {
 	resp, err := s.cEngine.ListExecutors(ctx.Session)
 	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) ListModules(ctx httpx.Request) {
+func (s *Self) ListModules(ctx httpx.Request) {
 	resp, err := s.cEngine.ListModules(ctx.Session)
 	httpx.WriteJSON(ctx.Http, resp, err)
 
 }
 
-func (s *Server) ListInvokers(ctx httpx.Request) {
+func (s *Self) ListInvokers(ctx httpx.Request) {
 
 }
