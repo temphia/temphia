@@ -93,7 +93,7 @@ func (s *Server) DevBprintFilePush(dclaim *claim.PlugDevTkt, ctx *gin.Context) {
 
 func (s *Server) DevExecWatch(dclaim *claim.PlugDevTkt, ctx *gin.Context) {
 
-	conn, err := transports.NewConnWS(ctx, s.sockdConnIdGenerator.Generate().Int64())
+	conn, err := transports.NewConnWS(ctx, s.idNode.Generate().Int64())
 	if err != nil {
 		httpx.WriteErr(ctx, err)
 		return

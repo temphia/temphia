@@ -209,7 +209,7 @@ func (s *Server) sockdRoomWS(ctx *gin.Context) {
 		return
 	}
 
-	conn, err := transports.NewConnWS(ctx, s.sockdConnIdGenerator.Generate().Int64())
+	conn, err := transports.NewConnWS(ctx, s.idNode.Generate().Int64())
 	if err != nil {
 		httpx.WriteErr(ctx, err)
 		return

@@ -1,46 +1,20 @@
-package server
+package apidata
 
 import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/backend/controllers/sockd"
-	"github.com/temphia/temphia/code/backend/services/sockdhub/transports"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
 
-func (s *Server) dataAPI(rg *gin.RouterGroup) {
-
-	rg.GET("/", s.dx(s.loadGroup))
-
-	rg.POST("/table/:tid/row", s.dx(s.newRow))
-	rg.GET("/table/:tid/row/:id", s.dx(s.getRow))
-	rg.POST("/table/:tid/row/:id", s.dx(s.updateRow))
-	rg.DELETE("/table/:tid/row/:id", s.dx(s.deleteRow))
-
-	rg.POST("/table/:tid/load", s.dx(s.loadTable))
-	rg.POST("/table/:tid/simple_query", s.dx(s.simpleQuery))
-	rg.POST("/table/:tid/fts_query", s.dx(s.FTSQuery))
-	rg.POST("/table/:tid/ref_load", s.dx(s.refLoad))
-	rg.POST("/table/:tid/ref_resolve", s.dx(s.refResolve))
-	rg.POST("/table/:tid/rev_ref_load", s.dx(s.reverseRefLoad))
-	rg.GET("/table/:tid/activity/:row_id", s.dx(s.listActivity))
-	rg.POST("/table/:tid/activity/:row_id", s.dx(s.commentRow))
-
-	s.dataSheetAPI(rg.Group("/sheet"))
-
-	rg.POST("/utils/user", s.dx(s.listDataUsers))
-
-}
-
-func (s *Server) loadGroup(uclaim *claim.Data, ctx *gin.Context) {
+func (s *Data) loadGroup(uclaim *claim.Data, ctx *gin.Context) {
 	gr, err := s.cData.LoadGroup(uclaim)
 	httpx.WriteJSON(ctx, gr, err)
 }
 
-func (s *Server) newRow(uclaim *claim.Data, ctx *gin.Context) {
+func (s *Data) newRow(uclaim *claim.Data, ctx *gin.Context) {
 
 	data := &newRowReq{}
 	err := ctx.BindJSON(data)
@@ -53,7 +27,7 @@ func (s *Server) newRow(uclaim *claim.Data, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, id, err)
 }
 
-func (s *Server) getRow(uclaim *claim.Data, ctx *gin.Context) {
+func (s *Data) getRow(uclaim *claim.Data, ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
 
@@ -69,7 +43,7 @@ type updateRowReq struct {
 	Cells   map[string]interface{} `json:"cells,omitempty"`
 }
 
-func (s *Server) updateRow(uclaim *claim.Data, ctx *gin.Context) {
+func (s *Data) updateRow(uclaim *claim.Data, ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
@@ -87,7 +61,7 @@ func (s *Server) updateRow(uclaim *claim.Data, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, cells, err)
 }
 
-func (s *Server) deleteRow(uclaim *claim.Data, ctx *gin.Context) {
+func (s *Data) deleteRow(uclaim *claim.Data, ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
@@ -97,7 +71,7 @@ func (s *Server) deleteRow(uclaim *claim.Data, ctx *gin.Context) {
 	httpx.WriteFinal(ctx, err)
 }
 
-func (s *Server) loadTable(uclaim *claim.Data, ctx *gin.Context) {
+func (s *Data) loadTable(uclaim *claim.Data, ctx *gin.Context) {
 	req := dyndb.LoadTableReq{}
 	err := ctx.BindJSON(&req)
 	if err != nil {
@@ -114,7 +88,7 @@ func (s *Server) loadTable(uclaim *claim.Data, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, resp, err)
 }
 
-func (s *Server) simpleQuery(uclaim *claim.Data, ctx *gin.Context) {
+func (s *Data) simpleQuery(uclaim *claim.Data, ctx *gin.Context) {
 	query := dyndb.SimpleQueryReq{}
 	err := ctx.BindJSON(&query)
 	if err != nil {
@@ -126,7 +100,7 @@ func (s *Server) simpleQuery(uclaim *claim.Data, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, resp, err)
 }
 
-func (s *Server) FTSQuery(uclaim *claim.Data, ctx *gin.Context) {
+func (s *Data) FTSQuery(uclaim *claim.Data, ctx *gin.Context) {
 	query := dyndb.FTSQueryReq{}
 	err := ctx.BindJSON(&query)
 	if err != nil {
@@ -140,7 +114,7 @@ func (s *Server) FTSQuery(uclaim *claim.Data, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, resp, err)
 }
 
-func (s *Server) refLoad(uclaim *claim.Data, ctx *gin.Context) {
+func (s *Data) refLoad(uclaim *claim.Data, ctx *gin.Context) {
 	query := &dyndb.RefLoadReq{}
 	err := ctx.BindJSON(&query)
 	if err != nil {
@@ -152,7 +126,7 @@ func (s *Server) refLoad(uclaim *claim.Data, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, resp, err)
 }
 
-func (s *Server) refResolve(uclaim *claim.Data, ctx *gin.Context) {
+func (s *Data) refResolve(uclaim *claim.Data, ctx *gin.Context) {
 	query := &dyndb.RefResolveReq{}
 	err := ctx.BindJSON(&query)
 	if err != nil {
@@ -164,7 +138,7 @@ func (s *Server) refResolve(uclaim *claim.Data, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, resp, err)
 }
 
-func (s *Server) reverseRefLoad(uclaim *claim.Data, ctx *gin.Context) {
+func (s *Data) reverseRefLoad(uclaim *claim.Data, ctx *gin.Context) {
 	query := &dyndb.RevRefLoadReq{}
 
 	err := ctx.BindJSON(query)
@@ -177,7 +151,7 @@ func (s *Server) reverseRefLoad(uclaim *claim.Data, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, resp, err)
 }
 
-func (s *Server) listActivity(uclaim *claim.Data, ctx *gin.Context) {
+func (s *Data) listActivity(uclaim *claim.Data, ctx *gin.Context) {
 	rid, err := strconv.ParseInt(ctx.Param("row_id"), 10, 64)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
@@ -188,7 +162,7 @@ func (s *Server) listActivity(uclaim *claim.Data, ctx *gin.Context) {
 	httpx.WriteJSON(ctx, resp, err)
 }
 
-func (s *Server) commentRow(uclaim *claim.Data, ctx *gin.Context) {
+func (s *Data) commentRow(uclaim *claim.Data, ctx *gin.Context) {
 	rid, err := strconv.ParseInt(ctx.Param("row_id"), 10, 64)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
@@ -207,7 +181,7 @@ func (s *Server) commentRow(uclaim *claim.Data, ctx *gin.Context) {
 	httpx.WriteFinal(ctx, err)
 }
 
-func (s *Server) dx(fn func(uclaim *claim.Data, ctx *gin.Context)) func(*gin.Context) {
+func (s *Data) dx(fn func(uclaim *claim.Data, ctx *gin.Context)) func(*gin.Context) {
 	return s.middleware.DataX(fn)
 }
 
@@ -222,49 +196,6 @@ type commentRowReq struct {
 	Message string `json:"message,omitempty"`
 }
 
-// data sockd
-
-func (s *Server) dataWSAPI(rg *gin.RouterGroup) {
-	rg.GET("/", s.sockdDataWS)
-	rg.POST("/", s.sockdDataUpdateWS)
-}
-
-func (s *Server) sockdDataWS(ctx *gin.Context) {
-	if !ctx.IsWebsocket() {
-		return
-	}
-
-	dclaim, err := s.signer.ParseData(ctx.Param("tenant_id"), ctx.Query("token"))
-	if err != nil {
-		httpx.UnAuthorized(ctx)
-		return
-	}
-
-	conn, err := transports.NewConnWS(ctx, s.sockdConnIdGenerator.Generate().Int64())
-	if err != nil {
-		httpx.WriteErr(ctx, err)
-		return
-	}
-
-	err = s.cSockd.AddData(sockd.DataConnOptions{
-		TenantId:  dclaim.TenantId,
-		UserId:    dclaim.UserID,
-		DynSource: dclaim.DataSource,
-		DynGroup:  dclaim.DataGroup,
-		Conn:      conn,
-	})
-
-	if err != nil {
-		httpx.WriteErr(ctx, err)
-		return
-	}
-
-}
-
-func (s *Server) sockdDataUpdateWS(ctx *gin.Context) {
-
-}
-
 // utils
 
 type DataUserReq struct {
@@ -272,7 +203,7 @@ type DataUserReq struct {
 	Target     string `json:"target,omitempty"`      // column id/slug
 }
 
-func (s *Server) listDataUsers(uclaim *claim.Data, ctx *gin.Context) {
+func (s *Data) listDataUsers(uclaim *claim.Data, ctx *gin.Context) {
 	req := DataUserReq{}
 	err := ctx.BindJSON(&req)
 	if err != nil {

@@ -8,6 +8,7 @@ import (
 
 	apiadmin "github.com/temphia/temphia/code/backend/app/server/api_admin"
 	apiauth "github.com/temphia/temphia/code/backend/app/server/api_auth"
+	apidata "github.com/temphia/temphia/code/backend/app/server/api_data"
 
 	apiself "github.com/temphia/temphia/code/backend/app/server/api_self"
 
@@ -59,21 +60,23 @@ type Server struct {
 
 	authserver *apiauth.Auth
 	apiself    *apiself.Self
+	apidata    *apidata.Data
 
 	// controllers
 
-	cOperator            *operator.Controller
-	cAuth                *authed.Controller
-	cBasic               *basic.Controller
-	cUser                *user.Controller
-	cData                *data.Controller
-	cCabinet             *cabinet.Controller
-	cRepo                *repo.Controller
-	cEngine              *engine.Controller
-	cDev                 *dev.Controller
-	cSockd               *sockd.Controller
-	ticketsAPI           *tickets.TicketAPI
-	sockdConnIdGenerator *snowflake.Node
+	cOperator *operator.Controller
+	cAuth     *authed.Controller
+	cBasic    *basic.Controller
+	cUser     *user.Controller
+	cData     *data.Controller
+	cCabinet  *cabinet.Controller
+	cRepo     *repo.Controller
+	cEngine   *engine.Controller
+	cDev      *dev.Controller
+	cSockd    *sockd.Controller
+
+	ticketsAPI *tickets.TicketAPI
+	idNode     *snowflake.Node // sockdConnIdGenerator
 }
 
 func New(opts Options) *Server {
@@ -122,22 +125,23 @@ func New(opts Options) *Server {
 
 		authserver: apiauth.New(root.AuthController(), signer),
 		apiself:    apiself.New(signer, mware, nz, root, node),
+		apidata:    apidata.New(mware, root.DtableController()),
 
 		// controllers
 
-		cOperator:            root.OperatorController(),
-		cAuth:                root.AuthController(),
-		cBasic:               root.BasicController(),
-		cData:                root.DtableController(),
-		cCabinet:             root.CabinetController(),
-		cRepo:                root.RepoController(),
-		cEngine:              root.EngineController(),
-		cDev:                 root.DevController(),
-		cUser:                root.UserController(),
-		cSockd:               root.SockdController(),
-		app:                  opts.App,
-		sockdConnIdGenerator: node,
-		ticketsAPI:           tktapi,
+		cOperator:  root.OperatorController(),
+		cAuth:      root.AuthController(),
+		cBasic:     root.BasicController(),
+		cData:      root.DtableController(),
+		cCabinet:   root.CabinetController(),
+		cRepo:      root.RepoController(),
+		cEngine:    root.EngineController(),
+		cDev:       root.DevController(),
+		cUser:      root.UserController(),
+		cSockd:     root.SockdController(),
+		app:        opts.App,
+		idNode:     node,
+		ticketsAPI: tktapi,
 	}
 }
 
