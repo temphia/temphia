@@ -34,7 +34,9 @@ func (s *Server) zRoutes(z *gin.RouterGroup) {
 
 func (s *Server) API(rg *gin.RouterGroup) {
 	s.admin.API(rg.Group("/admin"))
-	s.authAPI(rg.Group("/auth"))
+
+	s.authserver.API(rg.Group("/auth"))
+
 	s.dataAPI(rg.Group("/data"))
 	s.dataWSAPI(rg.Group("/data_ws"))
 
