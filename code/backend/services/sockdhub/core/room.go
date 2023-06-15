@@ -42,34 +42,42 @@ type pollMsg struct {
 
 func (r *room) sendDirect(connId int64, payload []byte) error {
 
-	msg := sockdx.Message{
-		Room:        r.name,
-		Type:        sockdx.MESSAGE_SERVER_DIRECT,
-		ServerIdent: r.parent.serverIdent,
-		XID:         xid.New().String(),
-		Payload:     payload,
-	}
+	var out []byte
+	if r.mode == RoomModeEncoded {
+		msg := sockdx.Message{
+			Room:        r.name,
+			Type:        sockdx.MESSAGE_SERVER_DIRECT,
+			ServerIdent: r.parent.serverIdent,
+			XID:         xid.New().String(),
+			Payload:     payload,
+		}
 
-	out, err := msg.JSON()
-	if err != nil {
-		r.parent.logger.Warn().
+		_out, err := msg.JSON()
+		if err != nil {
+			r.parent.logger.Warn().
+				Str("id", msg.XID).
+				Str("mtype", sockdx.MESSAGE_SERVER_DIRECT).
+				Str("room", r.name).
+				Bytes("data", payload).
+				Msg(logid.SockdSendMarshelErr)
+			return err
+		}
+
+		r.parent.logger.Info().
 			Str("id", msg.XID).
-			Str("mtype", sockdx.MESSAGE_SERVER_DIRECT).
-			Str("room", r.name).
-			Bytes("data", payload).
-			Msg(logid.SockdSendMarshelErr)
-		return err
-	}
+			Int64("target", int64(connId)).
+			Msg(logid.SockdSendDirect)
 
-	r.parent.logger.Info().
-		Str("id", msg.XID).
-		Int64("target", int64(connId)).
-		Msg(logid.SockdSendDirect)
+		out = _out
+
+	} else {
+		out = payload
+	}
 
 	c, ok := r.connections[connId]
 	if !ok {
 		if r.parent.syncer != nil {
-			r.parent.syncer.SyncMessage(r.ns, r.name, sockdx.MESSAGE_SERVER_DIRECT, msg)
+			r.parent.syncer.SyncMessage(r.ns, r.name, sockdx.MESSAGE_SERVER_DIRECT, nil)
 		}
 		return nil
 	}
@@ -82,29 +90,37 @@ func (r *room) sendDirect(connId int64, payload []byte) error {
 
 func (r *room) sendDirectBatch(conns []int64, payload []byte) error {
 
-	msg := sockdx.Message{
-		Room:        r.name,
-		Type:        sockdx.MESSAGE_SERVER_DIRECT,
-		ServerIdent: r.parent.serverIdent,
-		XID:         xid.New().String(),
-		Payload:     payload,
-	}
+	var out []byte
+	if r.mode == RoomModeEncoded {
+		msg := sockdx.Message{
+			Room:        r.name,
+			Type:        sockdx.MESSAGE_SERVER_DIRECT,
+			ServerIdent: r.parent.serverIdent,
+			XID:         xid.New().String(),
+			Payload:     payload,
+		}
 
-	out, err := msg.JSON()
-	if err != nil {
-		r.parent.logger.Warn().
+		_out, err := msg.JSON()
+		if err != nil {
+			r.parent.logger.Warn().
+				Str("id", msg.XID).
+				Str("mtype", sockdx.MESSAGE_SERVER_DIRECT).
+				Str("room", r.name).
+				Bytes("data", payload).
+				Msg(logid.SockdSendMarshelErr)
+			return err
+		}
+
+		r.parent.logger.Info().
 			Str("id", msg.XID).
-			Str("mtype", sockdx.MESSAGE_SERVER_DIRECT).
-			Str("room", r.name).
-			Bytes("data", payload).
-			Msg(logid.SockdSendMarshelErr)
-		return err
-	}
+			Interface("targets", conns).
+			Msg(logid.SockdSendDirectBatch)
 
-	r.parent.logger.Info().
-		Str("id", msg.XID).
-		Interface("targets", conns).
-		Msg(logid.SockdSendDirectBatch)
+		out = _out
+
+	} else {
+		out = payload
+	}
 
 	pending := make([]int64, 0)
 	for _, cid := range conns {
@@ -116,8 +132,8 @@ func (r *room) sendDirectBatch(conns []int64, payload []byte) error {
 	}
 
 	if len(pending) != 0 && r.parent.syncer != nil {
-		msg.TargetIds = pending
-		r.parent.syncer.SyncMessage(r.ns, r.name, sockdx.MESSAGE_SERVER_DIRECT, msg)
+		//		msg.TargetIds = pending
+		r.parent.syncer.SyncMessage(r.ns, r.name, sockdx.MESSAGE_SERVER_DIRECT, nil)
 	}
 
 	return nil
@@ -125,29 +141,37 @@ func (r *room) sendDirectBatch(conns []int64, payload []byte) error {
 
 func (r *room) sendBroadcast(ignores []int64, payload []byte) error {
 
-	msg := sockdx.Message{
-		Room:        r.name,
-		Type:        sockdx.MESSAGE_SERVER_BROADCAST,
-		ServerIdent: r.parent.serverIdent,
-		XID:         xid.New().String(),
-		Payload:     payload,
-	}
+	var out []byte
 
-	out, err := msg.JSON()
-	if err != nil {
-		r.parent.logger.Warn().
+	if r.mode == RoomModeEncoded {
+		msg := sockdx.Message{
+			Room:        r.name,
+			Type:        sockdx.MESSAGE_SERVER_BROADCAST,
+			ServerIdent: r.parent.serverIdent,
+			XID:         xid.New().String(),
+			Payload:     payload,
+		}
+		_out, err := msg.JSON()
+		if err != nil {
+			r.parent.logger.Warn().
+				Str("id", msg.XID).
+				Str("mtype", sockdx.MESSAGE_SERVER_BROADCAST).
+				Str("room", r.name).
+				Bytes("data", payload).
+				Msg(logid.SockdSendMarshelErr)
+			return err
+		}
+
+		out = _out
+
+		r.parent.logger.Info().
 			Str("id", msg.XID).
-			Str("mtype", sockdx.MESSAGE_SERVER_BROADCAST).
-			Str("room", r.name).
-			Bytes("data", payload).
-			Msg(logid.SockdSendMarshelErr)
-		return err
-	}
+			Interface("ignores", ignores).
+			Msg(logid.SockdSendBroadcast)
 
-	r.parent.logger.Info().
-		Str("id", msg.XID).
-		Interface("ignores", ignores).
-		Msg(logid.SockdSendBroadcast)
+	} else {
+		out = payload
+	}
 
 	for cid, conn := range r.connections {
 		if funk.ContainsInt64(ignores, cid) {
@@ -166,6 +190,11 @@ func (r *room) sendBroadcast(ignores []int64, payload []byte) error {
 }
 
 func (r *room) sendTagged(tags []string, ignores []int64, payload []byte) error {
+
+	if r.mode != RoomModeEncoded {
+		return easyerr.Error("not a encoded mode")
+	}
+
 	tagSet := r.cidFromTags(tags, ignores)
 	if len(tagSet) == 0 {
 		return nil
