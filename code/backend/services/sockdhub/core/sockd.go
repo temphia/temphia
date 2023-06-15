@@ -67,6 +67,10 @@ func (s *Sockd) RoomUpdateTags(ns, roomId string, opts sockdx.UpdateTagOptions) 
 	return s.roomUpdateTags(ns, roomId, opts)
 }
 
+func (s *Sockd) Poll(ns, roomId string, max, min int64) (*sockdx.PollResponse, error) {
+	return s.poll(ns, roomId, max, min)
+}
+
 func (s *Sockd) LocalListConns(ns string) (map[int64]string, error) {
 	return s.localListConns(ns)
 }

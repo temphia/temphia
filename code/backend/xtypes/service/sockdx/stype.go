@@ -56,6 +56,8 @@ type SockdCore interface {
 	SendBroadcast(ns, room string, ignores []int64, payload []byte) error
 	SendTagged(ns, room string, tags []string, ignores []int64, payload []byte) error
 	RoomUpdateTags(ns, roomId string, opts UpdateTagOptions) error
+
+	Poll(ns, roomId string, max, min int64) (*PollResponse, error)
 }
 
 type PeerSync interface {

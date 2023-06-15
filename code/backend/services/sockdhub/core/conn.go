@@ -114,7 +114,11 @@ func (c *Conn) readLoop() {
 			return
 		}
 
-		c.processPacket2(msg)
+		if c.parent.mode == RoomModeEncoded {
+			c.processEncoded(msg)
+		} else {
+			c.processRaw(msg)
+		}
 
 		if c.failed {
 			return

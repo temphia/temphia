@@ -2,25 +2,42 @@ package core
 
 import (
 	"sync"
+	"time"
 
 	"github.com/k0kubun/pp"
 	"github.com/rs/xid"
 	"github.com/rs/zerolog"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 	"github.com/thoas/go-funk"
 )
 
+const (
+	RoomModeEncoded       = 0
+	RoomModeBroadcast     = 1
+	RoomModePoll          = 2
+	RoomModeBroadcastPoll = 3
+)
+
 type room struct {
-	parent      *Sockd
-	ns          string
-	name        string
-	connections map[int64]*Conn
-	rlock       sync.Mutex
+	parent         *Sockd
+	ns             string
+	name           string
+	connections    map[int64]*Conn
+	rlock          sync.Mutex
+	mode           int
+	dropNewMessage bool
+	pollChan       chan pollMsg // it will be nil if its not pollable
 
 	// fixme => implement this
 	// debugWatch      bool
 	// debugWatchConns []*Conn
+}
+
+type pollMsg struct {
+	cid  int64
+	data []byte
 }
 
 func (r *room) sendDirect(connId int64, payload []byte) error {
@@ -286,6 +303,68 @@ func (r *room) kickRoomConn(cid int64) {
 	conn.close(false)
 	delete(r.connections, cid)
 	r.clearConnTags(cid)
+}
+
+func (r *room) poll(max, min int64) (*sockdx.PollResponse, error) {
+	if r.pollChan == nil {
+		return nil, easyerr.Error("room is not pollable")
+	}
+
+	resp := &sockdx.PollResponse{
+		Messages:    make(map[int64][][]byte),
+		ExtraEvents: []any{},
+	}
+
+	msgcount := 0
+
+	push := func(msg pollMsg) {
+
+		barr := resp.Messages[msg.cid]
+		if barr != nil {
+			barr = [][]byte{}
+		}
+		barr = append(barr, msg.data)
+		resp.Messages[msg.cid] = barr
+		msgcount = msgcount + 1
+	}
+
+	maxtime := time.Now().Add(time.Millisecond * time.Duration(max))
+	timer := time.NewTimer(time.Millisecond * time.Duration(min))
+	defer timer.Stop()
+
+OUTER:
+	for {
+
+		select {
+		case msg := <-r.pollChan:
+			push(msg)
+		case <-timer.C:
+
+			if msgcount > 0 {
+				break OUTER
+			}
+
+			if maxtime.After(time.Now()) {
+				break OUTER
+			}
+
+			timer.Reset(time.Millisecond * time.Duration(min))
+		}
+	}
+
+CLEAN:
+	for {
+		select {
+		case msg := <-r.pollChan:
+			push(msg)
+
+		default:
+			break CLEAN
+		}
+	}
+
+	return resp, nil
+
 }
 
 func (r *room) close() {

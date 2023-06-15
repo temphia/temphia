@@ -78,3 +78,12 @@ func (s *Sockd) roomUpdateTags(ns, roomId string, opts sockdx.UpdateTagOptions) 
 
 	return nil
 }
+
+func (s *Sockd) poll(ns, roomId string, max, min int64) (*sockdx.PollResponse, error) {
+	r := s.roomGet(ns, roomId, false)
+	if r == nil {
+		return nil, sockdx.ErrRoomNotFound
+	}
+
+	return r.poll(max, min)
+}

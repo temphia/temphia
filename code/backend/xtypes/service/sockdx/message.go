@@ -11,8 +11,9 @@ const (
 	MESSAGE_CLIENT_BROADCAST = "client_broadcast"
 	MESSAGE_CLIENT_PUBLISH   = "client_publish"
 
-	MESSAGE_CLIENT_SYSTEM = "client_system"
-	MESSAGE_SERVER_SYSTEM = "server_system"
+	MESSAGE_CLIENT_SYSTEM         = "client_system"
+	MESSAGE_SERVER_SYSTEM         = "server_system"
+	MESSAGE_CLIENT_FULL_BROADCAST = "client_full_broadcast"
 )
 
 type Message struct {
@@ -26,6 +27,11 @@ type Message struct {
 	TargetTags  []string `json:"target_tags,omitempty"`
 	IgnoreConns []int64  `json:"ignore_conns,omitempty"`
 	FromId      int64    `json:"from_id,omitempty"`
+}
+
+type PollResponse struct {
+	Messages    map[int64][][]byte
+	ExtraEvents []any
 }
 
 func (m *Message) JSON() ([]byte, error) {

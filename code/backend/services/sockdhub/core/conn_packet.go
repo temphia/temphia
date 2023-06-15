@@ -1,13 +1,16 @@
 package core
 
 import (
+	"time"
+
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 	"github.com/tidwall/gjson"
 )
 
-func (c *Conn) processPacket2(msg []byte) {
+func (c *Conn) processEncoded(msg []byte) {
+
 	msgFromid := gjson.GetBytes(msg, "from_id").Int()
 	msgType := gjson.GetBytes(msg, "type").String()
 	msgXid := gjson.GetBytes(msg, "xid").String()
@@ -84,22 +87,107 @@ func (c *Conn) processPacket2(msg []byte) {
 		}
 
 	case sockdx.MESSAGE_CLIENT_BROADCAST:
-		for cid, conn := range c.parent.connections {
-			if cid == c.conn.Id() {
-				continue
-			}
-			conn.write(msg)
-		}
-		if c.parent.parent.syncer != nil {
-			c.parent.parent.syncer.SyncMessage(c.parent.ns, c.parent.name, msgType, msg)
-		}
+		c.handleBroadcast(msg)
 	case sockdx.MESSAGE_CLIENT_SYSTEM:
 		c.handleClientSystem(msgFromid, msg)
+	case sockdx.MESSAGE_CLIENT_FULL_BROADCAST:
+		c.handleBroadcast(msg)
+		c.processPoll(msg)
+
 	default:
 		c.parent.getLogger().Warn().
 			Str("xid", msgXid).
 			RawJSON("data", msg).
 			Msg(logid.SockdMsgInvalidMType)
+	}
+
+}
+
+func (c *Conn) processRaw(msg []byte) {
+
+	if c.parent.mode == RoomModeBroadcast || c.parent.mode == RoomModeBroadcastPoll {
+		c.processBroadcast(msg)
+	}
+
+	if c.parent.mode == RoomModePoll || c.parent.mode == RoomModeBroadcastPoll {
+		c.processPoll(msg)
+	}
+
+}
+
+func (c *Conn) processBroadcast(msg []byte) {
+	for cid, conn := range c.parent.connections {
+		if cid == c.conn.Id() {
+			continue
+		}
+		conn.write(msg)
+	}
+
+	if c.parent.parent.syncer != nil {
+		c.parent.parent.syncer.SyncMessage(c.parent.ns, c.parent.name, "", msg)
+	}
+
+}
+
+func (c *Conn) processPoll(msg []byte) {
+	if c.parent.pollChan == nil {
+		return
+	}
+
+	pmsg := pollMsg{
+		cid:  c.conn.Id(),
+		data: msg,
+	}
+
+	select {
+	case c.parent.pollChan <- pmsg:
+		return
+	default:
+		timer := time.NewTimer(time.Millisecond * time.Duration(100))
+		defer timer.Stop()
+
+		select {
+		case c.parent.pollChan <- pmsg:
+			return
+		case <-timer.C:
+			if c.parent.dropNewMessage {
+				return
+			}
+
+			trycount := 0
+
+			// else drop old message try again
+			for {
+
+				<-c.parent.pollChan
+
+				select {
+				case c.parent.pollChan <- pmsg:
+					return
+				default:
+					if trycount > 3 {
+						return
+					}
+				}
+
+				trycount = trycount + 1
+			}
+
+		}
+
+	}
+
+}
+
+func (c *Conn) handleBroadcast(msg []byte) {
+	for cid, conn := range c.parent.connections {
+		if cid == c.conn.Id() {
+			continue
+		}
+		conn.write(msg)
+	}
+	if c.parent.parent.syncer != nil {
+		c.parent.parent.syncer.SyncMessage(c.parent.ns, c.parent.name, sockdx.MESSAGE_CLIENT_BROADCAST, msg)
 	}
 
 }
