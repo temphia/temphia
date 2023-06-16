@@ -58,6 +58,8 @@ func (h *HubV2) instanceTargetHook(handle Handle, item xbprint.BundleItem) error
 		return err
 	}
 
+	// asas
+
 	for _, s := range schema.Steps {
 
 		pp.Println(s)

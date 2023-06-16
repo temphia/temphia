@@ -24,18 +24,25 @@ type Core interface {
 }
 
 type Self interface {
-	SelfListResources() ([]*Resource, error)
-	SelfGetResource(name string) (*Resource, error)
+	ListResources() ([]*Resource, error)
+	GetResource(name string) (*Resource, error)
 
-	SelfInLinks() ([]Link, error)
-	SelfOutLinks() ([]Link, error)
-	SelfLinkExec(name, method string, data xtypes.LazyData, async, detached bool) (xtypes.LazyData, error)
+	InLinks() ([]Link, error)
+	OutLinks() ([]Link, error)
+	LinkExec(name, method string, data xtypes.LazyData, async, detached bool) (xtypes.LazyData, error)
 
-	SelfNewModule(name string, data xtypes.LazyData) (int32, error)
-	SelfModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error)
-	SelfModuleTicket(name string, opts xtypes.LazyData) (string, error)
+	NewModule(name string, data xtypes.LazyData) (int32, error)
+	ModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error)
+	ModuleTicket(name string, opts xtypes.LazyData) (string, error)
 
-	SelfForkExec(method string, data []byte) error
+	ForkExec(method string, data []byte) error
+}
+
+type SelfExecAsync interface {
+	ModuleExecAsync(mid int32, method string, data xtypes.LazyData) (int64, error)
+	ModuleExecAsyncPoll(mid int32, eid int64) (xtypes.LazyData, error)
+	ModuleExecAsyncForgot(mid int32, eid int64) error
+	ModuleExecAsyncWait(mid int32, eid int64) (xtypes.LazyData, error)
 }
 
 type PlugKV interface {

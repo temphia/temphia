@@ -12,7 +12,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities/resource"
 )
 
-func (b *SelfBindings) SelfListResources() ([]*bindx.Resource, error) {
+func (b *SelfBindings) ListResources() ([]*bindx.Resource, error) {
 	b.handle.LoadResources()
 
 	ress := make([]*bindx.Resource, 0, len(b.handle.Resources))
@@ -28,7 +28,7 @@ func (b *SelfBindings) SelfListResources() ([]*bindx.Resource, error) {
 	return ress, nil
 }
 
-func (b *SelfBindings) SelfGetResource(name string) (*bindx.Resource, error) {
+func (b *SelfBindings) GetResource(name string) (*bindx.Resource, error) {
 	b.handle.LoadResources()
 
 	res, ok := b.handle.Resources[name]
@@ -111,7 +111,7 @@ type DataGroup struct {
 	ReadOnly bool `json:"read_only,omitempty"`
 }
 
-func (b *SelfBindings) SelfModuleTicket(name string, opts xtypes.LazyData) (string, error) {
+func (b *SelfBindings) ModuleTicket(name string, opts xtypes.LazyData) (string, error) {
 
 	signer := b.handle.Deps.Signer
 	uctx := b.root.invoker.ContextUser()

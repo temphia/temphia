@@ -155,7 +155,7 @@ func (g *Goja) bind() {
 
 	if self := g.binder.SelfBindingsGet(); self != nil {
 		g.qbind("_self_list_resource", func() (any, any) {
-			resp, err := self.SelfListResources()
+			resp, err := self.ListResources()
 			if err != nil {
 				return nil, err.Error()
 			}
@@ -163,7 +163,7 @@ func (g *Goja) bind() {
 		})
 
 		g.qbind("_self_get_resource", func(name string) (any, any) {
-			resp, err := self.SelfGetResource(name)
+			resp, err := self.GetResource(name)
 			if err != nil {
 				return nil, err.Error()
 			}
@@ -172,7 +172,7 @@ func (g *Goja) bind() {
 		})
 
 		g.qbind("_self_inlinks", func() (any, any) {
-			resp, err := self.SelfInLinks()
+			resp, err := self.InLinks()
 			if err != nil {
 				return nil, err.Error()
 			}
@@ -181,7 +181,7 @@ func (g *Goja) bind() {
 		})
 
 		g.qbind("_self_outlinks", func() (any, any) {
-			resp, err := self.SelfOutLinks()
+			resp, err := self.OutLinks()
 			if err != nil {
 				return nil, err.Error()
 			}
@@ -189,15 +189,15 @@ func (g *Goja) bind() {
 		})
 
 		g.qbind("_self_new_module", func(name string, data goja.Value) (any, any) {
-			return self.SelfNewModule(name, lazydata.NewGojaData(g.runtime, data))
+			return self.NewModule(name, lazydata.NewGojaData(g.runtime, data))
 		})
 
 		g.qbind("_self_module_ticket", func(name string, data goja.Value) (any, any) {
-			return self.SelfModuleTicket(name, lazydata.NewGojaData(g.runtime, data))
+			return self.ModuleTicket(name, lazydata.NewGojaData(g.runtime, data))
 		})
 
 		g.qbind("_self_module_exec", func(mid int32, name string, data goja.Value) (any, any) {
-			resp, err := self.SelfModuleExec(mid, name, lazydata.NewGojaData(g.runtime, data))
+			resp, err := self.ModuleExec(mid, name, lazydata.NewGojaData(g.runtime, data))
 			if err != nil {
 				return nil, err.Error()
 			}
@@ -213,7 +213,7 @@ func (g *Goja) bind() {
 		})
 
 		g.qbind("_self_link_execute", func(name, method, path string, data goja.Value, async, detached bool) (any, any) {
-			resp, err := self.SelfLinkExec(name, method, lazydata.NewGojaData(g.runtime, data), async, detached)
+			resp, err := self.LinkExec(name, method, lazydata.NewGojaData(g.runtime, data), async, detached)
 			if err != nil {
 				return nil, err.Error()
 			}
@@ -229,7 +229,7 @@ func (g *Goja) bind() {
 		})
 
 		g.qbind("_self_fork_execute", func(method string, data string) any {
-			err := self.SelfForkExec(method, []byte(data))
+			err := self.ForkExec(method, []byte(data))
 			if err != nil {
 				return err.Error()
 			}

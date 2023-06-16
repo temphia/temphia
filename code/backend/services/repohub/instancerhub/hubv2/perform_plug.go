@@ -20,17 +20,23 @@ func (h *HubV2) instancePlug(handle Handle, item xbprint.BundleItem) error {
 		return err
 	}
 
-	for _, pstep := range schema.Steps {
+	return h.processStep(handle, true, pid, "", item.Name, schema.Steps)
+}
+
+func (h *HubV2) processStep(handle Handle, new bool, pid, laststep, name string, steps []step.Step) error {
+	tenantId := handle.tenantId
+
+	for _, pstep := range steps {
 
 		switch pstep.Name {
 		case step.PlugStepNewPlug:
 			pschema := xbprint.NewPlug{}
-			err = json.Unmarshal(pstep.Data, &pschema)
+			err := json.Unmarshal(pstep.Data, &pschema)
 			if err != nil {
 				return err
 			}
 
-			err = h.applyNewPlug(tenantId, pid, item.Name, handle, pschema)
+			err = h.applyNewPlug(tenantId, pid, name, handle, pschema)
 			if err != nil {
 				return err
 			}
@@ -38,7 +44,7 @@ func (h *HubV2) instancePlug(handle Handle, item xbprint.BundleItem) error {
 		case step.PlugStepNewAgent:
 
 			data := xbprint.NewAgent{}
-			err = json.Unmarshal(pstep.Data, &data)
+			err := json.Unmarshal(pstep.Data, &data)
 			if err != nil {
 				return err
 			}
@@ -50,7 +56,7 @@ func (h *HubV2) instancePlug(handle Handle, item xbprint.BundleItem) error {
 
 		case step.PlugStepUpdateAgent:
 			data := make(map[string]any)
-			err = json.Unmarshal(pstep.Data, &data)
+			err := json.Unmarshal(pstep.Data, &data)
 			if err != nil {
 				return err
 			}
@@ -64,7 +70,7 @@ func (h *HubV2) instancePlug(handle Handle, item xbprint.BundleItem) error {
 			)
 		case step.PlugStepAddInnerLink:
 			data := xbprint.NewInnerLink{}
-			err = json.Unmarshal(pstep.Data, &data)
+			err := json.Unmarshal(pstep.Data, &data)
 			if err != nil {
 				return err
 			}
@@ -90,6 +96,7 @@ func (h *HubV2) instancePlug(handle Handle, item xbprint.BundleItem) error {
 	}
 
 	return nil
+
 }
 
 // apply

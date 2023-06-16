@@ -34,26 +34,26 @@ func NewSelfBindings(handle *handle.Handle, root *Binder) SelfBindings {
 	}
 }
 
-func (b *SelfBindings) SelfNewModule(name string, data xtypes.LazyData) (int32, error) {
+func (b *SelfBindings) NewModule(name string, data xtypes.LazyData) (int32, error) {
 	return b.selfNewModule(name, data)
 }
 
-func (b *SelfBindings) SelfModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error) {
+func (b *SelfBindings) ModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error) {
 	return b.selfModuleExec(mid, method, data)
 }
 
-func (b *SelfBindings) SelfInLinks() ([]bindx.Link, error) {
+func (b *SelfBindings) InLinks() ([]bindx.Link, error) {
 	return b.selfInLinks()
 }
 
-func (b *SelfBindings) SelfOutLinks() ([]bindx.Link, error) {
+func (b *SelfBindings) OutLinks() ([]bindx.Link, error) {
 	return b.selfOutLinks()
 }
 
-func (b *SelfBindings) SelfLinkExec(name, method string, data xtypes.LazyData, async, detached bool) (xtypes.LazyData, error) {
+func (b *SelfBindings) LinkExec(name, method string, data xtypes.LazyData, async, detached bool) (xtypes.LazyData, error) {
 	return b.selfLinkExec(name, method, data, async, detached)
 }
 
-func (b *SelfBindings) SelfForkExec(method string, data []byte) error {
+func (b *SelfBindings) ForkExec(method string, data []byte) error {
 	return b.selfForkExec(method, data)
 }
