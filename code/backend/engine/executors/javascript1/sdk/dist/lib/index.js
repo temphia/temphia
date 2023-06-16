@@ -43,10 +43,8 @@ __nccwpck_require__.r(__webpack_exports__);
 
 // EXPORTS
 __nccwpck_require__.d(__webpack_exports__, {
-  "CabFolder": () => (/* reexport */ CabFolder),
   "Request": () => (/* reexport */ Request),
   "Response": () => (/* reexport */ Response),
-  "SockdRoom": () => (/* reexport */ SockdRoom),
   "core": () => (/* reexport */ core),
   "invoker": () => (/* reexport */ invoker),
   "plugkv": () => (/* reexport */ plugkv),
@@ -182,59 +180,6 @@ var Request = /** @class */ (function () {
 }());
 
 
-;// CONCATENATED MODULE: ./lib/cabinet.ts
-var CabFolder = /** @class */ (function () {
-    function CabFolder(folder) {
-        var _this = this;
-        this.add_file = function (file) {
-            return _cab_add_file(_this._folder, file);
-        };
-        this.list_folder = function (file) {
-            return _cab_list_folder(_this._folder, file);
-        };
-        this.get_file = function (file) {
-            return _cab_get_file(_this._folder, file);
-        };
-        this.get_file_str = function (file) {
-            return _cab_get_file_str(_this._folder, file);
-        };
-        this.del_file = function (file) {
-            return _cab_del_file(_this._folder, file);
-        };
-        this.gen_ticket = function (opts) {
-            return _cab_generate_ticket(_this._folder, opts);
-        };
-        this._folder = folder;
-    }
-    return CabFolder;
-}());
-
-
-;// CONCATENATED MODULE: ./lib/sockd.ts
-var SockdRoom = /** @class */ (function () {
-    function SockdRoom(room) {
-        var _this = this;
-        this.send_direct = function (connIds, value) {
-            return _sd_send_direct(_this._room, connIds, value);
-        };
-        this.send_direct_batch = function (connIds, value) {
-            return _sd_send_direct_batch(_this._room, connIds, value);
-        };
-        this.send_broadcast = function (value, ignores) {
-            return _sd_send_broadcast(_this._room, value, ignores ? ignores : []);
-        };
-        this.send_tagged = function (tags, value, ignore) {
-            return _sd_send_tagged(_this._room, tags, value, ignore ? ignore : []);
-        };
-        this.ticket = function (opts) {
-            return _sd_ticket(_this._room, opts);
-        };
-        this._room = room;
-    }
-    return SockdRoom;
-}());
-
-
 ;// CONCATENATED MODULE: ./lib/utils.ts
 var no_found = "upper: no more rows in this result set";
 var already_exists = "duplicate key value violates";
@@ -271,6 +216,7 @@ var self_self = {
     inlinks: function () { return _self_inlinks(); },
     outlinks: function () { return _self_outlinks(); },
     new_module: function (name, data) { return _self_new_module(name, data); },
+    module_ticket: function (name, opts) { return _self_module_ticket(name, opts); },
     module_execute: function (mid, method, data) {
         return _self_module_exec(mid, method, data);
     },
@@ -290,8 +236,6 @@ var invoker = {
 };
 
 ;// CONCATENATED MODULE: ./lib/index.ts
-
-
 
 
 
