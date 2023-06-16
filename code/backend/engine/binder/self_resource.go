@@ -119,7 +119,7 @@ func (b *SelfBindings) ModuleTicket(name string, opts xtypes.LazyData) (string, 
 	switch name {
 	case "self_plugstate":
 
-		popts := PlugState{}
+		popts := &PlugState{}
 		err := opts.AsObject(popts)
 		if err != nil {
 			return "", err
