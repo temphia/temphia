@@ -115,11 +115,11 @@ func (g *Goja) bind() {
 		})
 
 		g.qbind("_invoker_context_user", func() any {
-			return ibind.ContextUser()
+			return ibind.UserContext()
 		})
 
 		g.qbind("_invoker_context_user_info", func() (any, any) {
-			u, err := ibind.ContextUserInfo()
+			u, err := ibind.UserInfo()
 			if err != nil {
 				return nil, err.Error()
 			}
@@ -127,7 +127,7 @@ func (g *Goja) bind() {
 		})
 
 		g.qbind("_invoker_context_user_message", func(opts *bindx.UserMessage) any {
-			err := ibind.ContextUserMessage(opts)
+			err := ibind.UserMessage(opts)
 			if err != nil {
 				return err.Error()
 			}

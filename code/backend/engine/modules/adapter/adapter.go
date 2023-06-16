@@ -18,7 +18,7 @@ type AdapterMod struct {
 
 func (am *AdapterMod) Handle(method string, args xtypes.LazyData) (xtypes.LazyData, error) {
 
-	uctx := am.inBinder.ContextUser()
+	uctx := am.inBinder.UserContext()
 	if uctx == nil {
 		return nil, easyerr.NotFound("user ctx @adpter ctx")
 	}

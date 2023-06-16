@@ -41,7 +41,7 @@ func InvokerExec(ctx context.Context, ctxid, mPtr, mLen, dPtr, dLen, respOffset,
 
 func InvokerContextUser(ctx context.Context, ctxid, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
-	user := e.invoker.ContextUser()
+	user := e.invoker.UserContext()
 	if user == nil {
 		return 0
 	}
@@ -51,7 +51,7 @@ func InvokerContextUser(ctx context.Context, ctxid, respOffset, respLen int32) i
 
 func InvokerContextInfo(ctx context.Context, ctxid, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
-	user, err := e.invoker.ContextUserInfo()
+	user, err := e.invoker.UserInfo()
 	return e.writeJSONFinal(ctxid, respOffset, respLen, user, err)
 }
 
@@ -67,7 +67,7 @@ func InvokerContextUserMessage(ctx context.Context, ctxid, dPtr, dLen, respOffse
 		return 0
 	}
 
-	err = e.invoker.ContextUserMessage(msg)
+	err = e.invoker.UserMessage(msg)
 	if err != nil {
 		e.writeError(ctxid, respOffset, respLen, err)
 		return 0

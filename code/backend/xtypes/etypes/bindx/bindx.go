@@ -61,7 +61,7 @@ type PlugKV interface {
 type Invoker interface {
 	Name() string
 	ExecMethod(method string, data xtypes.LazyData) (xtypes.LazyData, error)
-	ContextUser() *claim.UserContext
-	ContextUserInfo() (*entities.UserInfo, error)
-	ContextUserMessage(opts *UserMessage) error
+	UserContext() *claim.UserContext
+	UserInfo() (*entities.UserInfo, error)
+	UserMessage(opts *UserMessage) error
 }

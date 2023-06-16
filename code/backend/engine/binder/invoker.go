@@ -27,9 +27,9 @@ func NewInvoker(handle *handle.Handle) InvokerBindings {
 
 func (b *InvokerBindings) Name() string { return b.job.Invoker.Type() }
 
-func (b *InvokerBindings) ContextUser() *claim.UserContext { return b.job.Invoker.UserContext() }
+func (b *InvokerBindings) UserContext() *claim.UserContext { return b.job.Invoker.UserContext() }
 
-func (b *InvokerBindings) ContextUserInfo() (*entities.UserInfo, error) {
+func (b *InvokerBindings) UserInfo() (*entities.UserInfo, error) {
 	uctx := b.job.Invoker.UserContext()
 	if uctx == nil {
 		return nil, easyerr.Error("empty invoker user")
@@ -55,7 +55,7 @@ func (b *InvokerBindings) ExecMethod(method string, data xtypes.LazyData) (xtype
 	return b.job.Invoker.ExecuteMethod(method, data)
 }
 
-func (b *InvokerBindings) ContextUserMessage(opts *bindx.UserMessage) error {
+func (b *InvokerBindings) UserMessage(opts *bindx.UserMessage) error {
 
 	uctx := b.job.Invoker.UserContext()
 	if uctx == nil {

@@ -114,7 +114,7 @@ type DataGroup struct {
 func (b *SelfBindings) ModuleTicket(name string, opts xtypes.LazyData) (string, error) {
 
 	signer := b.handle.Deps.Signer
-	uctx := b.root.invoker.ContextUser()
+	uctx := b.root.invoker.UserContext()
 
 	switch name {
 	case "self_plugstate":
