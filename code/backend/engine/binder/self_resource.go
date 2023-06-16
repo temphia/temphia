@@ -153,7 +153,6 @@ func (b *SelfBindings) ModuleTicket(name string, opts xtypes.LazyData) (string, 
 
 		return signer.SignData(b.handle.Namespace, &claim.Data{
 			TenantId:   b.handle.Namespace,
-			Type:       "",
 			UserID:     uctx.UserID,
 			UserGroup:  uctx.UserGroup,
 			SessionID:  uctx.SessionID,
@@ -162,6 +161,14 @@ func (b *SelfBindings) ModuleTicket(name string, opts xtypes.LazyData) (string, 
 			DataGroup:  target[1],
 			DataTables: []string{"*"},
 			IsExec:     true,
+		})
+	case resource.SockRoom:
+
+		return signer.SignSockdTkt(b.handle.Namespace, &claim.SockdTkt{
+			UserId:    uctx.UserID,
+			DeviceId:  uctx.DeviceId,
+			SessionId: uctx.SessionID,
+			Room:      res.Id,
 		})
 
 	default:
