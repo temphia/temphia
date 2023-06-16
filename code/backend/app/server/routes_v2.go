@@ -37,7 +37,8 @@ func (s *Server) API(rg *gin.RouterGroup) {
 
 	s.authserver.API(rg.Group("/auth"))
 
-	//	s.dataAPI(rg.Group("/data"))
+	s.apidata.API(rg.Group("/data"))
+
 	s.dataWSAPI(rg.Group("/data_ws"))
 
 	s.cabinetAPI(rg.Group("/cabinet"))
