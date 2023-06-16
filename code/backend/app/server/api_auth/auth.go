@@ -70,31 +70,6 @@ func (s *Auth) authListMethods(c *gin.Context) {
 	httpx.WriteJSON(c, resp, err)
 }
 
-func (s *Auth) authLoginNext(c *gin.Context) {
-	opts := authed.LoginNextRequest{}
-	err := c.BindJSON(&opts)
-	if err != nil {
-		httpx.WriteErr(c, err)
-		return
-	}
-
-	resp, err := s.cAuth.LoginNext(opts)
-	httpx.WriteJSON(c, resp, err)
-
-}
-
-func (s *Auth) authLoginSubmit(c *gin.Context) {
-	opts := authed.LoginSubmitRequest{}
-	err := c.BindJSON(&opts)
-	if err != nil {
-		httpx.WriteErr(c, err)
-		return
-	}
-
-	resp, err := s.cAuth.LoginSubmit(opts)
-	httpx.WriteJSON(c, resp, err)
-}
-
 func (s *Auth) authedFinish(c *gin.Context) {
 	opts := authed.AuthFinishRequest{}
 	err := c.BindJSON(&opts)
@@ -202,7 +177,7 @@ func (s *Auth) authResetFinish(c *gin.Context) {
 		return
 	}
 
-	resp, err := s.cAuth.AuthFinish(opts, "FIXME device name", c.ClientIP())
+	resp, err := s.cAuth.AuthFinish(opts, c.GetHeader("User-Agent"), c.ClientIP())
 	httpx.WriteJSON(c, resp, err)
 }
 
