@@ -1,5 +1,4 @@
 import { core } from "./core";
-import { plugkv } from "./plugkv";
 import { Request, Response } from "./http";
 import { utils} from "./utils"
 import {self} from "./self"
@@ -9,7 +8,6 @@ export {
   core,
   self,
   utils,
-  plugkv,
   invoker,
   Request,
   Response,

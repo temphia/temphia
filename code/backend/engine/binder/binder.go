@@ -97,8 +97,6 @@ func (b *Binder) Execute() (*event.Response, error) {
 
 // bindings
 
-func (b *Binder) PlugKVBindingsGet() bindx.PlugKV { return &b.plugKV }
-
 func (b *Binder) SelfBindingsGet() bindx.Self { return &b.self }
 func (b *Binder) InvokerGet() bindx.Invoker   { return &b.invoker }
 

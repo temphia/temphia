@@ -8,7 +8,6 @@ import (
 	"github.com/temphia/temphia/code/backend/engine/modules/http"
 	"github.com/temphia/temphia/code/backend/libx/lazydata"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 func (g *Goja) qbind(name string, fn any) {
@@ -17,13 +16,6 @@ func (g *Goja) qbind(name string, fn any) {
 		panic(err)
 	}
 
-}
-
-func resp(err error) any {
-	if err != nil {
-		return err.Error()
-	}
-	return nil
 }
 
 func (g *Goja) bind() {
@@ -42,55 +34,6 @@ func (g *Goja) bind() {
 			}
 			return string(data), nil
 		})
-	}
-
-	if pbind := g.binder.PlugKVBindingsGet(); pbind != nil {
-		g.qbind("_pkv_set", func(txid uint32, key string, value string, opts *store.SetOptions) any {
-			return resp(pbind.Set(txid, key, value, opts))
-		})
-
-		g.qbind("_pkv_update", func(txid uint32, key string, value string, opts *store.UpdateOptions) any {
-			return resp(pbind.Update(txid, key, value, opts))
-		})
-
-		g.qbind("_pkv_get", func(txid uint32, key string) (any, any) {
-			r, err := pbind.Get(txid, key)
-			if err != nil {
-				return nil, err.Error()
-			}
-
-			return r, nil
-		})
-
-		g.qbind("_pkv_del", func(txid uint32, key string) any {
-			return resp(pbind.Del(txid, key))
-		})
-		g.qbind("_pkv_batch_del", func(txid uint32, keys []string) any {
-			return resp(pbind.DelBatch(txid, keys))
-		})
-		g.qbind("_pkv_query", func(txid uint32, query *store.PkvQuery) (any, any) {
-			r, err := pbind.Query(txid, query)
-			if err != nil {
-				return nil, err.Error()
-			}
-
-			return r, nil
-		})
-		g.qbind("_pkv_new_txn", func() (uint32, any) {
-			txid, err := pbind.NewTxn()
-			if err != nil {
-				return 0, err.Error()
-			}
-
-			return txid, nil
-		})
-		g.qbind("_pkv_rollback", func(txid uint32) any {
-			return resp(pbind.RollBack(txid))
-		})
-		g.qbind("_pkv_commit", func(txid uint32) any {
-			return resp(pbind.Commit(txid))
-		})
-
 	}
 
 	if ibind := g.binder.InvokerGet(); ibind != nil {

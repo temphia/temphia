@@ -4,13 +4,11 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 type Bindings interface {
 	Core
 
-	PlugKVBindingsGet() PlugKV
 	SelfBindingsGet() Self
 	InvokerGet() Invoker
 }
@@ -45,19 +43,6 @@ type Self interface {
 	AsyncModuleExec(mid int32, method string, data xtypes.LazyData) (uint32, error)
 	AsyncEventPoll(mid int32, eid uint32) (xtypes.LazyData, error)
 	AsyncEventWait(mid int32, eid uint32) (xtypes.LazyData, error)
-}
-
-type PlugKV interface {
-	Set(txid uint32, key, value string, opts *store.SetOptions) error
-	Update(txid uint32, key, value string, opts *store.UpdateOptions) error
-	Get(txid uint32, key string) (*entities.PlugKV, error)
-	Del(txid uint32, key string) error
-	DelBatch(txid uint32, keys []string) error
-	Query(txid uint32, query *store.PkvQuery) ([]*entities.PlugKV, error)
-
-	NewTxn() (uint32, error)
-	RollBack(txid uint32) error
-	Commit(txid uint32) error
 }
 
 type Invoker interface {

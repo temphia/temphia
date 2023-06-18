@@ -20,10 +20,9 @@ type Executor struct {
 	mem     api.Memory
 
 	// bindings cache
-	bindings  bindx.Bindings
-	invoker   bindx.Invoker
-	bindSelf  bindx.Self
-	bindPluKV bindx.PlugKV
+	bindings bindx.Bindings
+	invoker  bindx.Invoker
+	bindSelf bindx.Self
 }
 
 func (e *Executor) Process(req *event.Request) (*event.Response, error) {
