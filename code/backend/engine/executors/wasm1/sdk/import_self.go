@@ -71,22 +71,14 @@ func SelfOutLinks() ([]bindx.Link, error) {
 	return nil, getErr(respOffset)
 }
 
-func SelfLinkExec(name, method string, data []byte, async, detached bool) ([]byte, error) {
+func SelfLinkExec(name, method string, data []byte) ([]byte, error) {
 	var respOffset, respLen int32
 
 	nptr, nlen := stringToPtr(name)
 	mptr, mlen := stringToPtr(method)
 	dptr, dlen := bytesToPtr(data)
 
-	var asyncI, detachedI int32
-	if async {
-		asyncI = 1
-	}
-	if detached {
-		detachedI = 1
-	}
-
-	if _self_link_exec(nptr, nlen, mptr, mlen, dptr, dlen, asyncI, detachedI, intAddr(&respOffset), intAddr(&respLen)) {
+	if _self_link_exec(nptr, nlen, mptr, mlen, dptr, dlen, intAddr(&respOffset), intAddr(&respLen)) {
 		return getBytes(respOffset), nil
 	}
 
@@ -155,7 +147,7 @@ func _self_out_links(respOffset, respLen int32) bool
 
 //go:wasm-module temphia1
 //export self_link_exec
-func _self_link_exec(nPtr, nLen, mPtr, mLen, dPtr, dLen, async, detached, respOffset, respLen int32) bool
+func _self_link_exec(nPtr, nLen, mPtr, mLen, dPtr, dLen, respOffset, respLen int32) bool
 
 //go:wasm-module temphia1
 //export self_new_module

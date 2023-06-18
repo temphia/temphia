@@ -50,10 +50,27 @@ func (b *SelfBindings) OutLinks() ([]bindx.Link, error) {
 	return b.selfOutLinks()
 }
 
-func (b *SelfBindings) LinkExec(name, method string, data xtypes.LazyData, async, detached bool) (xtypes.LazyData, error) {
-	return b.selfLinkExec(name, method, data, async, detached)
+func (b *SelfBindings) LinkExec(name, method string, data xtypes.LazyData) (xtypes.LazyData, error) {
+	return b.selfLinkExec(name, method, data)
+}
+
+func (b *SelfBindings) LinkExecEmit(name, method string, data xtypes.LazyData) error {
+	return nil
 }
 
 func (b *SelfBindings) ForkExec(method string, data []byte) error {
 	return b.selfForkExec(method, data)
+}
+
+func (b *SelfBindings) AsyncLinkExec(name, method string, data xtypes.LazyData) (uint32, error) {
+	return 0, nil
+}
+func (b *SelfBindings) AsyncModuleExec(mid int32, method string, data xtypes.LazyData) (uint32, error) {
+	return 0, nil
+}
+func (b *SelfBindings) AsyncEventPoll(mid int32, eid uint32) (xtypes.LazyData, error) {
+	return nil, nil
+}
+func (b *SelfBindings) AsyncEventWait(mid int32, eid uint32) (xtypes.LazyData, error) {
+	return nil, nil
 }

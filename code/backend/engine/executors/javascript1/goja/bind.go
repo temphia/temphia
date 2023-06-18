@@ -213,7 +213,7 @@ func (g *Goja) bind() {
 		})
 
 		g.qbind("_self_link_execute", func(name, method, path string, data goja.Value, async, detached bool) (any, any) {
-			resp, err := self.LinkExec(name, method, lazydata.NewGojaData(g.runtime, data), async, detached)
+			resp, err := self.LinkExec(name, method, lazydata.NewGojaData(g.runtime, data))
 			if err != nil {
 				return nil, err.Error()
 			}

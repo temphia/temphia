@@ -48,7 +48,7 @@ func (b *SelfBindings) selfOutLinks() ([]bindx.Link, error) {
 	return links, nil
 }
 
-func (b *SelfBindings) selfLinkExec(name, method string, data xtypes.LazyData, async, detached bool) (xtypes.LazyData, error) {
+func (b *SelfBindings) selfLinkExec(name, method string, data xtypes.LazyData) (xtypes.LazyData, error) {
 
 	alink, ok := b.handle.Links[name]
 	if !ok {
@@ -60,28 +60,20 @@ func (b *SelfBindings) selfLinkExec(name, method string, data xtypes.LazyData, a
 		return nil, err
 	}
 
-	if async {
-		resp, err := b.runtime.Preform(&job.Job{
-			PlugId:      alink.ToPlug,
-			AgentId:     alink.ToAgent,
-			EventId:     xid.New().String(),
-			EventAction: method,
-			Namespace:   b.handle.Namespace,
-			Payload:     out,
-			Invoker:     linked.New(b.handle.EventId, b.handle.PlugId, b.handle.AgentId, nil),
-		})
+	resp, err := b.runtime.Preform(&job.Job{
+		PlugId:      alink.ToPlug,
+		AgentId:     alink.ToAgent,
+		EventId:     xid.New().String(),
+		EventAction: method,
+		Namespace:   b.handle.Namespace,
+		Payload:     out,
+		Invoker:     linked.New(b.handle.EventId, b.handle.PlugId, b.handle.AgentId, nil),
+	})
 
-		if err != nil {
-			return nil, err
-		}
-
-		return lazydata.NewJsonData(resp.Payload), nil
+	if err != nil {
+		return nil, err
 	}
 
-	if detached {
+	return lazydata.NewJsonData(resp.Payload), nil
 
-		return nil, nil
-	}
-
-	panic("Not implemented")
 }

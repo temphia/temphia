@@ -29,20 +29,22 @@ type Self interface {
 
 	InLinks() ([]Link, error)
 	OutLinks() ([]Link, error)
-	LinkExec(name, method string, data xtypes.LazyData, async, detached bool) (xtypes.LazyData, error)
+
+	LinkExec(name, method string, data xtypes.LazyData) (xtypes.LazyData, error)
+	LinkExecEmit(name, method string, data xtypes.LazyData) error
 
 	NewModule(name string, data xtypes.LazyData) (int32, error)
 	ModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error)
 	ModuleTicket(name string, opts xtypes.LazyData) (string, error)
 
 	ForkExec(method string, data []byte) error
-}
 
-type SelfExecAsync interface {
-	ModuleExecAsync(mid int32, method string, data xtypes.LazyData) (int64, error)
-	ModuleExecAsyncPoll(mid int32, eid int64) (xtypes.LazyData, error)
-	ModuleExecAsyncForgot(mid int32, eid int64) error
-	ModuleExecAsyncWait(mid int32, eid int64) (xtypes.LazyData, error)
+	// if executor doesnot have native async support then you could use these for asyncness
+
+	AsyncLinkExec(name, method string, data xtypes.LazyData) (uint32, error)
+	AsyncModuleExec(mid int32, method string, data xtypes.LazyData) (uint32, error)
+	AsyncEventPoll(mid int32, eid uint32) (xtypes.LazyData, error)
+	AsyncEventWait(mid int32, eid uint32) (xtypes.LazyData, error)
 }
 
 type PlugKV interface {

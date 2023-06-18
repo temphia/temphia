@@ -30,15 +30,13 @@ func SelfOutLinks(ctx context.Context, ctxid, respOffset, respLen int32) int32 {
 	return e.writeJSONFinal(ctxid, respOffset, respLen, resp, err)
 }
 
-func SelfLinkExec(ctx context.Context, ctxid, nPtr, nLen, mPtr, mLen, dPtr, dLen, async, detached, respOffset, respLen int32) int32 {
+func SelfLinkExec(ctx context.Context, ctxid, nPtr, nLen, mPtr, mLen, dPtr, dLen, respOffset, respLen int32) int32 {
 	e := getCtx(ctx)
 
 	out, err := e.bindSelf.LinkExec(
 		e.getString(nPtr, nLen),
 		e.getString(mPtr, mLen),
 		lazydata.NewJsonData(e.getBytes(dPtr, dLen)),
-		async == 1,
-		detached == 1,
 	)
 	if err != nil {
 		e.writeError(ctxid, respOffset, respLen, err)
