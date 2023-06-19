@@ -64,7 +64,5 @@ func (b *Builder) Instance(opts etypes.ExecutorOption) (etypes.Executor, error) 
 
 		context: nil,
 		mem:     nil,
-
-		bindSelf: opts.Binder.SelfBindingsGet(),
 	}, nil
 }

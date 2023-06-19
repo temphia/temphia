@@ -5,15 +5,11 @@ import (
 
 	"github.com/rs/zerolog"
 
-	"github.com/temphia/temphia/code/backend/engine/binder/handle"
-
+	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/job"
-	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
-
-	"gitlab.com/mr_balloon/golib"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
 var (
@@ -21,95 +17,82 @@ var (
 )
 
 type Binder struct {
-	Handle       *handle.Handle
+	Deps      *Factory
+	Namespace string
+	PlugId    string
+	AgentId   string
+	BprintId  string
+
+	Context  context.Context
+	Executor etypes.Executor
+	Logger   zerolog.Logger
+
+	Job *job.Job
+
+	EventId string
+	Resp    []byte
+
+	// lazy loaded
+	Resources map[string]*entities.Resource
+	Links     map[string]*entities.AgentLink
+
 	executor     etypes.Executor
 	ReuseCounter int32
 	Epoch        int64
 
-	// specific bind impl
-	plugKV  PkvBindings
-	self    SelfBindings
+	activeModules    map[int32]etypes.Module
+	activeModCounter int32
+
 	invoker InvokerBindings
-}
-
-func (b *Binder) AttachJob(j *job.Job) {
-	b.Handle.Job = j
-	b.ReuseCounter = b.ReuseCounter + 1
-	b.Handle.InitLogger()
-	b.Handle.Context = context.Background()
-	b.Handle.EventId = j.EventId
-	b.Handle.Resp = nil
-
-	// build specific binds
-	b.plugKV = NewPKV(b.Handle.Deps.PlugKV, b.plugKV.namespace, b.plugKV.plugId, b.plugKV.agentid)
-
-	b.self = NewSelfBindings(b.Handle, b)
-	b.invoker = NewInvoker(b.Handle)
-}
-
-func (b *Binder) SetExec(exec etypes.Executor) {
-	b.executor = exec
-}
-
-var NoPanicWrap = true
-
-func (b *Binder) Execute() (*event.Response, error) {
-	b.logInfo().Msg(logid.BinderEventProcessStart)
-	b.logDebug().Interface("job_req", b.Handle.Job).Msg(logid.BinderEventRequestDebug)
-
-	var eresp *event.Response
-	var err error
-
-	if NoPanicWrap {
-		eresp, err = b.executor.Process(b.Handle.Job.AsEvent())
-	} else {
-		perr := golib.PanicWrapper(func() {
-			eresp, err = b.executor.Process(b.Handle.Job.AsEvent())
-		})
-
-		if perr != nil {
-			b.logErr().Err(perr).Msg(logid.BinderExecutePanicked)
-			return nil, perr
-		}
-	}
-
-	if err != nil {
-		b.logErr().Err(err).Msg(logid.BinderExecuteErr)
-		return nil, err
-	}
-
-	b.logErr().Msg(logid.BinderEventProcessOK)
-
-	if eresp == nil {
-		eresp = &event.Response{}
-	}
-
-	if eresp.Payload == nil {
-		if b.Handle.Resp != nil {
-			eresp.Payload = b.Handle.Resp
-		}
-	}
-
-	b.logDebug().Interface("resp", b.Handle.Job).Msg(logid.BinderEventResponseDebug)
-
-	return eresp, nil
 }
 
 // bindings
 
-func (b *Binder) SelfBindingsGet() bindx.Self { return &b.self }
-func (b *Binder) InvokerGet() bindx.Invoker   { return &b.invoker }
-
-// private
-
-func (b *Binder) logInfo() *zerolog.Event {
-	return b.Handle.Logger.Info()
+func (b *Binder) NewModule(name string, data xtypes.LazyData) (int32, error) {
+	return b.selfNewModule(name, data)
 }
 
-func (b *Binder) logErr() *zerolog.Event {
-	return b.Handle.Logger.Info()
+func (b *Binder) ModuleTicket(name string, opts xtypes.LazyData) (string, error) {
+	return b.moduleTicket(name, opts)
 }
 
-func (b *Binder) logDebug() *zerolog.Event {
-	return b.Handle.Logger.Info()
+func (b *Binder) ModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error) {
+	return b.selfModuleExec(mid, method, data)
+}
+
+func (b *Binder) InLinks() ([]bindx.Link, error) {
+	return b.selfInLinks()
+}
+
+func (b *Binder) OutLinks() ([]bindx.Link, error) {
+	return b.selfOutLinks()
+}
+
+func (b *Binder) LinkExec(name, method string, data xtypes.LazyData) (xtypes.LazyData, error) {
+	return b.selfLinkExec(name, method, data)
+}
+
+func (b *Binder) LinkExecEmit(name, method string, data xtypes.LazyData) error {
+	return nil
+}
+
+func (b *Binder) ForkExec(method string, data []byte) error {
+	return b.selfForkExec(method, data)
+}
+
+func (b *Binder) AsyncLinkExec(name, method string, data xtypes.LazyData) (uint32, error) {
+	return 0, nil
+}
+func (b *Binder) AsyncModuleExec(mid int32, method string, data xtypes.LazyData) (uint32, error) {
+	return 0, nil
+}
+func (b *Binder) AsyncEventPoll(mid int32, eid uint32) (xtypes.LazyData, error) {
+	return nil, nil
+}
+func (b *Binder) AsyncEventWait(mid int32, eid uint32) (xtypes.LazyData, error) {
+	return nil, nil
+}
+
+func (b *Binder) GetInvoker() bindx.Invoker {
+	return nil
 }

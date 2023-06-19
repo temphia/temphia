@@ -1,7 +1,6 @@
 package binder
 
 import (
-	"github.com/temphia/temphia/code/backend/engine/binder/handle"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
@@ -12,22 +11,24 @@ import (
 )
 
 type InvokerBindings struct {
+	binder  *Binder
 	job     *job.Job
 	corehub store.CoreHub
-	handle  *handle.Handle
 }
 
-func NewInvoker(handle *handle.Handle) InvokerBindings {
+func (b *Binder) NewInvoker(job *job.Job, corehub store.CoreHub) InvokerBindings {
 	return InvokerBindings{
-		job:     handle.Job,
-		corehub: handle.Deps.Corehub,
-		handle:  handle,
+		binder:  b,
+		job:     job,
+		corehub: corehub,
 	}
 }
 
 func (b *InvokerBindings) Name() string { return b.job.Invoker.Type() }
 
-func (b *InvokerBindings) UserContext() *claim.UserContext { return b.job.Invoker.UserContext() }
+func (b *InvokerBindings) UserContext() *claim.UserContext {
+	return b.job.Invoker.UserContext()
+}
 
 func (b *InvokerBindings) UserInfo() (*entities.UserInfo, error) {
 	uctx := b.job.Invoker.UserContext()
@@ -35,7 +36,7 @@ func (b *InvokerBindings) UserInfo() (*entities.UserInfo, error) {
 		return nil, easyerr.Error("empty invoker user")
 	}
 
-	ruser, err := b.corehub.GetUserByID(b.handle.Namespace, uctx.UserID)
+	ruser, err := b.corehub.GetUserByID(b.binder.Namespace, uctx.UserID)
 	if err != nil {
 		return nil, err
 	}
@@ -69,12 +70,12 @@ func (b *InvokerBindings) UserMessage(opts *bindx.UserMessage) error {
 		Contents:     opts.Contents,
 		UserId:       uctx.UserID,
 		FromUser:     "",
-		FromPlug:     b.handle.PlugId,
-		FromAgent:    b.handle.AgentId,
+		FromPlug:     b.binder.PlugId,
+		FromAgent:    b.binder.AgentId,
 		PlugCallback: "",
 		Encrypted:    false,
 		CreatedAt:    nil,
-		TenantId:     b.handle.Namespace,
+		TenantId:     b.binder.Namespace,
 		WarnLevel:    0,
 	})
 

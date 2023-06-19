@@ -7,21 +7,11 @@ import (
 )
 
 type Bindings interface {
-	Core
-
-	SelfBindingsGet() Self
-	InvokerGet() Invoker
-}
-
-type Core interface {
 	Log(msg string)
 	LazyLog(msgs []string)
 	Sleep(int32)
 	GetFileWithMeta(file string) (data []byte, version int64, err error)
-	GetApp() any
-}
 
-type Self interface {
 	ListResources() ([]*Resource, error)
 	GetResource(name string) (*Resource, error)
 
@@ -32,9 +22,8 @@ type Self interface {
 	LinkExecEmit(name, method string, data xtypes.LazyData) error
 
 	NewModule(name string, data xtypes.LazyData) (int32, error)
-	ModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error)
 	ModuleTicket(name string, opts xtypes.LazyData) (string, error)
-
+	ModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error)
 	ForkExec(method string, data []byte) error
 
 	// if executor doesnot have native async support then you could use these for asyncness
@@ -43,6 +32,8 @@ type Self interface {
 	AsyncModuleExec(mid int32, method string, data xtypes.LazyData) (uint32, error)
 	AsyncEventPoll(mid int32, eid uint32) (xtypes.LazyData, error)
 	AsyncEventWait(mid int32, eid uint32) (xtypes.LazyData, error)
+
+	GetInvoker() Invoker
 }
 
 type Invoker interface {

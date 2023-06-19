@@ -12,11 +12,11 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities/resource"
 )
 
-func (b *SelfBindings) ListResources() ([]*bindx.Resource, error) {
-	b.handle.LoadResources()
+func (b *Binder) ListResources() ([]*bindx.Resource, error) {
+	b.loadResources()
 
-	ress := make([]*bindx.Resource, 0, len(b.handle.Resources))
-	for _, r := range b.handle.Resources {
+	ress := make([]*bindx.Resource, 0, len(b.Resources))
+	for _, r := range b.Resources {
 		ress = append(ress, &bindx.Resource{
 			Name:    r.Name,
 			Type:    r.Type,
@@ -28,10 +28,10 @@ func (b *SelfBindings) ListResources() ([]*bindx.Resource, error) {
 	return ress, nil
 }
 
-func (b *SelfBindings) GetResource(name string) (*bindx.Resource, error) {
-	b.handle.LoadResources()
+func (b *Binder) GetResource(name string) (*bindx.Resource, error) {
+	b.loadResources()
 
-	res, ok := b.handle.Resources[name]
+	res, ok := b.Resources[name]
 	if !ok {
 		return nil, easyerr.Error(etypes.ResourceNotFound)
 	}
@@ -46,10 +46,10 @@ func (b *SelfBindings) GetResource(name string) (*bindx.Resource, error) {
 
 // module
 
-func (b *SelfBindings) selfNewModule(name string, args xtypes.LazyData) (int32, error) {
-	b.handle.LoadResources()
+func (b *Binder) selfNewModule(name string, args xtypes.LazyData) (int32, error) {
+	b.loadResources()
 
-	res, ok := b.handle.Resources[name]
+	res, ok := b.Resources[name]
 	if !ok {
 		return 0, easyerr.Error(etypes.ResourceNotFound)
 	}
@@ -64,13 +64,13 @@ func (b *SelfBindings) selfNewModule(name string, args xtypes.LazyData) (int32, 
 		modname = resource.DataGroup
 		fallthrough
 	case resource.Module:
-		modbuilder, ok := b.handle.Deps.ModuleBuilders[modname]
+		modbuilder, ok := b.Deps.ModuleBuilders[modname]
 		if !ok {
 			return 0, easyerr.NotFound("resource module")
 		}
 
 		mod, err := modbuilder.Instance(etypes.ModuleOptions{
-			Binder:       b.root,
+			Binder:       nil,
 			Resource:     res,
 			InvokerToken: "",
 			Args:         args,
@@ -111,10 +111,10 @@ type DataGroup struct {
 	ReadOnly bool `json:"read_only,omitempty"`
 }
 
-func (b *SelfBindings) ModuleTicket(name string, opts xtypes.LazyData) (string, error) {
+func (b *Binder) moduleTicket(name string, opts xtypes.LazyData) (string, error) {
 
-	signer := b.handle.Deps.Signer
-	uctx := b.root.invoker.UserContext()
+	signer := b.Deps.Signer
+	uctx := b.invoker.UserContext()
 
 	switch name {
 	case "self_plugstate":
@@ -125,24 +125,24 @@ func (b *SelfBindings) ModuleTicket(name string, opts xtypes.LazyData) (string, 
 			return "", err
 		}
 
-		return signer.SignPlugState(b.handle.Namespace, &claim.PlugState{
-			TenantId:  b.handle.Namespace,
+		return signer.SignPlugState(b.Namespace, &claim.PlugState{
+			TenantId:  b.Namespace,
 			Type:      "",
 			UserId:    uctx.UserID,
 			DeviceId:  uctx.DeviceId,
 			SessionId: uctx.SessionID,
 			ExecId:    0,
-			PlugId:    b.handle.PlugId,
-			AgentId:   b.handle.AgentId,
+			PlugId:    b.PlugId,
+			AgentId:   b.AgentId,
 			KeyPrefix: popts.KeyPrefix,
 		})
 	case "self_bprint":
 		return "", easyerr.NotImpl()
 	}
 
-	b.handle.LoadResources()
+	b.loadResources()
 
-	res, ok := b.handle.Resources[name]
+	res, ok := b.Resources[name]
 	if !ok {
 		return "", easyerr.Error(etypes.ResourceNotFound)
 	}
@@ -151,8 +151,8 @@ func (b *SelfBindings) ModuleTicket(name string, opts xtypes.LazyData) (string, 
 	case resource.DataGroup:
 		target := strings.Split(res.Target, "/")
 
-		return signer.SignData(b.handle.Namespace, &claim.Data{
-			TenantId:   b.handle.Namespace,
+		return signer.SignData(b.Namespace, &claim.Data{
+			TenantId:   b.Namespace,
 			UserID:     uctx.UserID,
 			UserGroup:  uctx.UserGroup,
 			SessionID:  uctx.SessionID,
@@ -164,7 +164,7 @@ func (b *SelfBindings) ModuleTicket(name string, opts xtypes.LazyData) (string, 
 		})
 	case resource.SockRoom:
 
-		return signer.SignSockdTkt(b.handle.Namespace, &claim.SockdTkt{
+		return signer.SignSockdTkt(b.Namespace, &claim.SockdTkt{
 			UserId:    uctx.UserID,
 			DeviceId:  uctx.DeviceId,
 			SessionId: uctx.SessionID,
@@ -178,7 +178,7 @@ func (b *SelfBindings) ModuleTicket(name string, opts xtypes.LazyData) (string, 
 
 }
 
-func (b *SelfBindings) selfModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error) {
+func (b *Binder) selfModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error) {
 
 	fmt.Println("@", b.activeModules, mid)
 

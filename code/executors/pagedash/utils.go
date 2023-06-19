@@ -2,12 +2,9 @@ package pagedash
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
-	"github.com/upper/db/v4"
 )
 
 type Index struct {
@@ -18,37 +15,42 @@ type Index struct {
 }
 
 func (pd *PageDash) getBuildData(key string) (map[string]any, error) {
-	pkv := pd.binder.PlugKVBindingsGet()
+	// pkv := pd.binder.PlugKVBindingsGet()
 
-	resp, err := pkv.Get(0, key)
-	if err != nil {
-		return nil, err
-	}
+	// resp, err := pkv.Get(0, key)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
-	data := make(map[string]any)
+	// data := make(map[string]any)
 
-	err = json.Unmarshal([]byte(resp.Value), &data)
-	if err != nil {
-		return nil, err
-	}
+	// err = json.Unmarshal([]byte(resp.Value), &data)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
-	return data, nil
+	// return data, nil
+
+	return nil, nil
 }
 
 func (pd *PageDash) setBuildData(key string, data map[string]any) error {
-	pkv := pd.binder.PlugKVBindingsGet()
+	// pkv := pd.binder.PlugKVBindingsGet()
 
-	out, err := json.Marshal(&data)
-	if err != nil {
-		return err
-	}
+	// out, err := json.Marshal(&data)
+	// if err != nil {
+	// 	return err
+	// }
 
-	return pkv.Set(0, key, string(out), &store.SetOptions{})
+	// return pkv.Set(0, key, string(out), &store.SetOptions{})
+	return nil
 }
 
 func (pd *PageDash) delBuldData(key string) error {
-	pkv := pd.binder.PlugKVBindingsGet()
-	return pkv.Del(0, key)
+	// pkv := pd.binder.PlugKVBindingsGet()
+	// return pkv.Del(0, key)
+
+	return nil
 }
 
 func (pd *PageDash) setIndex(index *Index) error {
@@ -82,37 +84,41 @@ func (pd *PageDash) getIndex() (*Index, error) {
 }
 
 func (pd *PageDash) getIndexRaw() (*entities.PlugKV, error) {
-	pkv := pd.binder.PlugKVBindingsGet()
+	// pkv := pd.binder.PlugKVBindingsGet()
 
-	val, err := pkv.Get(0, "index")
-	if err != nil {
-		return nil, err
-	}
+	// val, err := pkv.Get(0, "index")
+	// if err != nil {
+	// 	return nil, err
+	// }
 
-	return val, nil
+	// return val, nil
+
+	return nil, nil
 
 }
 
 func (pd *PageDash) setIndexRaw(value string, version int64) error {
-	pkv := pd.binder.PlugKVBindingsGet()
-	err := pkv.Update(0, "index", value, &store.UpdateOptions{
-		WithVerison: true,
-		Version:     int(version),
-	})
+	// pkv := pd.binder.PlugKVBindingsGet()
+	// err := pkv.Update(0, "index", value, &store.UpdateOptions{
+	// 	WithVerison: true,
+	// 	Version:     int(version),
+	// })
 
-	if err == nil {
-		return nil
-	}
+	// if err == nil {
+	// 	return nil
+	// }
 
-	if errors.Is(err, db.ErrNoMoreRows) {
-		err = pkv.Set(0, "index", value, &store.SetOptions{})
-		if err != nil {
-			return err
-		}
-		return nil
-	}
+	// if errors.Is(err, db.ErrNoMoreRows) {
+	// 	err = pkv.Set(0, "index", value, &store.SetOptions{})
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// 	return nil
+	// }
 
-	return err
+	// return err
+
+	return nil
 
 }
 

@@ -3,8 +3,6 @@ package binder
 import (
 	"github.com/rs/zerolog"
 
-	"github.com/temphia/temphia/code/backend/engine/binder/deps"
-	"github.com/temphia/temphia/code/backend/engine/binder/handle"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
@@ -22,7 +20,18 @@ type FactoryOptions struct {
 }
 
 type Factory struct {
-	deps deps.Deps
+	App            xtypes.App
+	Corehub        store.CoreHub
+	CabinetHub     store.CabinetHub
+	Sockd          sockdx.SockdCore
+	Pacman         repox.Hub
+	LoggerBase     zerolog.Logger
+	NodeCache      service.NodeCache
+	PlugKV         store.PlugStateKV
+	Runtime        etypes.Runtime
+	ModuleBuilders map[string]etypes.ModuleBuilder
+	ExecBuilders   map[string]etypes.ExecutorBuilder
+	Signer         service.Signer
 }
 
 func NewFactory(opts FactoryOptions) Factory {
@@ -30,20 +39,19 @@ func NewFactory(opts FactoryOptions) Factory {
 	appdeps := opts.App.GetDeps()
 
 	return Factory{
-		deps: deps.Deps{
-			App:            opts.App,
-			Sockd:          appdeps.SockdHub().(sockdx.Hub).GetSockd(),
-			Pacman:         appdeps.RepoHub().(repox.Hub),
-			Corehub:        appdeps.CoreHub().(store.CoreHub),
-			CabinetHub:     appdeps.Cabinet().(store.CabinetHub),
-			NodeCache:      appdeps.NodeCache().(service.NodeCache),
-			PlugKV:         appdeps.PlugKV().(store.PlugStateKV),
-			Runtime:        opts.Runtime,
-			ExecBuilders:   opts.ExecBuilders,
-			LoggerBase:     opts.Logger,
-			ModuleBuilders: opts.Modules,
-			Signer:         appdeps.Signer().(service.Signer),
-		},
+
+		App:            opts.App,
+		Sockd:          appdeps.SockdHub().(sockdx.Hub).GetSockd(),
+		Pacman:         appdeps.RepoHub().(repox.Hub),
+		Corehub:        appdeps.CoreHub().(store.CoreHub),
+		CabinetHub:     appdeps.Cabinet().(store.CabinetHub),
+		NodeCache:      appdeps.NodeCache().(service.NodeCache),
+		PlugKV:         appdeps.PlugKV().(store.PlugStateKV),
+		Runtime:        opts.Runtime,
+		ExecBuilders:   opts.ExecBuilders,
+		LoggerBase:     opts.Logger,
+		ModuleBuilders: opts.Modules,
+		Signer:         appdeps.Signer().(service.Signer),
 	}
 }
 
@@ -55,17 +63,16 @@ type BinderOptions struct {
 	Epoch     int64
 }
 
-func (bf Factory) New(opts BinderOptions) *Binder {
-
-	handle := handle.New(opts.Namespace,
-		opts.PlugId,
-		opts.AgentId,
-		opts.BprintId,
-		&bf.deps,
-	)
+func (bf *Factory) New(opts BinderOptions) *Binder {
 
 	b := &Binder{
-		Handle:       &handle,
+		Deps: bf,
+
+		Namespace: opts.Namespace,
+		PlugId:    opts.PlugId,
+		AgentId:   opts.AgentId,
+		BprintId:  opts.BprintId,
+
 		ReuseCounter: -1,
 		Epoch:        opts.Epoch,
 	}

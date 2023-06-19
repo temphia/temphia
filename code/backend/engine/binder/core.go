@@ -1,10 +1,8 @@
 package binder
 
 import (
-	"encoding/json"
 	"time"
 
-	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 )
@@ -17,9 +15,9 @@ func (b *Binder) Log(msg string) {
 
 	b.logDebugRoom(&etypes.DebugMessage{
 		Messages: []string{msg},
-		EventId:  b.Handle.EventId,
-		PlugId:   b.Handle.PlugId,
-		AgentId:  b.Handle.AgentId,
+		EventId:  b.EventId,
+		PlugId:   b.PlugId,
+		AgentId:  b.AgentId,
 	})
 }
 
@@ -30,9 +28,9 @@ func (b *Binder) LazyLog(msgs []string) {
 
 	b.logDebugRoom(&etypes.DebugMessage{
 		Messages: msgs,
-		EventId:  b.Handle.EventId,
-		PlugId:   b.Handle.PlugId,
-		AgentId:  b.Handle.AgentId,
+		EventId:  b.EventId,
+		PlugId:   b.PlugId,
+		AgentId:  b.AgentId,
 	})
 }
 
@@ -41,22 +39,12 @@ func (b *Binder) Sleep(msec int32) {
 }
 
 func (b *Binder) GetFileWithMeta(file string) ([]byte, int64, error) {
-	out, err := b.Handle.Deps.Pacman.BprintGetBlob(b.Handle.Namespace, b.Handle.BprintId, file)
+	out, err := b.Deps.Pacman.BprintGetBlob(b.Namespace, b.BprintId, file)
 	return out, 0, err
 }
 
 func (b *Binder) GetApp() any {
-	return b.Handle.Deps.App
+	return b.Deps.App
 }
 
 // private
-
-func (b *Binder) logDebugRoom(msg *etypes.DebugMessage) {
-	out, err := json.Marshal(msg)
-	if err != nil {
-		pp.Println(err)
-		return
-	}
-
-	b.Handle.Deps.Sockd.SendBroadcast(b.Handle.Namespace, "plugs_dev", []int64{}, out)
-}

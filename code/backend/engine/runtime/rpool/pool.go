@@ -85,28 +85,28 @@ func (p *Pool) Return(b *binder.Binder) {
 	p.slock.Lock()
 	defer p.slock.Unlock()
 
-	pSet, ok := p.plugIndex[b.Handle.PlugId]
+	pSet, ok := p.plugIndex[b.PlugId]
 	if !ok {
-		p.plugIndex[b.Handle.PlugId] = &plugSet{
+		p.plugIndex[b.PlugId] = &plugSet{
 			agents: Set{
-				b.Handle.AgentId: struct{}{},
+				b.AgentId: struct{}{},
 			},
-			bprintId: b.Handle.BprintId,
+			bprintId: b.BprintId,
 		}
 	} else {
-		pSet.agents.Push(b.Handle.AgentId)
+		pSet.agents.Push(b.AgentId)
 	}
 
-	aset, ok := p.agentIndex[b.Handle.PlugId+b.Handle.AgentId]
+	aset, ok := p.agentIndex[b.PlugId+b.AgentId]
 	if !ok {
 		aset = &agentSet{
 			binders: Set{
-				b.Handle.EventId: struct{}{},
+				b.EventId: struct{}{},
 			},
 			counter:      0,
 			epochVersion: b.Epoch,
 		}
-		p.agentIndex[b.Handle.PlugId+b.Handle.AgentId] = aset
+		p.agentIndex[b.PlugId+b.AgentId] = aset
 	} else {
 		if aset.epochVersion > b.Epoch {
 			return
@@ -119,16 +119,16 @@ func (p *Pool) Return(b *binder.Binder) {
 
 		if p.totalCount > p.maxTotalCount {
 			// delete random element
-			p.getRandom(b.Handle.PlugId, b.Handle.AgentId)
+			p.getRandom(b.PlugId, b.AgentId)
 			p.totalCount = p.totalCount - 1
-			delete(p.binders, b.Handle.EventId)
+			delete(p.binders, b.EventId)
 		}
 
-		aset.binders.Push(b.Handle.EventId)
+		aset.binders.Push(b.EventId)
 	}
 
 	p.totalCount = p.totalCount + 1
-	p.binders[b.Handle.EventId] = b
+	p.binders[b.EventId] = b
 }
 
 func (p *Pool) SetEpoch(plug, agent string, e int64) {
@@ -157,11 +157,11 @@ func (p *Pool) getRandom(currPlug, currAgent string) *binder.Binder {
 	for _, cval := range p.binders {
 		i = i + 1
 		if i >= int(elem) {
-			if cval.Handle.PlugId == currPlug || cval.Handle.AgentId == currAgent {
+			if cval.PlugId == currPlug || cval.AgentId == currAgent {
 				break
 			}
 
-			aset := p.agentIndex[cval.Handle.PlugId+cval.Handle.AgentId]
+			aset := p.agentIndex[cval.PlugId+cval.AgentId]
 			if len(aset.binders) < 1 {
 				continue
 			}
@@ -171,7 +171,7 @@ func (p *Pool) getRandom(currPlug, currAgent string) *binder.Binder {
 	}
 
 	for _, cval := range p.binders {
-		if cval.Handle.PlugId == currPlug || cval.Handle.AgentId == currAgent {
+		if cval.PlugId == currPlug || cval.AgentId == currAgent {
 			continue
 		}
 

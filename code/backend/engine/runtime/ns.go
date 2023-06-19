@@ -57,10 +57,10 @@ func (n *ns) listRunning() []etypes.RunningExec {
 	for _, b := range n.running {
 
 		re = append(re, etypes.RunningExec{
-			EventId:  b.Handle.EventId,
-			BprintId: b.Handle.BprintId,
-			PlugId:   b.Handle.PlugId,
-			AgentId:  b.Handle.AgentId,
+			EventId:  b.EventId,
+			BprintId: b.BprintId,
+			PlugId:   b.PlugId,
+			AgentId:  b.AgentId,
 		})
 
 	}
@@ -71,12 +71,12 @@ func (n *ns) countUp(b *binder.Binder) {
 	n.rlock.Lock()
 	defer n.rlock.Unlock()
 
-	n.running[b.Handle.EventId] = b
+	n.running[b.EventId] = b
 }
 
 func (n *ns) countDown(b *binder.Binder) {
 	n.rlock.Lock()
 	defer n.rlock.Unlock()
 
-	delete(n.running, b.Handle.EventId)
+	delete(n.running, b.EventId)
 }

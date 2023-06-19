@@ -36,7 +36,7 @@ func (g *Goja) bind() {
 		})
 	}
 
-	if ibind := g.binder.InvokerGet(); ibind != nil {
+	if ibind := g.binder.GetInvoker(); ibind != nil {
 		g.qbind("_invoker_name", func() any {
 			return ibind.Name()
 		})
@@ -96,90 +96,87 @@ func (g *Goja) bind() {
 
 	}
 
-	if self := g.binder.SelfBindingsGet(); self != nil {
-		g.qbind("_self_list_resource", func() (any, any) {
-			resp, err := self.ListResources()
-			if err != nil {
-				return nil, err.Error()
-			}
-			return resp, nil
-		})
+	g.qbind("_self_list_resource", func() (any, any) {
+		resp, err := g.binder.ListResources()
+		if err != nil {
+			return nil, err.Error()
+		}
+		return resp, nil
+	})
 
-		g.qbind("_self_get_resource", func(name string) (any, any) {
-			resp, err := self.GetResource(name)
-			if err != nil {
-				return nil, err.Error()
-			}
+	g.qbind("_self_get_resource", func(name string) (any, any) {
+		resp, err := g.binder.GetResource(name)
+		if err != nil {
+			return nil, err.Error()
+		}
 
-			return resp, nil
-		})
+		return resp, nil
+	})
 
-		g.qbind("_self_inlinks", func() (any, any) {
-			resp, err := self.InLinks()
-			if err != nil {
-				return nil, err.Error()
-			}
+	g.qbind("_self_inlinks", func() (any, any) {
+		resp, err := g.binder.InLinks()
+		if err != nil {
+			return nil, err.Error()
+		}
 
-			return resp, nil
-		})
+		return resp, nil
+	})
 
-		g.qbind("_self_outlinks", func() (any, any) {
-			resp, err := self.OutLinks()
-			if err != nil {
-				return nil, err.Error()
-			}
-			return resp, nil
-		})
+	g.qbind("_self_outlinks", func() (any, any) {
+		resp, err := g.binder.OutLinks()
+		if err != nil {
+			return nil, err.Error()
+		}
+		return resp, nil
+	})
 
-		g.qbind("_self_new_module", func(name string, data goja.Value) (any, any) {
-			return self.NewModule(name, lazydata.NewGojaData(g.runtime, data))
-		})
+	g.qbind("_self_new_module", func(name string, data goja.Value) (any, any) {
+		return g.binder.NewModule(name, lazydata.NewGojaData(g.runtime, data))
+	})
 
-		g.qbind("_self_module_ticket", func(name string, data goja.Value) (any, any) {
-			return self.ModuleTicket(name, lazydata.NewGojaData(g.runtime, data))
-		})
+	g.qbind("_self_module_ticket", func(name string, data goja.Value) (any, any) {
+		return g.binder.ModuleTicket(name, lazydata.NewGojaData(g.runtime, data))
+	})
 
-		g.qbind("_self_module_exec", func(mid int32, name string, data goja.Value) (any, any) {
-			resp, err := self.ModuleExec(mid, name, lazydata.NewGojaData(g.runtime, data))
-			if err != nil {
-				return nil, err.Error()
-			}
+	g.qbind("_self_module_exec", func(mid int32, name string, data goja.Value) (any, any) {
+		resp, err := g.binder.ModuleExec(mid, name, lazydata.NewGojaData(g.runtime, data))
+		if err != nil {
+			return nil, err.Error()
+		}
 
-			var i any
+		var i any
 
-			err = resp.AsObject(&i)
-			if err != nil {
-				return nil, err.Error()
-			}
+		err = resp.AsObject(&i)
+		if err != nil {
+			return nil, err.Error()
+		}
 
-			return i, nil
-		})
+		return i, nil
+	})
 
-		g.qbind("_self_link_execute", func(name, method, path string, data goja.Value, async, detached bool) (any, any) {
-			resp, err := self.LinkExec(name, method, lazydata.NewGojaData(g.runtime, data))
-			if err != nil {
-				return nil, err.Error()
-			}
+	g.qbind("_self_link_execute", func(name, method, path string, data goja.Value, async, detached bool) (any, any) {
+		resp, err := g.binder.LinkExec(name, method, lazydata.NewGojaData(g.runtime, data))
+		if err != nil {
+			return nil, err.Error()
+		}
 
-			var i any
+		var i any
 
-			err = resp.AsObject(&i)
-			if err != nil {
-				return nil, err.Error()
-			}
+		err = resp.AsObject(&i)
+		if err != nil {
+			return nil, err.Error()
+		}
 
-			return i, nil
-		})
+		return i, nil
+	})
 
-		g.qbind("_self_fork_execute", func(method string, data string) any {
-			err := self.ForkExec(method, []byte(data))
-			if err != nil {
-				return err.Error()
-			}
-			return nil
-		})
-
-	}
+	g.qbind("_self_fork_execute", func(method string, data string) any {
+		err := g.binder.ForkExec(method, []byte(data))
+		if err != nil {
+			return err.Error()
+		}
+		return nil
+	})
 
 }
 

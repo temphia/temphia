@@ -1,52 +1,17 @@
-package handle
+package binder
 
 import (
-	"context"
+	"encoding/json"
 
+	"github.com/k0kubun/pp"
 	"github.com/rs/zerolog"
-
-	"github.com/temphia/temphia/code/backend/engine/binder/deps"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes/job"
 	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
-// handle is a shared ctx between
-// different bindings component
-type Handle struct {
-	Deps      *deps.Deps
-	Namespace string
-	PlugId    string
-	AgentId   string
-	BprintId  string
-
-	Context  context.Context
-	Executor etypes.Executor
-	Logger   zerolog.Logger
-
-	Job *job.Job
-
-	EventId string
-	Resp    []byte
-
-	// lazy loaded
-	Resources map[string]*entities.Resource
-	Links     map[string]*entities.AgentLink
-}
-
-func New(ns, pid, aid, bid string, deps *deps.Deps) Handle {
-	return Handle{
-		Deps:      deps,
-		Namespace: ns,
-		PlugId:    pid,
-		AgentId:   aid,
-		BprintId:  bid,
-	}
-}
-
-func (h *Handle) InitLogger() {
+func (h *Binder) initLogger() {
 
 	h.Logger = h.Deps.LoggerBase.
 		With().
@@ -57,7 +22,29 @@ func (h *Handle) InitLogger() {
 		Str("event_id", h.EventId).Logger()
 }
 
-func (h *Handle) LoadResources() {
+func (b *Binder) logInfo() *zerolog.Event {
+	return b.Logger.Info()
+}
+
+func (b *Binder) logErr() *zerolog.Event {
+	return b.Logger.Info()
+}
+
+func (b *Binder) logDebug() *zerolog.Event {
+	return b.Logger.Info()
+}
+
+func (b *Binder) logDebugRoom(msg *etypes.DebugMessage) {
+	out, err := json.Marshal(msg)
+	if err != nil {
+		pp.Println(err)
+		return
+	}
+
+	b.Deps.Sockd.SendBroadcast(b.Namespace, "plugs_dev", []int64{}, out)
+}
+
+func (h *Binder) loadResources() {
 	if h.Resources != nil {
 		return
 	}
@@ -86,7 +73,7 @@ func (h *Handle) LoadResources() {
 
 }
 
-func (h *Handle) LoadLinks() {
+func (h *Binder) loadLinks() {
 	if h.Links != nil {
 		return
 	}

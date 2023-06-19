@@ -20,7 +20,7 @@ type AdapterModBuilder struct{}
 
 func (p *AdapterModBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, error) {
 	app := opts.Binder.GetApp().(xtypes.App)
-	invoker := opts.Binder.InvokerGet()
+	invoker := opts.Binder.GetInvoker()
 
 	pp.Println("@id", opts.Resource.Target)
 

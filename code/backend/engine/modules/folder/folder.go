@@ -3,7 +3,6 @@ package folder
 import (
 	"context"
 
-	"github.com/temphia/temphia/code/backend/engine/binder/handle"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
@@ -14,11 +13,11 @@ type Binding struct {
 	cabfolder string
 }
 
-func New(handle *handle.Handle) Binding {
+func New(chub store.CabinetHub, tenantId string) Binding {
 
 	return Binding{
-		chub:     handle.Deps.CabinetHub,
-		tenantId: handle.Namespace,
+		chub:     chub,
+		tenantId: tenantId,
 	}
 }
 
