@@ -4,39 +4,31 @@ import (
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes/job"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
-type InvokerBindings struct {
-	binder  *Binder
-	job     *job.Job
-	corehub store.CoreHub
+func (b *Binder) Name() string {
+	return b.Job.Invoker.Type()
 }
 
-func (b *Binder) NewInvoker(job *job.Job, corehub store.CoreHub) InvokerBindings {
-	return InvokerBindings{
-		binder:  b,
-		job:     job,
-		corehub: corehub,
+func (b *Binder) UserContext() *claim.UserContext {
+	// fixme => static user context ?
+
+	if b.Job != nil {
+		return b.Job.Invoker.UserContext()
 	}
+
+	return nil
 }
 
-func (b *InvokerBindings) Name() string { return b.job.Invoker.Type() }
-
-func (b *InvokerBindings) UserContext() *claim.UserContext {
-	return b.job.Invoker.UserContext()
-}
-
-func (b *InvokerBindings) UserInfo() (*entities.UserInfo, error) {
-	uctx := b.job.Invoker.UserContext()
+func (b *Binder) UserInfo() (*entities.UserInfo, error) {
+	uctx := b.Job.Invoker.UserContext()
 	if uctx == nil {
 		return nil, easyerr.Error("empty invoker user")
 	}
 
-	ruser, err := b.corehub.GetUserByID(b.binder.Namespace, uctx.UserID)
+	ruser, err := b.Deps.Corehub.GetUserByID(b.Namespace, uctx.UserID)
 	if err != nil {
 		return nil, err
 	}
@@ -52,30 +44,32 @@ func (b *InvokerBindings) UserInfo() (*entities.UserInfo, error) {
 
 }
 
-func (b *InvokerBindings) ExecMethod(method string, data xtypes.LazyData) (xtypes.LazyData, error) {
-	return b.job.Invoker.ExecuteMethod(method, data)
+func (b *Binder) ExecMethod(method string, data xtypes.LazyData) (xtypes.LazyData, error) {
+	return b.Job.Invoker.ExecuteMethod(method, data)
 }
 
-func (b *InvokerBindings) UserMessage(opts *bindx.UserMessage) error {
+func (b *Binder) UserMessage(opts *bindx.UserMessage) error {
 
-	uctx := b.job.Invoker.UserContext()
+	uctx := b.Job.Invoker.UserContext()
 	if uctx == nil {
 		return easyerr.Error("empty invoker user")
 	}
 
-	_, err := b.corehub.AddUserMessage(&entities.UserMessage{
+	corehub := b.Deps.Corehub
+
+	_, err := corehub.AddUserMessage(&entities.UserMessage{
 		Title:        opts.Title,
 		Read:         false,
 		Type:         "message",
 		Contents:     opts.Contents,
 		UserId:       uctx.UserID,
 		FromUser:     "",
-		FromPlug:     b.binder.PlugId,
-		FromAgent:    b.binder.AgentId,
+		FromPlug:     b.PlugId,
+		FromAgent:    b.AgentId,
 		PlugCallback: "",
 		Encrypted:    false,
 		CreatedAt:    nil,
-		TenantId:     b.binder.Namespace,
+		TenantId:     b.Namespace,
 		WarnLevel:    0,
 	})
 

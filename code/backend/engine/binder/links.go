@@ -37,9 +37,9 @@ func (b *Binder) selfInLinks() ([]bindx.Link, error) {
 func (b *Binder) selfOutLinks() ([]bindx.Link, error) {
 	b.loadLinks()
 
-	links := make([]bindx.Link, 0, len(b.Links))
+	links := make([]bindx.Link, 0, len(b.links))
 
-	for _, al := range b.Links {
+	for _, al := range b.links {
 		links = append(links, bindx.Link{
 			Name:    al.Name,
 			Type:    "",
@@ -53,7 +53,7 @@ func (b *Binder) selfOutLinks() ([]bindx.Link, error) {
 
 func (b *Binder) selfLinkExec(name, method string, data xtypes.LazyData) (xtypes.LazyData, error) {
 
-	alink, ok := b.Links[name]
+	alink, ok := b.links[name]
 	if !ok {
 		return nil, easyerr.Error(etypes.LinkNotFound)
 	}

@@ -23,6 +23,7 @@ type Binder struct {
 	PlugId    string
 	AgentId   string
 	BprintId  string
+	EventId   string
 
 	Context  context.Context
 	Executor etypes.Executor
@@ -30,12 +31,11 @@ type Binder struct {
 
 	Job *job.Job
 
-	EventId string
-	Resp    []byte
+	Resp []byte
 
 	// lazy loaded
-	Resources map[string]*entities.Resource
-	Links     map[string]*entities.AgentLink
+	resources map[string]*entities.Resource
+	links     map[string]*entities.AgentLink
 
 	executor     etypes.Executor
 	ReuseCounter int32
@@ -43,8 +43,6 @@ type Binder struct {
 
 	activeModules    map[int32]etypes.Module
 	activeModCounter int32
-
-	invoker InvokerBindings
 }
 
 // bindings
@@ -95,15 +93,15 @@ func (b *Binder) AsyncEventWait(mid int32, eid uint32) (xtypes.LazyData, error) 
 }
 
 func (b *Binder) GetInvoker() bindx.Invoker {
-	return nil
+	return b
 }
 
 func (b *Binder) Clone() bindx.Core {
 	b2 := &Binder{
 		executor:      nil,
 		activeModules: make(map[int32]etypes.Module),
-		Resources:     nil,
-		Links:         nil,
+		resources:     nil,
+		links:         nil,
 		Deps:          b.Deps,
 		Namespace:     b.Namespace,
 		PlugId:        b.PlugId,

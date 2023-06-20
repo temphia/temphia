@@ -15,8 +15,8 @@ import (
 func (b *Binder) ListResources() ([]*bindx.Resource, error) {
 	b.loadResources()
 
-	ress := make([]*bindx.Resource, 0, len(b.Resources))
-	for _, r := range b.Resources {
+	ress := make([]*bindx.Resource, 0, len(b.resources))
+	for _, r := range b.resources {
 		ress = append(ress, &bindx.Resource{
 			Name:    r.Name,
 			Type:    r.Type,
@@ -31,7 +31,7 @@ func (b *Binder) ListResources() ([]*bindx.Resource, error) {
 func (b *Binder) GetResource(name string) (*bindx.Resource, error) {
 	b.loadResources()
 
-	res, ok := b.Resources[name]
+	res, ok := b.resources[name]
 	if !ok {
 		return nil, easyerr.Error(etypes.ResourceNotFound)
 	}
@@ -49,7 +49,7 @@ func (b *Binder) GetResource(name string) (*bindx.Resource, error) {
 func (b *Binder) selfNewModule(name string, args xtypes.LazyData) (int32, error) {
 	b.loadResources()
 
-	res, ok := b.Resources[name]
+	res, ok := b.resources[name]
 	if !ok {
 		return 0, easyerr.Error(etypes.ResourceNotFound)
 	}
@@ -114,7 +114,7 @@ type DataGroup struct {
 func (b *Binder) moduleTicket(name string, opts xtypes.LazyData) (string, error) {
 
 	signer := b.Deps.Signer
-	uctx := b.invoker.UserContext()
+	uctx := b.UserContext()
 
 	switch name {
 	case "self_plugstate":
@@ -142,7 +142,7 @@ func (b *Binder) moduleTicket(name string, opts xtypes.LazyData) (string, error)
 
 	b.loadResources()
 
-	res, ok := b.Resources[name]
+	res, ok := b.resources[name]
 	if !ok {
 		return "", easyerr.Error(etypes.ResourceNotFound)
 	}

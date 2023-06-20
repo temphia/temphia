@@ -34,6 +34,8 @@ type Core interface {
 	AsyncModuleExec(mid int32, method string, data xtypes.LazyData) (uint32, error)
 	AsyncEventPoll(mid int32, eid uint32) (xtypes.LazyData, error)
 	AsyncEventWait(mid int32, eid uint32) (xtypes.LazyData, error)
+
+	UserContext() *claim.UserContext
 }
 
 type Bindings interface {

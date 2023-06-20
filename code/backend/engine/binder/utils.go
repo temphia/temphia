@@ -45,11 +45,9 @@ func (b *Binder) logDebugRoom(msg *etypes.DebugMessage) {
 }
 
 func (h *Binder) loadResources() {
-	if h.Resources != nil {
+	if h.resources != nil {
 		return
 	}
-
-	// fixme => sync.lock ?
 
 	h.Logger.Info().Msg(logid.EngineResourcesLoading)
 
@@ -66,7 +64,7 @@ func (h *Binder) loadResources() {
 		rh[rp.AgentResource.Slug] = rp.Resource
 	}
 
-	h.Resources = rh
+	h.resources = rh
 	h.Logger.Info().
 		Interface("resources", rh).
 		Msg(logid.EngineResourcesLoaded)
@@ -74,7 +72,7 @@ func (h *Binder) loadResources() {
 }
 
 func (h *Binder) loadLinks() {
-	if h.Links != nil {
+	if h.links != nil {
 		return
 	}
 
@@ -84,10 +82,10 @@ func (h *Binder) loadLinks() {
 		panic(err)
 	}
 
-	h.Links = make(map[string]*entities.AgentLink, len(links))
+	h.links = make(map[string]*entities.AgentLink, len(links))
 
 	for _, al := range links {
-		h.Links[al.Name] = al
+		h.links[al.Name] = al
 	}
 
 }
