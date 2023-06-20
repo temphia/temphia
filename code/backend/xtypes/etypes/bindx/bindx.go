@@ -26,7 +26,7 @@ type Core interface {
 	ModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error)
 	ForkExec(method string, data []byte) error
 
-	HttpFetch(*HttpRequest) (*HttpResponse, error)
+	HttpFetch(*HttpRequest) *HttpResponse
 
 	// if executor doesnot have native async support then you could use these for asyncness
 

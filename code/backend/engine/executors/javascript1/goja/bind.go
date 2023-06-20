@@ -5,7 +5,6 @@ import (
 
 	"github.com/dop251/goja"
 
-	"github.com/temphia/temphia/code/backend/engine/modules/http"
 	"github.com/temphia/temphia/code/backend/libx/lazydata"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 )
@@ -79,22 +78,18 @@ func (g *Goja) bind() {
 
 	}
 
-	if nb := http.New(); nb != nil {
+	hfunc := http1(g.binder, g.runtime)
+	g.qbind("_http1", func(method string, url string, headers map[string]string, body any) (int, any, any) {
 
-		hfunc := http1(nb, g.runtime)
-		g.qbind("_http1", func(method string, url string, headers map[string]string, body any) (int, any, any) {
-
-			resp := hfunc(&HTTPRequest{
-				Method:  method,
-				Path:    url,
-				Headers: headers,
-				Body:    body,
-			})
-
-			return resp.SatusCode, resp.Headers, resp.Body
+		resp := hfunc(&HTTPRequest{
+			Method:  method,
+			Path:    url,
+			Headers: headers,
+			Body:    body,
 		})
 
-	}
+		return resp.SatusCode, resp.Headers, resp.Body
+	})
 
 	g.qbind("_self_list_resource", func() (any, any) {
 		resp, err := g.binder.ListResources()
@@ -193,7 +188,7 @@ type HTTPResponse struct {
 	Body      any                 `json:"body,omitempty"`
 }
 
-func http1(nb http.Http, runtime *goja.Runtime) func(request *HTTPRequest) HTTPResponse {
+func http1(nb bindx.Core, runtime *goja.Runtime) func(request *HTTPRequest) HTTPResponse {
 	return func(request *HTTPRequest) HTTPResponse {
 
 		var bytes []byte
@@ -205,7 +200,7 @@ func http1(nb http.Http, runtime *goja.Runtime) func(request *HTTPRequest) HTTPR
 			bytes, _ = json.Marshal(request.Body)
 		}
 
-		resp := nb.HttpRaw(&http.HttpRequest{
+		resp := nb.HttpFetch(&bindx.HttpRequest{
 			Method:  request.Method,
 			Path:    request.Path,
 			Headers: request.Headers,
