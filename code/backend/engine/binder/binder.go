@@ -2,6 +2,7 @@ package binder
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/rs/zerolog"
 
@@ -95,4 +96,25 @@ func (b *Binder) AsyncEventWait(mid int32, eid uint32) (xtypes.LazyData, error) 
 
 func (b *Binder) GetInvoker() bindx.Invoker {
 	return nil
+}
+
+func (b *Binder) Clone() bindx.Core {
+	b2 := &Binder{
+		executor:      nil,
+		activeModules: make(map[int32]etypes.Module),
+		Resources:     nil,
+		Links:         nil,
+		Deps:          b.Deps,
+		Namespace:     b.Namespace,
+		PlugId:        b.PlugId,
+		AgentId:       b.AgentId,
+		BprintId:      b.BprintId,
+		Context:       context.Background(),
+		Job:           nil,
+		EventId:       fmt.Sprintf("cloned%s", b.EventId),
+	}
+
+	b2.initLogger()
+
+	return b2
 }

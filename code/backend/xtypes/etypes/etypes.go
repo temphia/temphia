@@ -11,8 +11,8 @@ type ExecutorBinder interface {
 	bindx.Bindings
 
 	GetApp() any
-	GetModuleBuilder(name string) (any, error)
 	GetLogger() *zerolog.Logger
+	GetModuleInstance(id uint32) any
 
 	AttachJob(j *job.Job)
 	Execute() (*event.Response, error)
