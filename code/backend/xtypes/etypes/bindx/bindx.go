@@ -6,7 +6,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
-type Bindings interface {
+type Core interface {
 	Log(msg string)
 	LazyLog(msgs []string)
 	Sleep(int32)
@@ -26,12 +26,22 @@ type Bindings interface {
 	ModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error)
 	ForkExec(method string, data []byte) error
 
+	HttpFetch(*HttpRequest) (*HttpResponse, error)
+
 	// if executor doesnot have native async support then you could use these for asyncness
 
 	AsyncLinkExec(name, method string, data xtypes.LazyData) (uint32, error)
 	AsyncModuleExec(mid int32, method string, data xtypes.LazyData) (uint32, error)
 	AsyncEventPoll(mid int32, eid uint32) (xtypes.LazyData, error)
 	AsyncEventWait(mid int32, eid uint32) (xtypes.LazyData, error)
+}
+
+type Bindings interface {
+	Core
+
+	// clone makes copy with some state (eg. Job) stripped so it can be stored for longer
+	// duration(than usual req/resp event cycle)
+	Clone() Core
 
 	GetInvoker() Invoker
 }
