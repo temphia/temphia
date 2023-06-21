@@ -43,7 +43,7 @@ func main() {
 
 	})
 
-	//	time.Sleep(3 * time.Second)
+	time.Sleep(3 * time.Second)
 
 	pp.Println("state |>", val.State())
 	pp.Println("result |>", val.Result())

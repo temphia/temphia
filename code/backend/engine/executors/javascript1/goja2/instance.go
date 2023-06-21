@@ -45,12 +45,8 @@ func NewInstance(tenantId string) *GojaInstance {
 
 func (g *GojaInstance) Init(b bindx.Bindings) error {
 	g.lastBinding = b
-	g.attachBindings()
+
 	g.evLoop.Start()
 
 	return nil
-}
-
-func (g *GojaInstance) attachBindings() {
-
 }
