@@ -20,17 +20,17 @@ Additionally, app has an associated user interface (UI) written in JS, which is 
 
 
 ## Features
-- Datatables (postgres, sqlite).
-- Websocket rooms (called sockd rooms).
-- Files and Folder (called cabinet).
-- Pluggable language executor (js, wasm).
-- Group bashed user management.
-- Logging Abstraction and exploration.
-- Key Value db for storing simple states.
-- Repository/Store for importing packages, simple to implement own repository.
-- Extendable in native golang (custom resource/modules, custom executor).
-- Multi-Tenant
-- Single static binary (ui embed)
+- 💾 Datatables (postgres, sqlite).
+- 🧦 Websocket rooms (called sockd rooms).
+- 📂 Files and Folder (called cabinet).
+- 🧩 Pluggable language executor (js, wasm).
+- 👥 Group bashed user management.
+- 🔍 Logging Abstraction and exploration.
+- 🗄️ Key Value db for storing simple states.
+- 📦 Repository/Store for importing packages, simple to implement own repository.
+- 🐹 Extendable in native golang (custom resource/modules, custom executor).
+- 🏢 Multi-Tenant
+- 🗃️ Single static binary (ui embed)
 
 ## Why
 - Batteries included means it's much faster to develop apps, as well as developed apps will be leaner because you are developing on top of primitives provided by the runtime.
