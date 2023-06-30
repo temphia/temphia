@@ -11,6 +11,7 @@ type Options struct {
 	BootstrapFile   string
 	ExecutorLibData string
 	ExecutorLibName string
+	BootstrapFunc   func(ctx BootstrapContext) error
 	RootFilesFunc   func() ([]byte, error)
 }
 
