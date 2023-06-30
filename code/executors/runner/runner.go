@@ -30,8 +30,8 @@ func New(opts *Options) *Runner {
 		opts:        opts,
 		token:       "",
 		controlLine: nil,
-		blines:      make(map[string]*bindingsLine),
 		clineLock:   sync.Mutex{},
+		blines:      make(map[string]*bindingsLine),
 		blinesLock:  sync.Mutex{},
 	}
 
