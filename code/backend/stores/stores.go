@@ -112,7 +112,7 @@ func (b *Builder) Build() error {
 		dyns[k] = s.DynDB()
 	}
 
-	b.dataHub = datahub.New(dyns)
+	b.dataHub = datahub.New(dyns["default"])
 	b.cabhub = cabhub.New(b.cabSources, b.config.DefaultCabinet)
 	b.coreHub = corehub.New(b.cdb)
 

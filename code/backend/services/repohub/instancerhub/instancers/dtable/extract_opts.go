@@ -27,8 +27,7 @@ func ExtractUserOptions(cabhub store.CabinetHub, coreHub store.CoreHub, dynhub d
 
 		grandom, _ := xutils.GenerateRandomString(5)
 
-		dsource := dynhub.DefaultSource(tenantId)
-		dopts.DyndbSource = dsource.Name()
+		dopts.DyndbSource = "default"
 
 		csource := cabhub.Default(tenantId)
 		dopts.CabinetSource = csource.Name()

@@ -16,11 +16,11 @@ import (
 var _ dyndb.DataHub = (*DataHub)(nil)
 
 type DataHub struct {
-	sources map[string]*DataSource
-	handle  *handle.Handle
+	source DataSource
+	handle *handle.Handle
 }
 
-func New(dyns map[string]dyndb.DynDB) *DataHub {
+func New(dyn dyndb.DynDB) *DataHub {
 
 	handle := &handle.Handle{
 		SockdHub: nil,
@@ -28,60 +28,22 @@ func New(dyns map[string]dyndb.DynDB) *DataHub {
 		CoreHub:  nil,
 	}
 
-	sources := make(map[string]*DataSource)
-
-	for k, dyn := range dyns {
-		sources[k] = &DataSource{
+	dhub := &DataHub{
+		source: DataSource{
 			inner:  dyn,
 			handle: handle,
-			name:   k,
+			name:   "default",
 			groups: make(map[string]dyndb.DataTableHub),
 			gLock:  sync.RWMutex{},
 			sheets: make(map[string]dyndb.DataSheetHub),
 			sLock:  sync.RWMutex{},
-		}
+		},
+		handle: handle,
 	}
 
-	dhub := &DataHub{
-		sources: sources,
-		handle:  handle,
-	}
-
-	handle.MainHub = dhub
+	dhub.handle.GetDataSheetHub = dhub.GetDataSheetHub
 
 	return dhub
-}
-
-func (d *DataHub) DefaultSource(tenant string) dyndb.DynSource {
-	// fixme =>
-
-	tdata, err := d.handle.CoreHub.GetTenant(tenant)
-	if err != nil {
-		panic(err)
-	}
-
-	source := "default"
-	if tdata.DefaultDSource != "" {
-		source = tdata.DefaultDSource
-	}
-
-	return d.sources[source]
-
-}
-
-func (d *DataHub) GetSource(source, tenant string) dyndb.DynSource {
-	return d.sources[source]
-}
-
-func (d *DataHub) ListSources(tenant string) ([]string, error) {
-
-	sources := make([]string, 0, len(d.sources))
-	for srcName := range d.sources {
-		sources = append(sources, srcName)
-	}
-
-	return sources, nil
-
 }
 
 func (d *DataHub) Inject(_app xtypes.App) {
@@ -95,22 +57,16 @@ func (d *DataHub) Inject(_app xtypes.App) {
 	d.handle.CoreHub = deps.CoreHub().(store.CoreHub)
 }
 
-func (d *DataHub) GetDataTableHub(source, tenantId, group string) dyndb.DataTableHub {
-	s := d.sources[source]
-	if s == nil {
-		return nil
-	}
-
-	return s.GetDataTableHub(tenantId, group)
+func (d *DataHub) GetDataTableHub(tenantId, group string) dyndb.DataTableHub {
+	return d.source.GetDataTableHub(tenantId, group)
 }
 
-func (d *DataHub) GetDataSheetHub(source, tenantId, group string) dyndb.DataSheetHub {
-	s := d.sources[source]
-	if s == nil {
-		return nil
-	}
+func (d *DataHub) GetDataSheetHub(tenantId, group string) dyndb.DataSheetHub {
+	return d.source.GetDataSheetHub(tenantId, group)
+}
 
-	return s.GetDataSheetHub(tenantId, group)
+func (d *DataHub) GetDynDB() dyndb.DynDB {
+	return d.source.inner
 }
 
 func (d *DataHub) ApplyTargetHook(tenantId string, id int64, data *entities.TargetHook) {

@@ -24,7 +24,7 @@ func (d *DGModuleBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, er
 		return nil, err
 	}
 
-	dynhub := deps.DataHub().(dyndb.DataHub).GetSource(target[0], opts.Resource.TenantId)
+	dynhub := deps.DataHub().(dyndb.DataHub)
 
 	dgmod := &DatagroupModule{
 		binder:   opts.Binder,

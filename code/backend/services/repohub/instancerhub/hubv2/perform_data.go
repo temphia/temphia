@@ -7,7 +7,7 @@ import (
 
 func (h *HubV2) instanceData(handle Handle, item xbprint.BundleItem) error {
 
-	dsrc := h.dtable.DefaultSource(handle.tenantId)
+	dsrc := h.dtable.GetDynDB()
 
 	schema, err := h.readSchema(handle.tenantId, handle.opts.BprintId, item.File)
 	if err != nil {

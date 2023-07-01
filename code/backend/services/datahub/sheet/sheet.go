@@ -156,8 +156,9 @@ func (s *Sheet) RefQuery(txid uint32, data *dyndb.RefQuerySheet) (*dyndb.QuerySh
 
 	if data.TargetGroup == "" {
 		hub = s
+
 	} else {
-		hub = s.handle.MainHub.GetDataSheetHub(data.TargetSource, data.TenantId, data.TargetGroup)
+		hub = s.handle.GetDataSheetHub(s.tenantId, data.TargetGroup)
 	}
 
 	return hub.Query(txid, &dyndb.QuerySheetReq{

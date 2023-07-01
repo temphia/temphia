@@ -20,14 +20,14 @@ type Seeder struct {
 	tg               *xbprint.NewTableGroup
 	model            *entities.BPrint
 	pacman           repox.Hub
-	source           dyndb.DynSource
+	source           dyndb.DataHub
 	tenant           string
 	group            string
 	selectableImages []string
 	selectableUsers  []string
 }
 
-func New(schema *xbprint.NewTableGroup, pman repox.Hub, dsource dyndb.DynSource, tenantId, dataGroup, userId string) *Seeder {
+func New(schema *xbprint.NewTableGroup, pman repox.Hub, dsource dyndb.DataHub, tenantId, dataGroup, userId string) *Seeder {
 	return &Seeder{
 		tg:               schema,
 		model:            nil,

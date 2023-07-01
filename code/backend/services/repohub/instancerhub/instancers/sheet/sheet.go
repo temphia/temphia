@@ -99,8 +99,7 @@ func (s *SheetInstancer) instanceInner(tenantId string, schemaData *xbprint.NewS
 
 func (s *SheetInstancer) instance(source, tenantId, gslug string, schemaData *xbprint.NewSheetGroup) (*xinstance.Response, error) {
 
-	dsrc := s.dynhub.GetSource(source, tenantId)
-	dtable := dsrc.GetDataTableHub(tenantId, gslug)
+	dtable := s.dynhub.GetDataTableHub(tenantId, gslug)
 
 	// fixme => inside same txn
 

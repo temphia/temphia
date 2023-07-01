@@ -13,7 +13,7 @@ func (c *Controller) ListSources(uclaim *claim.Session) ([]string, error) {
 		return nil, scopes.ErrNoAdminDataScope
 	}
 
-	return c.dynHub.ListSources(uclaim.TenantId)
+	return []string{"default"}, nil
 }
 
 // dyn_table_group
@@ -22,7 +22,7 @@ func (c *Controller) NewGroup(uclaim *claim.Session, source string, model *xbpri
 		return scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
 
 	return dynDB.NewGroup(uclaim.TenantId, model)
 }
@@ -32,7 +32,7 @@ func (c *Controller) EditGroup(uclaim *claim.Session, source, gslug string, mode
 		return scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
 
 	return dynDB.EditGroup(uclaim.TenantId, gslug, model)
 }
@@ -42,7 +42,8 @@ func (c *Controller) GetGroup(uclaim *claim.Session, source, gslug string) (*ent
 		return nil, scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
+
 	return dynDB.GetGroup(uclaim.TenantId, gslug)
 }
 
@@ -51,8 +52,7 @@ func (c *Controller) GetGroupSheets(uclaim *claim.Session, source, gslug string)
 		return nil, scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
-	sheet := dynDB.GetDataSheetHub(uclaim.TenantId, gslug)
+	sheet := c.dynHub.GetDataSheetHub(uclaim.TenantId, gslug)
 	return sheet.ListSheet(0)
 }
 
@@ -61,7 +61,8 @@ func (c *Controller) ListGroup(uclaim *claim.Session, source string) ([]*entitie
 		return nil, scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
+
 	return dynDB.ListGroup(uclaim.TenantId, nil)
 }
 
@@ -70,7 +71,7 @@ func (c *Controller) DeleteGroup(uclaim *claim.Session, source, gslug string) er
 		return scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
 	return dynDB.DeleteGroup(uclaim.TenantId, gslug)
 }
 
@@ -81,7 +82,8 @@ func (c *Controller) EditTable(uclaim *claim.Session, source, group, tslug strin
 		return scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
+
 	return dynDB.EditTable(uclaim.TenantId, group, tslug, model)
 }
 
@@ -90,7 +92,8 @@ func (c *Controller) GetTable(uclaim *claim.Session, source, group, tslug string
 		return nil, scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
+
 	return dynDB.GetTable(uclaim.TenantId, group, tslug)
 }
 
@@ -99,7 +102,8 @@ func (c *Controller) ListTables(uclaim *claim.Session, source, group string) ([]
 		return nil, scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
+
 	return dynDB.ListTables(uclaim.TenantId, group)
 }
 
@@ -108,7 +112,8 @@ func (c *Controller) DeleteTable(uclaim *claim.Session, source, group, tslug str
 		return scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
+
 	return dynDB.DeleteTable(uclaim.TenantId, group, tslug)
 }
 
@@ -119,7 +124,8 @@ func (c *Controller) GetColumn(uclaim *claim.Session, source, group, tslug strin
 		return nil, scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
+
 	return dynDB.GetColumn(uclaim.TenantId, group, tslug, cslug)
 }
 
@@ -128,7 +134,7 @@ func (c *Controller) EditColumn(uclaim *claim.Session, source, group, tslug stri
 		return scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
 
 	return dynDB.EditColumn(uclaim.TenantId, group, tslug, cslug, model)
 }
@@ -138,7 +144,7 @@ func (c *Controller) ListColumns(uclaim *claim.Session, source, group, tslug str
 		return nil, scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
 
 	return dynDB.ListColumns(uclaim.TenantId, group, tslug)
 }
@@ -148,7 +154,7 @@ func (c *Controller) DeleteColumn(uclaim *claim.Session, source, group, tslug st
 		return scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
 
 	return dynDB.DeleteColumn(uclaim.TenantId, group, tslug, cslug)
 }
@@ -158,7 +164,7 @@ func (c *Controller) DataActivityQuery(uclaim *claim.Session, source, group, tsl
 		return nil, scopes.ErrNoAdminDataScope
 	}
 
-	return c.dynHub.GetSource(source, uclaim.TenantId).QueryActivity(uclaim.TenantId, group, tslug, &entities.ActivityQuery{
+	return c.dynHub.GetDynDB().QueryActivity(uclaim.TenantId, group, tslug, &entities.ActivityQuery{
 		Types:       nil,
 		UserId:      "",
 		BetweenTime: [2]string{},
@@ -178,9 +184,7 @@ func (c *Controller) QueryDataGroup(uclaim *claim.Session, source, group string,
 		return nil, scopes.ErrNoAdminDataScope
 	}
 
-	src := c.dynHub.GetSource(source, uclaim.TenantId)
-
-	return src.GetDataTableHub(uclaim.TenantId, group).SqlQuery(0, dyndb.SqlQueryReq{
+	return c.dynHub.GetDataTableHub(uclaim.TenantId, group).SqlQuery(0, dyndb.SqlQueryReq{
 		NoTransform: false,
 		Raw:         query.Raw,
 		Group:       group,
@@ -190,7 +194,6 @@ func (c *Controller) QueryDataGroup(uclaim *claim.Session, source, group string,
 }
 
 func (c *Controller) LiveSeed(uclaim *claim.Session, source, group, table string, max int) error {
-	src := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	return src.GetDataTableHub(uclaim.TenantId, group).LiveSeed(table, uclaim.UserID, max)
+	return c.dynHub.GetDataTableHub(uclaim.TenantId, group).LiveSeed(table, uclaim.UserID, max)
 }

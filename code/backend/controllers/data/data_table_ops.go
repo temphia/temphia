@@ -9,7 +9,7 @@ import (
 
 func (c *Controller) LoadGroup(uclaim *claim.Data) (*dyndb.LoadDgroupResp, error) {
 
-	dynDB := c.dynHub.GetSource(uclaim.DataSource, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
 
 	tg, err := dynDB.GetGroup(uclaim.TenantId, uclaim.DataGroup)
 	if err != nil {
@@ -36,13 +36,11 @@ func (c *Controller) LoadGroup(uclaim *claim.Data) (*dyndb.LoadDgroupResp, error
 
 func (c *Controller) NewRow(uclaim *claim.Data, tslug string, cells map[string]any) (int64, error) {
 
-	source, group := getTarget(uclaim)
-	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
-	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
+	thub := c.dynHub.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
 	return thub.NewRow(0, dyndb.NewRowReq{
 		TenantId: uclaim.TenantId,
-		Group:    group,
+		Group:    uclaim.DataGroup,
 		Table:    tslug,
 		Data:     cells,
 		ModCtx: dyndb.ModCtx{
@@ -52,27 +50,23 @@ func (c *Controller) NewRow(uclaim *claim.Data, tslug string, cells map[string]a
 }
 
 func (c *Controller) GetRow(uclaim *claim.Data, tslug string, id int64) (map[string]any, error) {
-	source, group := getTarget(uclaim)
-	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
-	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
+	thub := c.dynHub.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
 	return thub.GetRow(0, dyndb.GetRowReq{
 		TenantId: uclaim.TenantId,
-		Group:    group,
+		Group:    uclaim.DataGroup,
 		Table:    tslug,
 		Id:       id,
 	})
 }
 
 func (c *Controller) UpdateRow(uclaim *claim.Data, tslug string, id, version int64, cells map[string]any) (map[string]any, error) {
-	source, group := getTarget(uclaim)
-	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
-	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
+	thub := c.dynHub.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
 	return thub.UpdateRow(0, dyndb.UpdateRowReq{
 		TenantId: uclaim.TenantId,
 		Version:  version,
-		Group:    group,
+		Group:    uclaim.DataGroup,
 		Table:    tslug,
 		Data:     cells,
 		Id:       id,
@@ -83,13 +77,11 @@ func (c *Controller) UpdateRow(uclaim *claim.Data, tslug string, id, version int
 }
 
 func (c *Controller) DeleteRowBatch(uclaim *claim.Data, tslug string, filterOpts []dyndb.FilterCond) error {
-	source, group := getTarget(uclaim)
-	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
-	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
+	thub := c.dynHub.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
 	_, err := thub.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
 		TenantId:    uclaim.TenantId,
-		Group:       group,
+		Group:       uclaim.DataGroup,
 		Table:       tslug,
 		FilterConds: filterOpts,
 		ModCtx: dyndb.ModCtx{
@@ -101,13 +93,11 @@ func (c *Controller) DeleteRowBatch(uclaim *claim.Data, tslug string, filterOpts
 }
 
 func (c *Controller) DeleteRowMulti(uclaim *claim.Data, tslug string, ids []int64) error {
-	source, group := getTarget(uclaim)
-	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
-	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
+	thub := c.dynHub.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
 	return thub.DeleteRowMulti(0, dyndb.DeleteRowMultiReq{
 		TenantId: uclaim.TenantId,
-		Group:    group,
+		Group:    uclaim.DataGroup,
 		Table:    tslug,
 		Ids:      ids,
 		ModCtx: dyndb.ModCtx{
@@ -118,13 +108,11 @@ func (c *Controller) DeleteRowMulti(uclaim *claim.Data, tslug string, ids []int6
 }
 
 func (c *Controller) DeleteRow(uclaim *claim.Data, tslug string, id int64) error {
-	source, group := getTarget(uclaim)
-	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
-	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
+	thub := c.dynHub.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
 	return thub.DeleteRow(0, dyndb.DeleteRowReq{
 		TenantId: uclaim.TenantId,
-		Group:    group,
+		Group:    uclaim.DataGroup,
 		Table:    tslug,
 		Id:       id,
 		ModCtx: dyndb.ModCtx{
@@ -135,36 +123,33 @@ func (c *Controller) DeleteRow(uclaim *claim.Data, tslug string, id int64) error
 }
 
 func (c *Controller) LoadTable(uclaim *claim.Data, req dyndb.LoadTableReq, tslug string) (*dyndb.LoadTableResp, error) {
-	source, group := getTarget(uclaim)
-	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
-	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
+
+	thub := c.dynHub.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
 	req.TenantId = uclaim.TenantId
 	req.Table = tslug
-	req.Group = group
+	req.Group = uclaim.DataGroup
 
 	return thub.LoadTable(0, req)
 
 }
 
 func (c *Controller) SimpleQuery(uclaim *claim.Data, tslug string, query dyndb.SimpleQueryReq) (*dyndb.QueryResult, error) {
-	source, group := getTarget(uclaim)
-	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
-	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
+
+	thub := c.dynHub.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
 	query.TenantId = uclaim.TenantId
 	query.Table = tslug
-	query.Group = group
+	query.Group = uclaim.DataGroup
 
 	return thub.SimpleQuery(0, query)
 }
 
 func (c *Controller) FTSQuery(uclaim *claim.Data, req dyndb.FTSQueryReq) (*dyndb.QueryResult, error) {
-	source, group := getTarget(uclaim)
-	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
-	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	req.Group = group
+	thub := c.dynHub.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
+
+	req.Group = uclaim.DataGroup
 	req.TenantId = uclaim.TenantId
 
 	return thub.FTSQuery(0, req)
@@ -187,47 +172,45 @@ func (d *Controller) TemplateQuery(uclaim *claim.Data, tslug string, query any) 
 }
 
 func (c *Controller) RefResolve(uclaim *claim.Data, req *dyndb.RefResolveReq) (*dyndb.QueryResult, error) {
-	source, group := getTarget(uclaim)
-	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
-	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	return thub.RefResolve(0, group, req)
+	thub := c.dynHub.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
+
+	return thub.RefResolve(0, uclaim.DataGroup, req)
 }
 
 func (c *Controller) ReverseRefLoad(uclaim *claim.Data, req *dyndb.RevRefLoadReq) (*dyndb.QueryResult, error) {
-	source, group := getTarget(uclaim)
-	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
-	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	return thub.ReverseRefLoad(0, group, req)
+	thub := c.dynHub.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
+
+	return thub.ReverseRefLoad(0, uclaim.DataGroup, req)
 }
 
 func (c *Controller) RefLoad(uclaim *claim.Data, req *dyndb.RefLoadReq) (*dyndb.QueryResult, error) {
-	source, group := getTarget(uclaim)
-	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
-	thub := ddb.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
 
-	return thub.RefLoad(0, group, req)
+	thub := c.dynHub.GetDataTableHub(uclaim.TenantId, uclaim.DataGroup)
+
+	return thub.RefLoad(0, uclaim.DataGroup, req)
 }
 
 func (c *Controller) ListActivity(uclaim *claim.Data, table string, rowId int) ([]*entities.DynActivity, error) {
-	source, group := getTarget(uclaim)
-	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	return ddb.ListActivity(uclaim.TenantId, group, table, rowId)
+	return c.dynHub.GetDynDB().ListActivity(uclaim.TenantId, uclaim.DataGroup, table, rowId)
 }
 
 func (c *Controller) CommentRow(uclaim *claim.Data, table, msg string, rowId int) error {
-	source, group := getTarget(uclaim)
-	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
 
-	return ddb.NewActivity(uclaim.TenantId, group, table, &entities.DynActivity{
+	dyndb := c.dynHub.GetDynDB()
+
+	_, err := dyndb.NewActivity(uclaim.TenantId, uclaim.DataGroup, table, &entities.DynActivity{
 		Type:      "comment",
 		RowId:     int64(rowId),
 		RowVerson: 0,
 		UserId:    uclaim.UserID,
 		Payload:   msg,
 	})
+
+	return err
+
 }
 
 func (c *Controller) folderTicket(group *entities.TableGroup, uclaim *claim.Data) (string, error) {
@@ -252,8 +235,7 @@ func (c *Controller) folderTicket(group *entities.TableGroup, uclaim *claim.Data
 
 func (c *Controller) ListDataUsers(uclaim *claim.Data, ttype, target string) ([]entities.UserInfo, error) {
 
-	source, group := getTarget(uclaim)
-	ddb := c.dynHub.GetSource(source, uclaim.TenantId)
+	//	return c.dynHub.GetDynDB().ListDataUsers("default", uclaim.TenantId, uclaim.DataGroup, ttype, target)
 
-	return ddb.ListDataUsers(source, uclaim.TenantId, group, ttype, target)
+	return nil, nil
 }

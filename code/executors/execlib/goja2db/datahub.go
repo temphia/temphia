@@ -15,7 +15,7 @@ type tableQueryOptions struct {
 }
 
 func (ctx *goja2db) tableQuery(opts tableQueryOptions) (any, any) {
-	table := ctx.datahub.GetDataTableHub(opts.Source, ctx.tenantId, opts.Group)
+	table := ctx.datahub.GetDataTableHub(ctx.tenantId, opts.Group)
 
 	return table.SimpleQuery(0, dyndb.SimpleQueryReq{
 		TenantId:    ctx.tenantId,
@@ -44,7 +44,7 @@ type tablejoinQueryOptions struct {
 
 func (ctx *goja2db) tableJoinQuery(opts tablejoinQueryOptions) (any, any) {
 
-	table := ctx.datahub.GetDataTableHub(opts.Source, ctx.tenantId, opts.Group)
+	table := ctx.datahub.GetDataTableHub(ctx.tenantId, opts.Group)
 
 	return table.JoinQuery(0, dyndb.JoinReq{
 		TenantId:      ctx.tenantId,
@@ -69,7 +69,7 @@ type newRowOpts struct {
 
 func (ctx *goja2db) newRow(opts newRowOpts) (any, any) {
 
-	table := ctx.datahub.GetDataTableHub(opts.Source, ctx.tenantId, opts.Group)
+	table := ctx.datahub.GetDataTableHub(ctx.tenantId, opts.Group)
 
 	return table.NewRow(0, dyndb.NewRowReq{
 		TenantId: ctx.tenantId,
@@ -91,7 +91,7 @@ type getRowOpts struct {
 }
 
 func (ctx *goja2db) getRow(opts getRowOpts) (any, any) {
-	table := ctx.datahub.GetDataTableHub(opts.Source, ctx.tenantId, opts.Group)
+	table := ctx.datahub.GetDataTableHub(ctx.tenantId, opts.Group)
 
 	return table.GetRow(0, dyndb.GetRowReq{
 		TenantId:  ctx.tenantId,
@@ -113,7 +113,7 @@ type updateRowOpts struct {
 }
 
 func (ctx *goja2db) updateRow(opts updateRowOpts) (any, any) {
-	table := ctx.datahub.GetDataTableHub(opts.Source, ctx.tenantId, opts.Group)
+	table := ctx.datahub.GetDataTableHub(ctx.tenantId, opts.Group)
 
 	return table.UpdateRow(0, dyndb.UpdateRowReq{
 		TenantId: ctx.tenantId,
@@ -137,7 +137,7 @@ type deleteRowBatchOpts struct {
 }
 
 func (ctx *goja2db) deleteRowBatch(opts deleteRowBatchOpts) ([]int64, any) {
-	table := ctx.datahub.GetDataTableHub(opts.Source, ctx.tenantId, opts.Group)
+	table := ctx.datahub.GetDataTableHub(ctx.tenantId, opts.Group)
 
 	return table.DeleteRowBatch(0, dyndb.DeleteRowBatchReq{
 		TenantId:    ctx.tenantId,
@@ -159,7 +159,7 @@ type deleteRowMultiOpts struct {
 }
 
 func (ctx *goja2db) deleteRowMulti(opts deleteRowMultiOpts) any {
-	table := ctx.datahub.GetDataTableHub(opts.Source, ctx.tenantId, opts.Group)
+	table := ctx.datahub.GetDataTableHub(ctx.tenantId, opts.Group)
 
 	table.DeleteRowMulti(0, dyndb.DeleteRowMultiReq{
 		TenantId: ctx.tenantId,
@@ -183,7 +183,7 @@ type deleteRowOpts struct {
 }
 
 func (ctx *goja2db) deleteRow(opts deleteRowOpts) any {
-	table := ctx.datahub.GetDataTableHub(opts.Source, ctx.tenantId, opts.Group)
+	table := ctx.datahub.GetDataTableHub(ctx.tenantId, opts.Group)
 
 	return table.DeleteRow(0, dyndb.DeleteRowReq{
 		TenantId: ctx.tenantId,
@@ -205,7 +205,7 @@ type loadTableOpts struct {
 }
 
 func (ctx *goja2db) loadTable(opts loadTableOpts) (any, any) {
-	table := ctx.datahub.GetDataTableHub(opts.Source, ctx.tenantId, opts.Group)
+	table := ctx.datahub.GetDataTableHub(ctx.tenantId, opts.Group)
 
 	return table.LoadTable(0, dyndb.LoadTableReq{
 		TenantId:    ctx.tenantId,
@@ -229,7 +229,7 @@ type ftsQueryOpts struct {
 }
 
 func (ctx *goja2db) ftsQuery(opts ftsQueryOpts) (any, any) {
-	table := ctx.datahub.GetDataTableHub(opts.Source, ctx.tenantId, opts.Group)
+	table := ctx.datahub.GetDataTableHub(ctx.tenantId, opts.Group)
 
 	return table.FTSQuery(0, dyndb.FTSQueryReq{
 		TenantId:     ctx.tenantId,
@@ -256,7 +256,7 @@ type refResolveOpts struct {
 }
 
 func (ctx *goja2db) refResolve(opts refResolveOpts) (any, any) {
-	table := ctx.datahub.GetDataTableHub(opts.Source, ctx.tenantId, opts.Group)
+	table := ctx.datahub.GetDataTableHub(ctx.tenantId, opts.Group)
 
 	return table.RefResolve(0, opts.Group, &dyndb.RefResolveReq{
 		Column: opts.Column,
@@ -279,7 +279,7 @@ type refLoadOpts struct {
 }
 
 func (ctx *goja2db) refLoad(opts refLoadOpts) (any, any) {
-	table := ctx.datahub.GetDataTableHub(opts.Source, ctx.tenantId, opts.Group)
+	table := ctx.datahub.GetDataTableHub(ctx.tenantId, opts.Group)
 
 	return table.RefLoad(0, opts.Group, &dyndb.RefLoadReq{
 		Column:      opts.Column,
@@ -303,7 +303,7 @@ type reverseRefLoadOpts struct {
 }
 
 func (ctx *goja2db) reverseRefLoad(opts reverseRefLoadOpts) (any, any) {
-	table := ctx.datahub.GetDataTableHub(opts.Source, ctx.tenantId, opts.Group)
+	table := ctx.datahub.GetDataTableHub(ctx.tenantId, opts.Group)
 
 	return table.ReverseRefLoad(0, opts.Group, &dyndb.RevRefLoadReq{
 		CurrentTable: opts.CurrentTable,
@@ -324,7 +324,7 @@ type sqlQueryOpts struct {
 }
 
 func (ctx *goja2db) sqlQuery(opts sqlQueryOpts) (any, any) {
-	table := ctx.datahub.GetDataTableHub(opts.Source, ctx.tenantId, opts.Group)
+	table := ctx.datahub.GetDataTableHub(ctx.tenantId, opts.Group)
 
 	return table.SqlQuery(0, dyndb.SqlQueryReq{
 		NoTransform: true,

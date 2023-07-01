@@ -12,7 +12,7 @@ func (c *Controller) NewView(uclaim *claim.Session, source, group, tslug string,
 		return scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
 
 	model.GroupID = group
 	model.TableID = tslug
@@ -28,7 +28,7 @@ func (c *Controller) ModifyView(uclaim *claim.Session, source, group, tslug stri
 		return scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
 
 	return dynDB.ModifyView(uclaim.TenantId, group, tslug, id, data)
 }
@@ -38,7 +38,7 @@ func (c *Controller) ListView(uclaim *claim.Session, source, group, tslug string
 		return nil, scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
 
 	return dynDB.ListView(uclaim.TenantId, group, tslug)
 }
@@ -48,7 +48,7 @@ func (c *Controller) DelView(uclaim *claim.Session, source, group, tslug string,
 		return scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
 
 	return dynDB.DelView(uclaim.TenantId, group, tslug, id)
 }
@@ -58,6 +58,7 @@ func (c *Controller) GetView(uclaim *claim.Session, source, group, tslug string,
 		return nil, scopes.ErrNoAdminDataScope
 	}
 
-	dynDB := c.dynHub.GetSource(source, uclaim.TenantId)
+	dynDB := c.dynHub.GetDynDB()
+
 	return dynDB.GetView(uclaim.TenantId, group, tslug, id)
 }

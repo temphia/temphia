@@ -41,7 +41,7 @@ func (c *Controller) ListCabinetSources(uclaim *claim.Session) ([]string, error)
 }
 
 func (c *Controller) ListDyndbSources(uclaim *claim.Session) ([]string, error) {
-	return c.dynHub.ListSources((uclaim.TenantId))
+	return []string{"default"}, nil
 }
 
 func (c *Controller) JoinNotification() error {

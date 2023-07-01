@@ -3,65 +3,18 @@ package dyndb
 import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
 type DataHub interface {
-	DefaultSource(tenant string) DynSource
-	GetSource(source, tenant string) DynSource
-	ListSources(tenant string) ([]string, error)
 	Inject(app xtypes.App)
 
 	xplane.StateWatcher
 
-	GetDataTableHub(source, tenantId, group string) DataTableHub
-	GetDataSheetHub(source, tenantId, group string) DataSheetHub
-}
-
-type DynSource interface {
-	Name() string
-
-	MigrateSchema(tenantId string, opts step.MigrateOptions) error
-
-	NewGroup(tenantId string, model *xbprint.NewTableGroup) error
-	EditGroup(tenantId, gslug string, model *entities.TableGroupPartial) error
-	ListGroup(tenantId string, cond map[string]any) ([]*entities.TableGroup, error)
-	GetGroup(tenantId, gslug string) (*entities.TableGroup, error)
-	DeleteGroup(tenantId, gslug string) error
-
-	EditTable(tenantId, gslug, tslug string, model *entities.TablePartial) error
-	GetTable(tenantId, gslug, tslug string) (*entities.Table, error)
-	ListTables(tenantId, gslug string) ([]*entities.Table, error)
-	DeleteTable(tenantId, gslug, tslug string) error
-
-	EditColumn(tenantId, gslug, tslug, cslug string, model *entities.ColumnPartial) error
-	GetColumn(tenantId, gslug, tslug, cslug string) (*entities.Column, error)
-	ListColumns(tenantId, gslug, tslug string) ([]*entities.Column, error)
-	ListReverseColumnRef(tenantId, gslug, tslug string) ([]*entities.Column, error)
-	DeleteColumn(tenantId, gslug, tslug, cslug string) error
-
-	NewView(tenantId string, model *entities.DataView) error
-	GetView(tenantId, gslug, tslug string, id int64) (*entities.DataView, error)
-	ModifyView(tenantId, gslug, tslug string, id int64, data map[string]any) error
-	ListView(tenantId, gslug, tslug string) ([]*entities.DataView, error)
-	DelView(tenantId, gslug, tslug string, id int64) error
-
-	QueryActivity(tenantId, group, table string, query *entities.ActivityQuery) ([]*entities.DynActivity, error)
-	ListActivity(tenantId, group, table string, rowId int) ([]*entities.DynActivity, error)
-	ListActivityByAlt(tenantId, group, table string, alt string) ([]*entities.DynActivity, error)
-	NewActivity(tenantId, group, table string, record *entities.DynActivity) error
-
-	ListDataUsers(source, tenantId, group, ttype, target string) ([]entities.UserInfo, error)
-
 	GetDataTableHub(tenantId, group string) DataTableHub
 	GetDataSheetHub(tenantId, group string) DataSheetHub
-}
 
-type HubProvider interface {
-	GetDataTableHub(source, tenantId, group string) DataTableHub
-	GetDataSheetHub(source, tenantId, group string) DataSheetHub
+	GetDynDB() DynDB
 }
 
 type DataTableHub interface {

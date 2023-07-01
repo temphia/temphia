@@ -13,7 +13,7 @@ type DatagroupModule struct {
 	tenantId string
 	source   string
 	group    string
-	dynsrc   dyndb.DynSource
+	dynsrc   dyndb.DataHub
 	binder   bindx.Bindings
 	res      *entities.Resource
 	modipc   *modipc.ModIPC

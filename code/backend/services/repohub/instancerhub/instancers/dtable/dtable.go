@@ -74,13 +74,7 @@ func (di *dtabeInstancer) Instance(opts xinstance.Options) (*xinstance.Response,
 
 func (di *dtabeInstancer) instance(tenantId string, opts *DataGroupRequest, schema *xbprint.NewTableGroup) (*DataGroupResponse, error) {
 
-	var dhub dyndb.DynSource
-
-	if opts.DyndbSource == "" {
-		dhub = di.dynhub.DefaultSource(tenantId)
-	} else {
-		dhub = di.dynhub.GetSource(opts.DyndbSource, tenantId)
-	}
+	dhub := di.dynhub.GetDynDB()
 
 	if opts.GroupName != "" {
 		schema.Name = opts.GroupName
@@ -125,7 +119,7 @@ func (di *dtabeInstancer) instance(tenantId string, opts *DataGroupRequest, sche
 	}
 
 	resp := &DataGroupResponse{
-		Source:     dhub.Name(),
+		Source:     "default",
 		GroupSlug:  opts.GroupSlug,
 		GroupName:  opts.GroupName,
 		ViewErrors: make(map[string]string),
@@ -153,7 +147,7 @@ func (di *dtabeInstancer) instance(tenantId string, opts *DataGroupRequest, sche
 		}
 	}
 
-	seeder := seeder.New(schema, di.pacman, dhub, tenantId, opts.GroupSlug, opts.UserId)
+	seeder := seeder.New(schema, di.pacman, di.dynhub, tenantId, opts.GroupSlug, opts.UserId)
 
 	switch opts.SeedType {
 	case dyndb.DynSeedTypeData:

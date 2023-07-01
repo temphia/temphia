@@ -25,10 +25,6 @@ func New(dhub dyndb.DataHub, repoman repox.Hub, cabHub store.CabinetHub, signer 
 	}
 }
 
-func getTarget(uclaim *claim.Data) (string, string) {
-	return uclaim.DataSource, uclaim.DataGroup
-}
-
 func (d *Controller) IssueDataClaim(uclaim *claim.Session, source string, group string) (string, error) {
 
 	dc := claim.Data{

@@ -39,10 +39,6 @@ func (c *Controller) InstanceSheet(uclaim *claim.Session, req QuickSheetInstance
 		return nil, easyerr.NotFound("template")
 	}
 
-	if req.Source == "" {
-		req.Source = c.dynHub.DefaultSource(uclaim.TenantId).Name()
-	}
-
 	tpl.Name = req.Name
 	tpl.Info = req.Info
 
