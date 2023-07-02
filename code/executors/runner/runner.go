@@ -3,16 +3,17 @@ package runner
 import (
 	"os"
 	"os/exec"
-	"path"
+	"strings"
 	"sync"
+
+	"github.com/temphia/temphia/code/executors/runner/rtypes"
 )
 
 type Options struct {
-	BootstrapFile   string
-	ExecutorLibData string
-	ExecutorLibName string
-	BootstrapFunc   func(ctx BootstrapContext) error
-	RootFilesFunc   func() ([]byte, error)
+	BootstrapFunc func(ctx rtypes.BootstrapContext) error
+	Runcmd        string
+	EntryFile     string
+	GetFile       func(name string) ([]byte, error)
 }
 
 type Runner struct {
@@ -41,30 +42,30 @@ func New(opts *Options) *Runner {
 
 func (r *Runner) init() error {
 
-	err := r.startServer()
-	if err != nil {
-		return err
-	}
-
 	// ExRunner
 
-	tdir, err := os.MkdirTemp("exrunner", "*")
+	tdir, err := os.MkdirTemp("", "temphia_runner_*")
 	if err != nil {
 		return err
 	}
 
-	err = os.WriteFile(path.Join(tdir, "bootstrap.sh"), []byte(r.opts.BootstrapFile), 0777)
-	if err != nil {
-		panic(err)
-	}
+	r.opts.BootstrapFunc(rtypes.BootstrapContext{
+		Folder:   tdir,
+		TenantId: "",
+		PlugId:   "",
+		AgentId:  "",
+		File:     r.opts.EntryFile,
+		GetFile:  r.opts.GetFile,
+	})
 
-	cmd := exec.Command("bootstrap.sh")
-	cmd.Dir = tdir
+	actualcmd := strings.Split(r.opts.Runcmd, " ")
 
-	err = cmd.Run()
+	runcmd := exec.Command(actualcmd[0], actualcmd[1:]...)
+
+	err = runcmd.Run()
 	if err != nil {
 		return err
 	}
 
-	return nil
+	return r.startServer()
 }
