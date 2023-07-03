@@ -1,9 +1,10 @@
 package runner
 
 import (
+	"encoding/json"
 	"net"
 
-	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/executors/runner/rtypes"
 )
 
 type controlLine struct {
@@ -28,17 +29,15 @@ func (r *controlLine) run() error {
 }
 
 func (r *controlLine) readLoop() {
-	buffer := make([]byte, 1024)
 
 	for {
-		// Read data into the buffer
-		bytesRead, err := r.conn.Read(buffer)
+		decoder := json.NewDecoder(r.conn)
+		packet := &rtypes.Packet{}
+
+		err := decoder.Decode(packet)
 		if err != nil {
 			return
 		}
-
-		data := buffer[:bytesRead]
-		pp.Println(string(data))
 
 	}
 }

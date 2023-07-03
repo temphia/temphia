@@ -16,3 +16,5 @@ type BootstrapContext struct {
 	File     string
 	GetFile  func(name string) ([]byte, error)
 }
+
+type BootstrapFunc func(ctx BootstrapContext) error

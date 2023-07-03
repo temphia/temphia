@@ -1,4 +1,4 @@
-package runner
+package python
 
 import (
 	"archive/zip"
@@ -9,13 +9,13 @@ import (
 	"testing"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/executors/runner/python"
+	"github.com/temphia/temphia/code/executors/runner"
 )
 
-func TestRunner(t *testing.T) {
+func TestPyRunner(t *testing.T) {
 
-	runner := New(&Options{
-		BootstrapFunc: python.BootstrapProject,
+	runner := runner.New(&runner.Options{
+		BootstrapFunc: BootstrapProject,
 		Runcmd:        "bash start.sh",
 		EntryFile:     "main.py.zip",
 		GetFile: func(name string) ([]byte, error) {
@@ -48,7 +48,7 @@ func TestRunner(t *testing.T) {
 		},
 	})
 
-	err := runner.init()
+	err := runner.Init()
 	if err != nil {
 		pp.Println(err)
 		t.Fatal(err)

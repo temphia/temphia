@@ -1,4 +1,4 @@
-import ActionRouter from temphia_python_executor
+import ActionRouter from action_router
 
 async def hello_world(param):
     return "HELLO_WORLD"

@@ -6,6 +6,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
 	"github.com/temphia/temphia/code/executors/runner/rtypes"
 )
 
@@ -40,7 +41,7 @@ func New(opts *Options) *Runner {
 	return r
 }
 
-func (r *Runner) init() error {
+func (r *Runner) Init() error {
 
 	// ExRunner
 
@@ -68,4 +69,9 @@ func (r *Runner) init() error {
 	}
 
 	return r.startServer()
+}
+
+func (r *Runner) Process(*event.Request) (*event.Response, error) {
+
+	return nil, nil
 }
