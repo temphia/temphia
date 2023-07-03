@@ -1,4 +1,6 @@
-package runner
+package re
+
+// re stands for Remote Executor.
 
 import (
 	"os"
@@ -7,7 +9,7 @@ import (
 	"sync"
 
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
-	"github.com/temphia/temphia/code/executors/runner/rtypes"
+	"github.com/temphia/temphia/code/executors/re/rtypes"
 )
 
 type Options struct {

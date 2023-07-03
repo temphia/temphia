@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/temphia/temphia/code/executors/runner/rtypes"
+	"github.com/temphia/temphia/code/executors/re/rtypes"
 )
 
 // go:embed lib.py

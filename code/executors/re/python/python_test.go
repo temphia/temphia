@@ -9,12 +9,12 @@ import (
 	"testing"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/executors/runner"
+	"github.com/temphia/temphia/code/executors/re"
 )
 
 func TestPyRunner(t *testing.T) {
 
-	runner := runner.New(&runner.Options{
+	runner := re.New(&re.Options{
 		BootstrapFunc: BootstrapProject,
 		Runcmd:        "bash start.sh",
 		EntryFile:     "main.py.zip",

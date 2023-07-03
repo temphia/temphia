@@ -1,10 +1,10 @@
-package runner
+package re
 
 import (
 	"encoding/json"
 	"net"
 
-	"github.com/temphia/temphia/code/executors/runner/rtypes"
+	"github.com/temphia/temphia/code/executors/re/rtypes"
 )
 
 type controlLine struct {

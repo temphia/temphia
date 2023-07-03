@@ -1,8 +1,8 @@
-package runner
+package re
 
 import (
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/executors/runner/rtypes"
+	"github.com/temphia/temphia/code/executors/re/rtypes"
 )
 
 type Builder struct {
