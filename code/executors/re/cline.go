@@ -28,7 +28,7 @@ type controlLine struct {
 	pendingEvents map[string]chan []byte
 }
 
-func (r *controlLine) run() error {
+func (r *controlLine) run() {
 
 	defer func() {
 		r.conn.Close()
@@ -38,8 +38,6 @@ func (r *controlLine) run() error {
 	go r.writeLoop()
 
 	r.readLoop()
-
-	return nil
 
 }
 

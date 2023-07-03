@@ -93,10 +93,7 @@ func (r *Runner) handleControl(conn net.Conn) {
 	r.controlLine = &line
 	r.clineLock.Unlock()
 
-	err := line.run()
-	if err != nil {
-		pp.Println(err)
-	}
+	line.run()
 
 	r.clineLock.Lock()
 	r.controlLine = nil
@@ -113,9 +110,6 @@ func (r *Runner) handleBind(conn net.Conn, id string) {
 		id:     id,
 	}
 
-	err := line.run()
-	if err != nil {
-		pp.Println(err)
-	}
+	line.run()
 
 }
