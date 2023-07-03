@@ -17,11 +17,17 @@ func (r *Runner) startServer() error {
 		return err
 	}
 
-	defer listener.Close()
+	r.listener = listener
+	return nil
+}
+
+func (r *Runner) acceptLoop() {
+
+	defer r.listener.Close()
 
 	for {
 
-		conn, err := listener.Accept()
+		conn, err := r.listener.Accept()
 		if err != nil {
 			fmt.Println("Error accepting connection:", err)
 			continue
@@ -33,7 +39,10 @@ func (r *Runner) startServer() error {
 
 		bytesRead, err := conn.Read(buffer)
 		if err != nil {
-			return err
+			pp.Println("@first_packet_error", err.Error())
+			conn.Write([]byte(`500: first packet read error`))
+			conn.Close()
+			continue
 		}
 
 		data := buffer[:bytesRead]
@@ -69,6 +78,7 @@ func (r *Runner) startServer() error {
 		}
 
 	}
+
 }
 
 func (r *Runner) handleControl(conn net.Conn) {

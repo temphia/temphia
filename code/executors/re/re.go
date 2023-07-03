@@ -3,6 +3,7 @@ package re
 // re stands for Remote Executor.
 
 import (
+	"net"
 	"os"
 	"os/exec"
 	"strings"
@@ -29,6 +30,8 @@ type Runner struct {
 
 	controlLine *controlLine
 	clineLock   sync.Mutex
+
+	listener net.Listener
 }
 
 func New(opts Options, eopts etypes.ExecutorOption) *Runner {
@@ -71,6 +74,11 @@ func (r *Runner) Init() error {
 		},
 	})
 
+	err = r.startServer()
+	if err != nil {
+		return err
+	}
+
 	actualcmd := strings.Split(r.opts.Runcmd, " ")
 
 	runcmd := exec.Command(actualcmd[0], actualcmd[1:]...)
@@ -80,10 +88,16 @@ func (r *Runner) Init() error {
 		return err
 	}
 
-	return r.startServer()
+	go r.acceptLoop()
+
+	return nil
 }
 
-func (r *Runner) Process(*event.Request) (*event.Response, error) {
+func (r *Runner) Close() error {
+	return r.listener.Close()
+}
+
+func (r *Runner) Process(evnt *event.Request) (*event.Response, error) {
 
 	return nil, nil
 }
