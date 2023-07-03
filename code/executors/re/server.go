@@ -103,17 +103,9 @@ func (r *Runner) handleBind(conn net.Conn, id string) {
 		id:     id,
 	}
 
-	r.blinesLock.Lock()
-	r.blines[id] = line
-	r.blinesLock.Unlock()
-
 	err := line.run()
 	if err != nil {
 		pp.Println(err)
 	}
-
-	r.blinesLock.Lock()
-	delete(r.blines, id)
-	r.blinesLock.Unlock()
 
 }

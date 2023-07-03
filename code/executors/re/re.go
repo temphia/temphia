@@ -8,6 +8,9 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/temphia/temphia/code/backend/libx/xutils"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
 	"github.com/temphia/temphia/code/executors/re/rtypes"
 )
@@ -15,29 +18,33 @@ import (
 type Options struct {
 	BootstrapFunc func(ctx rtypes.BootstrapContext) error
 	Runcmd        string
-	EntryFile     string
-	GetFile       func(name string) ([]byte, error)
 }
 
 type Runner struct {
-	opts  *Options
-	token string
+	opts      Options
+	token     string
+	entryFile string
 
-	blines     map[string]*bindingsLine
-	blinesLock sync.Mutex
+	rootBinding bindx.Core
 
 	controlLine *controlLine
 	clineLock   sync.Mutex
 }
 
-func New(opts *Options) *Runner {
+func New(opts Options, eopts etypes.ExecutorOption) *Runner {
+
+	tok, err := xutils.GenerateRandomString(10)
+	if err != nil {
+		panic(err)
+	}
+
 	r := &Runner{
 		opts:        opts,
-		token:       "",
+		token:       tok,
 		controlLine: nil,
 		clineLock:   sync.Mutex{},
-		blines:      make(map[string]*bindingsLine),
-		blinesLock:  sync.Mutex{},
+		rootBinding: eopts.Binder.Clone(),
+		entryFile:   eopts.File,
 	}
 
 	return r
@@ -57,8 +64,11 @@ func (r *Runner) Init() error {
 		TenantId: "",
 		PlugId:   "",
 		AgentId:  "",
-		File:     r.opts.EntryFile,
-		GetFile:  r.opts.GetFile,
+		File:     r.entryFile,
+		GetFile: func(name string) ([]byte, error) {
+			out, _, err := r.rootBinding.GetFileWithMeta(name)
+			return out, err
+		},
 	})
 
 	actualcmd := strings.Split(r.opts.Runcmd, " ")

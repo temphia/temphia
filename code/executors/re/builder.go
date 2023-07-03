@@ -22,15 +22,10 @@ func NewBuilder(name, runcmd string, bootstrapFunc rtypes.BootstrapFunc) *Builde
 
 func (b *Builder) Instance(opts etypes.ExecutorOption) (etypes.Executor, error) {
 
-	runner := New(&Options{
+	runner := New(Options{
 		BootstrapFunc: b.bootstrapFunc,
 		Runcmd:        b.runcmd,
-		EntryFile:     opts.File,
-		GetFile: func(name string) ([]byte, error) {
-			out, _, err := opts.Binder.GetFileWithMeta(name)
-			return out, err
-		},
-	})
+	}, opts)
 
 	return runner, nil
 }
