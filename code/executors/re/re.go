@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
@@ -97,7 +98,11 @@ func (r *Runner) Close() error {
 	return r.listener.Close()
 }
 
-func (r *Runner) Process(evnt *event.Request) (*event.Response, error) {
+func (r *Runner) Process(ev *event.Request) (*event.Response, error) {
 
-	return nil, nil
+	if r.controlLine == nil {
+		time.Sleep(time.Second * 2)
+	}
+
+	return r.controlLine.process(ev)
 }

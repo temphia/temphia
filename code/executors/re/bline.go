@@ -19,3 +19,9 @@ func (c *bindingsLine) run() error {
 
 	return nil
 }
+
+func (c *bindingsLine) read() {
+
+}
+
+func (c *bindingsLine) write() {}

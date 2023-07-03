@@ -3,8 +3,8 @@ package rtypes
 import "encoding/json"
 
 type Packet struct {
-	Id   int64
-	Type string
+	Id   string
+	Type string // proto.go
 	Data json.RawMessage
 }
 
