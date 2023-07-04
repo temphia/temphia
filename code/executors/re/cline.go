@@ -2,6 +2,7 @@ package re
 
 import (
 	"encoding/json"
+	"fmt"
 	"net"
 
 	"github.com/k0kubun/pp"
@@ -100,6 +101,9 @@ func (r *controlLine) process(ev *event.Request) (*event.Response, error) {
 	}
 
 	rchan := make(chan []byte)
+
+	fmt.Println("@aaa", r)
+	pp.Println(r.eventChan)
 
 	r.eventChan <- struct {
 		resp       chan []byte

@@ -87,6 +87,16 @@ func (r *Runner) handleControl(conn net.Conn) {
 		runner: r,
 		closed: false,
 		conn:   conn,
+		eventChan: make(chan struct {
+			resp       chan []byte
+			id         string
+			packetData []byte
+		}),
+		respChan: make(chan struct {
+			id   string
+			data []byte
+		}),
+		pendingEvents: make(map[string]chan []byte),
 	}
 
 	r.clineLock.Lock()
@@ -108,6 +118,11 @@ func (r *Runner) handleBind(conn net.Conn, id string) {
 		closed: false,
 		conn:   conn,
 		id:     id,
+		writeChan: make(chan struct {
+			isErr bool
+			id    string
+			data  []byte
+		}),
 	}
 
 	line.run()

@@ -117,7 +117,15 @@ func (r *Runner) Close() error {
 func (r *Runner) Process(ev *event.Request) (*event.Response, error) {
 
 	if r.controlLine == nil {
-		time.Sleep(time.Second * 2)
+		fmt.Print("SLEEPING #")
+		for {
+			fmt.Print("#")
+			time.Sleep(time.Second * 2)
+			if r.controlLine != nil {
+				break
+			}
+		}
+
 	}
 
 	return r.controlLine.process(ev)
