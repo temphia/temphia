@@ -10,6 +10,9 @@ import (
 	"github.com/temphia/temphia/code/executors/re/rtypes"
 )
 
+// FIXME => bindingsLine could leak/open forever even event is processed
+// its better not to dependent on remote exec process to close conn properly
+
 type bindingsLine struct {
 	runner *Runner
 	closed bool
@@ -36,11 +39,18 @@ func (c *bindingsLine) readLoop() {
 	mipc := modipc.NewModIPC(&c.bipc)
 
 	for {
+
+		if c.closed {
+			return
+		}
+
 		decoder := json.NewDecoder(c.conn)
 		packet := &rtypes.Packet{}
 
 		err := decoder.Decode(packet)
 		if err != nil {
+			c.closed = true
+			close(c.writeChan)
 			return
 		}
 
@@ -87,7 +97,16 @@ func (c *bindingsLine) writeLoop() {
 
 	for {
 
-		wmsg := <-c.writeChan
+		if c.closed {
+			return
+		}
+
+		wmsg, ok := <-c.writeChan
+		if !ok {
+			c.closed = true
+			c.conn.Close()
+			return
+		}
 
 		packet := &rtypes.Packet{
 			Id:   wmsg.id,
