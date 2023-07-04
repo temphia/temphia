@@ -18,6 +18,8 @@ type CLI struct {
 }
 
 func RunMain() {
+	pp.WithLineInfo = true
+
 	cli := &CLI{}
 	ctx := kong.Parse(cli)
 
