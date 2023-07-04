@@ -31,7 +31,7 @@ func (b *Builder) Instance(opts etypes.ExecutorOption) (etypes.Executor, error) 
 }
 
 func (b *Builder) ExecFile(file string) ([]byte, error) {
-	return nil, nil
+	return []byte(""), nil
 }
 
 func (b *Builder) IfaceFile() (*etypes.ExecutorIface, error) {

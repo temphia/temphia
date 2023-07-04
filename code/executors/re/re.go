@@ -3,6 +3,7 @@ package re
 // re stands for Remote Executor.
 
 import (
+	"fmt"
 	"net"
 	"os"
 	"os/exec"
@@ -27,6 +28,10 @@ type Runner struct {
 	token     string
 	entryFile string
 
+	tenantId string
+	plugId   string
+	agentId  string
+
 	rootBinding bindx.Core
 
 	controlLine *controlLine
@@ -45,6 +50,9 @@ func New(opts Options, eopts etypes.ExecutorOption) *Runner {
 	r := &Runner{
 		opts:        opts,
 		token:       tok,
+		tenantId:    eopts.TenantId,
+		plugId:      eopts.PlugId,
+		agentId:     eopts.AgentId,
 		controlLine: nil,
 		clineLock:   sync.Mutex{},
 		rootBinding: eopts.Binder.Clone(),
@@ -55,25 +63,25 @@ func New(opts Options, eopts etypes.ExecutorOption) *Runner {
 }
 
 func (r *Runner) Init() error {
-
-	// ExRunner
-
 	tdir, err := os.MkdirTemp("", "temphia_runner_*")
 	if err != nil {
 		return err
 	}
 
-	r.opts.BootstrapFunc(rtypes.BootstrapContext{
+	err = r.opts.BootstrapFunc(rtypes.BootstrapContext{
 		Folder:   tdir,
-		TenantId: "",
-		PlugId:   "",
-		AgentId:  "",
+		TenantId: r.tenantId,
+		PlugId:   r.plugId,
+		AgentId:  r.agentId,
 		File:     r.entryFile,
 		GetFile: func(name string) ([]byte, error) {
 			out, _, err := r.rootBinding.GetFileWithMeta(name)
 			return out, err
 		},
 	})
+	if err != nil {
+		return err
+	}
 
 	err = r.startServer()
 	if err != nil {
@@ -83,6 +91,14 @@ func (r *Runner) Init() error {
 	actualcmd := strings.Split(r.opts.Runcmd, " ")
 
 	runcmd := exec.Command(actualcmd[0], actualcmd[1:]...)
+
+	runcmd.Env = append(runcmd.Env,
+		fmt.Sprintf("TEMPHIA_REMOTE_PORT=%d", 1234),
+		fmt.Sprintf("TEMPHIA_TOKEN=%s", r.token),
+		fmt.Sprintf("TEMPHIA_TENANT_ID=%s", r.tenantId),
+		fmt.Sprintf("TEMPHIA_PLUG_ID=%s", r.plugId),
+		fmt.Sprintf("TEMPHIA_AGENT_ID=%s", r.agentId),
+	)
 
 	err = runcmd.Run()
 	if err != nil {
