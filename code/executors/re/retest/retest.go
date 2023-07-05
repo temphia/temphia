@@ -1,4 +1,4 @@
-package main
+package retest
 
 import (
 	"archive/zip"
@@ -6,15 +6,17 @@ import (
 	"io"
 	"os"
 	"path"
+	"testing"
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
 	"github.com/temphia/temphia/code/executors/re"
 	"github.com/temphia/temphia/code/executors/re/langs/python"
 )
 
-func main() {
+func TestRe(t *testing.T) {
 
 	builder := re.NewBuilder("re_python", "bash start.sh", python.BootstrapProject)
 
@@ -69,4 +71,18 @@ func getTestZip() ([]byte, error) {
 
 	return buf.Bytes(), nil
 
+}
+
+type MB struct {
+	bindx.Bindings
+}
+
+func (m *MB) GetFileWithMeta(file string) (data []byte, version int64, err error) {
+	out, err := getTestZip()
+	return out, 0, err
+}
+
+func (m *MB) Clone() bindx.Core {
+
+	return m
 }
