@@ -27,6 +27,11 @@ func (b *Builder) Instance(opts etypes.ExecutorOption) (etypes.Executor, error) 
 		Runcmd:        b.runcmd,
 	}, opts)
 
+	err := runner.Init()
+	if err != nil {
+		return nil, err
+	}
+
 	return runner, nil
 }
 

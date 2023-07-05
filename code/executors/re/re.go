@@ -11,6 +11,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
@@ -88,6 +89,8 @@ func (r *Runner) Init() error {
 		return err
 	}
 
+	go r.acceptLoop()
+
 	actualcmd := strings.Split(r.opts.Runcmd, " ")
 
 	runcmd := exec.Command(actualcmd[0], actualcmd[1:]...)
@@ -100,14 +103,26 @@ func (r *Runner) Init() error {
 		fmt.Sprintf("TEMPHIA_AGENT_ID=%s", r.agentId),
 	)
 
-	err = runcmd.Run()
-	if err != nil {
+	runcmd.Stderr = os.Stderr
+	runcmd.Stdout = os.Stdout
+	runcmd.Dir = tdir
+
+	errchan := make(chan error)
+
+	go func() {
+		err = runcmd.Run()
+		if err != nil {
+			errchan <- err
+		}
+	}()
+
+	select {
+	case <-time.After(time.Second * 2):
+		return err
+	case err = <-errchan:
 		return err
 	}
 
-	go r.acceptLoop()
-
-	return nil
 }
 
 func (r *Runner) Close() error {
@@ -115,6 +130,8 @@ func (r *Runner) Close() error {
 }
 
 func (r *Runner) Process(ev *event.Request) (*event.Response, error) {
+
+	pp.Println("@CTRL_LINE")
 
 	if r.controlLine == nil {
 		fmt.Print("SLEEPING #")
@@ -127,6 +144,8 @@ func (r *Runner) Process(ev *event.Request) (*event.Response, error) {
 		}
 
 	}
+
+	pp.Println("@CTRL_LINE")
 
 	return r.controlLine.process(ev)
 }

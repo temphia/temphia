@@ -24,15 +24,16 @@ class ActionContext:
 
 class ActionRouter:
     def __init__(self):
-        self.port = os.getenv("TEMPHIA_REMOTE_PORT")
+        self.port = os.getenv("TEMPHIA_REMOTE_PORT") or "1234"
         self.tenant_id = os.getenv("TEMPHIA_TENANT_ID")
         self.plug_id = os.getenv("TEMPHIA_PLUG_ID")
         self.agent_id = os.getenv("TEMPHIA_AGENT_ID")
         self.token = os.getenv("TEMPHIA_TOKEN")
-        print("___INIT___")
+
+        print(self.port, self.tenant_id, self.plug_id, self.agent_id, self.token)
 
         self.actions = {}
-    def register_action(name, action):
+    def register_action(self, name, action):
         self.actions[name] = action
     def run(self):
         asyncio.run(self.__run__())
@@ -41,12 +42,12 @@ class ActionRouter:
         self.reader, self.writer = await asyncio.open_connection('localhost', int(self.port))
 
         auth_data = json.dumps({
-            "type": "preform_auth",
+            "type": "control_auth",
             "token": self.token,
         })
 
         self.writer.write(auth_data.encode())
-        self.writer.drain()
+        await self.writer.drain()
 
 
         tasks = []
@@ -54,12 +55,15 @@ class ActionRouter:
             data = await self.reader.readline()
             if not data:
                 break
+            
+            print(data)
+
             message = data.decode().strip()            
             tasks.append(self.__handle_message__(message))
         await asyncio.gather(*tasks)  # Await all response tasks concurrently
         self.writer.close()
 
-    async def __handle_message__(self):
+    async def __handle_message__(self, message):
         try:
             data = json.loads(message)
             action_type = data.get("action_type")
@@ -77,6 +81,7 @@ class ActionRouter:
             pass
 
 
-router = ActionRouter()
-router.run()
+if __name__ == "__main__":
+    router = ActionRouter()
+    router.run()
 

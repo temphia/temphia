@@ -28,7 +28,7 @@ func TestRe(t *testing.T) {
 		File:     "main.py.zip",
 	})
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 
 	resp, err := exec.Process(&event.Request{
@@ -37,7 +37,7 @@ func TestRe(t *testing.T) {
 		Data: []byte(`{}`),
 	})
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 
 	pp.Println("@final", string(resp.Payload))
@@ -51,6 +51,8 @@ func getTestZip() ([]byte, error) {
 	defer z.Close()
 
 	for _, fk := range []string{"main.py", "start.sh"} {
+
+		pp.Println(os.Getwd())
 
 		rfile, err := os.Open(path.Join("testdata", fk))
 		if err != nil {
@@ -68,6 +70,8 @@ func getTestZip() ([]byte, error) {
 			return nil, err
 		}
 	}
+
+	z.Close()
 
 	return buf.Bytes(), nil
 

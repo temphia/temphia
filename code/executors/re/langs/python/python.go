@@ -15,10 +15,10 @@ import (
 	"github.com/temphia/temphia/code/executors/re/rtypes"
 )
 
-// go:embed lib.py
+//go:embed lib.py
 var Lib []byte
 
-// go:embed bootstrap.sh
+//go:embed bootstrap.sh
 var Bootstrap []byte
 
 func BootstrapProject(ctx rtypes.BootstrapContext) error {
@@ -37,12 +37,12 @@ func BootstrapProject(ctx rtypes.BootstrapContext) error {
 
 	// chmod +x bootstrap.sh ?
 
-	err = os.WriteFile(bfile, Bootstrap, 0766)
+	err = os.WriteFile(bfile, Bootstrap, 0777)
 	if err != nil {
 		return err
 	}
 
-	err = os.WriteFile(path.Join(ctx.Folder, "action_router.py"), Lib, 0766)
+	err = os.WriteFile(path.Join(ctx.Folder, "action_router.py"), Lib, 0777)
 	if err != nil {
 		return err
 	}
@@ -67,7 +67,7 @@ func BootstrapProject(ctx rtypes.BootstrapContext) error {
 
 func unzip(src []byte, dest string) error {
 	r, err := zip.NewReader(bytes.NewReader(src), int64(len(src)))
-	if err == nil {
+	if err != nil {
 		return err
 	}
 

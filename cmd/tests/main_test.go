@@ -2,6 +2,7 @@ package tests
 
 import (
 	"os"
+	"path"
 	"testing"
 
 	"github.com/k0kubun/pp"
@@ -28,10 +29,10 @@ func TestDummyTest(t *testing.T) {
 }
 
 func TestRemoteExecutor(t *testing.T) {
-	WithPath("code/executors/re", t)(retest.TestRe)
+	WithPath("../../code/executors/re", t)(retest.TestRe)
 }
 
-func WithPath(path string, t *testing.T) func(func(t *testing.T)) {
+func WithPath(p string, t *testing.T) func(func(t *testing.T)) {
 	return func(f func(t *testing.T)) {
 
 		dir, err := os.Getwd()
@@ -39,9 +40,16 @@ func WithPath(path string, t *testing.T) func(func(t *testing.T)) {
 			t.Fatal("COULD NOT GET WORKING DIR PATH", err)
 		}
 
-		os.Chdir(path)
+		err = os.Chdir(path.Join(dir, p))
+		if err != nil {
+			t.Fatal(err)
+		}
+
 		f(t)
-		os.Chdir(dir)
+		err = os.Chdir(dir)
+		if err != nil {
+			t.Fatal(err)
+		}
 
 	}
 }

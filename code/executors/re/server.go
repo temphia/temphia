@@ -9,6 +9,7 @@ import (
 )
 
 func (r *Runner) startServer() error {
+	pp.WithLineInfo = true
 
 	// fixme => dynamic port
 
@@ -46,6 +47,8 @@ func (r *Runner) acceptLoop() {
 		}
 
 		data := buffer[:bytesRead]
+
+		pp.Println(string(data))
 
 		mtype := gjson.GetBytes(data, "type").String()
 		mtoken := gjson.GetBytes(data, "token").String()
