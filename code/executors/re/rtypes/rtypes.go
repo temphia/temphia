@@ -3,9 +3,10 @@ package rtypes
 import "encoding/json"
 
 type Packet struct {
-	Id   string
-	Type string // proto.go
-	Data json.RawMessage
+	Id   string          `json:"id,omitempty"`
+	Name string          `json:"name,omitempty"`
+	Type string          `json:"type,omitempty"` // proto.go
+	Data json.RawMessage `json:"data,omitempty"`
 }
 
 type BootstrapContext struct {

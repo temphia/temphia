@@ -29,6 +29,7 @@ class ActionRouter:
         self.plug_id = os.getenv("TEMPHIA_PLUG_ID")
         self.agent_id = os.getenv("TEMPHIA_AGENT_ID")
         self.token = os.getenv("TEMPHIA_TOKEN")
+        self.bind_conns = {}
 
         print(self.port, self.tenant_id, self.plug_id, self.agent_id, self.token)
 
@@ -37,6 +38,21 @@ class ActionRouter:
         self.actions[name] = action
     def run(self):
         asyncio.run(self.__run__())
+
+
+    async def _run_client_conn(self, id):
+        self.reader, self.writer = await asyncio.open_connection('localhost', int(self.port))
+        auth_data = json.dumps({
+            "type": "bind_auth",
+            "token": self.token,
+        })
+
+        self.writer.write(auth_data.encode())
+        await self.writer.drain()
+        
+        self.bind_conns[id] = (reader, writer)
+
+
 
     async def __run__(self):
         self.reader, self.writer = await asyncio.open_connection('localhost', int(self.port))
@@ -52,36 +68,50 @@ class ActionRouter:
 
         tasks = []
         while True:
+            print("@PY", "waiting")
+
             data = await self.reader.readline()
             if not data:
                 break
             
-            print(data)
 
             message = data.decode().strip()            
+            
+            print("@PY", message)
+
+            self.__handle_message__(message)
+
             tasks.append(self.__handle_message__(message))
+
         await asyncio.gather(*tasks)  # Await all response tasks concurrently
         self.writer.close()
 
     async def __handle_message__(self, message):
+        print("@handle_message", message)
+
         try:
             data = json.loads(message)
-            action_type = data.get("action_type")
-            if action_type in actions:
-                response = await actions[action_type](data)
+            name = data.get("name")
+            if name in actions:
+                response = await actions[name](data)
                 response_message = json.dumps(response)
                 self.writer.write(response_message.encode())
                 await self.writer.drain()
             else:
-                print("Unknown action type:", action_type)
+                print("Unknown action type:", name)
         except json.JSONDecodeError as e:
             print("Failed to decode JSON message:", e)
         except Exception as e:
             print("Error processing message:", e)
             pass
 
+async def hello_world(param):
+    return "PONG"
+
+
 
 if __name__ == "__main__":
     router = ActionRouter()
+    router.register_action("ping", hello_world)
     router.run()
 

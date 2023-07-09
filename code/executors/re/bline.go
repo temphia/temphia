@@ -119,6 +119,7 @@ func (c *bindingsLine) writeLoop() {
 		}
 
 		c.conn.Write(out)
+		c.conn.Write([]byte("\n"))
 
 	}
 

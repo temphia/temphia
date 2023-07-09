@@ -2,7 +2,6 @@ package re
 
 import (
 	"encoding/json"
-	"fmt"
 	"net"
 
 	"github.com/k0kubun/pp"
@@ -75,8 +74,11 @@ func (r *controlLine) writeLoop() {
 
 		select {
 		case ev := <-r.eventChan:
+			pp.Println("@NEW_EVENT")
+
 			r.pendingEvents[ev.id] = ev.resp
 			r.conn.Write(ev.packetData)
+			r.conn.Write([]byte("\n"))
 		case rmsg := <-r.respChan:
 			rchan := r.pendingEvents[rmsg.id]
 			delete(r.pendingEvents, rmsg.id)
@@ -91,6 +93,7 @@ func (r *controlLine) process(ev *event.Request) (*event.Response, error) {
 
 	packet := rtypes.Packet{
 		Id:   ev.Id,
+		Name: ev.Name,
 		Type: rtypes.EVENT_PROCESS,
 		Data: ev.Data,
 	}
@@ -101,9 +104,6 @@ func (r *controlLine) process(ev *event.Request) (*event.Response, error) {
 	}
 
 	rchan := make(chan []byte)
-
-	fmt.Println("@aaa", r)
-	pp.Println(r.eventChan)
 
 	r.eventChan <- struct {
 		resp       chan []byte
@@ -116,6 +116,8 @@ func (r *controlLine) process(ev *event.Request) (*event.Response, error) {
 	}
 
 	rdata := <-rchan
+
+	pp.Println("@RDATA", rdata)
 
 	return &event.Response{
 		Payload: rdata,
