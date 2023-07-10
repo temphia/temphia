@@ -23,3 +23,6 @@
     temphia
     nsjail
     firefox
+    deno/bun
+    python
+    wasix/wasmer
