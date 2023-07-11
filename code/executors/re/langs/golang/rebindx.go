@@ -8,6 +8,7 @@ import (
 	"net"
 	"sync"
 
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 	"github.com/temphia/temphia/code/executors/re/rtypes"
 )
 
@@ -37,6 +38,8 @@ func (r *ReBindx) init() error {
 	if err != nil {
 		log.Fatalf("Failed to connect to parent process: %v", err)
 	}
+
+	// fixme => send auth
 
 	r.conn = conn
 
@@ -121,15 +124,74 @@ func (r *ReBindx) sendPacket2(pkt *rtypes.Packet) error {
 
 // bindings
 
+var unitByte = []byte("{}")
+
 func (r *ReBindx) Log(msg string) {
 
 	data, _ := json.Marshal(msg)
 
 	r.sendPacket2(&rtypes.Packet{
-		Id:   "",
-		Name: "bindx_log",
+		Name: "Log",
 		Type: r.btype,
 		Data: data,
 	})
 
 }
+
+func (r *ReBindx) InLinks() ([]bindx.Link, error) {
+
+	out, err := r.sendPacket(&rtypes.Packet{
+		Name: "InLinks",
+		Type: r.btype,
+		Data: unitByte,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	resp := []bindx.Link{}
+
+	err = json.Unmarshal(out.Data, &resp)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (r *ReBindx) OutLinks() ([]bindx.Link, error) {
+	out, err := r.sendPacket(&rtypes.Packet{
+		Name: "OutLinks",
+		Type: r.btype,
+		Data: unitByte,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	resp := []bindx.Link{}
+
+	err = json.Unmarshal(out.Data, &resp)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+/*
+
+	GetFileWithMeta(file string) (data []byte, version int64, err error)
+
+	ListResources() ([]*Resource, error)
+	GetResource(name string) (*Resource, error)
+
+	LinkExec(name, method string, data xtypes.LazyData) (xtypes.LazyData, error)
+	LinkExecEmit(name, method string, data xtypes.LazyData) error
+
+	NewModule(name string, data xtypes.LazyData) (int32, error)
+	ModuleTicket(name string, opts xtypes.LazyData) (string, error)
+	ModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error)
+	ForkExec(method string, data []byte) error
+
+*/

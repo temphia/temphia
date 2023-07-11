@@ -44,6 +44,8 @@ func (r *ReRouter) Init() error {
 
 	r.mainConn = conn
 
+	// fixme => do auth
+
 	go r.readLoop()
 
 	return nil

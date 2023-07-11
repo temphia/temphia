@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/temphia/temphia/code/executors/re/reclient"
+	reclient "github.com/temphia/temphia/code/executors/re/langs/golang"
 )
 
 func main() {
