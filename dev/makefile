@@ -21,16 +21,4 @@ backend_build:
 	cd .. && go build -o build/temphia-cli $(GOFLAGS) .
 build_all: frontend_build frontend_copy_files backend_build
 
-install_cli:
-	cp ../build/temphia-cli ~/.bin
-backup_cli:
-	cp ../build/temphia-cli ~/Desktop/temphia_run
-
-list_tests:
-	cd ../cmd/tests && go test -v *.go  -args list_tests
-run_tests:
-	cd ../cmd/tests && go test -v *.go
-run_some_tests:
-	cd ../cmd/tests && go test -v *.go -run $(ARGS)
-
 .PHONY: check docker_run server_run frontend_build frontend_copy_files backend_build build_all install_cli backup_cli
