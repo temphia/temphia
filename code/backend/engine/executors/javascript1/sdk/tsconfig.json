@@ -1,9 +1,0 @@
-{
-  "include": ["./lib/**/*"],
-  "exclude": ["node_modules/*"],
-  "compilerOptions": {
-    "target": "ES5",
-    "declaration": true,
-    "outDir": "build/lib"
-  },
-}
