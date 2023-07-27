@@ -6,7 +6,7 @@ type AppConfig struct {
 	RootDomain      string       `json:"root_domain,omitempty"`
 	RunnerDomain    string       `json:"runner_domain,omitempty"`
 	MasterKey       string       `json:"master_key,omitempty"`
-	EnableLocalDoor string       `json:"enable_local_door,omitempty"`
+	EnableLocalDoor bool         `json:"enable_local_door,omitempty"`
 	DataFolder      string       `json:"data_folder,omitempty"`
 	DatabaseConfig  *StoreConfig `json:"database_config,omitempty"`
 	FileStoreConfig *StoreConfig `json:"filestore_config,omitempty"`
