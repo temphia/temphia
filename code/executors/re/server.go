@@ -54,9 +54,12 @@ func (r *Runner) acceptLoop() {
 		mtoken := gjson.GetBytes(data, "token").String()
 
 		noAuthFunc := func() {
-			conn.Write([]byte(`401: bad auth`))
+			pp.Println("@writing_auth_bad")
+			conn.Write([]byte(`{"status": "401: bad auth"}`))
 			conn.Close()
 		}
+
+		pp.Println("@type", mtype)
 
 		switch mtype {
 		case "control_auth":

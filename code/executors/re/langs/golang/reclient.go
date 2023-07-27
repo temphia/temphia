@@ -1,7 +1,6 @@
 package reclient
 
 import (
-	"bufio"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -44,9 +43,12 @@ func (r *ReRouter) Init() error {
 
 	r.mainConn = conn
 
+	conn.Write([]byte(`{"token": "superman", "type": "control_auth"}`))
+	conn.Write([]byte("\n"))
+
 	// fixme => do auth
 
-	go r.readLoop()
+	r.readLoop()
 
 	return nil
 }
@@ -64,17 +66,14 @@ func (r *ReRouter) Close() error {
 }
 
 func (r *ReRouter) readLoop() {
-	reader := bufio.NewReader(r.mainConn)
+
+	jd := json.NewDecoder(r.mainConn)
 
 	for {
-		out, err := reader.ReadBytes('\n')
-		if err != nil {
-			log.Println("Error", err)
-			continue
-		}
 
 		pkt := &rtypes.Packet{}
-		err = json.Unmarshal(out, pkt)
+
+		err := jd.Decode(pkt)
 		if err != nil {
 			log.Println("Error", err)
 			continue
