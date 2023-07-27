@@ -1,0 +1,1 @@
+-- this should reflect schema after all migration is applied
