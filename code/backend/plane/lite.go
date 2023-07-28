@@ -1,7 +1,6 @@
 package plane
 
 import (
-	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/plane/idservice"
 	"github.com/temphia/temphia/code/backend/plane/msgbus"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/job"
@@ -39,8 +38,6 @@ func (p *PlaneLite) Start() error {
 	go p.msgbus.Start()
 	return nil
 }
-
-func (p *PlaneLite) Inject(iapp interface{}, config *config.Config) error { return nil }
 
 // liveness and status stuff
 

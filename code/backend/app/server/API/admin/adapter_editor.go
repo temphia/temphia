@@ -1,7 +1,6 @@
 package apiadmin
 
 import (
-	"io"
 	"strconv"
 	"time"
 
@@ -45,7 +44,7 @@ func (a *ApiAdmin) adapterSelfUpdate(aclaim *claim.AdapterEditor, ctx *gin.Conte
 }
 
 func (a *ApiAdmin) adapterReset(aclaim *claim.AdapterEditor, ctx *gin.Context) {
-	a.notz.Reset(aclaim.TenantId, aclaim.AdapterId)
+	// a.notz.Reset(aclaim.TenantId, aclaim.AdapterId)
 	time.Sleep(time.Second * 5)
 }
 
@@ -141,27 +140,28 @@ func (a *ApiAdmin) adapterDeleteHook(aclaim *claim.AdapterEditor, ctx *gin.Conte
 }
 
 func (a *ApiAdmin) adapterPreformAction(aclaim *claim.AdapterEditor, ctx *gin.Context) {
-	out, err := io.ReadAll(ctx.Request.Body)
-	if err != nil {
-		httpx.WriteErr(ctx, err)
-		return
-	}
+	/*	out, err := io.ReadAll(ctx.Request.Body)
+		if err != nil {
+			httpx.WriteErr(ctx, err)
+			return
+		}
 
-	uctx := &claim.UserContext{
-		UserID:    aclaim.UserID,
-		UserGroup: aclaim.UserGroup,
-		SessionID: aclaim.SessionID,
-		DeviceId:  aclaim.DeviceId,
-	}
+		uctx := &claim.UserContext{
+			UserID:    aclaim.UserID,
+			UserGroup: aclaim.UserGroup,
+			SessionID: aclaim.SessionID,
+			DeviceId:  aclaim.DeviceId,
+		}
 
-	resp, err := a.notz.PreformEditorAction(httpx.AdapterEditorContext{
-		Id:   aclaim.AdapterId,
-		User: uctx,
-		Name: ctx.Param("name"),
-		Data: out,
-	})
+		resp, err := a.notz.PreformEditorAction(httpx.AdapterEditorContext{
+			Id:   aclaim.AdapterId,
+			User: uctx,
+			Name: ctx.Param("name"),
+			Data: out,
+		})
 
-	httpx.WriteJSON(ctx, resp, err)
+		httpx.WriteJSON(ctx, resp, err)
+	*/
 
 }
 

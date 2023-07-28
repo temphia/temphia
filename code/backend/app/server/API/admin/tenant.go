@@ -112,7 +112,7 @@ func (a *ApiAdmin) domainIssueAdapterEditor(ctx httpx.Request) {
 }
 
 func (a *ApiAdmin) domainAdapterReset(ctx httpx.Request) {
-	a.notz.Reset(ctx.Session.TenantId, ctx.MustParamInt("id"))
+	// a.notz.Reset(ctx.Session.TenantId, ctx.MustParamInt("id"))
 }
 
 // system kv

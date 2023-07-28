@@ -2,9 +2,8 @@ package apiadmin
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/backend/app/server/API/tickets"
 	"github.com/temphia/temphia/code/backend/app/server/middleware"
-	"github.com/temphia/temphia/code/backend/app/server/notz"
-	"github.com/temphia/temphia/code/backend/app/server/tickets"
 	"github.com/temphia/temphia/code/backend/controllers/admin"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
@@ -13,18 +12,18 @@ import (
 type Options struct {
 	Admin      *admin.Controller
 	MiddleWare *middleware.Middleware
-	Notz       *notz.Notz
-	Signer     service.Signer
-	TicketAPI  *tickets.TicketAPI
+	//	Notz       *notz.Notz
+	Signer    service.Signer
+	TicketAPI *tickets.TicketAPI
 }
 
 type ApiAdmin struct {
 	rutil      httpx.Rutil
 	cAdmin     *admin.Controller
 	middleware *middleware.Middleware
-	notz       *notz.Notz
-	signer     service.Signer
-	ticketAPI  *tickets.TicketAPI
+	//	notz       *notz.Notz
+	signer    service.Signer
+	ticketAPI *tickets.TicketAPI
 }
 
 func New(opts Options) ApiAdmin {
@@ -32,9 +31,9 @@ func New(opts Options) ApiAdmin {
 		rutil:      httpx.Rutil{},
 		cAdmin:     opts.Admin,
 		middleware: opts.MiddleWare,
-		notz:       opts.Notz,
-		signer:     opts.Signer,
-		ticketAPI:  opts.TicketAPI,
+		//		notz:       opts.Notz,
+		signer:    opts.Signer,
+		ticketAPI: opts.TicketAPI,
 	}
 }
 
