@@ -1,12 +1,6 @@
 package agent
 
-import "net/http"
-
 // /z/agent_auth
-
-type AgentServer interface {
-	Handle(w http.ResponseWriter, req *http.Request)
-}
 
 type Agent struct {
 	Id                string         `json:"id,omitempty" db:"id,omitempty"`
