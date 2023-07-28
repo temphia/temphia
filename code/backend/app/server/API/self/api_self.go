@@ -14,7 +14,7 @@ import (
 	"github.com/temphia/temphia/code/backend/controllers/engine"
 	"github.com/temphia/temphia/code/backend/controllers/sockd"
 	"github.com/temphia/temphia/code/backend/controllers/user"
-	"github.com/temphia/temphia/code/backend/services/sockdhub/transports"
+	"github.com/temphia/temphia/code/backend/services/sockd/transports"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service"

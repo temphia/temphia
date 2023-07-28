@@ -1,0 +1,12 @@
+{
+    "room": "room1",
+    "type": "cp2p_msg",
+    "xid": "c6mvmdtmecalh1gflkk0",
+    "from_id": "t1",
+    "server_ident": "",
+    "ticket": "hwiud0192ohe09eyo2ih",
+    "targets": [
+        "t2"
+    ],
+    "payload": "hello to blues"
+}
