@@ -1,0 +1,29 @@
+package admin
+
+import (
+	"github.com/temphia/temphia/code/backend/xtypes/logx"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/scopes"
+)
+
+type LogQuery struct {
+	From    string            `json:"from,omitempty"`
+	To      string            `json:"to,omitempty"`
+	Filters map[string]string `json:"filters,omitempty"`
+	Cursor  string            `json:"cursor,omitempty"`
+	Count   int               `json:"count,omitempty"`
+}
+
+func (c *Controller) LensQuery(uclaim *claim.Session, query LogQuery) ([]logx.Log, error) {
+	if !c.HasScope(uclaim, "engine") {
+		return nil, scopes.ErrNoAdminLensScope
+	}
+
+	return c.log.Query(uclaim.TenantId, logx.QueryRequest{
+		From:    query.From,
+		To:      query.To,
+		Cursor:  query.Cursor,
+		Filters: query.Filters,
+		Count:   query.Count,
+	})
+}
