@@ -32,7 +32,7 @@ type Store interface {
 }
 
 type BuilderOptions struct {
-	Config     *config.StoreSource
+	Config     *config.StoreConfig
 	LogBuilder func() zerolog.Logger
 }
 
