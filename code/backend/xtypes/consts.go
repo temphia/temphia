@@ -14,7 +14,7 @@ const (
 )
 
 const (
-	TEMPHIA_VER_MIN = 2
+	TEMPHIA_VER_MIN = 3
 	TEMPHIA_VER_MAX = 0
 )
 
