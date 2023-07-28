@@ -5,24 +5,22 @@ import (
 	"sync"
 )
 
-type agentState struct {
-	webFiles       map[string]string
-	spaConfig      any
-	ssrConfig      any
-	templateConfig any
-}
-
 type AgentServer struct {
-	agents map[string]any
+	agents map[string]*agentState
 	aLock  sync.RWMutex
 }
 
 type AgentRequest struct {
 	ResponseWriter http.ResponseWriter
 	Request        *http.Request
+	TenantId       string
+	PlugId         string
+	AgentId        string
 	DomainId       int64
 }
 
 func (a *AgentServer) Render(ctx AgentRequest) {
 
 }
+
+// /z/agent_auth
