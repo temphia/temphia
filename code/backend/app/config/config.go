@@ -1,6 +1,6 @@
 package config
 
-type AppConfig struct {
+type Config struct {
 	ServerPort      string       `json:"server_port,omitempty"`
 	TenantId        string       `json:"tenant_id,omitempty"`
 	RootDomain      string       `json:"root_domain,omitempty"`

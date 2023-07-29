@@ -9,15 +9,22 @@ type Options struct {
 }
 
 type Server struct {
-	opts Options
+	opts     Options
+	duckMode bool
 }
 
 func New(opts Options) *Server {
 	return &Server{
-		opts: opts,
+		opts:     opts,
+		duckMode: true,
 	}
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	if s.duckMode {
+		return
+	}
 
 }
+
+//  /z/extension/<name>

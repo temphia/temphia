@@ -45,7 +45,6 @@ func NewFactory(opts FactoryOptions) Factory {
 		Pacman:         appdeps.RepoHub().(repox.Hub),
 		Corehub:        appdeps.CoreHub().(store.CoreHub),
 		CabinetHub:     appdeps.Cabinet().(store.CabinetHub),
-		NodeCache:      appdeps.NodeCache().(service.NodeCache),
 		PlugKV:         appdeps.PlugKV().(store.PlugStateKV),
 		Runtime:        opts.Runtime,
 		ExecBuilders:   opts.ExecBuilders,

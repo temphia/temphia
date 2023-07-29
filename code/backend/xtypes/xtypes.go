@@ -52,7 +52,6 @@ type Deps interface {
 	SockdHub() any
 	RepoHub() any
 	Extensions() any
-	NodeCache() any
 	Signer() any
 }
 

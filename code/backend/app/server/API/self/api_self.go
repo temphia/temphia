@@ -6,7 +6,7 @@ import (
 
 	"github.com/bwmarrin/snowflake"
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/backend/app/server/middleware"
+	"github.com/temphia/temphia/code/backend/app/server/API/middleware"
 	"github.com/temphia/temphia/code/backend/controllers"
 	"github.com/temphia/temphia/code/backend/controllers/basic"
 	"github.com/temphia/temphia/code/backend/controllers/cabinet"
