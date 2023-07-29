@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/backend/app/server"
 	"github.com/temphia/temphia/code/backend/controllers"
 	enginehub "github.com/temphia/temphia/code/backend/hub/engine"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
@@ -42,7 +43,16 @@ func (b *Builder) buildServer() error {
 		App: b.app,
 	})
 
-	b.app.deps.server = nil
+	server := server.New(server.Options{
+		RootDomain:     b.config.RootDomain,
+		RunnerDomain:   b.config.RunnerDomain,
+		App:            b.app,
+		GinEngine:      b.ginEngine,
+		RootController: b.app.deps.croot,
+		Port:           b.config.ServerPort,
+	})
+
+	b.app.deps.server = server
 
 	return nil
 }

@@ -22,6 +22,7 @@ type Builder struct {
 }
 
 func NewBuilder() *Builder {
+
 	return &Builder{
 		extHandle: newHandle(),
 		app: &App{
@@ -72,9 +73,4 @@ func (b *Builder) GetApp() xtypes.App {
 
 func (b *Builder) SetMode(dev bool) {
 	b.app.devmode = dev
-}
-
-func (b *Builder) SetSingleTenant(tenantId string) {
-	b.app.singleTenantMode = true
-	b.app.tenantIds = []string{tenantId}
 }

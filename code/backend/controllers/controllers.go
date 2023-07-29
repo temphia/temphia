@@ -44,9 +44,7 @@ type RootController struct {
 }
 
 type Options struct {
-	App              xtypes.App
-	OperatorUser     string
-	OperatorPassword string
+	App xtypes.App
 }
 
 func New(opts Options) *RootController {

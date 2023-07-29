@@ -131,14 +131,6 @@ func (r *runtime) getNS(tenantId string, create bool) *ns {
 		return ns
 	}
 
-	if r.app.SingleTenant() && tenantId != r.app.StaticTenants()[0] {
-		panic("Wrong Tenant")
-	}
-
-	if !create {
-		return nil
-	}
-
 	ns = r.newNs(tenantId)
 	r.ns[tenantId] = ns
 

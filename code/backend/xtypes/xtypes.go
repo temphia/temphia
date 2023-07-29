@@ -28,8 +28,7 @@ type App interface {
 	ClusterId() string
 	DevMode() bool
 
-	SingleTenant() bool
-	StaticTenants() []string
+	TenantId() string
 
 	GetDeps() Deps
 	GetServer() Server
