@@ -118,6 +118,18 @@ func (s *Server) Close() error {
 }
 
 func (s *Server) BuildRoutes() error {
+
+	if s.opts.GinEngine == nil {
+
+		s.opts.GinEngine = gin.New()
+		gin.SetMode(gin.DebugMode)
+
+		s.opts.GinEngine.Use(
+			s.middleware.Log,
+			gin.Recovery(),
+		)
+	}
+
 	s.buildRoutes()
 
 	return nil
