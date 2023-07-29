@@ -10,6 +10,7 @@ require (
 	github.com/dop251/goja v0.0.0-20230531210528-d7324b2d74f7
 	github.com/flosch/go-humanize v0.0.0-20140728123800-3ba51eabe506
 	github.com/gin-gonic/gin v1.9.1
+	github.com/hashicorp/golang-lru v0.5.4
 	github.com/jaevor/go-nanoid v1.3.0
 	github.com/k0kubun/pp v3.0.1+incompatible
 	github.com/lib/pq v1.10.9
@@ -21,13 +22,13 @@ require (
 	github.com/thoas/go-funk v0.9.3
 	github.com/upper/db/v4 v4.6.0
 	github.com/ztrue/tracerr v0.4.0
-	github.com/hashicorp/golang-lru v0.5.4
 )
 
 require (
 	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
 	github.com/dlclark/regexp2 v1.7.0 // indirect
+	github.com/dop251/goja_nodejs v0.0.0-20230727164059-07887644b3d4 // indirect
 	github.com/eknkc/basex v1.0.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
@@ -54,6 +55,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
+	github.com/tetratelabs/wazero v1.3.1 // indirect
 	github.com/tidwall/btree v1.4.2 // indirect
 	github.com/tidwall/buntdb v1.3.0 // indirect
 	github.com/tidwall/gjson v1.14.3 // indirect
@@ -73,5 +75,7 @@ require (
 	golang.org/x/text v0.11.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
+	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
