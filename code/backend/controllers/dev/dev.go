@@ -12,11 +12,11 @@ import (
 )
 
 type Controller struct {
-	pacman  repox.Hub
+	pacman  repox.Pacman
 	corehub store.CoreHub
 }
 
-func New(pacman repox.Hub, corehub store.CoreHub) *Controller {
+func New(pacman repox.Pacman, corehub store.CoreHub) *Controller {
 	return &Controller{
 		pacman:  pacman,
 		corehub: corehub,

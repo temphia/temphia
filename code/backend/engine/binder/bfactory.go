@@ -24,7 +24,7 @@ type Factory struct {
 	Corehub        store.CoreHub
 	CabinetHub     store.CabinetHub
 	Sockd          sockdx.SockdCore
-	Pacman         repox.Hub
+	Pacman         repox.Pacman
 	LoggerBase     zerolog.Logger
 	NodeCache      service.NodeCache
 	PlugKV         store.PlugStateKV
@@ -42,7 +42,7 @@ func NewFactory(opts FactoryOptions) Factory {
 
 		App:            opts.App,
 		Sockd:          appdeps.SockdHub().(sockdx.Hub).GetSockd(),
-		Pacman:         appdeps.RepoHub().(repox.Hub),
+		Pacman:         appdeps.RepoHub().(repox.Pacman),
 		Corehub:        appdeps.CoreHub().(store.CoreHub),
 		CabinetHub:     appdeps.Cabinet().(store.CabinetHub),
 		PlugKV:         appdeps.PlugKV().(store.PlugStateKV),

@@ -57,7 +57,7 @@ func New(opts Options) *RootController {
 	seq := cplane.GetIdService()
 
 	corehub := deps.CoreHub().(store.CoreHub)
-	pacman := deps.RepoHub().(repox.Hub)
+	pacman := deps.RepoHub().(repox.Pacman)
 	signer := deps.Signer().(service.Signer)
 	cab := deps.Cabinet().(store.CabinetHub)
 	dynhub := deps.DataHub().(dyndb.DataHub)

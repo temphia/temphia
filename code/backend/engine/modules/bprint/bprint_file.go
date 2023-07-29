@@ -10,7 +10,7 @@ import (
 type BprintMod struct {
 	tenantId string
 	bid      string
-	bhub     repox.Hub
+	bhub     repox.Pacman
 	modipc   *modipc.ModIPC
 }
 
@@ -78,7 +78,7 @@ func New(tenantId, bid string, app xtypes.App) *BprintMod {
 		tenantId: tenantId,
 		bid:      bid,
 		modipc:   nil,
-		bhub:     app.GetDeps().RepoHub().(repox.Hub),
+		bhub:     app.GetDeps().RepoHub().(repox.Pacman),
 	}
 
 	bm.modipc = modipc.NewModIPC(bm)

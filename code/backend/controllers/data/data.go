@@ -13,10 +13,10 @@ type Controller struct {
 	dynHub  dyndb.DataHub
 	cabHub  store.CabinetHub
 	signer  service.Signer
-	repoman repox.Hub
+	repoman repox.Pacman
 }
 
-func New(dhub dyndb.DataHub, repoman repox.Hub, cabHub store.CabinetHub, signer service.Signer) *Controller {
+func New(dhub dyndb.DataHub, repoman repox.Pacman, cabHub store.CabinetHub, signer service.Signer) *Controller {
 	return &Controller{
 		dynHub:  dhub,
 		cabHub:  cabHub,

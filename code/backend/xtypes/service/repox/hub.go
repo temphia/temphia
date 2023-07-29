@@ -6,7 +6,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
-type Hub interface {
+type Pacman interface {
 	Start() error
 
 	RepoCore

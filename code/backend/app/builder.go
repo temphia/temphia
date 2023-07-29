@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/app/registry"
+	"github.com/temphia/temphia/code/backend/stores"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
@@ -16,6 +17,8 @@ type Builder struct {
 	config    *config.Config
 	ginEngine *gin.Engine
 	extHandle *extHandle
+
+	sbuilder *stores.Builder
 }
 
 func NewBuilder() *Builder {
@@ -48,6 +51,10 @@ func (b *Builder) SetXplane(xp xplane.ControlPlane) {
 
 func (b *Builder) SetEngine(e *gin.Engine) {
 	b.ginEngine = e
+}
+
+func (b *Builder) SetStoreBuilder(sbuilder *stores.Builder) {
+	b.sbuilder = sbuilder
 }
 
 func (b *Builder) Build() error {

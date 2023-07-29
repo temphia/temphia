@@ -16,11 +16,11 @@ type Controller struct {
 	coredb  store.CoreHub
 	cabinet store.CabinetHub
 	dynHub  dyndb.DataHub
-	pacman  repox.Hub
+	pacman  repox.Pacman
 	signer  service.Signer
 }
 
-func New(coredb store.CoreHub, cabinet store.CabinetHub, dynHub dyndb.DataHub, pacman repox.Hub, sig service.Signer) *Controller {
+func New(coredb store.CoreHub, cabinet store.CabinetHub, dynHub dyndb.DataHub, pacman repox.Pacman, sig service.Signer) *Controller {
 	ctrl := &Controller{
 		coredb:  coredb,
 		cabinet: cabinet,

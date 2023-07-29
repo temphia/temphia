@@ -21,7 +21,7 @@ type Engine struct {
 	signer  service.Signer
 	syncer  store.SyncDB
 
-	pacman       repox.Hub
+	pacman       repox.Pacman
 	logger       zerolog.Logger
 	execbuilders map[string]etypes.ExecutorBuilder
 	modBuilders  map[string]etypes.ModuleBuilder
@@ -90,7 +90,7 @@ func (e *Engine) run() error {
 	e.runtime = runtime.New(e.app, e.logger)
 	e.signer = deps.Signer().(service.Signer)
 	e.syncer = deps.CoreHub().(store.SyncDB)
-	e.pacman = deps.RepoHub().(repox.Hub)
+	e.pacman = deps.RepoHub().(repox.Pacman)
 
 	e.execbuilders = e.app.GetGlobalVar().Get("executors").(map[string]etypes.ExecutorBuilder)
 	e.modBuilders = e.app.GetGlobalVar().Get("modules").(map[string]etypes.ModuleBuilder)

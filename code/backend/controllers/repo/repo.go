@@ -8,10 +8,10 @@ import (
 )
 
 type Controller struct {
-	pacman repox.Hub
+	pacman repox.Pacman
 }
 
-func New(pacman repox.Hub) *Controller {
+func New(pacman repox.Pacman) *Controller {
 	return &Controller{
 		pacman: pacman,
 	}

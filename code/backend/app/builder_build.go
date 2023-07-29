@@ -3,7 +3,9 @@ package app
 import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/controllers"
+	enginehub "github.com/temphia/temphia/code/backend/hub/engine"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/services/signer"
 )
 
 func (b *Builder) preCheck() error {
@@ -23,6 +25,14 @@ func (b *Builder) preCheck() error {
 
 	if b.config == nil {
 		return easyerr.Error("Empty Config")
+	}
+
+	if b.config.DatabaseConfig == nil {
+		return easyerr.Error("Empty Database Config")
+	}
+
+	if b.config.FileStoreConfig == nil {
+		return easyerr.Error("Empty File Config")
 	}
 
 	return nil
@@ -48,12 +58,12 @@ func (b *Builder) buildServices() error {
 
 	deps := &b.app.deps
 
-	// deps.coreHub = b.sbuilder.CoreHub()
-	// deps.cabinetHub = b.sbuilder.CabHub()
-	// deps.dataHub = b.sbuilder.DataHub()
+	deps.coreHub = b.sbuilder.CoreHub()
+	deps.cabinetHub = b.sbuilder.CabHub()
+	deps.dataHub = b.sbuilder.DataHub()
 
-	// deps.signer = signer.New([]byte(b.config.MasterKey), "temphia")
-	// deps.engine = enginehub.New(b.app, deps.logService)
+	deps.signer = signer.New([]byte(b.config.MasterKey), "temphia")
+	deps.engine = enginehub.New(b.app, deps.logService)
 
 	// deps.sockdhub = sockdhub.New(sockdx.Options{
 	// 	ServerIdent: b.app.clusterId,
@@ -62,8 +72,9 @@ func (b *Builder) buildServices() error {
 	// 	SysHelper:   nil,
 	// })
 
-	//	deps.repoHub = repohub.New(b.app)
-	//	deps.plugKV = b.sbuilder.PlugKV()
+	//	deps.repoHub = pacman.New(b.app)
+
+	deps.plugKV = b.sbuilder.PlugKV()
 	err = deps.repoHub.Start()
 	if err != nil {
 		return err

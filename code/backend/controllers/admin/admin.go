@@ -13,7 +13,7 @@ import (
 )
 
 type Controller struct {
-	pacman repox.Hub
+	pacman repox.Pacman
 	cplane xplane.ControlPlane
 	coredb store.CoreHub
 	signer service.Signer
@@ -26,7 +26,7 @@ type Controller struct {
 }
 
 func New(
-	pacman repox.Hub,
+	pacman repox.Pacman,
 	cplane xplane.ControlPlane,
 	coredb store.CoreHub,
 	signer service.Signer,

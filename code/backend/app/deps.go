@@ -28,7 +28,7 @@ type AppDeps struct {
 	cabinetHub store.CabinetHub
 	plugKV     store.PlugStateKV
 	dataHub    dyndb.DataHub
-	repoHub    repox.Hub
+	repoHub    repox.Pacman
 
 	croot      *controllers.RootController
 	extensions map[string]any
