@@ -1,6 +1,7 @@
 package server
 
 import (
+	"io/fs"
 	"net"
 	"net/http"
 
@@ -19,6 +20,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
@@ -27,10 +29,12 @@ var _ xtypes.Server = (*Server)(nil)
 type Options struct {
 	RootDomain     string
 	RunnerDomain   string
+	TenantId       string
 	App            xtypes.App
 	GinEngine      *gin.Engine
 	RootController *controllers.RootController
 	Port           string
+	BuildFS        fs.FS
 }
 
 type Server struct {
@@ -40,6 +44,7 @@ type Server struct {
 	log    logx.Service
 	signer service.Signer
 	notz   httpx.AdapterHub
+	cabhub store.CabinetHub
 
 	listener net.Listener
 
@@ -49,7 +54,7 @@ type Server struct {
 	authserver *apiauth.Auth
 	apiself    *apiself.Self
 	apidata    *apidata.Data
-	apiroot    apiroot.Server
+	apiroot    *apiroot.Server
 	ticketsAPI *tickets.TicketAPI
 }
 
@@ -91,6 +96,8 @@ func New(opts Options) *Server {
 		apiself:    apiself.New(signer, mware, nil, root, node),
 		apidata:    apidata.New(mware, root.DtableController()),
 		ticketsAPI: tickets.New(mware, root),
+		apiroot:    apiroot.New(signer, mware, root, node),
+		cabhub:     deps.Cabinet().(store.CabinetHub),
 	}
 }
 
@@ -99,6 +106,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	s.opts.GinEngine.ServeHTTP(w, req)
 }
 
 func (s *Server) Listen() error {

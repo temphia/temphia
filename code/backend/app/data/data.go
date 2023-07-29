@@ -1,4 +1,8 @@
 package data
 
-// static assets logo/banner etc
-// libs
+import (
+	"embed"
+)
+
+//go:embed *
+var DataFS embed.FS

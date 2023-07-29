@@ -5,6 +5,8 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/temphia/temphia/code/backend/app/server/templates"
 	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 )
 
@@ -19,13 +21,11 @@ func (s *Server) buildRoutes() {
 
 func (s *Server) zRoutes(z *gin.RouterGroup) {
 
-	// z.GET("/", s.asFile(static.Root, "html"))
-	// z.GET("/start", s.asFile(static.Root, "html"))
-	// z.GET("/portal", s.asFile(static.Portal, "html"))
-	// z.GET("/operator", s.asFile(static.Operator, "html"))
-	// z.GET("/auth", s.AuthIndex)
-	// z.GET("/interface/:name", s.serveInterface)
-	// s.assets(z.Group("/assets"))
+	z.GET("/", s.asFile(templates.Root, "html"))
+	z.GET("/portal", s.asFile(templates.Portal, "html"))
+
+	z.GET("/auth", s.AuthIndex)
+	s.assets(z.Group("/assets"))
 
 	s.API(z.Group("/api/:tenant_id/v2/"))
 }
@@ -37,18 +37,21 @@ func (s *Server) API(rg *gin.RouterGroup) {
 
 	s.apidata.API(rg.Group("/data"))
 
-	// s.dataWSAPI(rg.Group("/data_ws"))
-	// s.cabinetAPI(rg.Group("/cabinet"))
+	s.apiroot.DataWSAPI(rg.Group("/data_ws"))
 
-	// s.ticketsAPI.Folder(rg.Group("/folder"))
+	s.apiroot.CabinetAPI(rg.Group("/cabinet"))
 
-	// s.devAPI(rg.Group("/dev"))
-	// s.engineAPI(rg.Group("/engine"))
-	// s.apiself.API(rg.Group("/self"))
+	s.ticketsAPI.Folder(rg.Group("/folder"))
 
-	// s.repoAPI(rg.Group("/repo"))
+	s.apiroot.DevAPI(rg.Group("/dev"))
 
-	// s.adapterEditorAPI(rg.Group("/adapter_editor"))
+	s.apiroot.EngineAPI(rg.Group("/engine"))
+
+	s.apiself.API(rg.Group("/self"))
+
+	s.apiroot.RepoAPI(rg.Group("/repo"))
+
+	s.apiroot.AdapterEditorAPI(rg.Group("/adapter_editor"))
 
 }
 
@@ -71,6 +74,10 @@ func (s *Server) noRoute(ctx *gin.Context) {
 	}
 
 	s.notz.Serve(ctx)
+}
+
+func (s *Server) asFile(data []byte, ext string) func(ctx *gin.Context) {
+	return s.middleware.AsFile(data, ext)
 }
 
 // fixme  =>  /z/extension/<name> ?

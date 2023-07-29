@@ -165,7 +165,7 @@ func (s *Server) reset(ctx httpx.Request) {
 
 func (s *Server) domainTargetLaunch() func(ctx *gin.Context) {
 	tpl, err := template.New("agent_boot").
-		Parse(string(templates.AgentBootTemplate))
+		Parse(string(templates.AgentBoot))
 	if err != nil {
 		panic(err)
 	}

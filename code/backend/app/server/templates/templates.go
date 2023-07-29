@@ -5,4 +5,10 @@ import (
 )
 
 //go:embed agent_boot.html
-var AgentBootTemplate []byte
+var AgentBoot []byte
+
+//go:embed portal.html
+var Portal []byte
+
+//go:embed root.html
+var Root []byte
