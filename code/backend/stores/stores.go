@@ -1,6 +1,8 @@
 package stores
 
 import (
+	"path"
+
 	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/app/registry"
@@ -61,7 +63,16 @@ func (b *Builder) Build() error {
 	b.pkv = dbstore.StateDB()
 	b.dataHub = datahub.New(dbstore.DynDB())
 
-	fsBuilder := storeBuilders[dbconf.Provider]
+	fsconfig := b.opts.Config.FileStoreConfig
+	if fsconfig == nil {
+		fsconfig = &config.StoreConfig{
+			Name:     "localfs",
+			Provider: "localfs",
+			Target:   path.Join(b.opts.Config.DataFolder, "files"),
+		}
+	}
+
+	fsBuilder := storeBuilders[fsconfig.Provider]
 	fsstore, err := fsBuilder(store.BuilderOptions{
 		Config:     b.opts.Config.FileStoreConfig,
 		LogBuilder: b.opts.LogBuilder,
@@ -70,7 +81,7 @@ func (b *Builder) Build() error {
 		return err
 	}
 
-	cabinethub.New(fsstore.FileStore())
+	b.cabhub = cabinethub.New(fsstore.FileStore())
 
 	return nil
 }

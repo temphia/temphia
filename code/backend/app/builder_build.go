@@ -31,10 +31,6 @@ func (b *Builder) preCheck() error {
 		return easyerr.Error("Empty Database Config")
 	}
 
-	if b.config.FileStoreConfig == nil {
-		return easyerr.Error("Empty File Config")
-	}
-
 	return nil
 }
 
