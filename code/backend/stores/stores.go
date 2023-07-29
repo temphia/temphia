@@ -1,10 +1,12 @@
 package stores
 
 import (
-	"github.com/k0kubun/pp"
 	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/app/registry"
+	cabinethub "github.com/temphia/temphia/code/backend/hub/cabinet"
+	corehub "github.com/temphia/temphia/code/backend/hub/coredb"
+	datahub "github.com/temphia/temphia/code/backend/hub/dyndb"
 
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -20,7 +22,6 @@ type Options struct {
 type Builder struct {
 	opts Options
 
-	cdb     store.CoreDB
 	pkv     store.PlugStateKV
 	coreHub store.CoreHub
 	dataHub dyndb.DataHub
@@ -31,7 +32,6 @@ type Builder struct {
 func NewBuilder(opts Options) *Builder {
 	return &Builder{
 		opts:    opts,
-		cdb:     nil,
 		pkv:     nil,
 		cabhub:  nil,
 		coreHub: nil,
@@ -57,7 +57,9 @@ func (b *Builder) Build() error {
 		return err
 	}
 
-	pp.Println(dbstore) // fixme
+	b.coreHub = corehub.New(dbstore.CoreDB())
+	b.pkv = dbstore.StateDB()
+	b.dataHub = datahub.New(dbstore.DynDB())
 
 	fsBuilder := storeBuilders[dbconf.Provider]
 	fsstore, err := fsBuilder(store.BuilderOptions{
@@ -68,7 +70,7 @@ func (b *Builder) Build() error {
 		return err
 	}
 
-	pp.Println(fsstore) // fixme
+	cabinethub.New(fsstore.FileStore())
 
 	return nil
 }

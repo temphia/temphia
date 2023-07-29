@@ -7,12 +7,12 @@ import (
 )
 
 type Binding struct {
-	chub      store.FileStoreHub
+	chub      store.CabinetHub
 	tenantId  string
 	cabfolder string
 }
 
-func New(chub store.FileStore, tenantId string) Binding {
+func New(chub store.CabinetHub, tenantId string) Binding {
 
 	return Binding{
 		chub:     chub,
