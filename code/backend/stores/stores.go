@@ -1,6 +1,7 @@
 package stores
 
 import (
+	"github.com/k0kubun/pp"
 	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/app/registry"
@@ -17,37 +18,57 @@ type Options struct {
 }
 
 type Builder struct {
-	registry   *registry.Registry
-	config     *config.Config
-	logBuilder func() zerolog.Logger
+	opts Options
 
-	cdb store.CoreDB
-	pkv store.PlugStateKV
-
-	cabhub  store.CabinetHub
+	cdb     store.CoreDB
+	pkv     store.PlugStateKV
 	coreHub store.CoreHub
 	dataHub dyndb.DataHub
+
+	cabhub store.CabinetHub
 }
 
 func NewBuilder(opts Options) *Builder {
 	return &Builder{
-		registry:   opts.Registry,
-		config:     opts.Config,
-		logBuilder: opts.LogBuilder,
-		cdb:        nil,
-		pkv:        nil,
-		cabhub:     nil,
-		coreHub:    nil,
-		dataHub:    nil,
+		opts:    opts,
+		cdb:     nil,
+		pkv:     nil,
+		cabhub:  nil,
+		coreHub: nil,
+		dataHub: nil,
 	}
 }
 
 func (b *Builder) Build() error {
 
-	b.registry.Freeze()
+	b.opts.Registry.Freeze()
 
-	//	storeBuilders := b.registry.GetStoreBuilders()
-	// fixme => impl
+	storeBuilders := b.opts.Registry.GetStoreBuilders()
+
+	dbconf := b.opts.Config.DatabaseConfig
+
+	dbBuilder := storeBuilders[dbconf.Provider]
+
+	dbstore, err := dbBuilder(store.BuilderOptions{
+		Config:     dbconf,
+		LogBuilder: b.opts.LogBuilder,
+	})
+	if err != nil {
+		return err
+	}
+
+	pp.Println(dbstore) // fixme
+
+	fsBuilder := storeBuilders[dbconf.Provider]
+	fsstore, err := fsBuilder(store.BuilderOptions{
+		Config:     b.opts.Config.FileStoreConfig,
+		LogBuilder: b.opts.LogBuilder,
+	})
+	if err != nil {
+		return err
+	}
+
+	pp.Println(fsstore) // fixme
 
 	return nil
 }
