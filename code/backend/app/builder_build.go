@@ -6,6 +6,8 @@ import (
 	enginehub "github.com/temphia/temphia/code/backend/hub/engine"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/services/signer"
+	"github.com/temphia/temphia/code/backend/services/sockd"
+	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 )
 
 func (b *Builder) preCheck() error {
@@ -61,12 +63,12 @@ func (b *Builder) buildServices() error {
 	deps.signer = signer.New([]byte(b.config.MasterKey), "temphia")
 	deps.engine = enginehub.New(b.app, deps.logService)
 
-	// deps.sockdhub = sockdhub.New(sockdx.Options{
-	// 	ServerIdent: b.app.clusterId,
-	// 	Logger:      deps.logService.GetServiceLogger("sockd"),
-	// 	Syncer:      nil,
-	// 	SysHelper:   nil,
-	// })
+	deps.sockdhub = sockd.New(sockdx.Options{
+		ServerIdent: b.app.clusterId,
+		Logger:      deps.logService.GetServiceLogger("sockd"),
+		Syncer:      nil,
+		SysHelper:   nil,
+	})
 
 	//	deps.repoHub = pacman.New(b.app)
 

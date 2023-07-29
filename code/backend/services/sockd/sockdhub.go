@@ -6,26 +6,26 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
 )
 
-type SockdHub struct {
+type Sockd struct {
 	sockd sockdx.SockdCore
 
 	dataSyncer sockdx.DataSyncer
 	userSyncer sockdx.UserSyncer
 }
 
-func New(opts sockdx.Options) *SockdHub {
+func New(opts sockdx.Options) *Sockd {
 
 	sockd := core.New(opts)
 
-	return &SockdHub{
+	return &Sockd{
 		sockd:      sockd,
 		dataSyncer: syncer.NewData(sockd),
 		userSyncer: syncer.NewUser(sockd),
 	}
 }
 
-func (s *SockdHub) GetSockd() sockdx.SockdCore { return s.sockd }
+func (s *Sockd) GetSockd() sockdx.SockdCore { return s.sockd }
 
-func (s *SockdHub) GetDataSyncer() sockdx.DataSyncer { return s.dataSyncer }
+func (s *Sockd) GetDataSyncer() sockdx.DataSyncer { return s.dataSyncer }
 
-func (s *SockdHub) GetUserSyncer() sockdx.UserSyncer { return s.userSyncer }
+func (s *Sockd) GetUserSyncer() sockdx.UserSyncer { return s.userSyncer }
