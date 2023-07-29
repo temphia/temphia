@@ -1,11 +1,20 @@
 package server
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/backend/controllers"
+	"github.com/temphia/temphia/code/backend/xtypes"
+)
 
 type Options struct {
-	RootDomain   string
-	RunnerDomain string
-	Port         string
+	RootDomain     string
+	RunnerDomain   string
+	App            xtypes.App
+	GinEngine      *gin.Engine
+	RootController *controllers.RootController
+	Port           string
 }
 
 type Server struct {
