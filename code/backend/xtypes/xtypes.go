@@ -31,12 +31,9 @@ type App interface {
 	SingleTenant() bool
 	StaticTenants() []string
 
-	HostAddrs(privatePriIp, privateSecIps, p2p bool) []string
-
 	GetDeps() Deps
 	GetServer() Server
 	GetGlobalVar() GlobalVar
-	GetMeshes() []Mesh
 }
 
 type Deps interface {

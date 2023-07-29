@@ -32,7 +32,6 @@ func NewBuilder() *Builder {
 			deps: AppDeps{
 				extensions: make(map[string]any),
 			},
-			meshes: make([]xtypes.Mesh, 0, 2),
 		},
 	}
 }
