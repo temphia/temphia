@@ -215,8 +215,7 @@ func (c *Controller) CommentRow(uclaim *claim.Data, table, msg string, rowId int
 
 func (c *Controller) folderTicket(group *entities.TableGroup, uclaim *claim.Data) (string, error) {
 
-	if group.CabinetSource == "" || group.CabinetFolder == "" {
-		group.CabinetSource = c.cabHub.DefaultName(uclaim.TenantId)
+	if group.CabinetFolder == "" {
 		group.CabinetFolder = store.DefaultDataAssetsFolder
 	}
 

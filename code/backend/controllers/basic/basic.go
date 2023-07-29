@@ -37,7 +37,7 @@ func (c *Controller) ListRepoSources(uclaim *claim.Session) (map[int64]string, e
 }
 
 func (c *Controller) ListCabinetSources(uclaim *claim.Session) ([]string, error) {
-	return c.cabinet.ListSources(uclaim.TenantId)
+	return []string{"default"}, nil
 }
 
 func (c *Controller) ListDyndbSources(uclaim *claim.Session) ([]string, error) {

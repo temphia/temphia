@@ -91,6 +91,6 @@ func (u *Adapter) DynDB() dyndb.DynDB {
 	return u.innerDynDB
 }
 
-func (u *Adapter) CabinetSource() store.CabinetSource {
+func (u *Adapter) FileStore() store.FileStore {
 	return nil
 }

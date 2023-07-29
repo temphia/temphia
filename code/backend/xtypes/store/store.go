@@ -27,7 +27,9 @@ type Store interface {
 	CoreDB() CoreDB
 	DynDB() dyndb.DynDB
 	StateDB() PlugStateKV
-	CabinetSource() CabinetSource
+
+	FileStore() FileStore
+
 	Name() string
 }
 

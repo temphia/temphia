@@ -14,7 +14,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
-var _ store.CabinetSource = (*NativeBlob)(nil)
+var _ store.FileStore = (*NativeBlob)(nil)
 
 type NativeBlob struct {
 	rootFilePath string
@@ -107,12 +107,12 @@ func (n *NativeBlob) AddBlobStreaming(ctx context.Context, tenant string, folder
 	return easyerr.NotImpl()
 }
 
-func (n *NativeBlob) CheckPreSignedReadToken(ctx context.Context, tenant string, token string) error {
-	return easyerr.NotImpl()
-}
-func (n *NativeBlob) GetPreSignedReadToken(ctx context.Context, tenant, folder string, file string) (string, error) {
-	return "", easyerr.NotImpl()
-}
-func (n *NativeBlob) GetPreSignedWriteToken(ctx context.Context, tenant, folder string, file string) (string, error) {
-	return "", easyerr.NotImpl()
-}
+// func (n *NativeBlob) CheckPreSignedReadToken(ctx context.Context, tenant string, token string) error {
+// 	return easyerr.NotImpl()
+// }
+// func (n *NativeBlob) GetPreSignedReadToken(ctx context.Context, tenant, folder string, file string) (string, error) {
+// 	return "", easyerr.NotImpl()
+// }
+// func (n *NativeBlob) GetPreSignedWriteToken(ctx context.Context, tenant, folder string, file string) (string, error) {
+// 	return "", easyerr.NotImpl()
+// }

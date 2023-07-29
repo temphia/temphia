@@ -7,13 +7,12 @@ import (
 )
 
 type Binding struct {
-	chub      store.CabinetHub
+	chub      store.FileStoreHub
 	tenantId  string
-	cabsource string
 	cabfolder string
 }
 
-func New(chub store.CabinetHub, tenantId string) Binding {
+func New(chub store.FileStore, tenantId string) Binding {
 
 	return Binding{
 		chub:     chub,
@@ -22,12 +21,12 @@ func New(chub store.CabinetHub, tenantId string) Binding {
 }
 
 func (b *Binding) AddFile(bucket string, file string, contents []byte) error {
-	return b.source(b.cabsource).AddBlob(context.TODO(), b.cabfolder, file, contents)
+	return b.chub.AddBlob(context.TODO(), b.tenantId, b.cabfolder, file, contents)
 }
 
 func (b *Binding) ListFolder(bucket string) ([]string, error) {
 
-	files, err := b.source(b.cabsource).ListFolder(context.TODO(), b.cabfolder)
+	files, err := b.chub.ListFolderBlobs(context.TODO(), b.tenantId, b.cabfolder)
 	if err != nil {
 		return nil, err
 	}
@@ -42,14 +41,8 @@ func (b *Binding) ListFolder(bucket string) ([]string, error) {
 
 func (b *Binding) GetFile(bucket string, file string) ([]byte, error) {
 
-	return b.source(b.cabsource).GetBlob(context.TODO(), b.cabfolder, file)
+	return b.chub.GetBlob(context.TODO(), b.tenantId, b.cabfolder, file)
 }
 func (b *Binding) DeleteFile(bucket string, file string) error {
-	return b.source(b.cabsource).DeleteBlob(context.TODO(), b.cabfolder, file)
-}
-
-// private
-
-func (b *Binding) source(src string) store.CabinetSourced {
-	return b.chub.GetSource(src, b.tenantId)
+	return b.chub.DeleteBlob(context.TODO(), b.tenantId, b.cabfolder, file)
 }
