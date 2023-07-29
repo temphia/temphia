@@ -4,7 +4,6 @@ import (
 	"context"
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 
@@ -18,16 +17,6 @@ var _ store.FileStore = (*NativeBlob)(nil)
 
 type NativeBlob struct {
 	rootFilePath string
-}
-
-func (n *NativeBlob) InitilizeTenent(tenant string, folders []string) error {
-
-	for _, folder := range folders {
-		err := n.AddFolder(context.TODO(), tenant, folder)
-		log.Println(err)
-	}
-
-	return nil
 }
 
 func (n *NativeBlob) AddFolder(ctx context.Context, tenant, folder string) error {
@@ -70,6 +59,7 @@ func (n *NativeBlob) ListFolderBlobs(ctx context.Context, tenant, folder string)
 	if err != nil {
 		return nil, err
 	}
+
 	respblobs := make([]*store.BlobInfo, 0, len(files))
 	for _, f := range files {
 		if f.IsDir() {
