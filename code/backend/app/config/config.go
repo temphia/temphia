@@ -21,4 +21,5 @@ type StoreConfig struct {
 	Password string         `json:"password,omitempty"`
 	Port     string         `json:"port,omitempty"`
 	Options  map[string]any `json:"options,omitempty"`
+	Target   string         `json:"target,omitempty"`
 }
