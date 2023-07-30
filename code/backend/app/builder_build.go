@@ -6,6 +6,7 @@ import (
 	"github.com/temphia/temphia/code/backend/controllers"
 	enginehub "github.com/temphia/temphia/code/backend/hub/engine"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/services/pacman"
 	"github.com/temphia/temphia/code/backend/services/signer"
 	"github.com/temphia/temphia/code/backend/services/sockd"
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
@@ -80,7 +81,7 @@ func (b *Builder) buildServices() error {
 		SysHelper:   nil,
 	})
 
-	//	deps.repoHub = pacman.New(b.app)
+	deps.repoHub = pacman.New(b.app)
 
 	deps.plugKV = b.sbuilder.PlugKV()
 	err = deps.repoHub.Start()
