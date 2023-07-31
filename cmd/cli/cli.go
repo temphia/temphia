@@ -5,5 +5,5 @@ import (
 )
 
 func Run() {
-	pp.Println("@i_am_dev")
+	pp.Println("@i_am_cli")
 }

@@ -1,17 +1,21 @@
 package server
 
 import (
+	"fmt"
 	"io/fs"
 	"net"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/k0kubun/pp"
 
 	apiroot "github.com/temphia/temphia/code/backend/app/server/API"
 	apiadmin "github.com/temphia/temphia/code/backend/app/server/API/admin"
 	apiauth "github.com/temphia/temphia/code/backend/app/server/API/auth"
 	apidata "github.com/temphia/temphia/code/backend/app/server/API/data"
 	apiself "github.com/temphia/temphia/code/backend/app/server/API/self"
+	"github.com/temphia/temphia/code/backend/app/server/agent"
 
 	"github.com/temphia/temphia/code/backend/app/server/API/middleware"
 	"github.com/temphia/temphia/code/backend/app/server/API/tickets"
@@ -48,6 +52,8 @@ type Server struct {
 
 	listener net.Listener
 
+	agentServer *agent.AgentServer
+
 	middleware *middleware.Middleware
 
 	admin      apiadmin.ApiAdmin
@@ -79,12 +85,14 @@ func New(opts Options) *Server {
 	node := plane.GetIdService().NewNode("temphia.sockd")
 
 	return &Server{
-		opts:       opts,
-		duckMode:   true,
-		log:        logsvc,
-		signer:     signer,
-		notz:       nil,
-		listener:   nil,
+		opts:        opts,
+		duckMode:    true,
+		log:         logsvc,
+		signer:      signer,
+		notz:        nil,
+		listener:    nil,
+		agentServer: agent.New(nil, opts.App),
+
 		middleware: mware,
 		admin: apiadmin.New(apiadmin.Options{
 			Admin:      root.AdminController(),
@@ -103,6 +111,30 @@ func New(opts Options) *Server {
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	if s.duckMode {
+		return
+	}
+
+	if strings.HasPrefix(req.URL.Path, "/z/") {
+		s.opts.GinEngine.ServeHTTP(w, req)
+		return
+	}
+
+	host := strings.Split(req.Host, ":")[0]
+	if strings.HasSuffix(host, s.opts.RunnerDomain) {
+		prefix := strings.Replace(host, fmt.Sprintf(".%s", s.opts.RunnerDomain), "", 1)
+
+		ids := strings.Split(prefix, "-n-")
+
+		pp.Println("runner_prefix", ids)
+
+		s.agentServer.Render(agent.Context{
+			Writer:   w,
+			Request:  req,
+			TenantId: "",
+			PlugId:   ids[0],
+			AgentId:  ids[1],
+		})
+
 		return
 	}
 
