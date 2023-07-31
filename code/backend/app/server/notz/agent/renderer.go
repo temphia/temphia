@@ -1,5 +1,5 @@
 package agent
 
-func (a *AgentServer) spaRender(state *agentState) {
+func (a *AgentNotz) spaRender(state *agentState) {
 
 }

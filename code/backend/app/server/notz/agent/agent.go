@@ -1,36 +1,34 @@
 package agent
 
 import (
-	"net/http"
 	"sync"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/xnotz"
 )
 
-type AgentServer struct {
+type AgentNotz struct {
 	agents map[string]*agentState
 	aLock  sync.RWMutex
 
 	loadC chan agentL
 
 	ehub    etypes.EngineHub
-	app     xtypes.App
 	corehub store.CoreHub
+	cabinet store.CabinetHub
 }
 
-func New(ehub etypes.EngineHub, app xtypes.App) *AgentServer {
-	as := &AgentServer{
+func New(ehub etypes.EngineHub, corehub store.CoreHub, cabinet store.CabinetHub) *AgentNotz {
+	as := &AgentNotz{
 		agents: make(map[string]*agentState),
 		aLock:  sync.RWMutex{},
 
 		loadC:   make(chan agentL, 10),
-		corehub: nil,
-
-		ehub: ehub,
-		app:  app,
+		corehub: corehub,
+		cabinet: cabinet,
+		ehub:    ehub,
 	}
 
 	go as.evLoop()
@@ -38,16 +36,7 @@ func New(ehub etypes.EngineHub, app xtypes.App) *AgentServer {
 	return as
 }
 
-type Context struct {
-	Writer   http.ResponseWriter
-	Request  *http.Request
-	TenantId string
-	PlugId   string
-	AgentId  string
-	DomainId int64
-}
-
-func (a *AgentServer) Render(ctx Context) {
+func (a *AgentNotz) Render(ctx xnotz.Context) {
 
 	as := a.get(ctx.TenantId, ctx.PlugId, ctx.AgentId)
 	if as == nil {

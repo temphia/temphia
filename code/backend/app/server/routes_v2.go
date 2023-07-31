@@ -73,7 +73,7 @@ func (s *Server) noRoute(ctx *gin.Context) {
 		}
 	}
 
-	s.notz.Serve(ctx)
+	// s.notz.Serve(ctx)
 }
 
 func (s *Server) asFile(data []byte, ext string) func(ctx *gin.Context) {

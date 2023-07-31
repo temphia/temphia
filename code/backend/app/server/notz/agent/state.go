@@ -9,7 +9,7 @@ type agentState struct {
 	templateConfig any
 }
 
-func (a *AgentServer) evLoop() {
+func (a *AgentNotz) evLoop() {
 
 	for {
 
@@ -59,7 +59,7 @@ func (a *AgentServer) evLoop() {
 
 }
 
-func (a *AgentServer) get(tenantId, plug, agent string) *agentState {
+func (a *AgentNotz) get(tenantId, plug, agent string) *agentState {
 
 	key := plug + agent
 

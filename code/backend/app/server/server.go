@@ -15,16 +15,16 @@ import (
 	apiauth "github.com/temphia/temphia/code/backend/app/server/API/auth"
 	apidata "github.com/temphia/temphia/code/backend/app/server/API/data"
 	apiself "github.com/temphia/temphia/code/backend/app/server/API/self"
-	"github.com/temphia/temphia/code/backend/app/server/agent"
+	"github.com/temphia/temphia/code/backend/app/server/notz"
 
 	"github.com/temphia/temphia/code/backend/app/server/API/middleware"
 	"github.com/temphia/temphia/code/backend/app/server/API/tickets"
 	"github.com/temphia/temphia/code/backend/controllers"
 	"github.com/temphia/temphia/code/backend/xtypes"
-	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/xnotz"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
@@ -47,12 +47,11 @@ type Server struct {
 
 	log    logx.Service
 	signer service.Signer
-	notz   httpx.AdapterHub
 	cabhub store.CabinetHub
 
 	listener net.Listener
 
-	agentServer *agent.AgentServer
+	notz xnotz.Notz
 
 	middleware *middleware.Middleware
 
@@ -85,13 +84,14 @@ func New(opts Options) *Server {
 	node := plane.GetIdService().NewNode("temphia.sockd")
 
 	return &Server{
-		opts:        opts,
-		duckMode:    true,
-		log:         logsvc,
-		signer:      signer,
-		notz:        nil,
-		listener:    nil,
-		agentServer: agent.New(nil, opts.App),
+		opts:     opts,
+		duckMode: true,
+		log:      logsvc,
+		signer:   signer,
+
+		notz: notz.New(opts.App),
+
+		listener: nil,
 
 		middleware: mware,
 		admin: apiadmin.New(apiadmin.Options{
@@ -127,7 +127,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 		pp.Println("runner_prefix", ids)
 
-		s.agentServer.Render(agent.Context{
+		s.notz.HandleAgent(xnotz.Context{
 			Writer:   w,
 			Request:  req,
 			TenantId: "",
