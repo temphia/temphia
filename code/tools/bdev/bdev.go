@@ -7,7 +7,8 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
-	"github.com/temphia/temphia/code/distro/sharedcli"
+	"github.com/temphia/temphia/code/tools/sharedcli"
+
 	client "github.com/temphia/temphia/code/goclient"
 	"github.com/temphia/temphia/code/goclient/devc"
 	"gopkg.in/yaml.v2"
