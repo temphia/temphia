@@ -1,0 +1,44 @@
+<script lang="ts">
+  import { LoadingSpinner } from "../../xcompo";
+  import { PageDashService } from "./service";
+  import Pagedash from "./page/index.svelte";
+  import Tailwind from "../../xcompo/common/_tailwind.svelte";
+  import type { Environment } from "../../../lib/engine/environment";
+
+  export let env: Environment;
+
+  let loading = true;
+  let data;
+  let service: PageDashService;
+
+  const load = async () => {
+    loading = true;
+    if (!service) {
+      service = env.Extend(new PageDashService(env));
+    }
+
+    const resp = await service.load({});
+    if (!resp.ok) {
+      return;
+    }
+
+    console.log("@resp", resp);
+
+    data = resp.data;
+    loading = false;
+  };
+
+  load();
+</script>
+
+<svelte:head>
+  <script src="/z/assets/lib/chartjs/chartjs.js"></script>
+</svelte:head>
+
+{#if loading}
+  <LoadingSpinner />
+{:else}
+  <Pagedash {service} {data} />
+{/if}
+
+<Tailwind />

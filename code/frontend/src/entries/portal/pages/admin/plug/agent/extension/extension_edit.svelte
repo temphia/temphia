@@ -1,0 +1,87 @@
+<script lang="ts">
+  import { getContext } from "svelte";
+  import { AutoForm, LoadingSpinner, PortalService } from "../../../core";
+  import { params } from "svelte-hash-router";
+
+  export let pid = $params.pid;
+  export let aid = $params.aid;
+  export let eid = $params.eid;
+
+  const app = getContext("__app__") as PortalService;
+  const api = app.api_manager.get_admin_plug_api();
+
+  let message = "";
+  let data = {};
+  let loading = true;
+
+  const load = async () => {
+    const resp = await api.get_agent_ext(pid, aid, eid);
+    if (!resp.ok) {
+      return;
+    }
+
+    data = resp.data;
+    loading = false;
+  };
+
+  load();
+
+  const save = async (_data) => {
+    const resp = await api.update_agent_ext(pid, aid, eid, _data);
+    if (!resp.ok) {
+      message = resp.data;
+      return;
+    }
+    app.nav.admin_agents(pid);
+  };
+</script>
+
+{#if loading}
+  <LoadingSpinner />
+{:else}
+  <AutoForm
+    {message}
+    schema={{
+      fields: [
+        {
+          name: "Name",
+          ftype: "TEXT",
+          key_name: "name",
+        },
+        {
+          name: "Plug",
+          ftype: "TEXT",
+          key_name: "plug_id",
+          disabled: true,
+        },
+        {
+          name: "Agent",
+          ftype: "TEXT",
+          key_name: "agent_id",
+          disabled: true,
+        },
+        {
+          name: "File",
+          ftype: "TEXT",
+          key_name: "ref_file",
+        },
+
+        {
+          name: "Blueprint",
+          ftype: "TEXT",
+          key_name: "bprint_id",
+        },
+
+        {
+          name: "Extra Meta",
+          ftype: "KEY_VALUE_TEXT",
+          key_name: "extra_meta",
+        },
+      ],
+      name: "Update Extension",
+      required_fields: [],
+    }}
+    onSave={save}
+    {data}
+  />
+{/if}
