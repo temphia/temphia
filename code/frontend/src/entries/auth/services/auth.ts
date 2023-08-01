@@ -1,6 +1,8 @@
 import { AuthAPI } from "../../../lib/apiv2/auth";
-import { apiURL, SiteData, SiteUtils } from "../../../lib/utils/site";
+import { apiURL, SiteUtils } from "../../../lib/utils/site";
+import type {SiteData} from "../../../lib/utils/site";
 import { AuthNav } from "./nav";
+
 
 export class AuthService {
   auth_api: AuthAPI;

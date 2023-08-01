@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { AuthService } from "../../../../lib/app/auth/auth";
-
+  import { AuthService } from "../../../services";
+  
   export let app: AuthService;
   export let method: object;
   export let data: object;
