@@ -97,6 +97,7 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/twpayne/go-geom v1.5.2 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
+	github.com/webview/webview v0.0.0-20230728084238-22009bf0c6e1 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/crypto v0.11.0 // indirect

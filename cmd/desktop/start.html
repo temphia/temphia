@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Temphia Start</title>
+  </head>
+
+  <script>
+    const connect_local = () => {
+      const goto_page = window["__goto_page__"];
+      const as = document.getElementById("auto-start") || {};
+      
+      console.log(as);
+
+
+
+      goto_page({
+        type: "local",
+        auto_start: String(as["checked"])  || "",
+      });
+    };
+
+    const connect_remote = () => {
+        const goto_page = window["__goto_page__"];
+      const url = document.getElementById("target-url") || {};
+      
+      console.log(url);
+
+
+
+      goto_page({
+        type: "remote",
+        url: url["value"] || "",
+      });
+    };
+  </script>
+
+  <body>
+    <div class="popup">
+      <div class="form">
+        <div class="icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="35"
+            height="35"
+            viewBox="0 0 70.457 68.567"
+          >
+            <path
+              d="M.378.378h69.7v67.81H.378z"
+              fill="#925bd5"
+              stroke="#fff"
+              stroke-width=".757"
+            />
+            <g fill="#fff">
+              <path
+                d="M26.613 15.364a.26.26 0 0 0-.264.259l-.007.905a3.79 3.79 0 0 0-.465.06l-.228-.879a.26.26 0 1 0-.506.131l.228.88a3.79 3.79 0 0 0-.435.174l-.447-.789a.26.26 0 0 0-.455.258l.447.79a3.79 3.79 0 0 0-.373.283l-.638-.648a.26.26 0 1 0-.373.367l.636.647a3.79 3.79 0 0 0-.289.369l-.781-.459a.26.26 0 1 0-.265.451l.784.461a3.79 3.79 0 0 0-.183.431l-.876-.242a.26.26 0 0 0-.139.504l.873.242-.045.285.597.005c.193-1.592 1.544-2.79 3.148-2.792 1.624.002 2.984 1.229 3.153 2.843l.627.005-.041-.285.879-.228a.26.26 0 0 0-.131-.506l-.88.228a3.79 3.79 0 0 0-.174-.435l.789-.447a.26.26 0 1 0-.258-.455l-.79.447a3.79 3.79 0 0 0-.283-.373l.648-.638a.26.26 0 1 0-.367-.373l-.647.636a3.79 3.79 0 0 0-.369-.289l.459-.781a.26.26 0 1 0-.451-.265l-.461.784a3.79 3.79 0 0 0-.43-.183l.242-.876a.26.26 0 0 0-.504-.14l-.242.873a3.79 3.79 0 0 0-.464-.062l.007-.909a.26.26 0 0 0-.259-.264z"
+              />
+              <ellipse ry=".938" rx=".916" cy="19.213" cx="27.2" />
+              <path
+                d="M43.905 15.364a.26.26 0 0 0-.264.259l-.007.905a3.79 3.79 0 0 0-.465.06l-.228-.879a.26.26 0 0 0-.506.131l.228.88a3.79 3.79 0 0 0-.435.174l-.447-.789a.26.26 0 0 0-.455.258l.447.79a3.79 3.79 0 0 0-.373.283l-.638-.648a.26.26 0 1 0-.373.367l.636.647a3.79 3.79 0 0 0-.289.369l-.781-.459a.26.26 0 1 0-.265.451l.784.461a3.79 3.79 0 0 0-.183.431l-.876-.242a.26.26 0 0 0-.139.504l.873.242-.045.285.597.005c.193-1.592 1.544-2.79 3.148-2.792 1.624.002 2.984 1.229 3.153 2.843l.627.005-.041-.285.879-.228a.26.26 0 1 0-.131-.506l-.88.228a3.79 3.79 0 0 0-.174-.435l.789-.447a.26.26 0 0 0-.258-.455l-.79.447a3.79 3.79 0 0 0-.283-.373l.648-.638a.26.26 0 1 0-.367-.373l-.647.636a3.79 3.79 0 0 0-.369-.289l.459-.781a.26.26 0 1 0-.451-.265l-.461.784a3.79 3.79 0 0 0-.43-.183l.242-.876a.26.26 0 0 0-.504-.14l-.242.873a3.79 3.79 0 0 0-.464-.062l.007-.909a.26.26 0 0 0-.259-.264z"
+              />
+              <ellipse cx="44.493" cy="19.307" rx=".916" ry=".938" />
+              <path
+                d="M17.178 25.113l30.918-.44-1.145 6.518-29.597-3.171zm11.715 5.373l8.632 2.026-.088 28.011-3.435.617z"
+              />
+            </g>
+          </svg>
+        </div>
+        <div class="note">
+          <label class="title">Connect to local instance</label>
+        </div>
+
+        <label>
+          <input type="checkbox" id="auto-start" checked="true" />
+          Start if not running
+        </label>
+
+        <button id="connect-local" onclick="connect_local()">
+          Local Connect
+        </button>
+        <input id="target-url" class="input_field" />
+        <button id="connect-remote" onclick="connect_remote()">
+          Remote Connect
+        </button>
+      </div>
+    </div>
+  </body>
+
+  <style>
+    .popup {
+      position: relative;
+      width: 320px;
+      height: fit-content;
+      margin: auto;
+      margin-top: 50px;
+      background: #ffffff;
+      box-shadow: 0px 0px 0px 1px #9b9ba3;
+      border-radius: 13px;
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+      width: 60px;
+      height: 60px;
+      background: #ecf1fd;
+      box-shadow: 0px 0.5px 0.5px #efefef,
+        0px 1px 0.5px rgba(239, 239, 239, 0.5);
+      border-radius: 5px;
+    }
+
+    .note {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .title {
+      font-style: normal;
+      font-weight: 700;
+      font-size: 17px;
+      line-height: 24px;
+      color: #2b2b2f;
+    }
+
+    .input_field {
+      width: 100%;
+      height: 42px;
+      padding: 0 0 0 12px;
+      border-radius: 5px;
+      outline: none;
+      border: 1px solid #e5e5e5;
+      filter: drop-shadow(0px 1px 0px #efefef)
+        drop-shadow(0px 1px 0.5px rgba(239, 239, 239, 0.5));
+      transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+    }
+
+    .input_field:focus {
+      border: 1px solid transparent;
+      box-shadow: 0px 0px 0px 1px #2b2b2f;
+      background-color: transparent;
+    }
+
+    .form button {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 18px;
+      gap: 10px;
+      width: 100%;
+      height: 42px;
+      background: linear-gradient(
+        180deg,
+        #4480ff 0%,
+        #115dfc 50%,
+        #0550ed 100%
+      );
+      box-shadow: 0px 0.5px 0.5px #efefef,
+        0px 1px 0.5px rgba(239, 239, 239, 0.5);
+      border-radius: 5px;
+      border: 0;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 15px;
+      color: #ffffff;
+    }
+
+    .form button:hover {
+      scale: 1.05;
+      transition: all;
+    }
+
+    #connect-remote {
+      background: linear-gradient(
+        180deg,
+        #f8f8f8 0%,
+        #ecf2fc 50%,
+        #ccd7f5 100%
+      );
+      color: #272525;
+    }
+  </style>
+</html>

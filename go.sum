@@ -315,6 +315,8 @@ github.com/ugorji/go/codec v1.2.11 h1:BMaWp1Bb6fHwEtbplGBGJ498wD+LKlNSl25MjdZY4d
 github.com/ugorji/go/codec v1.2.11/go.mod h1:UNopzCgEMSXjBc6AOMqYvWC1ktqTAfzJZUZgYf6w6lg=
 github.com/upper/db/v4 v4.6.0 h1:0VmASnqrl/XN8Ehoq++HBgZ4zRD5j3GXygW8FhP0C5I=
 github.com/upper/db/v4 v4.6.0/go.mod h1:2mnRcPf+RcCXmVcD+o04LYlyu3UuF7ubamJia7CkN6s=
+github.com/webview/webview v0.0.0-20230728084238-22009bf0c6e1 h1:OdoF3Hub0NYVC2oY+L3ev5wC+c2Bl3IQiEjbFr2vh00=
+github.com/webview/webview v0.0.0-20230728084238-22009bf0c6e1/go.mod h1:rpXAuuHgyEJb6kXcXldlkOjU6y4x+YcASKKXJNUhh0Y=
 github.com/xanzy/ssh-agent v0.3.3 h1:+/15pJfg/RsTxqYcX6fHqOXZwwMP+2VyYWJeWM2qQFM=
 github.com/xanzy/ssh-agent v0.3.3/go.mod h1:6dzNDKs0J9rVPHPhaGCukekBHKqfl+L3KghI1Bc68Uw=
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
