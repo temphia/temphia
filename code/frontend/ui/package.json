@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "auth:dev": "AUTH_UI=1 vite",
+    "auth:build": "AUTH_UI=1 vite build",
+    "portal:dev": "vite",
+    "portal:build": "vite build"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.4.2",
