@@ -49,7 +49,8 @@ type Server struct {
 	signer service.Signer
 	cabhub store.CabinetHub
 
-	listener net.Listener
+	listener   net.Listener
+	ldListener net.Listener
 
 	notz xnotz.Notz
 
@@ -142,6 +143,11 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 
 func (s *Server) Listen() error {
+
+	err := s.localdoor()
+	if err != nil {
+		return err
+	}
 
 	listener, err := net.Listen("tcp", s.opts.Port)
 	if err != nil {
