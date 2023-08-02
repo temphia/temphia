@@ -3,7 +3,6 @@ package agent
 import (
 	"sync"
 
-	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/xnotz"
@@ -43,6 +42,5 @@ func (a *AgentNotz) Render(ctx xnotz.Context) {
 		return
 	}
 
-	pp.Println(as)
-
+	a.spaRender(ctx, as)
 }
