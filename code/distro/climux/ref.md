@@ -20,3 +20,5 @@
 - database {ping migrate rollback}
 - desktop(local://tmp/temphia.sock, lpweb://<hash>.lpweb )
 - lpweb
+- log {watch["folder"]}
+- remote_runner
