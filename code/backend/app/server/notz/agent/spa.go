@@ -2,13 +2,9 @@ package agent
 
 import (
 	"bytes"
-	_ "embed"
 	"fmt"
 	"strings"
 )
-
-//go:embed spa_boot.js
-var SpaBoot []byte
 
 type SpaBuilderOptions struct {
 	Plug         string                 `json:"plug"`
@@ -125,7 +121,9 @@ func (tb *SpaBuilder) join() {
 	tb.buf.Write([]byte(`<script>window["__loader_options__"] = `))
 	tb.buf.WriteString(loaderOptions)
 	tb.buf.Write([]byte("</script> \n <script>"))
-	tb.buf.Write(SpaBoot)
+
+	// tb.buf.Write(``)
+
 	tb.buf.Write([]byte("</script> \n"))
 
 	for _, script := range tb.linkScripts {

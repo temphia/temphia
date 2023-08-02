@@ -2,13 +2,11 @@ package api_server
 
 import (
 	_ "embed"
-	"html/template"
 	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/backend/app/server/templates"
 	"github.com/temphia/temphia/code/backend/controllers/sockd"
 	"github.com/temphia/temphia/code/backend/services/sockd/transports"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
@@ -23,7 +21,7 @@ func (s *Server) EngineAPI(rg *gin.RouterGroup) {
 	rg.POST("/launch/auth", s.launchAuth)
 	rg.POST("/reset", s.X(s.reset))
 
-	rg.GET("/launch/domain_target/:pid/:aid", s.domainTargetLaunch())
+	// rg.GET("/launch/domain_target/:pid/:aid", s.domainTargetLaunch())
 
 	// execute action
 	rg.POST("/execute/:action", s.execute)
@@ -159,38 +157,6 @@ func (s *Server) reset(ctx httpx.Request) {
 
 	s.cEngine.Reset(ctx.Session.TenantId, req.PlugId, req.AgentId)
 	httpx.WriteFinal(ctx.Http, err)
-}
-
-//  boot agent
-
-func (s *Server) domainTargetLaunch() func(ctx *gin.Context) {
-	tpl, err := template.New("agent_boot").
-		Parse(string(templates.AgentBoot))
-	if err != nil {
-		panic(err)
-	}
-
-	return func(ctx *gin.Context) {
-		data, err := s.cEngine.LaunchTargetWithDomain(
-			ctx.Param("tenant_id"),
-			ctx.Request.Host,
-			ctx.Param("pid"),
-			ctx.Param("aid"),
-		)
-		if err != nil {
-			pp.Println("@boot_err", err)
-			return
-		}
-
-		// fixme loader_script inline here
-
-		err = tpl.Execute(ctx.Writer, data)
-		if err != nil {
-			ctx.Error(err)
-			return
-		}
-	}
-
 }
 
 // engine/exec sockd

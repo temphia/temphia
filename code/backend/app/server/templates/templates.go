@@ -4,9 +4,6 @@ import (
 	_ "embed"
 )
 
-//go:embed agent_boot.html
-var AgentBoot []byte
-
 //go:embed portal.html
 var Portal []byte
 
