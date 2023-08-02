@@ -2,7 +2,7 @@ package climux
 
 import "sync"
 
-type CLiFunc func(args ...string) error
+type CLiFunc func(args []string) error
 
 var (
 	cliRegistery = map[string]CLiFunc{}
