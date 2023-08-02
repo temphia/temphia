@@ -49,6 +49,10 @@ func (b *Builder) SetXplane(xp xplane.ControlPlane) {
 	b.app.deps.controlPlane = xp
 }
 
+func (b *Builder) SetConfig(conf *config.Config) {
+	b.config = conf
+}
+
 func (b *Builder) SetEngine(e *gin.Engine) {
 	b.ginEngine = e
 }

@@ -8,6 +8,7 @@ type Config struct {
 	MasterKey       string       `json:"master_key,omitempty"`
 	EnableLocalDoor bool         `json:"enable_local_door,omitempty"`
 	DataFolder      string       `json:"data_folder,omitempty"`
+	LogFolder       string       `json:"log_folder,omitempty"`
 	DatabaseConfig  *StoreConfig `json:"database_config,omitempty"`
 	FileStoreConfig *StoreConfig `json:"filestore_config,omitempty"`
 }
