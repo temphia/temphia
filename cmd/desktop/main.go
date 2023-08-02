@@ -11,7 +11,7 @@ import (
 var StartHtml []byte
 
 func main() {
-	w := webview.New(false)
+	w := webview.New(true)
 	defer w.Destroy()
 
 	w.Bind("__goto_page__", func(ctx map[string]string) error {
