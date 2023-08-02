@@ -14,7 +14,11 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 )
 
-func NewDistroApp(conf *config.Config, dev bool) xtypes.App {
+type DistroApp struct {
+	app xtypes.App
+}
+
+func NewDistroApp(conf *config.Config, dev bool) (*DistroApp, error) {
 
 	var lservice *log.LogService
 
@@ -29,7 +33,7 @@ func NewDistroApp(conf *config.Config, dev bool) xtypes.App {
 
 	err := sbuilder.Build()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	lite := plane.NewLite(sbuilder.CoreHub())
@@ -59,12 +63,15 @@ func NewDistroApp(conf *config.Config, dev bool) xtypes.App {
 
 	err = builder.Build()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	app := builder.GetApp()
 
 	sbuilder.Inject(app)
 
-	return app
+	return &DistroApp{
+		app: app,
+	}, nil
+
 }
