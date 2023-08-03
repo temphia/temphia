@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/app/registry"
 	"github.com/temphia/temphia/code/backend/controllers"
 	"github.com/temphia/temphia/code/backend/xtypes"
@@ -16,6 +17,7 @@ import (
 
 type AppDeps struct {
 	registry     *registry.Registry
+	confd        config.Confd
 	logService   logx.Service
 	controlPlane xplane.ControlPlane
 	server       xtypes.Server
@@ -34,6 +36,7 @@ type AppDeps struct {
 	extensions map[string]any
 }
 
+func (d *AppDeps) Confd() any          { return d.confd }
 func (d *AppDeps) Registry() any       { return d.registry }
 func (d *AppDeps) RootController() any { return d.croot }
 func (d *AppDeps) ControlPlane() any   { return d.controlPlane }

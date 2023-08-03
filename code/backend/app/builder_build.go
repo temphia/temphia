@@ -67,6 +67,7 @@ func (b *Builder) buildServices() error {
 
 	deps := &b.app.deps
 
+	deps.confd = b.confd
 	deps.coreHub = b.sbuilder.CoreHub()
 	deps.cabinetHub = b.sbuilder.CabHub()
 	deps.dataHub = b.sbuilder.DataHub()

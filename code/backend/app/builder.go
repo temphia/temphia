@@ -14,6 +14,7 @@ import (
 
 type Builder struct {
 	app       *App
+	confd     config.Confd
 	config    *config.Config
 	ginEngine *gin.Engine
 	extHandle *extHandle
@@ -49,8 +50,9 @@ func (b *Builder) SetXplane(xp xplane.ControlPlane) {
 	b.app.deps.controlPlane = xp
 }
 
-func (b *Builder) SetConfig(conf *config.Config) {
-	b.config = conf
+func (b *Builder) SetConfigd(confd config.Confd) {
+	b.confd = confd
+	b.config = confd.GetConfig()
 }
 
 func (b *Builder) SetEngine(e *gin.Engine) {

@@ -36,6 +36,7 @@ type App interface {
 }
 
 type Deps interface {
+	Confd() any
 	Registry() any
 	RootController() any
 	ControlPlane() any

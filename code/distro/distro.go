@@ -2,7 +2,6 @@ package distro
 
 import (
 	"os"
-	"path"
 
 	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/app"
@@ -19,6 +18,8 @@ type DistroApp struct {
 }
 
 func NewDistroApp(conf *config.Config, dev bool) (*DistroApp, error) {
+
+	confd := config.New(conf)
 
 	var lservice *log.LogService
 
@@ -41,20 +42,15 @@ func NewDistroApp(conf *config.Config, dev bool) (*DistroApp, error) {
 	logdSecret := os.Getenv("TEMPHIA_LOGD_SECRET")
 	logdPort := os.Getenv("TEMPHIA_LOGD_PORT")
 
-	logfolder := conf.LogFolder
-	if logfolder == "" {
-		logfolder = path.Join(conf.DataFolder, "logs")
-	}
-
 	lservice = log.New(log.LogOptions{
 		LogdSecret: logdSecret,
-		Folder:     logfolder,
+		Folder:     confd.LogFolder(),
 		LogdPort:   logdPort,
 		NodeId:     lite.GetNodeId(),
 	})
 
 	builder := app.NewBuilder()
-	builder.SetConfig(conf)
+	builder.SetConfigd(confd)
 	builder.SetLogger(lservice)
 	builder.SetRegistry(reg)
 	builder.SetXplane(lite)
