@@ -17,6 +17,10 @@ type DistroApp struct {
 	app xtypes.App
 }
 
+func (d *DistroApp) Run() error {
+	return d.app.Run()
+}
+
 func NewDistroApp(conf *config.Config, dev bool) (*DistroApp, error) {
 
 	confd := config.New(conf)

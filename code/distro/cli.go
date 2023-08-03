@@ -99,7 +99,19 @@ func (a *AppCLi) initDatabase() error {
 
 func (a *AppCLi) start() error {
 
-	return nil
+	conf, err := a.readConfig()
+	if err != nil {
+		return err
+	}
+	// fixme => start log injester and set TEMPHIA_LOGD_SECRET TEMPHIA_LOGD_PORT
+	// call actualStart in subprocess
+
+	dapp, err := NewDistroApp(conf, true)
+	if err != nil {
+		return easyerr.Wrap("could not build app", err)
+	}
+
+	return dapp.Run()
 }
 
 func (a *AppCLi) actualStart() error {
