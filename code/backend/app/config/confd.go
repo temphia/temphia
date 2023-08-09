@@ -12,6 +12,7 @@ type Confd interface {
 	LogFolder() string
 	FileStoreFolder() string
 	DBFolder() string
+	InitDataFolder() error
 }
 
 type confd struct {

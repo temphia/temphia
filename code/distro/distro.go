@@ -14,11 +14,8 @@ import (
 )
 
 type DistroApp struct {
-	app xtypes.App
-}
-
-func (d *DistroApp) Run() error {
-	return d.app.Run()
+	app   xtypes.App
+	confd config.Confd
 }
 
 func NewDistroApp(conf *config.Config, dev bool) (*DistroApp, error) {
@@ -71,7 +68,8 @@ func NewDistroApp(conf *config.Config, dev bool) (*DistroApp, error) {
 	sbuilder.Inject(app)
 
 	return &DistroApp{
-		app: app,
+		app:   app,
+		confd: confd,
 	}, nil
 
 }
