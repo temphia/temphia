@@ -12,6 +12,7 @@
 - temphia_desktop.sh
 - temphia_server.sh
 - demo_assets
+- temphia.service
 
 ## subcli
 - bdev
