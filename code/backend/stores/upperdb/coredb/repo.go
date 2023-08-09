@@ -50,5 +50,5 @@ func (d *DB) RepoList(tenantId string) ([]*entities.Repo, error) {
 // private
 
 func (d *DB) repoTable() db.Collection {
-	return dbutils.Table(d.session, "tenant_repos")
+	return dbutils.Table(d.session, "repos")
 }

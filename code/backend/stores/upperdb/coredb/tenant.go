@@ -96,5 +96,5 @@ func (d *DB) tenantTable() db.Collection {
 }
 
 func (d *DB) tenantDomainTable() db.Collection {
-	return d.table("tenant_domains")
+	return d.table("domains")
 }
