@@ -17,7 +17,6 @@ type Builder struct {
 	confd     config.Confd
 	config    *config.Config
 	ginEngine *gin.Engine
-	extHandle *extHandle
 
 	sbuilder *stores.Builder
 }
@@ -25,7 +24,6 @@ type Builder struct {
 func NewBuilder() *Builder {
 
 	return &Builder{
-		extHandle: newHandle(),
 		app: &App{
 			global: Global{
 				globalVars: make(map[string]any),

@@ -4,10 +4,10 @@ import (
 	"strconv"
 
 	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/backend/app/adapter"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
-	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 )
 
 var _ etypes.ModuleBuilder = (*AdapterModBuilder)(nil)
@@ -29,10 +29,10 @@ func (p *AdapterModBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, 
 		return nil, err
 	}
 
-	return New(opts.Resource.TenantId, id, app.GetServer().GetAdapterHub().(httpx.AdapterHub), invoker), nil
+	return New(opts.Resource.TenantId, id, app.GetServer().GetAdapterHub().(adapter.AdapterHub), invoker), nil
 }
 
-func New(tenantId string, id int64, ahub httpx.AdapterHub, ib bindx.Invoker) *AdapterMod {
+func New(tenantId string, id int64, ahub adapter.AdapterHub, ib bindx.Invoker) *AdapterMod {
 
 	bm := &AdapterMod{
 		adapterHub: ahub,

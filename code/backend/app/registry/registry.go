@@ -4,10 +4,9 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/app/adapter"
+	"github.com/temphia/temphia/code/backend/app/xtension"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/backend/xtypes/extension"
-	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
@@ -19,7 +18,7 @@ type (
 type Registry struct {
 	repoBuilders  map[string]repox.Builder
 	storeBuilders map[string]store.Builder
-	extensions    map[string]extension.Builder
+	extensions    map[string]xtension.Builder
 
 	freezed bool
 	mlock   *sync.Mutex
@@ -35,7 +34,7 @@ func New(fromGlobal bool) *Registry {
 		freezed:       false,
 		repoBuilders:  make(map[string]repox.Builder),
 		storeBuilders: make(map[string]store.Builder),
-		extensions:    make(map[string]extension.Builder),
+		extensions:    make(map[string]xtension.Builder),
 		mlock:         &sync.Mutex{},
 	}
 
@@ -83,16 +82,16 @@ func (r *Registry) SetExecutor(name string, builder etypes.BuilderFactory) {
 		panic(errTooLate)
 	}
 
-	r.extensions[name] = func(app xtypes.App, handle extension.Handle) (any, error) {
-		eb, err := builder(app)
-		if err != nil {
-			return nil, err
-		}
+	// r.extensions[name] = func(app xtypes.App, handle extension.Handle) (any, error) {
+	// 	eb, err := builder(app)
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
 
-		handle.SetExecutorBuilder(name, eb)
+	// 	handle.SetExecutorBuilder(name, eb)
 
-		return eb, nil
-	}
+	// 	return eb, nil
+	// }
 
 }
 
@@ -103,32 +102,32 @@ func (r *Registry) SetExecModule(name string, builder etypes.ModuleBuilderFunc) 
 		panic(errTooLate)
 	}
 
-	r.extensions[name] = func(app xtypes.App, handle extension.Handle) (any, error) {
-		mod, err := builder(app)
-		if err != nil {
-			return nil, err
-		}
+	// r.extensions[name] = func(app xtypes.App, handle extension.Handle) (any, error) {
+	// 	mod, err := builder(app)
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
 
-		handle.SetModuleBuilder(name, mod)
-		return mod, nil
-	}
+	// 	handle.SetModuleBuilder(name, mod)
+	// 	return mod, nil
+	// }
 }
 
-func (r *Registry) SetAapterBuilder(name string, rb httpx.Builder) {
+func (r *Registry) SetAapterBuilder(name string, rb adapter.Builder) {
 	r.mlock.Lock()
 	defer r.mlock.Unlock()
 	if r.freezed {
 		panic(errTooLate)
 	}
 
-	r.extensions[name] = func(app xtypes.App, handle extension.Handle) (any, error) {
-		handle.SetAdapterBuilder(name, rb)
-		return nil, nil
-	}
+	// r.extensions[name] = func(app xtypes.App, handle extension.Handle) (any, error) {
+	// 	handle.SetAdapterBuilder(name, rb)
+	// 	return nil, nil
+	// }
 
 }
 
-func (r *Registry) SetExtensionBuilder(name string, builder extension.Builder) {
+func (r *Registry) SetExtensionBuilder(name string, builder xtension.Builder) {
 	r.mlock.Lock()
 	defer r.mlock.Unlock()
 	if r.freezed {
@@ -167,7 +166,7 @@ func (r *Registry) GetStoreBuilders() map[string]store.Builder {
 	return r.storeBuilders
 }
 
-func (r *Registry) GetExecutorBuilder() map[string]extension.Builder {
+func (r *Registry) GetExecutorBuilder() map[string]xtension.Builder {
 	r.mlock.Lock()
 	defer r.mlock.Unlock()
 	if !r.freezed {

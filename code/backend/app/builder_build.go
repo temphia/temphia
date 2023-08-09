@@ -1,7 +1,6 @@
 package app
 
 import (
-	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/server"
 	"github.com/temphia/temphia/code/backend/controllers"
 	enginehub "github.com/temphia/temphia/code/backend/hub/engine"
@@ -90,24 +89,24 @@ func (b *Builder) buildServices() error {
 		return err
 	}
 
-	exts := deps.registry.GetExecutorBuilder()
+	// exts := deps.registry.GetExecutorBuilder()
 
-	exthub := b.extHandle
+	// exthub := b.extHandle
 
-	for ename, extb := range exts {
-		ext, err := extb(b.app, exthub)
-		if err != nil {
-			pp.Println("@extension_error", ename, err.Error())
-			return err
-		}
+	// for ename, extb := range exts {
+	// 	ext, err := extb(b.app, exthub)
+	// 	if err != nil {
+	// 		pp.Println("@extension_error", ename, err.Error())
+	// 		return err
+	// 	}
 
-		b.app.deps.extensions[ename] = ext
-	}
+	// 	b.app.deps.extensions[ename] = ext
+	// }
 
-	b.app.global.Set("executors", exthub.executors)
-	b.app.global.Set("modules", exthub.modules)
-	b.app.global.Set("adapters", exthub.adapters)
-	b.app.global.Set("scripts", exthub.adapters)
+	// b.app.global.Set("executors", exthub.executors)
+	// b.app.global.Set("modules", exthub.modules)
+	// b.app.global.Set("adapters", exthub.adapters)
+	// b.app.global.Set("scripts", exthub.adapters)
 
 	return nil
 }

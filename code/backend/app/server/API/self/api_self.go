@@ -6,6 +6,7 @@ import (
 
 	"github.com/bwmarrin/snowflake"
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/backend/app/adapter"
 	"github.com/temphia/temphia/code/backend/app/server/API/middleware"
 	"github.com/temphia/temphia/code/backend/controllers"
 	"github.com/temphia/temphia/code/backend/controllers/basic"
@@ -31,14 +32,14 @@ type Self struct {
 	cEngine  *engine.Controller
 	cSockd   *sockd.Controller
 
-	notz httpx.AdapterHub
+	notz adapter.AdapterHub
 
 	middleware *middleware.Middleware
 
 	sockdConnIdGenerator *snowflake.Node
 }
 
-func New(signer service.Signer, middleware *middleware.Middleware, notz httpx.AdapterHub, root *controllers.RootController, id *snowflake.Node) *Self {
+func New(signer service.Signer, middleware *middleware.Middleware, notz adapter.AdapterHub, root *controllers.RootController, id *snowflake.Node) *Self {
 	return &Self{
 		signer:               signer,
 		middleware:           middleware,

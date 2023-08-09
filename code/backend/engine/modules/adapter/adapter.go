@@ -1,16 +1,16 @@
 package adapter
 
 import (
+	"github.com/temphia/temphia/code/backend/app/adapter"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/libx/lazydata"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
-	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 type AdapterMod struct {
-	adapterHub httpx.AdapterHub
+	adapterHub adapter.AdapterHub
 	adapterId  int64
 	inBinder   bindx.Invoker
 	tenantId   string
@@ -28,7 +28,7 @@ func (am *AdapterMod) Handle(method string, args xtypes.LazyData) (xtypes.LazyDa
 		return nil, err
 	}
 
-	resp, err := am.adapterHub.PreformEditorAction(httpx.AdapterEditorContext{
+	resp, err := am.adapterHub.PreformEditorAction(adapter.AdapterEditorContext{
 		Id: am.adapterId,
 		User: &claim.UserContext{
 			TenantId:  am.tenantId,

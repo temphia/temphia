@@ -1,8 +1,8 @@
 package registry
 
 import (
+	"github.com/temphia/temphia/code/backend/app/adapter"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
@@ -32,6 +32,6 @@ func SetExecModule(name string, builder etypes.ModuleBuilderFunc) {
 	G.SetExecModule(name, builder)
 }
 
-func SetAdapterBuilder(name string, rb httpx.Builder) {
+func SetAdapterBuilder(name string, rb adapter.Builder) {
 	G.SetAapterBuilder(name, rb)
 }
