@@ -130,22 +130,24 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 
 	host := strings.Split(req.Host, ":")[0]
-	if strings.HasSuffix(host, s.opts.RunnerDomain) {
+	if strings.HasSuffix(host, s.opts.RunnerDomain) && strings.Contains(host, "-n-") {
 		prefix := strings.Replace(host, fmt.Sprintf(".%s", s.opts.RunnerDomain), "", 1)
 
 		ids := strings.Split(prefix, "-n-")
 
-		pp.Println("runner_prefix", ids)
+		if len(ids) == 2 {
+			pp.Println("runner_prefix", ids)
+			s.notz.HandleAgent(xnotz.Context{
+				Writer:   w,
+				Request:  req,
+				TenantId: "",
+				PlugId:   ids[0],
+				AgentId:  ids[1],
+			})
 
-		s.notz.HandleAgent(xnotz.Context{
-			Writer:   w,
-			Request:  req,
-			TenantId: "",
-			PlugId:   ids[0],
-			AgentId:  ids[1],
-		})
+			return
+		}
 
-		return
 	}
 
 	s.opts.GinEngine.ServeHTTP(w, req)
