@@ -3,8 +3,10 @@ package server
 import (
 	"fmt"
 	"io/fs"
+	"log"
 	"net"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -194,3 +196,47 @@ func (s *Server) BuildRoutes() error {
 }
 
 func (s *Server) GetAdapterHub() any { return nil }
+
+func (s *Server) localdoor() error {
+
+	os.Remove(s.opts.LocalSocket)
+
+	l, err := net.Listen("unix", s.opts.LocalSocket)
+	if err != nil {
+		return err
+	}
+
+	s.ldListener = l
+
+	go func() {
+		for {
+			c, err := l.Accept()
+			if err != nil {
+				log.Fatal("accept error:", err)
+			}
+
+			func(c net.Conn) {
+				defer c.Close()
+
+				buf := make([]byte, 512)
+				nr, err := c.Read(buf)
+				if err != nil {
+					return
+				}
+
+				data := buf[0:nr]
+				println("Server got:", string(data))
+				_, err = c.Write(data)
+				if err != nil {
+					log.Fatal("Write: ", err)
+				}
+
+			}(c)
+
+		}
+
+	}()
+
+	return nil
+
+}
