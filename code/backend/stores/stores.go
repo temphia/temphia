@@ -73,8 +73,9 @@ func (b *Builder) Build() error {
 	}
 
 	fsBuilder := storeBuilders[fsconfig.Provider]
+
 	fsstore, err := fsBuilder(store.BuilderOptions{
-		Config:     b.opts.Config.FileStoreConfig,
+		Config:     fsconfig,
 		LogBuilder: b.opts.LogBuilder,
 	})
 	if err != nil {
