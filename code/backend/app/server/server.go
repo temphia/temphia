@@ -114,11 +114,17 @@ func New(opts Options) *Server {
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+
+	pp.Println("@ServeHTTP", req.URL.String())
+	pp.Println(req.URL.Path)
+
 	if s.duckMode {
+		pp.Println("@Ducked", req.URL.String())
 		return
 	}
 
 	if strings.HasPrefix(req.URL.Path, "/z/") {
+		pp.Println("@z")
 		s.opts.GinEngine.ServeHTTP(w, req)
 		return
 	}
@@ -147,7 +153,12 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 func (s *Server) Listen() error {
 
-	err := s.localdoor()
+	err := s.BuildRoutes()
+	if err != nil {
+		return err
+	}
+
+	err = s.localdoor()
 	if err != nil {
 		return err
 	}
@@ -161,6 +172,7 @@ func (s *Server) Listen() error {
 
 	s.listener = listener
 
+	s.duckMode = false
 	return http.Serve(listener, s)
 }
 
