@@ -4,11 +4,11 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/temphia/temphia/code/backend/app/adapter"
 	"github.com/temphia/temphia/code/backend/app/xtension"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/xnotz/adapter"
 )
 
 type (

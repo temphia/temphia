@@ -4,10 +4,11 @@ import (
 	"strconv"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/backend/app/adapter"
+
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
+	"github.com/temphia/temphia/code/backend/xtypes/xnotz/adapter"
 )
 
 var _ etypes.ModuleBuilder = (*AdapterModBuilder)(nil)
