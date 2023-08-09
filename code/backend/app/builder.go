@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/app/registry"
+	"github.com/temphia/temphia/code/backend/app/xtension"
 	"github.com/temphia/temphia/code/backend/stores"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
@@ -30,7 +31,7 @@ func NewBuilder() *Builder {
 				gmutex:     sync.Mutex{},
 			},
 			deps: AppDeps{
-				extensions: make(map[string]any),
+				extensions: make(map[string]xtension.Xtension),
 			},
 		},
 	}

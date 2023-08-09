@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/app/registry"
+	"github.com/temphia/temphia/code/backend/app/xtension"
 	"github.com/temphia/temphia/code/backend/controllers"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
@@ -33,7 +34,7 @@ type AppDeps struct {
 	repoHub    repox.Pacman
 
 	croot      *controllers.RootController
-	extensions map[string]any
+	extensions map[string]xtension.Xtension
 }
 
 func (d *AppDeps) Confd() any          { return d.confd }

@@ -166,7 +166,7 @@ func (r *Registry) GetStoreBuilders() map[string]store.Builder {
 	return r.storeBuilders
 }
 
-func (r *Registry) GetExecutorBuilder() map[string]xtension.Builder {
+func (r *Registry) GetXtensionBuilder() map[string]xtension.Builder {
 	r.mlock.Lock()
 	defer r.mlock.Unlock()
 	if !r.freezed {

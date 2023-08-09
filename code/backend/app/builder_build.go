@@ -1,7 +1,9 @@
 package app
 
 import (
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/server"
+	"github.com/temphia/temphia/code/backend/app/xtension"
 	"github.com/temphia/temphia/code/backend/controllers"
 	enginehub "github.com/temphia/temphia/code/backend/hub/engine"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
@@ -89,24 +91,26 @@ func (b *Builder) buildServices() error {
 		return err
 	}
 
-	// exts := deps.registry.GetExecutorBuilder()
+	Xtbuilders := deps.registry.GetXtensionBuilder()
+	ctx := xtension.NewHandle()
 
-	// exthub := b.extHandle
+	for ename, extb := range Xtbuilders {
+		ext, err := extb(ctx)
+		if err != nil {
+			pp.Println("@extension_error", ename, err.Error())
+			return err
+		}
+		if ext != nil {
+			deps.extensions[ename] = ext
+		}
+	}
 
-	// for ename, extb := range exts {
-	// 	ext, err := extb(b.app, exthub)
-	// 	if err != nil {
-	// 		pp.Println("@extension_error", ename, err.Error())
-	// 		return err
-	// 	}
+	xtdata := xtension.GetContextData(ctx)
 
-	// 	b.app.deps.extensions[ename] = ext
-	// }
-
-	// b.app.global.Set("executors", exthub.executors)
-	// b.app.global.Set("modules", exthub.modules)
-	// b.app.global.Set("adapters", exthub.adapters)
-	// b.app.global.Set("scripts", exthub.adapters)
+	b.app.global.Set("executors", xtdata.Executors)
+	b.app.global.Set("modules", xtdata.Modules)
+	b.app.global.Set("adapters", xtdata.Adapters)
+	b.app.global.Set("scripts", xtdata.Scripts)
 
 	return nil
 }
