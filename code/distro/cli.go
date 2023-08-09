@@ -3,6 +3,7 @@ package distro
 import (
 	"encoding/json"
 	"os"
+	"path"
 
 	"github.com/alecthomas/kong"
 	"github.com/temphia/temphia/code/backend/app/config"
@@ -84,9 +85,11 @@ func (a *AppCLi) initDatabase() error {
 		return err
 	}
 
+	confd := config.New(conf)
+
 	switch conf.DatabaseConfig.Vendor {
 	case store.VendorSqlite:
-		err = common.InitSQLiteDB(conf.DatabaseConfig.Target)
+		err = common.InitSQLiteDB(path.Join(confd.DBFolder(), conf.DatabaseConfig.Target))
 		if err != nil {
 			return err
 		}

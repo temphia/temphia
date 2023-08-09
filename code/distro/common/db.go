@@ -18,7 +18,7 @@ func InitSQLiteDB(path string) error {
 		return err
 	}
 
-	ok, err := sess.Collection("tenants").Exists()
+	ok, err := sess.Collection("system_events").Exists()
 	if err != nil {
 		if !errors.Is(err, db.ErrCollectionDoesNotExist) {
 			return err
@@ -33,7 +33,7 @@ func InitSQLiteDB(path string) error {
 
 	conn := sess.Driver().(*sql.DB)
 
-	ctx, cfunc := context.WithTimeout(context.Background(), time.Minute*2)
+	ctx, cfunc := context.WithTimeout(context.Background(), time.Minute*5)
 	defer cfunc()
 	_, err = conn.ExecContext(ctx, string(out))
 	return err

@@ -325,6 +325,13 @@ create table bprints(
     tenant_id text not null,
     primary KEY(id, tenant_id)
 );
+
+-- create table bprint_instance(
+--     id text not null,
+--     bprint_id text not null default '',
+--     step_head text not null
+-- );
+
 create table plugs(
     id text not null,
     name text not null default '',

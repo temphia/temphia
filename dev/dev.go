@@ -1,9 +1,11 @@
 package dev
 
 import (
+	"path"
+
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/config"
-	"github.com/temphia/temphia/code/backend/libx/xutils"
+	"github.com/temphia/temphia/code/distro/common"
 
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -18,7 +20,7 @@ func Run() error {
 
 	pp.Println("@i_am_dev")
 
-	dapp, err := distro.NewDistroApp(&config.Config{
+	conf := &config.Config{
 		ServerPort:      ":4000",
 		TenantId:        xtypes.DefaultTenant,
 		EnableLocalDoor: true,
@@ -31,19 +33,20 @@ func Run() error {
 			Provider: "sqlite",
 			Target:   "main.db",
 		},
-	}, true)
-	if err != nil {
-		panic(err)
 	}
+	confd := config.New(conf)
 
-	confd := dapp.Configd()
-
-	err = confd.InitDataFolder()
+	err := confd.InitDataFolder()
 	if err != nil {
 		return err
 	}
 
-	err = xutils.CreateIfNotExits(confd.RootDataFolder())
+	err = common.InitSQLiteDB(path.Join(confd.DBFolder(), conf.DatabaseConfig.Target))
+	if err != nil {
+		return err
+	}
+
+	dapp, err := distro.NewDistroApp(conf, true)
 	if err != nil {
 		return err
 	}
