@@ -4,16 +4,22 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/libx/xutils"
+
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/distro"
+
+	// stores
+	_ "github.com/temphia/temphia/code/backend/stores/localfs"
+	_ "github.com/temphia/temphia/code/backend/stores/upperdb/vendors/sqlite"
 )
 
 func Run() error {
+
 	pp.Println("@i_am_dev")
 
 	dapp, err := distro.NewDistroApp(&config.Config{
-		ServerPort:      "4000",
+		ServerPort:      ":4000",
 		TenantId:        xtypes.DefaultTenant,
 		EnableLocalDoor: true,
 		DataFolder:      "./tmp",

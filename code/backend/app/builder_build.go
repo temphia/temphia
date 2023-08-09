@@ -52,6 +52,7 @@ func (b *Builder) buildServer() error {
 		GinEngine:      b.ginEngine,
 		RootController: b.app.deps.croot,
 		Port:           b.config.ServerPort,
+		LocalSocket:    b.confd.LocalSocket(),
 	})
 
 	b.app.deps.server = server

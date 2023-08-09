@@ -3,10 +3,14 @@ package server
 import (
 	"log"
 	"net"
+	"os"
 )
 
 func (s *Server) localdoor() error {
-	l, err := net.Listen("unix", "/tmp/temphia.sock")
+
+	os.Remove(s.opts.LocalSocket)
+
+	l, err := net.Listen("unix", s.opts.LocalSocket)
 	if err != nil {
 		return err
 	}

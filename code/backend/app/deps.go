@@ -37,6 +37,37 @@ type AppDeps struct {
 	extensions map[string]xtension.Xtension
 }
 
+func (d *AppDeps) start() error {
+
+	err := d.controlPlane.Start()
+	if err != nil {
+		return err
+	}
+
+	err = d.engine.Start()
+	if err != nil {
+		return err
+	}
+
+	err = d.cabinetHub.
+		Start(d.controlPlane.GetMsgBus())
+	if err != nil {
+		return err
+	}
+
+	for _, xt := range d.extensions {
+		err = xt.Start()
+		if err != nil {
+			return err
+		}
+	}
+
+	// ectrl := a.deps.croot.EngineController()
+	// ectrl.RunStartupHooks(a.tenantIds, time.Minute*2)
+
+	return nil
+}
+
 func (d *AppDeps) Confd() any          { return d.confd }
 func (d *AppDeps) Registry() any       { return d.registry }
 func (d *AppDeps) RootController() any { return d.croot }

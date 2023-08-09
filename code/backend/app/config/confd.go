@@ -13,6 +13,7 @@ type Confd interface {
 	FileStoreFolder() string
 	DBFolder() string
 	InitDataFolder() error
+	LocalSocket() string
 }
 
 type confd struct {
@@ -45,7 +46,11 @@ func (c *confd) FileStoreFolder() string {
 }
 
 func (c *confd) DBFolder() string {
-	return path.Join(c.config.DataFolder, "db", c.config.DatabaseConfig.Vendor)
+	return path.Join(c.config.DataFolder, "db")
+}
+
+func (c *confd) LocalSocket() string {
+	return path.Join(c.config.DataFolder, "./local.sock")
 }
 
 func (c *confd) InitDataFolder() error {
@@ -64,5 +69,12 @@ func (c *confd) InitDataFolder() error {
 		return err
 	}
 
-	return xutils.CreateIfNotExits(c.DBFolder())
+	err = xutils.CreateIfNotExits(c.DBFolder())
+	if err != nil {
+		return err
+	}
+
+	spath := path.Join(c.DBFolder(), c.config.DatabaseConfig.Vendor)
+
+	return xutils.CreateIfNotExits(spath)
 }

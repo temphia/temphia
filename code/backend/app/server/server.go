@@ -34,6 +34,7 @@ type Options struct {
 	RootDomain     string
 	RunnerDomain   string
 	TenantId       string
+	LocalSocket    string
 	App            xtypes.App
 	GinEngine      *gin.Engine
 	RootController *controllers.RootController
@@ -149,6 +150,8 @@ func (s *Server) Listen() error {
 		return err
 	}
 
+	pp.Println("@port", s.opts.Port)
+
 	listener, err := net.Listen("tcp", s.opts.Port)
 	if err != nil {
 		panic(err)
@@ -160,6 +163,14 @@ func (s *Server) Listen() error {
 }
 
 func (s *Server) Close() error {
+	if s.ldListener != nil {
+		s.ldListener.Close()
+	}
+
+	if s.listener != nil {
+		return s.listener.Close()
+	}
+
 	return nil
 }
 

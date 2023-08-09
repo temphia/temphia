@@ -1,8 +1,20 @@
 package main
 
-import "github.com/temphia/temphia/dev"
+import (
+	"fmt"
+	"os"
+
+	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/dev"
+)
 
 func main() {
 
-	dev.Run()
+	err := dev.Run()
+	if err != nil {
+		pp.Println(err)
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
 }
