@@ -12,8 +12,15 @@ import (
 
 func (s *Server) assets(rg *gin.RouterGroup) {
 
-	assetFS, _ := fs.Sub(data.DataFS, "assets")
-	libsFS, _ := fs.Sub(data.DataFS, "libs")
+	assetFS, err := fs.Sub(data.DataFS, "assets")
+	if err != nil {
+		panic(err)
+	}
+
+	libsFS, err := fs.Sub(data.DataFS, "libs")
+	if err != nil {
+		panic(err)
+	}
 
 	rg.StaticFS("/static/", http.FS(assetFS))
 	rg.StaticFS("/build/", http.FS(s.opts.BuildFS))
