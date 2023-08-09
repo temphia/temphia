@@ -82,16 +82,16 @@ func (r *Registry) SetExecutor(name string, builder etypes.BuilderFactory) {
 		panic(errTooLate)
 	}
 
-	// r.extensions[name] = func(app xtypes.App, handle extension.Handle) (any, error) {
-	// 	eb, err := builder(app)
-	// 	if err != nil {
-	// 		return nil, err
-	// 	}
+	r.extensions[name] = func(ctx *xtension.Context) (xtension.Xtension, error) {
+		eb, err := builder(ctx.App)
+		if err != nil {
+			return nil, err
+		}
 
-	// 	handle.SetExecutorBuilder(name, eb)
+		ctx.SetExecutorBuilder(name, eb)
 
-	// 	return eb, nil
-	// }
+		return nil, nil
+	}
 
 }
 
@@ -102,15 +102,15 @@ func (r *Registry) SetExecModule(name string, builder etypes.ModuleBuilderFunc) 
 		panic(errTooLate)
 	}
 
-	// r.extensions[name] = func(app xtypes.App, handle extension.Handle) (any, error) {
-	// 	mod, err := builder(app)
-	// 	if err != nil {
-	// 		return nil, err
-	// 	}
+	r.extensions[name] = func(ctx *xtension.Context) (xtension.Xtension, error) {
+		mod, err := builder(ctx.App)
+		if err != nil {
+			return nil, err
+		}
 
-	// 	handle.SetModuleBuilder(name, mod)
-	// 	return mod, nil
-	// }
+		ctx.SetModuleBuilder(name, mod)
+		return nil, nil
+	}
 }
 
 func (r *Registry) SetAapterBuilder(name string, rb adapter.Builder) {
@@ -120,10 +120,10 @@ func (r *Registry) SetAapterBuilder(name string, rb adapter.Builder) {
 		panic(errTooLate)
 	}
 
-	// r.extensions[name] = func(app xtypes.App, handle extension.Handle) (any, error) {
-	// 	handle.SetAdapterBuilder(name, rb)
-	// 	return nil, nil
-	// }
+	r.extensions[name] = func(ctx *xtension.Context) (xtension.Xtension, error) {
+		ctx.SetAdapterBuilder(name, rb)
+		return nil, nil
+	}
 
 }
 
