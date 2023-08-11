@@ -1,8 +1,7 @@
 <script lang="ts">
   import { ResourceDataGroup } from "../../../../../../lib/entities";
-  import { LoadingSpinner } from "../../../../../adapter_editor/easypage/core";
   import type { DataService } from "../../../../services/data";
-  import type { PortalService } from "../../core";
+  import { LoadingSpinner, type PortalService } from "../../core";
 
   import ActionPicker from "../../core/action_picker.svelte";
 

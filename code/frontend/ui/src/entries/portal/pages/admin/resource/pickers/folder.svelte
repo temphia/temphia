@@ -1,8 +1,7 @@
 <script lang="ts">
   import { ResourceFolder } from "../../../../../../lib/entities";
-  import { LoadingSpinner } from "../../../../../adapter_editor/easypage/core";
   import type { CabinetService } from "../../../../services/cabinet/cabinet";
-  import type { PortalService } from "../../core";
+  import { LoadingSpinner, type PortalService } from "../../core";
 
   import ActionPicker from "../../core/action_picker.svelte";
 
