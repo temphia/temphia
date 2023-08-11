@@ -1,5 +1,7 @@
 <script lang="ts">
-  import PageQuery from "../../../executor/pagequery/index.svelte";
+  // import PageQuery from "../../../executor/pagequery/index.svelte";
 </script>
 
-<PageQuery env="" />
+<div>Play</div>
+
+<!-- <PageQuery env="" /> -->
