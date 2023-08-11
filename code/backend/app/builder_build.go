@@ -53,6 +53,7 @@ func (b *Builder) buildServer() error {
 		RootController: b.app.deps.croot,
 		Port:           b.config.ServerPort,
 		LocalSocket:    b.confd.LocalSocket(),
+		BuildFS:        b.assetsBuild,
 	})
 
 	b.app.deps.server = server

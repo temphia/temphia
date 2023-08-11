@@ -1,6 +1,7 @@
 package distro
 
 import (
+	"io/fs"
 	"os"
 
 	"github.com/rs/zerolog"
@@ -11,6 +12,7 @@ import (
 	"github.com/temphia/temphia/code/backend/plane"
 	"github.com/temphia/temphia/code/backend/stores"
 	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/frontend/ui"
 )
 
 type DistroApp struct {
@@ -18,16 +20,25 @@ type DistroApp struct {
 	confd config.Confd
 }
 
-func NewDistroApp(conf *config.Config, dev bool) (*DistroApp, error) {
+type Options struct {
+	Conf        *config.Config
+	Dev         bool
+	BuildFolder fs.FS
+}
 
-	confd := config.New(conf)
+func NewDistroApp(opts Options) (*DistroApp, error) {
+	if opts.BuildFolder == nil {
+		opts.BuildFolder = ui.BuildProd
+	}
+
+	confd := config.New(opts.Conf)
 
 	var lservice *log.LogService
 
 	reg := registry.New(true)
 	sbuilder := stores.NewBuilder(stores.Options{
 		Registry: reg,
-		Config:   conf,
+		Config:   opts.Conf,
 		LogBuilder: func() zerolog.Logger {
 			return lservice.GetServiceLogger("store")
 		},
@@ -56,7 +67,8 @@ func NewDistroApp(conf *config.Config, dev bool) (*DistroApp, error) {
 	builder.SetRegistry(reg)
 	builder.SetXplane(lite)
 	builder.SetStoreBuilder(sbuilder)
-	builder.SetMode(dev)
+	builder.SetMode(opts.Dev)
+	builder.SetBuildFolder(opts.BuildFolder)
 
 	err = builder.Build()
 	if err != nil {

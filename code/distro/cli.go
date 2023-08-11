@@ -109,7 +109,10 @@ func (a *AppCLi) start() error {
 	// fixme => start log injester and set TEMPHIA_LOGD_SECRET TEMPHIA_LOGD_PORT
 	// call actualStart in subprocess
 
-	dapp, err := NewDistroApp(conf, true)
+	dapp, err := NewDistroApp(Options{
+		Conf: conf,
+		Dev:  false,
+	})
 	if err != nil {
 		return easyerr.Wrap("could not build app", err)
 	}

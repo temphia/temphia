@@ -1,6 +1,7 @@
 package app
 
 import (
+	"io/fs"
 	"sync"
 
 	"github.com/gin-gonic/gin"
@@ -14,12 +15,12 @@ import (
 )
 
 type Builder struct {
-	app       *App
-	confd     config.Confd
-	config    *config.Config
-	ginEngine *gin.Engine
-
-	sbuilder *stores.Builder
+	app         *App
+	confd       config.Confd
+	config      *config.Config
+	ginEngine   *gin.Engine
+	assetsBuild fs.FS
+	sbuilder    *stores.Builder
 }
 
 func NewBuilder() *Builder {
@@ -78,4 +79,8 @@ func (b *Builder) GetApp() xtypes.App {
 
 func (b *Builder) SetMode(dev bool) {
 	b.app.devmode = dev
+}
+
+func (b *Builder) SetBuildFolder(bf fs.FS) {
+	b.assetsBuild = bf
 }
