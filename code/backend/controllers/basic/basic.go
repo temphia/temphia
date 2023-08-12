@@ -65,12 +65,6 @@ func (c *Controller) GetSelfInfo(uclaim *claim.Session) (*entities.SelfLoad, err
 		return nil, err
 	}
 
-	tenant, err := c.coredb.GetTenant(uclaim.TenantId)
-	if err != nil {
-		pp.Println("@TENANT", err)
-		return nil, err
-	}
-
 	ugroup, err := c.coredb.GetUserGroup(uclaim.TenantId, uclaim.UserGroup)
 	if err != nil {
 		pp.Println("@USER_GROUP ID", err)
@@ -106,7 +100,7 @@ func (c *Controller) GetSelfInfo(uclaim *claim.Session) (*entities.SelfLoad, err
 			Email:     usr.Email,
 			GroupId:   uclaim.UserGroup,
 			GroupName: ugroup.Name},
-		TenantName: tenant.Name,
+		TenantName: "",
 		TenantId:   uclaim.TenantId,
 		Scopes:     scs,
 		Apps:       papps,
