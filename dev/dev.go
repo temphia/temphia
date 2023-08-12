@@ -48,7 +48,7 @@ func Run() error {
 		return err
 	}
 
-	err = common.InitSQLiteDB(path.Join(confd.DBFolder(), conf.DatabaseConfig.Target))
+	ran, err := common.InitSQLiteDB(path.Join(confd.DBFolder(), conf.DatabaseConfig.Target))
 	if err != nil {
 		return err
 	}
@@ -62,6 +62,13 @@ func Run() error {
 
 	if err != nil {
 		return err
+	}
+
+	if ran {
+		err = dapp.SeedSuperUser()
+		if err != nil {
+			return err
+		}
 	}
 
 	err = dapp.Run()

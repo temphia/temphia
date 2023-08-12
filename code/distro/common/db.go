@@ -11,22 +11,22 @@ import (
 	"github.com/upper/db/v4"
 )
 
-func InitSQLiteDB(path string) error {
+func InitSQLiteDB(path string) (bool, error) {
 
 	sess, err := sqlite.NewUpperDb(path)
 	if err != nil {
-		return err
+		return false, err
 	}
 
 	ok, err := sess.Collection("system_events").Exists()
 	if err != nil {
 		if !errors.Is(err, db.ErrCollectionDoesNotExist) {
-			return err
+			return false, err
 		}
 	}
 
 	if ok {
-		return nil
+		return false, nil
 	}
 
 	out := schema.SQLiteSchema
@@ -36,6 +36,9 @@ func InitSQLiteDB(path string) error {
 	ctx, cfunc := context.WithTimeout(context.Background(), time.Minute*5)
 	defer cfunc()
 	_, err = conn.ExecContext(ctx, string(out))
-	return err
+	if err != nil {
+		return false, err
+	}
 
+	return true, nil
 }

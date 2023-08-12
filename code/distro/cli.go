@@ -67,7 +67,7 @@ func (a *AppCLi) initData() error {
 
 	switch conf.DatabaseConfig.Vendor {
 	case store.VendorSqlite:
-		err = common.InitSQLiteDB(conf.DatabaseConfig.Target)
+		_, err = common.InitSQLiteDB(conf.DatabaseConfig.Target)
 		if err != nil {
 			return err
 		}
@@ -89,7 +89,7 @@ func (a *AppCLi) initDatabase() error {
 
 	switch conf.DatabaseConfig.Vendor {
 	case store.VendorSqlite:
-		err = common.InitSQLiteDB(path.Join(confd.DBFolder(), conf.DatabaseConfig.Target))
+		_, err = common.InitSQLiteDB(path.Join(confd.DBFolder(), conf.DatabaseConfig.Target))
 		if err != nil {
 			return err
 		}
