@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { AuthService } from "../../../lib/app/auth/auth";
+  import { AuthService } from "../../services";
   import AltMethod from "./_methods/alt_method.svelte";
   import Password from "./_methods/password.svelte";
   import Icons from "./icons";

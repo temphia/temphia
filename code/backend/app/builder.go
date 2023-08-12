@@ -81,6 +81,10 @@ func (b *Builder) SetMode(dev bool) {
 	b.app.devmode = dev
 }
 
+func (b *Builder) SetTenantId(tenantId string) {
+	b.app.tenantId = tenantId
+}
+
 func (b *Builder) SetBuildFolder(bf fs.FS) {
 	b.assetsBuild = bf
 }

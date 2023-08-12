@@ -1,6 +1,5 @@
 <script lang="ts">
-  import type { AuthService } from "../../../../lib/app/auth/auth";
-
+  import { AuthService } from "../../../services";
   export let app: AuthService;
 
   let emailuser;
@@ -22,7 +21,7 @@
 </script>
 
 {#if message}
-  <p>{message}</p>
+  <p class="text-red-500">{message}</p>
 {/if}
 
 <div class="mt-4">

@@ -14,7 +14,7 @@ import (
 
 func (s *Server) AuthIndex(ctx *gin.Context) {
 
-	stoken, err := s.siteToken(s.opts.TenantId, ctx)
+	stoken, err := s.siteToken(s.opts.App.TenantId(), ctx)
 	if err != nil {
 		httpx.WriteErr(ctx, err)
 		return
@@ -22,8 +22,8 @@ func (s *Server) AuthIndex(ctx *gin.Context) {
 
 	data := &vmodels.SiteData{
 		SiteToken: stoken,
-		ApiURL:    fmt.Sprintf("http://%s/z/api/%s/v2", ctx.Request.Host, s.opts.TenantId),
-		TenantId:  s.opts.TenantId,
+		ApiURL:    fmt.Sprintf("http://%s/z/api/%s/v2", ctx.Request.Host, s.opts.App.TenantId()),
+		TenantId:  s.opts.App.TenantId(),
 		UserGroup: s.extractUserGroup(ctx),
 	}
 

@@ -69,6 +69,7 @@ func NewDistroApp(opts Options) (*DistroApp, error) {
 	builder.SetStoreBuilder(sbuilder)
 	builder.SetMode(opts.Dev)
 	builder.SetBuildFolder(opts.BuildFolder)
+	builder.SetTenantId(xtypes.DefaultTenant)
 
 	err = builder.Build()
 	if err != nil {

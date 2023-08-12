@@ -35,7 +35,6 @@ var _ xtypes.Server = (*Server)(nil)
 type Options struct {
 	RootDomain     string
 	RunnerDomain   string
-	TenantId       string
 	LocalSocket    string
 	App            xtypes.App
 	GinEngine      *gin.Engine
