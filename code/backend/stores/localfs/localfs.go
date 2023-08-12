@@ -2,10 +2,12 @@ package localfs
 
 import (
 	"context"
+	"errors"
 	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
@@ -15,15 +17,34 @@ import (
 
 var _ store.FileStore = (*NativeBlob)(nil)
 
+var (
+	ErrInvalidPath = errors.New("invalid path")
+)
+
 type NativeBlob struct {
 	rootFilePath string
 }
 
 func (n *NativeBlob) AddFolder(ctx context.Context, tenant, folder string) error {
-	return os.Mkdir(n.FolderPath(tenant, folder), 0755)
+	err := n.isValid(folder)
+	if err != nil {
+		return err
+	}
+
+	return os.MkdirAll(n.FolderPath(folder), 0755)
 }
 
 func (n *NativeBlob) AddBlob(ctx context.Context, tenant, folder string, file string, contents []byte) error {
+
+	err := n.isValid(folder)
+	if err != nil {
+		return err
+	}
+
+	err = n.isValid(file)
+	if err != nil {
+		return err
+	}
 
 	ok := xutils.FileExists(n.rootFilePath, folder)
 	if !ok {
@@ -33,9 +54,9 @@ func (n *NativeBlob) AddBlob(ctx context.Context, tenant, folder string, file st
 		}
 	}
 
-	err := os.WriteFile(n.filePath(tenant, folder, file), contents, 0755)
+	err = os.WriteFile(n.filePath(folder, file), contents, 0755)
 
-	pp.Println(err, contents)
+	pp.Println("@add_blob", folder, file, len(contents))
 
 	return err
 
@@ -55,7 +76,12 @@ func (n *NativeBlob) ListRoot(ctx context.Context, tenant string) ([]string, err
 }
 
 func (n *NativeBlob) ListFolderBlobs(ctx context.Context, tenant, folder string) ([]*store.BlobInfo, error) {
-	files, err := ioutil.ReadDir(n.FolderPath(tenant, folder))
+	err := n.isValid(folder)
+	if err != nil {
+		return nil, err
+	}
+
+	files, err := ioutil.ReadDir(n.FolderPath(folder))
 	if err != nil {
 		return nil, err
 	}
@@ -78,31 +104,49 @@ func (n *NativeBlob) ListFolderBlobs(ctx context.Context, tenant, folder string)
 }
 
 func (n *NativeBlob) GetBlob(ctx context.Context, tenant, folder string, file string) ([]byte, error) {
-	return os.ReadFile(n.filePath(tenant, folder, file))
+	err := n.isValid(folder)
+	if err != nil {
+		return nil, err
+	}
+
+	err = n.isValid(file)
+	if err != nil {
+		return nil, err
+	}
+
+	return os.ReadFile(n.filePath(folder, file))
 }
 
 func (n *NativeBlob) DeleteBlob(ctx context.Context, tenant, folder string, file string) error {
-	return os.Remove(n.filePath(tenant, folder, file))
+	err := n.isValid(folder)
+	if err != nil {
+		return err
+	}
+
+	err = n.isValid(file)
+	if err != nil {
+		return err
+	}
+
+	return os.Remove(n.filePath(folder, file))
 }
 
-func (n *NativeBlob) FolderPath(tenant, folder string) string {
-	return filepath.Join(n.rootFilePath, tenant, folder)
+func (n *NativeBlob) FolderPath(folder string) string {
+	return filepath.Join(n.rootFilePath, folder)
 }
 
-func (n *NativeBlob) filePath(tenant, folder, file string) string {
-	return filepath.Join(n.rootFilePath, tenant, folder, file)
+func (n *NativeBlob) filePath(folder, file string) string {
+	return filepath.Join(n.rootFilePath, folder, file)
 }
 
 func (n *NativeBlob) AddBlobStreaming(ctx context.Context, tenant string, folder string, file string, contents io.ReadCloser) error {
 	return easyerr.NotImpl()
 }
 
-// func (n *NativeBlob) CheckPreSignedReadToken(ctx context.Context, tenant string, token string) error {
-// 	return easyerr.NotImpl()
-// }
-// func (n *NativeBlob) GetPreSignedReadToken(ctx context.Context, tenant, folder string, file string) (string, error) {
-// 	return "", easyerr.NotImpl()
-// }
-// func (n *NativeBlob) GetPreSignedWriteToken(ctx context.Context, tenant, folder string, file string) (string, error) {
-// 	return "", easyerr.NotImpl()
-// }
+func (n *NativeBlob) isValid(folder string) error {
+	if strings.Contains(folder, "..") {
+		return ErrInvalidPath
+	}
+
+	return nil
+}
