@@ -19,7 +19,7 @@ type Seeder struct {
 	userId           string
 	tg               *xbprint.NewTableGroup
 	model            *entities.BPrint
-	pacman           repox.Pacman
+	bstore           repox.BStore
 	source           dyndb.DataHub
 	tenant           string
 	group            string
@@ -27,11 +27,11 @@ type Seeder struct {
 	selectableUsers  []string
 }
 
-func New(schema *xbprint.NewTableGroup, pman repox.Pacman, dsource dyndb.DataHub, tenantId, dataGroup, userId string) *Seeder {
+func New(schema *xbprint.NewTableGroup, bstore repox.BStore, dsource dyndb.DataHub, tenantId, dataGroup, userId string) *Seeder {
 	return &Seeder{
 		tg:               schema,
 		model:            nil,
-		pacman:           pman,
+		bstore:           bstore,
 		source:           dsource,
 		tenant:           tenantId,
 		group:            dataGroup,
@@ -53,7 +53,7 @@ func (s *Seeder) getTable(name string) *xbprint.NewTable {
 
 func (s *Seeder) DataSeed() error {
 
-	bytes, err := s.pacman.BprintGetBlob(s.tenant, s.model.ID, "data.yaml")
+	bytes, err := s.bstore.GetBlob(s.tenant, s.model.ID, "", "data.yaml")
 	if err != nil {
 		return err
 	}

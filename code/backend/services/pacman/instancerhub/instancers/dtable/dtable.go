@@ -147,7 +147,7 @@ func (di *dtabeInstancer) instance(tenantId string, opts *DataGroupRequest, sche
 		}
 	}
 
-	seeder := seeder.New(schema, di.pacman, di.dynhub, tenantId, opts.GroupSlug, opts.UserId)
+	seeder := seeder.New(schema, di.pacman.GetBprintFileStore(), di.dynhub, tenantId, opts.GroupSlug, opts.UserId)
 
 	switch opts.SeedType {
 	case dyndb.DynSeedTypeData:

@@ -18,7 +18,7 @@ var (
 
 type InstancHub struct {
 	instancers map[string]xinstance.Instancer
-	pacman     repox.RepoBprintOps
+	pacman     repox.BStore
 }
 
 /*
@@ -33,7 +33,7 @@ type InstancHub struct {
 
 */
 
-func New(instancers map[string]xinstance.Instancer, pacman repox.RepoBprintOps) *InstancHub {
+func New(instancers map[string]xinstance.Instancer, pacman repox.BStore) *InstancHub {
 	return &InstancHub{
 		instancers: instancers,
 		pacman:     pacman,
@@ -214,7 +214,7 @@ func (i *InstancHub) automaticSingle(opts repox.InstanceOptionsV1) (any, error) 
 // private
 
 func (i *InstancHub) loadFile(tenantId, bid string, file string, target any) error {
-	out, err := i.pacman.BprintGetBlob(tenantId, bid, file)
+	out, err := i.pacman.GetBlob(tenantId, bid, "", file)
 	if err != nil {
 		return err
 	}

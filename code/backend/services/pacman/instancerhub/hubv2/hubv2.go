@@ -19,12 +19,12 @@ var (
 )
 
 type HubV2 struct {
-	pacman  repox.RepoBprintOps
+	pacman  repox.Pacman
 	dtable  dyndb.DataHub
 	corehub store.CoreHub
 }
 
-func New(pacman repox.RepoBprintOps, dtable dyndb.DataHub, corehub store.CoreHub) *HubV2 {
+func New(pacman repox.Pacman, dtable dyndb.DataHub, corehub store.CoreHub) *HubV2 {
 	return &HubV2{
 		pacman:  pacman,
 		dtable:  dtable,
@@ -38,7 +38,8 @@ func (h *HubV2) Instance(opts repox.InstanceOptionsV2) (*repox.InstanceResponseV
 		opts.InstanceId = gFunc()
 	}
 
-	out, err := h.pacman.BprintGetBlob(opts.UserSession.TenantId, opts.BprintId, "schema.json")
+	bstore := h.pacman.GetBprintFileStore()
+	out, err := bstore.GetBlob(opts.UserSession.TenantId, opts.BprintId, "", "schema.json")
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +121,9 @@ func (h *HubV2) InstanceSheetDirect(opts repox.InstanceSheetOptions) (*xinstance
 // private
 
 func (h *HubV2) readSchema(tenantId, bprintid, file string) (*step.Schema, error) {
-	out, err := h.pacman.BprintGetBlob(tenantId, bprintid, file)
+	bstore := h.pacman.GetBprintFileStore()
+
+	out, err := bstore.GetBlob(tenantId, bprintid, "", file)
 	if err != nil {
 		return nil, err
 	}

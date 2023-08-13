@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
@@ -101,43 +102,70 @@ func (p *PacMan) BprintCreateFromZip(tenantId string, rawreader io.ReadCloser) (
 		return "", err
 	}
 
-	files := make([]string, 0)
-	bprint.Files = entities.JsonArray{}
-
 	bprint.TenantID = tenantId
 	bid, err := p.BprintCreate(tenantId, bprint)
 	if err != nil {
 		return "", err
 	}
 
+	cleanUpFunc := func() {
+		// try to clean up
+		p.corehub.BprintDel(tenantId, bid)
+		p.bstore.DeleteRoot(tenantId, bid)
+	}
+
+	err = p.bstore.NewRoot(tenantId, bid)
+	if err != nil {
+		cleanUpFunc()
+		return "", err
+	}
+
 	for _, file := range reader.File {
-		if file.Name == "index.json" {
+		if !file.FileInfo().IsDir() {
 			continue
+		}
+
+		err = p.bstore.NewFolder(tenantId, bid, file.Name)
+		if err != nil {
+			cleanUpFunc()
+			return "", err
+		}
+	}
+
+	for _, file := range reader.File {
+		if file.Name == "index.json" || file.FileInfo().IsDir() {
+			continue
+		}
+
+		name := file.Name
+		folder := ""
+		frags := strings.Split(file.Name, "/")
+		if len(frags) > 1 {
+			name = frags[len(frags)-1]
+			folder = strings.TrimRight(file.Name, name)
 		}
 
 		rfile, err := file.Open()
 		if err != nil {
+			cleanUpFunc()
 			return "", err
 		}
 
 		out, err := ioutil.ReadAll(rfile)
 		if err != nil {
+			cleanUpFunc()
 			return "", err
 		}
 
-		err = p.BprintNewBlob(tenantId, bid, file.Name, out, false)
+		err = p.bstore.NewBlob(tenantId, bid, folder, name, out)
 		if err != nil {
+			cleanUpFunc()
 			rfile.Close()
 			return "", err
 		}
-
-		files = append(files, file.Name)
-
 		rfile.Close()
 	}
 
-	pp.Println("@files", files)
-
-	err = p.BprintUpdateFilesList(bprint.TenantID, bid, files...)
 	return bid, err
+
 }

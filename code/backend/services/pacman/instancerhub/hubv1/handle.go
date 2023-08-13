@@ -12,11 +12,12 @@ import (
 type Handle struct {
 	instanced map[string]*xinstance.Response
 	opts      repox.InstanceOptionsV1
-	pacman    repox.RepoBprintOps
+	pacman    repox.BStore
 }
 
 func (h *Handle) GetFile(file string) ([]byte, error) {
-	return h.pacman.BprintGetBlob(h.opts.UserContext.TenantId, h.opts.BprintId, file)
+
+	return h.pacman.GetBlob(h.opts.UserContext.TenantId, h.opts.BprintId, "", file)
 }
 
 func (h *Handle) LoadFile(file string, target any) error {
@@ -28,7 +29,7 @@ func (h *Handle) GetPrevObject(name string) *xinstance.Response {
 }
 
 func (h *Handle) loadFile(tenantId, bid string, file string, target any) error {
-	out, err := h.pacman.BprintGetBlob(tenantId, bid, file)
+	out, err := h.pacman.GetBlob(tenantId, bid, "", file)
 	if err != nil {
 		return err
 	}
