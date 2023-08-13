@@ -9,6 +9,8 @@ import (
 type Pacman interface {
 	Start() error
 
+	GetBprintFileStore() BStore
+
 	RepoCore
 	RepoBprintOps
 
@@ -43,10 +45,14 @@ type RepoBprintOps interface {
 	BprintGet(tenantid, bid string) (*entities.BPrint, error)
 	BprintRemove(tenantid, bid string) error
 	BprintListBlobs(tenantid, bid string) (map[string]string, error)
+}
 
-	BprintNewBlob(tenantid, bid, file string, payload []byte, updateList bool) error
-	BprintUpdateBlob(tenantid, bid, file string, payload []byte) error
-	BprintUpdateFilesList(tenantid, bid string, files ...string) error
-	BprintGetBlob(tenantid, bid, file string) ([]byte, error)
-	BprintDeleteBlob(tenantid, bid, file string) error
+type BStore interface {
+	NewRoot(tenantid, bid string) error
+	DeleteRoot(tenantid, bid string) error
+	NewBlob(tenantid, bid, folder, file string, payload []byte) error
+	NewFolder(tenantid, bid, folder string) error
+	UpdateBlob(tenantid, bid, folder, file string, payload []byte) error
+	GetBlob(tenantid, bid, folder, file string) ([]byte, error)
+	DeleteBlob(tenantid, bid, folder, file string) error
 }
