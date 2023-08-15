@@ -5,7 +5,6 @@ import (
 
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/thoas/go-funk"
@@ -13,6 +12,7 @@ import (
 
 type Controller struct {
 	pacman  repox.Pacman
+	bstore  repox.BStore
 	corehub store.CoreHub
 }
 
@@ -20,6 +20,7 @@ func New(pacman repox.Pacman, corehub store.CoreHub) *Controller {
 	return &Controller{
 		pacman:  pacman,
 		corehub: corehub,
+		bstore:  pacman.GetBprintFileStore(),
 	}
 }
 
@@ -28,23 +29,27 @@ func (c *Controller) DevBprintFileList(tkt *claim.PlugDevTkt) (map[string]string
 }
 
 func (c *Controller) DevBprintFileDel(tkt *claim.PlugDevTkt, file string) error {
-	return c.pacman.BprintDeleteBlob(tkt.TenantId, tkt.BprintId, file)
+
+	return c.bstore.DeleteBlob(tkt.TenantId, tkt.BprintId, "", file)
 }
 
 func (c *Controller) DevBprintFileGet(tkt *claim.PlugDevTkt, file string) ([]byte, error) {
-	return c.pacman.BprintGetBlob(tkt.TenantId, tkt.BprintId, file)
+	return c.bstore.GetBlob(tkt.TenantId, tkt.BprintId, "", file)
 }
 
 func (c *Controller) DevPushFiles(tkt *claim.PlugDevTkt, files map[string]io.Reader) error {
 
-	bprint, err := c.pacman.BprintGet(tkt.TenantId, tkt.BprintId)
+	// fixme => folder support
+
+	ffs, err := c.bstore.ListBlob(tkt.TenantId, tkt.BprintId, "")
 	if err != nil {
 		return err
 	}
 
-	if bprint.Files == nil {
-		bprint.Files = make(entities.JsonArray, 0)
+	bffs := make(map[string]*store.BlobInfo)
 
+	for _, file := range ffs {
+		bffs[file.Name] = file
 	}
 
 	for filekey, filerc := range files {
@@ -53,14 +58,14 @@ func (c *Controller) DevPushFiles(tkt *claim.PlugDevTkt, files map[string]io.Rea
 			return err
 		}
 
-		if !funk.ContainsString(bprint.Files, filekey) {
-			err = c.pacman.BprintNewBlob(tkt.TenantId, tkt.BprintId, filekey, out, true)
+		if _, ok := bffs[filekey]; ok {
+			err = c.bstore.NewBlob(tkt.TenantId, tkt.BprintId, "", filekey, out)
 			if err != nil {
 				return err
 			}
-			bprint.Files = append(bprint.Files, filekey)
+
 		} else {
-			err = c.pacman.BprintUpdateBlob(tkt.TenantId, tkt.BprintId, filekey, out)
+			err = c.bstore.UpdateBlob(tkt.TenantId, tkt.BprintId, "", filekey, out)
 			if err != nil {
 				return err
 			}
@@ -68,7 +73,8 @@ func (c *Controller) DevPushFiles(tkt *claim.PlugDevTkt, files map[string]io.Rea
 
 	}
 
-	return c.pacman.BprintUpdateFilesList(tkt.TenantId, tkt.BprintId, bprint.Files...)
+	return nil
+
 }
 
 func (c *Controller) DevModifyPlug(tkt *claim.PlugDevTkt, pid string, data map[string]any) error {

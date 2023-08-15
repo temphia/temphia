@@ -10,7 +10,7 @@ import (
 type BprintMod struct {
 	tenantId string
 	bid      string
-	bhub     repox.Pacman
+	bhub     repox.BStore
 	modipc   *modipc.ModIPC
 }
 
@@ -26,32 +26,35 @@ func (bm *BprintMod) Close() error {
 
 type newBlobOptions struct {
 	File    string `json:"file,omitempty"`
+	Folder  string `json:"folder,omitempty"`
 	Payload []byte `json:"payload,omitempty"`
 }
 
 func (bm *BprintMod) NewBlob(opts *newBlobOptions) error {
-	return bm.bhub.BprintNewBlob(bm.tenantId, bm.bid, opts.File, opts.Payload, true)
+	return bm.bhub.NewBlob(bm.tenantId, bm.bid, opts.Folder, opts.File, opts.Payload)
 }
 
 type updateBlobOptions struct {
 	File    string `json:"file,omitempty"`
 	Payload []byte `json:"payload,omitempty"`
+	Folder  string `json:"folder,omitempty"`
 }
 
 func (bm *BprintMod) UpdateBlob(opts *updateBlobOptions) error {
-	return bm.bhub.BprintUpdateBlob(bm.tenantId, bm.bid, opts.File, opts.Payload)
+	return bm.bhub.UpdateBlob(bm.tenantId, bm.bid, opts.Folder, opts.File, opts.Payload)
 }
 
 type fileOpts struct {
-	File string `json:"file,omitempty"`
+	File   string `json:"file,omitempty"`
+	Folder string `json:"folder,omitempty"`
 }
 
 func (bm *BprintMod) GetBlob(opts *fileOpts) ([]byte, error) {
-	return bm.bhub.BprintGetBlob(bm.tenantId, bm.bid, opts.File)
+	return bm.bhub.GetBlob(bm.tenantId, bm.bid, opts.Folder, opts.File)
 }
 
 func (bm *BprintMod) DeleteBlob(opts *fileOpts) error {
-	return bm.bhub.BprintDeleteBlob(bm.tenantId, bm.bid, opts.File)
+	return bm.bhub.DeleteBlob(bm.tenantId, bm.bid, opts.Folder, opts.File)
 }
 
 // builder
@@ -73,12 +76,13 @@ func (p *BprintModBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, e
 }
 
 func New(tenantId, bid string, app xtypes.App) *BprintMod {
+	pacman := app.GetDeps().RepoHub().(repox.Pacman)
 
 	bm := &BprintMod{
 		tenantId: tenantId,
 		bid:      bid,
 		modipc:   nil,
-		bhub:     app.GetDeps().RepoHub().(repox.Pacman),
+		bhub:     pacman.GetBprintFileStore(),
 	}
 
 	bm.modipc = modipc.NewModIPC(bm)

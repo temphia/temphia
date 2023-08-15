@@ -45,7 +45,11 @@ func (e *Engine) serveAgentFile(tenantId, plugId, agentId, file string) ([]byte,
 		return nil, easyerr.NotFound("web file")
 	}
 
-	out, err := e.pacman.BprintGetBlob(tenantId, plug.BprintId, actualFile)
+	// fixme => folder support
+
+	bstore := e.pacman.GetBprintFileStore()
+	out, err := bstore.GetBlob(tenantId, plug.BprintId, "", actualFile)
+
 	if err != nil {
 		e.logger.Debug().
 			Str("tenant_id", tenantId).

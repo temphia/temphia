@@ -35,6 +35,10 @@ func (b *bstore) NewFolder(tenantid, bid, folder string) error {
 	return b.filestore.AddFolder(context.TODO(), tenantid, bprintFolder(bid, folder))
 }
 
+func (b *bstore) ListBlob(tenantid, bid, folder string) ([]*store.BlobInfo, error) {
+	return b.filestore.ListFolderBlobs(context.TODO(), tenantid, bprintFolder(bid, folder))
+}
+
 func (b *bstore) UpdateBlob(tenantid, bid, folder, file string, payload []byte) error {
 	return b.filestore.AddBlob(context.TODO(), tenantid, bprintFolder(bid, folder), file, payload)
 }

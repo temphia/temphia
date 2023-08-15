@@ -54,13 +54,13 @@ func (r *ApiAdmin) BprintGet(ctx httpx.Request) {
 }
 
 func (r *ApiAdmin) BprintUpdate(ctx httpx.Request) {
-	bprint := &entities.BPrint{}
+	bprint := make(map[string]any)
 	err := ctx.Http.BindJSON(bprint)
 	if err != nil {
 		r.rutil.WriteErr(ctx.Http, err.Error())
 		return
 	}
-	err = r.cAdmin.BprintUpdate(ctx.Session, bprint)
+	err = r.cAdmin.BprintUpdate(ctx.Session, ctx.Http.Param("id"), bprint)
 	r.rutil.WriteJSON(ctx.Http, nil, err)
 }
 

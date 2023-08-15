@@ -1,9 +1,7 @@
 package admin
 
 import (
-	"archive/zip"
 	"encoding/json"
-	"io"
 	"mime/multipart"
 
 	"github.com/k0kubun/pp"
@@ -30,12 +28,12 @@ func (c *Controller) BprintCreate(uclaim *claim.Session, bp *entities.BPrint) (s
 	return c.pacman.BprintCreate(uclaim.TenantId, bp)
 }
 
-func (c *Controller) BprintUpdate(uclaim *claim.Session, bp *entities.BPrint) error {
+func (c *Controller) BprintUpdate(uclaim *claim.Session, id string, data map[string]any) error {
 	if !c.HasScope(uclaim, "engine") {
 		return scopes.ErrNoAdminEngineScope
 	}
 
-	return c.pacman.BprintUpdate(uclaim.TenantId, bp)
+	return c.pacman.BprintUpdate(uclaim.TenantId, id, data)
 }
 
 func (c *Controller) BprintGet(uclaim *claim.Session, bid string) (*entities.BPrint, error) {
@@ -67,7 +65,9 @@ func (c *Controller) BprintNewBlob(uclaim *claim.Session, bid, file string, payl
 		return scopes.ErrNoAdminEngineScope
 	}
 
-	return c.pacman.BprintNewBlob(uclaim.TenantId, bid, file, payload, true)
+	bstore := c.pacman.GetBprintFileStore()
+
+	return bstore.NewBlob(uclaim.TenantId, bid, file, "", payload)
 }
 
 func (c *Controller) BprintUpdateBlob(uclaim *claim.Session, bid, file string, payload []byte) error {
@@ -75,7 +75,9 @@ func (c *Controller) BprintUpdateBlob(uclaim *claim.Session, bid, file string, p
 		return scopes.ErrNoAdminEngineScope
 	}
 
-	return c.pacman.BprintUpdateBlob(uclaim.TenantId, bid, file, payload)
+	bstore := c.pacman.GetBprintFileStore()
+
+	return bstore.UpdateBlob(uclaim.TenantId, bid, "", file, payload)
 }
 
 func (c *Controller) BprintGetBlob(uclaim *claim.Session, bid, file string) ([]byte, error) {
@@ -83,7 +85,9 @@ func (c *Controller) BprintGetBlob(uclaim *claim.Session, bid, file string) ([]b
 		return nil, scopes.ErrNoAdminEngineScope
 	}
 
-	return c.pacman.BprintGetBlob(uclaim.TenantId, bid, file)
+	bstore := c.pacman.GetBprintFileStore()
+
+	return bstore.GetBlob(uclaim.TenantId, bid, "", file)
 }
 
 func (c *Controller) BprintDeleteBlob(uclaim *claim.Session, bid, file string) error {
@@ -91,7 +95,9 @@ func (c *Controller) BprintDeleteBlob(uclaim *claim.Session, bid, file string) e
 		return scopes.ErrNoAdminEngineScope
 	}
 
-	return c.pacman.BprintDeleteBlob(uclaim.TenantId, bid, file)
+	bstore := c.pacman.GetBprintFileStore()
+
+	return bstore.DeleteBlob(uclaim.TenantId, bid, "", file)
 }
 
 func (c *Controller) BprintCreateFromZip(uclaim *claim.Session, form *multipart.Form) error {
@@ -107,60 +113,12 @@ func (c *Controller) BprintCreateFromZip(uclaim *claim.Session, form *multipart.
 
 	defer zipfile.Close()
 
-	reader, err := zip.NewReader(zipfile, zfile.Size)
+	_, err = c.pacman.BprintCreateFromZip(uclaim.TenantId, zipfile)
 	if err != nil {
 		return err
 	}
 
-	ifile, err := reader.Open("index.json")
-	if err != nil {
-		return err
-	}
-
-	bprint := &entities.BPrint{}
-	err = json.NewDecoder(ifile).Decode(bprint)
-	if err != nil {
-		return err
-	}
-
-	files := make([]string, 0)
-	bprint.Files = entities.JsonArray{}
-
-	bprint.TenantID = uclaim.TenantId
-	bid, err := c.pacman.BprintCreate(uclaim.TenantId, bprint)
-	if err != nil {
-		return err
-	}
-
-	for _, file := range reader.File {
-		if file.Name == "index.json" {
-			continue
-		}
-
-		rfile, err := file.Open()
-		if err != nil {
-			return err
-		}
-
-		out, err := io.ReadAll(rfile)
-		if err != nil {
-			return err
-		}
-
-		err = c.pacman.BprintNewBlob(uclaim.TenantId, bid, file.Name, out, false)
-		if err != nil {
-			rfile.Close()
-			return err
-		}
-
-		files = append(files, file.Name)
-
-		rfile.Close()
-	}
-
-	pp.Println("@files", files)
-
-	return c.pacman.BprintUpdateFilesList(bprint.TenantID, bid, files...)
+	return nil
 }
 
 // repo

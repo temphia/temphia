@@ -39,7 +39,11 @@ func (b *Binder) Sleep(msec int32) {
 }
 
 func (b *Binder) GetFileWithMeta(file string) ([]byte, int64, error) {
-	out, err := b.Deps.Pacman.BprintGetBlob(b.Namespace, b.BprintId, file)
+	bstore := b.Deps.Pacman.GetBprintFileStore()
+
+	// fixme => folder support ?
+
+	out, err := bstore.GetBlob(b.Namespace, b.BprintId, "", file)
 	return out, 0, err
 }
 

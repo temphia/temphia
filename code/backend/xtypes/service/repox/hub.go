@@ -4,6 +4,7 @@ import (
 	"io"
 
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 type Pacman interface {
@@ -41,7 +42,7 @@ type RepoCore interface {
 type RepoBprintOps interface {
 	BprintList(tenantid, group string) ([]*entities.BPrint, error)
 	BprintCreate(tenantid string, bp *entities.BPrint) (string, error)
-	BprintUpdate(tenantid string, bp *entities.BPrint) error
+	BprintUpdate(tenantid, bid string, data map[string]any) error
 	BprintGet(tenantid, bid string) (*entities.BPrint, error)
 	BprintRemove(tenantid, bid string) error
 	BprintListBlobs(tenantid, bid string) (map[string]string, error)
@@ -50,6 +51,7 @@ type RepoBprintOps interface {
 type BStore interface {
 	NewRoot(tenantid, bid string) error
 	DeleteRoot(tenantid, bid string) error
+	ListBlob(tenantid, bid, folder string) ([]*store.BlobInfo, error)
 	NewBlob(tenantid, bid, folder, file string, payload []byte) error
 	NewFolder(tenantid, bid, folder string) error
 	UpdateBlob(tenantid, bid, folder, file string, payload []byte) error
