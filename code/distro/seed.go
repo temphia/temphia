@@ -79,6 +79,33 @@ func (a *DistroApp) SendUserWelcome(user, msg string) error {
 	return err
 }
 
+func (a *DistroApp) SeedRepos() error {
+	tenantId := a.app.TenantId()
+
+	err := a.corehub().RepoNew(tenantId, &entities.Repo{
+		Id:       0,
+		Name:     "Embed",
+		Provider: "embed",
+		TenantId: tenantId,
+	})
+	if err != nil {
+		return err
+	}
+
+	err = a.corehub().RepoNew(tenantId, &entities.Repo{
+		Id:       0,
+		Name:     "Official",
+		Provider: "official",
+		TenantId: tenantId,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (a *DistroApp) corehub() store.CoreHub {
 	return a.app.GetDeps().CoreHub().(store.CoreHub)
 }
