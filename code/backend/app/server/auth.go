@@ -7,9 +7,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/xtypes"
-	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/vmodels"
+	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
 )
 
 func (s *Server) AuthIndex(ctx *gin.Context) {

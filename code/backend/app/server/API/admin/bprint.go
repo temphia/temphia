@@ -4,9 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/controllers/admin"
-	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
 )
 
 func (a *ApiAdmin) bprintAPI(rg *gin.RouterGroup) {

@@ -25,6 +25,17 @@ func New(app xtypes.App) *Notz {
 }
 
 func (n *Notz) HandleAgent(ctx xnotz.Context) {
+
+	/*
+
+		spa_plus
+		spa
+		ssr
+
+
+
+	*/
+
 	n.agent.Render(ctx)
 }
 

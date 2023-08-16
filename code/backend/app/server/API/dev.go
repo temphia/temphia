@@ -7,8 +7,8 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/controllers/sockd"
 	"github.com/temphia/temphia/code/backend/services/sockd/transports"
-	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
 )
 
 var (

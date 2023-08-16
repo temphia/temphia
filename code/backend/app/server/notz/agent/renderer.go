@@ -3,8 +3,8 @@ package agent
 import (
 	"net/http"
 
-	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/xnotz"
+	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
 )
 
 func (a *AgentNotz) spaRender(ctx xnotz.Context, state *agentState) {

@@ -5,8 +5,8 @@ import (
 	"github.com/temphia/temphia/code/backend/app/server/API/middleware"
 	"github.com/temphia/temphia/code/backend/app/server/API/tickets"
 	"github.com/temphia/temphia/code/backend/controllers/admin"
-	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
+	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
 )
 
 type Options struct {

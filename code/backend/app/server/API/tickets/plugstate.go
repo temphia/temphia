@@ -3,9 +3,9 @@ package tickets
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/controllers/tickets"
-	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
 )
 
 func (a *TicketAPI) PlugState(rg *gin.RouterGroup) {

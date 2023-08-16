@@ -6,8 +6,8 @@ import (
 	"github.com/temphia/temphia/code/backend/engine/invokers"
 	"github.com/temphia/temphia/code/backend/engine/invokers/bundled"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/backend/xtypes/httpx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
 )
 
 func (e *EngineHub) launchTarget(uclaim *claim.Session, data etypes.TargetLaunchData) (*etypes.LaunchOptions, error) {

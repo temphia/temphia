@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
 )
 
 func (s *Server) RepoAPI(rg *gin.RouterGroup) {

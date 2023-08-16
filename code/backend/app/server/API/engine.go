@@ -10,7 +10,7 @@ import (
 	"github.com/temphia/temphia/code/backend/controllers/sockd"
 	"github.com/temphia/temphia/code/backend/services/sockd/transports"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/backend/xtypes/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
 )
 
 func (s *Server) EngineAPI(rg *gin.RouterGroup) {
