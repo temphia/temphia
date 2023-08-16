@@ -8,11 +8,15 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
-type CabinetHub struct {
-	// impl sth like this ?
-	// needsCache  bool
-	// cacheBudget int64
 
+/*
+	future
+	- needsCache  bool
+	- cacheBudget int64
+*/
+
+
+type CabinetHub struct {
 	inner store.FileStore
 }
 
