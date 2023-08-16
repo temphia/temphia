@@ -69,6 +69,12 @@ func Run() error {
 		if err != nil {
 			return err
 		}
+
+		err = dapp.SeedRepos()
+		if err != nil {
+			return err
+		}
+
 	}
 
 	err = dapp.Run()
