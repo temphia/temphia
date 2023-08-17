@@ -17,12 +17,12 @@ func (h *HubV2) instanceData(handle Handle, item xbprint.BundleItem) error {
 	gslug := item.Name + handle.opts.InstanceId
 
 	err = dsrc.MigrateSchema(handle.tenantId, step.MigrateOptions{
-		Steps:            schema.Steps,
-		New:              true,
-		Gslug:            gslug,
-		BprintId:         handle.opts.BprintId,
-		BprintItemId:     item.Name,
-		BprintInstanceId: handle.opts.InstanceId,
+		Steps: schema.Steps,
+		New:   true,
+		Gslug: gslug,
+		// BprintId:         handle.opts.BprintId,
+		// BprintItemId:     item.Name,
+		// BprintInstanceId: handle.opts.InstanceId,
 	})
 	if err != nil {
 		return err

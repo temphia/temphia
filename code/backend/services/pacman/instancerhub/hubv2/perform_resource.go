@@ -81,16 +81,16 @@ func (h *HubV2) applyNewResource(item string, handle Handle, data xbprint.NewRes
 	}
 
 	return h.corehub.ResourceNew(handle.tenantId, &entities.Resource{
-		TenantId:         handle.tenantId,
-		Name:             data.Name,
-		Type:             data.Type,
-		SubType:          data.SubType,
-		Target:           target,
-		Payload:          data.Payload,
-		Policy:           data.Policy,
-		BprintId:         handle.opts.BprintId,
-		BprintItemId:     item,
-		BprintInstanceId: handle.opts.InstanceId,
+		TenantId: handle.tenantId,
+		Name:     data.Name,
+		Type:     data.Type,
+		SubType:  data.SubType,
+		Target:   target,
+		Payload:  data.Payload,
+		Policy:   data.Policy,
+		// BprintId:         handle.opts.BprintId,
+		// BprintItemId:     item,
+		// BprintInstanceId: handle.opts.InstanceId,
 	})
 
 }

@@ -69,14 +69,13 @@ func (pi *PlugInstancer) Instance(opts xinstance.Options) (*xinstance.Response, 
 func (pi *PlugInstancer) instance(pid string, opts xinstance.Options, schema *xbprint.NewPlug) (*PlugResponse, error) {
 
 	plug := &entities.Plug{
-		Id:           pid,
-		TenantId:     opts.TenantId,
-		Name:         schema.Name,
-		Live:         true,
-		Dev:          true,
-		ExtraMeta:    entities.JsonStrMap{},
-		InvokePolicy: "",
-		BprintId:     opts.BprintId,
+		Id:        pid,
+		TenantId:  opts.TenantId,
+		Name:      schema.Name,
+		Live:      true,
+		Dev:       true,
+		ExtraMeta: entities.JsonStrMap{},
+		BprintId:  opts.BprintId,
 	}
 
 	err := pi.syncer.PlugNew(opts.TenantId, plug)

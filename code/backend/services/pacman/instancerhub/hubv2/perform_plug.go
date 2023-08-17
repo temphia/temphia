@@ -104,15 +104,15 @@ func (h *HubV2) processStep(handle Handle, new bool, pid, laststep, name string,
 func (h *HubV2) applyNewPlug(tenantId, pid, itemid string, handle Handle, data xbprint.NewPlug) error {
 
 	plug := &entities.Plug{
-		Id:               pid,
-		TenantId:         tenantId,
-		Name:             data.Name,
-		Live:             false,
-		Dev:              true,
-		ExtraMeta:        entities.JsonStrMap{},
-		BprintId:         handle.opts.BprintId,
-		BprintItemId:     itemid,
-		BprintInstanceId: handle.opts.InstanceId,
+		Id:           pid,
+		TenantId:     tenantId,
+		Name:         data.Name,
+		Live:         false,
+		Dev:          true,
+		ExtraMeta:    entities.JsonStrMap{},
+		BprintId:     handle.opts.BprintId,
+		BprintItemId: itemid,
+		//		BprintInstanceId: handle.opts.InstanceId,
 	}
 
 	err := h.corehub.PlugNew(tenantId, plug)

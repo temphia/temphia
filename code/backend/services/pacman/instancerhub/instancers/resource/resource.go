@@ -46,16 +46,16 @@ func (pi *ResInstancer) Instance(opts xinstance.Options) (*xinstance.Response, e
 	}
 
 	err = pi.syncer.ResourceNew(opts.TenantId, &entities.Resource{
-		Id:        id,
-		Name:      res.Name,
-		Type:      res.Type,
-		SubType:   res.SubType,
-		Target:    target,
-		Payload:   res.Payload,
-		Policy:    res.Policy,
-		BprintId:  opts.BprintId,
-		ExtraMeta: res.Meta,
-		TenantId:  opts.TenantId,
+		Id:          id,
+		Name:        res.Name,
+		Type:        res.Type,
+		SubType:     res.SubType,
+		Target:      target,
+		Payload:     res.Payload,
+		Policy:      res.Policy,
+		OwnedByPlug: "",
+		ExtraMeta:   res.Meta,
+		TenantId:    opts.TenantId,
 	})
 
 	if err != nil {
