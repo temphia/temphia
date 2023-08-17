@@ -46,10 +46,7 @@ create table target_apps(
     plug_id text not null,
     agent_id text not null,
 
-    bprint_id text not null default '',
-    bprint_item_id text not null default '',
-    bprint_instance_id text not null default '',
-    bprint_step_head text not null default '',
+    owned_by_plug text not null default '',
 
     extra_meta json not null default '{}',
     exec_meta json not null default '{}',
@@ -68,10 +65,7 @@ create table target_hooks(
     plug_id text not null default '',
     agent_id text not null default '',
 
-    bprint_id text not null default '',
-    bprint_item_id text not null default '',
-    bprint_instance_id text not null default '',
-    bprint_step_head text not null default '',
+    owned_by_plug text not null default '',
 
     extra_meta json not null default '{}',
     exec_meta json not null default '{}',
@@ -221,10 +215,8 @@ create table data_table_groups (
     source_db TEXT not null,
     tenant_id TEXT not null,
 
-    bprint_id text not null default '',
-    bprint_item_id text not null default '',
-    bprint_instance_id text not null default '',        
-    bprint_step_head text not null default '',
+    owned_by_plug text not null default '',
+    migration_head text not null default '',
 
     renderer text not null default '',
     cabinet_source TEXT not null default '',
@@ -326,11 +318,6 @@ create table bprints(
     primary KEY(id, tenant_id)
 );
 
--- create table bprint_instance(
---     id text not null,
---     bprint_id text not null default '',
---     step_head text not null
--- );
 
 create table plugs(
     id text not null,
@@ -340,14 +327,14 @@ create table plugs(
 
     bprint_id text not null default '',
     bprint_item_id text not null default '',
-    bprint_instance_id text not null default '',    
-    bprint_step_head text not null default '',
+    instanced_objects json not null default '{}',
+    step_head  text not null default '',
 
-    invoke_policy text not null default '',
     extra_meta json not null default '{}',
     tenant_id text not null,
     primary KEY(id, tenant_id)
 );
+
 create table agents(
     id text not null,
     name text not null default '',
@@ -377,11 +364,8 @@ create table resources(
     target text not null default '',
     policy text not null default '',
 
-    bprint_id text not null default '',
-    bprint_item_id text not null default '',
-    bprint_instance_id text not null default '',
-    bprint_step_head text not null default '',
-    
+    owned_by_plug text not null default '',
+
     extra_meta json not null default '{}',
     tenant_id text not null,
     primary KEY(id, tenant_id)
