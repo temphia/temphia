@@ -25,20 +25,19 @@ func New(app xtypes.App) *Notz {
 }
 
 func (n *Notz) HandleAgent(ctx xnotz.Context) {
-
-	/*
-
-		spa_plus
-		spa
-		ssr
-
-
-
-	*/
-
 	n.agent.Render(ctx)
 }
 
 func (n *Notz) HandleDomain(ctx xnotz.Context) {
 
 }
+
+/*
+
+renderer_type
+	era => Executor Rendered App
+	spa => Single Page Application
+	gossr => golang Server Side Rendered
+	static => Static
+
+*/
