@@ -23,11 +23,8 @@ func (d *DynDDL) runNew(tenantId string, migctx MigrateContext) error {
 		"tenant_id": tenantId,
 		"slug":      migctx.BaseSchema.Slug,
 	}).Update(db.Cond{
-		"bprint_id":          migctx.Options.BprintId,
-		"bprint_item_id":     migctx.Options.BprintItemId,
-		"bprint_instance_id": migctx.Options.BprintInstanceId,
-		"bprint_step_head":   migctx.NextMigHead,
-		"active":             true,
+		"migration_head": migctx.NextMigHead,
+		"active":         true,
 	})
 
 	if err != nil {

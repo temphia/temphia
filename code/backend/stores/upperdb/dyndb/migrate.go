@@ -86,23 +86,11 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 			return err
 		}
 
-		if group.BprintId != opts.BprintId {
-			return easyerr.Error("wrong bprint_id")
+		if group.OwnedByPlug != opts.PlugId {
+			return easyerr.Error("wrong plug_id")
 		}
 
-		if group.BprintInstanceId != opts.BprintInstanceId {
-			return easyerr.Error("wrong bprint_instance_id")
-		}
-
-		if group.BprintItemId != opts.BprintItemId {
-			return easyerr.Error("wrong bprint_item_id")
-		}
-
-		if group.BprintStepHead == "" {
-			return easyerr.Error("bprint_step_head empty")
-		}
-
-		lastMigHead = group.BprintStepHead
+		lastMigHead = group.MigrationHead
 		found := false
 		for idx, step := range opts.Steps {
 			if idx+1 == len(opts.Steps) {

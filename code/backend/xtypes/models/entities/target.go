@@ -13,9 +13,7 @@ type TargetApp struct {
 	PlugId      string `json:"plug_id,omitempty" db:"plug_id,omitempty"`
 	AgentId     string `json:"agent_id,omitempty" db:"agent_id,omitempty"`
 
-	BprintId         string `json:"bprint_id,omitempty"  db:"bprint_id,omitempty"`
-	BprintItemId     string `json:"bprint_item_id,omitempty"  db:"bprint_item_id,omitempty"`
-	BprintInstanceId string `json:"bprint_instance_id,omitempty"  db:"bprint_instance_id,omitempty"`
+	OwnedByPlug string `json:"owned_by_plug,omitempty"  db:"owned_by_plug,omitempty"`
 
 	ExecDomain int64      `json:"exec_domain,omitempty" db:"exec_domain,omitempty"`
 	ExecMeta   JsonStrMap `json:"exec_meta,omitempty" db:"exec_meta,omitempty"`
@@ -60,9 +58,7 @@ type TargetHook struct {
 	AgentId    string `json:"agent_id,omitempty" db:"agent_id,omitempty"`
 	Handler    string `json:"handler,omitempty" db:"handler,omitempty"`
 
-	BprintId         string `json:"bprint_id,omitempty"  db:"bprint_id,omitempty"`
-	BprintItemId     string `json:"bprint_item_id,omitempty"  db:"bprint_item_id,omitempty"`
-	BprintInstanceId string `json:"bprint_instance_id,omitempty"  db:"bprint_instance_id,omitempty"`
+	OwnedByPlug string `json:"owned_by_plug,omitempty"  db:"owned_by_plug,omitempty"`
 
 	ExecMeta  JsonStrMap `json:"exec_meta,omitempty" db:"exec_meta,omitempty"`
 	ExtraMeta JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`

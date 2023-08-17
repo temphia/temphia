@@ -14,10 +14,8 @@ type TableGroup struct {
 	CabinetFolder string `json:"cabinet_folder,omitempty" db:"cabinet_folder"`
 	Renderer      string `json:"renderer,omitempty" db:"renderer"`
 
-	BprintId         string `json:"bprint_id,omitempty"  db:"bprint_id,omitempty"`
-	BprintItemId     string `json:"bprint_item_id,omitempty"  db:"bprint_item_id,omitempty"`
-	BprintInstanceId string `json:"bprint_instance_id,omitempty"  db:"bprint_instance_id,omitempty"`
-	BprintStepHead   string `json:"bprint_step_head,omitempty"  db:"bprint_step_head,omitempty"`
+	OwnedByPlug   string `json:"owned_by_plug,omitempty"  db:"owned_by_plug,omitempty"`
+	MigrationHead string `json:"migration_head,omitempty"  db:"migration_head,omitempty"`
 
 	ExtraMeta JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
 	Active    bool       `json:"active,omitempty" db:"active"`
