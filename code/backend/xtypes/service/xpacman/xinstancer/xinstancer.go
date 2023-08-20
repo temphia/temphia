@@ -24,7 +24,8 @@ type SheetOptions struct {
 }
 
 type Response struct {
-	Items map[string]string `json:"items,omitempty"`
+	StepHead string            `json:"step_head,omitempty"`
+	Items    map[string]string `json:"items,omitempty"`
 }
 
 type Instancer interface {

@@ -37,7 +37,7 @@ var (
 )
 
 func (i *instancer) Instance(opts xinstancer.Options) (*xinstancer.Response, error) {
-	as, err := i.loadAppSchema()
+	as, err := i.loadAppSchema(opts.TenantId, opts.BprintId)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,23 @@ func (i *instancer) Instance(opts xinstancer.Options) (*xinstancer.Response, err
 		return nil, err
 	}
 
-	return i.runStep(as, opts)
+	resp, err := i.runStep(as, opts)
+	if err != nil {
+		return nil, err
+	}
+
+	// update plug here
+
+	err = i.corehub.PlugUpdate(opts.TenantId, opts.PlugId, map[string]any{
+		"instanced_objects": opts.InstancedIds,
+		"step_head":         resp.Items,
+	})
+	if err != nil {
+
+		return nil, err
+	}
+
+	return resp, nil
 }
 
 func (i *instancer) runStep(as *xpackage.AppSchema, opts xinstancer.Options) (*xinstancer.Response, error) {
@@ -290,7 +306,28 @@ func (i *instancer) runStep(as *xpackage.AppSchema, opts xinstancer.Options) (*x
 
 func (i *instancer) Upgrade(opts xinstancer.Options) error {
 
+	as, err := i.loadAppSchema(opts.TenantId, opts.NextBprintId)
+	if err != nil {
+		return err
+	}
+
+	if opts.PlugId == "" {
+		opts.PlugId = gFunc()
+	}
+
+	plug, err := i.corehub.PlugGet(opts.TenantId, opts.PlugId)
+	if err != nil {
+		return err
+	}
+
+	opts.InstancedIds = plug.InstancedObjects
+
+	// fixme => pass last step_head
+
+	i.runStep(as, opts)
+
 	return nil
+
 }
 
 func (i *instancer) InstanceSheetDirect(opts xinstancer.SheetOptions) (*xinstance.Response, error) {
@@ -305,7 +342,7 @@ func (i *instancer) readMigration(tenantId, bprintid, file string) (*xpackage.Da
 	return nil, nil
 }
 
-func (i *instancer) loadAppSchema() (*xpackage.AppSchema, error) {
+func (i *instancer) loadAppSchema(tenantId, bprintid string) (*xpackage.AppSchema, error) {
 
 	as := &xpackage.AppSchema{}
 	out, err := i.loadBprintFile("", "app.yaml")
