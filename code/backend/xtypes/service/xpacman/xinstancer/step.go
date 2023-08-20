@@ -1,4 +1,43 @@
-package step
+package xinstancer
+
+import (
+	"encoding/json"
+)
+
+// agent
+
+const (
+	PlugStepNewAgent      = "new_agent"
+	PlugStepUpdateAgent   = "update_agent"
+	PlugStepRemoveAgent   = "remove_agent"
+	PlugStepAddInnerLink  = "add_inner_link"
+	PlugStepAddRemoveLink = "remove_inner_link"
+)
+
+// resource
+
+const (
+	PlugStepNewResourceModule    = "new_resource"
+	PlugStepUpdateResourceModule = "update_resource"
+	PlugStepRemoveResourceModule = "remove_resource"
+
+	PlugStepAddResourceLink    = "add_resource_link"
+	PlugStepRemoveResourceLink = "remove_resource_link"
+)
+
+// target
+
+const (
+	PlugStepAddTargetApp    = "add_target_app"
+	PlugStepUpdateTargetApp = "update_target_app"
+	PlugStepDeleteTargetApp = "delete_target_app"
+
+	PlugStepAddTargetHook    = "add_target_hook"
+	PlugStepUpdateTargetHook = "update_target_hook"
+	PlugStepDeleteTargetHook = "delete_target_hook"
+)
+
+// data
 
 type MigrateOptions struct {
 	Steps            []Step `json:"steps,omitempty" yaml:"steps,omitempty"`
@@ -9,6 +48,16 @@ type MigrateOptions struct {
 	BprintInstanceId string `json:"-"`
 	DryRun           bool   `json:"-"`
 }
+
+type Step struct {
+	Name string          `json:"name,omitempty" yaml:"name,omitempty"`
+	Type string          `json:"type,omitempty" yaml:"type,omitempty"`
+	Data json.RawMessage `json:"data,omitempty" yaml:"data,omitempty"`
+}
+
+const (
+	PlugStepRunDataMigration = "run_data_migration"
+)
 
 const (
 	MigTypeNewGroup              = "new_group"

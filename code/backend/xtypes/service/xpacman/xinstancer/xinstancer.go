@@ -8,9 +8,12 @@ import (
 
 type Options struct {
 	BprintId    string             `json:"bprint_id,omitempty"`
-	InstanceId  string             `json:"instance_id,omitempty"`
-	Items       map[string]string  `json:"items,omitempty"`
 	UserSession *claim.UserContext `json:"-"`
+	// for upgrade
+	PlugId       string            `json:"plug_id,omitempty"`
+	NextBprintId string            `json:"next_bprint_id,omitempty"`
+	TenantId     string            `json:"-"`
+	InstancedIds map[string]string `json:"instanced,omitempty"`
 }
 
 type SheetOptions struct {

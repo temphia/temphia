@@ -1,5 +1,7 @@
 package xpackage
 
+import "github.com/mitchellh/mapstructure"
+
 const (
 	TypeBundle     = "bundle"
 	TypeDataGroup  = "data_group"
@@ -32,12 +34,18 @@ type AppSchema struct {
 }
 
 type AppStep struct {
-	Name string `yaml:"name,omitempty"`
-	Type string `yaml:"type,omitempty"`
-	Data any    `yaml:"data,omitempty"`
+	Name     string `yaml:"name,omitempty"`
+	ObjectId string `yaml:"object_id,omitempty"`
+	Type     string `yaml:"type,omitempty"`
+	File     string `yaml:"file,omitempty"`
+	Data     any    `yaml:"data,omitempty"`
 }
 
 type AppObject struct {
 	Name string `yaml:"name,omitempty"`
 	Type string `yaml:"type,omitempty"`
+}
+
+func (a *AppStep) DataAs(target any) error {
+	return mapstructure.Decode(a.Data, target)
 }
