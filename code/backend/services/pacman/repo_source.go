@@ -1,6 +1,8 @@
 package pacman
 
-/*
+import (
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
+)
 
 func (p *PacMan) RepoSources(tenantid string) (map[int64]string, error) {
 	repos, err := p.corehub.RepoList(tenantid)
@@ -18,7 +20,7 @@ func (p *PacMan) RepoSources(tenantid string) (map[int64]string, error) {
 
 // private
 
-func (p *PacMan) getRepoSource(tenantId string, source int64) repox.Repository {
+func (p *PacMan) getRepoSource(tenantId string, source int64) xpacman.Repository {
 
 	p.activeRepoMutex.Lock()
 	trepos, ok := p.activeRepo[tenantId]
@@ -29,7 +31,7 @@ func (p *PacMan) getRepoSource(tenantId string, source int64) repox.Repository {
 			return repo
 		}
 	} else {
-		p.activeRepo[tenantId] = make(map[int64]repox.Repository)
+		p.activeRepo[tenantId] = make(map[int64]xpacman.Repository)
 	}
 	p.activeRepoMutex.Unlock()
 
@@ -43,7 +45,7 @@ func (p *PacMan) getRepoSource(tenantId string, source int64) repox.Repository {
 		return nil
 	}
 
-	newrepo, err := repoBuilder(&repox.BuilderOptions{
+	newrepo, err := repoBuilder(&xpacman.BuilderOptions{
 		TenantId:  tenantId,
 		BasePath:  rrepo.URL,
 		ExtraMeta: rrepo.ExtraMeta,
@@ -69,5 +71,3 @@ func (p *PacMan) getRepoSource(tenantId string, source int64) repox.Repository {
 	return newrepo
 
 }
-
-*/

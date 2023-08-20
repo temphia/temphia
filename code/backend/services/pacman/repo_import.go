@@ -1,14 +1,24 @@
 package pacman
 
-/*
+import (
+	"archive/zip"
+	"encoding/json"
+	"io"
+	"io/ioutil"
+	"os"
+	"path"
+	"strings"
 
+	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
+)
 
-
-func (p *PacMan) RepoSourceImport(tenantid string, opts *repox.RepoImportOpts) (string, error) {
+func (p *PacMan) RepoImport(tenantid string, opts *xpacman.RepoImportOpts) (string, error) {
 
 	pp.Println("@repo_import")
 
-	reader, err := p.RepoSourceGetZip(tenantid, opts.Source, opts.Slug, opts.Version)
+	reader, err := p.RepoGetZip(tenantid, opts.Source, opts.Slug, opts.Version)
 	if err != nil {
 		pp.Println("@could_not_get_zip", err.Error())
 		return "", err
@@ -18,10 +28,10 @@ func (p *PacMan) RepoSourceImport(tenantid string, opts *repox.RepoImportOpts) (
 	return p.BprintCreateFromZip(tenantid, reader)
 }
 
-func (p *PacMan) RepoSourceList(tenantid, group string, source int64, tags ...string) ([]repox.BPrint, error) {
+func (p *PacMan) RepoList(tenantid, group string, source int64, tags ...string) ([]xpacman.BPrint, error) {
 	repo := p.getRepoSource(tenantid, source)
 
-	return repo.Query(tenantid, &repox.RepoQuery{
+	return repo.Query(tenantid, &xpacman.RepoQuery{
 		Group: group,
 		Tags:  tags,
 		Page:  0,
@@ -29,12 +39,12 @@ func (p *PacMan) RepoSourceList(tenantid, group string, source int64, tags ...st
 
 }
 
-func (p *PacMan) RepoSourceGet(tenantid, slug string, source int64) (*repox.BPrint, error) {
+func (p *PacMan) RepoGet(tenantid, slug string, source int64) (*xpacman.BPrint, error) {
 	repo := p.getRepoSource(tenantid, source)
 	return repo.Get(tenantid, slug)
 }
 
-func (p *PacMan) RepoSourceGetZip(tenantid string, source int64, slug, version string) (io.ReadCloser, error) {
+func (p *PacMan) RepoGetZip(tenantid string, source int64, slug, version string) (io.ReadCloser, error) {
 	repo := p.getRepoSource(tenantid, source)
 	return repo.GetZip(tenantid, slug, version)
 }
@@ -159,5 +169,3 @@ func (p *PacMan) BprintCreateFromZip(tenantId string, rawreader io.ReadCloser) (
 	return bid, err
 
 }
-
-*/
