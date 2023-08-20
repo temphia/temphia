@@ -9,8 +9,8 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
@@ -31,7 +31,7 @@ type AppDeps struct {
 	cabinetHub store.CabinetHub
 	plugKV     store.PlugStateKV
 	dataHub    dyndb.DataHub
-	repoHub    repox.Pacman
+	repoHub    xpacman.Pacman
 
 	croot      *controllers.RootController
 	extensions map[string]xtension.Xtension

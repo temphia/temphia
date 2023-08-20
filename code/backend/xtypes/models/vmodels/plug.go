@@ -28,3 +28,7 @@ type ResourceHint struct {
 	Policy  string            `json:"policy,omitempty"`
 	Meta    map[string]string `json:"meta,omitempty"`
 }
+
+type DynData struct {
+	Data map[string][]map[string]any `json:"data,omitempty"`
+}

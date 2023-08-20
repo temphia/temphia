@@ -4,15 +4,15 @@ import (
 	"strings"
 
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 )
 
 type Zenerator interface {
-	NewGroup(tenantId string, model *xbprint.NewTableGroup) (*DDLGroupStmt, error)
-	NewTable(tenantId, gslug string, model *xbprint.NewTable, siblings []string) (*DDLStmt, error)
+	NewGroup(tenantId string, model *xpackage.NewTableGroup) (*DDLGroupStmt, error)
+	NewTable(tenantId, gslug string, model *xpackage.NewTable, siblings []string) (*DDLStmt, error)
 	DropTable(tenantId, gslug, tslug string) (string, error)
 
-	AddColumn(tenantId, gslug, tslug, cslug string, model *xbprint.NewColumn) (string, error)
+	AddColumn(tenantId, gslug, tslug, cslug string, model *xpackage.NewColumn) (string, error)
 	DropColumn(tenantId, gslug, tslug, cslug string) (string, error)
 
 	AddIndex(tenantId, gslug, tslug, iname, itype string, spans []string) (string, error)

@@ -4,11 +4,10 @@ import (
 	"encoding/json"
 	"mime/multipart"
 
-	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/scopes"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 )
 
 func (c *Controller) BprintList(uclaim *claim.Session, group string) ([]*entities.BPrint, error) {
@@ -123,12 +122,14 @@ func (c *Controller) BprintCreateFromZip(uclaim *claim.Session, form *multipart.
 
 // repo
 
-func (c *Controller) BprintImport(uclaim *claim.Session, opts *repox.RepoImportOpts) (string, error) {
+func (c *Controller) BprintImport(uclaim *claim.Session, opts *xpacman.RepoImportOpts) (string, error) {
 	if !c.HasScope(uclaim, "engine") {
 		return "", scopes.ErrNoAdminEngineScope
 	}
 
-	return c.pacman.RepoSourceImport(uclaim.TenantId, opts)
+	//return c.pacman.RepoSourceImport(uclaim.TenantId, opts)
+
+	return "", nil
 }
 
 type InstanceOptions struct {
@@ -139,34 +140,36 @@ type InstanceOptions struct {
 }
 
 func (c *Controller) BprintInstance(uclaim *claim.Session, bid string, opts *InstanceOptions) (any, error) {
-	if !c.HasScope(uclaim, "engine") {
-		return nil, scopes.ErrNoAdminEngineScope
-	}
+	// if !c.HasScope(uclaim, "engine") {
+	// 	return nil, scopes.ErrNoAdminEngineScope
+	// }
 
-	pp.Println(" ||>>", opts)
-	pp.Println(" ||>>", string(opts.UserConfigData))
+	// pp.Println(" ||>>", opts)
+	// pp.Println(" ||>>", string(opts.UserConfigData))
 
-	switch opts.InstancerType {
-	case "bundlev2":
-		instancer := c.pacman.GetInstancerHubV2()
-		return instancer.Instance(repox.InstanceOptionsV2{
-			BprintId:    bid,
-			UserSession: uclaim.AsUserCtx(),
-			InstanceId:  "",
-		})
+	// switch opts.InstancerType {
+	// case "bundlev2":
+	// 	instancer := c.pacman.GetInstancerHubV2()
+	// 	return instancer.Instance(repox.InstanceOptionsV2{
+	// 		BprintId:    bid,
+	// 		UserSession: uclaim.AsUserCtx(),
+	// 		InstanceId:  "",
+	// 	})
 
-	default:
-		fopt := repox.InstanceOptionsV1{
-			BprintId:       bid,
-			InstancerType:  opts.InstancerType,
-			File:           opts.File,
-			UserConfigData: opts.UserConfigData,
-			Auto:           opts.Auto,
-			UserContext:    uclaim.AsUserCtx(),
-		}
+	// default:
+	// 	fopt := repox.InstanceOptionsV1{
+	// 		BprintId:       bid,
+	// 		InstancerType:  opts.InstancerType,
+	// 		File:           opts.File,
+	// 		UserConfigData: opts.UserConfigData,
+	// 		Auto:           opts.Auto,
+	// 		UserContext:    uclaim.AsUserCtx(),
+	// 	}
 
-		instancer := c.pacman.GetInstancerHubV1()
-		return instancer.Instance(fopt)
-	}
+	// 	instancer := c.pacman.GetInstancerHubV1()
+	// 	return instancer.Instance(fopt)
+	// }
+
+	return nil, nil
 
 }

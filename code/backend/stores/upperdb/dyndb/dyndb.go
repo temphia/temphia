@@ -11,7 +11,7 @@ import (
 	"github.com/temphia/temphia/code/backend/stores/upperdb/dyndb/tns"
 	"github.com/temphia/temphia/code/backend/stores/upperdb/ucore"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xinstancer"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/upper/db/v4"
 )
@@ -93,7 +93,7 @@ func (d *DynDB) TemplateQuery(txid uint32, req dyndb.TemplateQueryReq) (*dyndb.Q
 	return d.templateQuery(txid, req)
 }
 
-func (d *DynDB) MigrateSchema(tenantId string, opts step.MigrateOptions) error {
+func (d *DynDB) MigrateSchema(tenantId string, opts xinstancer.MigrateOptions) error {
 	return d.migrateSchema(tenantId, opts)
 }
 

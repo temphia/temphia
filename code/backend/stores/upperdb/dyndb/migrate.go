@@ -8,17 +8,18 @@ import (
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/stores/upperdb/dyndb/dynddl2"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xinstancer"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	"github.com/upper/db/v4"
 )
 
-func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
+func (d *DynDB) migrateSchema(tenantId string, opts xinstancer.MigrateOptions) error {
 
 	// debug all this
 
 	var (
-		baseSchema  *xbprint.NewTableGroup
+		baseSchema  *xpackage.NewTableGroup
 		buf         = strings.Builder{}
 		lastMigHead = ""
 		nextMigHead = ""
@@ -32,11 +33,11 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 		firstStep := opts.Steps[0]
 		nextMigHead = firstStep.Name
 
-		if firstStep.Type != step.MigTypeNewGroup {
+		if firstStep.Type != xinstancer.MigTypeNewGroup {
 			return easyerr.Error("wrong type as first migration step")
 		}
 
-		baseSchema = &xbprint.NewTableGroup{}
+		baseSchema = &xpackage.NewTableGroup{}
 
 		err := json.Unmarshal(firstStep.Data, baseSchema)
 		if err != nil {
@@ -138,9 +139,9 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 		pp.Println(mstep.Type)
 
 		switch mstep.Type {
-		case step.MigTypeAddTable:
+		case xinstancer.MigTypeAddTable:
 
-			tschema := &xbprint.NewTable{}
+			tschema := &xpackage.NewTable{}
 			err := json.Unmarshal(mstep.Data, tschema)
 			if err != nil {
 				return err
@@ -166,8 +167,8 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 				})
 			}
 
-		case step.MigTypeRemoveTable:
-			tschema := &xbprint.RemoveTable{}
+		case xinstancer.MigTypeRemoveTable:
+			tschema := &xpackage.RemoveTable{}
 			err := json.Unmarshal(mstep.Data, tschema)
 			if err != nil {
 				return err
@@ -182,7 +183,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 
 			if opts.New {
 
-				newtables := make([]*xbprint.NewTable, 0, len(baseSchema.Tables))
+				newtables := make([]*xpackage.NewTable, 0, len(baseSchema.Tables))
 
 				found := false
 				for _, tbl := range baseSchema.Tables {
@@ -205,8 +206,8 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 				})
 			}
 
-		case step.MigTypeAddColumn:
-			tschema := &xbprint.NewColumn{}
+		case xinstancer.MigTypeAddColumn:
+			tschema := &xpackage.NewColumn{}
 			err := json.Unmarshal(mstep.Data, tschema)
 			if err != nil {
 				return err
@@ -243,9 +244,9 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 
 			}
 
-		case step.MigTypeRemoveColumn:
+		case xinstancer.MigTypeRemoveColumn:
 
-			tschema := &xbprint.RemoveColumn{}
+			tschema := &xpackage.RemoveColumn{}
 			err := json.Unmarshal(mstep.Data, tschema)
 			if err != nil {
 				return err
@@ -264,7 +265,7 @@ func (d *DynDB) migrateSchema(tenantId string, opts step.MigrateOptions) error {
 				for _, table := range baseSchema.Tables {
 					if table.Slug == tschema.Table {
 						found = true
-						newcols := make([]*xbprint.NewColumn, 0, len(table.Columns))
+						newcols := make([]*xpackage.NewColumn, 0, len(table.Columns))
 
 						for _, nc := range table.Columns {
 							if nc.Slug == tschema.Slug {

@@ -2,14 +2,14 @@ package dyndb
 
 import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xinstancer"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 )
 
 type DynDB interface {
-	MigrateSchema(tenantId string, opts step.MigrateOptions) error
+	MigrateSchema(tenantId string, opts xinstancer.MigrateOptions) error
 
-	NewGroup(tenantId string, model *xbprint.NewTableGroup) error
+	NewGroup(tenantId string, model *xpackage.NewTableGroup) error
 	EditGroup(tenantId string, gslug string, model *entities.TableGroupPartial) error
 	ListGroup(tenantId string, cond map[string]any) ([]*entities.TableGroup, error)
 	GetGroup(tenantId, gslug string) (*entities.TableGroup, error)

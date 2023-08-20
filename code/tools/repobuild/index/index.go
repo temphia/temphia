@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	"github.com/thoas/go-funk"
 )
 
@@ -19,7 +19,7 @@ func New(file string) *Indexer {
 	db := &DB{
 		GroupIndex: make(map[string][]string),
 		TagIndex:   make(map[string][]string),
-		Items:      make(map[string]repox.BPrint),
+		Items:      make(map[string]xpacman.BPrint),
 	}
 
 	fout, err := os.ReadFile(file)
@@ -36,7 +36,7 @@ func New(file string) *Indexer {
 	}
 }
 
-func (dbi *Indexer) UpdateItemIndex(bprint *xbprint.LocalBprint, alias, version string) error {
+func (dbi *Indexer) UpdateItemIndex(bprint *xpackage.Manifest, alias, version string) error {
 
 	typeEntries, ok := dbi.db.GroupIndex[bprint.Type]
 	if !ok {
@@ -57,7 +57,7 @@ func (dbi *Indexer) UpdateItemIndex(bprint *xbprint.LocalBprint, alias, version 
 		versions = append(versions, version)
 	}
 
-	item := repox.BPrint{
+	item := xpacman.BPrint{
 		Name:        bprint.Name,
 		Slug:        bprint.Slug,
 		Type:        bprint.Type,
@@ -85,7 +85,7 @@ func (dbi *Indexer) Save() error {
 }
 
 type DB struct {
-	GroupIndex map[string][]string     `json:"group_index" yaml:"group_index"`
-	TagIndex   map[string][]string     `json:"tag_index" yaml:"tag_index"`
-	Items      map[string]repox.BPrint `json:"items" yaml:"items"`
+	GroupIndex map[string][]string       `json:"group_index" yaml:"group_index"`
+	TagIndex   map[string][]string       `json:"tag_index" yaml:"tag_index"`
+	Items      map[string]xpacman.BPrint `json:"items" yaml:"items"`
 }

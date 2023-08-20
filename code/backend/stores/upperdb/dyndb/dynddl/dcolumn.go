@@ -7,11 +7,11 @@ import (
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/stores/upperdb/ucore"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	"github.com/upper/db/v4"
 )
 
-func (d *DynDDL) AddColumn(tenantId, gslug, tslug string, model *xbprint.NewColumn) error {
+func (d *DynDDL) AddColumn(tenantId, gslug, tslug string, model *xpackage.NewColumn) error {
 	qstr, err := d.dyngen.AddColumn(tenantId, gslug, tslug, model.Slug, model)
 	if err != nil {
 		return err

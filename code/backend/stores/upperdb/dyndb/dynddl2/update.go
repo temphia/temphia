@@ -5,8 +5,8 @@ import (
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/stores/upperdb/ucore"
 	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xinstancer"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	"github.com/upper/db/v4"
 )
 
@@ -53,7 +53,7 @@ func (d *DynDDL) update(tenantId string, migctx MigrateContext) (err error) {
 
 		switch pd.Mtype {
 
-		case step.MigTypeAddTable:
+		case xinstancer.MigTypeAddTable:
 
 			err = dbutils.Execute(ucore.GetDriver(d.session), pd.Stmt)
 			if err != nil {
@@ -63,14 +63,14 @@ func (d *DynDDL) update(tenantId string, migctx MigrateContext) (err error) {
 			err = d.MetaNewTable(
 				tenantId,
 				migctx.Options.Gslug,
-				pd.Data.(*xbprint.NewTable),
+				pd.Data.(*xpackage.NewTable),
 			)
 			if err != nil {
 				return err
 			}
 
-		case step.MigTypeRemoveTable:
-			schema := pd.Data.(*xbprint.RemoveTable)
+		case xinstancer.MigTypeRemoveTable:
+			schema := pd.Data.(*xpackage.RemoveTable)
 			d.MetaRollbackTable(tenantId, migctx.Options.Gslug, schema.Slug)
 			ok, err := d.dataTables().Find(db.Cond{
 				"tenant_id": tenantId,
@@ -89,8 +89,8 @@ func (d *DynDDL) update(tenantId string, migctx MigrateContext) (err error) {
 				return err
 			}
 
-		case step.MigTypeAddColumn:
-			schema := pd.Data.(*xbprint.NewColumn)
+		case xinstancer.MigTypeAddColumn:
+			schema := pd.Data.(*xpackage.NewColumn)
 
 			err = dbutils.Execute(ucore.GetDriver(d.session), pd.Stmt)
 			if err != nil {
@@ -108,8 +108,8 @@ func (d *DynDDL) update(tenantId string, migctx MigrateContext) (err error) {
 				return err
 			}
 
-		case step.MigTypeRemoveColumn:
-			schema := pd.Data.(*xbprint.RemoveColumn)
+		case xinstancer.MigTypeRemoveColumn:
+			schema := pd.Data.(*xpackage.RemoveColumn)
 			d.MetaRollbackColumn(tenantId, migctx.Options.Gslug, schema.Table, schema.Slug)
 
 			ok, err := d.dataTableColumns().Find(db.Cond{

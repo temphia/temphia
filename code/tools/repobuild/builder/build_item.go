@@ -12,7 +12,7 @@ import (
 	"github.com/k0kubun/pp"
 
 	"github.com/temphia/temphia/code/backend/libx/xutils"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	"github.com/temphia/temphia/code/tools/bdev"
 	"gopkg.in/yaml.v2"
 )
@@ -131,7 +131,7 @@ func (rb *RepoBuilder) copyArtifact(basePath, name, bprintFile, version string) 
 		return err
 	}
 
-	lbprint := &xbprint.LocalBprint{}
+	lbprint := &xpackage.Manifest{}
 	err = yaml.Unmarshal(out, lbprint)
 	if err != nil {
 		pp.Println("@unmarshel_bprint_err", err.Error())

@@ -7,7 +7,7 @@ import (
 	"github.com/temphia/temphia/code/backend/stores/upperdb/dyndb/tns"
 	"github.com/temphia/temphia/code/backend/stores/upperdb/ucore"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
@@ -43,7 +43,7 @@ func New(vendor string, tns tns.TNS) *zenerator {
 	return z
 }
 
-func (g *zenerator) NewGroup(tenantId string, model *xbprint.NewTableGroup) (*ucore.DDLGroupStmt, error) {
+func (g *zenerator) NewGroup(tenantId string, model *xpackage.NewTableGroup) (*ucore.DDLGroupStmt, error) {
 
 	if err := g.tns.CheckGroupSlug(model.Slug); err != nil {
 		return nil, err
@@ -77,7 +77,7 @@ func (g *zenerator) NewGroup(tenantId string, model *xbprint.NewTableGroup) (*uc
 	return gstmt, nil
 }
 
-func (g *zenerator) NewTable(tenantId, gslug string, model *xbprint.NewTable, siblings []string) (*ucore.DDLStmt, error) {
+func (g *zenerator) NewTable(tenantId, gslug string, model *xpackage.NewTable, siblings []string) (*ucore.DDLStmt, error) {
 
 	tgen := g.newTZZ(tenantId, gslug, model, siblings) // table generator
 	str, err := tgen.CreateTable()
@@ -104,7 +104,7 @@ func (g *zenerator) DropTable(tenantId, gslug, tslug string) (string, error) {
 	`, tbl, atbl), nil
 }
 
-func (g *zenerator) AddColumn(tenantId, gslug, tslug, cslug string, model *xbprint.NewColumn) (string, error) {
+func (g *zenerator) AddColumn(tenantId, gslug, tslug, cslug string, model *xpackage.NewColumn) (string, error) {
 	return g.addColumn(tenantId, gslug, tslug, cslug, model.Ctype, model.NotNullable)
 }
 

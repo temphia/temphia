@@ -8,7 +8,6 @@ import (
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xinstancer"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -330,7 +329,7 @@ func (i *instancer) Upgrade(opts xinstancer.Options) error {
 
 }
 
-func (i *instancer) InstanceSheetDirect(opts xinstancer.SheetOptions) (*xinstance.Response, error) {
+func (i *instancer) InstanceSheetDirect(opts xinstancer.SheetOptions) (*xinstancer.Response, error) {
 
 	return nil, nil
 }

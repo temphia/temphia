@@ -4,13 +4,13 @@ import (
 	"github.com/temphia/temphia/code/backend/engine/runtime/modipc"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 )
 
 type BprintMod struct {
 	tenantId string
 	bid      string
-	bhub     repox.BStore
+	bhub     xpacman.BStore
 	modipc   *modipc.ModIPC
 }
 
@@ -76,7 +76,7 @@ func (p *BprintModBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, e
 }
 
 func New(tenantId, bid string, app xtypes.App) *BprintMod {
-	pacman := app.GetDeps().RepoHub().(repox.Pacman)
+	pacman := app.GetDeps().RepoHub().(xpacman.Pacman)
 
 	bm := &BprintMod{
 		tenantId: tenantId,

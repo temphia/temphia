@@ -5,18 +5,18 @@ import (
 
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/thoas/go-funk"
 )
 
 type Controller struct {
-	pacman  repox.Pacman
-	bstore  repox.BStore
+	pacman  xpacman.Pacman
+	bstore  xpacman.BStore
 	corehub store.CoreHub
 }
 
-func New(pacman repox.Pacman, corehub store.CoreHub) *Controller {
+func New(pacman xpacman.Pacman, corehub store.CoreHub) *Controller {
 	return &Controller{
 		pacman:  pacman,
 		corehub: corehub,

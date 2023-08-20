@@ -5,7 +5,7 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/controllers/admin"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
 )
 
@@ -148,7 +148,7 @@ func (r *ApiAdmin) BprintInstance(ctx httpx.Request) {
 
 func (r *ApiAdmin) BprintImport(ctx httpx.Request) {
 
-	opts := &repox.RepoImportOpts{}
+	opts := &xpacman.RepoImportOpts{}
 	err := ctx.Http.BindJSON(opts)
 	if err != nil {
 		return

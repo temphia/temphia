@@ -6,8 +6,8 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
 	"github.com/temphia/temphia/code/backend/xtypes/service/sockdx"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
@@ -24,7 +24,7 @@ type Factory struct {
 	Corehub        store.CoreHub
 	CabinetHub     store.CabinetHub
 	Sockd          sockdx.SockdCore
-	Pacman         repox.Pacman
+	Pacman         xpacman.Pacman
 	LoggerBase     zerolog.Logger
 	NodeCache      service.NodeCache
 	PlugKV         store.PlugStateKV
@@ -42,7 +42,7 @@ func NewFactory(opts FactoryOptions) Factory {
 
 		App:            opts.App,
 		Sockd:          appdeps.SockdHub().(sockdx.Hub).GetSockd(),
-		Pacman:         appdeps.RepoHub().(repox.Pacman),
+		Pacman:         appdeps.RepoHub().(xpacman.Pacman),
 		Corehub:        appdeps.CoreHub().(store.CoreHub),
 		CabinetHub:     appdeps.Cabinet().(store.CabinetHub),
 		PlugKV:         appdeps.PlugKV().(store.PlugStateKV),

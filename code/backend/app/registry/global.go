@@ -2,7 +2,7 @@ package registry
 
 import (
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/xnotz/adapter"
 )
@@ -16,7 +16,7 @@ func init() {
 
 }
 
-func SetRepoBuilder(name string, builder repox.Builder) {
+func SetRepoBuilder(name string, builder xpacman.Builder) {
 	G.SetRepoBuilder(name, builder)
 }
 

@@ -8,8 +8,8 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/models/vmodels"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 
 	"github.com/goccy/go-yaml"
@@ -17,9 +17,9 @@ import (
 
 type Seeder struct {
 	userId           string
-	tg               *xbprint.NewTableGroup
+	tg               *xpackage.NewTableGroup
 	model            *entities.BPrint
-	bstore           repox.BStore
+	bstore           xpacman.BStore
 	source           dyndb.DataHub
 	tenant           string
 	group            string
@@ -27,7 +27,7 @@ type Seeder struct {
 	selectableUsers  []string
 }
 
-func New(schema *xbprint.NewTableGroup, bstore repox.BStore, dsource dyndb.DataHub, tenantId, dataGroup, userId string) *Seeder {
+func New(schema *xpackage.NewTableGroup, bstore xpacman.BStore, dsource dyndb.DataHub, tenantId, dataGroup, userId string) *Seeder {
 	return &Seeder{
 		tg:               schema,
 		model:            nil,
@@ -42,7 +42,7 @@ func New(schema *xbprint.NewTableGroup, bstore repox.BStore, dsource dyndb.DataH
 
 }
 
-func (s *Seeder) getTable(name string) *xbprint.NewTable {
+func (s *Seeder) getTable(name string) *xpackage.NewTable {
 	for _, tbl := range s.tg.Tables {
 		if tbl.Slug == name {
 			return tbl

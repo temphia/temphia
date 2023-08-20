@@ -6,14 +6,14 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
 type Controller struct {
-	pacman repox.Pacman
+	pacman xpacman.Pacman
 	cplane xplane.ControlPlane
 	coredb store.CoreHub
 	signer service.Signer
@@ -26,7 +26,7 @@ type Controller struct {
 }
 
 func New(
-	pacman repox.Pacman,
+	pacman xpacman.Pacman,
 	cplane xplane.ControlPlane,
 	coredb store.CoreHub,
 	signer service.Signer,

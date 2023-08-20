@@ -12,10 +12,10 @@ import (
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 )
 
-func ZipIt(bprint *xbprint.LocalBprint, outFile string) error {
+func ZipIt(bprint *xpackage.Manifest, outFile string) error {
 
 	// precheck if all files exists
 

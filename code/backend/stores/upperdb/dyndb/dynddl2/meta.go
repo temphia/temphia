@@ -5,12 +5,12 @@ import (
 	"github.com/temphia/temphia/code/backend/stores/upperdb/dyndb/dyncore"
 	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/upper/db/v4"
 )
 
-func (d *DynDDL) MetaNewGroup(tenantId string, model *xbprint.NewTableGroup) (err error) {
+func (d *DynDDL) MetaNewGroup(tenantId string, model *xpackage.NewTableGroup) (err error) {
 
 	clear := false
 	defer func() {
@@ -74,7 +74,7 @@ func (d *DynDDL) MetaRollbackGroup(tenantId, gslug string) {
 	}
 }
 
-func (d *DynDDL) MetaNewTable(tenantId, gslug string, model *xbprint.NewTable) error {
+func (d *DynDDL) MetaNewTable(tenantId, gslug string, model *xpackage.NewTable) error {
 	_, err := d.dataTables().Insert(model.To(tenantId, gslug))
 	if err != nil {
 		return err

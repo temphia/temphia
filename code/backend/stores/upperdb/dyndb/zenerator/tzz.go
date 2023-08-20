@@ -2,7 +2,7 @@ package zenerator
 
 import (
 	"github.com/temphia/temphia/code/backend/stores/upperdb/dyndb/tns"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
@@ -13,12 +13,12 @@ type tzz struct {
 	allSiblings     []string
 	tns             tns.TNS
 	gzz             *zenerator
-	model           *xbprint.NewTable
+	model           *xpackage.NewTable
 	tableSlug       string
 	referecedTables []string
 }
 
-func (g *zenerator) newTZZ(tenantId, gslug string, model *xbprint.NewTable, sibling []string) *tzz {
+func (g *zenerator) newTZZ(tenantId, gslug string, model *xpackage.NewTable, sibling []string) *tzz {
 	return &tzz{
 		tenantId:        tenantId,
 		gslug:           gslug,

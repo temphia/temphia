@@ -10,7 +10,7 @@ import (
 	"github.com/k0kubun/pp"
 
 	"github.com/temphia/temphia/code/backend/libx/xutils"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	"github.com/temphia/temphia/code/tools/repobuild/index"
 	"github.com/temphia/temphia/code/tools/repobuild/models"
 )
@@ -30,7 +30,7 @@ type RepoBuilder struct {
 	indexer *index.Indexer
 
 	repoCache      map[string]*git.Repository
-	bprintFileCace map[string]*xbprint.LocalBprint
+	bprintFileCace map[string]*xpackage.Manifest
 }
 
 func New(conf *models.BuildConfig) *RepoBuilder {
@@ -45,7 +45,7 @@ func New(conf *models.BuildConfig) *RepoBuilder {
 		erroredItems:   make(map[string]error),
 		outputs:        make(map[string]string),
 		repoCache:      make(map[string]*git.Repository),
-		bprintFileCace: make(map[string]*xbprint.LocalBprint),
+		bprintFileCace: make(map[string]*xpackage.Manifest),
 	}
 }
 

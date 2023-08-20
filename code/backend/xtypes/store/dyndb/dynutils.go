@@ -3,7 +3,7 @@ package dyndb
 import (
 	"github.com/rs/xid"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 )
 
 type DCache interface {
@@ -11,7 +11,7 @@ type DCache interface {
 	EvictColumns(tenantId, group, table string)
 }
 
-func ExtractColumns(m *xbprint.NewTable, tenantId, gslug string) []*entities.Column {
+func ExtractColumns(m *xpackage.NewTable, tenantId, gslug string) []*entities.Column {
 	indexedCol := make(map[string]*entities.Column)
 
 	for _, nc := range m.Columns {

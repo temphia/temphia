@@ -9,7 +9,7 @@ import (
 	"github.com/temphia/temphia/code/backend/stores/upperdb/dyndb/dynddl"
 	"github.com/temphia/temphia/code/backend/stores/upperdb/ucore"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 
 	"github.com/upper/db/v4"
 )
@@ -18,7 +18,7 @@ func (d *DynDB) ddlSess() *dynddl.DynDDL {
 	return dynddl.New(d.session, d.sharedLock, d.dyngen)
 }
 
-func (d *DynDB) AddTable(tenantId, gslug string, model *xbprint.NewTable) error {
+func (d *DynDB) AddTable(tenantId, gslug string, model *xpackage.NewTable) error {
 	ddl := d.ddlSess()
 	return ddl.AddTable(tenantId, gslug, model)
 }
@@ -63,7 +63,7 @@ func (d *DynDB) DeleteTable(tenantId, gslug, tslug string) error {
 
 // columns stuff
 
-func (d *DynDB) AddColumn(tenantId, gslug, tslug string, model *xbprint.NewColumn) error {
+func (d *DynDB) AddColumn(tenantId, gslug, tslug string, model *xpackage.NewColumn) error {
 	ddl := d.ddlSess()
 	return ddl.AddColumn(tenantId, gslug, tslug, model)
 }
@@ -128,7 +128,7 @@ func (d *DynDB) ListColumnRef(tenantId, gslug, tslug string) ([]*entities.Column
 
 // group
 
-func (d *DynDB) NewGroup(tenantId string, model *xbprint.NewTableGroup) error {
+func (d *DynDB) NewGroup(tenantId string, model *xpackage.NewTableGroup) error {
 	_, err := d.GetGroup(tenantId, model.Slug)
 	if err == nil {
 		return easyerr.Error("Group of same slug exists already")

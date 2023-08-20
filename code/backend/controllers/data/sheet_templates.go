@@ -6,22 +6,21 @@ import (
 
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xinstancer"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 )
 
 //go:embed sheet_templates.json
 var tplbytes []byte
 
-var Templates = map[string]xbprint.NewSheetGroup{}
+var Templates = map[string]xpackage.NewSheetGroup{}
 
 func init() {
 
 	json.Unmarshal(tplbytes, &Templates)
 }
 
-func (c *Controller) ListSheetTemplates(uclaim *claim.Session) (map[string]xbprint.NewSheetGroup, error) {
+func (c *Controller) ListSheetTemplates(uclaim *claim.Session) (map[string]xpackage.NewSheetGroup, error) {
 	return Templates, nil
 }
 
@@ -32,7 +31,7 @@ type QuickSheetInstance struct {
 	Source   string `json:"source,omitempty"`
 }
 
-func (c *Controller) InstanceSheet(uclaim *claim.Session, req QuickSheetInstance) (*xinstance.Response, error) {
+func (c *Controller) InstanceSheet(uclaim *claim.Session, req QuickSheetInstance) (*xinstancer.Response, error) {
 
 	tpl, ok := Templates[req.Template]
 	if !ok {
@@ -42,11 +41,13 @@ func (c *Controller) InstanceSheet(uclaim *claim.Session, req QuickSheetInstance
 	tpl.Name = req.Name
 	tpl.Info = req.Info
 
-	return c.repoman.GetInstancerHubV1().InstanceSheetDirect(repox.InstanceSheetOptions{
-		Source:      req.Source,
-		Group:       "",
-		Template:    &tpl,
-		UserContext: uclaim.AsUserCtx(),
-	})
+	// return c.repoman.GetInstancerHubV1().InstanceSheetDirect(repox.InstanceSheetOptions{
+	// 	Source:      req.Source,
+	// 	Group:       "",
+	// 	Template:    &tpl,
+	// 	UserContext: uclaim.AsUserCtx(),
+	// })
+
+	return nil, nil
 
 }

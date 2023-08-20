@@ -2,8 +2,7 @@ package xinstancer
 
 import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xinstance"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 )
 
 type Options struct {
@@ -17,10 +16,10 @@ type Options struct {
 }
 
 type SheetOptions struct {
-	Source      string                 `json:"source,omitempty"`
-	Group       string                 `json:"group,omitempty"`
-	Template    *xbprint.NewSheetGroup `json:"template,omitempty"`
-	UserContext *claim.UserContext     `json:"-"`
+	Source      string                  `json:"source,omitempty"`
+	Group       string                  `json:"group,omitempty"`
+	Template    *xpackage.NewSheetGroup `json:"template,omitempty"`
+	UserContext *claim.UserContext      `json:"-"`
 }
 
 type Response struct {
@@ -31,5 +30,5 @@ type Response struct {
 type Instancer interface {
 	Instance(opts Options) (*Response, error)
 	Upgrade(opts Options) error
-	InstanceSheetDirect(opts SheetOptions) (*xinstance.Response, error)
+	InstanceSheetDirect(opts SheetOptions) (*Response, error)
 }

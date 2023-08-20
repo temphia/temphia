@@ -4,7 +4,7 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
@@ -13,10 +13,10 @@ type Controller struct {
 	dynHub  dyndb.DataHub
 	cabHub  store.CabinetHub
 	signer  service.Signer
-	repoman repox.Pacman
+	repoman xpacman.Pacman
 }
 
-func New(dhub dyndb.DataHub, repoman repox.Pacman, cabHub store.CabinetHub, signer service.Signer) *Controller {
+func New(dhub dyndb.DataHub, repoman xpacman.Pacman, cabHub store.CabinetHub, signer service.Signer) *Controller {
 	return &Controller{
 		dynHub:  dhub,
 		cabHub:  cabHub,

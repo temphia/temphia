@@ -1,18 +1,8 @@
 package pacman
 
-import (
-	"archive/zip"
-	"encoding/json"
-	"io"
-	"io/ioutil"
-	"os"
-	"path"
-	"strings"
+/*
 
-	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
-)
+
 
 func (p *PacMan) RepoSourceImport(tenantid string, opts *repox.RepoImportOpts) (string, error) {
 
@@ -169,3 +159,5 @@ func (p *PacMan) BprintCreateFromZip(tenantId string, rawreader io.ReadCloser) (
 	return bid, err
 
 }
+
+*/

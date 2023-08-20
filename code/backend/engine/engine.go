@@ -7,7 +7,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
@@ -21,7 +21,7 @@ type Engine struct {
 	signer  service.Signer
 	syncer  store.SyncDB
 
-	pacman       repox.Pacman
+	pacman       xpacman.Pacman
 	logger       zerolog.Logger
 	execbuilders map[string]etypes.ExecutorBuilder
 	modBuilders  map[string]etypes.ModuleBuilder
@@ -90,7 +90,7 @@ func (e *Engine) run() error {
 	e.runtime = runtime.New(e.app, e.logger)
 	e.signer = deps.Signer().(service.Signer)
 	e.syncer = deps.CoreHub().(store.SyncDB)
-	e.pacman = deps.RepoHub().(repox.Pacman)
+	e.pacman = deps.RepoHub().(xpacman.Pacman)
 
 	e.execbuilders = e.app.GetGlobalVar().Get("executors").(map[string]etypes.ExecutorBuilder)
 	e.modBuilders = e.app.GetGlobalVar().Get("modules").(map[string]etypes.ModuleBuilder)

@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/controllers/admin"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
 )
 
@@ -45,7 +45,7 @@ func (a *ApiAdmin) dataAPI(rg *gin.RouterGroup) {
 // dyn_table_group
 
 func (a *ApiAdmin) NewGroup(ctx httpx.Request) {
-	tg := &xbprint.NewTableGroup{}
+	tg := &xpackage.NewTableGroup{}
 
 	err := ctx.Http.BindJSON(tg)
 

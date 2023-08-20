@@ -1,17 +1,17 @@
 package dynddl2
 
 import (
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/step"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xinstancer"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 )
 
 type (
 	MigrateContext struct {
-		BaseSchema  *xbprint.NewTableGroup
+		BaseSchema  *xpackage.NewTableGroup
 		StmtString  string
 		PostItems   []PostDDLItem
 		Siblings    map[string]map[string]string
-		Options     step.MigrateOptions
+		Options     xinstancer.MigrateOptions
 		Gslug       string
 		LastMigHead string
 		NextMigHead string

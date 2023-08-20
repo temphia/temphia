@@ -40,13 +40,11 @@ const (
 // data
 
 type MigrateOptions struct {
-	Steps            []Step `json:"steps,omitempty" yaml:"steps,omitempty"`
-	New              bool   `json:"new,omitempty" yaml:"new,omitempty"`
-	Gslug            string `json:"gslug,omitempty" yaml:"gslug,omitempty"`
-	BprintId         string `json:"bprint_id,omitempty" yaml:"bprint_id,omitempty"`
-	BprintItemId     string `json:"-"`
-	BprintInstanceId string `json:"-"`
-	DryRun           bool   `json:"-"`
+	Steps  []Step `json:"steps,omitempty" yaml:"steps,omitempty"`
+	New    bool   `json:"new,omitempty" yaml:"new,omitempty"`
+	Gslug  string `json:"gslug,omitempty" yaml:"gslug,omitempty"`
+	PlugId string `json:"plug_id,omitempty" yaml:"plug_id,omitempty"`
+	DryRun bool   `json:"-"`
 }
 
 type Step struct {

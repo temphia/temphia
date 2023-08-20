@@ -6,7 +6,7 @@ import (
 
 	"github.com/temphia/temphia/code/backend/app/xtension"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/xnotz/adapter"
 )
@@ -16,7 +16,7 @@ type (
 )
 
 type Registry struct {
-	repoBuilders  map[string]repox.Builder
+	repoBuilders  map[string]xpacman.Builder
 	storeBuilders map[string]store.Builder
 	extensions    map[string]xtension.Builder
 
@@ -32,7 +32,7 @@ var (
 func New(fromGlobal bool) *Registry {
 	reg := &Registry{
 		freezed:       false,
-		repoBuilders:  make(map[string]repox.Builder),
+		repoBuilders:  make(map[string]xpacman.Builder),
 		storeBuilders: make(map[string]store.Builder),
 		extensions:    make(map[string]xtension.Builder),
 		mlock:         &sync.Mutex{},
@@ -66,7 +66,7 @@ func (r *Registry) Freeze() {
 	r.freezed = true
 }
 
-func (r *Registry) SetRepoBuilder(name string, builder repox.Builder) {
+func (r *Registry) SetRepoBuilder(name string, builder xpacman.Builder) {
 	r.mlock.Lock()
 	defer r.mlock.Unlock()
 	if r.freezed {
@@ -147,7 +147,7 @@ func (r *Registry) SetStoreBuilder(name string, b store.Builder) {
 	r.storeBuilders[name] = b
 }
 
-func (r *Registry) GetRepoBuilders() map[string]repox.Builder {
+func (r *Registry) GetRepoBuilders() map[string]xpacman.Builder {
 	r.mlock.Lock()
 	defer r.mlock.Unlock()
 	if !r.freezed {

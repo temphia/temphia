@@ -1,8 +1,6 @@
 package pacman
 
-import (
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
-)
+/*
 
 func (p *PacMan) RepoSources(tenantid string) (map[int64]string, error) {
 	repos, err := p.corehub.RepoList(tenantid)
@@ -71,3 +69,5 @@ func (p *PacMan) getRepoSource(tenantId string, source int64) repox.Repository {
 	return newrepo
 
 }
+
+*/

@@ -6,7 +6,7 @@ import (
 	"github.com/alecthomas/kong"
 	"github.com/joho/godotenv"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox/xbprint"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	"github.com/temphia/temphia/code/tools/sharedcli"
 
 	client "github.com/temphia/temphia/code/goclient"
@@ -39,7 +39,7 @@ type CLI struct {
 	PlugId    string
 	AgentId   string
 
-	bp *xbprint.LocalBprint
+	bp *xpackage.Manifest
 }
 
 func (c *CLI) preRun(bfile string) error {
@@ -49,7 +49,7 @@ func (c *CLI) preRun(bfile string) error {
 		return easyerr.Wrap("bprint file not found", err)
 	}
 
-	bprint := xbprint.LocalBprint{}
+	bprint := xpackage.Manifest{}
 	err = yaml.Unmarshal(out, &bprint)
 	if err != nil {
 		return easyerr.Wrap("err unmarsheling .bprint file", err)
