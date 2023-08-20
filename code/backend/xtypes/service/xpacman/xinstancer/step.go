@@ -1,9 +1,5 @@
 package xinstancer
 
-import (
-	"encoding/json"
-)
-
 // agent
 
 const (
@@ -38,20 +34,6 @@ const (
 )
 
 // data
-
-type MigrateOptions struct {
-	Steps  []Step `json:"steps,omitempty" yaml:"steps,omitempty"`
-	New    bool   `json:"new,omitempty" yaml:"new,omitempty"`
-	Gslug  string `json:"gslug,omitempty" yaml:"gslug,omitempty"`
-	PlugId string `json:"plug_id,omitempty" yaml:"plug_id,omitempty"`
-	DryRun bool   `json:"-"`
-}
-
-type Step struct {
-	Name string          `json:"name,omitempty" yaml:"name,omitempty"`
-	Type string          `json:"type,omitempty" yaml:"type,omitempty"`
-	Data json.RawMessage `json:"data,omitempty" yaml:"data,omitempty"`
-}
 
 const (
 	PlugStepRunDataMigration = "run_data_migration"

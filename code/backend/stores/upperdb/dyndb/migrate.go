@@ -14,7 +14,7 @@ import (
 	"github.com/upper/db/v4"
 )
 
-func (d *DynDB) migrateSchema(tenantId string, opts xinstancer.MigrateOptions) error {
+func (d *DynDB) migrateSchema(tenantId string, opts xpackage.MigrateOptions) error {
 
 	// debug all this
 

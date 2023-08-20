@@ -282,14 +282,14 @@ func (i *instancer) runStep(as *xpackage.AppSchema, opts xinstancer.Options) (*x
 			}
 
 		case xinstancer.PlugStepRunDataMigration:
-			// schema, err := i.readMigration(opts.TenantId, opts.BprintId, step.File)
-			// if err != nil {
-			// 	return nil, err
-			// }
+			schema, err := i.readMigration(opts.TenantId, opts.BprintId, step.File)
+			if err != nil {
+				return nil, err
+			}
 
-			// dyndb := i.datahub.GetDynDB()
+			dyndb := i.datahub.GetDynDB()
 
-			// dyndb.MigrateSchema(opts.TenantId, )
+			dyndb.MigrateSchema(opts.TenantId, schema)
 
 			pp.Println("@run_migration_here")
 
@@ -336,9 +336,9 @@ func (i *instancer) InstanceSheetDirect(opts xinstancer.SheetOptions) (*xinstanc
 
 // private
 
-func (i *instancer) readMigration(tenantId, bprintid, file string) (*xpackage.DataSchema, error) {
+func (i *instancer) readMigration(tenantId, bprintid, file string) (xpackage.MigrateOptions, error) {
 
-	return nil, nil
+	return xpackage.MigrateOptions{}, nil
 }
 
 func (i *instancer) loadAppSchema(tenantId, bprintid string) (*xpackage.AppSchema, error) {

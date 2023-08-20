@@ -6,8 +6,12 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
-type DataSchema struct {
-	Steps []MigrationStep `json:"steps,omitempty" yaml:"steps,omitempty"`
+type MigrateOptions struct {
+	Steps  []MigrationStep `json:"steps,omitempty" yaml:"steps,omitempty"`
+	New    bool            `json:"new,omitempty" yaml:"new,omitempty"`
+	Gslug  string          `json:"gslug,omitempty" yaml:"gslug,omitempty"`
+	PlugId string          `json:"plug_id,omitempty" yaml:"plug_id,omitempty"`
+	DryRun bool            `json:"-"`
 }
 
 type MigrationStep struct {

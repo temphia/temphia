@@ -8,7 +8,6 @@ import (
 	"github.com/temphia/temphia/code/backend/hub/dyndb/table"
 
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xinstancer"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
@@ -117,7 +116,7 @@ func (ds *DataSource) NewActivity(tenantId, group, table string, record *entitie
 	return err
 }
 
-func (ds *DataSource) MigrateSchema(tenantId string, opts xinstancer.MigrateOptions) error {
+func (ds *DataSource) MigrateSchema(tenantId string, opts xpackage.MigrateOptions) error {
 	return ds.inner.MigrateSchema(tenantId, opts)
 }
 

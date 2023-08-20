@@ -1,7 +1,6 @@
 package dynddl2
 
 import (
-	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xinstancer"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 )
 
@@ -11,7 +10,7 @@ type (
 		StmtString  string
 		PostItems   []PostDDLItem
 		Siblings    map[string]map[string]string
-		Options     xinstancer.MigrateOptions
+		Options     xpackage.MigrateOptions
 		Gslug       string
 		LastMigHead string
 		NextMigHead string
