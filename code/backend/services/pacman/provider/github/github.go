@@ -9,7 +9,7 @@ import (
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 	"github.com/temphia/temphia/code/tools/repobuild/index"
 )
 
@@ -32,21 +32,21 @@ type Github struct {
 	repo   string
 	branch string
 
-	cache map[string]repox.BPrint
+	cache map[string]xpacman.BPrint
 	// cacheFillWip bool
 	cLock sync.Mutex
 }
 
 func (g *Github) Name() string { return "github" }
 
-func (g *Github) Query(tenantId string, opts *repox.RepoQuery) ([]repox.BPrint, error) {
+func (g *Github) Query(tenantId string, opts *xpacman.RepoQuery) ([]xpacman.BPrint, error) {
 
 	err := g.fillCache()
 	if err != nil {
 		return nil, err
 	}
 
-	vals := make([]repox.BPrint, 0, len(g.cache))
+	vals := make([]xpacman.BPrint, 0, len(g.cache))
 	for _, v := range g.cache {
 		vals = append(vals, v)
 	}
@@ -55,7 +55,7 @@ func (g *Github) Query(tenantId string, opts *repox.RepoQuery) ([]repox.BPrint, 
 
 }
 
-func (g *Github) Get(tenantid, slug string) (*repox.BPrint, error) {
+func (g *Github) Get(tenantid, slug string) (*xpacman.BPrint, error) {
 
 	err := g.fillCache()
 	if err != nil {

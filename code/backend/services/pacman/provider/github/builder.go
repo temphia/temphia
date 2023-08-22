@@ -2,7 +2,7 @@ package github
 
 import (
 	"github.com/temphia/temphia/code/backend/app/registry"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 )
 
 func init() {
@@ -10,9 +10,9 @@ func init() {
 	registry.SetRepoBuilder("github", New)
 }
 
-func NewOfficial(opts *repox.BuilderOptions) (repox.Repository, error) {
+func NewOfficial(opts *xpacman.BuilderOptions) (xpacman.Repository, error) {
 
-	return New(&repox.BuilderOptions{
+	return New(&xpacman.BuilderOptions{
 		TenantId: opts.TenantId,
 		BasePath: "",
 		ExtraMeta: map[string]string{
@@ -23,7 +23,7 @@ func NewOfficial(opts *repox.BuilderOptions) (repox.Repository, error) {
 	})
 }
 
-func New(opts *repox.BuilderOptions) (repox.Repository, error) {
+func New(opts *xpacman.BuilderOptions) (xpacman.Repository, error) {
 
 	gh := &Github{
 		user:   opts.ExtraMeta["user"],

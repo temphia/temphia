@@ -11,7 +11,7 @@ import (
 	"github.com/temphia/temphia/code/backend/app/registry"
 	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/service/repox"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 )
 
 func init() {
@@ -24,7 +24,7 @@ type Local struct {
 	name       string
 }
 
-func DevNew(opts *repox.BuilderOptions) (repox.Repository, error) {
+func DevNew(opts *xpacman.BuilderOptions) (xpacman.Repository, error) {
 
 	return &Local{
 		rootFolder: "./cmd/dev/repo",
@@ -32,7 +32,7 @@ func DevNew(opts *repox.BuilderOptions) (repox.Repository, error) {
 	}, nil
 }
 
-func New(opts *repox.BuilderOptions) (repox.Repository, error) {
+func New(opts *xpacman.BuilderOptions) (xpacman.Repository, error) {
 
 	return &Local{
 		rootFolder: opts.BasePath,
@@ -42,14 +42,14 @@ func New(opts *repox.BuilderOptions) (repox.Repository, error) {
 
 func (l *Local) Name() string { return l.name }
 
-func (l *Local) Query(tenantId string, opts *repox.RepoQuery) ([]repox.BPrint, error) {
+func (l *Local) Query(tenantId string, opts *xpacman.RepoQuery) ([]xpacman.BPrint, error) {
 
 	dirs, err := os.ReadDir(l.rootFolder)
 	if err != nil {
 		return nil, err
 	}
 
-	resp := make([]repox.BPrint, 0, len(dirs))
+	resp := make([]xpacman.BPrint, 0, len(dirs))
 
 	for _, dir := range dirs {
 		if !dir.IsDir() {
@@ -63,7 +63,7 @@ func (l *Local) Query(tenantId string, opts *repox.RepoQuery) ([]repox.BPrint, e
 			continue
 		}
 
-		bprint := repox.BPrint{}
+		bprint := xpacman.BPrint{}
 		err = json.Unmarshal(out, &bprint)
 		if err != nil {
 			pp.Println(err)
@@ -86,14 +86,14 @@ func (l *Local) Query(tenantId string, opts *repox.RepoQuery) ([]repox.BPrint, e
 
 }
 
-func (l *Local) Get(tenantid, slug string) (*repox.BPrint, error) {
+func (l *Local) Get(tenantid, slug string) (*xpacman.BPrint, error) {
 
 	out, err := os.ReadFile(path.Join(l.rootFolder, slug, "index.json"))
 	if err != nil {
 		return nil, err
 	}
 
-	bprint := repox.BPrint{}
+	bprint := xpacman.BPrint{}
 	err = json.Unmarshal(out, &bprint)
 	if err != nil {
 		return nil, err
