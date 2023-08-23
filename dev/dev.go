@@ -8,6 +8,7 @@ import (
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/config"
+
 	"github.com/temphia/temphia/code/distro/common"
 
 	"github.com/temphia/temphia/code/backend/xtypes"
@@ -17,6 +18,10 @@ import (
 	// stores
 	_ "github.com/temphia/temphia/code/backend/stores/localfs"
 	_ "github.com/temphia/temphia/code/backend/stores/upperdb/vendors/sqlite"
+
+	// repo provider
+	_ "github.com/temphia/temphia/code/backend/services/pacman/provider/github"
+	_ "github.com/temphia/temphia/code/backend/services/pacman/provider/local"
 )
 
 func Run() error {
