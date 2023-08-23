@@ -5,7 +5,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/scopes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/scopes"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 	"github.com/temphia/temphia/code/backend/xtypes/store"

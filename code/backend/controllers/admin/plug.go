@@ -7,8 +7,8 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities/flowmap"
+	"github.com/temphia/temphia/code/backend/xtypes/models/scopes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/vmodels"
-	"github.com/temphia/temphia/code/backend/xtypes/scopes"
 )
 
 // plug

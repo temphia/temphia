@@ -6,7 +6,7 @@ import (
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/scopes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/scopes"
 )
 
 func (c *Controller) AddUser(uclaim *claim.Session, user *entities.User) error {

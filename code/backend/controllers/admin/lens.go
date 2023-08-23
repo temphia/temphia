@@ -3,7 +3,7 @@ package admin
 import (
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/backend/xtypes/scopes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/scopes"
 )
 
 type LogQuery struct {

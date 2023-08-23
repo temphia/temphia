@@ -4,7 +4,7 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/scopes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/scopes"
 )
 
 func (c *Controller) NewView(uclaim *claim.Session, source, group, tslug string, model *entities.DataView) error {

@@ -5,7 +5,7 @@ import (
 
 	"github.com/temphia/temphia/code/backend/controllers/admin/devtoken"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/backend/xtypes/scopes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/scopes"
 )
 
 type DevIssueReq struct {
