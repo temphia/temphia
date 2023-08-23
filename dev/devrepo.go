@@ -9,7 +9,6 @@ import (
 	// repo provider
 	rembed "github.com/temphia/temphia/code/backend/services/pacman/provider/embed"
 	_ "github.com/temphia/temphia/code/backend/services/pacman/provider/github"
-	_ "github.com/temphia/temphia/code/backend/services/pacman/provider/local"
 )
 
 //go:embed devrepo

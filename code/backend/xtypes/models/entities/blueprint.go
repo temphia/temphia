@@ -11,6 +11,5 @@ type BPrint struct {
 	Source      string    `json:"source,omitempty" db:"source,omitempty"`
 	TenantID    string    `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`
 	Tags        JsonArray `json:"tags,omitempty" db:"tags,omitempty"`
-	Files       JsonArray `json:"files,omitempty" db:"files,omitempty"`
 	ExtraMeta   JsonMap   `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
 }

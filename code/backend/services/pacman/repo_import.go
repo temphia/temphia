@@ -138,7 +138,7 @@ func (p *PacMan) BprintCreateFromZip(tenantId string, rawreader io.ReadCloser) (
 	}
 
 	for _, file := range reader.File {
-		if file.Name == "index.json" || file.FileInfo().IsDir() {
+		if file.Name == "bprint.json" || file.FileInfo().IsDir() {
 			continue
 		}
 

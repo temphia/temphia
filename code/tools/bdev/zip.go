@@ -17,16 +17,11 @@ import (
 
 func ZipIt(bprint *xpackage.Manifest, outFile string) error {
 
-	// precheck if all files exists
-
-	files := make([]string, 0)
-
 	for fk, fpath := range bprint.Files {
 		if !xutils.FileExists(fpath, "") {
 			return easyerr.Error(fmt.Sprintf("[%s] file not found in path [%s]", fk, fpath))
 		}
 
-		files = append(files, fk)
 	}
 
 	archive, err := os.Create(outFile)
@@ -47,7 +42,6 @@ func ZipIt(bprint *xpackage.Manifest, outFile string) error {
 		Description: bprint.Description,
 		Tags:        bprint.Tags,
 		ExtraMeta:   bprint.ExtraMeta,
-		Files:       files,
 	}
 
 	bout, err := json.Marshal(newBprint)
@@ -55,7 +49,7 @@ func ZipIt(bprint *xpackage.Manifest, outFile string) error {
 		return err
 	}
 
-	iwriter, err := zipWriter.Create("index.json")
+	iwriter, err := zipWriter.Create("bprint.json")
 	if err != nil {
 		return err
 	}
@@ -83,6 +77,8 @@ func ZipIt(bprint *xpackage.Manifest, outFile string) error {
 		if err != nil {
 			return err
 		}
+
+		// fixme => add subfolder
 
 		if _, err := io.Copy(wfile, rfile); err != nil {
 			return err

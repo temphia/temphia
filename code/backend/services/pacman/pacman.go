@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/temphia/temphia/code/backend/app/registry"
+	"github.com/temphia/temphia/code/backend/services/pacman/bstore"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xinstancer"
@@ -41,6 +42,7 @@ func New(_app xtypes.App) *PacMan {
 		repoBuilders:    nil,
 		activeRepoMutex: sync.Mutex{},
 		activeRepo:      make(map[string]map[int64]xpacman.Repository),
+		bstore:          bstore.New(fhub),
 	}
 
 	return pm

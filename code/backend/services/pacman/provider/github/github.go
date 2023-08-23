@@ -19,9 +19,9 @@ import (
 	structure
 
 	data
-		index.json
+		db.json
 		example1/
-			index.json
+			bpint.json
 			version.zip
 
 
