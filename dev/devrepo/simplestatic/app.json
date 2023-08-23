@@ -1,0 +1,22 @@
+{
+  "name": "simplestatic",
+  "slug": "simplestatic",
+  "objects": {
+    "mainapp": {
+      "type": "agent"
+    }
+  },
+  "steps": [
+    {
+      "name": "add_main_agent",
+      "type": "add_agent",
+      "data": {
+        "name": "default",
+        "type": "static",
+        "web_files": {
+          "index.html": "-"
+        }
+      }
+    }
+  ]
+}

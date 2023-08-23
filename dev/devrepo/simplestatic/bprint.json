@@ -1,0 +1,8 @@
+{
+  "slug": "simplestatic",
+  "name": "simplestatic",
+  "type": "app",
+  "files": {
+    "index.html": "index.html"
+  }
+}
