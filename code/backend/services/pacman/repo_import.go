@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 )
@@ -30,6 +31,10 @@ func (p *PacMan) RepoImport(tenantid string, opts *xpacman.RepoImportOpts) (stri
 
 func (p *PacMan) RepoList(tenantid, group string, source int64, tags ...string) ([]xpacman.BPrint, error) {
 	repo := p.getRepoSource(tenantid, source)
+
+	if repo == nil {
+		return nil, easyerr.NotFound("repo")
+	}
 
 	return repo.Query(tenantid, &xpacman.RepoQuery{
 		Group: group,
