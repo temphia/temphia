@@ -127,9 +127,7 @@ func (c *Controller) BprintImport(uclaim *claim.Session, opts *xpacman.RepoImpor
 		return "", scopes.ErrNoAdminEngineScope
 	}
 
-	//return c.pacman.RepoSourceImport(uclaim.TenantId, opts)
-
-	return "", nil
+	return c.pacman.RepoImport(uclaim.TenantId, opts)
 }
 
 type InstanceOptions struct {

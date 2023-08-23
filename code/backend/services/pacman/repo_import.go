@@ -96,7 +96,7 @@ func (p *PacMan) BprintCreateFromZip(tenantId string, rawreader io.ReadCloser) (
 		return "", err
 	}
 
-	ifile, err := reader.Open("index.json")
+	ifile, err := reader.Open("bprint.json")
 	if err != nil {
 		return "", err
 	}

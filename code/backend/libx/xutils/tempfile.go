@@ -55,7 +55,11 @@ func ZipFsFolder(folder fs.FS, slug string) (string, error) {
 		}
 		defer file.Close()
 
-		zipPath := filepath.ToSlash(path)
+		zipPath, err := filepath.Rel(slug, filepath.ToSlash(path))
+		if err != nil {
+			return err
+		}
+
 		zipFile, err := writer.Create(zipPath)
 		if err != nil {
 			return err
