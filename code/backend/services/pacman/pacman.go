@@ -37,6 +37,7 @@ func New(_app xtypes.App) *PacMan {
 	fhub := deps.Cabinet().(store.CabinetHub)
 	corehub := deps.CoreHub().(store.CoreHub)
 	dynHub := deps.DataHub().(dyndb.DataHub)
+	bstore := bstore.New(fhub)
 
 	pm := &PacMan{
 		app:             _app,
@@ -46,8 +47,8 @@ func New(_app xtypes.App) *PacMan {
 		repoBuilders:    nil,
 		activeRepoMutex: sync.Mutex{},
 		activeRepo:      make(map[string]map[int64]xpacman.Repository),
-		bstore:          bstore.New(fhub),
-		instancer:       instancers.New(corehub, fhub, dynHub),
+		bstore:          bstore,
+		instancer:       instancers.New(corehub, bstore, dynHub),
 	}
 
 	return pm

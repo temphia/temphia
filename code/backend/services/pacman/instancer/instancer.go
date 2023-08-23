@@ -3,6 +3,7 @@ package instancers
 import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xinstancer"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -17,15 +18,15 @@ var (
 
 type instancer struct {
 	corehub store.CoreHub
-	cabinet store.CabinetHub
+	bstore  xpacman.BStore
 	datahub dyndb.DataHub
 }
 
-func New(corehub store.CoreHub, cabinet store.CabinetHub, datahub dyndb.DataHub) *instancer {
+func New(corehub store.CoreHub, bstore xpacman.BStore, datahub dyndb.DataHub) *instancer {
 	return &instancer{
 		corehub: corehub,
-		cabinet: cabinet,
 		datahub: datahub,
+		bstore:  bstore,
 	}
 }
 
@@ -60,11 +61,10 @@ func (i *instancer) Instance(opts xinstancer.Options) (*xinstancer.Response, err
 	// update plug here
 
 	err = i.corehub.PlugUpdate(opts.TenantId, opts.PlugId, map[string]any{
-		"instanced_objects": opts.InstancedIds,
-		"step_head":         resp.Items,
+		"instanced_objects": entities.JsonStrMap(resp.Items),
+		"step_head":         resp.StepHead,
 	})
 	if err != nil {
-
 		return nil, err
 	}
 
@@ -107,7 +107,7 @@ func (i *instancer) readMigration(tenantId, bprintid, file string) (xpackage.Mig
 func (i *instancer) loadAppSchema(tenantId, bprintid string) (*xpackage.AppSchema, error) {
 
 	as := &xpackage.AppSchema{}
-	out, err := i.loadBprintFile("", "app.yaml")
+	out, err := i.loadBprintFile(tenantId, bprintid, "", "app.json")
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +120,12 @@ func (i *instancer) loadAppSchema(tenantId, bprintid string) (*xpackage.AppSchem
 	return as, nil
 }
 
-func (i *instancer) loadBprintFile(folder, file string) ([]byte, error) {
+func (i *instancer) loadBprintFile(tenantId, bid, folder, file string) ([]byte, error) {
 
-	return nil, nil
+	out, err := i.bstore.GetBlob(tenantId, bid, folder, file)
+	if err != nil {
+		return nil, err
+	}
+
+	return out, err
 }

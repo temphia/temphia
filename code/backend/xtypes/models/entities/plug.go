@@ -18,8 +18,8 @@ type Plug struct {
 type Agent struct {
 	Id         string     `json:"id,omitempty" db:"id,omitempty"`
 	Name       string     `json:"name,omitempty" db:"name,omitempty"`
-	Type       string     `json:"type,omitempty" db:"type,omitempty"` // headless, spa, ssr, template
-	Executor   string     `json:"executor,omitempty" db:"executor,omitempty"`
+	Type       string     `json:"type,omitempty" db:"type,omitempty"`         // none, era spa gossr static
+	Executor   string     `json:"executor,omitempty" db:"executor,omitempty"` // none, javascript1, wasm1
 	IfaceFile  string     `json:"iface_file,omitempty" db:"iface_file,omitempty"`
 	EntryFile  string     `json:"entry_file,omitempty" db:"entry_file,omitempty"`
 	WebFiles   JsonStrMap `json:"web_files,omitempty" db:"web_files,omitempty"`

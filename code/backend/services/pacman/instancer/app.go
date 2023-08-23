@@ -13,6 +13,8 @@ import (
 
 func (i *instancer) runAppBundleStep(as *xpackage.AppSchema, opts xinstancer.Options) (*xinstancer.Response, error) {
 
+	resp := &xinstancer.Response{}
+
 	for _, step := range as.Steps {
 
 		getIntId := func() int64 {
@@ -27,6 +29,10 @@ func (i *instancer) runAppBundleStep(as *xpackage.AppSchema, opts xinstancer.Opt
 			if err != nil {
 				return nil, err
 			}
+
+			agent.PlugId = opts.PlugId
+			agent.TenantId = opts.TenantId
+			agent.Id = gFunc()
 
 			err = i.corehub.AgentNew(opts.TenantId, agent)
 			if err != nil {
@@ -228,11 +234,13 @@ func (i *instancer) runAppBundleStep(as *xpackage.AppSchema, opts xinstancer.Opt
 			pp.Println("@run_migration_here")
 
 		default:
-
+			pp.Println("@step", step)
 			panic("not implemented")
 		}
 
 	}
 
-	return nil, nil
+	resp.Items = opts.InstancedIds
+
+	return resp, nil
 }

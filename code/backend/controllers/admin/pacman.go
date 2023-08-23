@@ -8,6 +8,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/scopes"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
+	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xinstancer"
 )
 
 func (c *Controller) BprintList(uclaim *claim.Session, group string) ([]*entities.BPrint, error) {
@@ -142,32 +143,13 @@ func (c *Controller) BprintInstance(uclaim *claim.Session, bid string, opts *Ins
 	// 	return nil, scopes.ErrNoAdminEngineScope
 	// }
 
-	// pp.Println(" ||>>", opts)
-	// pp.Println(" ||>>", string(opts.UserConfigData))
-
-	// switch opts.InstancerType {
-	// case "bundlev2":
-	// 	instancer := c.pacman.GetInstancerHubV2()
-	// 	return instancer.Instance(repox.InstanceOptionsV2{
-	// 		BprintId:    bid,
-	// 		UserSession: uclaim.AsUserCtx(),
-	// 		InstanceId:  "",
-	// 	})
-
-	// default:
-	// 	fopt := repox.InstanceOptionsV1{
-	// 		BprintId:       bid,
-	// 		InstancerType:  opts.InstancerType,
-	// 		File:           opts.File,
-	// 		UserConfigData: opts.UserConfigData,
-	// 		Auto:           opts.Auto,
-	// 		UserContext:    uclaim.AsUserCtx(),
-	// 	}
-
-	// 	instancer := c.pacman.GetInstancerHubV1()
-	// 	return instancer.Instance(fopt)
-	// }
-
-	return nil, nil
+	return c.pacman.GetInstancer().Instance(xinstancer.Options{
+		BprintId:     bid,
+		UserSession:  uclaim.AsUserCtx(),
+		PlugId:       "",
+		NextBprintId: "",
+		TenantId:     uclaim.TenantId,
+		InstancedIds: make(map[string]string),
+	})
 
 }

@@ -13,7 +13,7 @@ func (d *DB) PlugNew(tenantId string, pg *entities.Plug) error {
 	return err
 }
 
-var plugField = []string{"name", "executor", "live", "dev", "owner", "bprint_id", "handlers", "extra_meta"}
+var plugField = []string{"name", "executor", "live", "dev", "bprint_id", "bprint_item_id", "instanced_objects", "step_head", "extra_meta"}
 
 func (d *DB) PlugUpdate(tenantId string, id string, data map[string]interface{}) error {
 
