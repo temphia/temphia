@@ -5,6 +5,7 @@ import (
 
 	"github.com/temphia/temphia/code/backend/app/registry"
 	"github.com/temphia/temphia/code/backend/services/pacman/bstore"
+	instancers "github.com/temphia/temphia/code/backend/services/pacman/instancer"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xinstancer"
@@ -27,22 +28,26 @@ type PacMan struct {
 	activeRepo      map[string]map[int64]xpacman.Repository
 	activeRepoMutex sync.Mutex
 	bstore          xpacman.BStore
+	instancer       xinstancer.Instancer
 }
 
 func New(_app xtypes.App) *PacMan {
 
 	deps := _app.GetDeps()
 	fhub := deps.Cabinet().(store.CabinetHub)
+	corehub := deps.CoreHub().(store.CoreHub)
+	dynHub := deps.DataHub().(dyndb.DataHub)
 
 	pm := &PacMan{
 		app:             _app,
-		corehub:         deps.CoreHub().(store.CoreHub),
-		dynHub:          deps.DataHub().(dyndb.DataHub),
+		corehub:         corehub,
+		dynHub:          dynHub,
 		cabinet:         fhub,
 		repoBuilders:    nil,
 		activeRepoMutex: sync.Mutex{},
 		activeRepo:      make(map[string]map[int64]xpacman.Repository),
 		bstore:          bstore.New(fhub),
+		instancer:       instancers.New(corehub, fhub, dynHub),
 	}
 
 	return pm
@@ -56,5 +61,5 @@ func (p *PacMan) Start() error {
 	return nil
 }
 
-func (p *PacMan) GetBprintFileStore() xpacman.BStore { return nil }
-func (p *PacMan) GetInstancer() xinstancer.Instancer { return nil }
+func (p *PacMan) GetBprintFileStore() xpacman.BStore { return p.bstore }
+func (p *PacMan) GetInstancer() xinstancer.Instancer { return p.instancer }

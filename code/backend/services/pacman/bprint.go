@@ -57,5 +57,5 @@ func (c *PacMan) BprintListBlobs(tenantid, bid string) (map[string]string, error
 		resp[v.Name] = v.LastModified
 	}
 
-	return nil, nil
+	return resp, nil
 }
