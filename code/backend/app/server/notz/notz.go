@@ -24,6 +24,10 @@ func New(app xtypes.App) *Notz {
 	}
 }
 
+func (n *Notz) Start() error {
+	return n.agent.Start()
+}
+
 func (n *Notz) HandleAgent(ctx xnotz.Context) {
 	n.agent.Render(ctx)
 }
@@ -31,13 +35,3 @@ func (n *Notz) HandleAgent(ctx xnotz.Context) {
 func (n *Notz) HandleDomain(ctx xnotz.Context) {
 
 }
-
-/*
-
-renderer_type
-	era => Executor Rendered App
-	spa => Single Page Application
-	gossr => golang Server Side Rendered
-	static => Static
-
-*/

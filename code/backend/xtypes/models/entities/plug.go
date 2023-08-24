@@ -30,22 +30,6 @@ type Agent struct {
 	TenantId   string     `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`
 }
 
-type SPAOptions struct {
-	WebEntry      string `json:"web_entry,omitempty"`
-	WebScript     string `json:"web_script,omitempty"`
-	WebStyle      string `json:"web_style,omitempty"`
-	WebLoader     string `json:"web_loader,omitempty"`
-	ServiceWorker string `json:"service_worker,omitempty"`
-}
-
-type SSROptions struct {
-	AutoInject     string `json:"auto_inject,omitempty"`
-	InjectKey      string `json:"inject_key,omitempty"`
-	InjectFiles    string `json:"inject_files,omitempty"`
-	ActionRedirect string `json:"action_redirect,omitempty"`
-	ServiceWorker  string `json:"service_worker,omitempty"`
-}
-
 type AgentResource struct {
 	Slug       string `json:"slug,omitempty" db:"slug,omitempty"`
 	PlugId     string `json:"plug_id,omitempty" db:"plug_id,omitempty"`

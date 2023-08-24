@@ -5,45 +5,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/launch"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
-
-type LaunchOptions struct {
-	ApiBaseURL   string            `json:"api_base_url,omitempty"`
-	Token        string            `json:"token,omitempty"`
-	EntryName    string            `json:"entry,omitempty"`
-	ExecLoader   string            `json:"exec_loader,omitempty"`
-	JSPlugScript string            `json:"js_plug_script,omitempty"`
-	StyleFile    string            `json:"style,omitempty"`
-	ExtScripts   map[string]string `json:"ext_scripts,omitempty"`
-	Plug         string            `json:"plug,omitempty"`
-	Agent        string            `json:"agent,omitempty"`
-}
-
-type TargetLaunchData struct {
-	TargetId   int64  `json:"target_id,omitempty"`
-	TargetType string `json:"target_type,omitempty"`
-}
-
-type AdminLaunchData struct {
-	PlugId  string `json:"plug_id,omitempty"`
-	AgentId string `json:"agent_id,omitempty"`
-}
-
-type AuthLaunchData struct{}
-
-type LaunchDomainOptions struct {
-	LoaderScript string
-	ScriptFile   string
-	StyleFile    string
-	ExtScripts   map[string]string
-	BootData     string
-	ApiBaseURL   string
-	PlugId       string
-	AgentId      string
-	Name         string
-	ExecLoader   string
-}
 
 type BootData struct {
 	TenantId   string `json:"tenant_id,omitempty"`
@@ -67,9 +32,11 @@ type EngineHub interface {
 	GetEngine() Engine
 	Start() error
 
-	LaunchTargetDomain(tenantId, host, plugId, agentId string) (*LaunchDomainOptions, error)
-	LaunchTarget(uclaim *claim.Session, data TargetLaunchData) (*LaunchOptions, error)
-	LaunchAdmin(uclaim *claim.Session, data AdminLaunchData) (*LaunchOptions, error)
+	GetCache() Ecache
+
+	LaunchAgent(uclaim *claim.Session, plugId, agentId string) (*launch.Response, error)
+	LaunchTarget(uclaim *claim.Session, targetId int64) (*launch.Response, error)
+	LaunchEditor(uclaim *claim.Session, plugId, agentId string) (*launch.Response, error)
 
 	Execute(tenantId, action string, ctx *gin.Context)
 	ExecuteDev(dclaim *claim.UserContext, plug, agent, action string, body []byte) ([]byte, error)
@@ -86,4 +53,8 @@ type EngineHub interface {
 	// 	RunAdapterHooks(tenants string, opts map[string]any) error
 	// 	RunUserHooks(tenants string, opts map[string]any) error
 
+}
+
+type Ecache interface {
+	GetAgent(tenantId, plug, agent string) *entities.Agent
 }

@@ -9,7 +9,6 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/controllers/sockd"
 	"github.com/temphia/temphia/code/backend/services/sockd/transports"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
 )
 
@@ -17,8 +16,9 @@ func (s *Server) EngineAPI(rg *gin.RouterGroup) {
 
 	// launch
 	rg.POST("/launch/target", s.X(s.launchTarget))
-	rg.POST("/launch/admin", s.X(s.launchAdmin))
-	rg.POST("/launch/auth", s.launchAuth)
+	rg.POST("/launch/agent", s.X(s.launchAgent))
+	rg.POST("/launch/editor", s.X(s.launchEditor))
+
 	rg.POST("/reset", s.X(s.reset))
 
 	// rg.GET("/launch/domain_target/:pid/:aid", s.domainTargetLaunch())
@@ -82,63 +82,29 @@ func (s *Server) executorFile(ctx *gin.Context) {
 
 // launch
 
+type launchOptions struct {
+	PlugId   string `json:"plug_id,omitempty"`
+	AgentId  string `json:"agent_id,omitempty"`
+	TargetId int64  `json:"target_id,omitempty"`
+}
+
+func (s *Server) launchAgent(ctx httpx.Request) {
+	opts := &launchOptions{}
+
+	resp, err := s.cEngine.LaunchAgent(ctx.Session, opts.PlugId, opts.AgentId)
+	httpx.WriteJSON(ctx.Http, resp, err)
+}
+
 func (s *Server) launchTarget(ctx httpx.Request) {
-
-	data := etypes.TargetLaunchData{}
-
-	err := ctx.Http.BindJSON(&data)
-	if err != nil {
-		httpx.WriteErr(ctx.Http, err)
-		return
-	}
-
-	out, err := s.cEngine.LaunchTarget(ctx.Session, data)
-	if err != nil {
-		httpx.WriteErr(ctx.Http, err)
-		return
-	}
-
-	out.ApiBaseURL = httpx.ApiBaseURL(ctx.Http.Request.Host, ctx.Session.TenantId)
-	httpx.WriteJSON(ctx.Http, out, err)
+	opts := &launchOptions{}
+	resp, err := s.cEngine.LaunchTarget(ctx.Session, opts.TargetId)
+	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
-func (s *Server) launchAdmin(ctx httpx.Request) {
-	data := etypes.AdminLaunchData{}
-
-	err := ctx.Http.BindJSON(&data)
-	if err != nil {
-		httpx.WriteErr(ctx.Http, err)
-		return
-	}
-
-	out, err := s.cEngine.LaunchAdmin(ctx.Session, data)
-	if err != nil {
-		httpx.WriteErr(ctx.Http, err)
-		return
-	}
-
-	out.ApiBaseURL = httpx.ApiBaseURL(ctx.Http.Request.Host, ctx.Session.TenantId)
-	httpx.WriteJSON(ctx.Http, out, err)
-
-}
-
-func (s *Server) launchAuth(ctx *gin.Context) {
-	data := etypes.AuthLaunchData{}
-
-	err := ctx.BindJSON(&data)
-	if err != nil {
-		httpx.WriteErr(ctx, err)
-		return
-	}
-
-	out, err := s.cEngine.LaunchAuth(data)
-	if err != nil {
-		httpx.WriteErr(ctx, err)
-		return
-	}
-
-	httpx.WriteJSON(ctx, out, err)
-
+func (s *Server) launchEditor(ctx httpx.Request) {
+	opts := &launchOptions{}
+	resp, err := s.cEngine.LaunchEditor(ctx.Session, opts.PlugId, opts.AgentId)
+	httpx.WriteJSON(ctx.Http, resp, err)
 }
 
 type ResetRequest struct {

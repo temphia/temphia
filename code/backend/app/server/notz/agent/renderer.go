@@ -3,22 +3,33 @@ package agent
 import (
 	"net/http"
 
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/xnotz"
 	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
 )
 
-func (a *AgentNotz) spaRender(ctx xnotz.Context, state *agentState) {
+/*
+
+renderer_type
+	era => Executor Rendered App
+	spa => Single Page Application
+	gossr => golang Server Side Rendered
+	static => Static
+
+*/
+
+func (a *AgentNotz) spaRender(ctx xnotz.Context, agent *entities.Agent) {
 
 	builder := SpaBuilder{
 		opts: SpaBuilderOptions{
 			Plug:         ctx.PlugId,
 			Agent:        ctx.AgentId,
-			APIBaseURL:   httpx.ApiBaseURL(ctx.Request.Host, ctx.TenantId),
-			EntryName:    state.spaConfig.WebEntry,
-			ExecLoader:   "",
 			TenantID:     ctx.TenantId,
-			JsPlugScript: state.spaConfig.WebScript,
-			StyleFile:    state.spaConfig.WebStyle,
+			APIBaseURL:   httpx.ApiBaseURL(ctx.Request.Host, ctx.TenantId),
+			EntryName:    agent.WebOptions["web_entry"],
+			ExecLoader:   agent.WebOptions["exec_loader"],
+			JsPlugScript: agent.WebOptions["web_script"],
+			StyleFile:    agent.WebOptions["web_style"],
 			ExtScripts:   make(map[string]interface{}),
 		},
 	}

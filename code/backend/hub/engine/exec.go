@@ -9,6 +9,7 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/engine/invokers/bundled"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
 func (e *EngineHub) execute(tenantId, action string, ctx *gin.Context) {
@@ -46,4 +47,17 @@ func (e *EngineHub) execute(tenantId, action string, ctx *gin.Context) {
 	}
 
 	ctx.Writer.Write(out)
+}
+
+func (e *EngineHub) executeDev(dclaim *claim.UserContext, plug, agent, action string, body []byte) ([]byte, error) {
+	// fixme => ability to send arbitary invoker type or dev invoker type?
+
+	return e.engine.Execute(etypes.Execution{
+		TenantId: dclaim.TenantId,
+		PlugId:   plug,
+		AgentId:  agent,
+		Action:   action,
+		Payload:  body,
+		Invoker:  bundled.NewAdmin(dclaim),
+	})
 }

@@ -159,6 +159,11 @@ func (s *Server) Listen() error {
 		return err
 	}
 
+	err = s.notz.Start()
+	if err != nil {
+		return err
+	}
+
 	err = s.localdoor()
 	if err != nil {
 		return err

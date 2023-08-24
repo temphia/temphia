@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/launch"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/thoas/go-funk"
@@ -51,27 +52,16 @@ func (c *Controller) ListModules(uclaim *claim.Session) ([]string, error) {
 
 // launch stuff
 
-func (c *Controller) LaunchTargetWithDomain(tenantId, host, plugId, agentId string) (*etypes.LaunchDomainOptions, error) {
-	// check scope here
-
-	return c.enginehub.LaunchTargetDomain(tenantId, host, plugId, agentId)
+func (c *Controller) LaunchAgent(uclaim *claim.Session, plugId, agentId string) (*launch.Response, error) {
+	return c.enginehub.LaunchAgent(uclaim, plugId, agentId)
 }
 
-func (c *Controller) LaunchTarget(uclaim *claim.Session, data etypes.TargetLaunchData) (*etypes.LaunchOptions, error) {
-	// check scope here
-
-	return c.enginehub.LaunchTarget(uclaim, data)
+func (c *Controller) LaunchTarget(uclaim *claim.Session, targetId int64) (*launch.Response, error) {
+	return c.enginehub.LaunchTarget(uclaim, targetId)
 }
 
-func (c *Controller) LaunchAuth(data etypes.AuthLaunchData) (string, error) {
-	return "", nil
-}
-
-func (c *Controller) LaunchAdmin(uclaim *claim.Session, data etypes.AdminLaunchData) (*etypes.LaunchOptions, error) {
-
-	// check scope here
-
-	return c.enginehub.LaunchAdmin(uclaim, data)
+func (c *Controller) LaunchEditor(uclaim *claim.Session, plugId, agentId string) (*launch.Response, error) {
+	return c.enginehub.LaunchEditor(uclaim, plugId, agentId)
 }
 
 func (c *Controller) ExecuteDev(dclaim *claim.PlugDevTkt, plug, agent, action string, body []byte) ([]byte, error) {

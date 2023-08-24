@@ -7,8 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
 	"github.com/temphia/temphia/code/backend/engine"
+	"github.com/temphia/temphia/code/backend/hub/engine/ecache"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes/launch"
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
@@ -26,6 +28,8 @@ type EngineHub struct {
 	corehub store.CoreHub
 	idgen   *snowflake.Node
 	logger  *zerolog.Logger
+
+	ecache etypes.Ecache
 
 	app xtypes.App
 }
@@ -50,6 +54,7 @@ func (e *EngineHub) Start() error {
 	e.corehub = deps.CoreHub().(store.CoreHub)
 	e.idgen = deps.ControlPlane().(xplane.ControlPlane).GetIdService().NewNode("engine")
 	e.logger = &logger
+	e.ecache = ecache.New(e.corehub)
 
 	return e.engine.Run()
 }
@@ -58,16 +63,20 @@ func (e *EngineHub) GetEngine() etypes.Engine {
 	return e.engine
 }
 
-func (e *EngineHub) LaunchTargetDomain(tenantId, host, plugId, agentId string) (*etypes.LaunchDomainOptions, error) {
-	return e.launchTargetDomain(tenantId, host, plugId, agentId)
+func (e *EngineHub) GetCache() etypes.Ecache {
+	return e.ecache
 }
 
-func (e *EngineHub) LaunchTarget(uclaim *claim.Session, data etypes.TargetLaunchData) (*etypes.LaunchOptions, error) {
-	return e.launchTarget(uclaim, data)
+func (e *EngineHub) LaunchAgent(uclaim *claim.Session, plugId, agentId string) (*launch.Response, error) {
+	return e.launchAgent(uclaim, plugId, agentId)
 }
 
-func (e *EngineHub) LaunchAdmin(uclaim *claim.Session, data etypes.AdminLaunchData) (*etypes.LaunchOptions, error) {
-	return e.launchAdmin(uclaim, data)
+func (e *EngineHub) LaunchTarget(uclaim *claim.Session, targetId int64) (*launch.Response, error) {
+	return e.launchTarget(uclaim, targetId)
+}
+
+func (e *EngineHub) LaunchEditor(uclaim *claim.Session, plugId, agentId string) (*launch.Response, error) {
+	return e.launchEditor(uclaim, plugId, agentId)
 }
 
 func (e *EngineHub) Execute(tenantId, action string, ctx *gin.Context) {
@@ -100,25 +109,6 @@ func (e *EngineHub) ListModules() ([]string, error) {
 	mods := e.engine.ListModules()
 	return mods, nil
 }
-
-/*
-
-	build logger
-	build xplane
-	build core/hub
-	build services
-
-	start services
-	start startup_hook
-	start server
-
-
-	stop_server
-	stop startup_hooks
-	send_duck_mode to engine
-
-
-*/
 
 func (e *EngineHub) RunStartupHooks(tenants []string, minwait time.Duration) {
 	e.runStartupHooks(tenants, minwait)
