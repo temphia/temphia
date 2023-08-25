@@ -1,11 +1,9 @@
-import type { Registry } from "../../../../lib/registry/registry";
-
 export class XtMgr {
   app: any;
-  registry: Registry<any>;
+  registry: any;
   bprint_editors: Map<string, any>;
 
-  constructor(app: any, registry: Registry<any>) {
+  constructor(app: any, registry: any) {
     this.app = app;
     this.registry = registry;
     this.bprint_editors = new Map();

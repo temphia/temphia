@@ -5,10 +5,10 @@ import { Navigator } from "./nav";
 import { Notifier } from "./notifier";
 
 import { DataService } from "../data";
+import { CabinetService } from "../cabinet/cabinet";
 
 import { SockdService } from "./sockd/sockd";
-import type { Logger } from "./logger";
-import { CabinetService } from "../cabinet/cabinet";
+
 import { XtMgr } from "./xtmgr";
 
 export interface AppOptions {
@@ -37,13 +37,15 @@ export class PortalService {
   notifier?: Notifier;
   utils: Utils;
   registry: any;
-  logger: Logger;
+  logger: any;
   xtmgr: XtMgr;
 
   services: Map<string, any>
 
 
   launcher: Launcher;
+
+
   data_service: DataService;
   cabinet_service: CabinetService;
 
@@ -63,6 +65,7 @@ export class PortalService {
 
     this.launcher = new Launcher();
     this.sockd_service = new SockdService();
+
     this.cabinet_service = new CabinetService(this.api_manager);
     this.registry = opts.registry;
     this.xtmgr = new XtMgr(this, this.registry);
