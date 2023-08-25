@@ -11,7 +11,7 @@
 
   import { WSService } from "$lib";
 
-  let currentTile = 0;
+  let currentTile: Number = 0;
 
   const ws = new WSService();
 </script>
