@@ -47,6 +47,7 @@ const _config = (entryFile, prod) => ({
     typescript({
       sourceMap: true,
       inlineSources: true,
+      rootDir: './src',
     }),
   ],
 });

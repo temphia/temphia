@@ -26,6 +26,8 @@ import AdminPlugStateEdit from "./plug/state/state_edit.svelte";
 
 import AdminPlugDevDocs from "./plug/dev/docs/docs.svelte";
 import AdminPlugDevExec from "./plug/dev/execute/execute.svelte";
+import AdminPlugDevEditor from "./plug/dev/editor/editor.svelte";
+
 import AdminPlugIPCShell from "./plug/dev/ipcshell/index.svelte";
 import AdminPlugLiveShell from "./plug/dev/liveshell/index.svelte";
 import AdminPlugDevFlowmap from "./plug/dev/flowmap/flowmap.svelte";
@@ -145,6 +147,7 @@ export default {
     "/:pid/dev": {
       "/flowmap": AdminPlugDevFlowmap,
       "/execute/:aid": AdminPlugDevExec,
+      "/editor/:aid": AdminPlugDevEditor,
       "/ipcshell/:aid": AdminPlugIPCShell,
       "/liveshell/:aid": AdminPlugLiveShell,
       "/docs/:aid": AdminPlugDevDocs,
