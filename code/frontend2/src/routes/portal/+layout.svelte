@@ -22,11 +22,11 @@
   export let launcher: Launcher;
 
   const route_links: [any, string, string][] = [
-    [HomeIcon, "start", "#/"],
-    [GroupIcon, "data tables", "#/data/"],
-    [AdminIcon, "admin", "#/admin/bprint/"],
-    [FolderIcon, "cabinet", "#/cabinet/"],
-    [StoreIcon, "store", "#/repo/"],
+    [HomeIcon, "start", "/z/pages/portal"],
+    [GroupIcon, "data tables", "/z/pages/portal/data"],
+    [AdminIcon, "admin", "/z/pages/portal/admin/bprint"],
+    [FolderIcon, "cabinet", "/z/pages/portal/cabinet/"],
+    [StoreIcon, "store", "/z/pages/portal/repo/"],
   ];
 
   const dispatch = createEventDispatcher();
@@ -58,23 +58,17 @@
     <ul>
       {#each route_links as link}
         <li class="text-white hover:bg-gray-100">
-          <div
-            class="card p-4 variant-filled-secondary"
-            data-popup="popupHover"
-          >
-            <p>link[1]</p>
-            <div class="arrow variant-filled-secondary" />
-          </div>
-
-          <button
-            class="h-12 px-4 flex justify-center items-center w-full text-gray-700 focus:text-orange-500"
-
-          >
-
-                      <!-- @button^ use:popup={popupHover} -->
-
+          <a
+            href={link[2]}
+          on:click={() => {
+            // launcher.plane_not_float();
+          }}
+          class="h-12 px-4 flex justify-center items-center w-full text-gray-700 focus:text-orange-500">
+          <button>
+                  <!-- @button^ use:popup={popupHover} -->
             <svelte:component this={link[0]} />
           </button>
+        </a>
         </li>
       {/each}
     </ul>
