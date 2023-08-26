@@ -12,6 +12,11 @@
     UserIcon,
   } from "$lib/compo/svg";
 
+  import '@skeletonlabs/skeleton/themes/theme-skeleton.css';
+  import '@skeletonlabs/skeleton/styles/skeleton.css';
+
+  import { AppBar } from '@skeletonlabs/skeleton';
+
   import Logo from "$lib/compo/svg/logo.svelte";
   import LaunchPlane from "./launcher/plane.svelte";
   import type { Launcher } from "$lib/services/portal/launcher/launcher";
@@ -299,7 +304,7 @@
   {/if}
 
   <div class="h-screen overflow-auto tx-main">
-    <LaunchPlane {launcher} />
+    <!-- <LaunchPlane {launcher} /> -->
 
     {#if !__laucher_active}
       <slot />
