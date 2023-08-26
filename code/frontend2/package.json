@@ -24,6 +24,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@skeletonlabs/skeleton": "^1.12.0"
+    "@skeletonlabs/skeleton": "^1.12.0",
+    "@krowten/svelte-heroicons": "^0.0.3"
   }
 }

@@ -1,5 +1,3 @@
-import { routes } from "svelte-hash-router";
-
 export class Navigator {
   options: any;
   constructor() {
