@@ -9,6 +9,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 	"github.com/temphia/temphia/code/backend/xtypes/xnotz/adapter"
+	"github.com/temphia/temphia/code/backend/xtypes/xserver"
 )
 
 var _ etypes.ModuleBuilder = (*AdapterModBuilder)(nil)
@@ -30,7 +31,9 @@ func (p *AdapterModBuilder) Instance(opts etypes.ModuleOptions) (etypes.Module, 
 		return nil, err
 	}
 
-	return New(opts.Resource.TenantId, id, app.GetServer().GetAdapterHub().(adapter.AdapterHub), invoker), nil
+	server := app.GetServer().(xserver.Server)
+
+	return New(opts.Resource.TenantId, id, server.GetAdapterHub().(adapter.AdapterHub), invoker), nil
 }
 
 func New(tenantId string, id int64, ahub adapter.AdapterHub, ib bindx.Invoker) *AdapterMod {

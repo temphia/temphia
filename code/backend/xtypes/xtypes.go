@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/flosch/go-humanize"
-	"github.com/temphia/temphia/code/backend/xtypes/remote"
 )
 
 var Version string = "dev"
@@ -31,7 +30,7 @@ type App interface {
 	TenantId() string
 
 	GetDeps() Deps
-	GetServer() Server
+	GetServer() any
 	GetGlobalVar() GlobalVar
 }
 
@@ -56,12 +55,4 @@ type GlobalVar interface {
 	Set(key string, val any)
 	Get(key string) any
 	Del(key string)
-}
-
-type Server interface {
-	Listen() error
-	Close() error
-	BuildRoutes() error
-	GetAdapterHub() any
-	HandleRemote(req *remote.Request) (*remote.Response, error)
 }

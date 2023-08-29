@@ -5,7 +5,6 @@ import (
 	"github.com/temphia/temphia/code/backend/app/registry"
 	"github.com/temphia/temphia/code/backend/app/xtension"
 	"github.com/temphia/temphia/code/backend/controllers"
-	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
@@ -14,6 +13,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
+	"github.com/temphia/temphia/code/backend/xtypes/xserver"
 )
 
 type AppDeps struct {
@@ -21,7 +21,7 @@ type AppDeps struct {
 	confd        config.Confd
 	logService   logx.Service
 	controlPlane xplane.ControlPlane
-	server       xtypes.Server
+	server       xserver.Server
 
 	signer   service.Signer
 	engine   etypes.EngineHub

@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/temphia/temphia/code/backend/xtypes/remote"
+	"github.com/temphia/temphia/code/backend/xtypes/xserver/remote"
 )
 
 func (s *Server) HandleRemote(req *remote.Request) (*remote.Response, error) {

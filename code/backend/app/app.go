@@ -31,7 +31,7 @@ func (a *App) ClusterId() string              { return a.clusterId }
 func (a *App) DevMode() bool                  { return a.devmode }
 func (a *App) TenantId() string               { return a.tenantId }
 func (a *App) GetDeps() xtypes.Deps           { return &a.deps }
-func (a *App) GetServer() xtypes.Server       { return nil }
+func (a *App) GetServer() any                 { return a.deps.server }
 func (a *App) GetGlobalVar() xtypes.GlobalVar { return &a.global }
 
 func (a *App) run() error {
