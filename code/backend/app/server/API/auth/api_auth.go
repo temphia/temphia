@@ -21,14 +21,16 @@ import (
 */
 
 type Auth struct {
-	cAuth  *authed.Controller
-	signer service.Signer
+	cAuth    *authed.Controller
+	signer   service.Signer
+	tenantId string
 }
 
-func New(cAuth *authed.Controller, signer service.Signer) *Auth {
+func New(cAuth *authed.Controller, signer service.Signer, tenantId string) *Auth {
 	return &Auth{
-		cAuth:  cAuth,
-		signer: signer,
+		cAuth:    cAuth,
+		signer:   signer,
+		tenantId: tenantId,
 	}
 }
 
@@ -63,7 +65,7 @@ func (s *Auth) API(rg *gin.RouterGroup) {
 
 func (s *Auth) authListMethods(c *gin.Context) {
 	resp, err := s.cAuth.AuthListMethods(
-		c.GetHeader("Authorization"),
+		s.tenantId,
 		c.Query("ugroup"),
 	)
 

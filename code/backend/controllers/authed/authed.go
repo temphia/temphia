@@ -6,7 +6,6 @@ import (
 	"github.com/bwmarrin/snowflake"
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/dbutils"
-	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
@@ -30,22 +29,10 @@ func New(coredb store.CoreHub, signer service.Signer, seq xplane.IDService) *Con
 	}
 }
 
-func (c *Controller) AuthListMethods(sitetoken, ugroup string) (*ListAuthResponse, error) {
-	site, err := c.signer.ParseSite(sitetoken)
-	if err != nil {
-		return nil, err
-	}
-
-	if ugroup == "" && site.PinnedUserGroup == "" {
-		return nil, easyerr.Error("user group not found")
-	}
-
-	if ugroup != "" && site.PinnedUserGroup != "" && ugroup != site.PinnedUserGroup {
-		return nil, easyerr.Error("user group not allowed")
-	}
+func (c *Controller) AuthListMethods(tenantId, ugroup string) (*ListAuthResponse, error) {
 
 	if ugroup == "" {
-		ugroup = site.PinnedUserGroup
+		ugroup = xtypes.UserGroupSuperAdmin
 	}
 
 	if ugroup == xtypes.UserGroupSuperAdmin {
@@ -56,7 +43,7 @@ func (c *Controller) AuthListMethods(sitetoken, ugroup string) (*ListAuthRespons
 		}, nil
 	}
 
-	auths, err := c.coredb.ListUserGroupAuth(site.TenantId, ugroup)
+	auths, err := c.coredb.ListUserGroupAuth(tenantId, ugroup)
 	if err != nil {
 		return nil, err
 	}

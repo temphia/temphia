@@ -24,16 +24,14 @@ func (s *Server) zRoutes(z *gin.RouterGroup) {
 	z.GET("/", s.asFile(templates.Root, "html"))
 	z.GET("/portal", s.asFile(templates.Portal, "html"))
 
-	z.GET("/auth", s.AuthIndex)
 	s.assets(z.Group("/assets"))
+	s.authserver.API(z.Group("/auth"))
 
 	s.API(z.Group("/api/:tenant_id/v2/"))
 }
 
 func (s *Server) API(rg *gin.RouterGroup) {
 	s.admin.API(rg.Group("/admin"))
-
-	s.authserver.API(rg.Group("/auth"))
 
 	s.apidata.API(rg.Group("/data"))
 
