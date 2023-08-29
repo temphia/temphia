@@ -8,8 +8,8 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
-	"github.com/temphia/temphia/code/backend/xtypes/xnotz/adapter"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver"
+	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/adapter"
 )
 
 var _ etypes.ModuleBuilder = (*AdapterModBuilder)(nil)

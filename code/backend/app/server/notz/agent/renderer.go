@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
-	"github.com/temphia/temphia/code/backend/xtypes/xnotz"
-	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz"
+	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/httpx"
 )
 
 /*

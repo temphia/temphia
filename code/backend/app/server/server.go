@@ -26,9 +26,9 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
-	"github.com/temphia/temphia/code/backend/xtypes/xnotz"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver"
+	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz"
 )
 
 var _ xserver.Server = (*Server)(nil)

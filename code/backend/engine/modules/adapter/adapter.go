@@ -6,7 +6,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/backend/xtypes/xnotz/adapter"
+	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/adapter"
 )
 
 type AdapterMod struct {

@@ -3,7 +3,7 @@ package authserver
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/controllers/authed"
-	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/httpx"
 )
 
 func (s *Auth) authLoginNext(c *gin.Context) {

@@ -4,7 +4,7 @@ import (
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
-	"github.com/temphia/temphia/code/backend/xtypes/xnotz"
+	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz"
 )
 
 type AgentNotz struct {

@@ -6,7 +6,7 @@ import (
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/launch"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/httpx"
 )
 
 func (e *EngineHub) launchAgent(uclaim *claim.Session, plugId, agentId string) (*launch.Response, error) {

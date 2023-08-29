@@ -18,8 +18,8 @@ import (
 	"github.com/temphia/temphia/code/backend/services/sockd/transports"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
-	"github.com/temphia/temphia/code/backend/xtypes/xnotz/adapter"
-	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/adapter"
+	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/httpx"
 	"github.com/tidwall/gjson"
 )
 

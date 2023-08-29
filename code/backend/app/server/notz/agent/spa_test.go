@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/temphia/temphia/code/backend/xtypes"
-	"github.com/temphia/temphia/code/backend/xtypes/xnotz/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/httpx"
 )
 
 func TestSPA(t *testing.T) {
