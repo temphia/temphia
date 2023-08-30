@@ -8,20 +8,16 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
-func (c *Controller) loginNext(opts LoginNextRequest) (*LoginNextResponse, error) {
+func (c *Controller) loginNext(tenantId string, opts LoginNextRequest) (*LoginNextResponse, error) {
 	const msg = "User or Password incorrect"
 
-	site, err := c.signer.ParseSite(opts.SiteToken)
-	if err != nil {
-		return nil, err
-	}
-
 	var user *entities.User
+	var err error
 
 	if strings.Contains(opts.UserIdent, "@") {
-		user, err = c.coredb.GetUserByEmail(site.TenantId, opts.UserIdent)
+		user, err = c.coredb.GetUserByEmail(tenantId, opts.UserIdent)
 	} else {
-		user, err = c.coredb.GetUserByID(site.TenantId, opts.UserIdent)
+		user, err = c.coredb.GetUserByID(tenantId, opts.UserIdent)
 	}
 	if err != nil {
 		return &LoginNextResponse{
@@ -29,12 +25,12 @@ func (c *Controller) loginNext(opts LoginNextRequest) (*LoginNextResponse, error
 		}, nil
 	}
 
-	data, err := c.coredb.GetUserData(site.TenantId, user.UserId)
+	data, err := c.coredb.GetUserData(tenantId, user.UserId)
 	if err != nil {
 		return nil, err
 	}
 
-	ugroup, err := c.coredb.GetUserGroup(site.TenantId, user.GroupID)
+	ugroup, err := c.coredb.GetUserGroup(tenantId, user.GroupID)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +47,7 @@ func (c *Controller) loginNext(opts LoginNextRequest) (*LoginNextResponse, error
 		}, nil
 	}
 
-	tok, err := c.signer.SignAutheNext(site.TenantId, &claim.AuthNext{
+	tok, err := c.signer.SignAutheNext(tenantId, &claim.AuthNext{
 		UserId:      user.UserId,
 		UserGroup:   user.GroupID,
 		UserEmail:   user.Email,
@@ -73,18 +69,14 @@ func (c *Controller) loginNext(opts LoginNextRequest) (*LoginNextResponse, error
 
 }
 
-func (c *Controller) loginSubmit(opts LoginSubmitRequest) (*LoginSubmitResponse, error) {
-	site, err := c.signer.ParseSite(opts.SiteToken)
+func (c *Controller) loginSubmit(tenantId string, opts LoginSubmitRequest) (*LoginSubmitResponse, error) {
+
+	nclaim, err := c.signer.ParseAutheNext(tenantId, opts.NextToken)
 	if err != nil {
 		return nil, err
 	}
 
-	nclaim, err := c.signer.ParseAutheNext(site.TenantId, opts.NextToken)
-	if err != nil {
-		return nil, err
-	}
-
-	udata, err := c.coredb.GetUserData(site.TenantId, nclaim.UserId)
+	udata, err := c.coredb.GetUserData(tenantId, nclaim.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +93,7 @@ func (c *Controller) loginSubmit(opts LoginSubmitRequest) (*LoginSubmitResponse,
 		}
 	}
 
-	patok, err := c.signer.SignPreAuthed(site.TenantId, &claim.PreAuthed{
+	patok, err := c.signer.SignPreAuthed(tenantId, &claim.PreAuthed{
 		UserID:     nclaim.UserId,
 		UserGroup:  nclaim.UserGroup,
 		UserEmail:  nclaim.UserEmail,

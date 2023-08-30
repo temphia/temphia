@@ -14,7 +14,7 @@ func (s *Auth) authLoginNext(c *gin.Context) {
 		return
 	}
 
-	resp, err := s.cAuth.LoginNext(opts)
+	resp, err := s.cAuth.LoginNext(s.tenantId, opts)
 	httpx.WriteJSON(c, resp, err)
 
 }
@@ -27,6 +27,6 @@ func (s *Auth) authLoginSubmit(c *gin.Context) {
 		return
 	}
 
-	resp, err := s.cAuth.LoginSubmit(opts)
+	resp, err := s.cAuth.LoginSubmit(s.tenantId, opts)
 	httpx.WriteJSON(c, resp, err)
 }

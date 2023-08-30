@@ -82,7 +82,6 @@ type AuthSubmitResponse struct {
 type LoginNextRequest struct {
 	UserIdent string `json:"user_ident,omitempty"`
 	Password  string `json:"password,omitempty"`
-	SiteToken string `json:"site_token,omitempty"`
 }
 
 type LoginNextResponse struct {
@@ -95,7 +94,6 @@ type LoginNextResponse struct {
 }
 
 type LoginSubmitRequest struct {
-	SiteToken string `json:"site_token,omitempty"`
 	NextToken string `json:"next_token,omitempty"`
 }
 
@@ -104,7 +102,6 @@ type LoginSubmitResponse struct {
 }
 
 type AuthFinishRequest struct {
-	SiteToken      string `json:"site_token,omitempty"`
 	PreAuthedToken string `json:"preauthed_token,omitempty"`
 	ProofToken     string `json:"proof_token,omitempty"`
 }

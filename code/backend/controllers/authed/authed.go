@@ -76,19 +76,15 @@ func (c *Controller) AuthListMethods(tenantId, ugroup string) (*ListAuthResponse
 
 */
 
-func (c *Controller) AuthFinish(opts AuthFinishRequest, deviceName, addr string) (*AuthFinishResponse, error) {
-	sclaim, err := c.signer.ParseSite(opts.SiteToken)
-	if err != nil {
-		return nil, err
-	}
+func (c *Controller) AuthFinish(opts AuthFinishRequest, tenantId, deviceName, addr string) (*AuthFinishResponse, error) {
 
-	paclaim, err := c.signer.ParsePreAuthed(sclaim.TenantId, opts.PreAuthedToken)
+	paclaim, err := c.signer.ParsePreAuthed(tenantId, opts.PreAuthedToken)
 	if err != nil {
 		pp.Println(err)
 		return nil, err
 	}
 
-	ugroup, err := c.coredb.GetUserGroup(sclaim.TenantId, paclaim.UserGroup)
+	ugroup, err := c.coredb.GetUserGroup(tenantId, paclaim.UserGroup)
 	if err != nil {
 		return nil, err
 	}
@@ -106,19 +102,19 @@ func (c *Controller) AuthFinish(opts AuthFinishRequest, deviceName, addr string)
 		APNToken:    "",
 		Scopes:      ugroup.Scopes,
 		ExtraMeta:   entities.JsonStrMap{},
-		TenantID:    sclaim.TenantId,
+		TenantID:    tenantId,
 		PairOptions: entities.JsonStrMap{},
 		ExpiresOn: dbutils.Time{
 			Inner: time.Now().Add(time.Hour * 24 * 60),
 		},
 	}
 
-	err = c.coredb.AddUserDevice(sclaim.TenantId, paclaim.UserID, device)
+	err = c.coredb.AddUserDevice(tenantId, paclaim.UserID, device)
 	if err != nil {
 		return nil, err
 	}
 
-	utok, err := c.signer.SignUser(sclaim.TenantId, device.Derive(paclaim.UserGroup))
+	utok, err := c.signer.SignUser(tenantId, device.Derive(paclaim.UserGroup))
 	if err != nil {
 		return nil, err
 	}
@@ -144,10 +140,10 @@ func (c *Controller) AuthSubmit(opts AuthSubmitRequest) (*AuthSubmitResponse, er
 	return c.authSubmit(opts)
 }
 
-func (c *Controller) LoginNext(opts LoginNextRequest) (*LoginNextResponse, error) {
-	return c.loginNext(opts)
+func (c *Controller) LoginNext(tenantId string, opts LoginNextRequest) (*LoginNextResponse, error) {
+	return c.loginNext(tenantId, opts)
 }
 
-func (c *Controller) LoginSubmit(opts LoginSubmitRequest) (*LoginSubmitResponse, error) {
-	return c.loginSubmit(opts)
+func (c *Controller) LoginSubmit(tenantId string, opts LoginSubmitRequest) (*LoginSubmitResponse, error) {
+	return c.loginSubmit(tenantId, opts)
 }
