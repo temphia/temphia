@@ -9,9 +9,13 @@ import (
 	"github.com/k0kubun/pp"
 )
 
+// during dev we just proxy to dev vite server running otherwise serve files from build folder
 func (s *Server) pages(z *gin.RouterGroup) {
-	z.GET("/pages")
-	z.GET("/pages/*files", s.pagesRoutes())
+	rfunc := s.pagesRoutes()
+
+	z.GET("/pages", rfunc)
+	z.GET("/pages/*files", rfunc)
+
 }
 
 func (s *Server) pagesRoutes() gin.HandlerFunc {
