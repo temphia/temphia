@@ -2,10 +2,9 @@ import { Http } from "./http";
 
 export class AuthAPI {
   http: Http;
-  constructor(baseUrl: string, site_token: string) {
+  constructor(baseUrl: string) {
     this.http = new Http(baseUrl, {
       "Content-Type": "application/json",
-      Authorization: site_token,
     });
   }
 
@@ -14,35 +13,35 @@ export class AuthAPI {
   };
 
   login_next = async (data: any) => {
-    return this.http.post("/auth/login/next", data);
+    return this.http.post("/login/next", data);
   };
 
   login_submit = async (data: any) => {
-    return this.http.post("/auth/login/submit", data);
+    return this.http.post("/login/submit", data);
   };
 
   altauth_generate = async (id: number, data: any) => {
-    return this.http.post(`/auth/alt/${id}/generate`, data);
+    return this.http.post(`/alt/${id}/generate`, data);
   };
 
   altauth_next = async (id: number, stage: string, data: any) => {
-    return this.http.post(`/auth/alt/${id}/next/${stage}`, data);
+    return this.http.post(`/alt/${id}/next/${stage}`, data);
   };
 
   altauth_submit = async (id: number, data: any) => {
-    return this.http.post(`/auth/alt/${id}/submit`, data);
+    return this.http.post(`/alt/${id}/submit`, data);
   };
 
   finish = async (data: any) => {
-    return this.http.post("/auth/finish", data);
+    return this.http.post("/finish", data);
   };
 
   signup_next = async (data: any) => {
-    return this.http.post("/auth/signup/next", data);
+    return this.http.post("/signup/next", data);
   };
 
   signup_submit = async (data: any) => {
-    return this.http.post("/auth/signup/submit", data);
+    return this.http.post("/signup/submit", data);
   };
 
   reset_submit = async (data: any) => {
@@ -59,6 +58,6 @@ export class AuthAPI {
       Authorization: user_token,
     });
 
-    return http.get("/auth/about");
+    return http.get("/about");
   };
 }

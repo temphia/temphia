@@ -36,3 +36,11 @@ export class ExecAPI {
     return this.http.post(`/engine/execute/${method}`, data);
   }
 }
+
+
+/*
+  /z/app/:plug/:agent/api/*action
+  /z/app/:plug/:agent/rpc/:action
+  /z/app/:plug/:agent/open/:action
+  /z/app/:plug/:agent/raw/*action
+*/

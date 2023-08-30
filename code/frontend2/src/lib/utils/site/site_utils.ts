@@ -2,9 +2,6 @@ const AUTHED_KEY_PREFIX = "_temphia_authed_key_";
 
 export interface AuthedData {
   user_token: string;
-  site_token: string;
-  tenant_id: string;
-  // fixme => place claim expiry date ?
 }
 
 export interface SiteData {
@@ -14,18 +11,16 @@ export interface SiteData {
 }
 
 export class SiteUtils {
-  _site_token?: string;
-
-  constructor(site_token?: string) {
-    this._site_token = site_token;
-  }
-
   isLogged() {
     return !!this.get();
   }
 
   gotoLoginPage() {
-    window.location.pathname = "/z/auth";
+    window.location.pathname = "/z/pages/auth";
+  }
+
+  gotoPortalPage() {
+    window.location.pathname = "/z/pages/portal";
   }
 
   setAuthedData(data: AuthedData) {
