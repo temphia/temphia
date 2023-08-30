@@ -23,6 +23,7 @@ func (s *Server) zRoutes(z *gin.RouterGroup) {
 
 	z.GET("/", s.asFile(templates.Root, "html"))
 	z.GET("/portal", s.asFile(templates.Portal, "html"))
+	s.pages(z) // /pages
 
 	s.assets(z.Group("/assets"))
 	s.authserver.API(z.Group("/auth"))
