@@ -1,112 +1,45 @@
 <script lang="ts">
-    import {
-      BluprintIcon,
-      EventIcon,
-      GroupIcon,
-      UserIcon,
-      PlugIcon,
-      CodeIcon,
-      OrgIcon,
-      UserGroupIcon,
-      ResourceIcon,
-      StoreIcon,
-      SearchIcon,
-    } from "$lib/compo/svg";
-    import { AppBar } from '@skeletonlabs/skeleton';
-      
-    const active =
-      "text-blue-500 rounded-none border-b-2 font-medium border-blue-500";
-  
-    export let items = [
-      {
-        id: "repo",
-        name: "Repos",
-        icon: StoreIcon,
-        path: "#/admin/repo/",
-      },
-  
-      {
-        id: "bprint",
-        name: "Bluprints",
-        icon: BluprintIcon,
-        path: "#/admin/bprint/",
-      },
-      {
-        id: "plug",
-        name: "Plugs",
-        icon: PlugIcon,
-        path: "#/admin/plug/",
-      },
-      {
-        id: "resource",
-        name: "Resources",
-        icon: ResourceIcon,
-        path: "#/admin/resource/",
-      },
-      {
-        id: "target",
-        name: "Target Apps and Hooks",
-        icon: CodeIcon,
-        path: "#/admin/target/app/",
-      },
-      {
-        id: "lens",
-        name: "lens",
-        icon: SearchIcon,
-        path: "#/admin/lens/logs",
-      },
-  
-      {
-        id: "ugroup",
-        name: "Users and Groups",
-        icon: UserGroupIcon,
-        path: "#/admin/ugroup/",
-      },
-      {
-        id: "tenant",
-        name: "Organization",
-        icon: OrgIcon,
-        path: "#/admin/tenant/",
-      },
-  
-      {
-        id: "data",
-        name: "Data Tables",
-        icon: GroupIcon,
-        path: "#/admin/data/",
-      },
-    ];
-  
-    $: _current_page = location.hash.split("/")[2];
-    window.addEventListener("hashchange", () => {
-      _current_page = location.hash.split("/")[2];
-    });
-  </script>
+  import { AppBar } from "@skeletonlabs/skeleton";
+  import { items } from "./admin";
+  const active =
+    "text-blue-500 rounded-none border-b-2 font-medium border-blue-500";
+
+  // fixme => we are not using hash router
+
+  $: _current_page = location.hash.split("/")[2];
+  window.addEventListener("hashchange", () => {
+    _current_page = location.hash.split("/")[2];
+  });
+</script>
 
 <div class="w-full h-full bg-indigo-100 overflow-auto">
-    <AppBar padding="p-0" gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
-        <div slot="lead"></div>
+  <AppBar
+    padding="p-0"
+    gridColumns="grid-cols-3"
+    slotDefault="place-self-center"
+    slotTrail="place-content-end"
+  >
+    <div slot="lead" />
 
-        <div class="flex flex-row"> 
-            {#each items as item}
-            <a href={item.path}>
-
-                <span
-                    class="text-gray-600 cursor-pointer p-2 md:p-3 hover:bg-red-100 block focus:outline-none uppercase {item.id ==
-                    _current_page
-                    ? active
-                    : ''}"
-                >
-                    <svelte:component this={item.icon} />
-                </span>
-            </a>
-            {/each}
-        </div>
-        <div slot="trail"></div>
-    </AppBar>
-    <div class="w-full h-full" style="height: calc(100vh - 3.5rem);">
-        <slot>
-          <p>Empty slot</p>
-        </slot>
+    <div class="flex flex-row">
+      {#each items as item}
+        <a href="/z/pages/portal/admin{item.path}">
+          <span
+            class="text-gray-600 cursor-pointer p-2 md:p-3 hover:bg-red-100 block focus:outline-none uppercase {item.id ==
+            _current_page
+              ? active
+              : ''}"
+          >
+            <svelte:component this={item.icon} />
+          </span>
+        </a>
+      {/each}
     </div>
+    <div slot="trail" />
+  </AppBar>
+  <div class="w-full h-full" style="height: calc(100vh - 3.5rem);">
+    <slot>
+      <p>Empty slot</p>
+    </slot>
+  </div>
 </div>
