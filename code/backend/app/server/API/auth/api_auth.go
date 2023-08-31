@@ -81,6 +81,8 @@ func (s *Auth) authedFinish(c *gin.Context) {
 	}
 
 	resp, err := s.cAuth.AuthFinish(opts, s.tenantId, "FIXME device name", c.ClientIP())
+	resp.TenantId = s.tenantId
+
 	httpx.WriteJSON(c, resp, err)
 
 }
@@ -191,7 +193,7 @@ func (s *Auth) authRefresh(c *gin.Context) {
 		return
 	}
 
-	uclaim, err := s.signer.ParseUser(c.Param("tenant_id"), opts.UserToken)
+	uclaim, err := s.signer.ParseUser(s.tenantId, opts.UserToken)
 	if err != nil {
 		httpx.UnAuthorized(c)
 		return
@@ -201,7 +203,7 @@ func (s *Auth) authRefresh(c *gin.Context) {
 }
 
 func (s *Auth) authAbout(c *gin.Context) {
-	uclaim, err := s.signer.ParseUser(c.Param("tenant_id"), c.GetHeader("Authorization"))
+	uclaim, err := s.signer.ParseUser(s.tenantId, c.GetHeader("Authorization"))
 	if err != nil {
 		httpx.UnAuthorized(c)
 		return

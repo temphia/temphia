@@ -108,6 +108,7 @@ type AuthFinishRequest struct {
 
 type AuthFinishResponse struct {
 	UserToken string `json:"user_token,omitempty"`
+	TenantId  string `json:"tenant_id,omitempty"`
 }
 
 type SubmitResponse struct {

@@ -1,4 +1,4 @@
-import { apiURL } from "../../../utils/site";
+import { apiURL, baseURL } from "../../../utils/site";
 import { Http } from "../http";
 
 export class ApiBase {
@@ -20,10 +20,12 @@ export class ApiBase {
     });
   }
 
+  
+
   async init() {
     // fixme => it should not create apiurl instead it should be passed
     // base_url or sth and build api_base_url from it
-    const resp = await fetch(`${apiURL(this.tenant_id)}/auth/refresh`, {
+    const resp = await fetch(`${baseURL()}/z/auth/refresh`, {
       method: "POST",
       body: JSON.stringify({
         path: ["basic"],

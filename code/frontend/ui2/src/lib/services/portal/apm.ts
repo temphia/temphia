@@ -26,6 +26,7 @@ import {
 } from "../apiv2/admin";
 import { PlugDevTktAPI } from "../apiv2/engine/plug_dev_tkt";
 import { EngineAPI } from "../apiv2/engine/engine";
+import { baseURL } from "$lib/utils/site";
 
 export class ApiManager {
   base_url: string;
@@ -47,7 +48,7 @@ export class ApiManager {
   }
 
   async init() {
-    const rresp = await fetch(`${this.api_base_url}/auth/refresh`, {
+    const rresp = await fetch(`${baseURL()}/z/auth/refresh`, {
       body: JSON.stringify({
         user_token: this.user_token,
         options: {},

@@ -25,15 +25,36 @@ export class LoginService {
         })
 
         if (resp.data["ok"]) {
+            console.log("@NEXT1")
+
+            const nexttoken = resp.data["next_token"]
+
+            const resp1 = await this.api.login_submit({
+                next_token: nexttoken,
+            })
+
+            if (!resp1.data["ok"]) {
+                return resp1.data
+            }
+            const resp2 = await this.api.finish({
+                preauthed_token: resp1.data["preauthed_token"],
+            })
+
+            console.log("@FINISH", resp2.data)
+
+            if (!resp2.ok) {
+                return resp2.data
+            }
+
             this.site_utils.setAuthedData({
-                user_token: resp.data["user_token"],
+                tenant_id: resp2.data["tenant_id"],
+                user_token: resp2.data["user_token"],
             })
 
             this.site_utils.gotoPortalPage()
-            return
+
+        } else {
+            return resp.data
         }
-
-
-        return resp.data
     }
 }
