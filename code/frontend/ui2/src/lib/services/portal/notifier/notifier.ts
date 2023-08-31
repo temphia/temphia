@@ -1,6 +1,7 @@
-import { derived, Readable, writable, Writable } from "svelte/store";
-import type { SelfAPI } from "../../../../lib/apiv2";
-import type { Sockd, SockdMessage } from "../../../../lib/sockd";
+import { derived, writable } from "svelte/store";
+import type {  Readable, Writable } from "svelte/store";
+import type { SelfAPI } from "../../apiv2";
+import type { Sockd, SockdMessage } from "../sockd";
 
 export interface State {
   messages: object[];

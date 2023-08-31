@@ -4,9 +4,9 @@ import {
   FolderTktAPI,
   RepoAPI,
   SelfAPI,
-} from "../../../../lib/apiv2";
-import { AdminTargetAPI } from "../../../../lib/apiv2/admin/target";
-import { ApiBase } from "../../../../lib/apiv2/base";
+} from "../apiv2";
+
+import { ApiBase } from "../apiv2/base";
 import type { SelfLoad } from "./stypes";
 
 import {
@@ -21,9 +21,11 @@ import {
   AdminUserAPI,
   AdminUserGroupAPI,
   AdminUserTktAPI,
-} from "../../../../lib/apiv2/admin";
-import { PlugDevTktAPI } from "../../../../lib/apiv2/engine/plug_dev_tkt";
-import { EngineAPI } from "../../../../lib/apiv2/engine/engine";
+  AdminTargetAPI,
+
+} from "../apiv2/admin";
+import { PlugDevTktAPI } from "../apiv2/engine/plug_dev_tkt";
+import { EngineAPI } from "../apiv2/engine/engine";
 
 export class ApiManager {
   base_url: string;

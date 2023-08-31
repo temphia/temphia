@@ -1,6 +1,6 @@
-import type { DataAPI, SelfAPI } from "../../../../lib/apiv2";
-import type { AdminDataAPI } from "../../../../lib/apiv2/admin";
-import type { SockdService } from "../sockd/sockd";
+import type { DataAPI, SelfAPI } from "../apiv2";
+import type { AdminDataAPI } from "../apiv2/admin";
+import type { SockdBuilder } from "../portal/sockd/builder";
 import { GroupService } from "./table/group";
 import { SheetGroupService } from "./sheet/sheet";
 
@@ -12,7 +12,7 @@ interface Apm {
 export class DataService {
   sources: string[];
   current_group: GroupService | null;
-  sockd_builder: SockdService;
+  sockd_builder: SockdBuilder;
   apm: Apm;
   close_modal: any;
   open_modal: any;
@@ -25,7 +25,7 @@ export class DataService {
     sources: string[];
     apm: Apm;
     api_base_url: string;
-    sockd_builder: SockdService;
+    sockd_builder: SockdBuilder;
     close_modal: any;
     open_modal: any;
     profile_genrator: (string) => string;

@@ -1,4 +1,4 @@
-import { apiURL } from "../../utils/site";
+import { apiURL } from "../../../utils/site";
 import { Http } from "../http";
 
 export class ApiBase {

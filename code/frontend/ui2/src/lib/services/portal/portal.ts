@@ -7,7 +7,7 @@ import { Notifier } from "./notifier";
 import { DataService } from "../data";
 import { CabinetService } from "../cabinet/cabinet";
 
-import { SockdService } from "./sockd/sockd";
+import { SockdBuilder } from "../portal/sockd/builder";
 
 import { XtMgr } from "./xtmgr";
 
@@ -33,7 +33,7 @@ export class PortalService {
   options: AppOptions;
   nav: Navigator;
   api_manager: ApiManager;
-  sockd_service: SockdService;
+  sockd_service: SockdBuilder;
   notifier?: Notifier;
   utils: Utils;
   registry: any;
@@ -64,7 +64,7 @@ export class PortalService {
 
 
     this.launcher = new Launcher();
-    this.sockd_service = new SockdService();
+    this.sockd_service = new SockdBuilder();
 
     this.cabinet_service = new CabinetService(this.api_manager);
     this.registry = opts.registry;

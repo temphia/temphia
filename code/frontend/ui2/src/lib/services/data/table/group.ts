@@ -1,10 +1,8 @@
-import { DataAPI, FolderTktAPI } from "../../../../../lib/apiv2";
-import {
-  MESSAGE_SERVER_PUBLISH,
-  Sockd,
-  SockdMessage,
-} from "../../../../../lib/sockd";
-import type { SockdService } from "../../sockd/sockd";
+import { DataAPI, FolderTktAPI } from "../../apiv2";
+import { MESSAGE_SERVER_PUBLISH, Sockd, } from "../../portal/sockd";
+import type { SockdMessage} from "../../portal/sockd";
+import type { SockdBuilder } from "../../portal/sockd/builder";
+
 import { TableService } from "./table_service";
 import type { DataTableMod } from "./table_types";
 
@@ -22,21 +20,21 @@ export class GroupService {
   folder_api: FolderTktAPI;
 
   // sockd
-  sockd_builder: SockdService;
+  sockd_builder: SockdBuilder;
   sockd_conn: Sockd;
   event_timer: number;
 
- profile_generator:  (string: any) => string
+  profile_generator: (string: any) => string
 
   constructor(opts: {
     source: string;
     name: string;
     api: DataAPI;
-    sockd_builder: SockdService;
+    sockd_builder: SockdBuilder;
     api_base_url: string;
     close_modal: any;
     open_modal: any;
-    profile_generator:  (string: any) => string
+    profile_generator: (string: any) => string
   }) {
     this.source = opts.source;
     this.name = opts.name;
@@ -72,7 +70,7 @@ export class GroupService {
     if (msg.type !== MESSAGE_SERVER_PUBLISH) {
       return;
     }
-    
+
     const payload = msg.payload as DataTableMod;
     const tablesvc = this.tables_services.get(payload.table);
     if (tablesvc) {

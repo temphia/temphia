@@ -1,6 +1,7 @@
-import { get, writable, Writable } from "svelte/store";
-import { DataAPI, FolderTktAPI } from "../../../../../lib/apiv2";
-import type { DataSheetAPI } from "../../../../../lib/apiv2/data_sheet";
+import { get, writable } from "svelte/store";
+import type { Writable} from "svelte/store";
+import { DataAPI, FolderTktAPI } from "../../apiv2";
+import type { DataSheetAPI } from "../../apiv2/data_sheet";
 import type {
   SheetCell,
   SheetColumn,
@@ -8,14 +9,17 @@ import type {
   Sheet,
   SheetWidget,
   SheetExecData,
-} from "../../../pages/data/sheet/sheets";
+} from "./sheet_types";
 import { formatCells } from "./format";
-import type { SockdService } from "../../sockd/sockd";
+
+import type { SockdBuilder } from "../../portal/sockd/builder";
+
 import {
   MESSAGE_SERVER_PUBLISH,
-  Sockd,
-  SockdMessage,
-} from "../../../../../lib/sockd";
+  type Sockd,
+  type SockdMessage,
+} from "../../portal/sockd";
+
 import { scroller } from "./scroll";
 import { formatRefCells } from "./format";
 import type { DataSheetMod } from "./sync";
@@ -30,7 +34,7 @@ export class SheetGroupService {
   folder_api: FolderTktAPI;
   data_api: DataAPI;
   data_sheet_api: DataSheetAPI;
-  sockd_builder: SockdService;
+  sockd_builder: SockdBuilder;
   sockd_conn: Sockd;
 
   profile_genrator: (string) => string;
@@ -39,7 +43,7 @@ export class SheetGroupService {
     source: string,
     group: string,
     api: DataAPI,
-    sockd_builder: SockdService,
+    sockd_builder: SockdBuilder,
     profile_genrator: (string) => string
   ) {
     this.source = source;

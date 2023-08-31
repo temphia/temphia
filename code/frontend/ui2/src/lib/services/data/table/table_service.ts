@@ -1,20 +1,32 @@
-import { get, writable, Writable } from "svelte/store";
-import type { DataAPI, FolderTktAPI } from "../../../../../lib/apiv2";
+import { get, writable } from "svelte/store";
+import type { Writable } from "svelte/store";
+
+import type { DataAPI, FolderTktAPI } from "../../apiv2";
 import { DirtyRowService } from "./dirty_service";
 import { generate_column_order } from "./formatter";
-import {
+import type {
   DataState,
   DirtyData,
   NavData,
   ViewData,
-  defaultViewData,
   ViewModeType,
-} from "./state_types";
+} from "../table/state_types";
+
 import {
-  DataTableMod,
+  defaultViewData,
+
+} from "../table/state_types";
+
+
+import {
   DataModTypeDelete,
   DataModTypeInsert,
   DataModTypeUpdate,
+} from "./table_types";
+
+
+import type {
+  DataTableMod,
   DataWidget,
   FilterItem,
   TableExecData,
@@ -203,9 +215,9 @@ export class TableService {
     return this.data_api.fts_query(this.table_slug, opts);
   };
 
-  poll = async () => {};
+  poll = async () => { };
 
-  close = () => {};
+  close = () => { };
 
   get_row_service = () => {
     return this.row_service;
