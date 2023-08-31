@@ -2,6 +2,7 @@ const AUTHED_KEY_PREFIX = "_temphia_authed_key_";
 
 export interface AuthedData {
   user_token: string;
+  tenant_id?: string;
 }
 
 export interface SiteData {

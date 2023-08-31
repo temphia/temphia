@@ -1,20 +1,38 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { PortalService } from "$lib/services/portal/portal";
-  import { baseURL } from "$lib/utils/site";
+  import { SiteUtils, baseURL } from "$lib/utils/site";
 
   import LayoutInner from "./_layout_inner.svelte";
   import { LoadingSpinner } from "$lib/compo";
+  import Noauth from "./noauth.svelte";
 
   let loading = true;
+  let ok = true;
+  let app;
 
-  const app = new PortalService({
-    base_url: baseURL(),
-    registry: null,
-    site_utils: null,
-    tenant_id: "",
-    user_token: "",
-  });
+  const load = async () => {
+    const site = new SiteUtils();
+
+    if (!!site.isLogged()) {
+      ok = false;
+      loading = false;
+    }
+
+    const sdata = site.getAuthedData();
+    app = new PortalService({
+      base_url: baseURL(),
+      registry: null,
+      site_utils: site,
+      tenant_id: sdata.tenant_id,
+      user_token: sdata.user_token,
+    });    
+
+    await app.init();
+    loading = false;
+  };
+
+  load();
 
   onMount(() => {
     window.onunhandledrejection = (e) => {
@@ -26,8 +44,10 @@
 
 {#if loading}
   <LoadingSpinner />
+{:else if !ok}
+  <Noauth />
 {:else}
-  <LayoutInner pending_notification={false} launcher={null}>
+  <LayoutInner pending_notification={false} launcher={app.launcher}>
     <svelte:fragment>
       <slot />
     </svelte:fragment>
