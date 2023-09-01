@@ -6,6 +6,7 @@
 
     import { setContext } from "svelte";
     import Notification from "../notification/notification.svelte";
+    import Modal from "./_modal.svelte";
 
     export let launcher: Launcher;
     export let app: PortalService;
@@ -17,10 +18,10 @@
     const toast_success = (msg: string) => {};
     const toast_error = (msg: string) => {};
 
-    const big_modal_open = (compo: any, options: object) => {};
-    const big_modal_close = () => {};
-    const small_modal_open = (compo: any, options: object) => {};
-    const small_modal_close = () => {};
+    let big_modal_open;
+    let big_modal_close;
+    let small_modal_open;
+    let small_modal_close;
 
     const notification_toggle = () => {
         if ($drawerStore.open) {
@@ -31,7 +32,7 @@
                 bgDrawer: "bg-purple-200 text-white",
                 position: "left",
                 width: "w-full md:w-[480px]",
-                padding: "p-4",
+                padding: "p-2",
                 rounded: "rounded-xl",
             });
         }
@@ -50,6 +51,13 @@
     setContext("__app__", app);
 </script>
 
+<Modal
+    bind:show_big={big_modal_open}
+    bind:show_small={small_modal_open}
+    bind:close_big={big_modal_close}
+    bind:close_small={small_modal_close}
+/>
+
 <Drawer>
     <Notification
         loading={$nstate.loading}
@@ -64,7 +72,7 @@
 <NavWrapper
     {launcher}
     pending_notification={$pending}
-    on:logout={(ev) => {}}
+    on:logout={app.logout}
     on:notification_toggle={notification_toggle}
     on:open_executors={(ev) => {}}
     on:self_profile={(ev) => {}}
