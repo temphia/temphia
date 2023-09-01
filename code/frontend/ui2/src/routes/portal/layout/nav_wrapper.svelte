@@ -13,7 +13,7 @@
     } from "$lib/compo/svg";
     
     import Logo from "$lib/compo/svg/logo.svelte";
-    import LaunchPlane from "../launcher/plane.svelte";
+    import LaunchPlane from "../../launcher/plane.svelte";
     import type { Launcher } from "$lib/services/portal/launcher/launcher";
   
     export let pending_notification = false;

@@ -2,10 +2,11 @@
   import { onMount } from "svelte";
   import { PortalService } from "$lib/services/portal/portal";
   import { SiteUtils, baseURL } from "$lib/utils/site";
-
-  import LayoutInner from "./_layout_inner.svelte";
   import { LoadingSpinner } from "$lib/compo";
-  import Noauth from "./noauth.svelte";
+
+  import Noauth from "./layout/noauth.svelte";
+  import Root from "./layout/root.svelte";
+
   import type { Registry } from "$lib/services/portal/registry/registry";
 
   let loading = true;
@@ -48,9 +49,9 @@
 {:else if !ok}
   <Noauth />
 {:else}
-  <LayoutInner pending_notification={false} launcher={app.launcher}>
+  <Root launcher={app.launcher} {app}>
     <svelte:fragment>
       <slot />
     </svelte:fragment>
-  </LayoutInner>
+  </Root>
 {/if}
