@@ -2,19 +2,40 @@
     import NavWrapper from "./nav_wrapper.svelte";
     import type { Launcher } from "$lib/services/portal/launcher/launcher";
     import type { PortalService } from "$lib/services/portal/portal";
+    import { getDrawerStore, Drawer } from "@skeletonlabs/skeleton";
+
     import { setContext } from "svelte";
+    import Notification from "../notification/notification.svelte";
 
     export let launcher: Launcher;
     export let app: PortalService;
 
+    const drawerStore = getDrawerStore();
+    const pending = app.notifier.is_pending_read;
+    const nstate = app.notifier.state;
+
     const toast_success = (msg: string) => {};
     const toast_error = (msg: string) => {};
+
     const big_modal_open = (compo: any, options: object) => {};
     const big_modal_close = () => {};
     const small_modal_open = (compo: any, options: object) => {};
     const small_modal_close = () => {};
-    const notification_toggle = () => {};
-    const pending = app.notifier.is_pending_read;
+
+    const notification_toggle = () => {
+        if ($drawerStore.open) {
+            drawerStore.close();
+        } else {
+            drawerStore.open({
+                id: "notification",
+                bgDrawer: "bg-purple-200 text-white",
+                position: "left",
+                width: "w-full md:w-[480px]",
+                padding: "p-4",
+                rounded: "rounded-xl",
+            });
+        }
+    };
 
     app.inject({
         toast_success,
@@ -29,11 +50,22 @@
     setContext("__app__", app);
 </script>
 
+<Drawer>
+    <Notification
+        loading={$nstate.loading}
+        messages={$nstate.messages}
+        on:ndelete={(ev) => app.notifier.delete_message(ev.detail)}
+        on:nread={(ev) => app.notifier.read_message(ev.detail)}
+        on:refresh={() => app.notifier.init()}
+        on:toggle_npanel={notification_toggle}
+    />
+</Drawer>
+
 <NavWrapper
     {launcher}
     pending_notification={$pending}
     on:logout={(ev) => {}}
-    on:notification_toggle={(ev) => {}}
+    on:notification_toggle={notification_toggle}
     on:open_executors={(ev) => {}}
     on:self_profile={(ev) => {}}
 >
