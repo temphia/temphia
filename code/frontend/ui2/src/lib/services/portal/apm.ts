@@ -73,7 +73,6 @@ export class ApiManager {
       this.tenant_id,
       this.session_token
     );
-    await this.base.init();
 
     this.self_api = new SelfAPI(this.base);
 

@@ -20,22 +20,6 @@ export class ApiBase {
     });
   }
 
-  
-
-  async init() {
-    // fixme => it should not create apiurl instead it should be passed
-    // base_url or sth and build api_base_url from it
-    const resp = await fetch(`${baseURL()}/z/auth/refresh`, {
-      method: "POST",
-      body: JSON.stringify({
-        path: ["basic"],
-        user_token: this.user_token,
-      }),
-    });
-
-    const rdata = await resp.json();
-  }
-
   async raw_fetch(
     path: string,
     method: string,

@@ -6,6 +6,7 @@
   import LayoutInner from "./_layout_inner.svelte";
   import { LoadingSpinner } from "$lib/compo";
   import Noauth from "./noauth.svelte";
+  import type { Registry } from "$lib/services/portal/registry/registry";
 
   let loading = true;
   let ok = true;
@@ -14,7 +15,7 @@
   const load = async () => {
     const site = new SiteUtils();
 
-    if (!!site.isLogged()) {
+    if (!site.isLogged()) {
       ok = false;
       loading = false;
     }
@@ -22,11 +23,11 @@
     const sdata = site.getAuthedData();
     app = new PortalService({
       base_url: baseURL(),
-      registry: null,
+      registry: window["__registry__"] as Registry<any>,
       site_utils: site,
       tenant_id: sdata.tenant_id,
       user_token: sdata.user_token,
-    });    
+    });
 
     await app.init();
     loading = false;

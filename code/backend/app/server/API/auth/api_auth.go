@@ -198,6 +198,7 @@ func (s *Auth) authRefresh(c *gin.Context) {
 		httpx.UnAuthorized(c)
 		return
 	}
+	uclaim.TenantId = s.tenantId
 	resp := s.cAuth.RefreshService(uclaim, opts)
 	httpx.WriteJSON(c, resp, nil)
 }

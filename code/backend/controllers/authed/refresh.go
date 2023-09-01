@@ -19,10 +19,6 @@ type RefreshResp struct {
 }
 
 func (c *Controller) RefreshService(uclaim *claim.User, opts RefreshReq) *RefreshResp {
-	return c.refreshService(uclaim, opts)
-}
-
-func (c *Controller) refreshService(uclaim *claim.User, opts RefreshReq) *RefreshResp {
 	return c.sessionClaim(uclaim, opts)
 }
 
