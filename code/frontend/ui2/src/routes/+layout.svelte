@@ -1,9 +1,11 @@
 <script lang="ts">
-  import "@skeletonlabs/skeleton/themes/theme-skeleton.css";
-  import "@skeletonlabs/skeleton/styles/skeleton.css";
+  import "../app.postcss";
+
   import { initRegistry } from "$lib/services/portal/registry/putils";
+  import { initializeStores } from "@skeletonlabs/skeleton";
 
   initRegistry();
+  initializeStores();
 </script>
 
 <slot />
