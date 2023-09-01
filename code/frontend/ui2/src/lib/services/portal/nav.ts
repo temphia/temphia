@@ -1,3 +1,5 @@
+import { goto } from '$app/navigation';
+
 export class Navigator {
   options: any;
   constructor() {
@@ -6,17 +8,20 @@ export class Navigator {
 
   set = (new_url: string, opts?: any) => {
     this.options = opts;
-    location.hash = new_url;
+    goto(`/z/pages/portal/${new_url}`)
   };
 
   start = () => {
-    this.set("#/");
+    this.set("");
   };
+
+
+  // 
+
 
   launch_target(target: string, opts?: { name?: string; target_type: string }) {
     this.set(
-      `#/launch/${target}${
-        (opts || {}).name ? "/" + window.btoa(opts.name) : ""
+      `#/launch/${target}${(opts || {}).name ? "/" + window.btoa(opts.name) : ""
       }`,
       opts
     );
