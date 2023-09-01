@@ -103,18 +103,19 @@ export class Navigator {
   };
 
   self_profile = () => {
-    this.set(`#/profile/self`);
+    this.set(`profile/self`);
   };
+
   user_profile = (user: string) => {
-    this.set(`#/profile/user/${user}`);
+    this.set(`profile/user/${user}`);
   };
 
   self_devices = () => {
-    this.set(`#/profile/device`);
+    this.set(`profile/device`);
   };
 
   self_device_new = () => {
-    this.set(`#/profile/device/new`);
+    this.set(`profile/device/new`);
   };
 
   play = () => {

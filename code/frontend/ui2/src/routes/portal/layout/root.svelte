@@ -75,7 +75,7 @@
     on:logout={app.logout}
     on:notification_toggle={notification_toggle}
     on:open_executors={(ev) => {}}
-    on:self_profile={(ev) => {}}
+    on:self_profile={app.nav.self_profile}
 >
     <svelte:fragment>
         <slot />
