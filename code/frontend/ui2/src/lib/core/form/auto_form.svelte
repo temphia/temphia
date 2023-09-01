@@ -1,10 +1,9 @@
 <script lang="ts">
   import KvEditor from "./_kv_editor.svelte";
-  //  import type { PortalService } from "../../../../services";
   import type { Schema } from "./form";
   import MultiText from "./_multi_text.svelte";
   import Action from "./_action.svelte";
-  import { generateId } from "../../../../../../lib/utils";
+  import { generateId } from "../../utils";
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
 
   export let schema: Schema;

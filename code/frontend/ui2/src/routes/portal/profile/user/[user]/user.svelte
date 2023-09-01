@@ -5,7 +5,7 @@
   import type { PortalService } from "$lib/core";
   import { LoadingSpinner } from "$lib/core";
 
-  export let id = "" // $params.id;
+  export let id;
 
   const app: PortalService = getContext("__app__");
 
