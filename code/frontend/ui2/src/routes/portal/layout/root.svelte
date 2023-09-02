@@ -72,10 +72,10 @@
 <NavWrapper
     {launcher}
     pending_notification={$pending}
-    on:logout={app.logout}
+    on:logout={() => app.logout()}
     on:notification_toggle={notification_toggle}
-    on:open_executors={(ev) => {}}
-    on:self_profile={app.nav.self_profile}
+    on:open_executors={() => app.nav.launcher()}
+    on:self_profile={() => app.nav.self_profile()}
 >
     <svelte:fragment>
         <slot />
