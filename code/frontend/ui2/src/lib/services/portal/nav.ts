@@ -125,52 +125,39 @@ export class Navigator {
   // ADMIN
 
   admin_bprints = () => {
-    this.set(`#/admin/bprint/`);
+    this.set(`admin/bprint/`);
   };
 
   admin_bprint = (bid: string) => {
-    this.set(`#/admin/bprint/${bid}/edit`);
+    this.set(`admin/bprint/edit/${bid}`);
   };
 
   admin_bprint_export_zip = (bid: string) => {
-    this.set(`#/admin/bprint/${bid}/zipit`);
-  };
-
-  admin_bprint_update = (bid: string) => {
-    this.set(`#/admin/bprint/${bid}/update`);
+    this.set(`admin/bprint/${bid}/zipit`);
   };
 
   admin_bprint_new = () => {
-    this.set(`#/admin/bprint/new`);
+    this.set(`admin/bprint/new`);
   };
 
   admin_bprint_new_zip = () => {
-    this.set(`#/admin/bprint/new/zip`);
+    this.set(`admin/bprint/new/zip`);
   };
 
   admin_bprint_files = (bid: string) => {
-    this.set(`#/admin/bprint/${bid}/file`);
+    this.set(`admin/bprint/files/${bid}`);
   };
 
   admin_bprint_file = (bid: string, file: string) => {
-    this.set(`#/admin/bprint/${bid}/file/${file}`);
+    this.set(`admin/bprint/files/${bid}/${file}`);
   };
 
-  admin_bprint_data_instancer = (bid: string, file: string, opts?: any) => {
-    this.set(`#/admin/bprint/${bid}/instance/data/${file}`, opts);
+
+  admin_bprint_instancer = (bid: string, opts?: any) => {
+    this.set(`admin/bprint/instancer/${bid}`, opts);
   };
 
-  admin_bprint_plug_instancer = (bid: string, file: string, opts?: any) => {
-    this.set(`#/admin/bprint/${bid}/instance/plug/${file}`, opts);
-  };
 
-  admin_bprint_auto_instancer = (bid: string, opts?: any) => {
-    this.set(`#/admin/bprint/${bid}/instance/automatic`, opts);
-  };
-
-  admin_bprint_editor = (bid: string, etype: string, file: string) => {
-    this.set(`#/admin/bprint/${bid}/editor/${etype}/${file}`);
-  };
 
   // plugs
 
