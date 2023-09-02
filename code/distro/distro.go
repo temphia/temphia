@@ -12,7 +12,7 @@ import (
 	"github.com/temphia/temphia/code/backend/plane"
 	"github.com/temphia/temphia/code/backend/stores"
 	"github.com/temphia/temphia/code/backend/xtypes"
-	"github.com/temphia/temphia/code/frontend/ui"
+	ui "github.com/temphia/temphia/code/frontend/ui2"
 )
 
 type DistroApp struct {

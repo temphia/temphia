@@ -1,7 +1,6 @@
 package dev
 
 import (
-	"os"
 	"path"
 
 	"github.com/k0kubun/pp"
@@ -48,11 +47,10 @@ func Run() error {
 		return err
 	}
 
-	devbuild := os.DirFS("../code/frontend/ui/build_dev/")
 	dapp, err := distro.NewDistroApp(distro.Options{
 		Conf:        conf,
 		Dev:         true,
-		BuildFolder: devbuild,
+		BuildFolder: nil,
 	})
 
 	if err != nil {
