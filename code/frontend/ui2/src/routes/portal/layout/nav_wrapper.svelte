@@ -59,7 +59,7 @@
           <a
             href={link[2]}
             on:click={() => {
-              // launcher.plane_not_float();
+              launcher.plane_not_float();
             }}
             class="h-12 px-4 flex justify-center items-center w-full text-gray-700 focus:text-orange-500"
           >
@@ -297,7 +297,7 @@
   {/if}
 
   <div class="h-screen overflow-auto tx-main">
-    <!-- <LaunchPlane {launcher} /> -->
+    <LaunchPlane {launcher} />
 
     {#if !__laucher_active}
       <slot />
