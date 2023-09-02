@@ -1,1 +1,0 @@
-<div>Pick methods</div>
