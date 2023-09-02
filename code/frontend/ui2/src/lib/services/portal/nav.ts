@@ -28,7 +28,7 @@ export class Navigator {
   }
 
   launcher() {
-    this.set(`#/launch/`);
+    this.set(`launch/`);
   }
 
   // data
@@ -91,15 +91,15 @@ export class Navigator {
   // repo
 
   repo_loader = () => {
-    this.set(`#/repo/`);
+    this.set(`repo`);
   };
 
   repo_source = (source: string) => {
-    this.set(`#/repo/${source}`);
+    this.set(`repo/${source}`);
   };
 
   repo_item = (source: string, group: string, item: string) => {
-    this.set(`#/repo/${source}/${group}/${item}`);
+    this.set(`repo/${source}/${item}`);
   };
 
   self_profile = () => {
