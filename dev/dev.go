@@ -19,10 +19,6 @@ import (
 )
 
 func Run() error {
-	err := copyFilesFromBuildProd()
-	if err != nil {
-		return err
-	}
 
 	pp.Println("@i_am_dev")
 
@@ -42,7 +38,7 @@ func Run() error {
 	}
 	confd := config.New(conf)
 
-	err = confd.InitDataFolder()
+	err := confd.InitDataFolder()
 	if err != nil {
 		return err
 	}
