@@ -267,15 +267,15 @@ export class Navigator {
   // repo
 
   admin_repos = () => {
-    this.set(`#/admin/repo/`);
+    this.set(`admin/repo/`);
   };
 
   admin_repo_edit = (rid: string) => {
-    this.set(`#/admin/repo/${rid}/edit`);
+    this.set(`admin/repo/edit/${rid}`);
   };
 
   admin_repo_new = () => {
-    this.set(`#/admin/repo/new`);
+    this.set(`admin/repo/new`);
   };
 
   // data
