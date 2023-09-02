@@ -1,14 +1,15 @@
 <script lang="ts">
   import { AppBar } from "@skeletonlabs/skeleton";
   import { items } from "./admin";
+
+  import { afterNavigate } from "$app/navigation";
   const active =
     "text-blue-500 rounded-none border-b-2 font-medium border-blue-500";
 
-  // fixme => we are not using hash router
+  $: _current_page = location.pathname.split("/")[5];
 
-  $: _current_page = location.hash.split("/")[2];
-  window.addEventListener("hashchange", () => {
-    _current_page = location.hash.split("/")[2];
+  afterNavigate(() => {
+    _current_page = location.pathname.split("/")[5];
   });
 </script>
 
