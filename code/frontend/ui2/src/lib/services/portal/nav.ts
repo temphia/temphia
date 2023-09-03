@@ -264,6 +264,8 @@ export class Navigator {
     this.set(`#/admin/plug/${pid}/dev/logs/${aid}`);
   };
 
+  
+
   // repo
 
   admin_repos = () => {
@@ -414,19 +416,18 @@ export class Navigator {
     this.set(`#/admin/user/new`);
   }
 
-
   admin_ugroups() {
-    this.set(`#/admin/ugroup/`);
+    this.set(`admin/ugroup/`);
   }
   admin_ugroup_new() {
-    this.set(`#/admin/ugroup/new`);
+    this.set(`admin/ugroup/new`);
   }
   admin_ugroup_edit(ugroup: string) {
-    this.set(`#/admin/ugroup/${ugroup}/edit`);
+    this.set(`admin/ugroup/edit/${ugroup}`);
   }
 
   admin_ugroup_users(ugroup: string) {
-    this.set(`#/admin/ugroup/${ugroup}/user/`);
+    this.set(`admin/ugroup/subusers/${ugroup}`);
   }
 
   admin_ugroup_user_edit(ugroup: string, user_id: string) {
@@ -472,6 +473,7 @@ export class Navigator {
   admin_ugroup_data_edit(ugroup: string, id: string) {
     this.set(`#/admin/ugroup/${ugroup}/data/edit/${id}`);
   }
+  
 
   admin_tenant() {
     this.set(`#/admin/tenant/`);
