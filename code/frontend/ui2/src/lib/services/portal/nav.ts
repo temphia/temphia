@@ -162,15 +162,15 @@ export class Navigator {
   // plugs
 
   admin_plugs = () => {
-    this.set(`#/admin/plug/`);
+    this.set(`admin/plug/`);
   };
 
   admin_plug_new = () => {
-    this.set(`#/admin/plug/new`);
+    this.set(`admin/plug/new`);
   };
 
-  admin_plug_edit = (bid: string) => {
-    this.set(`#/admin/plug/${bid}/edit`);
+  admin_plug_edit = (pid: string) => {
+    this.set(`#/admin/plug/edit/${pid}`);
   };
 
   // agents
@@ -188,15 +188,15 @@ export class Navigator {
   };
 
   admin_agents = (pid: string) => {
-    this.set(`#/admin/plug/${pid}/agent/`);
+    this.set(`#/admin/plug/agent/${pid}/`);
   };
 
   admin_agent_new = (pid: string) => {
-    this.set(`#/admin/plug/${pid}/agent/new`);
+    this.set(`#/admin/plug/agent/${pid}/new`);
   };
 
   admin_agent_edit = (pid: string, aid: string) => {
-    this.set(`#/admin/plug/${pid}/agent/${aid}/edit`);
+    this.set(`#/admin/plug/agent/${pid}/edit/${aid}`);
   };
 
   // agent link
@@ -364,15 +364,15 @@ export class Navigator {
   // resources
 
   admin_resources = () => {
-    this.set(`#/admin/resource/`);
+    this.set(`admin/resource/`);
   };
 
   admin_resource_edit = (rid: string) => {
-    this.set(`#/admin/resource/${rid}/edit`);
+    this.set(`admin/resource/edit/${rid}`);
   };
 
   admin_resource_new = (opts?: any) => {
-    this.set(`#/admin/resource/new`, opts);
+    this.set(`admin/resource/new`, opts);
   };
 
   // apps
