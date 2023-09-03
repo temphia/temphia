@@ -201,6 +201,10 @@ export class Navigator {
     this.set(`admin/plug/agent/${pid}/edit/${aid}`);
   };
 
+  admin_plug_dev_execute = (pid: string, aid: string) => {
+    this.set(`admin/plug/agent/${pid}/execute/${aid}`);
+  };
+
   // agent link
 
   admin_agent_links = (pid: string, aid: string) => {
@@ -246,9 +250,7 @@ export class Navigator {
   admin_plug_dev_flowmap = (pid: string) => {
     this.set(`#/admin/plug/${pid}/dev/flowmap`);
   };
-  admin_plug_dev_execute = (pid: string, aid: string) => {
-    this.set(`#/admin/plug/${pid}/dev/execute/${aid}`);
-  };
+
 
   admin_plug_dev_live_shell = (pid: string, aid: string) => {
     this.set(`#/admin/plug/${pid}/dev/liveshell/${aid}`);

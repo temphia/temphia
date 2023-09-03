@@ -27,6 +27,8 @@ func Run() error {
 		EnableLocalDoor: true,
 		DataFolder:      "./tmp",
 		MasterKey:       "test123",
+		RootDomain:      "localhost",
+		RunnerDomain:    "localhost",
 
 		DatabaseConfig: &config.StoreConfig{
 			Name:     "sqlite",

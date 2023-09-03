@@ -6,7 +6,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/temphia/temphia/code/backend/app/server/templates"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/httpx"
 )
 
@@ -21,9 +20,14 @@ func (s *Server) buildRoutes() {
 
 func (s *Server) zRoutes(z *gin.RouterGroup) {
 
-	z.GET("/", s.asFile(templates.Root, "html"))
-	z.GET("/portal", s.asFile(templates.Portal, "html"))
 	s.pages(z) // /pages
+	z.GET("/ping", func(ctx *gin.Context) {
+		ctx.Data(
+			http.StatusOK,
+			"application/json; charset=utf-8",
+			[]byte(`{"message": "pong"}`),
+		)
+	})
 
 	s.assets(z.Group("/assets"))
 	s.authserver.API(z.Group("/auth"))
@@ -73,10 +77,6 @@ func (s *Server) noRoute(ctx *gin.Context) {
 	}
 
 	// s.notz.Serve(ctx)
-}
-
-func (s *Server) asFile(data []byte, ext string) func(ctx *gin.Context) {
-	return s.middleware.AsFile(data, ext)
 }
 
 // fixme  =>  /z/extension/<name> ?
