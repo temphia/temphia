@@ -173,7 +173,7 @@ export class Navigator {
     this.set(`#/admin/plug/edit/${pid}`);
   };
 
-  // agents
+  // states
 
   admin_plug_states = (pid: string) => {
     this.set(`#/admin/plug/${pid}/state/`);
@@ -187,16 +187,18 @@ export class Navigator {
     this.set(`#/admin/plug/${pid}/state/${skey}/edit`);
   };
 
+  // agents
+
   admin_agents = (pid: string) => {
-    this.set(`#/admin/plug/agent/${pid}/`);
+    this.set(`admin/plug/agent/${pid}`);
   };
 
   admin_agent_new = (pid: string) => {
-    this.set(`#/admin/plug/agent/${pid}/new`);
+    this.set(`admin/plug/agent/${pid}/new`);
   };
 
   admin_agent_edit = (pid: string, aid: string) => {
-    this.set(`#/admin/plug/agent/${pid}/edit/${aid}`);
+    this.set(`admin/plug/agent/${pid}/edit/${aid}`);
   };
 
   // agent link
