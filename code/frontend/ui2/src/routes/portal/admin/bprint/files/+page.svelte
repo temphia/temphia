@@ -8,8 +8,9 @@
   } from "$lib/core";
 
   import FileNew from "./_file_new.svelte";
+  import { params  } from "$lib/params";
 
-  export let data;
+  let data = $params;
 
   let bid = data["slug"];
 

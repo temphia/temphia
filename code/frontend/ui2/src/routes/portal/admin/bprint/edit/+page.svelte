@@ -1,8 +1,9 @@
 <script lang="ts">
     import { getContext } from "svelte";
     import { AutoForm, LoadingSpinner, PortalService } from "$lib/core";
+    import { params  } from "$lib/params";
 
-    export let data;
+    let data = $params
 
     let bid = data["slug"];
 

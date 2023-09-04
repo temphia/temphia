@@ -1,8 +1,9 @@
 <script lang="ts">
     import { getContext } from "svelte";
     import { AutoForm, PortalService, LoadingSpinner } from "$lib/core";
+    import { params  } from "$lib/params";
 
-    export let data;
+    let data = $params;
 
     let pid = data["pid"];
     let aid = data["aid"];

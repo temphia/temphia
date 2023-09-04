@@ -2,8 +2,9 @@
     import { getContext } from "svelte";
     import type { PortalService } from "$lib/core";
     import { LoadingSpinner, FloatingAdd } from "$lib/core";
+    import { params  } from "$lib/params";
 
-    export let data;
+    let data = $params;
 
     const pid = data["pid"];
     const aid = data["aid"];

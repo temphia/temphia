@@ -1,10 +1,11 @@
 <script lang="ts">
     import { getContext } from "svelte";
     import { AutoForm, LoadingSpinner, PortalService } from "$lib/core";
- 
-    export let data
+    import { params  } from "$lib/params";
+    
+    let data = $params;
 
-    export let ugroup = data["ugroup"];
+    let ugroup = data["ugroup"];
   
     const app = getContext("__app__") as PortalService;
     const api = app.api_manager.get_admin_ugroup_api();

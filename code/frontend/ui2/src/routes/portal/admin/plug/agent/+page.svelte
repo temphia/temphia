@@ -7,7 +7,9 @@
         PortalService,
     } from "$lib/core";
 
-    export let data;
+    import { params  } from "$lib/params";
+
+    let data = $params;
 
     export let pid = data["pid"];
 

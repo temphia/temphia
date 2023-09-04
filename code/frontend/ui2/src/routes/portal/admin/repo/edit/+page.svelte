@@ -2,11 +2,12 @@
     import { getContext } from "svelte";
     import type { PortalService } from "$lib/core";
     import { AutoForm, LoadingSpinner } from "$lib/core";
+    import { params  } from "$lib/params";
 
     const app = getContext("__app__") as PortalService;
     const rapi = app.api_manager.get_admin_repo_api();
 
-    export let data;
+    let data = $params;
 
     let rid = data["slug"];
 

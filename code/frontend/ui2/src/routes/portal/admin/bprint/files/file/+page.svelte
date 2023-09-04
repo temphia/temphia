@@ -2,9 +2,10 @@
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import { getContext } from "svelte";
   import { CEditor, LoadingSpinner, PortalService } from "$lib/core";
+  import { params  } from "$lib/params";
   import PickEditor from "../_pick_editor.svelte";
 
-  export let data;
+  let data = $params;
 
   export let bid = data["slug"];
   export let file = data["file"];
