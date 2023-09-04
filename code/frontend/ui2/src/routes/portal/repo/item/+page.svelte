@@ -3,7 +3,7 @@
     import type { PortalService } from "$lib/core";
     import { LoadingSpinner } from "$lib/core";
 
-    import Importer from "../../panels/importer/index.svelte";
+    import Importer from "../panels/importer/index.svelte";
 
     const app = getContext("__app__") as PortalService;
 
@@ -13,7 +13,7 @@
 
     const load = async () => {
         const rapi = app.api_manager.get_repo_api();
-        const resp = await rapi.getBprint(data["source"], "", data["item"]);
+        const resp = await rapi.getBprint(data.get("source"), "", data.get("item"));
         if (!resp.ok) {
             return;
         }
@@ -24,7 +24,7 @@
 </script>
 
 {#if rdata}
-    <Importer data={rdata} source={data["source"]} />
+    <Importer data={rdata} source={data.get("source")} />
 {:else}
     <LoadingSpinner />
 {/if}

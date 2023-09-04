@@ -1,7 +1,6 @@
 <script>
     import User from "./user.svelte";
-
-    export let data;
+    import { params } from "$lib/params";
 </script>
 
-<User id={data["user"]} />
+<User id={$params["id"]} />

@@ -24,7 +24,7 @@
         loading = false;
     };
 
-    $: load(data["source"]);
+    $: load(data.get("source"));
 </script>
 
 {#if loading}
@@ -34,12 +34,12 @@
         onChangeSource={(next) => app.nav.repo_source(next)}
         onItemSelect={(item) => {
             app.nav.repo_item(
-                data["source"],
+                data.get("source"),
                 item["group"] || item["type"],
                 item["slug"]
             );
         }}
-        currentSource={data["source"]}
+        currentSource={data.get("source")}
         {items}
         {sources}
     />
