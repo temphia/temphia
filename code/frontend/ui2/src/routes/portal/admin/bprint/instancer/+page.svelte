@@ -2,10 +2,10 @@
     import { getContext } from "svelte";
     import { LoadingSpinner, PortalService } from "$lib/core";
     import Wizard from "./_wizard.svelte";
+    import { params  } from "$lib/params";
 
-    export let data;
 
-    let bid = data["slug"];
+    let bid = $params["slug"];
 
     const app = getContext("__app__") as PortalService;
     const bapi = app.api_manager.get_admin_bprint_api();
