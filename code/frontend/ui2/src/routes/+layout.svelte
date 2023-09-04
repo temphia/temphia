@@ -8,4 +8,8 @@
   initializeStores();
 </script>
 
+<svelte:head>
+  <link rel="icon" type="image/png" href="/z/assets/static/logo.png">
+</svelte:head>
+
 <slot />
