@@ -204,7 +204,7 @@ export class Navigator {
   };
 
   admin_plug_dev_execute = (pid: string, aid: string) => {
-    this.set(`admin/plug/agent/execute?=pid${pid}&aid=${aid}`);
+    this.set(`admin/plug/agent/execute?pid=${pid}&aid=${aid}`);
   };
 
   // agent link
