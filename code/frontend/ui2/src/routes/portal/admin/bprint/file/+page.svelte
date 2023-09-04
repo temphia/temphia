@@ -3,11 +3,11 @@
   import { getContext } from "svelte";
   import { CEditor, LoadingSpinner, PortalService } from "$lib/core";
   import { params  } from "$lib/params";
-  import PickEditor from "../_pick_editor.svelte";
+  import PickEditor from "../files/_pick_editor.svelte";
 
   let data = $params;
 
-  export let bid = data["slug"];
+  export let bid = data["bid"];
   export let file = data["file"];
 
   let loading = true;

@@ -12,7 +12,7 @@
 
   let data = $params;
 
-  let bid = data["slug"];
+  let bid = data["bid"];
 
   let datas = [];
   let loading = true;

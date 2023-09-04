@@ -127,15 +127,15 @@ export class Navigator {
   // ADMIN
 
   admin_bprints = () => {
-    this.set(`admin/bprint/`);
+    this.set(`admin/bprint`);
   };
 
   admin_bprint = (bid: string) => {
-    this.set(`admin/bprint/edit/${bid}`);
+    this.set(`admin/bprint/edit?bid=${bid}`);
   };
 
   admin_bprint_export_zip = (bid: string) => {
-    this.set(`admin/bprint/${bid}/zipit`);
+    this.set(`admin/bprint/zipit?bid=${bid}`);
   };
 
   admin_bprint_new = () => {
@@ -147,16 +147,16 @@ export class Navigator {
   };
 
   admin_bprint_files = (bid: string) => {
-    this.set(`admin/bprint/files/${bid}`);
+    this.set(`admin/bprint/files?bid=${bid}`);
   };
 
   admin_bprint_file = (bid: string, file: string) => {
-    this.set(`admin/bprint/files/${bid}/${file}`);
+    this.set(`admin/bprint/file?bid=${bid}&file=${file}`);
   };
 
 
   admin_bprint_instancer = (bid: string, opts?: any) => {
-    this.set(`admin/bprint/instancer/${bid}`, opts);
+    this.set(`admin/bprint/instancer?bid=${bid}`, opts);
   };
 
 
@@ -172,39 +172,39 @@ export class Navigator {
   };
 
   admin_plug_edit = (pid: string) => {
-    this.set(`#/admin/plug/edit/${pid}`);
+    this.set(`admin/plug/edit?pid=${pid}`);
   };
 
   // states
 
   admin_plug_states = (pid: string) => {
-    this.set(`#/admin/plug/${pid}/state/`);
+    this.set(`admin/plug/state?pid=${pid}`);
   };
 
   admin_plug_state_new = (pid: string) => {
-    this.set(`#/admin/plug/${pid}/state/new`);
+    this.set(`admin/plug/${pid}/state/new`);
   };
 
   admin_plug_state_edit = (pid: string, skey) => {
-    this.set(`#/admin/plug/${pid}/state/${skey}/edit`);
+    this.set(`admin/plug/${pid}/state/${skey}/edit`);
   };
 
   // agents
 
   admin_agents = (pid: string) => {
-    this.set(`admin/plug/agent/${pid}`);
+    this.set(`admin/plug/agent?pid=${pid}`);
   };
 
   admin_agent_new = (pid: string) => {
-    this.set(`admin/plug/agent/${pid}/new`);
+    this.set(`admin/plug/agent/new?pid=${pid}`);
   };
 
   admin_agent_edit = (pid: string, aid: string) => {
-    this.set(`admin/plug/agent/${pid}/edit/${aid}`);
+    this.set(`admin/plug/agent/edit?pid=${pid}&aid=${aid}`);
   };
 
   admin_plug_dev_execute = (pid: string, aid: string) => {
-    this.set(`admin/plug/agent/${pid}/execute/${aid}`);
+    this.set(`admin/plug/agent/execute?=pid${pid}&aid=${aid}`);
   };
 
   // agent link
