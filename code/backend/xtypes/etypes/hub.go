@@ -48,6 +48,8 @@ type EngineHub interface {
 	ListExecutors() ([]string, error)
 	ListModules() ([]string, error)
 
+	GetExecutorBuilder(name string) ExecutorBuilder
+
 	RunStartupHooks(tenants []string, minwait time.Duration)
 	// 	RunDyndbHooks(tenants string, opts map[string]any) error
 	// 	RunAdapterHooks(tenants string, opts map[string]any) error

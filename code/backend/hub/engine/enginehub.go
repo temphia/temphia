@@ -67,6 +67,11 @@ func (e *EngineHub) GetCache() etypes.Ecache {
 	return e.ecache
 }
 
+func (e *EngineHub) GetExecutorBuilder(name string) etypes.ExecutorBuilder {
+	// fixme => impl
+	return nil
+}
+
 func (e *EngineHub) LaunchAgent(uclaim *claim.Session, plugId, agentId string) (*launch.Response, error) {
 	return e.launchAgent(uclaim, plugId, agentId)
 }

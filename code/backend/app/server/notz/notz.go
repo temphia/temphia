@@ -1,15 +1,17 @@
 package notz
 
 import (
-	"github.com/temphia/temphia/code/backend/app/server/notz/agent"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
-	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz"
 )
 
 type Notz struct {
-	agent *agent.AgentNotz
+	ehub    etypes.EngineHub
+	corehub store.CoreHub
+	cabinet store.CabinetHub
+	ecache  etypes.Ecache
 }
 
 func New(app xtypes.App) *Notz {
@@ -20,18 +22,19 @@ func New(app xtypes.App) *Notz {
 	cabinet := deps.Cabinet().(store.CabinetHub)
 
 	return &Notz{
-		agent: agent.New(ehub, corehub, cabinet),
+		ehub:    ehub,
+		corehub: corehub,
+		cabinet: cabinet,
 	}
 }
 
 func (n *Notz) Start() error {
-	return n.agent.Start()
-}
+	ecahe := n.ehub.GetCache()
+	if ecahe == nil {
+		return easyerr.Error("ecache not found")
+	}
 
-func (n *Notz) HandleAgent(ctx xnotz.Context) {
-	n.agent.Render(ctx)
-}
+	n.ecache = ecahe
 
-func (n *Notz) HandleDomain(ctx xnotz.Context) {
-
+	return nil
 }

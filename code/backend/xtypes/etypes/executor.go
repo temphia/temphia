@@ -1,6 +1,8 @@
 package etypes
 
 import (
+	"net/http"
+
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
 )
@@ -33,6 +35,17 @@ type ExecutorBuilder interface {
 	Instance(ExecutorOption) (Executor, error)
 	ExecFile(file string) ([]byte, error)
 	IfaceFile() (*ExecutorIface, error)
+}
+
+type ERContext struct {
+	Writer  http.ResponseWriter
+	Request *http.Request
+	PlugId  string
+	AgentId string
+}
+
+type ExecutorRenderer interface {
+	Handle(ctx *ERContext)
 }
 
 type ExecBuilderFunc func(ExecutorOption) (Executor, error)

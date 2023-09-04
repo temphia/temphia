@@ -1,4 +1,4 @@
-package agent
+package spatpl
 
 import (
 	"bytes"
@@ -23,6 +23,12 @@ type SpaBuilder struct {
 	buf         bytes.Buffer
 	linkScripts []linkType
 	linkStyles  []string
+}
+
+func New(opts SpaBuilderOptions) *SpaBuilder {
+	return &SpaBuilder{
+		opts: opts,
+	}
 }
 
 type linkType struct {
