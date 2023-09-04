@@ -95,11 +95,13 @@ export class Navigator {
   };
 
   repo_source = (source: string) => {
-    this.set(`repo/${source}`);
+    this.set(`repo/source?source=${source}`);
   };
 
   repo_item = (source: string, group: string, item: string) => {
-    this.set(`repo/${source}/${item}`);
+    const p = new URLSearchParams({ source, group, item })
+
+    this.set(`repo/item?${p.toString()}`);
   };
 
   self_profile = () => {
@@ -107,7 +109,7 @@ export class Navigator {
   };
 
   user_profile = (user: string) => {
-    this.set(`profile/user/${user}`);
+    this.set(`profile/user?id=${user}`);
   };
 
   self_devices = () => {
@@ -268,7 +270,7 @@ export class Navigator {
     this.set(`#/admin/plug/${pid}/dev/logs/${aid}`);
   };
 
-  
+
 
   // repo
 
@@ -477,7 +479,7 @@ export class Navigator {
   admin_ugroup_data_edit(ugroup: string, id: string) {
     this.set(`#/admin/ugroup/${ugroup}/data/edit/${id}`);
   }
-  
+
 
   admin_tenant() {
     this.set(`#/admin/tenant/`);

@@ -1,10 +1,11 @@
 <script lang="ts">
     import { getContext } from "svelte";
     import type { PortalService } from "$lib/core";
+    import { params } from "$lib/params";
+
     import Skeleton from "../panels/_skeleton.svelte";
     import Listings from "../panels/listings.svelte";
 
-    export let data;
 
     const app = getContext("__app__") as PortalService;
     const rapi = app.api_manager.get_repo_api();
@@ -24,22 +25,24 @@
         loading = false;
     };
 
-    $: load(data.get("source"));
+    
+
+    $: load($params["source"]);
 </script>
 
 {#if loading}
     <Skeleton />
-{:else if data["source"]}
+{:else if $params["source"]}
     <Listings
         onChangeSource={(next) => app.nav.repo_source(next)}
         onItemSelect={(item) => {
             app.nav.repo_item(
-                data.get("source"),
+                $params["source"],
                 item["group"] || item["type"],
                 item["slug"]
             );
         }}
-        currentSource={data.get("source")}
+        currentSource={$params["source"]}
         {items}
         {sources}
     />

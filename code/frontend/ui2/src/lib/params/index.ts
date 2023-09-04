@@ -15,3 +15,7 @@ export const params = derived([navigating], ([ndata]) => {
     return o
 })
 
+
+params.subscribe((v) => {
+    console.log("@params", v)
+})
