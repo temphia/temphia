@@ -1,9 +1,12 @@
 package notz
 
 import (
+	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/temphia/temphia/code/backend/app/server/notz/spatpl"
+	"github.com/temphia/temphia/code/backend/app/server/notz/static"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz"
@@ -79,5 +82,33 @@ func (a *Notz) spaRender(ctx xnotz.Context, agent *entities.Agent) {
 }
 
 func (a *Notz) staticRenderer(ctx xnotz.Context, agent *entities.Agent) {
+
+	path := ctx.Request.URL.Path
+
+	bprintid := a.getBid(ctx.TenantId, ctx.PlugId)
+
+	fprefix, file := static.ExtractPath(path, agent)
+
+	folder := fmt.Sprintf("bprint/%s/%s", fprefix, bprintid)
+
+	out, err := a.cabinet.GetBlob(ctx.Request.Context(), ctx.TenantId, folder, file)
+	if err != nil {
+		return
+	}
+
+	ffiles := strings.Split(file, ".")
+
+	ctype := ""
+	switch ffiles[1] {
+	case "js":
+		ctype = "application/javascript"
+	case "css":
+		ctype = "text/css"
+	default:
+		ctype = http.DetectContentType(out)
+	}
+
+	ctx.Writer.Header().Set("Context-Type", ctype)
+	ctx.Writer.Write(out)
 
 }

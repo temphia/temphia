@@ -115,7 +115,7 @@ func New(opts Options) *Server {
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
-	pp.Println("@ServeHTTP", req.URL.String())
+	pp.Println("@ServeHTTP[PATH] =>", req.URL.Path)
 	pp.Println(req.URL.Path)
 
 	if s.duckMode {
