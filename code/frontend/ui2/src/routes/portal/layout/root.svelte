@@ -4,7 +4,7 @@
     import type { PortalService } from "$lib/services/portal/portal";
     import { getDrawerStore, Drawer } from "@skeletonlabs/skeleton";
 
-    import { setContext } from "svelte";
+    import { onMount, setContext } from "svelte";
     import Notification from "../notification/notification.svelte";
     import Modal from "./_modal.svelte";
 
@@ -38,14 +38,16 @@
         }
     };
 
-    app.inject({
-        toast_success,
-        toast_error,
-        big_modal_open,
-        big_modal_close,
-        small_modal_open,
-        small_modal_close,
-        notification_toggle,
+    onMount(() => {
+        app.inject({
+            toast_success,
+            toast_error,
+            big_modal_open,
+            big_modal_close,
+            small_modal_open,
+            small_modal_close,
+            notification_toggle,
+        });
     });
 
     setContext("__app__", app);
