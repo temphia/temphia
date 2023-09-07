@@ -5,7 +5,7 @@
     import { params  } from "$lib/params";
 
 
-    let bid = $params["slug"];
+    let bid = $params["bid"];
 
     const app = getContext("__app__") as PortalService;
     const bapi = app.api_manager.get_admin_bprint_api();
