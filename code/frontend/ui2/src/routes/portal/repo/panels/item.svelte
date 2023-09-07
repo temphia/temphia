@@ -1,7 +1,7 @@
 <script>
   import Icon from "./icon.svelte";
-  import SvelteMarkdown from "svelte-markdown";
-  import {PrimaryButton} from "../../../../xcompo/common";
+  // import SvelteMarkdown from "svelte-markdown";
+  import {PrimaryButton} from "$lib/compo/common";
 
   export let data = {
     id: "",
@@ -52,7 +52,7 @@
       </div>
 
       <div class="m-auto">
-        <SvelteMarkdown source={readme} />
+        <!-- <SvelteMarkdown source={readme} /> -->
       </div>
 
       <div class="w-full border bg-white shadow">
@@ -80,7 +80,7 @@
           <p class="text-gray-600">Sub Type</p>
           <p>{data.subtype || ""}</p>
         </div>
-        <div
+        <!-- <div
           class="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-1 p-4"
         >
           <p class="text-gray-600">Files</p>
@@ -107,7 +107,7 @@
               </div>
             {/each}
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="flex justify-end items-center p-1">

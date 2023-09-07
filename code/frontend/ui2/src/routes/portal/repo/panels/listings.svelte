@@ -72,7 +72,7 @@
         </div>
 
         <div class="h-auto max-w-full p-4 bg-gray-200">
-          <Icon src={item.icon} />
+          <Icon src={item["icon"] || ""} />
         </div>
         <div class="mt-2 h-32 w-full space-y-3">
           <h1 class="text-xl font-semibold text-gray-700">
