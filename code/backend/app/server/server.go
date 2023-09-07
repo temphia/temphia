@@ -48,6 +48,8 @@ type Server struct {
 	opts     Options
 	duckMode bool
 
+	tenantId string
+
 	log    logx.Service
 	signer service.Signer
 	cabhub store.CabinetHub
@@ -97,6 +99,8 @@ func New(opts Options) *Server {
 
 		listener: nil,
 
+		tenantId: opts.App.TenantId(),
+
 		middleware: mware,
 		admin: apiadmin.New(apiadmin.Options{
 			Admin:      root.AdminController(),
@@ -140,7 +144,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			s.notz.HandleAgent(xnotz.Context{
 				Writer:   w,
 				Request:  req,
-				TenantId: "",
+				TenantId: s.tenantId,
 				PlugId:   ids[0],
 				AgentId:  ids[1],
 			})
