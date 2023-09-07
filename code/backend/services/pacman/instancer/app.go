@@ -32,7 +32,7 @@ func (i *instancer) runAppBundleStep(as *xpackage.AppSchema, opts xinstancer.Opt
 
 			agent.PlugId = opts.PlugId
 			agent.TenantId = opts.TenantId
-			agent.Id = gFunc()
+			agent.Id = agent.Name
 
 			err = i.corehub.AgentNew(opts.TenantId, agent)
 			if err != nil {
