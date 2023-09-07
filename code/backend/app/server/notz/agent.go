@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/server/notz/spatpl"
 	"github.com/temphia/temphia/code/backend/app/server/notz/static"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
@@ -18,6 +19,8 @@ func (a *Notz) HandleAgent(ctx xnotz.Context) {
 	if as == nil {
 		return
 	}
+
+	pp.Println("@got_agent", as)
 
 	switch as.Type {
 	case "era":

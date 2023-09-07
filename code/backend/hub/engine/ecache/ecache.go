@@ -23,6 +23,8 @@ func New(corehub store.CoreHub) *ecache {
 	ec := &ecache{
 		corehub: corehub,
 		agents:  make(map[string]*entities.Agent),
+		aLock:   sync.RWMutex{},
+		aChan:   make(chan agentstate),
 	}
 
 	go ec.evLoop()
@@ -37,7 +39,7 @@ func (e *ecache) GetAgent(tenantId, plug, agent string) *entities.Agent {
 	state := e.agents[key]
 	e.aLock.RUnlock()
 
-	if state == nil {
+	if state != nil {
 		return state
 	}
 

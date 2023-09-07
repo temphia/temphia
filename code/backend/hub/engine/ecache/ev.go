@@ -1,7 +1,10 @@
 package ecache
 
-func (e *ecache) evLoop() {
+import (
+	"github.com/k0kubun/pp"
+)
 
+func (e *ecache) evLoop() {
 	for {
 
 		asq := <-e.aChan
@@ -9,15 +12,16 @@ func (e *ecache) evLoop() {
 
 		e.aLock.RLock()
 		as := e.agents[key]
-		e.aLock.Unlock()
+		e.aLock.RUnlock()
 
-		if as == nil {
+		if as != nil {
 			asq.wchan <- as
 			continue
 		}
 
 		agent, err := e.corehub.AgentGet(asq.tenantId, asq.plug, asq.agent)
 		if err != nil {
+			pp.Println("@get_agent_err", err.Error())
 			asq.wchan <- nil
 			continue
 		}
