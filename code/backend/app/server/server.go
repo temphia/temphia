@@ -33,6 +33,16 @@ import (
 
 var _ xserver.Server = (*Server)(nil)
 
+/*
+
+
+fixme => impl multi domains (localhost, home.local, myapp.com)
+ MainDomains   []string
+ RunnerDomains []string
+
+
+*/
+
 type Options struct {
 	RootDomain     string
 	RunnerDomain   string
