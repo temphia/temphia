@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { LoadingSpinner, PortalService } from "../../core";
-  import { ResourceModule } from "../../../../../../lib/entities";
+  import { LoadingSpinner, PortalService } from "$lib/core";
+  import { ResourceModule } from "./resources";
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import { generateId } from "../../../../../../lib/utils";
+  import { generateId } from "$lib/utils";
 
   export let service: PortalService;
 

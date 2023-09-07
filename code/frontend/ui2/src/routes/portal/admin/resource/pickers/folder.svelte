@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { ResourceFolder } from "../../../../../../lib/entities";
-  import { LoadingSpinner } from "../../../../../adapter_editor/easypage/core";
-  import type { CabinetService } from "../../../../services/cabinet/cabinet";
-  import type { PortalService } from "../../core";
+  import { ResourceFolder } from "./resources";
+  import { LoadingSpinner } from "$lib/core";
+  import type { CabinetService } from "$lib/services/cabinet/cabinet";
+  import type { PortalService } from "$lib/core";
 
-  import ActionPicker from "../../core/action_picker.svelte";
+  import ActionPicker from "$lib/core/action_picker.svelte";
 
   export let service: PortalService;
 

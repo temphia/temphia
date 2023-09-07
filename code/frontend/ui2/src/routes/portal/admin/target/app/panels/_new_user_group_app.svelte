@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { LoadingSpinner } from "../../../../../adapter_editor/easypage/core";
-  import type { PortalService } from "../../core";
-  import ActionPicker from "../../core/action_picker.svelte";
-  import { TargetAppTypeUserGroupApp } from "../target";
+  import { LoadingSpinner } from "$lib/core";
+  import type { PortalService } from "$lib/core";
+  import ActionPicker from "$lib/core/action_picker.svelte";
+  import { TargetAppTypeUserGroupApp } from "../../target";
 
   export let service: PortalService;
 

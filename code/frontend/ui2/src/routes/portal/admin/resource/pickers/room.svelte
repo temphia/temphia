@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { PortalService } from "../../core";
-  import { ResourceSockRoom } from "../../../../../../lib/entities";
-  import { generateId } from "../../../../../../lib/utils";
+  import type { PortalService } from "$lib/core";
+  import { ResourceSockRoom } from "./resources";
+  import { generateId } from "$lib/utils";
 
   export let service: PortalService;
 
