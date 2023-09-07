@@ -8,6 +8,7 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/server/notz/spatpl"
 	"github.com/temphia/temphia/code/backend/app/server/notz/static"
+	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz"
@@ -93,7 +94,9 @@ func (a *Notz) staticRenderer(ctx xnotz.Context, agent *entities.Agent) {
 
 	fprefix, file := static.ExtractPath(path, agent)
 
-	folder := fmt.Sprintf("bprint/%s/%s", fprefix, bprintid)
+	folder := fmt.Sprintf("%s/%s/%s", xtypes.BprintBlobFolder, bprintid, fprefix)
+
+	pp.Println("@folder/file", folder, file)
 
 	out, err := a.cabinet.GetBlob(ctx.Request.Context(), ctx.TenantId, folder, file)
 	if err != nil {

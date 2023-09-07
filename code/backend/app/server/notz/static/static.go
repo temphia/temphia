@@ -75,6 +75,6 @@ func ExtractPath(path string, agent *entities.Agent) (string, string) {
 		return "", file
 	}
 
-	return "", ""
+	return "", file
 
 }
