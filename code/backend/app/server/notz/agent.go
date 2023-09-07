@@ -86,9 +86,10 @@ func (a *Notz) spaRender(ctx xnotz.Context, agent *entities.Agent) {
 
 func (a *Notz) staticRenderer(ctx xnotz.Context, agent *entities.Agent) {
 
-	path := ctx.Request.URL.Path
+	plug := a.ecache.GetPlug(ctx.TenantId, ctx.PlugId)
+	bprintid := plug.BprintId
 
-	bprintid := a.getBid(ctx.TenantId, ctx.PlugId)
+	path := ctx.Request.URL.Path
 
 	fprefix, file := static.ExtractPath(path, agent)
 

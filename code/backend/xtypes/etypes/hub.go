@@ -59,4 +59,5 @@ type EngineHub interface {
 
 type Ecache interface {
 	GetAgent(tenantId, plug, agent string) *entities.Agent
+	GetPlug(tenantId, plugId string) *entities.Plug
 }
