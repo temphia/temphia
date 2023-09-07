@@ -1,10 +1,10 @@
 <script lang="ts">
-  import Step from "../../../../../xcompo/stepper/step.svelte";
-  import Stepper from "../../../../../xcompo/stepper/stepper.svelte";
+  import Step from "$lib/compo/stepper/step.svelte";
+  import Stepper from "$lib/compo/stepper/stepper.svelte";
   import Template from "./_template.svelte";
   import { getContext } from "svelte";
-  import type { PortalService } from "../../../../services";
-  import { LoadingSpinner } from "../../../admin/core";
+  import type { PortalService } from "$lib/core";
+  import { LoadingSpinner } from "$lib/core";
 
   const app: PortalService = getContext("__app__");
 

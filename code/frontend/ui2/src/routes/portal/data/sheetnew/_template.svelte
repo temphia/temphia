@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import type { PortalService } from "../../../../services";
-  import { LoadingSpinner } from "../../../admin/core";
+  import type { PortalService } from "$lib/core";
+  import { LoadingSpinner } from "$lib/core";
 
   export let template = "";
 
