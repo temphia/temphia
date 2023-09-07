@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { SheetService, SheetState } from "../../../../services/data";
-  import { LoadingSpinner } from "../../../admin/core";
+  import type { SheetService, SheetState } from "$lib/services/data";
+  import { LoadingSpinner } from "$lib/core";
   import type { SheetColumn } from "../sheets";
   import SheetInner from "../_sheet_inner.svelte";
 

@@ -17,7 +17,7 @@
     SheetColTypeRemote,
     SheetColTypeSelect,
     SheetColTypeUser,
-    SheetColumn,
+    type SheetColumn,
     SheetCtypeIcons,
   } from "../sheets";
   import CellActions from "./_cell_actions.svelte";
@@ -25,7 +25,7 @@
   import Remote from "./_remote.svelte";
   import ColorPanel from "./_color_panel.svelte";
   import Point from "./_point.svelte";
-  import type { SheetService } from "../../../../services/data";
+  import type { SheetService } from "$lib/services/data";
   import Selectable from "./_selectable.svelte";
   import UserPanel from "./_user_panel.svelte";
 

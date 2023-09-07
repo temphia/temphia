@@ -4,7 +4,7 @@
   import {
     toGeoJson,
     fromGeoJsonOrFallback,
-  } from "../../../../../../lib/utils";
+  } from "$lib/utils";
 
   export let value = "{}";
   export let onChange = (val) => {};

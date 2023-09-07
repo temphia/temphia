@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { fromGeoJson } from "../../../../../../lib/utils";
+  import { fromGeoJson } from "$lib/utils";
 
   export let value;
 

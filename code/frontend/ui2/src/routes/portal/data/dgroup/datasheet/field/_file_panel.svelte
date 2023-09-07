@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { FolderTktAPI } from "../../../../../../lib/apiv2";
-  import { LoadingSpinner } from "../../../admin/core";
+  import type { FolderTktAPI } from "$lib/services/apiv2";
+  import { LoadingSpinner } from "$lib/core";
 
   export let folder_api: FolderTktAPI;
   export let onFileAdd = (file) => {};

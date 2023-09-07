@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { SheetService } from "../../../../services/data";
-  import Avatar from "../../shared/user/avatar.svelte";
+  import type { SheetService } from "$lib/services/data";
+  import Avatar from "../../_shared/user/avatar.svelte";
   import type { SheetColumn } from "../sheets";
 
   export let service: SheetService;

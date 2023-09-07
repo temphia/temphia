@@ -29,6 +29,8 @@
   "dependencies": {
     "@krowten/svelte-heroicons": "^0.0.3",
     "codemirror": "^5.62.3",
+    "leaflet": "^1.9.4",
+    "svelte-leafletjs": "^0.10.0",
     "yootils": "^0.3.1"
   }
 }
