@@ -1,0 +1,1 @@
+function ping(params) {}

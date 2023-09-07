@@ -1,0 +1,10 @@
+{
+  "slug": "withserverjs",
+  "name": "withserverjs",
+  "type": "app",
+  "files": {
+    "index.html": "index.html",
+    "app.json": "app.json",
+    "server.js": "server.js"
+  }
+}
