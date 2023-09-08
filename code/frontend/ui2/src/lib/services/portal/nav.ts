@@ -33,16 +33,12 @@ export class Navigator {
 
   // data
 
-  data_loader = () => {
-    this.set(`#/data/`);
-  };
-
   data_groups = (source: string) => {
-    this.set(`#/data/${source}`);
+    this.set(`#/data`);
   };
 
-  data_render_custom_loader(source: string, dgroup: string) {
-    this.set(`#/data/${source}/${dgroup}/custom`);
+  data_render_table_loader(source: string, dgroup: string) {
+    this.set(`data/datatable?dsource=${source}&dgroup=${dgroup}`);
   }
 
   data_render_table(
@@ -51,23 +47,25 @@ export class Navigator {
     table: string,
     layout = ""
   ) {
-    this.set(`#/data/${source}/${dgroup}/table/${table}${layout}`);
-  }
 
-  data_render_table_loader(source: string, dgroup: string) {
-    this.set(`#/data/${source}/${dgroup}/table`);
-  }
-
-  data_render_sheet(source: string, dgroup: string, sheetid: string, opts?: any) {
-    this.set(`#/data/${source}/${dgroup}/sheet/${sheetid}`, opts);
+    if (layout === "vcard") {
+      this.set(`data/datatable/vcard?dsource=${source}&dgroup=${dgroup}&dtable=${table}`);
+    } else {
+      this.set(`data/datatable/vgrid?dsource=${source}&dgroup=${dgroup}&dtable=${table}`);
+    }
   }
 
   data_render_sheet_loader(source: string, dgroup: string) {
-    this.set(`#/data/${source}/${dgroup}/sheet`);
+    this.set(`data/datasheet?dsource=${source}&dgroup=${dgroup}`);
   }
 
+  data_render_sheet(source: string, dgroup: string, sheetid: string, opts?: any) {
+    this.set(`data/datasheet?dsource=${source}&dgroup=${dgroup}&sheetid=${sheetid}`, opts);
+  }
+
+
   data_sheets_new() {
-    this.set(`#/data_sheets/new`);
+    this.set(`data/datasheet/new`);
   }
 
   // cab
