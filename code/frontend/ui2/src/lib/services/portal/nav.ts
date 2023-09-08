@@ -38,7 +38,7 @@ export class Navigator {
   };
 
   data_render_table_loader(source: string, dgroup: string) {
-    this.set(`data/datatable?dsource=${source}&dgroup=${dgroup}`);
+    this.set(`data/dgroup/datatable?dsource=${source}&dgroup=${dgroup}`);
   }
 
   data_render_table(
@@ -56,16 +56,16 @@ export class Navigator {
   }
 
   data_render_sheet_loader(source: string, dgroup: string) {
-    this.set(`data/datasheet?dsource=${source}&dgroup=${dgroup}`);
+    this.set(`data/dgroup/datasheet?dsource=${source}&dgroup=${dgroup}`);
   }
 
   data_render_sheet(source: string, dgroup: string, sheetid: string, opts?: any) {
-    this.set(`data/datasheet?dsource=${source}&dgroup=${dgroup}&sheetid=${sheetid}`, opts);
+    this.set(`data/dgroup/datasheet?dsource=${source}&dgroup=${dgroup}&sheetid=${sheetid}`, opts);
   }
 
 
   data_sheets_new() {
-    this.set(`data/datasheet/new`);
+    this.set(`data/dgroup/datasheet/new`);
   }
 
   // cab
