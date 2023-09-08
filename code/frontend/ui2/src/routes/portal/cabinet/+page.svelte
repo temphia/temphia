@@ -1,1 +1,7 @@
-<div>Cabinet Root</div>
+<script>
+    import Ref from "./_panels/ref.svelte";
+
+</script>
+
+
+<Ref />
