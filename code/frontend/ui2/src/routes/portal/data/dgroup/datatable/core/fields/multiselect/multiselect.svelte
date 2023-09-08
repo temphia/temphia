@@ -1,12 +1,13 @@
 <script lang="ts">
-  import {
-    commaArrayDecode,
-    commaArryEncode,
-  } from "../../datatable/core/fields/field";
+  import type { Column } from "../../../../../../services/data";
 
+
+  import { commaArrayDecode, commaArryEncode } from "../field";
   export let value: any;
+  export let column: Column;
   export let onChange: (_value: any) => void;
-  export let options: string[];
+
+  let options = column.options || [];
 
   $: _selected = commaArrayDecode(value);
 
@@ -20,7 +21,7 @@
   };
 </script>
 
-<div class="flex flex-col w-full p-1 overflow-auto">
+<div class="flex flex-col w-full h-full p-1 overflow-auto">
   <div
     class="flex flex-col pl-4 p-1 space-y-1 border border-dashed rounded-lg bg-gray-50 text-gray-800"
     style="min-height: 2rem;"
@@ -29,7 +30,6 @@
       <label>
         <input
           type="checkbox"
-          checked={_selected.includes(opt)}
           on:change={onOptChange(opt)}
           class="form-checkbox h-5 w-5 text-gray-600"
         />

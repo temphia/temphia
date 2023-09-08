@@ -1,11 +1,11 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import { createEventDispatcher, onMount } from "svelte";
-  import type { FolderTktAPI } from "../../../../../lib/apiv2";
+  import type { FolderTktAPI } from "$lib/services/apiv2";
   import UserAvatar from "./field/_user_avatar.svelte";
   import Point from "./field/_point.svelte";
   import {
-    SheetCell,
+    type SheetCell,
     SheetColTypeBoolean,
     SheetColTypeDate,
     SheetColTypeFile,
@@ -16,9 +16,9 @@
     SheetColTypeReference,
     SheetColTypeSelect,
     SheetColTypeUser,
-    SheetColumn,
+    type SheetColumn,
     SheetCtypeIcons,
-    SheetRow,
+    type SheetRow,
   } from "./sheets";
 
   export let columns: SheetColumn[];

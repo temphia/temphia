@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Kveditor from "../../../../../../xcompo/common/kveditor.svelte";
-  import type { SheetService } from "../../../../../services/data";
+  import Kveditor from "$lib/compo/common/kveditor.svelte";
+  import type { SheetService } from "$lib/services/data";
   import type { SheetColumn } from "../../sheets";
   import Layout from "./_layout.svelte";
 

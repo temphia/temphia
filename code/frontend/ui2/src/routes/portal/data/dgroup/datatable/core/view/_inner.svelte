@@ -1,15 +1,24 @@
 <script lang="ts">
-  import ActionSaveButton from "$lib/compo/common/action_button/action_save_button.svelte";
-  import ViewItem from "../../../data/table/core/view/_view_item.svelte";
-  import { KvEditor } from "$lib/core";
-
+  import { KvEditor } from "../../../../admin/core";
+  import ViewItem from "./_view_item.svelte";
   export let columns;
   export let data;
-  export let onSave = (_data) => {};
+
+  export let modified = false;
 
   let name = data["name"];
   let filter_conds = data["filter_conds"] || [];
+  let search_term = data["search_term"] || "";
+  let main_column = data["main_column"] || "";
   let count = data["count"] || 0;
+
+  export const getViewData = () => ({
+    name,
+    filter_conds,
+    search_term,
+    main_column,
+    count,
+  });
 </script>
 
 <div class="flex flex-col px-2 py-3 mt-2 border-b">
@@ -30,8 +39,8 @@
     <ViewItem
       {columns}
       bind:filter_conds
-      onModify={(_fc) => {
-        data["filter_conds"] = _fc;
+      onModify={(_) => {
+        modified = true;
       }}
     />
   </div>
@@ -58,17 +67,4 @@
 <div class="flex flex-col px-2 py-3 border-b">
   <h2 class="inline-block text-lg text-slate-800 mb-1">View Tags</h2>
   <KvEditor data={{}} />
-</div>
-
-<div class="flex justify-end mt-2">
-  <ActionSaveButton
-    name="save"
-    icon_name="inbox-in"
-    onClick={() =>
-      onSave({
-        name,
-        filter_conds,
-        count,
-      })}
-  />
 </div>

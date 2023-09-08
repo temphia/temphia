@@ -1,6 +1,6 @@
 <script lang="ts">
     import { getContext } from "svelte";
-    import { validateEmail, validateSlug } from "../../../../../lib/utils";
+    import { validateEmail, validateSlug } from "$lib/utils";
     import { AutoForm, PortalService } from "$lib/core";
 
     const app = getContext("__app__") as PortalService;
