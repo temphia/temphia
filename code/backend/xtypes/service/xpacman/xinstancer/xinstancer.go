@@ -17,7 +17,6 @@ type Options struct {
 
 type SheetOptions struct {
 	Source      string                  `json:"source,omitempty"`
-	Group       string                  `json:"group,omitempty"`
 	Template    *xpackage.NewSheetGroup `json:"template,omitempty"`
 	UserContext *claim.UserContext      `json:"-"`
 }

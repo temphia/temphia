@@ -16,8 +16,10 @@ var tplbytes []byte
 var Templates = map[string]xpackage.NewSheetGroup{}
 
 func init() {
-
-	json.Unmarshal(tplbytes, &Templates)
+	err := json.Unmarshal(tplbytes, &Templates)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (c *Controller) ListSheetTemplates(uclaim *claim.Session) (map[string]xpackage.NewSheetGroup, error) {
@@ -41,13 +43,9 @@ func (c *Controller) InstanceSheet(uclaim *claim.Session, req QuickSheetInstance
 	tpl.Name = req.Name
 	tpl.Info = req.Info
 
-	// return c.repoman.GetInstancerHubV1().InstanceSheetDirect(repox.InstanceSheetOptions{
-	// 	Source:      req.Source,
-	// 	Group:       "",
-	// 	Template:    &tpl,
-	// 	UserContext: uclaim.AsUserCtx(),
-	// })
-
-	return nil, nil
-
+	return c.repoman.GetInstancer().InstanceSheetDirect(xinstancer.SheetOptions{
+		Source:      req.Source,
+		Template:    &tpl,
+		UserContext: uclaim.AsUserCtx(),
+	})
 }
