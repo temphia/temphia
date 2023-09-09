@@ -42,7 +42,7 @@
 <div class="h-screen w-screen flex tx-root">
   <!-- DESKTOP NAV -->
   <nav
-    class="flex-col items-center bg-blue-200 text-gray-700 h-full w-12 shadow-lg tx-nav-desktop"
+    class="flex-col items-center bg-primary-400 h-full w-12 shadow-lg tx-nav-desktop"
   >
     <!-- Side Nav Bar-->
 
@@ -84,7 +84,7 @@
 
     <div class="mt-auto flex items-center w-full">
       <div class="flex flex-col items-center w-full">
-        <div
+        <button
           on:click={() => {
             launcher.plane_not_float();
             dispatch("notification_toggle");
@@ -103,9 +103,9 @@
           {/if}
 
           <NotificationIcon />
-        </div>
+        </button>
 
-        <div
+        <button
           on:click={() => {
             launcher.plane_not_float();
             dispatch("self_profile");
@@ -114,7 +114,7 @@
                 w-full focus:text-orange-500 hover:bg-red-200 focus:outline-none"
         >
           <UserIcon />
-        </div>
+        </button>
 
         <button
           on:click={() => {
@@ -175,14 +175,14 @@
     </div>
     <!-- Responsive navbar -->
 
-    <div
+    <button
       on:click={() => dispatch("open_executors")}
       class="flex mr-6 items-center cursor-pointer"
     >
       <Icon name="lightning-bolt" class="w-6 h-6" />
-    </div>
+    </button>
 
-    <div
+    <button
       class="flex mr-6 items-center cursor-pointer"
       on:click={() => {
         launcher.plane_not_float();
@@ -199,9 +199,9 @@
           <span class="relative inline-flex rounded-full h-3 w-3 bg-pink-500" />
         </span>
       {/if}
-    </div>
+    </button>
 
-    <div
+    <button
       class="flex mr-6 items-center cursor-pointer"
       on:click={() => {
         launcher.plane_not_float();
@@ -209,7 +209,7 @@
       }}
     >
       <UserIcon />
-    </div>
+    </button>
   </nav>
 
   {#if __open_menu}
