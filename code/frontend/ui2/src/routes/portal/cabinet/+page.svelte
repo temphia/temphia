@@ -5,13 +5,15 @@
     import type { PortalService } from "$lib/core";
     import { LoadingSpinner } from "$lib/compo";
 
+    export let source = "default";
+
     const app: PortalService = getContext("__app__");
     const cservice = app.get_cabinet_service();
 
     let data = [];
     let loading = true;
     const load = async () => {
-        const capi = cservice.get_source_api("default");
+        const capi = cservice.get_source_api(source);
         const resp = await capi.listRoot();
         if (!resp.ok) {
             return;
@@ -33,5 +35,10 @@
 {#if loading}
     <LoadingSpinner />
 {:else}
-    <FolderView files={data} />
+    <FolderView
+        files={data}
+        on:open_item={(ev) => {
+            app.nav.cab_folder(source, ev.detail["name"]);
+        }}
+    />
 {/if}

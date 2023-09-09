@@ -1,4 +1,5 @@
 <script>
+    import { createEventDispatcher } from "svelte";
     import Folder from "./Icons/Folder.svelte";
     import Icon from "./Icons/Icon.svelte";
     import HeroIcon from "@krowten/svelte-heroicons/Icon.svelte";
@@ -39,13 +40,11 @@
             last_modified: "2022/03/45",
             size: "1K",
         },
-    ]
+    ];
 
-    
+    const dispatcher = createEventDispatcher();
 
     let size = "32";
-
-
 </script>
 
 <div class="table-container">
@@ -60,7 +59,7 @@
         </thead>
         <tbody>
             {#each files as row, i}
-                <tr>
+                <tr on:dblclick={() => dispatcher("open_item", row)}>
                     <td>
                         <span class="mr-1 text-indigo-500">
                             {#if row.is_dir}
