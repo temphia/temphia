@@ -71,19 +71,19 @@ export class Navigator {
   // cab
 
   cab_loader = () => {
-    this.set(`#/cabinet/`);
+    this.set(`cabinet/`);
   };
 
   cab_folders = (source: string) => {
-    this.set(`#/cabinet/${source}`);
+    this.set(`cabinet?source=${source}`);
   };
 
   cab_folder = (source: string, folder: string) => {
-    this.set(`#/cabinet/${source}/${folder}`);
+    this.set(`cabinet/folder?source=${source}&folder=${folder}`);
   };
 
   cab_file = (source: string, folder: string, file: string) => {
-    this.set(`#/cabinet/${source}/${folder}/${file}`);
+    this.set(`cabinet/file?source=${source}&folder=${folder}&file=${file}`);
   };
 
   // repo

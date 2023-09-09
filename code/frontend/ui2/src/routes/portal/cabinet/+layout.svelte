@@ -1,15 +1,26 @@
+<script>
+    import { params } from "$lib/params";
+    $: _paths = ($params["folder"] || "").split("/");
+    
+</script>
+
 <div class="h-full p-0 md:p-2">
     <div class="card p-2 variant-glass-primary h-full">
         <header class="card-header">
             <div class="flex justify-between">
                 <ol class="breadcrumb">
                     <li class="crumb">
-                        <a class="anchor" href="/elements/breadcrumbs">Home</a>
+                        <a class="anchor" href="/z/pages/portal/cabinet">Home</a
+                        >
                     </li>
-                    <li class="crumb-separator" aria-hidden>/</li>
-                    <li class="crumb">
-                        <a class="anchor" href="/elements/breadcrumbs">Bprints</a>
-                    </li>
+
+                    {#each _paths as path}
+                        <li class="crumb-separator" aria-hidden>/</li>
+
+                        <li class="crumb">
+                            <a class="anchor" href="#">{path}</a>
+                        </li>
+                    {/each}
                 </ol>
 
                 <div>

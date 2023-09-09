@@ -8,31 +8,26 @@
 
     export let source = $params["source"] || "default";
 
-    let folder = $params["folder"]
+    let folder;
 
     const app: PortalService = getContext("__app__");
     const cservice = app.get_cabinet_service();
 
     let data = [];
     let loading = true;
-    const load = async () => {
+    const load = async (_folder) => {
+        folder = _folder
         const capi = cservice.get_source_api(source);
-        const resp = await capi.listFolder(folder)
+        const resp = await capi.listFolder(_folder)
         if (!resp.ok) {
             return;
         }
 
-        data = resp.data.map((element) => ({
-            name: element,
-            is_dir: true,
-            size: "",
-            last_modified: "",
-        }));
-
+        data = resp.data
         loading = false;
     };
 
-    load();
+    $: load($params["folder"]);
 </script>
 
 {#if loading}
@@ -41,7 +36,7 @@
     <FolderView
         files={data}
         on:open_item={(ev) => {
-            app.nav.cab_folder(source, ev.detail["name"]);
+            app.nav.cab_folder(source, `${folder}/${ev.detail["name"]}` );
         }}
     />
 {/if}

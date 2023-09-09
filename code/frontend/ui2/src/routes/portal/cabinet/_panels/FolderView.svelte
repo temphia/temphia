@@ -59,7 +59,7 @@
         </thead>
         <tbody>
             {#each files as row, i}
-                <tr on:dblclick={() => dispatcher("open_item", row)}>
+                <tr on:dblclick={() => dispatcher("open_item", row)} class="cursor-pointer hover:bg-gray-700">
                     <td>
                         <span class="mr-1 text-indigo-500">
                             {#if row.is_dir}
