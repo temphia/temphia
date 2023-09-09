@@ -1,83 +1,37 @@
-<script>
-    import Folder from "./_panels/Icons/Folder.svelte";
-    import Icon from "./_panels/Icons/Icon.svelte";
+<script lang="ts">
+    import FolderView from "./_panels/FolderView.svelte";
 
-    const tableArr = [
-        {
-            name: "public",
-            modified: "",
-            size: "",
+    import { getContext } from "svelte";
+    import type { PortalService } from "$lib/core";
+    import { LoadingSpinner } from "$lib/compo";
+
+    const app: PortalService = getContext("__app__");
+    const cservice = app.get_cabinet_service();
+
+    let data = [];
+    let loading = true;
+    const load = async () => {
+        const capi = cservice.get_source_api("default");
+        const resp = await capi.listRoot();
+        if (!resp.ok) {
+            return;
+        }
+
+        data = resp.data.map((element) => ({
+            name: element,
             is_dir: true,
-        },
-        {
-            name: "test.mp4",
-            modified: "2022/03/45",
-            size: "23M",
-        },
+            size: "",
+            last_modified: "",
+        }));
 
-        {
-            name: "test.txt",
-            modified: "2022/03/45",
-            size: "1K",
-        },
+        loading = false;
+    };
 
-        {
-            name: "test.zip",
-            modified: "2022/03/45",
-            size: "1K",
-        },
-
-        {
-            name: "test.png",
-            modified: "2022/03/45",
-            size: "1K",
-        },
-
-        {
-            name: "xyz.mp3",
-            modified: "2022/03/45",
-            size: "1K",
-        },
-
-        {
-            name: "test.txt",
-            modified: "2022/03/45",
-            size: "1K",
-        },
-    ];
-
-    let size = "32";
+    load();
 </script>
 
-<div class="table-container">
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Last Modified</th>
-                <th>Size</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {#each tableArr as row, i}
-                <tr>
-                    <td>
-                        <span class="mr-1 text-indigo-500">
-                            {#if row.is_dir}
-                                <Folder {size} />
-                            {:else}
-                                <Icon {size} name={row.name} />
-                            {/if}
-                        </span>
-
-                        {row.name}
-                    </td>
-                    <td>{row.modified}</td>
-                    <td>{row.size}</td>
-                    <td>A</td>
-                </tr>
-            {/each}
-        </tbody>
-    </table>
-</div>
+{#if loading}
+    <LoadingSpinner />
+{:else}
+    <FolderView files={data} />
+{/if}
