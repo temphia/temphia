@@ -356,3 +356,29 @@ func (cs *ClaimSigner) ParseExecModTkt(tenantId, payload string) (*claim.ExecMod
 	data.TenantId = tenantId
 	return data, nil
 }
+
+func (cs *ClaimSigner) SignLSock(data *claim.LSock) (string, error) {
+
+	out, err := json.Marshal(data)
+	if err != nil {
+		return "", nil
+	}
+
+	return cs.signer.GlobalSignRaw(string(out))
+}
+
+func (cs *ClaimSigner) ParseLSock(payload string) (*claim.LSock, error) {
+
+	out, err := cs.signer.GlobalParseRaw(payload)
+	if err != nil {
+		return nil, err
+	}
+
+	data := &claim.LSock{}
+	err = json.Unmarshal([]byte(out), data)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}

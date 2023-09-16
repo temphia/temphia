@@ -19,6 +19,10 @@ type Signer interface {
 type ClaimSigner interface {
 	SignOperator(data *claim.Operator) (string, error)
 	ParseOperator(payload string) (*claim.Operator, error)
+
+	SignLSock(data *claim.LSock) (string, error)
+	ParseLSock(payload string) (*claim.LSock, error)
+
 	SignSite(data *claim.Site) (string, error)
 	ParseSite(payload string) (*claim.Site, error)
 	SignUser(tenantId string, data *claim.User) (string, error)
