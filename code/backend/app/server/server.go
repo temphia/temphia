@@ -17,6 +17,7 @@ import (
 	apiauth "github.com/temphia/temphia/code/backend/app/server/API/auth"
 	apidata "github.com/temphia/temphia/code/backend/app/server/API/data"
 	apiself "github.com/temphia/temphia/code/backend/app/server/API/self"
+	"github.com/temphia/temphia/code/backend/app/server/lsock"
 	"github.com/temphia/temphia/code/backend/app/server/notz"
 
 	"github.com/temphia/temphia/code/backend/app/server/API/middleware"
@@ -67,7 +68,8 @@ type Server struct {
 	listener   net.Listener
 	ldListener net.Listener
 
-	notz xnotz.Notz
+	notz  xnotz.Notz
+	lsock *lsock.LSock
 
 	middleware *middleware.Middleware
 
@@ -99,13 +101,16 @@ func New(opts Options) *Server {
 
 	node := plane.GetIdService().NewNode("temphia.sockd")
 
+	nz := notz.New(opts.App)
+
 	return &Server{
 		opts:     opts,
 		duckMode: true,
 		log:      logsvc,
 		signer:   signer,
 
-		notz: notz.New(opts.App),
+		notz:  nz,
+		lsock: lsock.New(nz, signer),
 
 		listener: nil,
 

@@ -32,6 +32,8 @@ func (s *Server) zRoutes(z *gin.RouterGroup) {
 	s.assets(z.Group("/assets"))
 	s.authserver.API(z.Group("/auth"))
 
+	s.lsock.API(z.Group("/lsock"))
+
 	s.API(z.Group("/api/:tenant_id/v2/"))
 }
 
