@@ -8,7 +8,7 @@ package xserver
 
 type LSock interface {
 	Register(s LSubcriber) int64
-	SendWS(eid int64, name string, data []byte)
+	SendWS(sid int64, name string, data []byte) error
 }
 
 type LSubcriber interface {

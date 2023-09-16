@@ -10,4 +10,5 @@ type lsockWs struct {
 	parent *LSock
 	sub    xserver.LSubcriber
 	conn   net.Conn
+	wChan  chan []byte
 }

@@ -3,6 +3,8 @@ package notz
 import (
 	"fmt"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"strings"
 
 	"github.com/k0kubun/pp"
@@ -49,6 +51,10 @@ func (a *Notz) HandleAgent(ctx xnotz.Context) {
 		a.staticRenderer(ctx, as)
 	case "spa":
 		a.spaRender(ctx, as)
+	case "raw":
+		a.rawRender(ctx, as)
+	default:
+		panic("not implemented")
 	}
 
 }
@@ -117,5 +123,40 @@ func (a *Notz) staticRenderer(ctx xnotz.Context, agent *entities.Agent) {
 
 	ctx.Writer.Header().Set("Context-Type", ctype)
 	ctx.Writer.Write(out)
+
+}
+
+func (a *Notz) rawRender(ctx xnotz.Context, agent *entities.Agent) {
+
+	key := ctx.PlugId + ctx.AgentId
+
+	a.rLock.RLock()
+	rpxy := a.rawProxies[key]
+	a.rLock.RUnlock()
+
+	if rpxy == nil {
+		a.laLock.Lock()
+		addr := a.laddrs[key]
+		a.laLock.Unlock()
+
+		if addr == "" {
+			return
+		}
+
+		u, err := url.Parse(fmt.Sprintf("http://%s", addr))
+		if err != nil {
+			return
+		}
+
+		rpxy = httputil.NewSingleHostReverseProxy(u)
+
+		a.rLock.Lock()
+		if _, ok := a.rawProxies[key]; !ok {
+			a.rawProxies[key] = rpxy
+		}
+		a.rLock.Unlock()
+	}
+
+	rpxy.ServeHTTP(ctx.Writer, ctx.Request)
 
 }
