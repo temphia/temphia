@@ -4,7 +4,7 @@
     import { getContext } from "svelte";
     import type { PortalService } from "$lib/core";
     import { LoadingSpinner } from "$lib/compo";
-    import { params} from "$lib/params"
+    import { params } from "$lib/params";
 
     export let source = $params["source"] || "default";
 
@@ -16,14 +16,14 @@
     let data = [];
     let loading = true;
     const load = async (_folder) => {
-        folder = _folder
+        folder = _folder;
         const capi = cservice.get_source_api(source);
-        const resp = await capi.listFolder(_folder)
+        const resp = await capi.listFolder(_folder);
         if (!resp.ok) {
             return;
         }
 
-        data = resp.data
+        data = resp.data;
         loading = false;
     };
 
@@ -36,7 +36,10 @@
     <FolderView
         files={data}
         on:open_item={(ev) => {
-            app.nav.cab_folder(source, `${folder}/${ev.detail["name"]}` );
+            console.log("@EEEE", ev.detail);
+            if (ev.detail["is_dir"]) {
+                app.nav.cab_folder(source, `${folder}/${ev.detail["name"]}`);
+            }
         }}
     />
 {/if}
