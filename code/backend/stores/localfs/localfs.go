@@ -88,9 +88,6 @@ func (n *NativeBlob) ListFolderBlobs(ctx context.Context, tenant, folder string)
 
 	respblobs := make([]*store.BlobInfo, 0, len(files))
 	for _, f := range files {
-		if f.IsDir() {
-			continue
-		}
 
 		respblobs = append(respblobs, &store.BlobInfo{
 			Name:         f.Name(),
