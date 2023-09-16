@@ -14,31 +14,33 @@ export class CabinetAPI {
   }
 
   listFolder(folder: string) {
-    return this.base.get(`/cabinet/${this.source}/${folder}`);
+    return this.base.get(`/cabinet/${this.source}/folder/${folder}`);
   }
 
   newFolder(folder: string) {
-    return this.base.post(`/cabinet/${this.source}/${folder}`, {});
+    return this.base.post(`/cabinet/${this.source}/folder`, {
+      folder
+    });
   }
 
   getFile(folder: string, fname: string) {
-    return this.base.get(`/cabinet/${this.source}/${folder}/file/${fname}`);
+    return this.base.get(`/cabinet/${this.source}/file/${folder}/${fname}`);
   }
 
   uploadFile(folder: string, fname: string, data: any) {
     return this.base.postForm(
-      `/cabinet/${this.source}/${folder}/file/${fname}`,
+      `/cabinet/${this.source}/file/${folder}/${fname}`,
       true,
       data
     );
   }
 
   deleteFile(folder: string, fname: string) {
-    return this.base.delete(`/cabinet/${this.source}/${folder}/file/${fname}`);
+    return this.base.delete(`/cabinet/${this.source}/file/${folder}/${fname}`);
   }
 
   getFilePreview(folder: string, fname: string) {
-    return `${this.base.api_base_url}/cabinet/${this.source}/${folder}/preview/${fname}?token=${this.base.user_token}`;
+    return `${this.base.api_base_url}/cabinet/${this.source}/preview/${folder}/${fname}?token=${this.base.user_token}`;
   }
 }
 
