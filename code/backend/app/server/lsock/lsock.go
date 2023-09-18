@@ -63,18 +63,18 @@ func (l *LSock) Register(s xserver.LSubcriber) int64 {
 	return sid
 }
 
-func (l *LSock) SendRPC(iid int64, name string, data []byte) ([]byte, error) {
+func (l *LSock) SendRPX(iid int64, name string, data []byte) ([]byte, error) {
 
 	l.rLock.RLock()
 	rinfo := l.remotes[iid]
 	l.rLock.RUnlock()
 
-	prefix := rinfo.RPCPrefix
+	prefix := rinfo.RPXPrefix
 	if prefix == "" {
 		prefix = "/"
 	}
 
-	req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("http://%s%s/%s", rinfo.Addr, rinfo.RPCPrefix, name), bytes.NewReader(data))
+	req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("http://%s%s/%s", rinfo.Addr, prefix, name), bytes.NewReader(data))
 	if err != nil {
 		return nil, err
 	}
