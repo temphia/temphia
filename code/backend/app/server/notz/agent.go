@@ -114,9 +114,9 @@ func (a *Notz) staticRenderer(ctx xnotz.Context, agent *entities.Agent) {
 	ctype := ""
 	switch ffiles[1] {
 	case "js":
-		ctype = "application/javascript"
+		ctype = httpx.CtypeJS
 	case "css":
-		ctype = "text/css"
+		ctype = httpx.CtypeCSS
 	default:
 		ctype = http.DetectContentType(out)
 	}
