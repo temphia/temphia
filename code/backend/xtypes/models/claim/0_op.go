@@ -8,7 +8,8 @@ type Operator struct {
 
 type LSock struct {
 	Type  string `json:"type,omitempty"`
-	SID   int64  `json:"sid,omitempty"`
+	IID   int64  `json:"iid,omitempty"` // instance id
+	EID   int64  `json:"eid,omitempty"` // execution id
 	Plug  string `json:"plug,omitempty"`
 	Agent string `json:"agent,omitempty"`
 }

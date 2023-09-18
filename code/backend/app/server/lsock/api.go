@@ -18,7 +18,7 @@ func (l *LSock) apiRPCAction(ctx *gin.Context) {
 	}
 
 	l.sLock.Lock()
-	sub := l.subs[lclaim.SID]
+	sub := l.subs[lclaim.IID]
 	l.sLock.Unlock()
 
 	out, err := io.ReadAll(ctx.Request.Body)
@@ -43,7 +43,7 @@ func (l *LSock) apiWS(ctx *gin.Context) {
 	}
 
 	l.sLock.Lock()
-	sub := l.subs[lclaim.SID]
+	sub := l.subs[lclaim.IID]
 	l.sLock.Unlock()
 
 	conn, _, _, err := ws.UpgradeHTTP(ctx.Request, ctx.Writer)
@@ -60,7 +60,7 @@ func (l *LSock) apiWS(ctx *gin.Context) {
 	}
 
 	l.wLock.Lock()
-	l.wsconns[lclaim.SID] = lws
+	l.wsconns[lclaim.IID] = lws
 	l.wLock.Unlock()
 
 	go l.handleWS(lws)
