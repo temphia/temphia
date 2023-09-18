@@ -1,7 +1,10 @@
 package lsock
 
 import (
-	"encoding/json"
+	"bytes"
+	"fmt"
+	"io"
+	"net/http"
 	"sync"
 	"sync/atomic"
 
@@ -19,6 +22,9 @@ type LSock struct {
 	subs  map[int64]xserver.LSubcriber
 	sLock sync.Mutex
 
+	remotes map[int64]*xserver.REInfo
+	rLock   sync.RWMutex
+
 	counter int64
 
 	notz   xnotz.Notz
@@ -29,6 +35,9 @@ func New(notz xnotz.Notz, signer service.Signer) *LSock {
 	return &LSock{
 		subs:  make(map[int64]xserver.LSubcriber),
 		sLock: sync.Mutex{},
+
+		remotes: make(map[int64]*xserver.REInfo),
+		rLock:   sync.RWMutex{},
 
 		counter: 1,
 		notz:    notz,
@@ -54,12 +63,29 @@ func (l *LSock) Register(s xserver.LSubcriber) int64 {
 	return sid
 }
 
-type LSPacket struct {
-	Name string          `json:"name,omitempty"`
-	Data json.RawMessage `json:"data,omitempty"`
-}
+func (l *LSock) SendRPC(iid int64, name string, data []byte) ([]byte, error) {
 
-func (l *LSock) SendRPC(iid int64, name string) ([]byte, error) {
+	l.rLock.RLock()
+	rinfo := l.remotes[iid]
+	l.rLock.RUnlock()
 
-	return nil, nil
+	prefix := rinfo.RPCPrefix
+	if prefix == "" {
+		prefix = "/"
+	}
+
+	req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("http://%s%s/%s", rinfo.Addr, rinfo.RPCPrefix, name), bytes.NewReader(data))
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Authorization", rinfo.Token)
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return io.ReadAll(resp.Body)
+
 }

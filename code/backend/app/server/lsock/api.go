@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/backend/xtypes/xserver"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/httpx"
 )
 
@@ -42,11 +43,17 @@ func (l *LSock) apiRegister(ctx *gin.Context) {
 		return
 	}
 
-	out, err := io.ReadAll(ctx.Request.Body)
+	info := &xserver.REInfo{}
+
+	err = ctx.BindJSON(info)
 	if err != nil {
 		ctx.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
 
-	l.notz.RegisterLocalAddr(lclaim.Plug, lclaim.Agent, string(out))
+	l.rLock.Lock()
+	l.remotes[lclaim.IID] = info
+	l.rLock.Unlock()
+
+	l.notz.RegisterLocalAddr(lclaim.Plug, lclaim.Agent, info.Addr)
 }

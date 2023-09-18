@@ -10,7 +10,7 @@ import "encoding/json"
 
 type LSock interface {
 	Register(s LSubcriber) int64
-	SendRPC(iid int64, name string) ([]byte, error)
+	SendRPC(iid int64, name string, data []byte) ([]byte, error)
 }
 
 type LSubcriber interface {
@@ -20,9 +20,10 @@ type LSubcriber interface {
 // remote execution info
 
 type REInfo struct {
-	Addr          string
-	RPCPrefix     string
-	ControlPrefix string
+	Addr          string `json:"addr,omitempty"`
+	RPCPrefix     string `json:"rpc_prefix,omitempty"`
+	ControlPrefix string `json:"control_prefix,omitempty"`
+	Token         string `json:"token,omitempty"`
 }
 
 type REPacketIn struct {
