@@ -15,3 +15,21 @@ type LSubcriber interface {
 	Handle(name string, data []byte)
 	HandleWS(data []byte)
 }
+
+// remote execution info
+
+type REInfo struct {
+	Addr          string
+	RPCPrefix     string
+	ControlPrefix string
+}
+
+type REPacketIn struct {
+	Name    string `json:"name,omitempty"`
+	UserCtx any    `json:"user_ctx,omitempty"`
+	Data    any    `json:"data,omitempty"`
+}
+
+type REPacketOut struct {
+	Data any `json:"data,omitempty"`
+}
