@@ -21,13 +21,7 @@ func (s *Server) buildRoutes() {
 func (s *Server) zRoutes(z *gin.RouterGroup) {
 
 	s.pages(z) // /pages
-	z.GET("/ping", func(ctx *gin.Context) {
-		ctx.Data(
-			http.StatusOK,
-			"application/json; charset=utf-8",
-			[]byte(`{"message": "pong"}`),
-		)
-	})
+	z.GET("/ping", ping)
 
 	s.assets(z.Group("/assets"))
 	s.authserver.API(z.Group("/auth"))
@@ -79,6 +73,14 @@ func (s *Server) noRoute(ctx *gin.Context) {
 	}
 
 	// s.notz.Serve(ctx)
+}
+
+func ping(ctx *gin.Context) {
+	ctx.Data(
+		http.StatusOK,
+		"application/json; charset=utf-8",
+		[]byte(`{"message": "pong"}`),
+	)
 }
 
 // fixme  =>  /z/extension/<name> ?
