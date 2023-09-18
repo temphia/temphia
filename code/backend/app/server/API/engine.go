@@ -2,7 +2,6 @@ package api_server
 
 import (
 	_ "embed"
-	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -19,27 +18,11 @@ func (s *Server) EngineAPI(rg *gin.RouterGroup) {
 
 	rg.POST("/reset", s.X(s.reset))
 
-	// rg.GET("/launch/domain_target/:pid/:aid", s.domainTargetLaunch())
-
 	// execute action
-	rg.POST("/execute/:action", s.execute)
-	rg.OPTIONS("/execute/:action", func(ctx *gin.Context) {
-		pp.Println("@iframe_cors")
 
-		ctx.Header("Access-Control-Allow-Origin", "*")
-		ctx.Header("Access-Control-Allow-Credentials", "true")
-		ctx.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		ctx.Header("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
-
-		ctx.AbortWithStatus(204)
-	})
-
-	// s.app.Data().AssetAdapter("build")
-	fs := http.FS(nil) // fixme
-
-	rg.GET("/plug/:pid/agent/:aid/launcher/:file", func(ctx *gin.Context) {
-		ctx.FileFromFS(ctx.Param("file"), fs)
-	})
+	rg.POST("/rpx/closed/:action", s.executeClosedRPX)
+	rg.POST("/rpx/open/:action", s.executeOpenRPX)
+	rg.POST("/rpx/raw/:action", s.executeRawRPX)
 
 	// serve file
 	rg.GET("/plug/:pid/agent/:aid/serve/*file", s.agentServeFile)
@@ -47,10 +30,21 @@ func (s *Server) EngineAPI(rg *gin.RouterGroup) {
 
 }
 
-func (s *Server) execute(ctx *gin.Context) {
-	ctx.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+// rpx execute
+
+func (s *Server) executeOpenRPX(ctx *gin.Context) {
+
+}
+
+func (s *Server) executeClosedRPX(ctx *gin.Context) {
 	s.cEngine.Execute(ctx.Param("tenant_id"), ctx.Param("action"), ctx)
 }
+
+func (s *Server) executeRawRPX(ctx *gin.Context) {
+
+}
+
+// serve
 
 func (s *Server) agentServeFile(ctx *gin.Context) {
 	file := strings.TrimPrefix(ctx.Param("file"), "/")
@@ -74,13 +68,6 @@ func (s *Server) executorFile(ctx *gin.Context) {
 	}
 	httpx.WriteFile(file, out, ctx)
 }
-
-/*
-  /z/rpx/:plug/:agent/closed/*action
-  /z/rpx/:plug/:agent/open/:action
-  /z/rpx/:plug/:agent/raw/:action
-
-*/
 
 // launch
 
