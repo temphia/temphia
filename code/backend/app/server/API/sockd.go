@@ -9,7 +9,14 @@ import (
 
 func (s *Server) DataWSAPI(rg *gin.RouterGroup) {
 	rg.GET("/", s.sockdDataWS)
-	rg.POST("/", s.sockdDataUpdateWS)
+
+}
+
+func (s *Server) WSAPI(rg *gin.RouterGroup) {
+	rg.GET("/data", s.sockdDataWS)
+	rg.GET("/plug", s.enginePlugWS)
+	rg.GET("/self", s.selfUserWS)
+	rg.GET("/mqtt", func(ctx *gin.Context) {})
 }
 
 func (s *Server) sockdDataWS(ctx *gin.Context) {
@@ -44,6 +51,63 @@ func (s *Server) sockdDataWS(ctx *gin.Context) {
 
 }
 
-func (s *Server) sockdDataUpdateWS(ctx *gin.Context) {
+func (s *Server) enginePlugWS(ctx *gin.Context) {
+
+	if !ctx.IsWebsocket() {
+		return
+	}
+
+	tenantId := ctx.Param("tenant_id")
+
+	dclaim, err := s.signer.ParseSockdTkt(tenantId, ctx.Query("ticket"))
+	if err != nil {
+		httpx.UnAuthorized(ctx)
+		return
+	}
+
+	conn, err := transports.NewConnWS(ctx, s.idNode.Generate().Int64())
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	err = s.cSockd.AddPlugConn(sockd.PlugConnOptions{
+		TenantId: tenantId,
+		UserId:   dclaim.UserId,
+		GroupId:  "",
+		DeviceId: dclaim.DeviceId,
+		Plug:     "",
+		Conn:     conn,
+		Room:     dclaim.Room,
+	})
+
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+}
+
+func (s *Server) selfUserWS(ctx *gin.Context) {
+
+	sclaim, err := s.signer.ParseSession(ctx.Param("tenant_id"), ctx.Query("token"))
+	if err != nil {
+		httpx.UnAuthorized(ctx)
+		return
+	}
+
+	conn, err := transports.NewConnWS(ctx, s.idNode.Generate().Int64())
+	if err != nil {
+		httpx.WriteErr(ctx, err)
+		return
+	}
+
+	s.cSockd.AddUserConn(sockd.UserConnOptions{
+		TenantId: ctx.Param("tenant_id"),
+		UserId:   sclaim.UserID,
+		GroupId:  sclaim.UserGroup,
+		DeviceId: sclaim.DeviceId,
+		Conn:     conn,
+	})
 
 }
