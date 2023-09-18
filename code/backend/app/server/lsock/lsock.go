@@ -19,9 +19,6 @@ type LSock struct {
 	subs  map[int64]xserver.LSubcriber
 	sLock sync.Mutex
 
-	wsconns map[int64]*lsockWs
-	wLock   sync.RWMutex
-
 	counter int64
 
 	notz   xnotz.Notz
@@ -30,10 +27,9 @@ type LSock struct {
 
 func New(notz xnotz.Notz, signer service.Signer) *LSock {
 	return &LSock{
-		subs:    make(map[int64]xserver.LSubcriber),
-		sLock:   sync.Mutex{},
-		wsconns: make(map[int64]*lsockWs),
-		wLock:   sync.RWMutex{},
+		subs:  make(map[int64]xserver.LSubcriber),
+		sLock: sync.Mutex{},
+
 		counter: 1,
 		notz:    notz,
 		signer:  signer,
@@ -43,7 +39,6 @@ func New(notz xnotz.Notz, signer service.Signer) *LSock {
 func (l *LSock) API(g *gin.RouterGroup) {
 
 	g.POST("/rpc/:action", l.apiRPCAction)
-	g.GET("/ws", l.apiWS)
 	g.POST("/register", l.apiRegister)
 
 }
@@ -64,22 +59,7 @@ type LSPacket struct {
 	Data json.RawMessage `json:"data,omitempty"`
 }
 
-func (l *LSock) SendWS(sid int64, name string, data []byte) error {
-	l.wLock.RLock()
-	wcon := l.wsconns[sid]
-	l.wLock.RUnlock()
+func (l *LSock) SendRPC(iid int64, name string) ([]byte, error) {
 
-	pak := &LSPacket{
-		Name: name,
-		Data: data,
-	}
-
-	out, err := json.Marshal(pak)
-	if err != nil {
-		return err
-	}
-
-	wcon.wChan <- out
-	return nil
-
+	return nil, nil
 }

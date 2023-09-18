@@ -7,6 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const (
+	CtypeJSON = "application/json"
+	CtypeJS   = "application/javascript"
+	CtypeCSS  = "text/css"
+)
+
 func NotFound(ctx *gin.Context) {
 	ctx.Data(http.StatusNotFound, "text/html", []byte(`<h1>Not Found<h1>`))
 }
@@ -22,9 +28,9 @@ func WriteFile(file string, data []byte, ctx *gin.Context) {
 	ctype := ""
 	switch ffiles[1] {
 	case "js":
-		ctype = "application/javascript"
+		ctype = CtypeJS
 	case "css":
-		ctype = "text/css"
+		ctype = CtypeCSS
 	default:
 		ctype = http.DetectContentType(data)
 	}

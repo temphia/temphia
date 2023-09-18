@@ -1,5 +1,7 @@
 package xserver
 
+import "encoding/json"
+
 // LSock is service that allows subprocesses to communicate with main app instance
 // they are mostly locally run processes example use it in remote executor that is
 // spawned in nsjail that want to call bindings or perform action in resources we
@@ -8,12 +10,11 @@ package xserver
 
 type LSock interface {
 	Register(s LSubcriber) int64
-	SendWS(sid int64, name string, data []byte) error
+	SendRPC(iid int64, name string) ([]byte, error)
 }
 
 type LSubcriber interface {
-	Handle(name string, data []byte)
-	HandleWS(data []byte)
+	Handle(name string, data []byte) ([]byte, error)
 }
 
 // remote execution info
@@ -25,11 +26,13 @@ type REInfo struct {
 }
 
 type REPacketIn struct {
-	Name    string `json:"name,omitempty"`
-	UserCtx any    `json:"user_ctx,omitempty"`
-	Data    any    `json:"data,omitempty"`
+	Name    string          `json:"name,omitempty"`
+	UserCtx any             `json:"user_ctx,omitempty"`
+	Data    json.RawMessage `json:"data,omitempty"`
 }
 
 type REPacketOut struct {
-	Data any `json:"data,omitempty"`
+	Name    string `json:"name,omitempty"`
+	UserCtx any    `json:"user_ctx,omitempty"`
+	Data    any    `json:"data,omitempty"`
 }
