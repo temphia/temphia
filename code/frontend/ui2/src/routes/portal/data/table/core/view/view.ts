@@ -1,4 +1,4 @@
-import type { TableService } from "../../../../../services/data";
+import type { TableService } from "$lib/services/data";
 
 export interface ViewModal {
   open: (compo, options) => void;
