@@ -49,19 +49,14 @@ export class Navigator {
     }
   }
 
-
-
-  // data_render_sheet_loader(source: string, dgroup: string) {
-  //   this.set(`data/dgroup/datasheet?dsource=${source}&dgroup=${dgroup}`);
-  // }
-
-  // data_render_sheet(source: string, dgroup: string, sheetid: string, opts?: any) {
-  //   this.set(`data/dgroup/datasheet?dsource=${source}&dgroup=${dgroup}&sheetid=${sheetid}`, opts);
-  // }
+  data_sheet_render_page(source: string, dgroup: string, sheetid?: string, opts?: any) {
+    const sheetparam = sheetid ? `&sheetid=${sheetid}` : ""
+    this.set(`data/sheet?dsource=${source}&dgroup=${dgroup}${sheetparam}`, opts);
+  }
 
 
   data_sheets_new() {
-    this.set(`data/dgroup/datasheet/new`);
+    this.set(`data/sheet/new`);
   }
 
   // cab

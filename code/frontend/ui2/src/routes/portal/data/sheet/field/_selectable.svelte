@@ -2,7 +2,7 @@
   import {
     commaArrayDecode,
     commaArryEncode,
-  } from "../../datatable/core/fields/field";
+  } from "../../table/core/fields/field";
 
   export let value: any;
   export let onChange: (_value: any) => void;

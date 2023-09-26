@@ -38,10 +38,10 @@
   
       switch (group["renderer"]) {
         case "sheet":
-          app.nav.data_render_sheet_loader(source, slug);
+          app.nav.data_sheet_render_page(source, slug);
           break;
         default:
-          app.nav.data_render_table_loader(source, slug);
+          app.nav.data_group_page(source, slug);
           break;
       }
     };
@@ -117,7 +117,7 @@
                   <Dropdown>
                     <button
                       on:click={() =>
-                        app.nav.data_render_table_loader(source, group["slug"])}
+                        app.nav.data_group_page(source, group["slug"])}
                       class="flex justify-between rounded-sm px-4 py-2 text-sm capitalize text-gray-700 hover:bg-blue-500 hover:text-white"
                     >
                       <Icon name="hashtag" class="h-5 w-5" />

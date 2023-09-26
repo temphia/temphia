@@ -13,7 +13,7 @@
   import SearchPanel from "./panels/_search_panel.svelte";
   import type { SheetWidget } from "./sheets";
   import type { SheetService, SheetState } from "$lib/services/data";
-  import { TargetAppTypeDataSheetWidget } from "../../../admin/target/target";
+  import { TargetAppTypeDataSheetWidget } from "../../admin/target/target";
   import RefRecord from "./panels/row/ref_record.svelte";
   import ExtraActions from "./panels/extra_actions.svelte";
 
@@ -76,7 +76,7 @@
       Confirm: async () => {
         await sheet_service.remove_sheet();
         app.utils.small_modal_close();
-        app.nav.data_render_sheet_loader(source, group);
+        app.nav.data_sheet_render_page(source, group);
       },
       Deny: () => app.utils.small_modal_close(),
     });
@@ -205,7 +205,7 @@
   };
 
   const gotoSheetRow = (nextsheet, rowid) => {
-    app.nav.data_render_sheet(source, group, nextsheet, {
+    app.nav.data_sheet_render_page(source, group, nextsheet, {
       row_cursor_id: rowid,
     });
   };
@@ -229,13 +229,13 @@
       on:action_goto_history={() =>
         app.nav.admin_data_activity(source, group, "scells")}
       on:action_goto_rawtable={() =>
-        app.nav.data_render_table_loader(source, group)}
+        app.nav.data_group_page(source, group)}
       on:add_row={() => doAddRow()}
       on:edit_row={doEditRow}
       on:action_refresh={() => sheet_service.init()}
       on:add_sheet={doAddSheet}
       on:change_sheet={(ev) => {
-        app.nav.data_render_sheet(source, group, ev.detail);
+        app.nav.data_sheet_render_page(source, group, ev.detail);
       }}
       on:mounted={({ detail }) => {
         sheet_service.scroller = detail.scroller;

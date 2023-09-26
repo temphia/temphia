@@ -22,7 +22,7 @@
       return;
     }
 
-    app.nav.data_render_sheet(source, group, String(sheets[0]["__id"]));
+    app.nav.data_sheet_render_page(source, group, String(sheets[0]["__id"]));
   };
   load();
 </script>
