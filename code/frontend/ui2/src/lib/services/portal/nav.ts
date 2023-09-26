@@ -33,35 +33,31 @@ export class Navigator {
 
   // data
 
-  data_groups = (source: string) => {
-    this.set(`#/data`);
+  data_page = (source: string) => {
+    this.set(`#/data?dsource=${source}`);
   };
 
-  data_render_table_loader(source: string, dgroup: string) {
-    this.set(`data/dgroup/datatable?dsource=${source}&dgroup=${dgroup}`);
+  data_group_page = (source: string, dgroup: string) => {
+    this.set(`#/data/table?dsource=${source}&dgroup=${dgroup}`);
   }
 
-  data_render_table(
-    source: string,
-    dgroup: string,
-    table: string,
-    layout = ""
-  ) {
-
+  data_table_render_page = (source: string, dgroup: string, table: string, layout = "") => {
     if (layout === "vcard") {
-      this.set(`data/datatable/vcard?dsource=${source}&dgroup=${dgroup}&dtable=${table}`);
+      this.set(`data/table/vcard?dsource=${source}&dgroup=${dgroup}&dtable=${table}`);
     } else {
-      this.set(`data/datatable/vgrid?dsource=${source}&dgroup=${dgroup}&dtable=${table}`);
+      this.set(`data/table/vgrid?dsource=${source}&dgroup=${dgroup}&dtable=${table}`);
     }
   }
 
-  data_render_sheet_loader(source: string, dgroup: string) {
-    this.set(`data/dgroup/datasheet?dsource=${source}&dgroup=${dgroup}`);
-  }
 
-  data_render_sheet(source: string, dgroup: string, sheetid: string, opts?: any) {
-    this.set(`data/dgroup/datasheet?dsource=${source}&dgroup=${dgroup}&sheetid=${sheetid}`, opts);
-  }
+
+  // data_render_sheet_loader(source: string, dgroup: string) {
+  //   this.set(`data/dgroup/datasheet?dsource=${source}&dgroup=${dgroup}`);
+  // }
+
+  // data_render_sheet(source: string, dgroup: string, sheetid: string, opts?: any) {
+  //   this.set(`data/dgroup/datasheet?dsource=${source}&dgroup=${dgroup}&sheetid=${sheetid}`, opts);
+  // }
 
 
   data_sheets_new() {
@@ -287,27 +283,27 @@ export class Navigator {
   // data
 
   admin_data_loader = () => {
-    this.set(`#/admin/data/`);
+    this.set(`admin/data/`);
   };
 
   admin_data_groups = (source: string) => {
-    this.set(`#/admin/data/${source}/group`);
+    this.set(`admin/data/dgroup?source=${source}`);
   };
 
   admin_data_group = (source: string, group: string) => {
-    this.set(`#/admin/data/${source}/group/${group}`);
+    this.set(`admin/data/dgroup/edit?source=${source}&group=${group}`);
   };
 
   admin_data_tables = (source: string, group: string) => {
-    this.set(`#/admin/data/${source}/table/${group}`);
+    this.set(`admin/data/dtable?source=${source}&group=${group}`);
   };
 
   admin_data_table = (source: string, group: string, table: string) => {
-    this.set(`#/admin/data/${source}/table/${group}/${table}`);
+    this.set(`admin/data/dtable/edit?source=${source}&group=${group}&table=${table}`);
   };
 
   admin_data_columns = (source: string, group: string, table: string) => {
-    this.set(`#/admin/data/${source}/column/${group}/${table}`);
+    this.set(`admin/data/dcolumn?source=${source}&group=${group}&table=${table}`);
   };
 
   admin_data_column = (
@@ -316,7 +312,7 @@ export class Navigator {
     table: string,
     column: string
   ) => {
-    this.set(`#/admin/data/${source}/column/${group}/${table}/${column}`);
+    this.set(`admin/data/dcolumn/edit?source=${source}&group=${group}&table=${table}&column=${column}`);
   };
 
   // hooks
