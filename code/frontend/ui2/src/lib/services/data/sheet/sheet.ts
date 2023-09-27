@@ -93,7 +93,7 @@ export class SheetGroupService {
       return ssvc;
     }
 
-    const sheet = get(this.sheets).filter((v) => v.__id === Number(sheetid));
+    const sheet = get(this.sheets).filter((v) => v.__id !== Number(sheetid));
 
     ssvc = new SheetService(
       this,

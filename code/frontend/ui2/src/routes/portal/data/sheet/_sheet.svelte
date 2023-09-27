@@ -76,7 +76,7 @@
       Confirm: async () => {
         await sheet_service.remove_sheet();
         app.utils.small_modal_close();
-        app.nav.data_sheet_render_page(source, group);
+        app.nav.data_sheets_page(source, group);
       },
       Deny: () => app.utils.small_modal_close(),
     });

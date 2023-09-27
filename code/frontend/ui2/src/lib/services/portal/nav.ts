@@ -34,11 +34,11 @@ export class Navigator {
   // data
 
   data_page = (source: string) => {
-    this.set(`#/data?dsource=${source}`);
+    this.set(`data?dsource=${source}`);
   };
 
   data_group_page = (source: string, dgroup: string) => {
-    this.set(`#/data/table?dsource=${source}&dgroup=${dgroup}`);
+    this.set(`data/table?dsource=${source}&dgroup=${dgroup}`);
   }
 
   data_table_render_page = (source: string, dgroup: string, table: string, layout = "") => {
@@ -49,8 +49,14 @@ export class Navigator {
     }
   }
 
+  data_sheets_page(source: string, dgroup: string) {
+    this.set(`data/sheet/loader?dsource=${source}&dgroup=${dgroup}`);
+  }
+
+
   data_sheet_render_page(source: string, dgroup: string, sheetid?: string, opts?: any) {
     const sheetparam = sheetid ? `&sheetid=${sheetid}` : ""
+
     this.set(`data/sheet?dsource=${source}&dgroup=${dgroup}${sheetparam}`, opts);
   }
 

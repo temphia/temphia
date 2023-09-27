@@ -19,6 +19,7 @@
     const sheets = get(gsvc.sheets);
 
     if (sheets.length === 0) {
+      console.log("@EMPTY sheets")
       return;
     }
 

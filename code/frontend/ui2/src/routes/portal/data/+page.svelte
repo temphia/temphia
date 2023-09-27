@@ -38,7 +38,7 @@
   
       switch (group["renderer"]) {
         case "sheet":
-          app.nav.data_sheet_render_page(source, slug);
+          app.nav.data_sheets_page(source, slug);
           break;
         default:
           app.nav.data_group_page(source, slug);
