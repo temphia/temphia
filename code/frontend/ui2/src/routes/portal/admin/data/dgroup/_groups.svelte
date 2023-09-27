@@ -8,7 +8,7 @@
   } from "$lib/core";
   import NewPick from "./_new_pick.svelte";
 
-  export let source;
+  export let source = "default";
 
   const app = getContext("__app__") as PortalService;
 
@@ -35,7 +35,7 @@
     sources = await sreq;
   };
 
-  load(source);
+  $: load(source);
 
   // actions
 
