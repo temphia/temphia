@@ -23,7 +23,7 @@
   };
 </script>
 
-<div class="flex flex-col p-2 rounded">
+<div class="flex flex-col m-1 p-1 rounded bg-white dark:bg-gray-500">
   <nav class="flex flex-row border flex-nowrap overflow-auto">
     {#each sheets as sheet}
       {#if sheet.__id === active_sheet}
