@@ -9,7 +9,7 @@
 </script>
 
 <div
-  class="w-full h-full py-10 mx-auto overflow-auto bg-gradient-to-b from-purple-100 to-indigo-100"
+  class="w-full h-full py-10 mx-auto overflow-auto"
 >
   <div class="flex justify-center w-full mb-10">
     <div class="relative">
@@ -62,7 +62,7 @@
   <div class="flex flex-wrap justify-center gap-2 p-2">
     {#each items as item, i}
       <div
-        class="p-4 2xl:w-1/6 xl:w-1/5 lg:1/4 md:w-1/3 w-full bg-white rounded-md hover:border-purple-600 border cursor-pointer relative"
+        class="p-4 2xl:w-1/6 xl:w-1/5 lg:1/4 md:w-1/4 sm:1/2 w-full rounded-md hover:border-purple-600 border cursor-pointer relative card"
         on:click={onItemSelect(item)}
       >
         <div
@@ -71,11 +71,11 @@
           <span>{item.type || item.group}</span>
         </div>
 
-        <div class="h-auto max-w-full p-4 bg-gray-200">
+        <div class="h-auto max-w-full p-4 bg-gray-200 card-header">
           <Icon src={item["icon"] || ""} />
         </div>
         <div class="mt-2 h-32 w-full space-y-3">
-          <h1 class="text-xl font-semibold text-gray-700">
+          <h1 class="text-xl font-semibold text-gray-700 h1">
             {item.name}
           </h1>
 

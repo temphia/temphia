@@ -37,7 +37,7 @@
 </script>
 
 <div class="p-2 overflow-visible">
-  <table class="table-auto border-collapse w-full bg-white shadow rounded-xl">
+  <table class="table-auto border-collapse w-full card">
     <thead>
       <tr
         class="rounded-lg text-sm font-medium text-gray-700 text-left"
@@ -71,7 +71,7 @@
               {#each extern_actions as action}
                 <button
                   on:click={() => action.Action(data[action_key], data)}
-                  class="flex p-1 m-1 text-sm font-semibold text-white rounded transform hover:scale-110 {action.Class ||
+                  class="flex m-1 text-white  transform hover:scale-110 btn btn-sm {action.Class ||
                     'bg-blue-400'}"
                 >
                   {#if action["icon"]}

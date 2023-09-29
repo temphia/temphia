@@ -13,7 +13,7 @@
   });
 </script>
 
-<div class="w-full h-full bg-indigo-100 overflow-auto">
+<div class="w-full h-full overflow-auto">
   <AppBar
     padding="p-0"
     gridColumns="grid-cols-3"
