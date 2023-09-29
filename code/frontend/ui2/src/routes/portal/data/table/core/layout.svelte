@@ -3,7 +3,7 @@
   import { createEventDispatcher } from "svelte";
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
 
-  import { ActionHook, ActionNormal } from "../../shared";
+  import { ActionHook, ActionNormal } from "../../_shared";
 
   export let data_widgets: object[];
   export let all_tables: object[];

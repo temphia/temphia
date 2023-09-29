@@ -1,6 +1,6 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import type { Column } from "../../../../../services/data";
+  import type { Column } from "$lib/services/data";
   import * as f from "../fields/field";
   import { CtypeFilterConds } from "./filters";
   

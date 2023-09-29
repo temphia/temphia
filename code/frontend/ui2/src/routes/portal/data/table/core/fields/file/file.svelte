@@ -3,7 +3,7 @@
   import FilesPreview from "./_files_preview.svelte";
   import { ctypeFileDecode } from "../field";
   import FilepickDialog from "./_file_panel.svelte";
-  import type { Column, RowService } from "../../../../../../services/data";
+  import type { Column, RowService } from "$lib/services/data";
 
 
   export let multi: boolean;

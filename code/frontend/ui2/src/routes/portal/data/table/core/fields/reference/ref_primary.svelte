@@ -1,6 +1,6 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import type { Column, RowService } from "../../../../../../services/data";
+  import type { Column, RowService } from "$lib/services/data";
 
   import { KeyPrimary } from "../field";
   import RefPanel from "./ref_panel.svelte";

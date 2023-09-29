@@ -1,9 +1,9 @@
 <script lang="ts">
   import Layout from "./_layout.svelte";
-  import type { Column, TableService } from "../../../../../services/data";
+  import type { Column, TableService } from "$lib/services/data";
   import TableRows from "./_table_rows.svelte";
 
-  import { LoadingSpinner } from "../../../../admin/core";
+  import { LoadingSpinner } from "$lib/core";
 
   export let columns: Column[] = [];
   export let table_service: TableService;

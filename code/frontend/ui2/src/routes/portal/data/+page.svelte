@@ -2,7 +2,6 @@
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import { getContext } from "svelte";
   import { strHash } from "$lib/utils";
-  import Dropdown from "$lib/compo/autotable/_dropdown.svelte";
   import type { PortalService } from "$lib/core";
   import { FloatingAdd, LoadingSpinner } from "$lib/core";
   import NewDataPicker from "./_new_data_picker.svelte";

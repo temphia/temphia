@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Column, RowService } from "../../../../../../services/data";
-  import { CEditor } from "../../../../../admin/core";
+  import type { Column, RowService } from "$lib/services/data";
+  import { CEditor } from "$lib/core";
 
   export let column: Column;
   export let value: any;

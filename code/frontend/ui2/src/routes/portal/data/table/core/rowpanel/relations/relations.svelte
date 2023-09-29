@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { TableService } from "../../../../../../services/data";
+  import type { TableService } from "$lib/services/data";
 
   import Embed from "../../embed/embed.svelte";
 

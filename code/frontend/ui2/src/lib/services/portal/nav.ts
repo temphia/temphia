@@ -43,9 +43,9 @@ export class Navigator {
 
   data_table_render_page = (source: string, dgroup: string, table: string, layout = "") => {
     if (layout === "vcard") {
-      this.set(`data/table/vcard?dsource=${source}&dgroup=${dgroup}&dtable=${table}`);
+      this.set(`data/table/render?dsource=${source}&dgroup=${dgroup}&dtable=${table}`);
     } else {
-      this.set(`data/table/vgrid?dsource=${source}&dgroup=${dgroup}&dtable=${table}`);
+      this.set(`data/table/render?dsource=${source}&dgroup=${dgroup}&dtable=${table}`);
     }
   }
 

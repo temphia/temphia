@@ -1,7 +1,7 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import LoadingSpinner from "../../../../../../../xcompo/common/loading_spinner.svelte";
-  import type { TableService, Column } from "../../../../../../services/data";
+  import {LoadingSpinner} from "$lib/core";
+  import type { TableService, Column } from "$lib/services/data";
   import Field from "../../fields/field.svelte";
 
   export let columns: string[];

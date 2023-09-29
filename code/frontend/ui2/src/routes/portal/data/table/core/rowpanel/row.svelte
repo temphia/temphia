@@ -5,7 +5,7 @@
   import Properties from "./properties/properties.svelte";
   import Rowlayout from "./_layout.svelte";
   import Relations from "./relations/relations.svelte";
-  import type { TableService } from "../../../../../services/data";
+  import type { TableService } from "$lib/services/data";
 
   export let show_editor = false;
   export let table_service: TableService;

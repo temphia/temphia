@@ -1,7 +1,7 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
   import { setContext } from "svelte";
-  import type { TableService } from "../../../../../services/data";
+  import type { TableService } from "$lib/services/data";
   import type { ViewModal } from "./view";
 
   import Inner from "./_inner.svelte";

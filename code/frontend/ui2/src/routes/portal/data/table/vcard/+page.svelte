@@ -1,1 +1,0 @@
-<div>Datatable Card</div>

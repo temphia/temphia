@@ -1,6 +1,6 @@
 <script lang="ts">
   import Icon from "@krowten/svelte-heroicons/Icon.svelte";
-  import type { SheetService } from "../../../../services/data";
+  import type { SheetService } from "$lib/services/data";
 
   export let service: SheetService;
 

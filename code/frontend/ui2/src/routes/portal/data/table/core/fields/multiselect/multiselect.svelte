@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Column } from "../../../../../../services/data";
+  import type { Column } from "$lib/services/data";
 
 
   import { commaArrayDecode, commaArryEncode } from "../field";

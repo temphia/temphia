@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { RowService } from "../../../../../../services/data";
+  import type { RowService } from "$lib/services/data";
 
   import LocationSelect from "./_location_panel.svelte";
   export let value: any;
