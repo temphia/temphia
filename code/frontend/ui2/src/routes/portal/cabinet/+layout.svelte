@@ -6,7 +6,7 @@
 </script>
 
 <div class="h-full p-0 md:p-2">
-    <div class="card p-2 variant-glass-primary h-full">
+    <div class="card p-2 variant-glass-secondary h-full">
         <header class="card-header">
             <div class="flex justify-between">
                 <ol class="breadcrumb">

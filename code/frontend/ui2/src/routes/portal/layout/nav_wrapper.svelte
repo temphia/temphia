@@ -42,7 +42,7 @@
 <div class="h-screen w-screen flex tx-root">
   <!-- DESKTOP NAV -->
   <nav
-    class="flex-col items-center bg-primary-400 h-full w-12 shadow-lg tx-nav-desktop"
+    class="flex-col items-center h-full w-12 shadow-lg tx-nav-desktop variant-glass-primary"
   >
     <!-- Side Nav Bar-->
 
@@ -146,7 +146,7 @@
   </nav>
 
   <nav
-    class="justify-between w-screen bg-blue-200 text-gray-700 shadow-lg tx-nav-mobile"
+    class="justify-between w-screen variant-glass-primary text-gray-700 shadow-lg tx-nav-mobile"
   >
     <div class=" py-2 flex w-full items-center">
       <a
