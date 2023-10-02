@@ -28,7 +28,7 @@ func (e *EngineHub) execute(tenantId, action string, ctx *gin.Context) {
 
 	pp.Println("@here_payload_before", string(payload))
 
-	out, err := e.engine.Execute(etypes.Execution{
+	out, err := e.engine.RPXecute(etypes.Execution{
 		TenantId: tenantId,
 		PlugId:   eclaim.PlugId,
 		AgentId:  eclaim.AgentId,
@@ -52,7 +52,7 @@ func (e *EngineHub) execute(tenantId, action string, ctx *gin.Context) {
 func (e *EngineHub) executeDev(dclaim *claim.UserContext, plug, agent, action string, body []byte) ([]byte, error) {
 	// fixme => ability to send arbitary invoker type or dev invoker type?
 
-	return e.engine.Execute(etypes.Execution{
+	return e.engine.RPXecute(etypes.Execution{
 		TenantId: dclaim.TenantId,
 		PlugId:   plug,
 		AgentId:  agent,

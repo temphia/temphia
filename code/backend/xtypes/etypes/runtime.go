@@ -16,7 +16,8 @@ type Runtime interface {
 	Run(map[string]ExecutorBuilder, map[string]ModuleBuilder) error
 
 	Preform(j *job.Job) (*event.Response, error)
-	PreformAsync(j *job.AsyncJob)
+
+	InitAgent(tenantId, plug, agent string) error
 
 	ResetAgents(tenantId, plug string, agents []string)
 	ResetBprint(tenantId, bprint string)

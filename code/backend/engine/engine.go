@@ -1,6 +1,8 @@
 package engine
 
 import (
+	"net/http"
+
 	"github.com/rs/zerolog"
 
 	"github.com/temphia/temphia/code/backend/engine/runtime"
@@ -50,9 +52,13 @@ func (e *Engine) GetRuntime() etypes.Runtime {
 	return e.runtime
 }
 
-func (e *Engine) Execute(opts etypes.Execution) ([]byte, error) {
+func (e *Engine) RPXecute(opts etypes.Execution) ([]byte, error) {
 	return e.execute(opts)
 }
+
+func (e *Engine) WebRawXecute(rw http.ResponseWriter, req *http.Request) {}
+
+func (e *Engine) SetREOption(opt etypes.REOptions) {}
 
 func (e *Engine) ServeAgentFile(tenantId, plugId, agentId, file string) ([]byte, error) {
 	return e.serveAgentFile(tenantId, plugId, agentId, file)

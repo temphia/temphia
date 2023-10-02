@@ -11,3 +11,5 @@ type LazyData interface {
 	IsObject() bool
 	Inner() any
 }
+
+type BeBytes []byte

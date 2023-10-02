@@ -103,7 +103,7 @@ func (r *RCAgent) EmitOneAysnc(opts *emitOptions) error {
 // private
 
 func (r *RCAgent) emit(method string, data []byte, link *entities.AgentLink) (any, error) {
-	return r.engine.Execute(etypes.Execution{
+	return r.engine.RPXecute(etypes.Execution{
 		TenantId: r.tenantId,
 		PlugId:   link.ToPlug,
 		AgentId:  link.ToAgent,

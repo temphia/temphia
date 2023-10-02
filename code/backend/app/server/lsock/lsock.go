@@ -79,7 +79,7 @@ func (l *LSock) SendRPX(iid int64, name string, data []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	req.Header.Set("Authorization", rinfo.Token)
+	req.Header.Set("Authorization", rinfo.ReplyToken)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
