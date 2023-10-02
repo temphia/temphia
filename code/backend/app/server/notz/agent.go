@@ -11,7 +11,6 @@ import (
 	"github.com/temphia/temphia/code/backend/app/server/notz/spatpl"
 	"github.com/temphia/temphia/code/backend/app/server/notz/static"
 	"github.com/temphia/temphia/code/backend/xtypes"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/httpx"
@@ -34,19 +33,21 @@ func (a *Notz) HandleAgent(ctx xnotz.Context) {
 			return
 		}
 
-		er, ok := eb.(etypes.ExecutorRenderer)
-		if !ok {
-			ctx.Writer.Write([]byte(`<h1>Executor is not renderer.</h1>`))
-			ctx.Writer.WriteHeader(http.StatusBadRequest)
-			return
-		}
+		pp.Println("@era", eb)
 
-		er.Handle(&etypes.ERContext{
-			Writer:  ctx.Writer,
-			Request: ctx.Request,
-			PlugId:  ctx.PlugId,
-			AgentId: ctx.AgentId,
-		})
+		// er, ok := eb.(etypes.ExecutorRenderer)
+		// if !ok {
+		// 	ctx.Writer.Write([]byte(`<h1>Executor is not renderer.</h1>`))
+		// 	ctx.Writer.WriteHeader(http.StatusBadRequest)
+		// 	return
+		// }
+
+		// er.Handle(&etypes.ERContext{
+		// 	Writer:  ctx.Writer,
+		// 	Request: ctx.Request,
+		// 	PlugId:  ctx.PlugId,
+		// 	AgentId: ctx.AgentId,
+		// })
 	case "static":
 		a.staticRenderer(ctx, as)
 	case "spa":
