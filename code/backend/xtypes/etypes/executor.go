@@ -1,8 +1,10 @@
 package etypes
 
 import (
+	"net/http"
+
+	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/bindx"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes/event"
 )
 
 type BuilderFactory func(app any) (ExecutorBuilder, error)
@@ -26,21 +28,23 @@ type ExecutorIface struct {
 }
 
 type Executor interface {
-	Process(*event.Request) (*event.Response, error)
+	New(ExecutorOption) (Executor, error)
+	ServeFile(file string) (xtypes.BeBytes, error)
 }
 
 type ExecutorBuilder interface {
-	Instance(ExecutorOption) (Executor, error)
-	ExecFile(file string) ([]byte, error)
-	IfaceFile() (*ExecutorIface, error)
+	RPXecute(r Request) (xtypes.BeBytes, error)
+	WebRawXecute(rw http.ResponseWriter, req *http.Request)
+	SetRemoteOptions(opts any)
+	Reset() error
 }
 
 type ExecBuilderFunc func(ExecutorOption) (Executor, error)
 
-func (e ExecBuilderFunc) Instance(opts ExecutorOption) (Executor, error) {
+func (e ExecBuilderFunc) New(opts ExecutorOption) (Executor, error) {
 	return e(opts)
 }
 
-func (e ExecBuilderFunc) ExecFile(file string) ([]byte, error) { return []byte(``), nil }
-
-func (e ExecBuilderFunc) IfaceFile() (*ExecutorIface, error) { return &ExecutorIface{}, nil }
+func (e ExecBuilderFunc) ServeFile(file string) (xtypes.BeBytes, error) {
+	return nil, nil
+}

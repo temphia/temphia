@@ -7,7 +7,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/backend/engine/invokers/bundled"
+
+	//	"github.com/temphia/temphia/code/backend/engine/invokers/bundled"
+
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
@@ -34,7 +36,7 @@ func (e *EngineHub) execute(tenantId, action string, ctx *gin.Context) {
 		AgentId:  eclaim.AgentId,
 		Action:   action,
 		Payload:  payload,
-		Invoker:  bundled.NewWeb(ctx, nil, eclaim),
+		//		Invoker:  bundled.NewWeb(ctx, nil, eclaim),
 	})
 
 	if err != nil {
@@ -58,6 +60,6 @@ func (e *EngineHub) executeDev(dclaim *claim.UserContext, plug, agent, action st
 		AgentId:  agent,
 		Action:   action,
 		Payload:  body,
-		Invoker:  bundled.NewAdmin(dclaim),
+		//		Invoker:  bundled.NewAdmin(dclaim),
 	})
 }

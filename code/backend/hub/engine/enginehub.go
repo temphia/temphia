@@ -6,8 +6,8 @@ import (
 	"github.com/bwmarrin/snowflake"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
-	"github.com/temphia/temphia/code/backend/engine"
-	"github.com/temphia/temphia/code/backend/engine2/ecache"
+	engine "github.com/temphia/temphia/code/backend/engine"
+	"github.com/temphia/temphia/code/backend/engine/ecache"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/launch"
@@ -93,7 +93,7 @@ func (e *EngineHub) ExecuteDev(dclaim *claim.UserContext, plug, agent, action st
 }
 
 func (e *EngineHub) Reset(tenantId, plugId, agentId string) error {
-	e.engine.GetRuntime().ResetAgents(tenantId, plugId, []string{agentId})
+	// e.engine.GetRuntime().ResetAgents(tenantId, plugId, []string{agentId})
 	return nil
 }
 
