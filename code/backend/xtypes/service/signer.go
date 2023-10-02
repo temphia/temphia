@@ -32,9 +32,6 @@ type ClaimSigner interface {
 	SignExecutor(tenantId string, data *claim.Executor) (string, error)
 	ParseExecutor(tenantId, payload string) (*claim.Executor, error)
 
-	SignAdapterEditor(tenantId string, data *claim.AdapterEditor) (string, error)
-	ParseAdapterEditor(tenantId, payload string) (*claim.AdapterEditor, error)
-
 	SignPlugState(tenantId string, data *claim.PlugState) (string, error)
 	ParsePlugState(tenantId, payload string) (*claim.PlugState, error)
 

@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/rs/zerolog"
+	"github.com/temphia/temphia/code/backend/engine/eutils/ecache"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
@@ -17,6 +18,8 @@ type Engine struct {
 	app    xtypes.App
 	signer service.Signer
 	syncer store.SyncDB
+
+	ecache etypes.Ecache
 
 	pacman       xpacman.Pacman
 	logger       zerolog.Logger
@@ -43,6 +46,7 @@ func (e *Engine) Run() error {
 }
 
 func (e *Engine) GetCache() etypes.Ecache {
+
 	return nil
 }
 func (e *Engine) RPXecute(options etypes.Execution) ([]byte, error) {
@@ -94,12 +98,16 @@ func (e *Engine) ListModules() []string {
 func (e *Engine) run() error {
 	deps := e.app.GetDeps()
 
+	ch := deps.CoreHub().(store.CoreHub)
+
 	e.signer = deps.Signer().(service.Signer)
-	e.syncer = deps.CoreHub().(store.SyncDB)
+	e.syncer = ch
 	e.pacman = deps.RepoHub().(xpacman.Pacman)
 
 	e.execbuilders = e.app.GetGlobalVar().Get("executors").(map[string]etypes.ExecutorBuilder)
 	e.modBuilders = e.app.GetGlobalVar().Get("modules").(map[string]etypes.ModuleBuilder)
+
+	e.ecache = ecache.New(ch)
 
 	// e.runtime.Run(e.execbuilders, e.modBuilders)
 

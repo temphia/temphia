@@ -3,7 +3,6 @@ package plane
 import (
 	"github.com/temphia/temphia/code/backend/plane/idservice"
 	"github.com/temphia/temphia/code/backend/plane/msgbus"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes/job"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
@@ -12,7 +11,6 @@ var _ xplane.ControlPlane = (*PlaneLite)(nil)
 
 type PlaneLite struct {
 	locker *Locker
-	router *Router
 	nodeId int64
 	seq    idservice.IDService
 
@@ -25,7 +23,6 @@ func NewLite(coreHub store.CoreHub) *PlaneLite {
 
 	return &PlaneLite{
 		locker: NewLocker(),
-		router: nil,
 		nodeId: nodeId,
 		seq:    *idservice.New(nodeId),
 		msgbus: msgbus.New(nodeId, coreHub),
@@ -43,15 +40,6 @@ func (p *PlaneLite) Start() error {
 
 func (p *PlaneLite) NotifyStat(stats xplane.NodeStat) error   { return nil }
 func (p *PlaneLite) GetAppStatus() (*xplane.AppStatus, error) { return nil, nil }
-
-// router stuff
-func (p *PlaneLite) SetJobChan(ic chan *job.Job) {
-	p.router = NewRouter(ic)
-}
-
-func (p *PlaneLite) GetRouter() xplane.Router {
-	return p.router
-}
 
 // locker
 func (p *PlaneLite) GetLocker() xplane.Locker {

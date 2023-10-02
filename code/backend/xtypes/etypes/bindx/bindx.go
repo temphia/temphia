@@ -7,8 +7,8 @@ import (
 )
 
 type Core interface {
-	Log(msg string)
-	LazyLog(msgs []string)
+	Log(eid, msg string)
+	LazyLog(eid string, msgs []string)
 	Sleep(int32)
 	GetFileWithMeta(file string) (data []byte, version int64, err error)
 
@@ -24,7 +24,7 @@ type Core interface {
 	NewModule(name string, data xtypes.LazyData) (int32, error)
 	ModuleTicket(name string, opts xtypes.LazyData) (string, error)
 	ModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error)
-	ForkExec(method string, data []byte) error
+	ForkExec(eid, method string, data []byte) error
 
 	HttpFetch(*HttpRequest) *HttpResponse
 
@@ -35,7 +35,7 @@ type Core interface {
 	AsyncEventPoll(mid int32, eid uint32) (xtypes.LazyData, error)
 	AsyncEventWait(mid int32, eid uint32) (xtypes.LazyData, error)
 
-	UserContext() *claim.UserContext
+	UserContext(eid string) *claim.UserContext
 }
 
 type Bindings interface {
@@ -45,7 +45,7 @@ type Bindings interface {
 	// duration(than usual req/resp event cycle)
 	Clone() Core
 
-	GetInvoker() Invoker
+	GetInvoker(eid string) Invoker
 }
 
 type Invoker interface {

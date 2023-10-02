@@ -27,12 +27,12 @@ type ExecutorIface struct {
 	Definations map[string]any        `json:"definations,omitempty"`
 }
 
-type Executor interface {
+type ExecutorBuilder interface {
 	New(ExecutorOption) (Executor, error)
 	ServeFile(file string) (xtypes.BeBytes, error)
 }
 
-type ExecutorBuilder interface {
+type Executor interface {
 	RPXecute(r Request) (xtypes.BeBytes, error)
 	WebRawXecute(rw http.ResponseWriter, req *http.Request)
 	SetRemoteOptions(opts any)

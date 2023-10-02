@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
 	engine "github.com/temphia/temphia/code/backend/engine"
-	"github.com/temphia/temphia/code/backend/engine/ecache"
+
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/launch"
@@ -28,8 +28,6 @@ type EngineHub struct {
 	corehub store.CoreHub
 	idgen   *snowflake.Node
 	logger  *zerolog.Logger
-
-	ecache etypes.Ecache
 
 	app xtypes.App
 }
@@ -54,7 +52,6 @@ func (e *EngineHub) Start() error {
 	e.corehub = deps.CoreHub().(store.CoreHub)
 	e.idgen = deps.ControlPlane().(xplane.ControlPlane).GetIdService().NewNode("engine")
 	e.logger = &logger
-	e.ecache = ecache.New(e.corehub)
 
 	return e.engine.Run()
 }
@@ -64,7 +61,7 @@ func (e *EngineHub) GetEngine() etypes.Engine {
 }
 
 func (e *EngineHub) GetCache() etypes.Ecache {
-	return e.ecache
+	return e.engine.GetCache()
 }
 
 func (e *EngineHub) GetExecutorBuilder(name string) etypes.ExecutorBuilder {

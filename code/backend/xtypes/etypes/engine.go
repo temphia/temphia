@@ -58,3 +58,16 @@ type Ecache interface {
 	GetAgent(tenantId, plug, agent string) *entities.Agent
 	GetPlug(tenantId, plugId string) *entities.Plug
 }
+
+/*
+
+type RunningExec struct {
+	EventId  string
+	BprintId string
+	PlugId   string
+	AgentId  string
+}
+
+ListRunning(tenantId string) ([]RunningExec, error)
+
+*/

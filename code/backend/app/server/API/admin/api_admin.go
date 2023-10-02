@@ -52,7 +52,6 @@ func (a *ApiAdmin) API(rg *gin.RouterGroup) {
 	a.tenantAPI(rg.Group("/tenant"))
 	a.TargetAPI(rg.Group("/target"))
 	a.LensAPI(rg.Group("/lens"))
-	a.adapterEditorAPI(rg.Group("/adapter_editor"))
 
 	a.ticketAPI.PlugState(rg.Group("/plug_state"))
 
