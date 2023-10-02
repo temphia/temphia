@@ -5,6 +5,7 @@ import (
 
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/invoker"
+	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
 type Execution struct {
@@ -51,4 +52,9 @@ type Engine interface {
 	ListModules() []string
 
 	RemotePerform(opt Remote) ([]byte, error)
+}
+
+type Ecache interface {
+	GetAgent(tenantId, plug, agent string) *entities.Agent
+	GetPlug(tenantId, plugId string) *entities.Plug
 }

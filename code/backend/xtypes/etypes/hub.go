@@ -7,7 +7,6 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/launch"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
-	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 )
 
 type BootData struct {
@@ -55,9 +54,4 @@ type EngineHub interface {
 	// 	RunAdapterHooks(tenants string, opts map[string]any) error
 	// 	RunUserHooks(tenants string, opts map[string]any) error
 
-}
-
-type Ecache interface {
-	GetAgent(tenantId, plug, agent string) *entities.Agent
-	GetPlug(tenantId, plugId string) *entities.Plug
 }
