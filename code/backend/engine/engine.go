@@ -8,6 +8,7 @@ import (
 	"github.com/temphia/temphia/code/backend/engine/eutils/ecache"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/logx/logid"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -92,12 +93,32 @@ func (e *Engine) SetRemoteOption(opt etypes.RemoteOptions) {
 	b.Executor.SetRemoteOptions(opt)
 }
 
-func (e *Engine) ResetAgent(tenantId, plugId, agentId string) error { return nil }
-func (e *Engine) ServeAgentFile(tenantId, plugId, agentId, file string) ([]byte, error) {
-	// agent := e.ecache.GetAgent(tenantId, plugId, agentId)
-	// agent.WebFiles[file]
+func (e *Engine) ResetAgent(tenantId, plugId, agentId string) error {
 
-	return nil, nil
+	return nil
+}
+
+func (e *Engine) ServeAgentFile(tenantId, plugId, agentId, file string) ([]byte, error) {
+	agent := e.ecache.GetAgent(tenantId, plugId, agentId)
+	plug := e.ecache.GetPlug(tenantId, plugId)
+	actualFile := agent.WebFiles[file]
+
+	bstore := e.pacman.GetBprintFileStore()
+	out, err := bstore.GetBlob(tenantId, plug.BprintId, "", actualFile)
+
+	if err != nil {
+		e.logger.Debug().
+			Str("tenant_id", tenantId).
+			Str("plug_id", plugId).
+			Str("agent_id", agentId).
+			Err(err).
+			Str("file", file).
+			Msg(logid.EngineServeBprintErr)
+		return nil, err
+	}
+
+	return out, err
+
 }
 
 func (e *Engine) ServeExecutorFile(tenantId, plugId, agentId, file string) ([]byte, error) {
@@ -108,8 +129,8 @@ func (e *Engine) ServeExecutorFile(tenantId, plugId, agentId, file string) ([]by
 	return eb.ServeFile(file)
 }
 
-func (e *Engine) RemotePerform(opt etypes.Remote) ([]byte, error) {
-	return nil, nil
+func (e *Engine) RemotePerform(opts etypes.Remote) ([]byte, error) {
+	return e.remotePerform(opts)
 }
 
 func (e *Engine) ListExecutors() []string {

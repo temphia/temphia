@@ -30,6 +30,7 @@ type Remote struct {
 	PlugId   string
 	AgentId  string
 	Eid      string
+	Action   string
 	Data     xtypes.BeBytes
 }
 
