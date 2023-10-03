@@ -60,7 +60,7 @@ func (b *Binder) selfLinkExec(name, method string, data xtypes.LazyData) (xtypes
 		return nil, err
 	}
 
-	resp, err := b.Deps.Engine.RPXecute(etypes.Execution{
+	resp, err := b.Deps.Engine.RPXecute(etypes.RPXecuteOptions{
 		TenantId: b.Namespace,
 		PlugId:   alink.ToPlug,
 		AgentId:  alink.ToAgent,
@@ -87,7 +87,7 @@ func (b *Binder) selfForkExec(eid string, method string, data []byte) error {
 
 	go func() {
 
-		b.Deps.Engine.RPXecute(etypes.Execution{
+		b.Deps.Engine.RPXecute(etypes.RPXecuteOptions{
 			TenantId: b.Namespace,
 			PlugId:   b.PlugId,
 			AgentId:  b.AgentId,

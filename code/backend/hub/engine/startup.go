@@ -30,7 +30,7 @@ func (e *EngineHub) runStartupHooks(tenants []string, minwait time.Duration) {
 
 			for _, hook := range hooks {
 				go func(hook *entities.TargetHook) {
-					_, err := e.engine.RPXecute(etypes.Execution{
+					_, err := e.engine.RPXecute(etypes.RPXecuteOptions{
 						TenantId: tenantId,
 						PlugId:   hook.PlugId,
 						AgentId:  hook.AgentId,
