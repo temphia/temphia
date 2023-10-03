@@ -75,7 +75,7 @@ func (bf *Factory) New(opts BinderOptions) *Binder {
 		BprintId:  opts.BprintId,
 
 		activeRPXJobs: make(map[string]*job.RPXJob),
-		ajLock:        sync.RWMutex{},
+		ajLock:        sync.Mutex{},
 	}
 
 	return b

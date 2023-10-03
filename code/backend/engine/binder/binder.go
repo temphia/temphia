@@ -24,11 +24,11 @@ type Binder struct {
 	AgentId   string
 	BprintId  string
 
-	Executor etypes.ExecutorBuilder
+	Executor etypes.Executor
 	Logger   zerolog.Logger
 
 	activeRPXJobs map[string]*job.RPXJob
-	ajLock        sync.RWMutex
+	ajLock        sync.Mutex
 
 	// lazy loaded
 	resources map[string]*entities.Resource

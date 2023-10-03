@@ -69,7 +69,7 @@ func (b *Binder) selfNewModule(name string, args xtypes.LazyData) (int32, error)
 			return 0, easyerr.NotFound("resource module")
 		}
 
-		mod, err := modbuilder.Instance(etypes.ModuleOptions{
+		mod, err := modbuilder.New(etypes.ModuleOptions{
 			Binder:       nil,
 			Resource:     res,
 			InvokerToken: "",

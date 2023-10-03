@@ -1,9 +1,10 @@
-package engine2
+package engine
 
 import (
-	"net/http"
+	"sync"
 
 	"github.com/rs/zerolog"
+	"github.com/temphia/temphia/code/backend/engine/binder"
 	"github.com/temphia/temphia/code/backend/engine/eutils/ecache"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
@@ -25,6 +26,11 @@ type Engine struct {
 	logger       zerolog.Logger
 	execbuilders map[string]etypes.ExecutorBuilder
 	modBuilders  map[string]etypes.ModuleBuilder
+
+	// runtime
+	running       map[string]*binder.Binder
+	rLock         sync.RWMutex
+	binderFactory binder.Factory
 }
 
 func New(_app xtypes.App, logger zerolog.Logger) *Engine {
@@ -37,36 +43,69 @@ func New(_app xtypes.App, logger zerolog.Logger) *Engine {
 		execbuilders: nil,
 		modBuilders:  nil,
 		logger:       logger,
+		running:      make(map[string]*binder.Binder),
+		rLock:        sync.RWMutex{},
 	}
 
 }
 
 func (e *Engine) Run() error {
-	return e.run()
+
+	err := e.run()
+	if err != nil {
+		return err
+	}
+
+	e.binderFactory = binder.NewFactory(binder.FactoryOptions{
+		App:          e.app,
+		Logger:       e.logger,
+		Modules:      e.modBuilders,
+		ExecBuilders: e.execbuilders,
+	})
+
+	return nil
 }
 
 func (e *Engine) GetCache() etypes.Ecache {
 
-	return nil
+	return e.ecache
 }
-func (e *Engine) RPXecute(options etypes.Execution) ([]byte, error) {
-	return nil, nil
-}
-func (e *Engine) WebRawXecute(rw http.ResponseWriter, req *http.Request) {
 
+func (e *Engine) RPXecute(opts etypes.RPXecuteOptions) ([]byte, error) {
+	return e.rPXecute(opts)
+}
+
+func (e *Engine) WebRawXecute(opts etypes.WebRawXecuteOptions) {
+	e.webRawXecute(opts)
 }
 
 func (e *Engine) SetRemoteOption(opt etypes.RemoteOptions) {
 
+	e.rLock.RLock()
+	b := e.running[opt.PlugId+opt.AgentId]
+	e.rLock.RUnlock()
+
+	if b == nil {
+		return
+	}
+
+	b.Executor.SetRemoteOptions(opt)
 }
 
 func (e *Engine) ResetAgent(tenantId, plugId, agentId string) error { return nil }
 func (e *Engine) ServeAgentFile(tenantId, plugId, agentId, file string) ([]byte, error) {
+	// agent := e.ecache.GetAgent(tenantId, plugId, agentId)
+	// agent.WebFiles[file]
+
 	return nil, nil
 }
 
 func (e *Engine) ServeExecutorFile(tenantId, plugId, agentId, file string) ([]byte, error) {
-	return nil, nil
+
+	agent := e.ecache.GetAgent(tenantId, plugId, agentId)
+	eb := e.execbuilders[agent.Executor]
+
+	return eb.ServeFile(file)
 }
 
 func (e *Engine) RemotePerform(opt etypes.Remote) ([]byte, error) {

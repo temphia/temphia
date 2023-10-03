@@ -17,15 +17,6 @@ type LSubcriber interface {
 	Handle(name string, data []byte) ([]byte, error)
 }
 
-// remote execution info
-
-type REInfo struct {
-	Addr          string `json:"addr,omitempty"`
-	RPXPrefix     string `json:"rpx_prefix,omitempty"`
-	ControlPrefix string `json:"control_prefix,omitempty"`
-	ReplyToken    string `json:"reply_token,omitempty"`
-}
-
 type REPacketIn struct {
 	Name    string          `json:"name,omitempty"`
 	UserCtx any             `json:"user_ctx,omitempty"`

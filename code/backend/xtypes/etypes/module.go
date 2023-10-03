@@ -15,7 +15,7 @@ type ModuleOptions struct {
 type ModuleBuilderFunc func(app any) (ModuleBuilder, error)
 
 type ModuleBuilder interface {
-	Instance(ModuleOptions) (Module, error)
+	New(ModuleOptions) (Module, error)
 }
 
 type Module interface {

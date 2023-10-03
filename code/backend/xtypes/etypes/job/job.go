@@ -7,8 +7,6 @@ import (
 )
 
 type RPXJob struct {
-	PlugId    string
-	AgentId   string
 	EventId   string
 	Name      string
 	Namespace string
@@ -18,9 +16,7 @@ type RPXJob struct {
 }
 
 type RawWebJob struct {
-	PlugId         string
-	AgentId        string
-	EventId        string
-	ResponseWriter http.ResponseWriter
-	Request        *http.Request
+	EventId string
+	Writer  http.ResponseWriter
+	Request *http.Request
 }

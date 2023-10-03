@@ -7,18 +7,13 @@ import (
 
 var NoPanicWrap = true
 
-func (b *Binder) Execute() ([]byte, error) {
-
-	return nil, nil
-}
-
-func (b *Binder) RPXecuteWithExecutor(j *job.RPXJob, ex etypes.Executor) ([]byte, error) {
+func (b *Binder) RPXecute(j *job.RPXJob) ([]byte, error) {
 
 	b.ajLock.Lock()
 	b.activeRPXJobs[j.EventId] = j
 	b.ajLock.Unlock()
 
-	out, err := ex.RPXecute(etypes.Request{
+	out, err := b.Executor.RPXecute(etypes.Request{
 		Id:      j.EventId,
 		Name:    j.Name,
 		Data:    j.Payload,
@@ -30,4 +25,8 @@ func (b *Binder) RPXecuteWithExecutor(j *job.RPXJob, ex etypes.Executor) ([]byte
 	b.ajLock.Unlock()
 
 	return out, err
+}
+
+func (b *Binder) WebRawXecute(j *job.RawWebJob) {
+	b.Executor.WebRawXecute(j.Writer, j.Request)
 }

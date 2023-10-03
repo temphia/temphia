@@ -9,6 +9,7 @@ import (
 	"sync/atomic"
 
 	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz"
@@ -22,7 +23,7 @@ type LSock struct {
 	subs  map[int64]xserver.LSubcriber
 	sLock sync.Mutex
 
-	remotes map[int64]*xserver.REInfo
+	remotes map[int64]*etypes.RemoteOptions
 	rLock   sync.RWMutex
 
 	counter int64
@@ -36,7 +37,7 @@ func New(notz xnotz.Notz, signer service.Signer) *LSock {
 		subs:  make(map[int64]xserver.LSubcriber),
 		sLock: sync.Mutex{},
 
-		remotes: make(map[int64]*xserver.REInfo),
+		remotes: make(map[int64]*etypes.RemoteOptions),
 		rLock:   sync.RWMutex{},
 
 		counter: 1,
