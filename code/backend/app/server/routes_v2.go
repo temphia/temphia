@@ -50,8 +50,6 @@ func (s *Server) API(rg *gin.RouterGroup) {
 
 	s.apiroot.RepoAPI(rg.Group("/repo"))
 
-	s.apiroot.AdapterEditorAPI(rg.Group("/adapter_editor"))
-
 }
 
 func (s *Server) noRoute(ctx *gin.Context) {
