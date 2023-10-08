@@ -163,15 +163,15 @@ export class Navigator {
   // states
 
   admin_plug_states = (pid: string) => {
-    this.set(`admin/plug/state?pid=${pid}`);
+    this.set(`admin/plug/states?pid=${pid}`);
   };
 
   admin_plug_state_new = (pid: string) => {
-    this.set(`admin/plug/${pid}/state/new`);
+    this.set(`admin/plug/states/new?pid=${pid}`);
   };
 
-  admin_plug_state_edit = (pid: string, skey) => {
-    this.set(`admin/plug/${pid}/state/${skey}/edit`);
+  admin_plug_state_edit = (pid: string, skey: string) => {
+    this.set(`admin/plug/states/edit?pid=${pid}&skey=${skey}`);
   };
 
   // agents
