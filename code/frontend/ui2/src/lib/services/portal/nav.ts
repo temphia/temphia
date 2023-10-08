@@ -79,7 +79,7 @@ export class Navigator {
   };
 
   cab_file = (source: string, folder: string, file: string) => {
-    this.set(`cabinet/file?source=${source}&folder=${folder}&file=${file}`);
+    this.set(`cabinet/file/text?source=${source}&folder=${folder}&file=${file}`);
   };
 
   // repo
@@ -137,14 +137,6 @@ export class Navigator {
 
   admin_bprint_new_zip = () => {
     this.set(`admin/bprint/new/zip`);
-  };
-
-  admin_bprint_files = (bid: string) => {
-    this.set(`admin/bprint/files?bid=${bid}`);
-  };
-
-  admin_bprint_file = (bid: string, file: string) => {
-    this.set(`admin/bprint/file?bid=${bid}&file=${file}`);
   };
 
 
