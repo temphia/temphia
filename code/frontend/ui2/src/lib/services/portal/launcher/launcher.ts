@@ -58,16 +58,6 @@ export class Launcher {
     this.state.subscribe((lstate) => console.log("@launcher_state", lstate));
   }
 
-  get_bootloader = async () => {
-    if (this.bootloader) {
-      return this.bootloader;
-    }
-
-    const resp = await fetch("/z/assets/build/executor_bootloader_iframe.js");
-    this.bootloader = await resp.text();
-    return this.bootloader;
-  };
-
   plane_hide() {
     this.state.update((old) => ({ ...old, display: "HIDDEN" }));
   }

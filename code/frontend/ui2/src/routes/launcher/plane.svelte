@@ -45,7 +45,7 @@
     <div class="flex justify-between border border-gray-100">
       <div class="grow h-10 flex flex-row flex-nowrap overflow-hidden">
         {#each __instances as instance}
-          <div
+          <button
             id={`itab-item-${instance.id}`}
             on:click={() => {
               if (__floating) {
@@ -61,13 +61,13 @@
           >
             {instance.name || ""} [{instance.id || ""}] &nbsp;&nbsp;
 
-            <span on:click={() => launcher.instance_close(instance.id)}>
+            <button on:click={() => launcher.instance_close(instance.id)}>
               <Icon
                 name="x-circle"
                 class="w-5 pt-1 text-gray-500 hover:text-red-500"
               />
-            </span>
-          </div>
+            </button>
+          </button>
         {/each}
       </div>
 
