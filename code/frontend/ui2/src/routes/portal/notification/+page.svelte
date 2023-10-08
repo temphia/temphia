@@ -32,41 +32,49 @@
     load();
 </script>
 
-{#if loading}
-    <LoadingSpinner />
-{:else}
-    <div class="card p-2 h-full">
-        <div class="card-header">
-            <h2 class="h2 mb-2">Notifications</h2>
-        </div>
+<div class="p-2 h-full">
+    {#if loading}
+        <LoadingSpinner />
+    {:else}
+        <div class="card p-2 h-full">
+            <div class="card-header">
+                <h2 class="h2 mb-2">Notifications</h2>
+            </div>
 
-        <div>
-            <div class="table-container">
-                <table class="table text-token table-interactive" role="grid">
-                    <thead class="table-head">
-                        <tr>
-                            <th class="">Title</th>
-                            <th class="">Message</th>
-                            <th class="">Source</th>
-                            <th class="">Date</th>
-                            <th class="">Actions</th>
-                        </tr>
-                    </thead>
-
-                    <tbody class="table-body">
-                        {#each data as nt}
+            <div>
+                <div class="table-container">
+                    <table
+                        class="table text-token table-interactive"
+                        role="grid"
+                    >
+                        <thead class="table-head">
                             <tr>
-                                <th class="">{nt.title}</th>
-                                <td class="" role="gridcell">{nt.contents}</td>
-                                <td class="" role="gridcell">{nt.type}</td>
-                                <td class="" role="gridcell">{nt.created_at}</td
-                                >
-                                <td class="" role="gridcell" />
+                                <th class="">Title</th>
+                                <th class="">Message</th>
+                                <th class="">Source</th>
+                                <th class="">Date</th>
+                                <th class="">Actions</th>
                             </tr>
-                        {/each}
-                    </tbody>
-                </table>
+                        </thead>
+
+                        <tbody class="table-body">
+                            {#each data as nt}
+                                <tr>
+                                    <th class="">{nt.title}</th>
+                                    <td class="" role="gridcell"
+                                        >{nt.contents}</td
+                                    >
+                                    <td class="" role="gridcell">{nt.type}</td>
+                                    <td class="" role="gridcell"
+                                        >{nt.created_at}</td
+                                    >
+                                    <td class="" role="gridcell" />
+                                </tr>
+                            {/each}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-{/if}
+    {/if}
+</div>
