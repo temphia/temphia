@@ -13,6 +13,7 @@
   const toggle_npanel = () => dispatch("toggle_npanel");
   const nread = (msg) => dispatch("nread", msg);
   const ndelete = (msg) => dispatch("ndelete", msg);
+  const explore_notif_page = () => dispatch("explore_noti")
 
   $: _messages = messages.sort((x, y) => x["id"] - y["id"]);
 </script>
@@ -94,13 +95,19 @@
     </div>
   </div>
 
-  {#if loading}
-    <Processing text={"loading"} />
-  {:else}
-    {#each _messages as nmsg}
-      <Card {nmsg} delete_notif={ndelete} read_notif={nread} />
-    {/each}
-  {/if}
+  <div>
+    {#if loading}
+      <Processing text={"loading"} />
+    {:else}
+      {#each _messages as nmsg}
+        <Card {nmsg} delete_notif={ndelete} read_notif={nread} />
+      {/each}
+    {/if}
+  </div>
+
+  <div class="flex justify-end mt-10">
+    <button class="underline variant-filled" on:click={explore_notif_page}>Explore</button>
+  </div>
 
   <div class="flex items-center justiyf-between">
     <hr class="w-full" />

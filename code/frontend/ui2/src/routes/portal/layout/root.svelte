@@ -68,6 +68,7 @@
         on:nread={(ev) => app.notifier.read_message(ev.detail)}
         on:refresh={() => app.notifier.init()}
         on:toggle_npanel={notification_toggle}
+        on:explore_noti={() => app.nav.notifications()}
     />
 </Drawer>
 

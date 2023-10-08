@@ -30,6 +30,10 @@ export class Navigator {
     this.set(`launch/`);
   }
 
+  notifications() {
+    this.set(`notification/`);
+  }
+
   // data
 
   data_page = (source: string) => {
@@ -421,6 +425,8 @@ export class Navigator {
   admin_ugroup_users(ugroup: string) {
     this.set(`admin/ugroup/subusers/${ugroup}`);
   }
+
+  ////
 
   admin_ugroup_user_edit(ugroup: string, user_id: string) {
     this.set(`#/admin/ugroup/${ugroup}/user/${user_id}/edit`);
