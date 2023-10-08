@@ -16,15 +16,14 @@ export class Navigator {
   };
 
 
-  // 
-
 
   launch_target(target: string, opts?: { name?: string; target_type: string }) {
-    this.set(
-      `#/launch/${target}${(opts || {}).name ? "/" + window.btoa(opts.name) : ""
-      }`,
-      opts
-    );
+
+    const __opts = opts || {};
+    const __name = __opts["name"] ? window.btoa(__opts["name"]) : ""
+
+
+    this.set(`launch?target=${target}&name=${__name}`,opts);
   }
 
   launcher() {
@@ -115,9 +114,8 @@ export class Navigator {
     this.set(`profile/device/new`);
   };
 
-  play = () => {
-    this.set(`#/play`);
-  };
+
+
 
   // ADMIN
 
@@ -205,41 +203,42 @@ export class Navigator {
   // agent link
 
   admin_agent_links = (pid: string, aid: string) => {
-    this.set(`#/admin/plug/${pid}/agent/${aid}/link/`);
+    this.set(`admin/plug/agent/link?pid=${pid}&aid=${aid}`);
   };
 
   admin_agent_link_new = (pid: string, aid: string, opts?: any) => {
-    this.set(`#/admin/plug/${pid}/agent/${aid}/link/new`, opts);
+    this.set(`admin/plug/agent/link/new?pid=${pid}&aid=${aid}`, opts);
   };
 
   admin_agent_link_edit = (pid: string, aid: string, lid: string) => {
-    this.set(`#/admin/plug/${pid}/agent/${aid}/link/${lid}/edit`);
+    this.set(`admin/plug/agent/link/edit?pid=${pid}&aid=${aid}&lid=${lid}`);
   };
 
   // agent ext
 
   admin_agent_ext = (pid: string, aid: string) => {
-    this.set(`#/admin/plug/${pid}/agent/${aid}/ext/`);
+    this.set(`admin/plug/agent/ext?pid=${pid}&aid=${aid}`);
   };
 
   admin_agent_ext_new = (pid: string, aid: string) => {
-    this.set(`#/admin/plug/${pid}/agent/${aid}/ext/new`);
+    this.set(`admin/plug/agent/ext/new?pid=${pid}&aid=${aid}`);
   };
 
   admin_agent_ext_edit = (pid: string, aid: string, eid: string) => {
-    this.set(`#/admin/plug/${pid}/agent/${aid}/ext/${eid}/edit`);
+    this.set(`admin/plug/agent/ext/edit?pid=${pid}&aid=${aid}&eid=${eid}`);
   };
 
   admin_agent_res = (pid: string, aid: string) => {
-    this.set(`#/admin/plug/${pid}/agent/${aid}/res/`);
+    this.set(`admin/plug/agent/res?pid=${pid}&aid=${aid}`);
   };
 
+
   admin_agent_res_new = (pid: string, aid: string, opts?: any) => {
-    this.set(`#/admin/plug/${pid}/agent/${aid}/res/new`, opts);
+    this.set(`admin/plug/agent/res/new?pid=${pid}&aid=${aid}`, opts);
   };
 
   admin_agent_res_edit = (pid: string, aid: string, rid: string) => {
-    this.set(`#/admin/plug/${pid}/agent/${aid}/res/${rid}/edit`);
+    this.set(`admin/plug/agent/res/edit?pid=${pid}&aid=${aid}&rid=${rid}`);
   };
 
   // dev
@@ -381,26 +380,26 @@ export class Navigator {
   // apps
 
   admin_target_apps = () => {
-    this.set(`#/admin/target/app/`);
+    this.set(`admin/target/app`);
   };
   admin_target_app_edit = (ttype: string, id: number) => {
-    this.set(`#/admin/target/app/${ttype}/${id}/edit`);
+    this.set(`admin/target/app/edit?ttype=${ttype}&id=${id}`);
   };
 
   admin_target_app_new = (opts?: any) => {
-    this.set(`#/admin/target/app/new`, opts);
+    this.set(`admin/target/app/new`, opts);
   };
 
   // hooks
 
   admin_target_hooks = () => {
-    this.set(`#/admin/target/hook/`);
+    this.set(`admin/target/hook/`);
   };
   admin_target_hook_edit = (ttype: string, id: number) => {
-    this.set(`#/admin/target/hook/${ttype}/${id}/edit`);
+    this.set(`admin/target/hook/edit?ttype=${ttype}&id=${id}`);
   };
   admin_target_hook_new = () => {
-    this.set(`#/admin/target/hook/new`);
+    this.set(`admin/target/hook/new`);
   };
 
   // user
