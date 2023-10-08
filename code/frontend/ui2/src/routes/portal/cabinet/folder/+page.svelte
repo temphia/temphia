@@ -39,6 +39,8 @@
             console.log("@EEEE", ev.detail);
             if (ev.detail["is_dir"]) {
                 app.nav.cab_folder(source, `${folder}/${ev.detail["name"]}`);
+            } else {
+                app.nav.cab_file(source, folder, ev.detail["name"]);
             }
         }}
     />
