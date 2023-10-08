@@ -37,7 +37,6 @@
     const action_issue = (id: string) =>
         app.utils.small_modal_open(Issuer, { app, bid: id });
 
-
     const action_delete = async (id: string) => {
         const api = app.api_manager.get_admin_bprint_api();
         await api.delete(id);
@@ -47,6 +46,9 @@
         app.utils.small_modal_open(PickNewBprint, { app });
     };
 
+    const action_goto_files = (id) => {
+        app.nav.cab_folder("default", `bprints/${id}`);
+    };
 
     const action_zipit = (id: string) => app.nav.admin_bprint_export_zip(id);
 </script>
@@ -64,6 +66,12 @@
                 Class: "bg-blue-400",
                 icon: "document-download",
                 Action: action_instance,
+            },
+            {
+                Name: "Files",
+                Action: action_goto_files,
+                Class: "bg-green-400",
+                icon: "document-duplicate",
             },
             {
                 Name: "Edit",
