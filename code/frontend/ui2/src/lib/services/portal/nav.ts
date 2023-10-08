@@ -236,7 +236,7 @@ export class Navigator {
   // dev
 
   admin_plug_dev_flowmap = (pid: string) => {
-    this.set(`#/admin/plug/${pid}/dev/flowmap`);
+    this.set(`#/admin/plug/dev/flowmap?pid=${pid}`);
   };
 
 
@@ -488,14 +488,14 @@ export class Navigator {
   }
 
   admin_tenant_system_kvs() {
-    this.set(`#/admin/tenant/system/kv`);
+    this.set(`admin/tenant/system/kv`);
   }
 
   admin_tenant_system_events() {
-    this.set(`#/admin/tenant/system/event`);
+    this.set(`admin/tenant/system/event`);
   }
 
   admin_lens_logs(opts?: any) {
-    this.set(`#/admin/lens/logs`, opts);
+    this.set(`admin/lens/logs`, opts);
   }
 }
