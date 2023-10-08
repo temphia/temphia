@@ -1,1 +1,82 @@
-<div>Portal Root</div>
+<script lang="ts">
+    import type { PortalService } from "$lib/core";
+    import { getContext } from "svelte";
+
+    export let show_running = false;
+
+    const app = getContext("__app__") as PortalService;
+
+    const user_apps = app.api_manager.self_data.get_user_apps();
+
+    const launchFunc = (uapp) => {
+        app.nav.launch_target(uapp["target_id"], {
+            name: uapp["name"],
+            target_type: "user_group_app",
+        });
+    };
+</script>
+
+<div class="h-full p-0 md:p-2">
+    <div class="card h-full p-2 variant-gradient-warning-error">
+        <div class="card-header flex justify-center">
+            <div class="flex justify-center w-full mb-10">
+                <div class="relative">
+                    <input
+                        type="text"
+                        class="h-14 w-96 pr-8 pl-5 rounded z-0 focus:shadow focus:outline-none"
+                        placeholder="Search anything..."
+                    />
+                    <div class="absolute top-4 right-3 flex">
+                        <svg
+                            class="h-5 w-5 text-gray-500"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            ><path
+                                d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            /></svg
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-8 flex flex-wrap justify-center gap-4">
+            {#each user_apps as uapp}
+                <button
+                    on:click={() => launchFunc(uapp)}
+                    class="btn variant-glass-primary flex flex-col items-center h-32 w-32 p-2 overflow-hidden shadow-lg rounded-lg cursor-pointer hover:border-2 border-blue-400"
+                >
+                    {#if !uapp["icon"]}
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="w-28 h-28 text-gray-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"
+                            />
+                        </svg>
+                    {:else}
+                        <div class="w-28 h-28">
+                            {@html uapp["icon"]}
+                            <!-- fixme => escape contents -->
+                        </div>
+                    {/if}
+
+                    <h2 class="text-xs text-gray-500 font-semibold font-mono">
+                        {uapp["name"]}
+                    </h2>
+                </button>
+            {/each}
+        </div>
+    </div>
+</div>
