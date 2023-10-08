@@ -21,7 +21,7 @@ module.exports = {
 		skeleton({
 			themes: {
 				// Register each theme within this array:
-				preset: [ "skeleton", "modern", "crimson", "rocket" ] 
+				preset: [ "skeleton", "modern", "crimson", "rocket", 'gold-nouveau', 'hamlindigo', 'sahara', 'seafoam', 'vintage', 'wintry' ] 
 			}
 		})
 	]
