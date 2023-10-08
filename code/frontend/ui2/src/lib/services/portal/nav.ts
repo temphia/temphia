@@ -504,4 +504,8 @@ export class Navigator {
   admin_lens_logs(opts?: any) {
     this.set(`admin/lens/logs`, opts);
   }
+
+  admin_lens_watcher(opts?: any) {
+    this.set(`admin/lens/watcher`, opts);
+  }
 }
