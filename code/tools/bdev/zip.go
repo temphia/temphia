@@ -5,8 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/fs"
 	"log"
 	"os"
+	ppath "path"
+	"path/filepath"
+	"strings"
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
@@ -66,23 +70,59 @@ func ZipIt(bprint *xpackage.Manifest, outFile string) error {
 	for fk, fpath := range bprint.Files {
 		log.Println("addng file: ", fk, fpath)
 
-		rfile, err := os.Open(fpath)
+		// its a file
+		if !strings.HasSuffix(fk, "/") {
+			rfile, err := os.Open(fpath)
+			if err != nil {
+				return err
+			}
+
+			defer rfile.Close()
+
+			wfile, err := zipWriter.Create(fk)
+			if err != nil {
+				return err
+			}
+
+			if _, err := io.Copy(wfile, rfile); err != nil {
+				return err
+			}
+
+			return nil
+		}
+
+		// its a folder, now zip all folders contents
+		err = filepath.WalkDir(fk, func(path string, d fs.DirEntry, err error) error {
+			if err != nil {
+				return err
+			}
+
+			if d.IsDir() {
+				return nil
+			}
+
+			pp.Println("@zipping_file", path)
+
+			zipEntry, err := zipWriter.Create(ppath.Join(fk, d.Name()))
+			if err != nil {
+				return err
+			}
+
+			file, err := os.Open(fpath)
+			if err != nil {
+				return err
+			}
+
+			defer file.Close()
+
+			_, err = io.Copy(zipEntry, file)
+			return err
+		})
+
 		if err != nil {
 			return err
 		}
 
-		defer rfile.Close()
-
-		wfile, err := zipWriter.Create(fk)
-		if err != nil {
-			return err
-		}
-
-		// fixme => add subfolder
-
-		if _, err := io.Copy(wfile, rfile); err != nil {
-			return err
-		}
 	}
 
 	log.Println("create zip ok")
