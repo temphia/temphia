@@ -3,30 +3,13 @@ package cli
 import (
 	"fmt"
 	"os"
-	"text/template"
 
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/distro/climux"
 
 	_ "github.com/temphia/temphia/code/distro"
+	_ "github.com/temphia/temphia/code/tools/bdev"
 )
-
-const HelpTemplate = `
-Temphia is a platform for apps.
-
-Usage:
-
-        temphia <command> [arguments]
-
-The commands are:{{range $index, $element := .}}
-    {{$index}}	{{$element.Help}}{{end}}
-    version     print Temphia version
-    help        this help page
-
-Use "temphia <command> help" for more information about a command.
-
-
-`
 
 func Run() {
 
@@ -58,14 +41,21 @@ func Run() {
 func PrintHelpText() {
 	clis := climux.GetRegistry()
 
-	tpl, err := template.New("").Parse(HelpTemplate)
-	if err != nil {
-		panic(err)
+	fmt.Printf(`Temphia is a platform for apps.
+Usage:
+	
+	temphia <command> [arguments]
+
+The commands are:
+`)
+
+	for _, v := range clis {
+		fmt.Printf("\t%s\t%s\n", v.Name, v.Help)
 	}
 
-	err = tpl.Execute(os.Stdout, clis)
-	if err != nil {
-		panic(err)
-	}
+	fmt.Printf(`	version	print Temphia version
+	help	this help page
 
+Use "temphia <command> help" for more information about a command.
+`)
 }
