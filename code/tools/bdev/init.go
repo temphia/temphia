@@ -11,7 +11,7 @@ func init() {
 
 	climux.Register(&climux.CliAction{
 		Name: "bdev",
-		Help: "bprint development related actions",
+		Help: "app/bprint development related actions",
 		Func: RunCLI,
 	})
 

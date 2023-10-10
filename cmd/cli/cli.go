@@ -9,6 +9,7 @@ import (
 
 	_ "github.com/temphia/temphia/code/distro"
 	_ "github.com/temphia/temphia/code/tools/bdev"
+	_ "github.com/temphia/temphia/code/tools/repobuild"
 )
 
 func Run() {
