@@ -28,7 +28,7 @@ func Run() {
 
 	clis := climux.GetRegistry()
 	acli, ok := clis[os.Args[1]]
-	if ok {
+	if !ok {
 		return
 	}
 

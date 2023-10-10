@@ -41,6 +41,8 @@ type AppCLi struct {
 
 func RunAppCLI(args []string) error {
 
+	os.Args = args
+
 	cli := &AppCLi{}
 	ctx := kong.Parse(cli)
 
