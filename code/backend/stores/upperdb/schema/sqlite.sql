@@ -338,7 +338,8 @@ create table plugs(
 create table agents(
     id text not null,
     name text not null default '',
-    type text not null,
+    type text not null default '',
+    renderer text not null default '',
     executor text not null,
     entry_file text not null default '',
     iface_file text not null default '',
