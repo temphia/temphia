@@ -5,9 +5,11 @@ import (
 	"os"
 
 	"github.com/temphia/temphia/code/backend/xtypes"
+
 	"github.com/temphia/temphia/code/distro/climux"
 
 	_ "github.com/temphia/temphia/code/distro"
+	_ "github.com/temphia/temphia/code/ebrowser"
 	_ "github.com/temphia/temphia/code/tools/bdev"
 	_ "github.com/temphia/temphia/code/tools/repobuild"
 )
@@ -25,6 +27,8 @@ func Run() {
 			return
 		}
 
+	} else {
+		os.Args = []string{os.Args[0], "ebrowser"}
 	}
 
 	clis := climux.GetRegistry()
@@ -51,11 +55,11 @@ The commands are:
 `)
 
 	for _, v := range clis {
-		fmt.Printf("\t%s\t%s\n", v.Name, v.Help)
+		fmt.Printf("\t%s  \t\t%s\n", v.Name, v.Help)
 	}
 
-	fmt.Printf(`	version	print Temphia version
-	help	this help page
+	fmt.Printf(`	version		print Temphia version
+	help  		this help page
 
 Use "temphia <command> help" for more information about a command.
 `)

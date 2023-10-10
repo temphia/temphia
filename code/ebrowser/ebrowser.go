@@ -1,16 +1,17 @@
-package main
+package ebrowser
 
 import (
 	_ "embed"
 
 	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/distro/climux"
 	"github.com/webview/webview"
 )
 
 //go:embed start.html
 var StartHtml []byte
 
-func main() {
+func Run() {
 	w := webview.New(true)
 	defer w.Destroy()
 
@@ -24,5 +25,18 @@ func main() {
 	w.SetHtml(string(StartHtml))
 
 	w.Run()
+
+}
+
+func init() {
+
+	climux.Register(&climux.CliAction{
+		Name: "ebrowser",
+		Help: "Run embed browser with state folder",
+		Func: func(args []string) error {
+			Run()
+			return nil
+		},
+	})
 
 }
