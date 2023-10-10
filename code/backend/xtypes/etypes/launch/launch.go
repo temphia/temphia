@@ -5,6 +5,9 @@ type Response struct {
 	Token      string `json:"token,omitempty"`
 	Domain     string `json:"domain,omitempty"`
 	Options    any    `json:"options,omitempty"`
+
+	// AuthInject    string `json:"auth_inject,omitempty"`
+	// AuthRedirrect string `json:"auth_redirrect,omitempty"`
 }
 
 type EraOptions struct {
