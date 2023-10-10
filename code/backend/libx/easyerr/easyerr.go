@@ -48,7 +48,6 @@ func NotAuthorized() error {
 }
 
 func Error(err string) error {
-	pp.Println(err)
 	if !ScopeInfo {
 		return errors.New(err)
 	}

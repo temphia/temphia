@@ -9,8 +9,18 @@ import (
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/distro/climux"
 	"github.com/temphia/temphia/code/distro/common"
 )
+
+func init() {
+
+	climux.Register(&climux.CliAction{
+		Name: "app",
+		Help: "run app related actions",
+	})
+
+}
 
 type AppCLi struct {
 	InitData struct {

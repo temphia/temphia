@@ -7,6 +7,8 @@ import (
 
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/distro/climux"
+
+	_ "github.com/temphia/temphia/code/distro"
 )
 
 const HelpTemplate = `

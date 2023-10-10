@@ -15,9 +15,9 @@ var (
 	cLock        sync.Mutex
 )
 
-func Register(name string, a *CliAction) {
+func Register(a *CliAction) {
 	cLock.Lock()
-	cliRegistery[name] = a
+	cliRegistery[a.Name] = a
 	cLock.Unlock()
 }
 
