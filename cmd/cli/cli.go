@@ -1,9 +1,11 @@
 package cli
 
 import (
+	"fmt"
 	"os"
 	"text/template"
 
+	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/distro/climux"
 )
 
@@ -31,6 +33,12 @@ func Run() {
 			PrintHelpText()
 			return
 		}
+
+		if os.Args[1] == "version" || os.Args[1] == "--version" {
+			fmt.Printf("temphia %s", xtypes.Version)
+			return
+		}
+
 	}
 
 	clis := climux.GetRegistry()
