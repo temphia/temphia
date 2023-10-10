@@ -24,7 +24,7 @@ func (a *Notz) HandleAgent(ctx xnotz.Context) {
 
 	pp.Println("@got_agent", as)
 
-	switch as.Type {
+	switch as.Renderer {
 	case "era":
 		eb := a.ehub.GetExecutorBuilder(as.Executor)
 		if eb == nil {

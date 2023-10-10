@@ -18,12 +18,13 @@ type Plug struct {
 type Agent struct {
 	Id         string     `json:"id,omitempty" db:"id,omitempty"`
 	Name       string     `json:"name,omitempty" db:"name,omitempty"`
-	Type       string     `json:"type,omitempty" db:"type,omitempty"`         // none, era spa gossr static
+	Type       string     `json:"type,omitempty" db:"type,omitempty"`         // app
 	Executor   string     `json:"executor,omitempty" db:"executor,omitempty"` // none, javascript1, wasm1
+	Renderer   string     `json:"renderer,omitempty" db:"executor,omitempty"` // none, era spa gossr static
 	IfaceFile  string     `json:"iface_file,omitempty" db:"iface_file,omitempty"`
 	EntryFile  string     `json:"entry_file,omitempty" db:"entry_file,omitempty"`
 	WebFiles   JsonStrMap `json:"web_files,omitempty" db:"web_files,omitempty"`
-	WebOptions JsonStrMap `json:"web_options,omitempty" db:"web_options,omitempty"`
+	WebOptions JsonStrMap `json:"web_options,omitempty" db:"web_options,omitempty"` // auth_inject, auth_redirrect
 	ExtraMeta  JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
 	ModVersion int64      `json:"mod_version,omitempty" db:"mod_version,omitempty"`
 	PlugId     string     `json:"plug_id,omitempty" db:"plug_id,omitempty"`
