@@ -16,19 +16,18 @@ import (
 
 func Run() {
 
-	if len(os.Args) > 1 {
-		if os.Args[1] == "help" || os.Args[1] == "--help" {
-			PrintHelpText()
-			return
-		}
+	if len(os.Args) == 1 {
+		os.Args = []string{os.Args[0], "help"}
+	}
 
-		if os.Args[1] == "version" || os.Args[1] == "--version" {
-			fmt.Printf("temphia %s", xtypes.Version)
-			return
-		}
+	if os.Args[1] == "help" || os.Args[1] == "--help" {
+		PrintHelpText()
+		return
+	}
 
-	} else {
-		os.Args = []string{os.Args[0], "ebrowser"}
+	if os.Args[1] == "version" || os.Args[1] == "--version" {
+		fmt.Printf("temphia %s", xtypes.Version)
+		return
 	}
 
 	clis := climux.GetRegistry()
