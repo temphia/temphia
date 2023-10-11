@@ -25,5 +25,5 @@ func RunCLI(args []string) error {
 	ctx := kong.Parse(cli)
 	cli.ctx = ctx
 
-	return cli.Execute()
+	return cli.Run()
 }
