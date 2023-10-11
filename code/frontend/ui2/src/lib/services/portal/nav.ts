@@ -140,7 +140,7 @@ export class Navigator {
   };
 
   admin_bprint_new_zip = () => {
-    this.set(`admin/bprint/new/zip`);
+    this.set(`admin/bprint/zip`);
   };
 
 
