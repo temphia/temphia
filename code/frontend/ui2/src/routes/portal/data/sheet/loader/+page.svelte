@@ -5,7 +5,7 @@
   import { getContext } from "svelte";
   import { get } from "svelte/store";
 
-  export let source = $params["source"];
+  export let source = $params["dsource"] || $params["source"] || "default";
   export let group = $params["dgroup"];
 
   const app: PortalService = getContext("__app__");

@@ -228,8 +228,7 @@
       on:add_column={doAddColumn}
       on:action_goto_history={() =>
         app.nav.admin_data_activity(source, group, "scells")}
-      on:action_goto_rawtable={() =>
-        app.nav.data_group_page(source, group)}
+      on:action_goto_rawtable={() => app.nav.data_group_page(source, group)}
       on:add_row={() => doAddRow()}
       on:edit_row={doEditRow}
       on:action_refresh={() => sheet_service.init()}
