@@ -1,0 +1,8 @@
+{
+  "slug": "simplespa",
+  "name": "simplespa",
+  "type": "app",
+  "files": {
+    "index.html": "index.html"
+  }
+}
