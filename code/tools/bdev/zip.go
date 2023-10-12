@@ -36,6 +36,8 @@ func ZipIt(bprint *xpackage.Manifest, outFile string) error {
 
 	zipWriter := zip.NewWriter(archive)
 
+	defer zipWriter.Close()
+
 	// write index.json
 
 	newBprint := &entities.BPrint{
@@ -88,7 +90,7 @@ func ZipIt(bprint *xpackage.Manifest, outFile string) error {
 				return err
 			}
 
-			return nil
+			continue
 		}
 
 		// its a folder, now zip all folders contents
@@ -128,5 +130,5 @@ func ZipIt(bprint *xpackage.Manifest, outFile string) error {
 	log.Println("create zip ok")
 	pp.Println(outFile)
 
-	return zipWriter.Close()
+	return nil
 }
