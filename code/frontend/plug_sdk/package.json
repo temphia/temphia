@@ -1,0 +1,17 @@
+{
+    "name": "@temphia/temphia",
+    "version": "1.1.0",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "/dist",
+        "readme.md"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/temphia/temphia.git"
+    },
+    "scripts": {
+        "build": "tsc"
+    }
+}
