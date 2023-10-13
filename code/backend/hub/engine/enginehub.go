@@ -6,6 +6,7 @@ import (
 	"github.com/bwmarrin/snowflake"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
+	"github.com/temphia/temphia/code/backend/app/config"
 	engine "github.com/temphia/temphia/code/backend/engine"
 
 	"github.com/temphia/temphia/code/backend/xtypes"
@@ -28,6 +29,8 @@ type EngineHub struct {
 	corehub store.CoreHub
 	idgen   *snowflake.Node
 	logger  *zerolog.Logger
+
+	runnerDomain string // fixme  []string ?
 
 	app xtypes.App
 }
@@ -52,6 +55,9 @@ func (e *EngineHub) Start() error {
 	e.corehub = deps.CoreHub().(store.CoreHub)
 	e.idgen = deps.ControlPlane().(xplane.ControlPlane).GetIdService().NewNode("engine")
 	e.logger = &logger
+
+	config := e.app.GetDeps().Confd().(config.Confd).GetConfig()
+	e.runnerDomain = config.RunnerDomain
 
 	return e.engine.Run()
 }

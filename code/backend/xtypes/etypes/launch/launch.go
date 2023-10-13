@@ -4,10 +4,11 @@ type Response struct {
 	ApiBaseURL string `json:"api_base_url,omitempty"`
 	Token      string `json:"token,omitempty"`
 	Domain     string `json:"domain,omitempty"`
+	PlugId     string `json:"plug_id,omitempty"`
+	AgentId    string `json:"agent_id,omitempty"`
+	TenantId   string `json:"tenant_id,omitempty"`
+	StartPage  string `json:"start_page,omitempty"`
 	Options    any    `json:"options,omitempty"`
-
-	// AuthInject    string `json:"auth_inject,omitempty"`
-	// AuthRedirrect string `json:"auth_redirrect,omitempty"`
 }
 
 type EraOptions struct {

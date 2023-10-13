@@ -92,6 +92,12 @@ func (s *Server) launchAgent(ctx httpx.Request) {
 
 func (s *Server) launchTarget(ctx httpx.Request) {
 	opts := &launchOptions{}
+	err := ctx.Http.BindJSON(opts)
+	if err != nil {
+		httpx.WriteErr(ctx.Http, err)
+		return
+	}
+
 	resp, err := s.cEngine.LaunchTarget(ctx.Session, opts.TargetId)
 	if err != nil {
 		httpx.WriteErr(ctx.Http, err)
@@ -102,6 +108,12 @@ func (s *Server) launchTarget(ctx httpx.Request) {
 
 func (s *Server) launchEditor(ctx httpx.Request) {
 	opts := &launchOptions{}
+	err := ctx.Http.BindJSON(opts)
+	if err != nil {
+		httpx.WriteErr(ctx.Http, err)
+		return
+	}
+
 	resp, err := s.cEngine.LaunchEditor(ctx.Session, opts.PlugId, opts.AgentId)
 	if err != nil {
 		httpx.WriteErr(ctx.Http, err)
