@@ -55,3 +55,16 @@ type EngineHub interface {
 	// 	RunUserHooks(tenants string, opts map[string]any) error
 
 }
+
+/*
+
+	Events
+	- Call(Link)  => sync/single => rpx(name, data)
+	- Emit(Signal)  => async/multi  => rpx(handle, {cname, name, plugid, agentid, data})
+
+	AddOn
+	- Hijacker
+	- Extension
+	- Native
+
+*/
