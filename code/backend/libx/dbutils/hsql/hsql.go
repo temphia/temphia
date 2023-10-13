@@ -41,7 +41,7 @@ func (h *Hsql) Transform(tenantId, group string, allowedTables []string, query s
 		return nil, easyerr.Error("invalid statement type")
 	}
 
-	v := &HsqlVisitor{
+	v := &InsertVisitor{
 		tenantId:        tenantId,
 		group:           group,
 		tns:             h.tns,
