@@ -1,57 +1,45 @@
 package engine
 
 import (
-	"encoding/json"
+	"io"
 
-	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/gin-gonic/gin"
+	"github.com/temphia/temphia/code/backend/libx/xutils/kosher"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
-type getFileReq struct {
-	File string `json:"file,omitempty"`
-}
+func (e *Engine) GetRemoteHandler() any {
 
-func (e *Engine) remotePerform(opts etypes.Remote) ([]byte, error) {
-	b := e.getBinding(opts.TenantId, opts.PlugId, opts.AgentId)
-
-	var err error
-	var resp any
-
-	switch opts.Action {
-	case "get_self_file":
-		req := &getFileReq{}
-		err = json.Unmarshal(opts.Data, req)
-		if err != nil {
-			break
-		}
-		resp, _, err = b.GetFileWithMeta(req.File)
+	rh := &RemoteHandler{
+		engine: e,
 	}
 
+	return rh
+}
+
+type RemoteHandler struct {
+	engine *Engine
+}
+
+func (r *RemoteHandler) Log(uclaim *claim.LSock, c *gin.Context) {
+	b := r.engine.getBinding(uclaim.TenantId, uclaim.Plug, uclaim.Agent)
+
+	out, err := io.ReadAll(c.Request.Body)
 	if err != nil {
-		return nil, err
+		return
 	}
 
-	return json.Marshal(resp)
-
+	b.Log(c.Param("eid"), kosher.Str(out))
 }
 
-/*
-
-	Log(eid, msg string)
-	LazyLog(eid string, msgs []string)
-
-	GetSelfFile(file string) (data []byte, err error)
-	ListResources() ([]*Resource, error)
-	GetResource(name string) (*Resource, error)
-	InLinks() ([]Link, error)
-	OutLinks() ([]Link, error)
-
-	LinkExec(name, method string, data xtypes.LazyData) (xtypes.LazyData, error)
-	LinkExecEmit(name, method string, data xtypes.LazyData) error
-
-	NewModule(name string, data xtypes.LazyData) (int32, error)
-	ModuleTicket(name string, opts xtypes.LazyData) (string, error)
-	ModuleExec(mid int32, method string, data xtypes.LazyData) (xtypes.LazyData, error)
-
-	UserContext(eid string) *claim.UserContext
-
-*/
+func (r *RemoteHandler) LazyLog(c *gin.Context)       {}
+func (r *RemoteHandler) GetSelfFile(c *gin.Context)   {}
+func (r *RemoteHandler) ListResources(c *gin.Context) {}
+func (r *RemoteHandler) GetResource(c *gin.Context)   {}
+func (r *RemoteHandler) InLinks(c *gin.Context)       {}
+func (r *RemoteHandler) OutLinks(c *gin.Context)      {}
+func (r *RemoteHandler) LinkExec(c *gin.Context)      {}
+func (r *RemoteHandler) LinkExecEmit(c *gin.Context)  {}
+func (r *RemoteHandler) NewModule(c *gin.Context)     {}
+func (r *RemoteHandler) ModuleTicket(c *gin.Context)  {}
+func (r *RemoteHandler) ModuleExec(c *gin.Context)    {}

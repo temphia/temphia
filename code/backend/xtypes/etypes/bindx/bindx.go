@@ -28,12 +28,7 @@ type Core interface {
 
 	HttpFetch(*HttpRequest) *HttpResponse
 
-	// if executor doesnot have native async support then you could use these for asyncness
-
-	AsyncLinkExec(name, method string, data xtypes.LazyData) (uint32, error)
-	AsyncModuleExec(mid int32, method string, data xtypes.LazyData) (uint32, error)
-	AsyncEventPoll(mid int32, eid uint32) (xtypes.LazyData, error)
-	AsyncEventWait(mid int32, eid uint32) (xtypes.LazyData, error)
+	AsyncNess
 
 	UserContext(eid string) *claim.UserContext
 }
@@ -54,4 +49,13 @@ type Invoker interface {
 	UserContext() *claim.UserContext
 	UserInfo() (*entities.UserInfo, error)
 	UserMessage(opts *UserMessage) error
+}
+
+// if executor doesnot have native async support then you could use these for asyncness
+
+type AsyncNess interface {
+	AsyncLinkExec(name, method string, data xtypes.LazyData) (uint32, error)
+	AsyncModuleExec(mid int32, method string, data xtypes.LazyData) (uint32, error)
+	AsyncEventPoll(mid int32, eid uint32) (xtypes.LazyData, error)
+	AsyncEventWait(mid int32, eid uint32) (xtypes.LazyData, error)
 }

@@ -69,6 +69,7 @@ type Engine interface {
 	ListModules() []string
 
 	RemotePerform(opt Remote) ([]byte, error)
+	GetRemoteHandler() any
 }
 
 type Ecache interface {

@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"encoding/json"
 	"sync"
 
 	"github.com/rs/zerolog"
@@ -172,4 +173,34 @@ func (e *Engine) run() error {
 	// e.runtime.Run(e.execbuilders, e.modBuilders)
 
 	return nil
+}
+
+// remove this ?
+
+type getFileReq struct {
+	File string `json:"file,omitempty"`
+}
+
+func (e *Engine) remotePerform(opts etypes.Remote) ([]byte, error) {
+	b := e.getBinding(opts.TenantId, opts.PlugId, opts.AgentId)
+
+	var err error
+	var resp any
+
+	switch opts.Action {
+	case "get_self_file":
+		req := &getFileReq{}
+		err = json.Unmarshal(opts.Data, req)
+		if err != nil {
+			break
+		}
+		resp, _, err = b.GetFileWithMeta(req.File)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	return json.Marshal(resp)
+
 }
