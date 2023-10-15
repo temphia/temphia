@@ -3,6 +3,7 @@ package api_server
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/engine"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/httpx"
 )
@@ -13,7 +14,7 @@ func (s *Server) remoteEngineAPI(rg *gin.RouterGroup) {
 
 	h := e.GetRemoteHandler().(*engine.RemoteHandler)
 
-	rg.POST("/register")
+	rg.POST("/register", s.RX(s.setRemoteOption(e)))
 	rg.POST("/bindx/log", s.RX(h.Log))
 	rg.POST("/bindx/lazylog", s.RX(h.LazyLog))
 	rg.GET("/bindx/self_file", s.RX(h.GetSelfFile))
@@ -28,6 +29,21 @@ func (s *Server) remoteEngineAPI(rg *gin.RouterGroup) {
 	rg.POST("/bindx/module/ticket", s.RX(h.ModuleTicket))
 	rg.POST("/bindx/module/:mid/exec", s.RX(h.ModuleExec))
 
+}
+
+func (s *Server) setRemoteOption(e etypes.Engine) func(aclaim *claim.LSock, ctx *gin.Context) {
+
+	return func(aclaim *claim.LSock, ctx *gin.Context) {
+
+		opts := etypes.RemoteOptions{}
+		err := ctx.BindJSON(&opts)
+		if err != nil {
+			httpx.WriteErr(ctx, err)
+			return
+		}
+
+		e.SetRemoteOption(opts)
+	}
 }
 
 func (s *Server) RX(fn func(aclaim *claim.LSock, ctx *gin.Context)) func(ctx *gin.Context) {
