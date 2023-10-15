@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/xserver"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/httpx"
 )
 
@@ -43,7 +43,7 @@ func (l *LSock) apiRegister(ctx *gin.Context) {
 		return
 	}
 
-	info := &etypes.RemoteOptions{}
+	info := &xserver.LSOptions{}
 	err = ctx.BindJSON(info)
 	if err != nil {
 		ctx.AbortWithError(http.StatusBadRequest, err)
