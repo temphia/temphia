@@ -36,10 +36,6 @@ type Core interface {
 type Bindings interface {
 	Core
 
-	// clone makes copy with some state (eg. Job) stripped so it can be stored for longer
-	// duration(than usual req/resp event cycle)
-	Clone() Core
-
 	GetInvoker(eid string) Invoker
 }
 
