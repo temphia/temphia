@@ -77,3 +77,7 @@ func (c *Controller) ExecuteDev(dclaim *claim.PlugDevTkt, plug, agent, action st
 	}, plug, agent, action, body)
 
 }
+
+func (c *Controller) GetEngine() etypes.Engine {
+	return c.enginehub.GetEngine()
+}

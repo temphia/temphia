@@ -10,6 +10,7 @@ import (
 const (
 	CtypeJSON = "application/json"
 	CtypeJS   = "application/javascript"
+	CtypeBin  = "application/octet-stream"
 	CtypeCSS  = "text/css"
 )
 

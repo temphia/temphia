@@ -28,6 +28,9 @@ func (s *Server) EngineAPI(rg *gin.RouterGroup) {
 	rg.GET("/plug/:pid/agent/:aid/serve/*file", s.agentServeFile)
 	rg.GET("/plug/:pid/agent/:aid/executor/:eid/*file", s.executorFile)
 
+	// remote
+	s.remoteEngineAPI(rg.Group("/remote"))
+
 }
 
 // rpx execute
