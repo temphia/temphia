@@ -81,17 +81,9 @@ func (e *Engine) WebRawXecute(opts etypes.WebRawXecuteOptions) {
 	e.webRawXecute(opts)
 }
 
-func (e *Engine) SetRemoteOption(opt etypes.RemoteOptions) {
-
-	e.rLock.RLock()
-	b := e.running[opt.PlugId+opt.AgentId]
-	e.rLock.RUnlock()
-
-	if b == nil {
-		return
-	}
-
-	b.Executor.SetRemoteOptions(opt)
+func (e *Engine) SetRemoteOption(opts etypes.RemoteOptions) {
+	eb := e.execbuilders[opts.PlugId+opts.AgentId]
+	eb.SetRemoteOptions(opts)
 }
 
 func (e *Engine) ResetAgent(tenantId, plugId, agentId string) error {

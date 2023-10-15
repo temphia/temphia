@@ -30,12 +30,12 @@ type ExecutorIface struct {
 type ExecutorBuilder interface {
 	New(ExecutorOption) (Executor, error)
 	ServeFile(file string) (xtypes.BeBytes, error)
+	SetRemoteOptions(opts RemoteOptions) error
 }
 
 type Executor interface {
 	RPXecute(r Request) (xtypes.BeBytes, error)
 	WebRawXecute(rw http.ResponseWriter, req *http.Request)
-	SetRemoteOptions(opts any)
 	Reset() error
 }
 

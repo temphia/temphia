@@ -29,6 +29,8 @@ func (b *Builder) ServeFile(file string) (xtypes.BeBytes, error) {
 	return nil, nil
 }
 
+func (b *Builder) SetRemoteOptions(opts etypes.RemoteOptions) {}
+
 type Noop struct {
 	tenantId string
 	plugId   string
@@ -46,8 +48,6 @@ func (n *Noop) RPXecute(r etypes.Request) (xtypes.BeBytes, error) {
 func (n *Noop) WebRawXecute(rw http.ResponseWriter, req *http.Request) {
 	pp.Println("@web_raw_execute", req.URL.Path)
 }
-
-func (n *Noop) SetRemoteOptions(opts any) {}
 
 func (n *Noop) Reset() error {
 
