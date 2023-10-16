@@ -1,7 +1,11 @@
-<script>
+<script lang="ts">
+    import { getContext } from "svelte";
+    import type { PortalService } from "$lib/core";
     import { params } from "$lib/params";
     import Icon from "@krowten/svelte-heroicons/Icon.svelte";
     $: _paths = ($params["folder"] || "").split("/");
+
+    const app: PortalService = getContext("__app__");
 </script>
 
 <div class="h-full p-0 md:p-2">
@@ -25,7 +29,14 @@
 
                 {#if !$params["file"]}
                     <div class="flex flex-row gap-1">
-                        <button class="btn btn-sm variant-filled-primary">
+                        <button
+                            class="btn btn-sm variant-filled-primary"
+                            on:click={() =>
+                                app.nav.cab_uploader(
+                                    $params["source"],
+                                    $params["folder"]
+                                )}
+                        >
                             <Icon name="cloud-upload" class="h-4 w4" />
                             <span class="hidden md:inline">Upload</span>
                         </button>

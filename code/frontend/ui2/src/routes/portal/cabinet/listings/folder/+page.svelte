@@ -1,5 +1,5 @@
 <script lang="ts">
-    import FolderView from "../_panels/FolderView.svelte";
+    import FolderView from "../../_panels/FolderView.svelte";
 
     import { getContext } from "svelte";
     import type { PortalService } from "$lib/core";

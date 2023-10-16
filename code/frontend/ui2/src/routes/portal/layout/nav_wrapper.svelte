@@ -23,7 +23,7 @@
     [HomeIcon, "start", "/z/pages/portal"],
     [GroupIcon, "data tables", "/z/pages/portal/data"],
     [AdminIcon, "admin", "/z/pages/portal/admin/bprint"],
-    [FolderIcon, "cabinet", "/z/pages/portal/cabinet/"],
+    [FolderIcon, "cabinet", "/z/pages/portal/cabinet/listings"],
     [StoreIcon, "store", "/z/pages/portal/repo/"],
   ];
 
