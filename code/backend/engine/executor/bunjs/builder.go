@@ -32,14 +32,13 @@ type Builder struct {
 }
 
 type Config struct {
-	SubFolder string   `json:"sub_folder,omitempty"`
-	Entry     string   `json:"entry,omitempty"`
-	Files     []string `json:"files,omitempty"`
+	SubFolder  string `json:"sub_folder,omitempty"`
+	RunCommand string `json:"run_command,omitempty"`
 }
 
 func (b *Builder) New(opts etypes.ExecutorOption) (etypes.Executor, error) {
-
-	err := b.initData(opts)
+	conf := Config{}
+	err := b.initData(opts, &conf)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +64,7 @@ func (b *Builder) New(opts etypes.ExecutorOption) (etypes.Executor, error) {
 			return nil, err
 		}
 
-		cmd = exec.Command("bun", "run", "main.js")
+		cmd = exec.Command("bun", "run", conf.RunCommand)
 		cmd.Dir = opts.RunFolder
 		cmd.Env = b.confd.GetRemoteExecEnvs(opts.PlugId, opts.AgentId, opts.BprintId, token)
 
@@ -100,7 +99,7 @@ func (b *Builder) New(opts etypes.ExecutorOption) (etypes.Executor, error) {
 	}, nil
 }
 
-func (b *Builder) initData(opts etypes.ExecutorOption) error {
+func (b *Builder) initData(opts etypes.ExecutorOption, conf *Config) error {
 
 	if doesFolderExist(opts.RunFolder) {
 		return nil
@@ -111,18 +110,17 @@ func (b *Builder) initData(opts etypes.ExecutorOption) error {
 		return err
 	}
 
-	conf := Config{}
 	fout, _, err := opts.Binder.GetFileWithMeta(opts.File)
 	if err != nil {
 		return err
 	}
 
-	err = json.Unmarshal(fout, &conf)
+	err = json.Unmarshal(fout, conf)
 	if err != nil {
 		return err
 	}
 
-	zfile, err := b.chub.GetFolderAsZip(context.TODO(), opts.TenantId, path.Join(xtypes.BprintBlobFolder, opts.BprintId))
+	zfile, err := b.chub.GetFolderAsZip(context.TODO(), opts.TenantId, path.Join(xtypes.BprintBlobFolder, opts.BprintId, conf.SubFolder))
 	if err != nil {
 		return err
 	}
