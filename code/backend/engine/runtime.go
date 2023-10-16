@@ -95,7 +95,7 @@ func (e *Engine) getBinding(tenantId, plugId, agentId string) *binder.Binder {
 		BprintId:      plug.BprintId,
 		DefaultRunner: "",
 		RunFolder:     path.Join(cd.RootDataFolder(), ety.RunId),
-		EnvVars:       map[string]string{},
+		WebOptions:    agent.WebOptions,
 	})
 
 	if err != nil {

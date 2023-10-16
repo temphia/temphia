@@ -2,7 +2,6 @@ package bunjs
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"net/http/httputil"
 	"net/url"
@@ -110,15 +109,8 @@ func (b *Builder) initData(opts etypes.ExecutorOption, conf *Config) error {
 		return err
 	}
 
-	fout, _, err := opts.Binder.GetFileWithMeta(opts.File)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(fout, conf)
-	if err != nil {
-		return err
-	}
+	conf.RunCommand = opts.WebOptions["run_command"]
+	conf.SubFolder = opts.WebOptions["run_sub_folder"]
 
 	zfile, err := b.chub.GetFolderAsZip(context.TODO(), opts.TenantId, path.Join(xtypes.BprintBlobFolder, opts.BprintId, conf.SubFolder))
 	if err != nil {

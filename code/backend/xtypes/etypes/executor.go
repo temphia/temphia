@@ -17,7 +17,7 @@ type ExecutorOption struct {
 	BprintId      string
 	File          string
 	ExecType      string
-	EnvVars       map[string]string
+	WebOptions    map[string]string
 	DefaultRunner string
 	RunFolder     string
 }
