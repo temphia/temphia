@@ -84,13 +84,14 @@ func (c *confd) InitDataFolder() error {
 func (c *confd) GetRemoteExecEnvs(plug, agent, bprint, token string) []string {
 
 	return []string{
-		fmt.Sprintf("TEMPHIA_MAIN_SERVER=http://localhost:%s", c.config.ServerPort),
-		fmt.Sprintf("TEMPHIA_REMOTE_EXEC_TOKEN=%s", token),
+		"TEMPHIA_HOST=localhost",
+		fmt.Sprintf("TEMPHIA_PORT=%s", c.config.ServerPort),
+		fmt.Sprintf("TEMPHIA_RE_PATH=/z/api/%s/v2/engine/remote", c.config.TenantId),
+		fmt.Sprintf("TEMPHIA_RE_TOKEN=%s", token),
 		fmt.Sprintf("TEMPHIA_TENANT_ID=%s", c.config.TenantId),
 		fmt.Sprintf("TEMPHIA_PLUG_ID=%s", plug),
 		fmt.Sprintf("TEMPHIA_AGENT_ID=%s", agent),
 		fmt.Sprintf("TEMPHIA_BPRINT_ID=%s", bprint),
-		fmt.Sprintf("TEMPHIA_REMOTE_EXEC_PATH=/z/api/%s/v2/engine/remote", c.config.TenantId),
 	}
 
 }
