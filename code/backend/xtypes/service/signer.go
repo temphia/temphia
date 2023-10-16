@@ -32,6 +32,9 @@ type ClaimSigner interface {
 	SignExecutor(tenantId string, data *claim.Executor) (string, error)
 	ParseExecutor(tenantId, payload string) (*claim.Executor, error)
 
+	SignRemoteExec(tenantId string, data *claim.RemoteExec) (string, error)
+	ParseRemoteExec(tenantId, payload string) (*claim.RemoteExec, error)
+
 	SignPlugState(tenantId string, data *claim.PlugState) (string, error)
 	ParsePlugState(tenantId, payload string) (*claim.PlugState, error)
 

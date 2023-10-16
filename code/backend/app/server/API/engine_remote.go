@@ -31,9 +31,9 @@ func (s *Server) remoteEngineAPI(rg *gin.RouterGroup) {
 
 }
 
-func (s *Server) setRemoteOption(e etypes.Engine) func(aclaim *claim.LSock, ctx *gin.Context) {
+func (s *Server) setRemoteOption(e etypes.Engine) func(aclaim *claim.RemoteExec, ctx *gin.Context) {
 
-	return func(aclaim *claim.LSock, ctx *gin.Context) {
+	return func(aclaim *claim.RemoteExec, ctx *gin.Context) {
 
 		opts := etypes.RemoteOptions{}
 		err := ctx.BindJSON(&opts)
@@ -46,10 +46,10 @@ func (s *Server) setRemoteOption(e etypes.Engine) func(aclaim *claim.LSock, ctx 
 	}
 }
 
-func (s *Server) RX(fn func(aclaim *claim.LSock, ctx *gin.Context)) func(ctx *gin.Context) {
+func (s *Server) RX(fn func(aclaim *claim.RemoteExec, ctx *gin.Context)) func(ctx *gin.Context) {
 
 	return func(ctx *gin.Context) {
-		aclaim, err := s.signer.ParseLSock(ctx.GetHeader("Authorization"))
+		aclaim, err := s.signer.ParseRemoteExec(ctx.Param("tenant_id"), ctx.GetHeader("Authorization"))
 		if err != nil {
 			httpx.UnAuthorized(ctx)
 			return

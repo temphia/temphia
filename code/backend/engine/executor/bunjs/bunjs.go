@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/http/httputil"
+	"os/exec"
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes"
@@ -19,6 +20,7 @@ type BunJS struct {
 	agentId   string
 	addr      string
 	rPXPrefix string
+	cmd       *exec.Cmd
 	proxy     *httputil.ReverseProxy
 }
 

@@ -13,17 +13,22 @@ import (
 
 	"github.com/k0kubun/pp"
 
+	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
+	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
+	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 )
 
 type Builder struct {
-	chub  store.CabinetHub
-	waits map[string]chan *etypes.RemoteOptions
-	wlock sync.Mutex
+	chub   store.CabinetHub
+	signer service.Signer
+	waits  map[string]chan *etypes.RemoteOptions
+	wlock  sync.Mutex
+	confd  config.Confd
 }
 
 type Config struct {
@@ -46,9 +51,24 @@ func (b *Builder) New(opts etypes.ExecutorOption) (etypes.Executor, error) {
 	b.waits[key] = wchan
 	b.wlock.Unlock()
 
+	var cmd *exec.Cmd
+
 	switch opts.DefaultRunner {
 	case "":
-		cmd := exec.Command("bun", "run", "main.js")
+
+		token, err := b.signer.SignRemoteExec(opts.TenantId, &claim.RemoteExec{
+			TenantId: opts.TenantId,
+			Plug:     opts.PlugId,
+			Agent:    opts.AgentId,
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		cmd = exec.Command("bun", "run", "main.js")
+		cmd.Dir = opts.RunFolder
+		cmd.Env = b.confd.GetRemoteExecEnvs(opts.PlugId, opts.AgentId, opts.BprintId, token)
+
 		err = cmd.Start()
 		if err != nil {
 			return nil, err
@@ -73,6 +93,7 @@ func (b *Builder) New(opts etypes.ExecutorOption) (etypes.Executor, error) {
 		tenantId:  opts.TenantId,
 		plugId:    opts.PlugId,
 		agentId:   opts.AgentId,
+		cmd:       cmd,
 		proxy:     httputil.NewSingleHostReverseProxy(u),
 		rPXPrefix: ropts.RPXPrefix,
 		addr:      ropts.Addr,

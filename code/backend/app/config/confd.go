@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"path"
 
 	"github.com/temphia/temphia/code/backend/libx/xutils"
@@ -14,6 +15,7 @@ type Confd interface {
 	DBFolder() string
 	InitDataFolder() error
 	LocalSocket() string
+	GetRemoteExecEnvs(plug, agent, bprint, token string) []string
 }
 
 type confd struct {
@@ -77,4 +79,18 @@ func (c *confd) InitDataFolder() error {
 	spath := path.Join(c.DBFolder(), c.config.DatabaseConfig.Vendor)
 
 	return xutils.CreateIfNotExits(spath)
+}
+
+func (c *confd) GetRemoteExecEnvs(plug, agent, bprint, token string) []string {
+
+	return []string{
+		fmt.Sprintf("TEMPHIA_MAIN_SERVER=http://localhost:%s", c.config.ServerPort),
+		fmt.Sprintf("TEMPHIA_REMOTE_EXEC_TOKEN=%s", token),
+		fmt.Sprintf("TEMPHIA_TENANT_ID=%s", c.config.TenantId),
+		fmt.Sprintf("TEMPHIA_PLUG_ID=%s", plug),
+		fmt.Sprintf("TEMPHIA_AGENT_ID=%s", agent),
+		fmt.Sprintf("TEMPHIA_BPRINT_ID=%s", bprint),
+		fmt.Sprintf("TEMPHIA_REMOTE_EXEC_PATH=/z/api/%s/v2/engine/remote", c.config.TenantId),
+	}
+
 }

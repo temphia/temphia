@@ -90,6 +90,20 @@ func (cs *ClaimSigner) ParseSite(payload string) (*claim.Site, error) {
 	return data, nil
 }
 
+func (cs *ClaimSigner) SignRemoteExec(tenantId string, data *claim.RemoteExec) (string, error) {
+	return cs.signer.Sign(tenantId, data)
+}
+
+func (cs *ClaimSigner) ParseRemoteExec(tenantId, payload string) (*claim.RemoteExec, error) {
+	data := &claim.RemoteExec{}
+	err := cs.signer.Parse(tenantId, payload, data)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}
+
 func (cs *ClaimSigner) SignUser(tenantId string, data *claim.User) (string, error) {
 	return cs.signer.Sign(tenantId, data)
 }

@@ -25,7 +25,7 @@ type RemoteHandler struct {
 	engine *Engine
 }
 
-func (r *RemoteHandler) Log(uclaim *claim.LSock, c *gin.Context) {
+func (r *RemoteHandler) Log(uclaim *claim.RemoteExec, c *gin.Context) {
 	b := r.engine.getBinding(uclaim.TenantId, uclaim.Plug, uclaim.Agent)
 
 	out, err := io.ReadAll(c.Request.Body)
@@ -36,7 +36,7 @@ func (r *RemoteHandler) Log(uclaim *claim.LSock, c *gin.Context) {
 	b.Log(c.Query("eid"), kosher.Str(out))
 }
 
-func (r *RemoteHandler) LazyLog(uclaim *claim.LSock, c *gin.Context) {
+func (r *RemoteHandler) LazyLog(uclaim *claim.RemoteExec, c *gin.Context) {
 	b := r.engine.getBinding(uclaim.TenantId, uclaim.Plug, uclaim.Agent)
 	logs := []string{}
 
@@ -49,7 +49,7 @@ func (r *RemoteHandler) LazyLog(uclaim *claim.LSock, c *gin.Context) {
 	b.LazyLog(c.Query("eid"), logs)
 }
 
-func (r *RemoteHandler) GetSelfFile(uclaim *claim.LSock, c *gin.Context) {
+func (r *RemoteHandler) GetSelfFile(uclaim *claim.RemoteExec, c *gin.Context) {
 	b := r.engine.getBinding(uclaim.TenantId, uclaim.Plug, uclaim.Agent)
 
 	out, _, err := b.GetFileWithMeta(c.Param("name"))
@@ -61,35 +61,35 @@ func (r *RemoteHandler) GetSelfFile(uclaim *claim.LSock, c *gin.Context) {
 	c.Data(http.StatusOK, httpx.CtypeBin, out)
 }
 
-func (r *RemoteHandler) ListResources(uclaim *claim.LSock, c *gin.Context) {
+func (r *RemoteHandler) ListResources(uclaim *claim.RemoteExec, c *gin.Context) {
 	b := r.engine.getBinding(uclaim.TenantId, uclaim.Plug, uclaim.Agent)
 
 	resp, err := b.ListResources()
 	httpx.WriteJSON(c, resp, err)
 }
 
-func (r *RemoteHandler) GetResource(uclaim *claim.LSock, c *gin.Context) {
+func (r *RemoteHandler) GetResource(uclaim *claim.RemoteExec, c *gin.Context) {
 	b := r.engine.getBinding(uclaim.TenantId, uclaim.Plug, uclaim.Agent)
 
 	resp, err := b.GetResource(c.Param("name"))
 	httpx.WriteJSON(c, resp, err)
 }
 
-func (r *RemoteHandler) InLinks(uclaim *claim.LSock, c *gin.Context) {
+func (r *RemoteHandler) InLinks(uclaim *claim.RemoteExec, c *gin.Context) {
 	b := r.engine.getBinding(uclaim.TenantId, uclaim.Plug, uclaim.Agent)
 
 	resp, err := b.InLinks()
 	httpx.WriteJSON(c, resp, err)
 }
 
-func (r *RemoteHandler) OutLinks(uclaim *claim.LSock, c *gin.Context) {
+func (r *RemoteHandler) OutLinks(uclaim *claim.RemoteExec, c *gin.Context) {
 	b := r.engine.getBinding(uclaim.TenantId, uclaim.Plug, uclaim.Agent)
 
 	resp, err := b.OutLinks()
 	httpx.WriteJSON(c, resp, err)
 }
 
-func (r *RemoteHandler) LinkExec(uclaim *claim.LSock, c *gin.Context) {
+func (r *RemoteHandler) LinkExec(uclaim *claim.RemoteExec, c *gin.Context) {
 	b := r.engine.getBinding(uclaim.TenantId, uclaim.Plug, uclaim.Agent)
 
 	out, err := io.ReadAll(c.Request.Body)
@@ -113,7 +113,7 @@ func (r *RemoteHandler) LinkExec(uclaim *claim.LSock, c *gin.Context) {
 	c.Data(http.StatusOK, httpx.CtypeBin, out)
 }
 
-func (r *RemoteHandler) LinkExecEmit(uclaim *claim.LSock, c *gin.Context) {
+func (r *RemoteHandler) LinkExecEmit(uclaim *claim.RemoteExec, c *gin.Context) {
 	b := r.engine.getBinding(uclaim.TenantId, uclaim.Plug, uclaim.Agent)
 
 	out, err := io.ReadAll(c.Request.Body)
@@ -131,7 +131,7 @@ func (r *RemoteHandler) LinkExecEmit(uclaim *claim.LSock, c *gin.Context) {
 	httpx.WriteOk(c)
 }
 
-func (r *RemoteHandler) NewModule(uclaim *claim.LSock, c *gin.Context) {
+func (r *RemoteHandler) NewModule(uclaim *claim.RemoteExec, c *gin.Context) {
 
 	b := r.engine.getBinding(uclaim.TenantId, uclaim.Plug, uclaim.Agent)
 
@@ -146,7 +146,7 @@ func (r *RemoteHandler) NewModule(uclaim *claim.LSock, c *gin.Context) {
 
 }
 
-func (r *RemoteHandler) ModuleTicket(uclaim *claim.LSock, c *gin.Context) {
+func (r *RemoteHandler) ModuleTicket(uclaim *claim.RemoteExec, c *gin.Context) {
 
 	b := r.engine.getBinding(uclaim.TenantId, uclaim.Plug, uclaim.Agent)
 
@@ -161,7 +161,7 @@ func (r *RemoteHandler) ModuleTicket(uclaim *claim.LSock, c *gin.Context) {
 
 }
 
-func (r *RemoteHandler) ModuleExec(uclaim *claim.LSock, c *gin.Context) {
+func (r *RemoteHandler) ModuleExec(uclaim *claim.RemoteExec, c *gin.Context) {
 	b := r.engine.getBinding(uclaim.TenantId, uclaim.Plug, uclaim.Agent)
 
 	out, err := io.ReadAll(c.Request.Body)
