@@ -1,6 +1,7 @@
 package xutils
 
 import (
+	"archive/zip"
 	"errors"
 	"io"
 	"net"
@@ -68,4 +69,36 @@ func GetFreePort() (int, error) {
 	}
 	defer l.Close()
 	return l.Addr().(*net.TCPAddr).Port, nil
+}
+
+func ExtractZip(zfile, ofolder string) error {
+	z, err := zip.OpenReader(zfile)
+	if err != nil {
+		panic(err)
+	}
+	defer z.Close()
+
+	for _, file := range z.File {
+		fileReader, err := file.Open()
+		if err != nil {
+			return err
+		}
+
+		defer fileReader.Close()
+
+		extractedFilePath := ofolder + string(os.PathSeparator) + file.Name
+		extractedFile, err := os.Create(extractedFilePath)
+		if err != nil {
+			return err
+		}
+
+		defer extractedFile.Close()
+
+		_, err = io.Copy(extractedFile, fileReader)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

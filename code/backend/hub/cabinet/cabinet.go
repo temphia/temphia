@@ -8,13 +8,11 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/xplane"
 )
 
-
 /*
 	future
 	- needsCache  bool
 	- cacheBudget int64
 */
-
 
 type CabinetHub struct {
 	inner store.FileStore
@@ -56,4 +54,8 @@ func (f *CabinetHub) GetBlob(ctx context.Context, tenant, folder string, file st
 
 func (f *CabinetHub) DeleteBlob(ctx context.Context, tenant, folder string, file string) error {
 	return f.inner.DeleteBlob(ctx, tenant, folder, file)
+}
+
+func (f *CabinetHub) GetFolderAsZip(ctx context.Context, tenant, folder string) (string, error) {
+	return f.inner.GetFolderAsZip(ctx, tenant, folder)
 }

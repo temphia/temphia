@@ -43,5 +43,6 @@ type FileStore interface {
 	ListRoot(ctx context.Context, tenant string) ([]string, error)
 	ListFolderBlobs(ctx context.Context, tenant, folder string) ([]*BlobInfo, error)
 	GetBlob(ctx context.Context, tenant, folder string, file string) ([]byte, error)
+	GetFolderAsZip(ctx context.Context, tenant, folder string) (string, error)
 	DeleteBlob(ctx context.Context, tenant, folder string, file string) error
 }

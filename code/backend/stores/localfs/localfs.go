@@ -1,11 +1,12 @@
 package localfs
 
 import (
+	"archive/zip"
 	"context"
 	"errors"
 	"io"
-	"io/ioutil"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 
@@ -81,7 +82,7 @@ func (n *NativeBlob) ListFolderBlobs(ctx context.Context, tenant, folder string)
 		return nil, err
 	}
 
-	files, err := ioutil.ReadDir(n.FolderPath(folder))
+	files, err := os.ReadDir(n.FolderPath(folder))
 	if err != nil {
 		return nil, err
 	}
@@ -89,11 +90,16 @@ func (n *NativeBlob) ListFolderBlobs(ctx context.Context, tenant, folder string)
 	respblobs := make([]*store.BlobInfo, 0, len(files))
 	for _, f := range files {
 
+		i, err := f.Info()
+		if err != nil {
+			continue
+		}
+
 		respblobs = append(respblobs, &store.BlobInfo{
 			Name:         f.Name(),
-			Size:         int(f.Size()),
+			Size:         int(i.Size()),
 			IsDir:        f.IsDir(),
-			LastModified: f.ModTime().String(),
+			LastModified: i.ModTime().String(),
 		})
 	}
 
@@ -126,6 +132,52 @@ func (n *NativeBlob) DeleteBlob(ctx context.Context, tenant, folder string, file
 	}
 
 	return os.Remove(n.filePath(folder, file))
+}
+
+func (n *NativeBlob) GetFolderAsZip(ctx context.Context, tenant, folder string) (string, error) {
+	err := n.isValid(folder)
+	if err != nil {
+		return "", err
+	}
+
+	folderToZip := n.FolderPath(folder)
+
+	zfile, err := os.CreateTemp("", "*temphia_cab_folder.zip")
+	if err != nil {
+		return "", err
+	}
+
+	defer zfile.Close()
+
+	zipWriter := zip.NewWriter(zfile)
+	defer zipWriter.Close()
+
+	err = filepath.Walk(folderToZip, func(filePath string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		zipEntry, err := zipWriter.Create(filePath)
+		if err != nil {
+			return err
+		}
+
+		file, err := os.Open(filePath)
+		if err != nil {
+			return err
+		}
+		defer file.Close()
+
+		_, err = io.Copy(zipEntry, file)
+		return err
+	})
+
+	if err != nil {
+		return "", err
+	}
+
+	return path.Join(folderToZip, zfile.Name()), nil
+
 }
 
 func (n *NativeBlob) FolderPath(folder string) string {
