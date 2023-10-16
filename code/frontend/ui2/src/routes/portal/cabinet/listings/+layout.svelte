@@ -3,9 +3,21 @@
     import type { PortalService } from "$lib/core";
     import { params } from "$lib/params";
     import Icon from "@krowten/svelte-heroicons/Icon.svelte";
+    import NewFolder from "../_panels/new_folder.svelte";
     $: _paths = ($params["folder"] || "").split("/");
 
     const app: PortalService = getContext("__app__");
+
+    const cservice = app.get_cabinet_service();
+    const capi = cservice.get_source_api($params["source"]);
+
+    $: __epoch = 1;
+
+    const complete_new_folder = async (name) => {
+        await capi.newFolder(name);
+        __epoch = __epoch + 1;
+        app.utils.small_modal_close()
+    };
 </script>
 
 <div class="h-full p-0 md:p-2">
@@ -14,7 +26,7 @@
             <div class="flex justify-between">
                 <ol class="breadcrumb">
                     <li class="crumb">
-                        <a class="anchor" href="/z/pages/portal/cabinet">Home</a
+                        <a class="anchor" href="/z/pages/portal/cabinet/listings">Home</a
                         >
                     </li>
 
@@ -40,7 +52,14 @@
                             <Icon name="cloud-upload" class="h-4 w4" />
                             <span class="hidden md:inline">Upload</span>
                         </button>
-                        <button class="btn btn-sm variant-filled-primary">
+                        <button
+                            class="btn btn-sm variant-filled-primary"
+                            on:click={() => {
+                                app.utils.small_modal_open(NewFolder, {
+                                    onNewName: complete_new_folder,
+                                });
+                            }}
+                        >
                             <Icon name="folder-add" class="h-4 w4" />
                             <span class="hidden md:inline">New Folder</span>
                         </button>
@@ -49,7 +68,9 @@
             </div>
         </header>
         <section class="p-2">
-            <slot />
+            {#key __epoch}
+                <slot />
+            {/key}
         </section>
     </div>
 </div>

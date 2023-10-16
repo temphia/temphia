@@ -23,7 +23,7 @@
       <button
         disabled={value === ""}
         on:click={() => onNewName(value)}
-        class="p-2 rounded cursor-pointer uppercase text-sm font-bold bg-blue-500 text-white hover:bg-blue-700 disabled:bg-gray-500"
+        class="btn variant-filled-primary"
         >Create</button
       >
     </div>
