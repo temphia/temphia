@@ -47,7 +47,7 @@
         importPreform();
         break;
       case 1:
-        app.nav.admin_bprint_auto_instancer(bid);
+        app.nav.admin_bprint_instancer(bid);
 
       default:
         break;
