@@ -29,7 +29,9 @@ func (b *Builder) ServeFile(file string) (xtypes.BeBytes, error) {
 	return nil, nil
 }
 
-func (b *Builder) SetRemoteOptions(opts etypes.RemoteOptions) {}
+func (b *Builder) SetRemoteOptions(opts etypes.RemoteOptions) error {
+	return nil
+}
 
 type Noop struct {
 	tenantId string

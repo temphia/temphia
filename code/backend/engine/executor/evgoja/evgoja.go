@@ -26,8 +26,6 @@ func (g *EvGoja) RPXecute(r etypes.Request) (xtypes.BeBytes, error) {
 
 func (g *EvGoja) WebRawXecute(rw http.ResponseWriter, req *http.Request) {}
 
-func (g *EvGoja) SetRemoteOptions(opts etypes.RemoteOptions) {}
-
 func (g *EvGoja) Reset() error {
 
 	return nil
