@@ -24,7 +24,9 @@ func (g *EvGoja) RPXecute(r etypes.Request) (xtypes.BeBytes, error) {
 	return g.rPXecute(r)
 }
 
-func (g *EvGoja) WebRawXecute(rw http.ResponseWriter, req *http.Request) {}
+func (g *EvGoja) WebRawXecute(rw http.ResponseWriter, req *http.Request) {
+	g.webRawXecute(rw, req)
+}
 
 func (g *EvGoja) Reset() error {
 
