@@ -30,11 +30,11 @@
                         >
                     </li>
 
-                    {#each _paths as path}
+                    {#each _paths as  path, i}
                         <li class="crumb-separator" aria-hidden>/</li>
 
                         <li class="crumb">
-                            <a class="anchor" href="#">{path}</a>
+                            <a class="anchor" href="/z/pages/portal/cabinet/listings?folder={_paths.slice(0, i+1).join("/")}">{path}</a>
                         </li>
                     {/each}
                 </ol>
