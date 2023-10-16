@@ -1,0 +1,10 @@
+{
+  "slug": "hello_bun",
+  "name": "hello_bun",
+  "type": "app",
+  "files": {
+    "index.html": "index.html",
+    "app.json": "app.json",
+    "server.js": "server.js"
+  }
+}

@@ -1,6 +1,6 @@
 {
-  "slug": "withserverjs",
-  "name": "withserverjs",
+  "slug": "hello_goja",
+  "name": "hello_goja",
   "type": "app",
   "files": {
     "index.html": "index.html",

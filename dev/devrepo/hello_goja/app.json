@@ -1,6 +1,6 @@
 {
-  "name": "With Server JS",
-  "slug": "withserverjs",
+  "name": "Hello Goja",
+  "slug": "hello_goja",
   "objects": {
     "mainapp": {
       "type": "agent"
