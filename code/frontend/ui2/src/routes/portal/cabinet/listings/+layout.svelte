@@ -14,9 +14,9 @@
     $: __epoch = 1;
 
     const complete_new_folder = async (name) => {
-        await capi.newFolder(name);
+        await capi.newFolder(($params["folder"] || "") + "/" + name);
         __epoch = __epoch + 1;
-        app.utils.small_modal_close()
+        app.utils.small_modal_close();
     };
 </script>
 
@@ -26,32 +26,42 @@
             <div class="flex justify-between">
                 <ol class="breadcrumb">
                     <li class="crumb">
-                        <a class="anchor" href="/z/pages/portal/cabinet/listings">Home</a
+                        <a
+                            class="anchor"
+                            href="/z/pages/portal/cabinet/listings">Home</a
                         >
                     </li>
 
-                    {#each _paths as  path, i}
+                    {#each _paths as path, i}
                         <li class="crumb-separator" aria-hidden>/</li>
 
                         <li class="crumb">
-                            <a class="anchor" href="/z/pages/portal/cabinet/listings?folder={_paths.slice(0, i+1).join("/")}">{path}</a>
+                            <a
+                                class="anchor"
+                                href="/z/pages/portal/cabinet/listings/folder?source={$params["source"]}&folder={_paths
+                                    .slice(0, i + 1)
+                                    .join('/')}">{path}</a
+                            >
                         </li>
                     {/each}
                 </ol>
 
                 {#if !$params["file"]}
                     <div class="flex flex-row gap-1">
-                        <button
-                            class="btn btn-sm variant-filled-primary"
-                            on:click={() =>
-                                app.nav.cab_uploader(
-                                    $params["source"],
-                                    $params["folder"]
-                                )}
-                        >
-                            <Icon name="cloud-upload" class="h-4 w4" />
-                            <span class="hidden md:inline">Upload</span>
-                        </button>
+                        {#if $params["folder"]}
+                            <button
+                                class="btn btn-sm variant-filled-primary"
+                                on:click={() =>
+                                    app.nav.cab_uploader(
+                                        $params["source"],
+                                        $params["folder"]
+                                    )}
+                            >
+                                <Icon name="cloud-upload" class="h-4 w4" />
+                                <span class="hidden md:inline">Upload</span>
+                            </button>
+                        {/if}
+
                         <button
                             class="btn btn-sm variant-filled-primary"
                             on:click={() => {
