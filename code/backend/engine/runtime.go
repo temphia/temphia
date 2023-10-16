@@ -1,7 +1,11 @@
 package engine
 
 import (
+	"path"
+
+	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/engine/binder"
+	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/job"
 )
@@ -60,14 +64,38 @@ func (e *Engine) getBinding(tenantId, plugId, agentId string) *binder.Binder {
 	})
 
 	eb := e.execbuilders[agent.Executor]
+
+	cd := e.app.GetDeps().Confd().(config.Confd)
+	ety := e.rundb.get(plugId, agentId)
+	if ety == nil {
+		iid, _ := xutils.GenerateRandomString(5)
+		ety = &entry{
+			BprintId: plug.BprintId,
+			RunId:    iid,
+			PlugId:   plugId,
+			AgentId:  agentId,
+		}
+
+		e.rundb.set(ety)
+		err := e.rundb.flush()
+		if err != nil {
+			return nil
+		}
+	}
+
+	// check mod_hash if it changed? then generate new runid
+
 	ex, err := eb.New(etypes.ExecutorOption{
-		Binder:   b,
-		TenantId: tenantId,
-		PlugId:   plugId,
-		AgentId:  agentId,
-		File:     agent.EntryFile,
-		ExecType: agent.Executor,
-		EnvVars:  map[string]string{},
+		Binder:        b,
+		TenantId:      tenantId,
+		PlugId:        plugId,
+		AgentId:       agentId,
+		File:          agent.EntryFile,
+		ExecType:      agent.Executor,
+		BprintId:      plug.BprintId,
+		DefaultRunner: "",
+		RunFolder:     path.Join(cd.RootDataFolder(), ety.RunId),
+		EnvVars:       map[string]string{},
 	})
 
 	if err != nil {

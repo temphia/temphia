@@ -1,10 +1,11 @@
 package engine
 
 import (
-	"encoding/json"
+	"path"
 	"sync"
 
 	"github.com/rs/zerolog"
+	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/engine/binder"
 	"github.com/temphia/temphia/code/backend/engine/eutils/ecache"
 	"github.com/temphia/temphia/code/backend/xtypes"
@@ -30,8 +31,10 @@ type Engine struct {
 	modBuilders  map[string]etypes.ModuleBuilder
 
 	// runtime
-	running       map[string]*binder.Binder
-	rLock         sync.RWMutex
+	running map[string]*binder.Binder
+	rLock   sync.RWMutex
+	rundb   runDB
+
 	binderFactory binder.Factory
 }
 
@@ -64,6 +67,9 @@ func (e *Engine) Run() error {
 		Modules:      e.modBuilders,
 		ExecBuilders: e.execbuilders,
 	})
+
+	cd := e.app.GetDeps().Confd().(config.Confd)
+	e.rundb = newRunDB(path.Join(cd.RootDataFolder(), "running.json"))
 
 	return nil
 }
@@ -122,10 +128,6 @@ func (e *Engine) ServeExecutorFile(tenantId, plugId, agentId, file string) ([]by
 	return eb.ServeFile(file)
 }
 
-func (e *Engine) RemotePerform(opts etypes.Remote) ([]byte, error) {
-	return e.remotePerform(opts)
-}
-
 func (e *Engine) ListExecutors() []string {
 
 	keys := make([]string, 0, len(e.execbuilders))
@@ -165,34 +167,4 @@ func (e *Engine) run() error {
 	// e.runtime.Run(e.execbuilders, e.modBuilders)
 
 	return nil
-}
-
-// remove this ?
-
-type getFileReq struct {
-	File string `json:"file,omitempty"`
-}
-
-func (e *Engine) remotePerform(opts etypes.Remote) ([]byte, error) {
-	b := e.getBinding(opts.TenantId, opts.PlugId, opts.AgentId)
-
-	var err error
-	var resp any
-
-	switch opts.Action {
-	case "get_self_file":
-		req := &getFileReq{}
-		err = json.Unmarshal(opts.Data, req)
-		if err != nil {
-			break
-		}
-		resp, _, err = b.GetFileWithMeta(req.File)
-	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(resp)
-
 }

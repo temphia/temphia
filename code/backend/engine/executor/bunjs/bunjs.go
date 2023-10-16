@@ -1,7 +1,12 @@
 package bunjs
 
 import (
+	"bytes"
+	"errors"
+	"fmt"
 	"net/http"
+	"net/http/httptest"
+	"net/http/httputil"
 
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes"
@@ -9,22 +14,35 @@ import (
 )
 
 type BunJS struct {
-	tenantId string
-	plugId   string
-	agentId  string
-	addr     string
+	tenantId  string
+	plugId    string
+	agentId   string
+	addr      string
+	rPXPrefix string
+	proxy     *httputil.ReverseProxy
 }
 
 func (b *BunJS) RPXecute(r etypes.Request) (xtypes.BeBytes, error) {
 
-	pp.Println("@rpx_execute", r)
+	rw := httptest.NewRecorder()
+	req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("%s/", b.rPXPrefix), bytes.NewReader(r.Data))
+	if err != nil {
+		return nil, err
+	}
 
-	return nil, nil
+	b.proxy.ServeHTTP(rw, req)
+
+	if rw.Code != http.StatusOK {
+		return nil, errors.New(rw.Body.String())
+	}
+
+	return rw.Body.Bytes(), nil
 
 }
 
 func (b *BunJS) WebRawXecute(rw http.ResponseWriter, req *http.Request) {
 	pp.Println("@web_raw_execute", req.URL.Path)
+	b.proxy.ServeHTTP(rw, req)
 }
 
 func (b *BunJS) Reset() error {

@@ -68,7 +68,6 @@ type Engine interface {
 	ListExecutors() []string
 	ListModules() []string
 
-	RemotePerform(opt Remote) ([]byte, error)
 	GetRemoteHandler() any
 }
 

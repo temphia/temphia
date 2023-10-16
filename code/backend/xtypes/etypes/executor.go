@@ -10,13 +10,16 @@ import (
 type BuilderFactory func(app any) (ExecutorBuilder, error)
 
 type ExecutorOption struct {
-	Binder   bindx.Bindings
-	TenantId string
-	PlugId   string
-	AgentId  string
-	File     string
-	ExecType string
-	EnvVars  map[string]string
+	Binder        bindx.Bindings
+	TenantId      string
+	PlugId        string
+	AgentId       string
+	BprintId      string
+	File          string
+	ExecType      string
+	EnvVars       map[string]string
+	DefaultRunner string
+	RunFolder     string
 }
 
 type ExecutorIface struct {
