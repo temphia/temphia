@@ -46,7 +46,7 @@
             }
         }}
         on:select_item={(ev) => {
-            set("", ev.detail["name"]);
+            set(folder, ev.detail["name"]);
         }}
     />
 {/if}

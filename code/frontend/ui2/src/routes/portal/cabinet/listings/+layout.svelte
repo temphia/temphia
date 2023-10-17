@@ -4,6 +4,8 @@
     import { params } from "$lib/params";
     import Icon from "@krowten/svelte-heroicons/Icon.svelte";
     import NewFolder from "../_panels/new_folder.svelte";
+    import { current } from "./select";
+
     $: _paths = ($params["folder"] || "").split("/");
 
     const app: PortalService = getContext("__app__");
@@ -38,9 +40,10 @@
                         <li class="crumb">
                             <a
                                 class="anchor"
-                                href="/z/pages/portal/cabinet/listings/folder?source={$params["source"]}&folder={_paths
-                                    .slice(0, i + 1)
-                                    .join('/')}">{path}</a
+                                href="/z/pages/portal/cabinet/listings/folder?source={$params[
+                                    'source'
+                                ]}&folder={_paths.slice(0, i + 1).join('/')}"
+                                >{path}</a
                             >
                         </li>
                     {/each}
@@ -73,6 +76,16 @@
                             <Icon name="folder-add" class="h-4 w4" />
                             <span class="hidden md:inline">New Folder</span>
                         </button>
+
+                        {#if $current.item && $current.folder}
+                            <button
+                                class="btn btn-sm variant-filled-primary"
+                                on:click={() => {}}
+                            >
+                                <Icon name="trash" class="h-4 w4" />
+                                <span class="hidden md:inline">Delete</span>
+                            </button>
+                        {/if}
                     </div>
                 {/if}
             </div>
