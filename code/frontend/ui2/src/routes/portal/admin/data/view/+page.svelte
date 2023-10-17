@@ -5,12 +5,13 @@
     LoadingSpinner,
     FloatingAdd,
     PortalService,
-  } from "../../core";
-  import { params } from "svelte-hash-router";
+  } from "$lib/core";
 
-  export let source = $params.source;
-  export let group = $params.group;
-  export let table = $params.table;
+  import { params } from "$lib/params";
+
+  export let source = $params["source"];
+  export let group = $params["group"];
+  export let table = $params["table"];
 
   const app = getContext("__app__") as PortalService;
 

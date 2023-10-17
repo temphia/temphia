@@ -5,9 +5,9 @@
     LoadingSpinner,
     FloatingAdd,
     PortalService,
-  } from "../../../core";
+  } from "$lib/core";
 
-  import { params } from "svelte-hash-router";
+  import { params } from "$lib/params";
 
   const app = getContext("__app__") as PortalService;
 
@@ -16,7 +16,7 @@
   const api = app.api_manager.get_admin_plug_api();
 
   const load = async () => {
-    const resp = await api.list_agent_resource($params.pid, $params.aid);
+    const resp = await api.list_agent_resource($params["pid"], $params["aid"]);
     if (!resp.ok) {
       return;
     }
@@ -29,9 +29,9 @@
 
   // actions
 
-  const action_edit = (id: string) => app.nav.admin_agent_res_edit($params.pid, $params.aid, id);
+  const action_edit = (id: string) => app.nav.admin_agent_res_edit($params["pid"], $params["aid"], id);
   const action_delete = async (id: string) => {
-    const resp = await api.delete_agent_resource($params.pid, $params.aid, id);
+    const resp = await api.delete_agent_resource($params["pid"], $params["aid"], id);
     if (!resp.ok) {
       return;
     }
@@ -39,7 +39,7 @@
   };
 
   const action_new = () =>
-    app.nav.admin_agent_res_new($params.pid, $params.aid);
+    app.nav.admin_agent_res_new($params["pid"], $params["aid"]);
 </script>
 
 {#if loading}
