@@ -41,6 +41,11 @@ func newRunDB(f string) runDB {
 		if err != nil {
 			panic(err)
 		}
+	} else {
+		_, err = file.Write([]byte("{}"))
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	return runDB{
