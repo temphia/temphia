@@ -4,6 +4,7 @@
     import { getContext } from "svelte";
     import type { PortalService } from "$lib/core";
     import { LoadingSpinner } from "$lib/compo";
+    import { current, set } from "./select";
 
     export let source = "default";
 
@@ -36,9 +37,13 @@
     <LoadingSpinner />
 {:else}
     <FolderView
+        selected={$current.item}
         files={data}
         on:open_item={(ev) => {
             app.nav.cab_folder(source, ev.detail["name"]);
+        }}
+        on:select_item={(ev) => {
+            set("", ev.detail["name"]);
         }}
     />
 {/if}

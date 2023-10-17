@@ -5,6 +5,7 @@
     import type { PortalService } from "$lib/core";
     import { LoadingSpinner } from "$lib/compo";
     import { params } from "$lib/params";
+    import { current, set } from "../select";
 
     export let source = $params["source"] || "default";
 
@@ -34,6 +35,7 @@
     <LoadingSpinner />
 {:else}
     <FolderView
+        selected={$current.item}
         files={data}
         on:open_item={(ev) => {
             console.log("@EEEE", ev.detail);
@@ -42,6 +44,9 @@
             } else {
                 app.nav.cab_file(source, folder, ev.detail["name"]);
             }
+        }}
+        on:select_item={(ev) => {
+            set("", ev.detail["name"]);
         }}
     />
 {/if}
