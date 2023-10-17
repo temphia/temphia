@@ -87,8 +87,17 @@ export class Navigator {
   };
 
   cab_file = (source: string, folder: string, file: string) => {
+    this.set(`cabinet/listings/file?source=${source}&folder=${folder}&file=${file}`);
+  };
+
+  cab_text_file = (source: string, folder: string, file: string) => {
     this.set(`cabinet/listings/file/text?source=${source}&folder=${folder}&file=${file}`);
   };
+
+  cab_image_file = (source: string, folder: string, file: string) => {
+    this.set(`cabinet/listings/file/image?source=${source}&folder=${folder}&file=${file}`);
+  };
+
 
   // repo
 
