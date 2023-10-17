@@ -1,0 +1,1 @@
+const n=o=>{const s=r(o.cells||[]);return{rows:Object.keys(s).map(e=>({__id:e,sheetid:o.sheet_id})),cells:s,columns:o.columns}},r=o=>o.reduce((s,e)=>{let t=s[e.rowid];return t||(t={},s[e.rowid]=t),t[e.colid]=e,s},{});export{n as a,r as f};
