@@ -49,6 +49,7 @@
     <table class="table table-hover">
         <thead>
             <tr>
+                <td />
                 <th>Name</th>
                 <th>Last Modified</th>
                 <th>Size</th>
@@ -62,9 +63,14 @@
                     on:click={() => dispatcher("select_item", row)}
                     class="cursor-pointer hover:bg-gray-700 {selected ===
                     row.name
-                        ? 'variant-filled-primary'
+                        ? 'variant-outline-primary'
                         : ''}"
                 >
+                    <td class="w-1">
+                        {#if selected === row.name}
+                            <input type="checkbox" checked={true} />
+                        {/if}
+                    </td>
                     <td>
                         <span class="mr-1 text-indigo-500">
                             {#if row.is_dir}
