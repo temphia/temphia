@@ -66,7 +66,7 @@ func TestHsql(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		v := &InsertVisitor{
+		v := &Visitor{
 			tenantId:        "default0",
 			group:           "test1",
 			tns:             nil, //tns.New("shared"),

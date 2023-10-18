@@ -36,12 +36,15 @@ func (h *Hsql) Transform(tenantId, group string, allowedTables []string, query s
 
 	switch stmt.(type) {
 	case *sql.SelectStatement:
+	case *sql.InsertStatement:
+	case *sql.UpdateStatement:
+	case *sql.DeleteStatement:
 	default:
 
 		return nil, easyerr.Error("invalid statement type")
 	}
 
-	v := &InsertVisitor{
+	v := &Visitor{
 		tenantId:        tenantId,
 		group:           group,
 		tns:             h.tns,

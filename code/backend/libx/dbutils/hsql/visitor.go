@@ -9,9 +9,9 @@ import (
 	"github.com/thoas/go-funk"
 )
 
-var _ sql.Visitor = (*InsertVisitor)(nil)
+var _ sql.Visitor = (*Visitor)(nil)
 
-type InsertVisitor struct {
+type Visitor struct {
 	tenantId        string
 	group           string
 	tns             TNS
@@ -19,7 +19,7 @@ type InsertVisitor struct {
 	allowedTables   []string
 }
 
-func (h *InsertVisitor) Visit(node sql.Node) (sql.Visitor, error) {
+func (h *Visitor) Visit(node sql.Node) (sql.Visitor, error) {
 
 	switch snode := node.(type) {
 
@@ -50,6 +50,6 @@ func (h *InsertVisitor) Visit(node sql.Node) (sql.Visitor, error) {
 	return h, nil
 }
 
-func (h *InsertVisitor) VisitEnd(node sql.Node) error {
+func (h *Visitor) VisitEnd(node sql.Node) error {
 	return nil
 }
