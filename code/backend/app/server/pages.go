@@ -1,9 +1,8 @@
 package server
 
 import (
-	"io"
-	"io/fs"
-	"net/http"
+	"embed"
+	"fmt"
 	"net/http/httputil"
 	"net/url"
 	"os"
@@ -49,12 +48,7 @@ func (s *Server) pagesRoutes() gin.HandlerFunc {
 	}
 	pp.Println("@not_using_dev_proxy")
 
-	BuildFolder, err := fs.Sub(s.opts.BuildFS, "build")
-	if err != nil {
-		panic(err)
-	}
-
-	bfs := http.FS(BuildFolder)
+	bfs := (s.opts.BuildFS.(embed.FS))
 
 	return func(ctx *gin.Context) {
 		path := strings.TrimSuffix(strings.TrimPrefix(ctx.Request.URL.Path, "/z/pages/"), "/")
@@ -68,15 +62,9 @@ func (s *Server) pagesRoutes() gin.HandlerFunc {
 
 		pp.Println("@FILE ==>", path)
 
-		hf, err := bfs.Open(path)
+		out, err := bfs.ReadFile(fmt.Sprintf("build/%s", path))
 		if err != nil {
 			pp.Println("@open_err", err.Error())
-			return
-		}
-
-		out, err := io.ReadAll(hf)
-		if err != nil {
-			pp.Println("@read_err", err.Error())
 			return
 		}
 
