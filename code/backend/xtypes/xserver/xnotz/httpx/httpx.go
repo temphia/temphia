@@ -27,7 +27,7 @@ func WriteFile(file string, data []byte, ctx *gin.Context) {
 	ffiles := strings.Split(file, ".")
 
 	ctype := ""
-	switch ffiles[1] {
+	switch ffiles[len(ffiles)-1] {
 	case "js":
 		ctype = CtypeJS
 	case "css":
