@@ -17,6 +17,7 @@ require (
 	github.com/gobwas/ws v1.2.1
 	github.com/goccy/go-yaml v1.11.0
 	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/graphql-go/graphql v0.8.1
 	github.com/hako/branca v0.0.0-20200807062402-6052ac720505
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/hashicorp/golang-lru v0.5.4
@@ -32,7 +33,6 @@ require (
 	github.com/rs/xid v1.5.0
 	github.com/rs/zerolog v1.29.1
 	github.com/siddontang/go v0.0.0-20180604090527-bdc77568d726
-	github.com/tetratelabs/wazero v1.3.1
 	github.com/thoas/go-funk v0.9.3
 	github.com/tidwall/buntdb v1.3.0
 	github.com/tidwall/gjson v1.14.3
@@ -44,7 +44,6 @@ require (
 	github.com/ztrue/tracerr v0.4.0
 	golang.org/x/crypto v0.11.0
 	golang.org/x/oauth2 v0.10.0
-	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gopkg.in/yaml.v2 v2.4.0
 )
@@ -115,7 +114,6 @@ require (
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
-	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
