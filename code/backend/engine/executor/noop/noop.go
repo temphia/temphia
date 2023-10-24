@@ -51,7 +51,7 @@ func (n *Noop) WebRawXecute(rw http.ResponseWriter, req *http.Request) {
 	pp.Println("@web_raw_execute", req.URL.Path)
 }
 
-func (n *Noop) Reset() error {
+func (n *Noop) Close() error {
 
 	return nil
 }

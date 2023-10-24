@@ -47,7 +47,7 @@ func (b *BunJS) WebRawXecute(rw http.ResponseWriter, req *http.Request) {
 	b.proxy.ServeHTTP(rw, req)
 }
 
-func (b *BunJS) Reset() error {
+func (b *BunJS) Close() error {
 
 	return nil
 }

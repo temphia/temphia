@@ -28,7 +28,7 @@ func (g *EvGoja) WebRawXecute(rw http.ResponseWriter, req *http.Request) {
 	g.webRawXecute(rw, req)
 }
 
-func (g *EvGoja) Reset() error {
+func (g *EvGoja) Close() error {
 
 	return nil
 }

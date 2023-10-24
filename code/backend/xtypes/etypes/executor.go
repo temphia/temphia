@@ -39,7 +39,7 @@ type ExecutorBuilder interface {
 type Executor interface {
 	RPXecute(r Request) (xtypes.BeBytes, error)
 	WebRawXecute(rw http.ResponseWriter, req *http.Request)
-	Reset() error
+	Close() error
 }
 
 type ExecBuilderFunc func(ExecutorOption) (Executor, error)
