@@ -1,7 +1,7 @@
 import type { SiteUtils } from "../../utils/site";
 import { ApiManager } from "./apm";
 import { Launcher } from "./launcher/launcher";
-import { Navigator } from "./nav";
+import { PoralNavigator } from "./nav";
 import { Notifier } from "./notifier";
 
 import { DataService } from "../data";
@@ -31,7 +31,7 @@ export interface Utils {
 
 export class PortalService {
   options: AppOptions;
-  nav: Navigator;
+  nav: PoralNavigator;
   api_manager: ApiManager;
   sockd_service: SockdBuilder;
   notifier?: Notifier;
@@ -53,7 +53,7 @@ export class PortalService {
     console.log("@portal_service", this);
 
     this.options = opts;
-    this.nav = new Navigator();
+    this.nav = new PoralNavigator();
     this.api_manager = new ApiManager(
       opts.base_url,
       opts.tenant_id,

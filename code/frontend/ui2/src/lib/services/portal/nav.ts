@@ -1,6 +1,6 @@
 import { goto } from '$app/navigation';
 
-export class Navigator {
+export class PoralNavigator {
   options: any;
   constructor() {
     this.options = null;
