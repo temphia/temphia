@@ -2,7 +2,11 @@
     import { getContext } from "svelte";
     import { params } from "$lib/params";
     import { FloatingAdd, LoadingSpinner, PortalService } from "$lib/core";
-  
+    import TopActions from "$lib/core/top_actions.svelte";
+    import StateExport from "./panels/_export.svelte";
+    import StateImport from "./panels/_import.svelte";
+
+    
     export let pid = $params["pid"];
   
     let datas = [];
@@ -28,6 +32,17 @@
       datas = resp.data;
       loading = false;
     };
+
+
+    const action_state_export = (id) => {
+        app.utils.small_modal_open(StateExport, { app, id });
+    };
+
+    const action_state_import = (id) => {
+        app.utils.small_modal_open(StateImport, { app, id });
+    };
+
+    
   
     load();
   </script>
@@ -35,6 +50,14 @@
   {#if loading}
     <LoadingSpinner />
   {:else}
+
+
+<TopActions
+actions={{
+    "Import": () => action_state_export(pid),
+    "Export": () => action_state_import(pid),
+}}
+/>
     <div class="overflow-auto p-4">
       <table class="min-w-full shadow rounded-lg">
         <thead class="bg-gray-50 border-b">
@@ -125,7 +148,7 @@
                 class="text-sm text-gray-900 font-light px-2 py-2 whitespace-nowrap flex gap-2"
               >
                 <button
-                  class="p-1 text-white text-sm font-semibold flex self-center shadow rounded hover:scale-110 bg-blue-400"
+                  class="btn variant-filled-primary"
                   on:click={() => app.nav.admin_plug_state_edit(pid, data["key"])}
                 >
                   Edit
@@ -136,7 +159,7 @@
                     const resp = await api.delete_plug_state(pid, data["key"]);
                     load();
                   }}
-                  class="p-1 text-white text-sm font-semibold flex self-center shadow rounded hover:scale-110 bg-red-400"
+                  class="btn btn-sm variant-filled-secondary"
                 >
                   Delete
                 </button>

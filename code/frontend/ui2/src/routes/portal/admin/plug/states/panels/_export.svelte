@@ -47,14 +47,14 @@
     <div class="mt-6 flex justify-end gap-2">
       <button
         on:click={() => load()}
-        class="py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm"
+        class="btn variant-filled-primary"
       >
         Ok
       </button>
 
       <button
         on:click={() => app.utils.small_modal_close()}
-        class="py-2 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-red-500 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all text-sm"
+        class="btn variant-filled-secondary"
       >
         Cancel
       </button>
