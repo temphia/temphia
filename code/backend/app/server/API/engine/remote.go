@@ -1,4 +1,4 @@
-package api_server
+package engineapi
 
 import (
 	"github.com/gin-gonic/gin"
@@ -8,7 +8,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/httpx"
 )
 
-func (s *Server) remoteEngineAPI(rg *gin.RouterGroup) {
+func (s *EngineAPI) remoteEngineAPI(rg *gin.RouterGroup) {
 
 	e := s.cEngine.GetEngine()
 
@@ -31,7 +31,7 @@ func (s *Server) remoteEngineAPI(rg *gin.RouterGroup) {
 
 }
 
-func (s *Server) setRemoteOption(e etypes.Engine) func(aclaim *claim.RemoteExec, ctx *gin.Context) {
+func (s *EngineAPI) setRemoteOption(e etypes.Engine) func(aclaim *claim.RemoteExec, ctx *gin.Context) {
 
 	return func(aclaim *claim.RemoteExec, ctx *gin.Context) {
 
@@ -46,7 +46,7 @@ func (s *Server) setRemoteOption(e etypes.Engine) func(aclaim *claim.RemoteExec,
 	}
 }
 
-func (s *Server) RX(fn func(aclaim *claim.RemoteExec, ctx *gin.Context)) func(ctx *gin.Context) {
+func (s *EngineAPI) RX(fn func(aclaim *claim.RemoteExec, ctx *gin.Context)) func(ctx *gin.Context) {
 
 	return func(ctx *gin.Context) {
 		aclaim, err := s.signer.ParseRemoteExec(ctx.Param("tenant_id"), ctx.GetHeader("Authorization"))
