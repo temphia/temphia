@@ -27,7 +27,7 @@ type LSock struct {
 
 	counter int64
 
-	notz   xnotz.Notz
+	//notz   xnotz.Notz
 	signer service.Signer
 }
 
@@ -40,8 +40,8 @@ func New(notz xnotz.Notz, signer service.Signer) *LSock {
 		rLock:   sync.RWMutex{},
 
 		counter: 1,
-		notz:    notz,
-		signer:  signer,
+		//		notz:    notz,
+		signer: signer,
 	}
 }
 

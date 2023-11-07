@@ -57,5 +57,4 @@ func (l *LSock) apiRegister(ctx *gin.Context) {
 	l.remotes[lclaim.IID] = info
 	l.rLock.Unlock()
 
-	l.notz.RegisterLocalAddr(lclaim.Plug, lclaim.Agent, info.Addr)
 }
