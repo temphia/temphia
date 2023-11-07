@@ -22,7 +22,7 @@ func (s *Server) pages(z *gin.RouterGroup) {
 
 }
 
-const NoDEV = true
+const NoPreBuildFiles = false
 
 func (s *Server) pagesRoutes() gin.HandlerFunc {
 	var proxy *httputil.ReverseProxy
@@ -32,7 +32,7 @@ func (s *Server) pagesRoutes() gin.HandlerFunc {
 		panic("BUILD FS")
 	}
 
-	if pserver != "" && !NoDEV {
+	if pserver != "" && !NoPreBuildFiles {
 		url, err := url.Parse(pserver)
 		if err != nil {
 			panic(err)
