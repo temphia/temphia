@@ -3,7 +3,7 @@ package api_server
 import (
 	"github.com/bwmarrin/snowflake"
 	engineapi "github.com/temphia/temphia/code/backend/app/server/API/engine"
-	"github.com/temphia/temphia/code/backend/app/server/API/middleware"
+	"github.com/temphia/temphia/code/backend/app/server/middleware"
 	"github.com/temphia/temphia/code/backend/controllers"
 	"github.com/temphia/temphia/code/backend/controllers/cabinet"
 	"github.com/temphia/temphia/code/backend/controllers/dev"

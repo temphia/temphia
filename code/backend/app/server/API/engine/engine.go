@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/backend/app/server/API/middleware"
+	"github.com/temphia/temphia/code/backend/app/server/middleware"
 	"github.com/temphia/temphia/code/backend/controllers/engine"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/httpx"

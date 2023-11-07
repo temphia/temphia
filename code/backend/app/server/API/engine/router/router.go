@@ -1,11 +1,9 @@
 package engineapi
 
-type RouteItemMode int8
-
 const (
-	RouteItemModeRPX RouteItemMode = iota
-	RouteItemModeRaw
-	RouteItemModeServe
+	RouteItemModeRPX   = "rpx"
+	RouteItemModeRaw   = "raw"
+	RouteItemModeServe = "serve"
 )
 
 type RouteConfig struct {
@@ -15,9 +13,11 @@ type RouteConfig struct {
 }
 
 type RouteItem struct {
-	Path        string
-	Method      string
-	Mode        RouteItemMode
-	ApppendHTML bool
-	TrimSlash   bool
+	Path        string `json:"path,omitempty"`
+	Method      string `json:"method,omitempty"`
+	Mode        string `json:"mode,omitempty"`
+	Target      string `json:"target,omitempty"`
+	ApppendHTML bool   `json:"append_html,omitempty"`
+	TrimSlash   bool   `json:"trim_slash,omitempty"`
+	Wildcard    bool   `json:"wildcard,omitempty"`
 }

@@ -8,8 +8,9 @@ import (
 	"strings"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/backend/app/server/notz/spatpl"
-	"github.com/temphia/temphia/code/backend/app/server/notz/static"
+
+	"github.com/temphia/temphia/code/backend/app/server/API/engine/notz/spatpl"
+	"github.com/temphia/temphia/code/backend/app/server/API/engine/notz/static"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz"

@@ -1,7 +1,7 @@
 package tickets
 
 import (
-	"github.com/temphia/temphia/code/backend/app/server/API/middleware"
+	"github.com/temphia/temphia/code/backend/app/server/middleware"
 
 	"github.com/temphia/temphia/code/backend/controllers"
 	"github.com/temphia/temphia/code/backend/controllers/admin"
