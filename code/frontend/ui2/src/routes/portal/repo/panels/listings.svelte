@@ -86,7 +86,7 @@
           </div>
 
           <p class="font-medium text-gray-700 mb-4 truncate overflow-clip ">
-            {item.description}
+            {item.description || ""}
           </p>
         </div>
       </div>

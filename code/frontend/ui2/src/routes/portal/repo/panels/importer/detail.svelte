@@ -31,7 +31,7 @@
   <div class="w-3/4 flex flex-col ml-5 mb-4">
     <h1 class="text-gray-700 text-3xl font-medium">{data.name}</h1>
     <p class="mb-8 text-base leading-relaxed text-left text-blueGray-600">
-      {data.description}
+      {data.description || ""}
     </p>
   </div>
 </div>
