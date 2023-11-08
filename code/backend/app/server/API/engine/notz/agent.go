@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/server/API/engine/notz/spatpl"
 	"github.com/temphia/temphia/code/backend/app/server/API/engine/router"
 	"github.com/temphia/temphia/code/backend/xtypes"
@@ -63,6 +64,10 @@ func (a *Notz) stdRendererV1(ctx xnotz.Context, agent *entities.Agent) {
 	path := ctx.Request.URL.Path
 
 	cconf := a.getRouteConfig(ctx.TenantId, ctx.PlugId, ctx.AgentId)
+	if cconf == nil || cconf.config == nil {
+		pp.Println("@bailing_out_conf_not found", cconf)
+		return
+	}
 
 	engine := a.ehub.GetEngine()
 
