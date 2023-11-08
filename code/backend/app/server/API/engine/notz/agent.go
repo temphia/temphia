@@ -3,18 +3,20 @@ package notz
 import (
 	"fmt"
 	"net/http"
-	"net/http/httputil"
-	"net/url"
 	"strings"
 
-	"github.com/k0kubun/pp"
-
 	"github.com/temphia/temphia/code/backend/app/server/API/engine/notz/spatpl"
-	"github.com/temphia/temphia/code/backend/app/server/API/engine/notz/static"
+	"github.com/temphia/temphia/code/backend/app/server/API/engine/router"
 	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/httpx"
+)
+
+const (
+	NotzRendererDynamicSPA = "notz.dspa"
+	NotzRendererStandardV1 = "notz.std.v1"
 )
 
 func (a *Notz) HandleAgent(ctx xnotz.Context) {
@@ -23,55 +25,18 @@ func (a *Notz) HandleAgent(ctx xnotz.Context) {
 		return
 	}
 
-	pp.Println("@got_agent", as)
-
 	switch as.Renderer {
-	case "era":
-		eb := a.ehub.GetExecutorBuilder(as.Executor)
-		if eb == nil {
-			ctx.Writer.Write([]byte(`<h1>Executor not found</h1>`))
-			ctx.Writer.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		pp.Println("@era", eb)
-
-		// er, ok := eb.(etypes.ExecutorRenderer)
-		// if !ok {
-		// 	ctx.Writer.Write([]byte(`<h1>Executor is not renderer.</h1>`))
-		// 	ctx.Writer.WriteHeader(http.StatusBadRequest)
-		// 	return
-		// }
-
-		// er.Handle(&etypes.ERContext{
-		// 	Writer:  ctx.Writer,
-		// 	Request: ctx.Request,
-		// 	PlugId:  ctx.PlugId,
-		// 	AgentId: ctx.AgentId,
-		// })
-	case "static":
-		a.staticRenderer(ctx, as)
-	case "spa":
-		a.spaRender(ctx, as)
-	case "raw":
-		a.rawRender(ctx, as)
+	case NotzRendererStandardV1, "":
+		a.stdRendererV1(ctx, as)
+	case NotzRendererDynamicSPA:
+		a.dynamicSPARender(ctx, as)
 	default:
 		panic("not implemented")
 	}
 
 }
 
-/*
-
-renderer_type
-	era => Executor Rendered App
-	spa => Single Page Application
-	gossr => golang Server Side Rendered
-	static => Static
-
-*/
-
-func (a *Notz) spaRender(ctx xnotz.Context, agent *entities.Agent) {
+func (a *Notz) dynamicSPARender(ctx xnotz.Context, agent *entities.Agent) {
 
 	builder := spatpl.New(spatpl.SpaBuilderOptions{
 		Plug:         ctx.PlugId,
@@ -93,18 +58,61 @@ func (a *Notz) spaRender(ctx xnotz.Context, agent *entities.Agent) {
 
 }
 
-func (a *Notz) staticRenderer(ctx xnotz.Context, agent *entities.Agent) {
-
-	plug := a.ecache.GetPlug(ctx.TenantId, ctx.PlugId)
-	bprintid := plug.BprintId
+func (a *Notz) stdRendererV1(ctx xnotz.Context, agent *entities.Agent) {
 
 	path := ctx.Request.URL.Path
 
-	fprefix, file := static.ExtractPath(path, agent)
+	cconf := a.getRouteConfig(ctx.TenantId, ctx.PlugId, ctx.AgentId)
+
+	engine := a.ehub.GetEngine()
+
+	for _, item := range cconf.config.Items {
+
+		if strings.HasPrefix(path, item.Path) {
+			continue
+		}
+
+		switch item.Mode {
+		case router.RouteItemModeRaw:
+
+			engine.WebRawXecute(etypes.WebRawXecuteOptions{
+				TenantId: ctx.TenantId,
+				PlugId:   ctx.PlugId,
+				AgentId:  ctx.AgentId,
+				Writer:   ctx.Writer,
+				Request:  ctx.Request,
+			})
+
+		case router.RouteItemModeServe:
+			a.serve(ctx, cconf.bprintId)
+
+		case router.RouteItemModeRPX:
+
+			engine.RPXecute(etypes.RPXecuteOptions{
+				TenantId: ctx.TenantId,
+				PlugId:   ctx.PlugId,
+				AgentId:  ctx.AgentId,
+				Action:   item.Target,
+				Payload:  nil,
+				Invoker:  nil,
+			})
+
+		default:
+			panic("Unknow Renderer")
+		}
+
+	}
+
+}
+
+func (a *Notz) serve(ctx xnotz.Context, bprintid string) {
+
+	// fprefix, file := static.ExtractPath(path, agent)
+
+	file := ""
+	fprefix := ""
 
 	folder := fmt.Sprintf("%s/%s/%s", xtypes.BprintBlobFolder, bprintid, fprefix)
-
-	pp.Println("@folder/file", folder, file)
 
 	out, err := a.cabinet.GetBlob(ctx.Request.Context(), ctx.TenantId, folder, file)
 	if err != nil {
@@ -125,40 +133,5 @@ func (a *Notz) staticRenderer(ctx xnotz.Context, agent *entities.Agent) {
 
 	ctx.Writer.Header().Set("Context-Type", ctype)
 	ctx.Writer.Write(out)
-
-}
-
-func (a *Notz) rawRender(ctx xnotz.Context, agent *entities.Agent) {
-
-	key := ctx.PlugId + ctx.AgentId
-
-	a.rLock.RLock()
-	rpxy := a.rawProxies[key]
-	a.rLock.RUnlock()
-
-	if rpxy == nil {
-		a.laLock.Lock()
-		addr := a.laddrs[key]
-		a.laLock.Unlock()
-
-		if addr == "" {
-			return
-		}
-
-		u, err := url.Parse(fmt.Sprintf("http://%s", addr))
-		if err != nil {
-			return
-		}
-
-		rpxy = httputil.NewSingleHostReverseProxy(u)
-
-		a.rLock.Lock()
-		if _, ok := a.rawProxies[key]; !ok {
-			a.rawProxies[key] = rpxy
-		}
-		a.rLock.Unlock()
-	}
-
-	rpxy.ServeHTTP(ctx.Writer, ctx.Request)
 
 }

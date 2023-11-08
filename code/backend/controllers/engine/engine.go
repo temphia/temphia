@@ -81,3 +81,7 @@ func (c *Controller) ExecuteDev(dclaim *claim.PlugDevTkt, plug, agent, action st
 func (c *Controller) GetEngine() etypes.Engine {
 	return c.enginehub.GetEngine()
 }
+
+func (c *Controller) RegisterLocalAddr(opts etypes.RemoteOptions) {
+	c.enginehub.GetEngine().SetRemoteOption(opts)
+}
