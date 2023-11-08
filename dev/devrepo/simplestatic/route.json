@@ -1,0 +1,10 @@
+{
+    "type": "simple",
+    "items": [{
+        "method": "GET",
+        "mode": "serve",
+        "wildcard": true,
+        "path": "/",
+        "target": "/www/"
+    }]
+}

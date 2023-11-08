@@ -12,10 +12,12 @@
       "type": "new_agent",
       "data": {
         "name": "default",
-        "type": "static",
+        "type": "app",
         "executor": "none",
-        "web_files": {
-          "index.html": "-"
+        "renderer": "notz.std.v1",
+        "web_options": {
+          "route": "route.json",
+          "auth_inject": false
         }
       }
     }
