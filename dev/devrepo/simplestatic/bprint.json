@@ -1,6 +1,5 @@
 {
   "slug": "simplestatic",
   "name": "simplestatic",
-  "type": "app",
-  "files": {}
+  "type": "app"
 }

@@ -11,11 +11,16 @@
       "name": "add_main_agent",
       "type": "new_agent",
       "data": {
-        "name": "default",
-        "type": "static",
+        "id": "default",
         "executor": "none",
+        "renderer": "notz.std.v1",
+        "web_options": {
+          "inject_auth": false
+        },
         "web_files": {
-          "index.html": "-"
+          "client.js": "www/client.js",
+          "client.css": "www/client.css",
+          "loader": "std.loader"
         }
       }
     }

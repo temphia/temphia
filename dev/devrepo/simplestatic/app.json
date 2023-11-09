@@ -11,8 +11,7 @@
       "name": "add_main_agent",
       "type": "new_agent",
       "data": {
-        "name": "default",
-        "type": "app",
+        "id": "default",
         "executor": "none",
         "renderer": "notz.std.v1",
         "web_options": {
