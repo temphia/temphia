@@ -337,21 +337,16 @@ create table plugs(
 
 create table agents(
     id text not null,
-    name text not null default '',
-    type text not null default '',
     renderer text not null default '',
-    executor text not null,
+    executor text not null default '',
     entry_file text not null default '',
-    iface_file text not null default '',
-    mod_version integer not null default 0,
-    web_entry text not null default '',
-    web_script text not null default '',
-    web_style text not null default '',
-    web_loader text not null default '',
+    web_options json not null default '{}',
     web_files json not null default '{}',
     extra_meta json not null default '{}',
     tenant_id text not null,
     plug_id text not null,
+
+    mod_version integer not null default 0,
     foreign KEY(plug_id, tenant_id) references plugs(id, tenant_id),
     primary KEY(id, plug_id, tenant_id)
 );
