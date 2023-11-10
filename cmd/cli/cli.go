@@ -9,7 +9,7 @@ import (
 	"github.com/temphia/temphia/code/distro/climux"
 
 	_ "github.com/temphia/temphia/code/distro"
-	//	_ "github.com/temphia/temphia/code/ebrowser"
+	_ "github.com/temphia/temphia/code/ebrowser"
 	_ "github.com/temphia/temphia/code/tools/bdev"
 	_ "github.com/temphia/temphia/code/tools/repobuild"
 )
