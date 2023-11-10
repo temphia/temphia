@@ -13,10 +13,10 @@
       "data": {
         "id": "default",
         "executor": "none",
-        "renderer": "notz.std.v1",
+        "renderer": "serve.v1",
         "web_options": {
-          "route": "route.json",
-          "auth_inject": "false"
+          "auth_inject": "false",
+          "serve_folder": "www"
         }
       }
     }
