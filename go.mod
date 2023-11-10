@@ -40,7 +40,7 @@ require (
 	github.com/twpayne/go-geom v1.5.2
 	github.com/ugorji/go/codec v1.2.11
 	github.com/upper/db/v4 v4.6.0
-	github.com/webview/webview v0.0.0-20230728084238-22009bf0c6e1
+	github.com/webview/webview_go v0.0.0-20230901181450-5a14030a9070
 	github.com/ztrue/tracerr v0.4.0
 	golang.org/x/crypto v0.11.0
 	golang.org/x/oauth2 v0.10.0

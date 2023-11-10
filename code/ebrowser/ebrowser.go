@@ -3,9 +3,10 @@ package ebrowser
 import (
 	_ "embed"
 
+	webview "github.com/webview/webview_go"
+
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/distro/climux"
-	"github.com/webview/webview"
 )
 
 //go:embed start.html
