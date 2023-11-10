@@ -1,3 +1,2 @@
-code/backend/data/assets/** linguist-vendored
-code/frontend/dist** linguist-vendored
-code/frontend/rollup.config.js
+code/frontend/ui2/build/** linguist-vendored
+code/frontend/ui2/*.js
