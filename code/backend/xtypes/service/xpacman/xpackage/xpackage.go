@@ -1,6 +1,9 @@
 package xpackage
 
-import "github.com/mitchellh/mapstructure"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 const (
 	TypeBundle     = "bundle"
@@ -47,5 +50,26 @@ type AppObject struct {
 }
 
 func (a *AppStep) DataAs(target any) error {
-	return mapstructure.Decode(a.Data, target)
+
+	a.Data = convert(a.Data.(map[interface{}]interface{}))
+
+	out, err := json.Marshal(a.Data)
+	if err != nil {
+		return err
+	}
+
+	return json.Unmarshal(out, target)
+}
+
+func convert(m map[interface{}]interface{}) map[string]interface{} {
+	res := map[string]interface{}{}
+	for k, v := range m {
+		switch v2 := v.(type) {
+		case map[interface{}]interface{}:
+			res[fmt.Sprint(k)] = convert(v2)
+		default:
+			res[fmt.Sprint(k)] = v
+		}
+	}
+	return res
 }

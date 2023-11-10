@@ -16,7 +16,7 @@
         "renderer": "notz.std.v1",
         "web_options": {
           "route": "route.json",
-          "auth_inject": false
+          "auth_inject": "false"
         }
       }
     }
