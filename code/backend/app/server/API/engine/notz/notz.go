@@ -25,6 +25,7 @@ type Notz struct {
 	cabinet store.CabinetHub
 	ecache  etypes.Ecache
 	pacman  xpacman.Pacman
+	engine  etypes.Engine
 
 	routesCaches map[string]*routeCache
 	rMutext      sync.Mutex
@@ -55,6 +56,7 @@ func (n *Notz) Start() error {
 		return easyerr.Error("ecache not found")
 	}
 
+	n.engine = n.ehub.GetEngine()
 	n.ecache = ecahe
 
 	return nil

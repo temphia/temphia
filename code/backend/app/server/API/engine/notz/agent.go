@@ -2,6 +2,7 @@ package notz
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 
@@ -15,29 +16,73 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/httpx"
 )
 
+const CacheBudget = 1 << 20
+
 const (
-	NotzRendererDynamicSPA = "notz.dspa"
-	NotzRendererStandardV1 = "notz.std.v1"
+	NotzRendererDynamicSPA   = "dspa.v1"
+	NotzRendererRawHttp      = "raw_http.v1"
+	NotzRendererServe        = "serve.v1"
+	NotzRendererSimpleRouter = "simple_router.v1"
 )
 
 func (a *Notz) HandleAgent(ctx xnotz.Context) {
 	as := a.ecache.GetAgent(ctx.TenantId, ctx.PlugId, ctx.AgentId)
 	if as == nil {
+		pp.Println("@agent_not_found", ctx.AgentId, ctx.PlugId)
 		return
 	}
 
 	switch as.Renderer {
-	case NotzRendererStandardV1, "":
-		a.stdRendererV1(ctx, as)
+	case NotzRendererSimpleRouter, "":
+		a.simpleRouterRendererV1(ctx, as)
 	case NotzRendererDynamicSPA:
-		a.dynamicSPARender(ctx, as)
+		a.dynamicSPARenderV1(ctx, as)
+	case NotzRendererRawHttp:
+		a.engine.WebRawXecute(etypes.WebRawXecuteOptions{
+			TenantId: ctx.TenantId,
+			PlugId:   ctx.PlugId,
+			AgentId:  ctx.AgentId,
+			Writer:   ctx.Writer,
+			Request:  ctx.Request,
+		})
+
+	case NotzRendererServe:
+
+		cconf := a.getRouteConfig(ctx.TenantId, ctx.PlugId, ctx.AgentId)
+		if cconf == nil || cconf.config == nil {
+			pp.Println("@conf_not_found", cconf)
+			return
+		}
+
+		path := ctx.Request.URL.Path
+		subfolder := as.WebOptions["serve_folder"]
+		file := ""
+
+		if path[len(path)-1] == '/' {
+			file = "index.html"
+		} else {
+			paths := strings.Split(path, "/")
+			file = paths[len(paths)-1]
+
+			if !strings.Contains(file, ".") && as.WebOptions["serve_append_html"] == "true" {
+				file = fmt.Sprintf("%s.html", file)
+			}
+
+		}
+
+		a.serveFromBprint1(ctx, &router.RouteResponse{
+			Mode:   router.RouteItemModeServe,
+			Target: subfolder,
+			File:   file,
+		}, cconf.bprintId)
+
 	default:
 		panic("not implemented")
 	}
 
 }
 
-func (a *Notz) dynamicSPARender(ctx xnotz.Context, agent *entities.Agent) {
+func (a *Notz) dynamicSPARenderV1(ctx xnotz.Context, agent *entities.Agent) {
 
 	builder := spatpl.New(spatpl.SpaBuilderOptions{
 		Plug:         ctx.PlugId,
@@ -59,7 +104,7 @@ func (a *Notz) dynamicSPARender(ctx xnotz.Context, agent *entities.Agent) {
 
 }
 
-func (a *Notz) stdRendererV1(ctx xnotz.Context, agent *entities.Agent) {
+func (a *Notz) simpleRouterRendererV1(ctx xnotz.Context, agent *entities.Agent) {
 
 	path := ctx.Request.URL.Path
 
@@ -69,62 +114,58 @@ func (a *Notz) stdRendererV1(ctx xnotz.Context, agent *entities.Agent) {
 		return
 	}
 
-	engine := a.ehub.GetEngine()
+	route := router.SimpleRoutePick(cconf.config, path, ctx.Request.Method)
+	if route == nil {
+		return
+	}
 
-	for _, item := range cconf.config.Items {
+	switch route.Mode {
+	case router.RouteItemModeRPX:
+		// fixme check auth token ?
 
-		if strings.HasPrefix(path, item.Path) {
-			continue
+		out, err := io.ReadAll(ctx.Request.Body)
+		if err != nil {
+			pp.Println("err reading rpx payload", err)
+			return
 		}
 
-		switch item.Mode {
-		case router.RouteItemModeRaw:
+		a.engine.RPXecute(etypes.RPXecuteOptions{
+			TenantId: ctx.TenantId,
+			PlugId:   ctx.PlugId,
+			AgentId:  ctx.AgentId,
+			Action:   route.Target,
+			Payload:  out,
+			Invoker:  nil,
+		})
+	case router.RouteItemModeServe:
+		a.serveFromBprint1(ctx, route, cconf.bprintId)
+	case router.RouteItemModeRaw:
+		a.engine.WebRawXecute(etypes.WebRawXecuteOptions{
+			TenantId: ctx.TenantId,
+			PlugId:   ctx.PlugId,
+			AgentId:  ctx.AgentId,
+			Writer:   ctx.Writer,
+			Request:  ctx.Request,
+		})
 
-			engine.WebRawXecute(etypes.WebRawXecuteOptions{
-				TenantId: ctx.TenantId,
-				PlugId:   ctx.PlugId,
-				AgentId:  ctx.AgentId,
-				Writer:   ctx.Writer,
-				Request:  ctx.Request,
-			})
-
-		case router.RouteItemModeServe:
-			a.serve(ctx, cconf.bprintId)
-
-		case router.RouteItemModeRPX:
-
-			engine.RPXecute(etypes.RPXecuteOptions{
-				TenantId: ctx.TenantId,
-				PlugId:   ctx.PlugId,
-				AgentId:  ctx.AgentId,
-				Action:   item.Target,
-				Payload:  nil,
-				Invoker:  nil,
-			})
-
-		default:
-			panic("Unknow Renderer")
-		}
-
+	default:
+		panic("Unknown Renderer")
 	}
 
 }
 
-func (a *Notz) serve(ctx xnotz.Context, bprintid string) {
+func (a *Notz) serveFromBprint1(ctx xnotz.Context, route *router.RouteResponse, bprintid string) {
 
-	// fprefix, file := static.ExtractPath(path, agent)
+	// fixme => implement caching with cache budget
 
-	file := ""
-	fprefix := ""
+	folder := fmt.Sprintf("%s/%s/%s", xtypes.BprintBlobFolder, bprintid, route.Target)
 
-	folder := fmt.Sprintf("%s/%s/%s", xtypes.BprintBlobFolder, bprintid, fprefix)
-
-	out, err := a.cabinet.GetBlob(ctx.Request.Context(), ctx.TenantId, folder, file)
+	out, err := a.cabinet.GetBlob(ctx.Request.Context(), ctx.TenantId, folder, route.File)
 	if err != nil {
 		return
 	}
 
-	ffiles := strings.Split(file, ".")
+	ffiles := strings.Split(route.File, ".")
 
 	ctype := ""
 	switch ffiles[1] {
