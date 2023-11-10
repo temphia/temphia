@@ -8,6 +8,7 @@ import (
 	"github.com/alecthomas/kong"
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/distro/climux"
 	"github.com/temphia/temphia/code/distro/common"
@@ -18,6 +19,7 @@ func init() {
 	climux.Register(&climux.CliAction{
 		Name: "app",
 		Help: "run app related actions",
+		Func: RunAppCLI,
 	})
 
 }
@@ -26,17 +28,15 @@ type AppCLi struct {
 	InitData struct {
 		SkipDBInit bool `help:"Skip database initilization."`
 		DemoSeed   bool `help:"Demo seed database."`
-	} `cmd:"" help:"Initilizes data folder and create db and run migrations."`
-
-	InitDB struct {
-		CustomMigration string `help:"Custom migration folder."`
-	} `cmd:"" help:"Create db and run migrations."`
+	} `cmd:"" help:"Initilizes data folder, create db and run migrations."`
 
 	Start struct{} `cmd:"" help:"Starts the application."`
 
 	ActualStart struct{} `cmd:"" help:"Do not call, called internally."`
 
 	ConfigFile string
+
+	ctx *kong.Context
 }
 
 func RunAppCLI(args []string) error {
@@ -46,11 +46,11 @@ func RunAppCLI(args []string) error {
 	cli := &AppCLi{}
 	ctx := kong.Parse(cli)
 
+	cli.ctx = ctx
+
 	switch ctx.Command() {
 	case "init-data":
 		return cli.initData()
-	case "init-db":
-		return cli.initDatabase()
 	case "start":
 		return cli.start()
 	case "actual-start":
@@ -90,28 +90,6 @@ func (a *AppCLi) initData() error {
 	return nil
 }
 
-func (a *AppCLi) initDatabase() error {
-
-	conf, err := a.readConfig()
-	if err != nil {
-		return err
-	}
-
-	confd := config.New(conf)
-
-	switch conf.DatabaseConfig.Vendor {
-	case store.VendorSqlite:
-		_, err = common.InitSQLiteDB(path.Join(confd.DBFolder(), conf.DatabaseConfig.Target))
-		if err != nil {
-			return err
-		}
-	default:
-		return easyerr.Error("db vendor not implemented")
-	}
-
-	return nil
-}
-
 func (a *AppCLi) start() error {
 
 	conf, err := a.readConfig()
@@ -139,13 +117,38 @@ func (a *AppCLi) actualStart() error {
 
 // private
 
+const (
+	TemphiaStateFolder = ".temphia-data"
+	TemphiaConfigFile  = "temphia.json"
+)
+
 func (a *AppCLi) readConfig() (*config.Config, error) {
 
 	if a.ConfigFile == "" {
+		maybeConf := path.Join(TemphiaStateFolder, TemphiaConfigFile)
+
+		if a.ctx.Command() == "init-data" {
+			os.Mkdir(TemphiaStateFolder, os.FileMode(0522))
+			a.ConfigFile = maybeConf
+
+		} else {
+			if xutils.FileExists(TemphiaStateFolder, TemphiaConfigFile) {
+				a.ConfigFile = maybeConf
+			}
+		}
+
+	}
+
+	return readConfig(a.ConfigFile)
+}
+
+func readConfig(file string) (*config.Config, error) {
+
+	if file == "" {
 		return nil, easyerr.Error("--config-file not passed")
 	}
 
-	out, err := os.ReadFile(a.ConfigFile)
+	out, err := os.ReadFile(file)
 	if err != nil {
 		return nil, easyerr.Wrap("err reading config file", err)
 	}

@@ -33,6 +33,8 @@ func Run() {
 	clis := climux.GetRegistry()
 	acli, ok := clis[os.Args[1]]
 	if !ok {
+		fmt.Println("not found cli")
+		os.Exit(1)
 		return
 	}
 
