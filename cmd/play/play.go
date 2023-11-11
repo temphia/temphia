@@ -6,6 +6,7 @@ import (
 	"io/fs"
 	"log"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
 	"strings"
@@ -14,14 +15,28 @@ import (
 )
 
 func main() {
+	FakeFork()
 
-	err := ZipIt("test1.zip", map[string]string{
-		"testdata/pp.txt": "pp.txt",
-		"testdata/mnop/":  "mnop/",
-	})
+}
 
-	pp.Println("@err", err.Error())
+func FakeFork() {
+	bin, err := os.Executable()
 
+	pp.Println("@i_am_dev", bin, err)
+	pp.Println("@args", os.Args)
+	pp.Println("@envs", os.Environ())
+
+	if os.Getenv("PLAY_TEST") != "" {
+		return
+	}
+
+	pp.Println("@running_sub")
+	cmd := exec.Command(bin)
+	cmd.Env = append(cmd.Env, "PLAY_TEST=1")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	pp.Println(cmd.Run())
 }
 
 func ZipIt(outFile string, files map[string]string) error {
