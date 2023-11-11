@@ -2,10 +2,10 @@ package server
 
 import (
 	"embed"
-	"fmt"
 	"net/http/httputil"
 	"net/url"
 	"os"
+	"path"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -51,23 +51,24 @@ func (s *Server) pagesRoutes() gin.HandlerFunc {
 	bfs := (s.opts.BuildFS.(embed.FS))
 
 	return func(ctx *gin.Context) {
-		path := strings.TrimSuffix(strings.TrimPrefix(ctx.Request.URL.Path, "/z/pages/"), "/")
 
-		pitems := strings.Split(path, "/")
+		ppath := strings.TrimSuffix(strings.TrimPrefix(ctx.Request.URL.Path, "/z/pages"), "/")
+
+		pitems := strings.Split(ppath, "/")
 		lastpath := pitems[len(pitems)-1]
 
 		if !strings.Contains(lastpath, ".") {
-			path = path + ".html"
+			ppath = ppath + ".html"
 		}
 
-		pp.Println("@FILE ==>", path)
+		pp.Println("@FILE ==>", ppath)
 
-		out, err := bfs.ReadFile(fmt.Sprintf("build/%s", path))
+		out, err := bfs.ReadFile(path.Join("build", ppath))
 		if err != nil {
 			pp.Println("@open_err", err.Error())
 			return
 		}
 
-		httpx.WriteFile(path, out, ctx)
+		httpx.WriteFile(ppath, out, ctx)
 	}
 }

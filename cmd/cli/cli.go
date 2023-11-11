@@ -12,6 +12,13 @@ import (
 	_ "github.com/temphia/temphia/code/ebrowser"
 	_ "github.com/temphia/temphia/code/tools/bdev"
 	_ "github.com/temphia/temphia/code/tools/repobuild"
+
+	_ "github.com/temphia/temphia/code/backend/stores/localfs"
+	_ "github.com/temphia/temphia/code/backend/stores/upperdb/vendors/sqlite"
+
+	// repo provider
+
+	_ "github.com/temphia/temphia/code/backend/services/pacman/provider/github"
 )
 
 func Run() {

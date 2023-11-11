@@ -74,14 +74,42 @@ func (a *AppCLi) initData() error {
 		return nil
 	}
 
+	ran := false
+
 	switch conf.DatabaseConfig.Vendor {
 	case store.VendorSqlite:
-		_, err = common.InitSQLiteDB(conf.DatabaseConfig.Target)
+		_ran, err := common.InitSQLiteDB(conf.DatabaseConfig.Target)
 		if err != nil {
 			return err
 		}
+
+		ran = _ran
+
 	default:
 		return easyerr.Error("db vendor not implemented")
+	}
+
+	dapp, err := NewDistroApp(Options{
+		Conf:        conf,
+		Dev:         true,
+		BuildFolder: nil,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	if ran {
+		err = dapp.SeedSuperUser()
+		if err != nil {
+			return err
+		}
+
+		err = dapp.SeedRepos()
+		if err != nil {
+			return err
+		}
+
 	}
 
 	return nil

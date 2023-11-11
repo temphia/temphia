@@ -9,6 +9,7 @@ import (
 	cabinethub "github.com/temphia/temphia/code/backend/hub/cabinet"
 	corehub "github.com/temphia/temphia/code/backend/hub/coredb"
 	datahub "github.com/temphia/temphia/code/backend/hub/dyndb"
+	"github.com/temphia/temphia/code/backend/libx/easyerr"
 
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
@@ -72,7 +73,10 @@ func (b *Builder) Build() error {
 		}
 	}
 
-	fsBuilder := storeBuilders[fsconfig.Provider]
+	fsBuilder, ok := storeBuilders[fsconfig.Provider]
+	if !ok {
+		return easyerr.Error("store builder not found")
+	}
 
 	fsstore, err := fsBuilder(store.BuilderOptions{
 		Config:     fsconfig,
