@@ -10,7 +10,4 @@ const (
 	NotzAdapterBuildOk         = "adapter_build_ok"
 	NotzAdapterNotFound        = "adapter_instance_not_found"
 	NotzHostExtractErr         = "host_extract_err"
-
-	NotzAdapterEditorFileServeEr = "adapter_editor_file_serve_err"
-	NotzAdapterEditorActionErr   = "adapter_editor_file_action_err"
 )

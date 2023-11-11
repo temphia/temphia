@@ -4,7 +4,6 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
-	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/adapter"
 )
 
 var G *Registry
@@ -30,8 +29,4 @@ func SetExecutor(name string, builder etypes.BuilderFactory) {
 
 func SetExecModule(name string, builder etypes.ModuleBuilderFunc) {
 	G.SetExecModule(name, builder)
-}
-
-func SetAdapterBuilder(name string, rb adapter.Builder) {
-	G.SetAapterBuilder(name, rb)
 }

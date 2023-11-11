@@ -124,7 +124,7 @@ func New(opts Options) *Server {
 			TicketAPI:  tktapi,
 		}),
 		authserver: apiauth.New(root.AuthController(), signer, opts.App.TenantId()),
-		apiself:    apiself.New(signer, mware, nil, root, node),
+		apiself:    apiself.New(signer, mware, root, node),
 		apidata:    apidata.New(mware, root.DtableController()),
 		ticketsAPI: tickets.New(mware, root),
 		apiroot:    apiroot.New(signer, mware, root, node),

@@ -18,7 +18,6 @@ import (
 	"github.com/temphia/temphia/code/backend/services/sockd/transports"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
-	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/adapter"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/httpx"
 	"github.com/tidwall/gjson"
 )
@@ -33,18 +32,15 @@ type Self struct {
 	cEngine  *engine.Controller
 	cSockd   *sockd.Controller
 
-	notz adapter.AdapterHub
-
 	middleware *middleware.Middleware
 
 	sockdConnIdGenerator *snowflake.Node
 }
 
-func New(signer service.Signer, middleware *middleware.Middleware, notz adapter.AdapterHub, root *controllers.RootController, id *snowflake.Node) *Self {
+func New(signer service.Signer, middleware *middleware.Middleware, root *controllers.RootController, id *snowflake.Node) *Self {
 	return &Self{
 		signer:               signer,
 		middleware:           middleware,
-		notz:                 notz,
 		cBasic:               root.BasicController(),
 		cUser:                root.UserController(),
 		cData:                root.DtableController(),

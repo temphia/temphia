@@ -150,23 +150,6 @@ func (cs *ClaimSigner) ParseExecutor(tenantId, payload string) (*claim.Executor,
 	return data, nil
 }
 
-func (cs *ClaimSigner) SignAdapterEditor(tenantId string, data *claim.AdapterEditor) (string, error) {
-	return cs.signer.Sign(tenantId, data)
-}
-
-func (cs *ClaimSigner) ParseAdapterEditor(tenantId, payload string) (*claim.AdapterEditor, error) {
-	data := &claim.AdapterEditor{}
-
-	err := cs.signer.Parse(tenantId, payload, data)
-	if err != nil {
-		return nil, err
-	}
-
-	data.TenantId = tenantId
-
-	return data, nil
-}
-
 //  auth related
 
 func (cs *ClaimSigner) SignOauthState(tenantId string, data *claim.OauthState) (string, error) {

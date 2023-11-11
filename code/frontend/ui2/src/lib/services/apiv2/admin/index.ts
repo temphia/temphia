@@ -10,5 +10,4 @@ export * from "./user_tkt";
 export * from "./user";
 export * from  "./lens";
 export * from "./plug_state"
-export * from "./adapter_editor"
 export * from "./target"

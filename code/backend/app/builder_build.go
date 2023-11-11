@@ -111,7 +111,6 @@ func (b *Builder) buildServices() error {
 
 	b.app.global.Set("executors", xtdata.Executors)
 	b.app.global.Set("modules", xtdata.Modules)
-	b.app.global.Set("adapters", xtdata.Adapters)
 	b.app.global.Set("scripts", xtdata.Scripts)
 
 	return nil

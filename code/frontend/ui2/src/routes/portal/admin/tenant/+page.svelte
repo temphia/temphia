@@ -72,14 +72,7 @@
                         action_key="id"
                         show_drop={true}
                         actions={[
-                            {
-                                Name: "Adapter Editor",
-                                Action: (id) =>
-                                    app.nav.admin_tenant_domain_adapter_editor(
-                                        id
-                                    ),
-                                icon: "lightning-bolt",
-                            },
+                            
 
                             {
                                 Name: "Edit",

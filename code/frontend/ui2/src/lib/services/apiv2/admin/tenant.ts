@@ -34,9 +34,6 @@ export class AdminTenantAPI {
     return this.base.delete(`/admin/tenant/domain/${did}`);
   }
 
-  domain_issue_adapter_editor(did: string) {
-    return this.base.get(`/admin/tenant/domain/${did}/issue/adapter_editor`);
-  }
   domain_adapter_reset(did: string) {
     return this.base.get(`/admin/tenant/domain/${did}/reset`);
   }

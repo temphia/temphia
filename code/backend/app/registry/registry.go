@@ -8,7 +8,6 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
-	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/adapter"
 )
 
 type (
@@ -111,20 +110,6 @@ func (r *Registry) SetExecModule(name string, builder etypes.ModuleBuilderFunc) 
 		ctx.SetModuleBuilder(name, mod)
 		return nil, nil
 	}
-}
-
-func (r *Registry) SetAapterBuilder(name string, rb adapter.Builder) {
-	r.mlock.Lock()
-	defer r.mlock.Unlock()
-	if r.freezed {
-		panic(errTooLate)
-	}
-
-	r.extensions[name] = func(ctx *xtension.Context) (xtension.Xtension, error) {
-		ctx.SetAdapterBuilder(name, rb)
-		return nil, nil
-	}
-
 }
 
 func (r *Registry) SetExtensionBuilder(name string, builder xtension.Builder) {
