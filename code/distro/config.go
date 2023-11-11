@@ -43,7 +43,7 @@ func (a *AppCLi) readConfig() (*config.Config, error) {
 
 	if a.ConfigFile == "" {
 
-		if a.ctx.Command() == "init-data" {
+		if a.ctx.Command() == "init" {
 			os.Mkdir(TemphiaStateFolder, os.FileMode(0777))
 			os.WriteFile(TemphiaConfigFile, getConfig(), os.FileMode(0666))
 			a.ConfigFile = TemphiaConfigFile

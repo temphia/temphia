@@ -29,6 +29,10 @@ type DatabaseCLI struct {
 		CustomMigration string `help:"Custom migration folder."`
 	} `cmd:"" help:"delete old db and init new db"`
 
+	Rollback struct {
+		CustomMigration string `help:"Custom migration folder."`
+	} `cmd:"" help:"Rollback migrations."`
+
 	Migrate struct {
 		CustomMigration string `help:"Custom migration folder."`
 	} `cmd:"" help:"Run new migrations."`

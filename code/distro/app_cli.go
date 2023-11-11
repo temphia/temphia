@@ -1,11 +1,15 @@
 package distro
 
 import (
+	"fmt"
 	"os"
+	"os/exec"
 
 	"github.com/alecthomas/kong"
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/distro/climux"
 	"github.com/temphia/temphia/code/distro/common"
@@ -22,14 +26,16 @@ func init() {
 }
 
 type AppCLi struct {
-	InitData struct {
-		SkipDBInit bool `help:"Skip database initilization."`
-		DemoSeed   bool `help:"Demo seed database."`
+	Init struct {
+		SkipDBInit bool   `help:"Skip database initilization."`
+		OrgName    string `help:"Org/Tenant name slug."`
+		HttpPort   string `help:"HTTP Port for service."`
+		DemoSeed   bool   `help:"Demo seed database."`
 	} `cmd:"" help:"Initilizes data folder, create db and run migrations."`
 
-	Start struct{} `cmd:"" help:"Starts the application."`
-
+	Start       struct{} `cmd:"" help:"Starts the application."`
 	ActualStart struct{} `cmd:"" help:"Do not call, called internally."`
+	Status      struct{} `cmd:"" help:"Status of App [running/stopped]"`
 
 	ConfigFile string
 
@@ -46,19 +52,21 @@ func RunAppCLI(args []string) error {
 	cli.ctx = ctx
 
 	switch ctx.Command() {
-	case "init-data":
-		return cli.initData()
+	case "init":
+		return cli.init()
 	case "start":
 		return cli.start()
 	case "actual-start":
 		return cli.actualStart()
+	case "status":
+		panic("not impl yet")
 	default:
 		panic("Not implemened command:" + ctx.Command())
 	}
 
 }
 
-func (a *AppCLi) initData() error {
+func (a *AppCLi) init() error {
 	conf, err := a.readConfig()
 	if err != nil {
 		return err
@@ -70,7 +78,7 @@ func (a *AppCLi) initData() error {
 		return err
 	}
 
-	if a.InitData.SkipDBInit {
+	if a.Init.SkipDBInit {
 		return nil
 	}
 
@@ -117,12 +125,47 @@ func (a *AppCLi) initData() error {
 
 func (a *AppCLi) start() error {
 
+	_, err := a.readConfig()
+	if err != nil {
+		return err
+	}
+
+	selfbinary, err := os.Executable()
+	if err != nil {
+		return err
+	}
+
+	logdsecret, err := xutils.GenerateRandomString(32)
+	if err != nil {
+		return err
+	}
+
+	// fixme => start logd service / injester
+
+	cmd := exec.Command(selfbinary, "app", fmt.Sprintf("--config-file=%s", a.ConfigFile), "actual-start")
+	cmd.Env = append(cmd.Env, os.Environ()...)
+	cmd.Env = append(cmd.Env,
+		fmt.Sprintf("TEMPHIA_LOGD_SECRET=%s", logdsecret),
+		fmt.Sprintf("TEMPHIA_LOGD_PORT=%s", "5555"), // fixme => real logd
+	)
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	pp.Println("@starting_actual_process", cmd.String())
+
+	return cmd.Run()
+
+}
+
+func (a *AppCLi) actualStart() error {
+
 	conf, err := a.readConfig()
 	if err != nil {
 		return err
 	}
-	// fixme => start log injester and set TEMPHIA_LOGD_SECRET TEMPHIA_LOGD_PORT
-	// call actualStart in subprocess
+
+	// fixme use TEMPHIA_LOGD_SECRET TEMPHIA_LOGD_PORT
 
 	dapp, err := NewDistroApp(Options{
 		Conf: conf,
@@ -134,10 +177,3 @@ func (a *AppCLi) start() error {
 
 	return dapp.Run()
 }
-
-func (a *AppCLi) actualStart() error {
-
-	return nil
-}
-
-// private

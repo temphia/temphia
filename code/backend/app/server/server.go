@@ -241,6 +241,7 @@ func (s *Server) localdoor() error {
 
 	l, err := net.Listen("unix", s.opts.LocalSocket)
 	if err != nil {
+		pp.Println("cannot listen socket", err.Error())
 		return err
 	}
 
@@ -250,7 +251,8 @@ func (s *Server) localdoor() error {
 		for {
 			c, err := l.Accept()
 			if err != nil {
-				log.Fatal("accept error:", err)
+				log.Fatal("accept error:", err.Error())
+				return
 			}
 
 			func(c net.Conn) {
