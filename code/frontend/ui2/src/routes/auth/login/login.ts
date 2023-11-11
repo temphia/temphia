@@ -19,6 +19,9 @@ export class LoginService {
     }
 
     async loginWithPassword(user_ident, password) {
+
+        this.site_utils.clearAuthedData()
+
         const resp = await this.api.login_next({
             user_ident: user_ident,
             password: password,
