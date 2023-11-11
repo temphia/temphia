@@ -23,12 +23,6 @@ create table domains(
     about text not null default '',
     default_ugroup text not null default '',
     cors_policy text not null default '',
-    adapter_policy text not null default '',
-    adapter_type text not null default '',
-    adapter_opts json not null default '{}',
-    adapter_cab_source text not null default '',
-    adapter_cab_folder text not null default '',
-    adapter_template_bprints text not null default '',
     tenant_id text not null,
     extra_meta json not null default '{}',
     unique(name, tenant_id)

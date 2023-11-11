@@ -55,43 +55,6 @@
         },
   
         {
-          name: "Adapter Policy",
-          ftype: "TEXT_POLICY",
-          key_name: "adapter_policy",
-        },
-  
-        {
-          name: "Adapter Type",
-          ftype: "SELECT",
-          key_name: "adapter_type",
-          options: adapter_providers,
-        },
-  
-        {
-          name: "Adapter Options",
-          ftype: "KEY_VALUE_TEXT",
-          key_name: "adapter_opts",
-        },
-  
-        // {
-        //   name: "Adapter Cabinet Source",
-        //   ftype: "TEXT",
-        //   key_name: "adapter_cab_source",
-        // },
-  
-        // {
-        //   name: "Adapter Cabinet Folder",
-        //   ftype: "TEXT",
-        //   key_name: "adapter_cab_folder",
-        // },
-  
-        // {
-        //   name: "Adapter Template Blueprints",
-        //   ftype: "MULTI_TEXT",
-        //   key_name: "adapter_template_bprints",
-        // },
-  
-        {
           name: "Extra Meta",
           ftype: "KEY_VALUE_TEXT",
           key_name: "extra_meta",

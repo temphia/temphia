@@ -1,6 +1,7 @@
 <script lang="ts">
     import { getContext } from "svelte";
-    import { AutoTable, ActionAddButton, PortalService } from "$lib/core";
+    import Icon from "@krowten/svelte-heroicons/Icon.svelte";
+    import { AutoTable, PortalService } from "$lib/core";
     import TopActions from "$lib/core/top_actions.svelte";
 
     const app: PortalService = getContext("__app__");
@@ -59,9 +60,13 @@
 
                 <div class="flex-col flex py-3 relative border rounded p-2">
                     <div class="absolute right-1">
-                        <ActionAddButton
-                            onClick={() => app.nav.admin_tenant_domain_new()}
-                        />
+                        <button
+                            class="btn btn-sm variant-filled-primary"
+                            on:click={() => app.nav.admin_tenant_domain_new()}
+                        >
+                            <Icon name="plus" class="h-5 w-5" />
+                            Add
+                        </button>
                     </div>
 
                     <label class="pb-2 text-gray-700 font-semibold"
@@ -72,8 +77,6 @@
                         action_key="id"
                         show_drop={true}
                         actions={[
-                            
-
                             {
                                 Name: "Edit",
                                 Action: (id) =>
@@ -117,11 +120,10 @@
                         key_names={[
                             ["id", "ID"],
                             ["name", "Name"],
-                            ["adapter_type", "Http Adapter"],
                             ["about", "About"],
                         ]}
                         datas={domains}
-                        color={["adapter_type"]}
+                        color={[]}
                     />
                 </div>
             {/if}

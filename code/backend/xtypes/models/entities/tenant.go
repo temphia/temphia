@@ -12,14 +12,11 @@ type Tenant struct {
 }
 
 type TenantDomain struct {
-	Id             int64      `json:"id,omitempty" db:"id,omitempty"`
-	Name           string     `json:"name,omitempty" db:"name,omitempty"`
-	About          string     `json:"about,omitempty" db:"about,omitempty"`
-	DefaultUgroup  string     `json:"default_ugroup,omitempty" db:"default_ugroup,omitempty"`
-	CORSPolicy     string     `json:"cors_policy,omitempty" db:"cors_policy,omitempty"`
-	AdapterPolicy  string     `json:"adapter_policy,omitempty" db:"adapter_policy,omitempty"`
-	AdapterType    string     `json:"adapter_type,omitempty" db:"adapter_type,omitempty"` // dynamic, plug_app, landing_page, static, alias, launcher
-	AdapterOptions JsonStrMap `json:"adapter_opts,omitempty" db:"adapter_opts,omitempty"`
-	TenantId       string     `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`
-	ExtraMeta      JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
+	Id            int64      `json:"id,omitempty" db:"id,omitempty"`
+	Name          string     `json:"name,omitempty" db:"name,omitempty"`
+	About         string     `json:"about,omitempty" db:"about,omitempty"`
+	DefaultUgroup string     `json:"default_ugroup,omitempty" db:"default_ugroup,omitempty"`
+	CORSPolicy    string     `json:"cors_policy,omitempty" db:"cors_policy,omitempty"`
+	TenantId      string     `json:"tenant_id,omitempty" db:"tenant_id,omitempty"`
+	ExtraMeta     JsonStrMap `json:"extra_meta,omitempty" db:"extra_meta,omitempty"`
 }
