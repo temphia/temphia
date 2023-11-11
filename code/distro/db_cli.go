@@ -2,10 +2,8 @@ package distro
 
 import (
 	"os"
-	"path"
 
 	"github.com/alecthomas/kong"
-	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/distro/climux"
@@ -72,11 +70,9 @@ func (a *DatabaseCLI) initDatabase() error {
 		return err
 	}
 
-	confd := config.New(conf)
-
 	switch conf.DatabaseConfig.Vendor {
 	case store.VendorSqlite:
-		_, err = common.InitSQLiteDB(path.Join(confd.DBFolder(), conf.DatabaseConfig.Target))
+		_, err = common.InitSQLiteDB(conf.DatabaseConfig.Target)
 		if err != nil {
 			return err
 		}

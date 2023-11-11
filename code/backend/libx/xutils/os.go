@@ -22,6 +22,10 @@ func FileExists(dpath, file string) bool {
 func CreateIfNotExits(fpath string) error {
 	if _, err := os.Stat(fpath); errors.Is(err, os.ErrNotExist) {
 		return os.Mkdir(fpath, os.ModePerm)
+	} else {
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

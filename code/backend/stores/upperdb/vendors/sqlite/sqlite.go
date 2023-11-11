@@ -2,6 +2,7 @@ package sqlite
 
 import (
 	"database/sql"
+	"path"
 
 	"github.com/k0kubun/pp"
 	"github.com/mattn/go-sqlite3"
@@ -31,15 +32,15 @@ func (sl) Db(so *config.StoreConfig) (db.Session, error) {
 		return csess, nil
 	}
 
-	return NewUpperDb(so.HostPath)
+	return NewUpperDb(so.Target)
 }
 
 func (sl) NewTx(sqlTx *sql.Tx) (dbutils.Tx, error) {
 	return sqlite.NewTx(sqlTx)
 }
 
-func NewUpperDb(path string) (db.Session, error) {
-	db, err := NewRawDB(path)
+func NewUpperDb(p string) (db.Session, error) {
+	db, err := NewRawDB(path.Join(p, "main.db"))
 	if err != nil {
 		return nil, err
 	}

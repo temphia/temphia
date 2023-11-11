@@ -1,8 +1,6 @@
 package dev
 
 import (
-	"path"
-
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/config"
 
@@ -34,17 +32,22 @@ func Run() error {
 			Name:     "sqlite",
 			Vendor:   store.VendorSqlite,
 			Provider: "sqlite",
-			Target:   "main.db",
 		},
 	}
-	confd := config.New(conf)
 
-	err := confd.InitDataFolder()
+	err := conf.Init()
 	if err != nil {
 		return err
 	}
 
-	ran, err := common.InitSQLiteDB(path.Join(confd.DBFolder(), conf.DatabaseConfig.Target))
+	confd := config.New(conf)
+
+	err = confd.InitDataFolder()
+	if err != nil {
+		return err
+	}
+
+	ran, err := common.InitSQLiteDB(conf.DatabaseConfig.Target)
 	if err != nil {
 		return err
 	}

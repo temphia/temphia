@@ -1,14 +1,11 @@
 package distro
 
 import (
-	"encoding/json"
 	"os"
-	"path"
 
 	"github.com/alecthomas/kong"
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/distro/climux"
 	"github.com/temphia/temphia/code/distro/common"
@@ -116,48 +113,3 @@ func (a *AppCLi) actualStart() error {
 }
 
 // private
-
-const (
-	TemphiaStateFolder = ".temphia-data"
-	TemphiaConfigFile  = "temphia.json"
-)
-
-func (a *AppCLi) readConfig() (*config.Config, error) {
-
-	if a.ConfigFile == "" {
-		maybeConf := path.Join(TemphiaStateFolder, TemphiaConfigFile)
-
-		if a.ctx.Command() == "init-data" {
-			os.Mkdir(TemphiaStateFolder, os.FileMode(0522))
-			a.ConfigFile = maybeConf
-
-		} else {
-			if xutils.FileExists(TemphiaStateFolder, TemphiaConfigFile) {
-				a.ConfigFile = maybeConf
-			}
-		}
-
-	}
-
-	return readConfig(a.ConfigFile)
-}
-
-func readConfig(file string) (*config.Config, error) {
-
-	if file == "" {
-		return nil, easyerr.Error("--config-file not passed")
-	}
-
-	out, err := os.ReadFile(file)
-	if err != nil {
-		return nil, easyerr.Wrap("err reading config file", err)
-	}
-
-	conf := &config.Config{}
-	err = json.Unmarshal(out, &conf)
-	if err != nil {
-		return nil, easyerr.Wrap("err parsing config JSON", err)
-	}
-
-	return conf, nil
-}

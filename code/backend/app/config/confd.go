@@ -76,9 +76,7 @@ func (c *confd) InitDataFolder() error {
 		return err
 	}
 
-	spath := path.Join(c.DBFolder(), c.config.DatabaseConfig.Vendor)
-
-	return xutils.CreateIfNotExits(spath)
+	return xutils.CreateIfNotExits(c.config.DatabaseConfig.Target)
 }
 
 func (c *confd) GetRemoteExecEnvs(plug, agent, bprint, token string) []string {

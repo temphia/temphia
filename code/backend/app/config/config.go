@@ -1,5 +1,7 @@
 package config
 
+import "path"
+
 type Config struct {
 	ServerPort      string        `json:"server_port,omitempty"`
 	TenantId        string        `json:"tenant_id,omitempty"`
@@ -23,7 +25,15 @@ type StoreConfig struct {
 	Password string         `json:"password,omitempty"`
 	Port     string         `json:"port,omitempty"`
 	Options  map[string]any `json:"options,omitempty"`
-	Target   string         `json:"target,omitempty"`
+	Target   string         `json:"-,omitempty"` // computed
+}
+
+func (c *Config) Init() error {
+
+	c.DatabaseConfig.Target = path.Join(c.DataFolder, "db", c.DatabaseConfig.Vendor)
+
+	return nil
+
 }
 
 type IngestConfig struct {
