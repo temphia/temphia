@@ -432,78 +432,71 @@ export class PoralNavigator {
     this.set(`admin/ugroup/new`);
   }
   admin_ugroup_edit(ugroup: string) {
-    this.set(`admin/ugroup/edit/${ugroup}`);
+    this.set(`admin/ugroup/edit?ugroup=${ugroup}`);
   }
 
   admin_ugroup_users(ugroup: string) {
-    this.set(`admin/ugroup/subusers/${ugroup}`);
+    this.set(`admin/ugroup/subusers?ugroup=${ugroup}`);
   }
 
   ////
 
   admin_ugroup_user_edit(ugroup: string, user_id: string) {
-    this.set(`#/admin/ugroup/${ugroup}/user/${user_id}/edit`);
+    this.set(`admin/ugroup/subusers/edit?ugroup=${ugroup}&user_id=${user_id}`);
+
   }
 
   admin_ugroup_user_new(ugroup: string, opts?: any) {
-    this.set(`#/admin/ugroup/${ugroup}/user/new`, opts);
+    this.set(`admin/ugroup/subusers?ugroup=${ugroup}`, opts);
   }
 
   admin_ugroup_auths(ugroup: string) {
-    this.set(`#/admin/ugroup/${ugroup}/auth`);
+    this.set(`admin/ugroup/auth?ugroup=${ugroup}`);
   }
 
   admin_ugroup_auth_new(ugroup: string) {
-    this.set(`#/admin/ugroup/${ugroup}/auth/new`);
+    this.set(`admin/ugroup/auth/new?ugroup=${ugroup}`);
   }
 
   admin_ugroup_auth_edit(ugroup: string, id: string) {
-    this.set(`#/admin/ugroup/${ugroup}/auth/edit/${id}`);
+    this.set(`admin/ugroup/auth/edit?ugroup=${ugroup}&id=${id}`);
   }
 
   admin_ugroup_apps(ugroup: string) {
-    this.set(`#/admin/ugroup/${ugroup}/app`);
+    this.set(`admin/ugroup/app?ugroup=${ugroup}`);
   }
 
   admin_ugroup_app_new(ugroup: string) {
-    this.set(`#/admin/ugroup/${ugroup}/app/new`);
+    this.set(`admin/ugroup/app/new?ugroup=${ugroup}`);
   }
 
   admin_ugroup_app_edit(ugroup: string, id: string) {
-    this.set(`#/admin/ugroup/${ugroup}/app/edit/${id}`);
+    this.set(`admin/ugroup/app/edit?ugroup=${ugroup}&id=${id}`);
   }
 
   admin_ugroup_datas(ugroup: string) {
-    this.set(`#/admin/ugroup/${ugroup}/data`);
+    this.set(`admin/ugroup/data?ugroup=${ugroup}`);
   }
 
   admin_ugroup_data_new(ugroup: string) {
-    this.set(`#/admin/ugroup/${ugroup}/data/new`);
+    this.set(`admin/ugroup/data/new?ugroup=${ugroup}`);
   }
 
   admin_ugroup_data_edit(ugroup: string, id: string) {
-    this.set(`#/admin/ugroup/${ugroup}/data/edit/${id}`);
+    this.set(`admin/ugroup/${ugroup}/data/edit/${id}`);
   }
 
 
   admin_tenant() {
-    this.set(`#/admin/tenant/`);
-  }
-
-  admin_tenant_edit() {
-    this.set(`#/admin/tenant/edit`);
+    this.set(`admin/tenant`);
   }
 
   admin_tenant_domain_edit(did: string) {
-    this.set(`#/admin/tenant/domain/${did}/edit`);
+    this.set(`admin/tenant/domain/edit?did=${did}`);
   }
 
   admin_tenant_domain_new() {
-    this.set(`#/admin/tenant/domain/new`);
-  }
-
-  admin_tenant_domain_adapter_editor(did: string) {
-    this.set(`#/admin/tenant/domain/${did}/adapter_editor`);
+    this.set(`admin/tenant/domain/new`);
   }
 
   admin_tenant_system_kvs() {
