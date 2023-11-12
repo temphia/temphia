@@ -6,38 +6,42 @@ import (
 	webview "github.com/webview/webview_go"
 
 	"github.com/k0kubun/pp"
-	"github.com/temphia/temphia/code/distro/climux"
 )
 
-//go:embed start.html
-var StartHtml []byte
+type EbrowserApp struct {
+	webview webview.WebView
+}
 
-func Run() {
+func New() *EbrowserApp {
+
 	w := webview.New(true)
-	defer w.Destroy()
-
-	w.Bind("__goto_page__", func(ctx map[string]string) error {
-		pp.Println("@ctx", ctx)
-		return nil
-	})
-
-	w.SetTitle("Temphia Start")
 	w.SetSize(900, 700, webview.HintNone)
-	w.SetHtml(string(StartHtml))
 
-	w.Run()
+	return &EbrowserApp{
+		webview: w,
+	}
+}
+
+func (e *EbrowserApp) RunWithStartPage(opts TemplateOptions) {
+
+	e.webview.Bind("__ebrowser_rpc__", e.__BindEbrowserRPC)
+
+	shtml, err := RenderPage(opts)
+	if err != nil {
+		panic(err)
+	}
+
+	e.webview.SetTitle("Temphia Start")
+	e.webview.SetHtml(shtml)
+	e.webview.Run()
 
 }
 
-func init() {
+func (e *EbrowserApp) __BindEbrowserRPC(name string, opts map[string]string) error {
+	pp.Println("@ctx", name, opts)
+	return nil
+}
 
-	climux.Register(&climux.CliAction{
-		Name: "ebrowser",
-		Help: "Run embed browser with state folder",
-		Func: func(args []string) error {
-			Run()
-			return nil
-		},
-	})
-
+func (e *EbrowserApp) Close() {
+	e.webview.Destroy()
 }
