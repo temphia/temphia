@@ -27,10 +27,12 @@ func init() {
 
 type AppCLi struct {
 	Init struct {
-		SkipDBInit bool   `help:"Skip database initilization."`
-		OrgName    string `help:"Org/Tenant name slug."`
-		HttpPort   string `help:"HTTP Port for service."`
-		DemoSeed   bool   `help:"Demo seed database."`
+		SkipDBInit   bool   `help:"Skip database initilization."`
+		OrgName      string `help:"Org/Tenant name slug."`
+		HttpPort     string `help:"HTTP Port for service."`
+		RootDomain   string `help:"Root domain to run main temphia app. like example.com"`
+		RunnerDomain string `help:"Runner domain to run apps under like myapp.example.com. so it should support wildcard subdomain in DNS. Pass as example.com here."`
+		DemoSeed     bool   `help:"Demo seed database."`
 	} `cmd:"" help:"Initilizes data folder, create db and run migrations."`
 
 	Start       struct{} `cmd:"" help:"Starts the application."`
@@ -69,12 +71,14 @@ func RunAppCLI(args []string) error {
 func (a *AppCLi) init() error {
 	conf, err := a.readConfig()
 	if err != nil {
+		pp.Println("read config error")
 		return err
 	}
 
 	confd := config.New(conf)
 	err = confd.InitDataFolder()
 	if err != nil {
+		pp.Println("init folder error")
 		return err
 	}
 

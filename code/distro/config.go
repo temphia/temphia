@@ -3,8 +3,10 @@ package distro
 import (
 	"encoding/json"
 	"fmt"
+	"net"
 	"os"
 
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/libx/xutils"
@@ -15,27 +17,63 @@ const (
 	TemphiaConfigFile  = "temphia.json"
 )
 
-func getConfig() []byte {
-	randomId, err := xutils.GenerateRandomString(32)
-	if err != nil {
-		panic(err)
+func getConfig(port, tenantId, root_domain, runner_domain, master_key, statefolder string) []byte {
+
+	if port == "" {
+		l, err := net.Listen("tcp", ":4000")
+		if err != nil {
+			p, err := xutils.GetFreePort()
+			if err != nil {
+				panic("cannot alllocate port")
+			}
+
+			port = fmt.Sprintf(":%d", p)
+
+		} else {
+			l.Close()
+			port = ":4000"
+
+		}
+	}
+
+	if tenantId == "" {
+		tenantId = "default0"
+	}
+
+	if root_domain == "" {
+		root_domain = "localhost"
+	}
+
+	if runner_domain == "" {
+		runner_domain = "localhost"
+	}
+
+	if master_key == "" {
+		randomId, err := xutils.GenerateRandomString(32)
+		if err != nil {
+			panic(err)
+		}
+		master_key = randomId
+	}
+
+	if statefolder == "" {
+		statefolder = TemphiaStateFolder
 	}
 
 	return []byte(fmt.Sprintf(`{
-		"server_port": ":4000",
-		"tenant_id": "default0",
-		"root_domain": "localhost",
-		"runner_domain": "localhost",
+		"server_port": "%s",
+		"tenant_id": "%s",
+		"root_domain": "%s",
+		"runner_domain": "%s",
 		"master_key": "%s",
 		"enable_local_door": true,
 		"data_folder": "./%s",
 		"database_config": {
 			"name": "sqlite",
 			"vendor": "sqlite",
-			"provider": "sqlite",
-			"target": "main.db"
+			"provider": "sqlite"
 		}
-	}`, randomId, TemphiaStateFolder))
+	}`, port, tenantId, root_domain, runner_domain, master_key, statefolder))
 
 }
 
@@ -45,7 +83,14 @@ func (a *AppCLi) readConfig() (*config.Config, error) {
 
 		if a.ctx.Command() == "init" {
 			os.Mkdir(TemphiaStateFolder, os.FileMode(0777))
-			os.WriteFile(TemphiaConfigFile, getConfig(), os.FileMode(0666))
+			os.WriteFile(TemphiaConfigFile, getConfig(
+				a.Init.HttpPort,
+				a.Init.OrgName,
+				a.Init.RootDomain,
+				a.Init.RunnerDomain,
+				os.Getenv("TEMPHIA_APP_INIT_SECRET"),
+				"",
+			), os.FileMode(0666))
 			a.ConfigFile = TemphiaConfigFile
 
 		} else {
@@ -73,6 +118,7 @@ func readConfig(file string) (*config.Config, error) {
 	conf := &config.Config{}
 	err = json.Unmarshal(out, &conf)
 	if err != nil {
+		pp.Println("@UNMARSHEL ERROR", string(out), err.Error())
 		return nil, easyerr.Wrap("err parsing config JSON", err)
 	}
 
