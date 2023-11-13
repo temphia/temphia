@@ -15,20 +15,19 @@ func init() {
 	climux.Register(&climux.CliAction{
 		Name: "ebrowser",
 		Help: "Run embed browser with state folder",
-		Func: func(cctx climux.Context) error {
-			Run()
-			return nil
-		},
+		Func: RunCLI,
 	})
 
 }
 
-func Run() {
+func RunCLI(cctx climux.Context) error {
 
 	file := "temphia.json"
 
 	ew := New()
 	defer ew.Close()
+
+	ew.clictx = cctx
 
 	if !xutils.FileExists("./", file) {
 		ew.RunWithStartPage(TemplateOptions{
@@ -36,7 +35,7 @@ func Run() {
 			LocalExists:  false,
 			LocalFile:    "",
 		})
-		return
+		return nil
 	}
 
 	out, err := os.ReadFile(file)
@@ -56,7 +55,8 @@ func Run() {
 			LocalRunning: false,
 			LocalFile:    file,
 		})
-		return
+
+		return nil
 	}
 
 	ew.RunWithStartPage(TemplateOptions{
@@ -64,5 +64,7 @@ func Run() {
 		LocalRunning: true,
 		LocalFile:    file,
 	})
+
+	return nil
 
 }

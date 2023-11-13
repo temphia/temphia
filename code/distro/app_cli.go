@@ -45,9 +45,7 @@ type AppCLi struct {
 }
 
 func RunAppCLI(cctx climux.Context) error {
-	args := cctx.Args
-
-	os.Args = args
+	os.Args = cctx.Args
 
 	cli := &AppCLi{}
 	ctx := kong.Parse(cli)
