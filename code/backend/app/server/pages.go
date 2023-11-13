@@ -54,6 +54,10 @@ func (s *Server) pagesRoutes() gin.HandlerFunc {
 
 		ppath := strings.TrimSuffix(strings.TrimPrefix(ctx.Request.URL.Path, "/z/pages"), "/")
 
+		if ppath == "" {
+			ppath = "index.html"
+		}
+
 		pitems := strings.Split(ppath, "/")
 		lastpath := pitems[len(pitems)-1]
 
