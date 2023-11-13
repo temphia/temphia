@@ -45,7 +45,10 @@ func Run() {
 		return
 	}
 
-	err := acli.Func(os.Args[1:])
+	err := acli.Func(climux.Context{
+		Args: os.Args[1:],
+		R:    clis,
+	})
 	if err != nil {
 		panic(err)
 	}

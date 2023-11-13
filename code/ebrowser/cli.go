@@ -15,7 +15,7 @@ func init() {
 	climux.Register(&climux.CliAction{
 		Name: "ebrowser",
 		Help: "Run embed browser with state folder",
-		Func: func(args []string) error {
+		Func: func(cctx climux.Context) error {
 			Run()
 			return nil
 		},

@@ -44,7 +44,8 @@ type AppCLi struct {
 	ctx *kong.Context
 }
 
-func RunAppCLI(args []string) error {
+func RunAppCLI(cctx climux.Context) error {
+	args := cctx.Args
 
 	os.Args = args
 

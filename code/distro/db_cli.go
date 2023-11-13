@@ -46,9 +46,9 @@ type DatabaseCLI struct {
 	ctx *kong.Context
 }
 
-func RunDatabaseCLI(args []string) error {
+func RunDatabaseCLI(cctx climux.Context) error {
 
-	os.Args = args
+	os.Args = cctx.Args
 
 	cli := &DatabaseCLI{}
 	ctx := kong.Parse(cli)

@@ -10,9 +10,9 @@ func init() {
 	climux.Register(&climux.CliAction{
 		Name: "repo",
 		Help: "repositary related actions",
-		Func: func(args []string) error {
+		Func: func(cctx climux.Context) error {
 
-			if args[0] == "build" {
+			if cctx.Args[0] == "build" {
 				return cmd.Run(".repo.yaml")
 			}
 

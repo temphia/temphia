@@ -17,9 +17,9 @@ func init() {
 
 }
 
-func RunCLI(args []string) error {
+func RunCLI(cctx climux.Context) error {
 
-	os.Args = args
+	os.Args = cctx.Args
 
 	cli := &CLI{}
 	ctx := kong.Parse(cli)

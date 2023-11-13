@@ -7,8 +7,10 @@ type CLiFunc func(args []string) error
 type CliAction struct {
 	Name string
 	Help string
-	Func func(args []string) error
+	Func func(ctx Context) error
 }
+
+type Registery map[string]*CliAction
 
 var (
 	cliRegistery = map[string]*CliAction{}
