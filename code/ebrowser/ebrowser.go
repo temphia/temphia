@@ -2,6 +2,9 @@ package ebrowser
 
 import (
 	_ "embed"
+	"encoding/json"
+	"fmt"
+	"time"
 
 	"github.com/temphia/temphia/code/distro/climux"
 	webview "github.com/webview/webview_go"
@@ -32,6 +35,11 @@ func (e *EbrowserApp) RunWithStartPage(opts TemplateOptions) {
 	if err != nil {
 		panic(err)
 	}
+
+	go func() {
+		time.Sleep(time.Second * 2)
+		pp.Println(e.__sendRPC("temphia_start", map[string]any{}))
+	}()
 
 	e.webview.SetTitle("Temphia Start")
 	e.webview.SetHtml(shtml)
@@ -67,6 +75,17 @@ func (e *EbrowserApp) __BindEbrowserRPC(name string, opts map[string]string) {
 
 	}()
 
+}
+
+func (e *EbrowserApp) __sendRPC(name string, data any) error {
+
+	out, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+
+	e.webview.Eval(fmt.Sprintf(`__handle_rpc__("%s", "%s" )`, name, out))
+	return nil
 }
 
 func (e *EbrowserApp) Close() {

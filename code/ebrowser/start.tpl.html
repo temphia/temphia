@@ -29,6 +29,12 @@
     }
   }
 
+  window["__handle_rpc__"] = (method, data) => {
+    console.log("__rpc__",method, data)
+
+  } 
+
+
 
   const connect_local = () => {
     const __ebrowser_rpc = window["__ebrowser_rpc__"];
