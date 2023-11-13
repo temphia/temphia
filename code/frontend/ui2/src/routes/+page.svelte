@@ -1,13 +1,11 @@
-<h1>Welcome to Z Pages</h1>
+<script>
+    import Linked from "./_linked.svelte";
+</script>
 
-<ul>
-    <li>
-        <a href="/z/pages/portal">Portal</a>
-    </li>
-
-    <li>
-        <a href="/z/pages/auth">Auth</a>
-    </li>
-</ul>
-
-
+<Linked
+    title="Welcome to Z Pages."
+    links={[
+        ["Portal", "/z/pages/portal"],
+        ["Auth", "/z/pages/auth"],
+    ]}
+/>

@@ -1,19 +1,13 @@
+<script>
+    import Linked from "../_linked.svelte";
+</script>
 
-<h1>Welcome to Auth Page.</h1>
-
-<ul>
-    <li>
-        <a href="/z/pages/auth/login">Login</a>
-    </li>
-
-    <li>
-        <a href="/z/pages/auth/signup">Signup</a>
-    </li>
-
-    <li>
-        <a href="/z/pages/auth/app">App Auth</a>
-    </li>
-
-</ul>
-
-
+<Linked
+    title="Welcome to Auth Pages."
+    links={[
+        ["[..]", "/z/pages"],
+        ["Login", "/z/pages/auth/login"],
+        ["Signup", "/z/pages/auth/login"],
+        ["App Auth", "/z/pages/auth/login"],
+    ]}
+/>
