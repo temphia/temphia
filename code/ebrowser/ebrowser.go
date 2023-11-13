@@ -4,8 +4,10 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"os"
 	"time"
 
+	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/distro/climux"
 	webview "github.com/webview/webview_go"
 
@@ -63,17 +65,45 @@ func (e *EbrowserApp) __BindEbrowserRPC(name string, opts map[string]string) {
 				}
 			}
 
-			err := e.clictx.RunCLI("app", []string{"app", "start"})
-			if err != nil {
-				pp.Println("@cannot_start", err)
-				return
+			if opts["start_instance"] == "true" {
+				go func() {
+					err := e.clictx.RunCLI("app", []string{"app", "start"})
+					if err != nil {
+						pp.Println("@cannot_start", err)
+						return
+					}
+				}()
+
+				time.Sleep(time.Second * 5)
 			}
+
+			pp.Println(e.NavigateLocal("temphia.json"))
 
 		case "connect_remote":
 
 		}
 
 	}()
+
+}
+
+func (e *EbrowserApp) NavigateLocal(file string) error {
+	pp.Println("@nav", file)
+
+	out, err := os.ReadFile(file)
+	if err != nil {
+		return err
+	}
+
+	conf := config.Config{}
+	err = json.Unmarshal(out, &conf)
+	if err != nil {
+		return err
+	}
+
+	e.webview.Navigate(fmt.Sprintf("http://localhost%s/z/pages", conf.ServerPort))
+
+	return nil
 
 }
 
