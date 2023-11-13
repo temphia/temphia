@@ -24,7 +24,7 @@ import (
 func Run() {
 
 	if len(os.Args) == 1 {
-		os.Args = []string{os.Args[0], "help"}
+		os.Args = []string{os.Args[0], climux.DefaultCLI}
 	}
 
 	if os.Args[1] == "help" || os.Args[1] == "--help" {

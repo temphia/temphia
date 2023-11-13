@@ -18,6 +18,8 @@ func init() {
 		Func: RunCLI,
 	})
 
+	climux.DefaultCLI = "ebrowser"
+
 }
 
 func RunCLI(cctx climux.Context) error {

@@ -2,6 +2,10 @@ package climux
 
 import "sync"
 
+var (
+	DefaultCLI = "help"
+)
+
 type CLiFunc func(args []string) error
 
 type CliAction struct {
