@@ -8,7 +8,7 @@
   
    </script>
 
-   <div>data app edit</div>
+   <div>New Data app</div>
   
   <!-- <App ttype="data" target={`${source}/${group}/${table}`} /> -->
   

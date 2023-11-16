@@ -11,6 +11,8 @@
   const app = getContext("__app__") as PortalService;
 </script>
 
+<div>Data Hooks</div>
+
 <!-- <Hooks
   action_new={() => app.nav.admin_data_hook(source, group, table)}
   ttype="data"

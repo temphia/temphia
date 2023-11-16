@@ -60,7 +60,7 @@
 {:else}
   <div class="p-4">
     <div class="p-4 bg-white rounded-md">
-      <div class="text-2xl text-indigo-900 mb-6">Seeder</div>
+      <div class="text-2xl text-indigo-900 mb-6">Auto Seeder</div>
 
       <div>
         <legend class="text-base text-1.5xl font-medium text-gray-900 mb-2"
@@ -95,9 +95,9 @@
                     <!-- <input type="checkbox" /> -->
                   </td>
                   <td class="p-1 border-b border-grey-light">{data.slug}</td>
-                  <td class="p-1 border-b border-grey-light">{data.name}</td>
+                  <td class="p-1 border-b border-grey-light">{data.name || ""}</td>
                   <td class="p-1 border-b border-grey-light"
-                    >{data.description}</td
+                    >{data.description || ""}</td
                   >
                 </tr>
               {/each}

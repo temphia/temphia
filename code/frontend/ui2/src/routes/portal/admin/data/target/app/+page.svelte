@@ -11,6 +11,8 @@
   const app = getContext("__app__") as PortalService;
 </script>
 
+<div>Data Apps</div>
+
 <!-- <Apps
   action_new={() => app.nav.admin_data_app(source, group, table)}
   ttype="data"

@@ -320,28 +320,28 @@ export class PoralNavigator {
   // hooks
 
   admin_data_hooks = (source: string, group: string, table: string) => {
-    this.set(`#/admin/data/${source}/hook/${group}/${table}`);
+    this.set(`admin/data/target/hook?source=${source}&group=${group}&table=${table}`);
   };
 
   admin_data_hook = (source: string, group: string, table: string) => {
-    this.set(`#/admin/data/${source}/hook/${group}/${table}/new`);
+    this.set(`admin/data/target/hook/new?source=${source}&group=${group}&table=${table}`);
   };
 
   admin_data_apps = (source: string, group: string, table: string) => {
-    this.set(`#/admin/data/${source}/app/${group}/${table}`);
+    this.set(`admin/data/target/data?source=${source}&group=${group}&table=${table}`);
   };
 
   admin_data_app = (source: string, group: string, table: string) => {
-    this.set(`#/admin/data/${source}/app/${group}/${table}/new`);
+    this.set(`admin/data/target/data/new?source=${source}&group=${group}&table=${table}`);
   };
   // views
 
   admin_data_views = (source: string, group: string, table: string) => {
-    this.set(`#/admin/data/${source}/view/${group}/${table}`);
+    this.set(`admin/data/view?source=${source}&group=${group}&table=${table}`);
   };
 
   admin_data_view_new = (source: string, group: string, table: string) => {
-    this.set(`#/admin/data/${source}/view/${group}/${table}/new`);
+    this.set(`admin/data/view/new?source=${source}&group=${group}&table=${table}`);
   };
 
   admin_data_view_edit = (
@@ -350,19 +350,19 @@ export class PoralNavigator {
     table: string,
     id: string
   ) => {
-    this.set(`#/admin/data/${source}/view/${group}/${table}/${id}/edit`);
+    this.set(`admin/data/view/edit?source=${source}&group=${group}&table=${table}&id=${id}`);
   };
 
   admin_data_activity(source: string, group: string, table: string) {
-    this.set(`#/admin/data/${source}/activity/${group}/${table}`);
+    this.set(`admin/data/tools/data_activity?source=${source}&group=${group}&table=${table}`);
   }
 
   admin_data_seed(source: string, group: string, table: string) {
-    this.set(`#/admin/data/${source}/seed/${group}/${table}`);
+    this.set(`admin/data/tools/auto_seed?source=${source}&group=${group}&table=${table}`);
   }
 
   admin_data_query(source: string, group: string) {
-    this.set(`#/admin/data/${source}/query/${group}`);
+    this.set(`admin/data/tools/query?source=${source}&group=${group}`);
   }
 
   // resources
@@ -407,15 +407,15 @@ export class PoralNavigator {
   // user
 
   admin_users() {
-    this.set(`#/admin/user/`);
+    this.set(`admin/user`);
   }
 
   admin_user_edit(userid: string) {
-    this.set(`#/admin/user/edit/${userid}`);
+    this.set(`admin/user/edit?userid=${userid}`);
   }
 
   admin_user_new() {
-    this.set(`#/admin/user/new`);
+    this.set(`admin/user/new`);
   }
 
   admin_ugroups() {
@@ -431,8 +431,6 @@ export class PoralNavigator {
   admin_ugroup_users(ugroup: string) {
     this.set(`admin/ugroup/subusers?ugroup=${ugroup}`);
   }
-
-  ////
 
   admin_ugroup_user_edit(ugroup: string, user_id: string) {
     this.set(`admin/ugroup/subusers/edit?ugroup=${ugroup}&user_id=${user_id}`);
