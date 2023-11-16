@@ -193,7 +193,7 @@ func (c *Controller) QueryDataGroup(uclaim *claim.Session, source, group string,
 
 }
 
-func (c *Controller) LiveSeed(uclaim *claim.Session, source, group, table string, max int) error {
+func (c *Controller) AutoSeed(uclaim *claim.Session, source, group, table string, max int) error {
 
-	return c.dynHub.GetDataTableHub(uclaim.TenantId, group).LiveSeed(table, uclaim.UserID, max)
+	return c.dynHub.GetDataTableHub(uclaim.TenantId, group).AutoSeed(table, uclaim.UserID, max)
 }

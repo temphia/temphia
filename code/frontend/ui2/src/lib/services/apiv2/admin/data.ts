@@ -117,10 +117,14 @@ export class AdminDataAPI {
   }
 
   seed_table = (source: string, gid: string, tid: string, max: number) => {
-    return this.base.get(
-      `/admin/data/${source}/group/${gid}/table/${tid}/seed?max=${max}`
+    return this.base.post(
+      `/admin/data/${source}/group/${gid}/table/${tid}/autoseed?max=${max}`, {
+        max
+      }
     );
   };
+
+
 
   query = (source: string, gid: string, opts: any) => {
     return this.base.post(`/admin/data/${source}/group/${gid}/query`, opts);

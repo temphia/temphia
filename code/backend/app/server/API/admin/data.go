@@ -27,7 +27,7 @@ func (a *ApiAdmin) dataAPI(rg *gin.RouterGroup) {
 	rg.DELETE("/:source/group/:gid/table/:tid", a.X(a.DeleteTable))
 
 	rg.GET("/:source/group/:gid/table/:tid/activity", a.X(a.QueryActivity))
-	rg.GET("/:source/group/:gid/table/:tid/seed", a.X(a.seed))
+	rg.POST("/:source/group/:gid/table/:tid/autoseed", a.X(a.autoSeed))
 
 	rg.GET("/:source/group/:gid/table/:tid/column", a.X(a.ListColumns))
 	rg.PATCH("/:source/group/:gid/table/:tid/column/:cid", a.X(a.EditColumn))
@@ -232,20 +232,25 @@ func (a *ApiAdmin) query(ctx httpx.Request) {
 	a.rutil.WriteJSON(ctx.Http, resp, err)
 }
 
-func (a *ApiAdmin) seed(ctx httpx.Request) {
+type autoSeedRequest struct {
+	Max int `json:"max"`
+}
 
-	max, err := strconv.ParseInt(ctx.Http.Query("max"), 10, 64)
+func (a *ApiAdmin) autoSeed(ctx httpx.Request) {
+
+	r := &autoSeedRequest{}
+	err := ctx.Http.BindJSON(r)
 	if err != nil {
 		a.rutil.WriteErr(ctx.Http, err.Error())
 		return
 	}
 
-	a.cAdmin.LiveSeed(
+	a.cAdmin.AutoSeed(
 		ctx.Session,
 		ctx.MustParam("source"),
 		ctx.MustParam("gid"),
 		ctx.MustParam("tid"),
-		int(max),
+		r.Max,
 	)
 
 }

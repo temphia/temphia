@@ -43,7 +43,7 @@ type DataTableHub interface {
 	ListActivity(table string, rowId int) ([]*entities.DynActivity, error)
 	ListActivityByAlt(table string, alt string) ([]*entities.DynActivity, error)
 
-	LiveSeed(table, userId string, max int) error
+	AutoSeed(table, userId string, max int) error
 }
 
 type DataSheetHub interface {
