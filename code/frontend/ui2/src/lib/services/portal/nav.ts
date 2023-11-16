@@ -253,24 +253,17 @@ export class PoralNavigator {
   // dev
 
   admin_plug_dev_flowmap = (pid: string) => {
-    this.set(`#/admin/plug/dev/flowmap?pid=${pid}`);
+    this.set(`admin/plug/dev/flowmap?pid=${pid}`);
   };
 
 
   admin_plug_dev_live_shell = (pid: string, aid: string) => {
-    this.set(`#/admin/plug/${pid}/dev/liveshell/${aid}`);
+    this.set(`admin/plug/dev/liveshell?pid=${pid}`);
   };
 
-  admin_plug_dev_ipc_shell = (pid: string, aid: string) => {
-    this.set(`#/admin/plug/${pid}/dev/ipcshell/${aid}`);
-  };
 
   admin_plug_dev_docs = (pid: string, aid: string) => {
-    this.set(`#/admin/plug/${pid}/dev/docs/${aid}`);
-  };
-
-  admin_plug_dev_logs = (pid: string, aid: string) => {
-    this.set(`#/admin/plug/${pid}/dev/logs/${aid}`);
+    this.set(`admin/plug/dev/docs?pid=${pid}&aid=${aid}`);
   };
 
 
