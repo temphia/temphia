@@ -34,19 +34,9 @@ import (
 
 var _ xserver.Server = (*Server)(nil)
 
-/*
-
-
-fixme => impl multi domains (localhost, home.local, myapp.com)
- MainDomains   []string
- RunnerDomains []string
-
-
-*/
-
 type Options struct {
-	RootDomain     string
-	RunnerDomain   string
+	RootDomain     []string
+	RunnerDomain   []string
 	LocalSocket    string
 	App            xtypes.App
 	GinEngine      *gin.Engine
@@ -149,22 +139,29 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 
 	host := strings.Split(req.Host, ":")[0]
-	if strings.HasSuffix(host, s.opts.RunnerDomain) && strings.Contains(host, "-n-") {
-		prefix := strings.Replace(host, fmt.Sprintf(".%s", s.opts.RunnerDomain), "", 1)
 
-		ids := strings.Split(prefix, "-n-")
+	if strings.Contains(host, "-n-") {
 
-		if len(ids) == 2 {
-			pp.Println("runner_prefix", ids)
-			s.notz.HandleAgent(xnotz.Context{
-				Writer:   w,
-				Request:  req,
-				TenantId: s.tenantId,
-				PlugId:   ids[0],
-				AgentId:  ids[1],
-			})
+		for _, rd := range s.opts.RunnerDomain {
+			if strings.HasSuffix(host, rd) {
+				prefix := strings.Replace(host, fmt.Sprintf(".%s", rd), "", 1)
+				ids := strings.Split(prefix, "-n-")
 
-			return
+				if len(ids) == 2 {
+					pp.Println("runner_prefix", ids)
+					s.notz.HandleAgent(xnotz.Context{
+						Writer:   w,
+						Request:  req,
+						TenantId: s.tenantId,
+						PlugId:   ids[0],
+						AgentId:  ids[1],
+					})
+
+					return
+				}
+
+			}
+
 		}
 
 	}

@@ -1,6 +1,8 @@
 package app
 
 import (
+	"strings"
+
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/server"
 	"github.com/temphia/temphia/code/backend/app/xtension"
@@ -46,8 +48,8 @@ func (b *Builder) buildServer() error {
 	})
 
 	server := server.New(server.Options{
-		RootDomain:     b.config.RootDomain,
-		RunnerDomain:   b.config.RunnerDomain,
+		RootDomain:     strings.Split(b.config.RootDomain, ","),
+		RunnerDomain:   strings.Split(b.config.RunnerDomain, ","),
 		App:            b.app,
 		GinEngine:      b.ginEngine,
 		RootController: b.app.deps.croot,
