@@ -1,4 +1,4 @@
-package distro
+package app
 
 import (
 	"fmt"
@@ -11,13 +11,13 @@ import (
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
-	"github.com/temphia/temphia/code/distro/climux"
-	"github.com/temphia/temphia/code/distro/common"
+	"github.com/temphia/temphia/code/climux"
+	"github.com/temphia/temphia/code/distro"
 )
 
 func init() {
 
-	climux.Register(&climux.CliAction{
+	climux.Register(&climux.Action{
 		Name: "app",
 		Help: "run app related actions",
 		Func: RunAppCLI,
@@ -89,7 +89,7 @@ func (a *AppCLi) init() error {
 
 	switch conf.DatabaseConfig.Vendor {
 	case store.VendorSqlite:
-		_ran, err := common.InitSQLiteDB(conf.DatabaseConfig.Target)
+		_ran, err := distro.InitSQLiteDB(conf.DatabaseConfig.Target)
 		if err != nil {
 			return err
 		}
@@ -100,7 +100,7 @@ func (a *AppCLi) init() error {
 		return easyerr.Error("db vendor not implemented")
 	}
 
-	dapp, err := NewDistroApp(Options{
+	dapp, err := distro.NewDistroApp(distro.Options{
 		Conf:        conf,
 		Dev:         true,
 		BuildFolder: nil,
@@ -170,7 +170,7 @@ func (a *AppCLi) actualStart() error {
 
 	// fixme use TEMPHIA_LOGD_SECRET TEMPHIA_LOGD_PORT
 
-	dapp, err := NewDistroApp(Options{
+	dapp, err := distro.NewDistroApp(distro.Options{
 		Conf: conf,
 		Dev:  false,
 	})
@@ -179,4 +179,31 @@ func (a *AppCLi) actualStart() error {
 	}
 
 	return dapp.Run()
+}
+
+func (a *AppCLi) readConfig() (*config.Config, error) {
+
+	if a.ConfigFile == "" {
+
+		if a.ctx.Command() == "init" {
+			os.Mkdir(distro.TemphiaStateFolder, os.FileMode(0777))
+			os.WriteFile(distro.TemphiaConfigFile, distro.GetConfig(
+				a.Init.HttpPort,
+				a.Init.OrgName,
+				a.Init.RootDomain,
+				a.Init.RunnerDomain,
+				os.Getenv("TEMPHIA_APP_INIT_SECRET"),
+				"",
+			), os.FileMode(0666))
+			a.ConfigFile = distro.TemphiaConfigFile
+
+		} else {
+			if xutils.FileExists("./", distro.TemphiaConfigFile) {
+				a.ConfigFile = distro.TemphiaConfigFile
+			}
+		}
+
+	}
+
+	return distro.ReadConfig(a.ConfigFile)
 }

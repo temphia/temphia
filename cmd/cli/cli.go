@@ -5,13 +5,15 @@ import (
 	"os"
 
 	"github.com/temphia/temphia/code/backend/xtypes"
+	"github.com/temphia/temphia/code/climux"
 
-	"github.com/temphia/temphia/code/distro/climux"
-
-	_ "github.com/temphia/temphia/code/distro"
-	_ "github.com/temphia/temphia/code/ebrowser"
-	_ "github.com/temphia/temphia/code/tools/bdev"
-	_ "github.com/temphia/temphia/code/tools/repobuild"
+	_ "github.com/temphia/temphia/code/climux/app"
+	_ "github.com/temphia/temphia/code/climux/bdev"
+	_ "github.com/temphia/temphia/code/climux/client"
+	_ "github.com/temphia/temphia/code/climux/db"
+	_ "github.com/temphia/temphia/code/climux/ebrowser"
+	_ "github.com/temphia/temphia/code/climux/log"
+	_ "github.com/temphia/temphia/code/climux/repo"
 
 	_ "github.com/temphia/temphia/code/backend/stores/localfs"
 	_ "github.com/temphia/temphia/code/backend/stores/upperdb/vendors/sqlite"

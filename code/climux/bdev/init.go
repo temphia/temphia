@@ -4,12 +4,12 @@ import (
 	"os"
 
 	"github.com/alecthomas/kong"
-	"github.com/temphia/temphia/code/distro/climux"
+	"github.com/temphia/temphia/code/climux"
 )
 
 func init() {
 
-	climux.Register(&climux.CliAction{
+	climux.Register(&climux.Action{
 		Name: "bdev",
 		Help: "app/bprint development related actions",
 		Func: RunCLI,

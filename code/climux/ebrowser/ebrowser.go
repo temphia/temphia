@@ -6,13 +6,14 @@ import (
 
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/libx/xutils"
-	"github.com/temphia/temphia/code/distro/climux"
-	"github.com/temphia/temphia/code/distro/common"
+	"github.com/temphia/temphia/code/climux"
+	"github.com/temphia/temphia/code/distro"
+	eb "github.com/temphia/temphia/code/ebrowser"
 )
 
 func init() {
 
-	climux.Register(&climux.CliAction{
+	climux.Register(&climux.Action{
 		Name: "ebrowser",
 		Help: "Run embed browser with state folder",
 		Func: RunCLI,
@@ -26,13 +27,11 @@ func RunCLI(cctx climux.Context) error {
 
 	file := "temphia.json"
 
-	ew := New()
+	ew := eb.New(cctx)
 	defer ew.Close()
 
-	ew.clictx = cctx
-
 	if !xutils.FileExists("./", file) {
-		ew.RunWithStartPage(TemplateOptions{
+		ew.RunWithStartPage(eb.TemplateOptions{
 			LocalRunning: false,
 			LocalExists:  false,
 			LocalFile:    "",
@@ -51,8 +50,8 @@ func RunCLI(cctx climux.Context) error {
 		panic(err)
 	}
 
-	if !common.IsRunning(conf.DataFolder) {
-		ew.RunWithStartPage(TemplateOptions{
+	if !distro.IsRunning(conf.DataFolder) {
+		ew.RunWithStartPage(eb.TemplateOptions{
 			LocalExists:  true,
 			LocalRunning: false,
 			LocalFile:    file,
@@ -61,7 +60,7 @@ func RunCLI(cctx climux.Context) error {
 		return nil
 	}
 
-	ew.RunWithStartPage(TemplateOptions{
+	ew.RunWithStartPage(eb.TemplateOptions{
 		LocalExists:  true,
 		LocalRunning: true,
 		LocalFile:    file,

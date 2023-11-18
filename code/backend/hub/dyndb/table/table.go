@@ -281,6 +281,7 @@ func (t *Table) SqlQuery(txid uint32, req dyndb.SqlQueryReq) (*dyndb.SqlQueryRes
 }
 
 func (t *Table) AutoSeed(table, userId string, max int) error {
+
 	// lseder, err := seeder2.NewLiveSeeder(seeder2.LiveSeederOptions{
 	// 	TenantId:  tenantId,
 	// 	Group:     group,

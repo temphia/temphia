@@ -8,24 +8,27 @@ import (
 	"time"
 
 	"github.com/temphia/temphia/code/backend/app/config"
-	"github.com/temphia/temphia/code/distro/climux"
+	"github.com/temphia/temphia/code/climux"
 	webview "github.com/webview/webview_go"
 
 	"github.com/k0kubun/pp"
 )
+
+// p2p-eproxy
 
 type EbrowserApp struct {
 	webview webview.WebView
 	clictx  climux.Context
 }
 
-func New() *EbrowserApp {
+func New(clictx climux.Context) *EbrowserApp {
 
 	w := webview.New(true)
 	w.SetSize(900, 700, webview.HintNone)
 
 	return &EbrowserApp{
 		webview: w,
+		clictx:  clictx,
 	}
 }
 

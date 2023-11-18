@@ -13,7 +13,8 @@ import (
 
 	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
-	"github.com/temphia/temphia/code/tools/bdev"
+	"github.com/temphia/temphia/code/climux/bdev"
+
 	"gopkg.in/yaml.v2"
 )
 

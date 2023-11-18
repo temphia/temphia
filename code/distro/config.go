@@ -17,7 +17,7 @@ const (
 	TemphiaConfigFile  = "temphia.json"
 )
 
-func getConfig(port, tenantId, root_domain, runner_domain, master_key, statefolder string) []byte {
+func GetConfig(port, tenantId, root_domain, runner_domain, master_key, statefolder string) []byte {
 
 	if port == "" {
 		l, err := net.Listen("tcp", ":4000")
@@ -77,34 +77,7 @@ func getConfig(port, tenantId, root_domain, runner_domain, master_key, statefold
 
 }
 
-func (a *AppCLi) readConfig() (*config.Config, error) {
-
-	if a.ConfigFile == "" {
-
-		if a.ctx.Command() == "init" {
-			os.Mkdir(TemphiaStateFolder, os.FileMode(0777))
-			os.WriteFile(TemphiaConfigFile, getConfig(
-				a.Init.HttpPort,
-				a.Init.OrgName,
-				a.Init.RootDomain,
-				a.Init.RunnerDomain,
-				os.Getenv("TEMPHIA_APP_INIT_SECRET"),
-				"",
-			), os.FileMode(0666))
-			a.ConfigFile = TemphiaConfigFile
-
-		} else {
-			if xutils.FileExists("./", TemphiaConfigFile) {
-				a.ConfigFile = TemphiaConfigFile
-			}
-		}
-
-	}
-
-	return readConfig(a.ConfigFile)
-}
-
-func readConfig(file string) (*config.Config, error) {
+func ReadConfig(file string) (*config.Config, error) {
 
 	if file == "" {
 		return nil, easyerr.Error("--config-file not passed")

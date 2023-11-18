@@ -4,8 +4,6 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/config"
 
-	"github.com/temphia/temphia/code/distro/common"
-
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/distro"
@@ -47,7 +45,7 @@ func Run() error {
 		return err
 	}
 
-	ran, err := common.InitSQLiteDB(conf.DatabaseConfig.Target)
+	ran, err := distro.InitSQLiteDB(conf.DatabaseConfig.Target)
 	if err != nil {
 		return err
 	}
