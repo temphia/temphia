@@ -1,4 +1,6 @@
-package dyndblocal
+package dlocal
+
+import "github.com/temphia/temphia/code/climux/bdev/core"
 
 /*
 
@@ -12,3 +14,5 @@ package dyndblocal
 type DLocalCLI struct {
 	Init struct{} `cmd:"" help:"init dydb migration with step to run in app.json"`
 }
+
+func (c *DLocalCLI) Run(ctx core.BdevContext) error { return nil }

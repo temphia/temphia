@@ -27,3 +27,13 @@ func RunCLI(cctx climux.Context) error {
 
 	return cli.Run()
 }
+
+func RunCLI2(cctx climux.Context) error {
+
+	os.Args = cctx.Args
+
+	cli := &BdevCLI{}
+	//ctx := kong.Parse(cli)
+
+	return cli.Run()
+}

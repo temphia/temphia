@@ -1,5 +1,7 @@
 package dyndb
 
+import "github.com/temphia/temphia/code/climux/bdev/core"
+
 type DyndbCLI struct {
 	List struct{} `cmd:"" help:"list dydbs inside this bprint/app."`
 
@@ -14,3 +16,5 @@ type DyndbCLI struct {
 	Peek     struct{} `cmd:"" help:"get random records from dyndb."`
 	Query    struct{} `cmd:"" help:"query records from dyndb."`
 }
+
+func (c *DyndbCLI) Run(ctx core.BdevContext) error { return nil }
