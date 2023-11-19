@@ -13,7 +13,6 @@ import (
 
 	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
-	"github.com/temphia/temphia/code/climux/bdev"
 
 	"gopkg.in/yaml.v2"
 )
@@ -158,7 +157,7 @@ func (rb *RepoBuilder) copyArtifact(basePath, name, bprintFile, version string) 
 
 	}()
 
-	err = bdev.ZipIt(lbprint, filename)
+	err = ZipIt(lbprint, filename)
 
 	pp.Println(os.Chdir(wd))
 

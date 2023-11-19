@@ -1,13 +1,18 @@
 package bdev
 
 import (
+	"encoding/json"
+	"fmt"
 	"os"
 
 	"github.com/alecthomas/kong"
 	"github.com/joho/godotenv"
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	client "github.com/temphia/temphia/code/goclient"
+	"github.com/temphia/temphia/code/tools/repobuild/builder"
+	"github.com/tidwall/pretty"
 	"gopkg.in/yaml.v2"
 
 	"github.com/temphia/temphia/code/goclient/devc"
@@ -106,6 +111,47 @@ func (c *CLI) preRun(bfile string) error {
 	if c.PlugId == "" {
 		c.PlugId = cctx.PlugId
 	}
+
+	return nil
+}
+
+// impl
+
+func (c *CLI) reset() error {
+	return c.devClient.Reset(c.PlugId, c.AgentId)
+}
+
+func (c *CLI) watch() {
+	c.devClient.Watch(c.PlugId, c.AgentId)
+}
+
+func (c *CLI) zipit() error {
+	if c.Zip.OutFile == "" {
+		c.Zip.OutFile = fmt.Sprintf("build/%s.zip", c.bp.Slug)
+	}
+
+	return (builder.ZipIt(c.bp, c.Zip.OutFile))
+}
+
+func (c *CLI) push() error {
+	return (c.devClient.PushFile(c.Push.Name, c.bp.Files[c.Push.Name]))
+}
+
+func (c *CLI) execute() error {
+	var data any
+	err := json.Unmarshal([]byte(c.Exec.Data), &data)
+	if err != nil {
+		pp.Println(err)
+		return err
+	}
+
+	resp, err := c.devClient.ExecRun(c.PlugId, c.AgentId, c.Exec.Action, data)
+	if err != nil {
+		pp.Println(err)
+		return err
+	}
+
+	fmt.Print(string(pretty.Color(pretty.Pretty(resp), nil)))
 
 	return nil
 }
