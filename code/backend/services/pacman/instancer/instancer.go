@@ -40,7 +40,17 @@ func (i *instancer) Instance(opts xinstancer.Options) (*xinstancer.Response, err
 		opts.PlugId = gFunc()
 	}
 
-	err = i.corehub.PlugNew(opts.TenantId, &entities.Plug{
+	var bprint *entities.BPrint
+	if as.Name == "" {
+		bprint, err = i.corehub.BprintGet(opts.TenantId, opts.BprintId)
+		if err != nil {
+			return nil, err
+		}
+
+		as.Name = bprint.Name
+	}
+
+	pobj := &entities.Plug{
 		Id:               opts.PlugId,
 		Name:             as.Name,
 		BprintId:         opts.BprintId,
@@ -48,7 +58,9 @@ func (i *instancer) Instance(opts xinstancer.Options) (*xinstancer.Response, err
 		BprintItemId:     "",
 		StepHead:         "",
 		TenantId:         opts.TenantId,
-	})
+	}
+
+	err = i.corehub.PlugNew(opts.TenantId, pobj)
 	if err != nil {
 		return nil, err
 	}

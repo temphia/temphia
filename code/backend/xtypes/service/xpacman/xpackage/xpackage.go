@@ -31,7 +31,6 @@ type Manifest struct {
 
 type AppSchema struct {
 	Name    string               `yaml:"name,omitempty"`
-	Slug    string               `yaml:"slug,omitempty"`
 	Objects map[string]AppObject `yaml:"objects,omitempty"`
 	Steps   []AppStep            `yaml:"steps,omitempty"`
 }
