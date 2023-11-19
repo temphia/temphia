@@ -9,7 +9,6 @@ import (
 
 	_ "github.com/temphia/temphia/code/climux/app"
 	_ "github.com/temphia/temphia/code/climux/bdev"
-	_ "github.com/temphia/temphia/code/climux/client"
 	_ "github.com/temphia/temphia/code/climux/db"
 	_ "github.com/temphia/temphia/code/climux/ebrowser"
 	_ "github.com/temphia/temphia/code/climux/log"
