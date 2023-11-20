@@ -10,7 +10,7 @@ import (
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
-	client "github.com/temphia/temphia/code/goclient"
+	"github.com/temphia/temphia/code/climux/bdev/core"
 	"github.com/temphia/temphia/code/tools/repobuild/builder"
 	"github.com/tidwall/pretty"
 	"gopkg.in/yaml.v2"
@@ -101,8 +101,7 @@ func (c *CLI) preRun(bfile string) error {
 		return easyerr.Wrap("env file load err", err)
 	}
 
-	cctx := client.ReadContext()
-
+	cctx := core.ReadEnvVars()
 	c.devClient = devc.New(cctx.APIURL, cctx.Token)
 	if c.AgentId == "" {
 		c.AgentId = cctx.AgentId
