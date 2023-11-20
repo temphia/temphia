@@ -46,3 +46,27 @@ type FileStore interface {
 	GetFolderAsZip(ctx context.Context, tenant, folder string) (string, error)
 	DeleteBlob(ctx context.Context, tenant, folder string, file string) error
 }
+
+// fixme => ref v2
+type FileStore2 interface {
+	ListFolder(fpath string) ([]string, error)
+	NewFolder(fpath, name string) error
+	DeleteFoler(fpath string) error
+	RenameFolder(fpath, newname string) error
+	CompressFolder(fpath string) (FData, error)
+	TreeFolder(fpath string) ([]string, error)
+
+	GetFile(fpath string) (FData, error)
+	RenameFile(fpath, name, newname string) error
+	DuplicateFile(fpath, name, newname string) error
+	MoveFile(fpath, newfpath string) error
+	NewFile(fpath, name string, data FData) error
+	UpdateFile(fpath, name string) error
+	DeleteFile(fpath, name string) error
+	CompressFiles(fpath string, files []string) (FData, error)
+}
+
+type FData interface {
+	AsBytes() ([]byte, error)
+	AsReader() io.ReadCloser
+}
