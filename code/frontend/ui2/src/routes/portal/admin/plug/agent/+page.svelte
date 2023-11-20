@@ -42,8 +42,6 @@
     const action_agent_resources = (id: string) =>
         app.nav.admin_agent_res(pid, id);
 
-    const action_ipc_shell = (id: string) =>
-        app.nav.admin_plug_dev_ipc_shell(pid, id);
     const action_live_shell = (id: string) =>
         app.nav.admin_plug_dev_live_shell(pid, id);
     const action_logs = (id: string) => {
@@ -134,12 +132,6 @@
                 Action: action_agent_resources,
             },
 
-            {
-                Name: "IPC Shell",
-                drop: true,
-                icon: "terminal",
-                Action: action_ipc_shell,
-            },
             {
                 Name: "Live Shell",
                 drop: true,

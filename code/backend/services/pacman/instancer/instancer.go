@@ -1,6 +1,8 @@
 package instancers
 
 import (
+	"encoding/json"
+
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman"
@@ -111,9 +113,20 @@ func (i *instancer) Upgrade(opts xinstancer.Options) error {
 
 // private
 
-func (i *instancer) readMigration(tenantId, bprintid, file string) (xpackage.MigrateOptions, error) {
+func (i *instancer) readMigration(tenantId, bprintid, file string) (*xpackage.MigrateOptions, error) {
 
-	return xpackage.MigrateOptions{}, nil
+	out, err := i.bstore.GetBlob(tenantId, bprintid, "", file)
+	if err != nil {
+		return nil, err
+	}
+
+	opts := &xpackage.MigrateOptions{}
+	err = json.Unmarshal(out, opts)
+	if err != nil {
+		return nil, err
+	}
+
+	return opts, nil
 }
 
 func (i *instancer) loadAppSchema(tenantId, bprintid string) (*xpackage.AppSchema, error) {

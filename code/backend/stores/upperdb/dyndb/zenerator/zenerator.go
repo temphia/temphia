@@ -3,6 +3,7 @@ package zenerator
 import (
 	"fmt"
 
+	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/stores/upperdb/dyndb/tns"
 	"github.com/temphia/temphia/code/backend/stores/upperdb/ucore"
@@ -46,6 +47,7 @@ func New(vendor string, tns tns.TNS) *zenerator {
 func (g *zenerator) NewGroup(tenantId string, model *xpackage.NewTableGroup) (*ucore.DDLGroupStmt, error) {
 
 	if err := g.tns.CheckGroupSlug(model.Slug); err != nil {
+		pp.Println("group slug error", err)
 		return nil, err
 	}
 

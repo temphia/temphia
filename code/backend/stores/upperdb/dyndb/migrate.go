@@ -16,7 +16,7 @@ import (
 
 func (d *DynDB) migrateSchema(tenantId string, opts xpackage.MigrateOptions) error {
 
-	// debug all this
+	pp.Println("@migration_start")
 
 	var (
 		baseSchema  *xpackage.NewTableGroup

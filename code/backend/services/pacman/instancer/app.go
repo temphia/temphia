@@ -228,9 +228,17 @@ func (i *instancer) runAppBundleStep(as *xpackage.AppSchema, opts xinstancer.Opt
 
 			dyndb := i.datahub.GetDynDB()
 
-			dyndb.MigrateSchema(opts.TenantId, schema)
+			schema.PlugId = opts.PlugId
+			schema.New = true
+			schema.DryRun = false
+			schema.Gslug = gFunc()
 
-			pp.Println("@run_migration_here")
+			err = dyndb.MigrateSchema(opts.TenantId, *schema)
+			if err != nil {
+				return nil, err
+			}
+
+			opts.InstancedIds[step.ObjectId] = schema.Gslug
 
 		default:
 			pp.Println("@step", step)

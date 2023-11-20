@@ -4,7 +4,7 @@ import "errors"
 
 var (
 	ErrLongSlug        = errors.New("longer slug length than allowed")
-	ErrNotAllowedChars = errors.New("slug has not allowed slug")
+	ErrNotAllowedChars = errors.New("slug has not allowed chars")
 )
 
 type TNS interface {

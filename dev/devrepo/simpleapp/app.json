@@ -14,9 +14,9 @@
       "data": {
         "id": "default",
         "executor": "none",
-        "renderer": "notz.std.v1",
+        "renderer": "std.v1",
         "web_options": {
-          "inject_auth": false
+          "inject_auth": "false"
         },
         "web_files": {
           "client.js": "www/client.js",
@@ -24,6 +24,11 @@
           "loader": "std.loader"
         }
       }
+    }, 
+    {
+      "name": "add_main_dydb",
+      "type": "run_data_migration",
+      "file": "db/schema.json"
     }
   ]
 }
