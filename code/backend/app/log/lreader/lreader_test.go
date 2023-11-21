@@ -1,4 +1,4 @@
-package log
+package lreader
 
 import (
 	"encoding/json"
@@ -12,10 +12,10 @@ type Log struct {
 	MetaId float64 `json:"meta_id,omitempty"`
 }
 
-func TestSimpleLogProxy(t *testing.T) {
+func TestLreader(t *testing.T) {
 
-	sl := SimpleLogProxy{
-		Path: "testdata.log",
+	sl := Lreader{
+		path: "testdata.log",
 	}
 
 	sl.Query("", logx.QueryRequest{

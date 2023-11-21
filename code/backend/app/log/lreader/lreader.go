@@ -1,4 +1,4 @@
-package log
+package lreader
 
 import (
 	"bufio"
@@ -19,11 +19,19 @@ import (
 // cursorIndex []struct{xid xid.Id; line uint }
 // }
 
-type SimpleLogProxy struct {
-	Path string
+type Lreader struct {
+	path string
 }
 
-func (s *SimpleLogProxy) Query(tenantId string, req logx.QueryRequest) ([]logx.Log, error) {
+func New(lpath string) *Lreader {
+
+	return &Lreader{
+		path: lpath,
+	}
+
+}
+
+func (s *Lreader) Query(tenantId string, req logx.QueryRequest) ([]logx.Log, error) {
 	if req.Count == 0 {
 		req.Count = 20
 	}
@@ -31,8 +39,8 @@ func (s *SimpleLogProxy) Query(tenantId string, req logx.QueryRequest) ([]logx.L
 	return s.query(req.From, req.To, req.Cursor, tenantId, req.Filters, req.Count)
 }
 
-func (s *SimpleLogProxy) query(from, to, cursor, tenantId string, filters map[string]string, max int) ([]logx.Log, error) {
-	readFile, err := os.Open(s.Path)
+func (s *Lreader) query(from, to, cursor, tenantId string, filters map[string]string, max int) ([]logx.Log, error) {
+	readFile, err := os.Open(s.path)
 	if err != nil {
 		return nil, err
 	}
