@@ -1,11 +1,13 @@
 package log
 
 import (
+	"io"
 	"os"
 	"path"
 
 	"github.com/rs/xid"
 	"github.com/rs/zerolog"
+	"github.com/temphia/temphia/code/backend/app/log/lreader"
 	"github.com/temphia/temphia/code/backend/xtypes/logx"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -16,6 +18,7 @@ type LogOptions struct {
 	FilePrefix string
 	LogdPort   string
 	NodeId     int64
+	Rotating   bool
 }
 
 var _ logx.Service = (*LogService)(nil)
@@ -26,7 +29,7 @@ type LogService struct {
 	engineLogger zerolog.Logger
 	siteLogger   zerolog.Logger
 
-	simpleProxy SimpleLogProxy
+	lproxy logx.Proxy
 }
 
 func New(opts LogOptions) *LogService {
@@ -44,20 +47,30 @@ func New(opts LogOptions) *LogService {
 
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnixMs
 
-	// file, err := os.OpenFile(actualPath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
-	// if err != nil {
-	// 	panic(err)
-	// }
+	var logwriter io.WriteCloser
+	var lr *lreader.Lreader
 
-	logRotater := &lumberjack.Logger{
-		Filename:   actualPath,
-		MaxSize:    100, // megabytes
-		MaxBackups: 3,
-		MaxAge:     28,
-		Compress:   false,
+	if opts.Rotating {
+		file, err := os.OpenFile(actualPath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+		if err != nil {
+			panic(err)
+		}
+
+		logwriter = file
+		lr = lreader.New(actualPath)
+	} else {
+		logRotater := &lumberjack.Logger{
+			Filename:   actualPath,
+			MaxSize:    100, // megabytes
+			MaxBackups: 3,
+			MaxAge:     28,
+			Compress:   false,
+		}
+
+		logwriter = logRotater
 	}
 
-	root := zerolog.New(zerolog.MultiLevelWriter(logRotater, zerolog.NewConsoleWriter())).
+	root := zerolog.New(zerolog.MultiLevelWriter(logwriter, zerolog.NewConsoleWriter())).
 		Hook(zerolog.HookFunc(func(e *zerolog.Event, level zerolog.Level, message string) {
 			e.Str("log_event_id", xid.New().String())
 			e.Int64("node_id", opts.NodeId)
@@ -69,9 +82,7 @@ func New(opts LogOptions) *LogService {
 		appLogger:    root.With().Str("index", "app").Logger(),
 		engineLogger: root.With().Str("index", "engine").Logger(),
 		siteLogger:   root.With().Str("index", "site").Logger(),
-		simpleProxy: SimpleLogProxy{
-			Path: actualPath,
-		},
+		lproxy:       lr,
 	}
 }
 
@@ -94,5 +105,5 @@ func (ls *LogService) GetServiceLogger(service string) zerolog.Logger {
 }
 
 func (ls *LogService) GetLogProxy() logx.Proxy {
-	return &ls.simpleProxy
+	return ls.lproxy
 }
