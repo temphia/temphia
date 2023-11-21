@@ -62,7 +62,7 @@ func New(opts LogOptions) *LogService {
 		logRotater := &lumberjack.Logger{
 			Filename:   actualPath,
 			MaxSize:    100, // megabytes
-			MaxBackups: 3,
+			MaxBackups: 10,
 			MaxAge:     28,
 			Compress:   false,
 		}
