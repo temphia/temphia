@@ -42,13 +42,13 @@ func (m *NewColumn) To(tenantId, gslug, tslug string) *entities.Column {
 		OrderID:       0,
 		Pattern:       m.Pattern,
 		StrictPattern: m.StrictPattern,
+		NotNullable:   m.NotNullable,
 		TableID:       tslug,
 		TenantID:      tenantId,
 		RefId:         "",
 		RefType:       "",
 		RefTarget:     "",
 		RefObject:     "",
-		RefCopy:       "",
 		ExtraMeta:     nil,
 	}
 }

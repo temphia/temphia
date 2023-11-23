@@ -37,7 +37,6 @@ func ExtractColumns(m *xpackage.NewTable, tenantId, gslug string) []*entities.Co
 			col.RefType = colref.Type
 			col.RefTarget = colref.Target
 			col.RefObject = colref.ToCols[idx]
-			col.RefCopy = colref.RefCopy
 		}
 	}
 

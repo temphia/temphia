@@ -45,11 +45,11 @@ type Column struct {
 	OrderID       int64          `json:"order_id,omitempty" db:"order_id"`
 	Pattern       string         `json:"pattern,omitempty" db:"pattern"`
 	StrictPattern bool           `json:"strict_pattern,omitempty" db:"strict_pattern"`
+	NotNullable   bool           `json:"not_nullable,omitempty" db:"not_nullable"`
 	RefId         string         `json:"ref_id,omitempty" db:"ref_id"`
 	RefType       string         `json:"ref_type,omitempty" db:"ref_type"`
 	RefTarget     string         `json:"ref_target,omitempty" db:"ref_target"`
 	RefObject     string         `json:"ref_object,omitempty" db:"ref_object"`
-	RefCopy       string         `json:"ref_copy,omitempty" db:"ref_copy"`
 	TableID       string         `json:"table_id,omitempty" db:"table_id"`
 	GroupID       string         `json:"group_id,omitempty" db:"group_id"`
 	TenantID      string         `json:"tenant_id,omitempty" db:"tenant_id"`
@@ -91,5 +91,4 @@ type ColumnFKRef struct {
 	Target   string   `json:"target,omitempty" yaml:"target,omitempty"`
 	FromCols []string `json:"from_cols,omitempty" yaml:"from_cols,omitempty"`
 	ToCols   []string `json:"to_cols,omitempty" yaml:"to_cols,omitempty"`
-	RefCopy  string   `json:"ref_copy,omitempty" yaml:"ref_copy,omitempty"`
 }

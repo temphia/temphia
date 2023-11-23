@@ -245,6 +245,7 @@ create table data_table_columns (
     icon TEXT,
     pattern TEXT not null,
     strict_pattern BOOLEAN not null default false,
+    not_nullable BOOLEAN not null default false,
     table_id TEXT not null,
     group_id TEXT not null,
     options TEXT [],
