@@ -1,5 +1,6 @@
 {
   "slug": "simpleapp",
   "name": "simpleapp",
-  "type": "app"
+  "type": "app",
+  "description": "Simple app"
 }

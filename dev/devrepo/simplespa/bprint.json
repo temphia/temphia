@@ -1,5 +1,7 @@
 {
   "slug": "simplespa",
   "name": "simplespa",
-  "type": "app"
+  "type": "app",
+  "description": "Simple SPA app."
+
 }
