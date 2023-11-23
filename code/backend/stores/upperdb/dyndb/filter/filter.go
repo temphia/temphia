@@ -117,6 +117,13 @@ func TransformWithPrefix(vendor string, fcs []dyndb.FilterCond, prefix string) (
 			conds[fmt.Sprintf("%s%s%s", prefix, filter.Column, optr)] = filter.Value
 		}
 
+		if vendor == store.VendorSqlite {
+			if filter.Cond == FilterILike {
+				// fixme => use `x like y AND  upper(y)`
+				filter.Cond = FilterLike
+			}
+		}
+
 		switch filter.Cond {
 		case FilterAround, FilterNotAround:
 			panic("location filter not implemented")
@@ -153,7 +160,7 @@ func TransformWithPrefix(vendor string, fcs []dyndb.FilterCond, prefix string) (
 
 			normalTransform()
 		case FilterContains:
-			filter.Cond = FilterILike
+			filter.Cond = FilterLike
 			filter.Value = fmt.Sprintf("%%%s%%", filter.Value)
 			normalTransform()
 		case FilterIsNull:
