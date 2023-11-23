@@ -30,7 +30,13 @@
       user_token: sdata.user_token,
     });
 
-    await app.init();
+    const ierr = await app.init();
+    if (ierr) {
+      ok = false
+      loading = false
+      return
+    }
+
     loading = false;
   };
 

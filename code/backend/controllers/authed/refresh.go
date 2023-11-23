@@ -1,7 +1,6 @@
 package authed
 
 import (
-	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 )
 
@@ -12,28 +11,19 @@ type RefreshReq struct {
 }
 
 type RefreshResp struct {
-	Token    string `json:"token,omitempty"`
-	Expiry   string `json:"expiry,omitempty"`
-	Message  string `json:"message,omitempty"`
-	StatusOk bool   `json:"status_ok,omitempty"`
+	Token  string `json:"token,omitempty"`
+	Expiry string `json:"expiry,omitempty"`
 }
 
-func (c *Controller) RefreshService(uclaim *claim.User, opts RefreshReq) *RefreshResp {
+func (c *Controller) RefreshService(uclaim *claim.User, opts RefreshReq) (*RefreshResp, error) {
 	return c.sessionClaim(uclaim, opts)
 }
 
-func (c *Controller) sessionClaim(uclaim *claim.User, opts RefreshReq) *RefreshResp {
+func (c *Controller) sessionClaim(uclaim *claim.User, opts RefreshReq) (*RefreshResp, error) {
 
 	_, err := c.coredb.GetUserDevice(uclaim.TenantId, uclaim.UserID, uclaim.DeviceId)
 	if err != nil {
-
-		pp.Println("@get_user_device_error", err)
-
-		return &RefreshResp{
-			Token:    "",
-			Message:  "device not found",
-			StatusOk: false,
-		}
+		return nil, err
 	}
 
 	serviceId := c.sessionNode.Generate().Int64()
@@ -49,21 +39,12 @@ func (c *Controller) sessionClaim(uclaim *claim.User, opts RefreshReq) *RefreshR
 
 	token, err := c.signer.SignSession(uclaim.TenantId, sclaim)
 	if err != nil {
-		pp.Println("@sign_err", err)
-
-		return &RefreshResp{
-			Token:    "",
-			Expiry:   "",
-			Message:  err.Error(),
-			StatusOk: false,
-		}
+		return nil, err
 	}
 
 	return &RefreshResp{
-		Token:    token,
-		Expiry:   "",
-		Message:  "",
-		StatusOk: true,
-	}
+		Token:  token,
+		Expiry: "",
+	}, nil
 
 }

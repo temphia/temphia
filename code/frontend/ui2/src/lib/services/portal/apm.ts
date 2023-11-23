@@ -62,10 +62,6 @@ export class ApiManager {
     }
 
     const rdata = await rresp.json();
-    if (!rdata["status_ok"]) {
-      return "Status error"
-    }
-
     this.session_token = rdata["token"];
 
     this.base = new ApiBase(

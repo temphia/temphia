@@ -199,8 +199,8 @@ func (s *Auth) authRefresh(c *gin.Context) {
 		return
 	}
 	uclaim.TenantId = s.tenantId
-	resp := s.cAuth.RefreshService(uclaim, opts)
-	httpx.WriteJSON(c, resp, nil)
+	resp, err := s.cAuth.RefreshService(uclaim, opts)
+	httpx.WriteJSON(c, resp, err)
 }
 
 func (s *Auth) authAbout(c *gin.Context) {
