@@ -7,6 +7,7 @@ import (
 	"github.com/k0kubun/pp"
 
 	"github.com/temphia/temphia/code/backend/hub/dyndb/handle"
+	"github.com/temphia/temphia/code/backend/services/pacman/seeder"
 	"github.com/temphia/temphia/code/backend/xtypes/models/entities"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
 )
@@ -282,22 +283,40 @@ func (t *Table) SqlQuery(txid uint32, req dyndb.SqlQueryReq) (*dyndb.SqlQueryRes
 
 func (t *Table) AutoSeed(table, userId string, max int) error {
 
-	// lseder, err := seeder2.NewLiveSeeder(seeder2.LiveSeederOptions{
-	// 	TenantId:  tenantId,
-	// 	Group:     group,
-	// 	Table:     table,
-	// 	UserId:    userId,
-	// 	Source:    nil,
-	// 	MaxRecord: int(max),
-	// })
+	seeder := seeder.NewAutoSeeder(seeder.Options{
+		TenantId:        t.tenantId,
+		UserId:          userId,
+		GroupId:         t.group,
+		Dydb:            t.inner,
+		SelectableFiles: []string{},
+		SelectableUsers: []string{},
+	})
 
-	// if err != nil {
-	// 	return err
-	// }
+	data, err := seeder.TableGenerate(table, max)
+	if err != nil {
+		pp.Println("@seed_err")
+		return err
+	}
 
-	// return lseder.Seed()
+	pp.Println("@data", data)
 
-	return nil
+	_, err = t.inner.NewBatchRows(0, dyndb.NewBatchRowReq{
+		TenantId: t.tenantId,
+		Group:    t.group,
+		Table:    table,
+		Data:     data,
+		ModCtx: dyndb.ModCtx{
+			UserId: userId,
+		},
+	})
+	if err != nil {
+		pp.Println("@seeding_err", err.Error())
+		return err
+	}
+
+	pp.Println("@seeding_ok")
+
+	return err
 }
 
 func (t *Table) QueryActivity(table string, query *entities.ActivityQuery) ([]*entities.DynActivity, error) {
