@@ -18,6 +18,8 @@ import (
 
 var _ service.ClaimSigner = (*ClaimSigner)(nil)
 
+var GlobalPrefix = "global_key"
+
 type ClaimSigner struct {
 	signer Signer
 }
@@ -28,7 +30,7 @@ func New(key []byte, salt string) *ClaimSigner {
 	core := Signer{
 		masterKey:    masterKey,
 		signers:      make(map[string]*branca.Branca),
-		globalSigner: branca.NewBranca(string(pbkdf2.Key(key, []byte(salt+"global_key"), 1024, 32, sha256.New))),
+		globalSigner: branca.NewBranca(string(pbkdf2.Key(key, []byte(salt+GlobalPrefix), 1024, 32, sha256.New))),
 	}
 
 	return &ClaimSigner{
