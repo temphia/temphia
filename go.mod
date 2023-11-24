@@ -15,7 +15,6 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-git/go-git/v5 v5.10.0
 	github.com/gobwas/ws v1.3.1
-	github.com/goccy/go-yaml v1.11.2
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/graphql-go/graphql v0.8.1
 	github.com/hako/branca v0.0.0-20200807062402-6052ac720505

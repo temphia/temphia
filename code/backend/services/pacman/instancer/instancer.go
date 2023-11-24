@@ -10,7 +10,6 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/backend/xtypes/store/dyndb"
-	"gopkg.in/yaml.v2"
 )
 
 var (
@@ -137,7 +136,7 @@ func (i *instancer) loadAppSchema(tenantId, bprintid string) (*xpackage.AppSchem
 		return nil, err
 	}
 
-	err = yaml.Unmarshal(out, as)
+	err = json.Unmarshal(out, as)
 	if err != nil {
 		return nil, err
 	}
