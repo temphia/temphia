@@ -13,7 +13,7 @@ func init() {
 		Func: func(cctx climux.Context) error {
 
 			if cctx.Args[0] == "build" {
-				return cmd.Run(".repo.yaml")
+				return cmd.Run(".repo.toml")
 			}
 
 			return nil

@@ -3,28 +3,28 @@ package config
 import "path"
 
 type Config struct {
-	ServerPort      string        `json:"server_port,omitempty"`
-	TenantId        string        `json:"tenant_id,omitempty"`
-	RootDomain      string        `json:"root_domain,omitempty"`
-	RunnerDomain    string        `json:"runner_domain,omitempty"`
-	MasterKey       string        `json:"master_key,omitempty"`
-	EnableLocalDoor bool          `json:"enable_local_door,omitempty"`
-	DataFolder      string        `json:"data_folder,omitempty"`
-	LogFolder       string        `json:"log_folder,omitempty"`
-	DatabaseConfig  *StoreConfig  `json:"database_config,omitempty"`
-	FileStoreConfig *StoreConfig  `json:"filestore_config,omitempty"`
-	LogIngestConfig *IngestConfig `json:"log_ingest_config,omitempty"`
+	ServerPort      string        `json:"server_port,omitempty" toml:"server_port"`
+	TenantId        string        `json:"tenant_id,omitempty" toml:"tenant_id"`
+	RootDomain      string        `json:"root_domain,omitempty" toml:"root_domain"`
+	RunnerDomain    string        `json:"runner_domain,omitempty" toml:"runner_domain"`
+	MasterKey       string        `json:"master_key,omitempty" toml:"master_key"`
+	EnableLocalDoor bool          `json:"enable_local_door,omitempty" toml:"enable_local_door"`
+	DataFolder      string        `json:"data_folder,omitempty" toml:"data_folder"`
+	LogFolder       string        `json:"log_folder,omitempty" toml:"log_folder"`
+	DatabaseConfig  *StoreConfig  `json:"database_config,omitempty" toml:"database_config"`
+	FileStoreConfig *StoreConfig  `json:"filestore_config,omitempty" toml:"filestore_config"`
+	LogIngestConfig *IngestConfig `json:"log_ingest_config,omitempty" toml:"log_ingest_config"`
 }
 
 type StoreConfig struct {
-	Name     string         `json:"name,omitempty"`
-	Vendor   string         `json:"vendor,omitempty"`
-	Provider string         `json:"provider,omitempty"`
-	HostPath string         `json:"host_path,omitempty"`
-	User     string         `json:"user,omitempty"`
-	Password string         `json:"password,omitempty"`
-	Port     string         `json:"port,omitempty"`
-	Options  map[string]any `json:"options,omitempty"`
+	Name     string         `json:"name,omitempty" toml:"name"`
+	Vendor   string         `json:"vendor,omitempty" toml:"vendor"`
+	Provider string         `json:"provider,omitempty" toml:"provider"`
+	HostPath string         `json:"host_path,omitempty" toml:"host_path"`
+	User     string         `json:"user,omitempty" toml:"user"`
+	Password string         `json:"password,omitempty" toml:"password"`
+	Port     string         `json:"port,omitempty" toml:"port"`
+	Options  map[string]any `json:"options,omitempty" toml:"options"`
 	Target   string         `json:"-,omitempty"` // computed
 }
 
@@ -37,7 +37,7 @@ func (c *Config) Init() error {
 }
 
 type IngestConfig struct {
-	Upstream string `json:"upstream,omitempty"`
-	User     string `json:"user,omitempty"`
-	Password string `json:"password,omitempty"`
+	Upstream string `json:"upstream,omitempty" toml:"upstream"`
+	User     string `json:"user,omitempty" toml:"user"`
+	Password string `json:"password,omitempty" toml:"password"`
 }

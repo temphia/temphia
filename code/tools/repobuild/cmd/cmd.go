@@ -3,9 +3,9 @@ package cmd
 import (
 	"os"
 
+	"github.com/BurntSushi/toml"
 	"github.com/temphia/temphia/code/tools/repobuild/builder"
 	"github.com/temphia/temphia/code/tools/repobuild/models"
-	"gopkg.in/yaml.v2"
 )
 
 func Run(repofile string) error {
@@ -16,7 +16,7 @@ func Run(repofile string) error {
 	}
 
 	conf := &models.BuildConfig{}
-	err = yaml.Unmarshal(cbytes, conf)
+	err = toml.Unmarshal(cbytes, conf)
 	if err != nil {
 		return err
 	}

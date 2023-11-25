@@ -7,14 +7,13 @@ import (
 	"os/exec"
 	"path"
 
+	"github.com/BurntSushi/toml"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/k0kubun/pp"
 
 	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
-
-	"gopkg.in/yaml.v2"
 )
 
 func (rb *RepoBuilder) buildItem(name string) (string, error) {
@@ -132,7 +131,7 @@ func (rb *RepoBuilder) copyArtifact(basePath, name, bprintFile, version string) 
 	}
 
 	lbprint := &xpackage.Manifest{}
-	err = yaml.Unmarshal(out, lbprint)
+	err = toml.Unmarshal(out, lbprint)
 	if err != nil {
 		pp.Println("@unmarshel_bprint_err", err.Error())
 		return err

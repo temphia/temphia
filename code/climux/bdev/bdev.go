@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/BurntSushi/toml"
 	"github.com/alecthomas/kong"
 	"github.com/joho/godotenv"
 	"github.com/k0kubun/pp"
@@ -13,7 +14,6 @@ import (
 	"github.com/temphia/temphia/code/climux/bdev/core"
 	"github.com/temphia/temphia/code/tools/repobuild/builder"
 	"github.com/tidwall/pretty"
-	"gopkg.in/yaml.v2"
 
 	"github.com/temphia/temphia/code/goclient/devc"
 )
@@ -36,7 +36,7 @@ type CLI struct {
 
 	Zip struct {
 		OutFile string
-	} `cmd:"" help:"create zip from bprint.yaml"`
+	} `cmd:"" help:"create zip from bprint.toml"`
 
 	ctx       *kong.Context
 	devClient *devc.DevClient
@@ -50,7 +50,7 @@ func (c *CLI) Run() error {
 
 	bconf := os.Getenv("TEMPHIA_BDEV_BPRINT_CONFIG")
 	if bconf == "" {
-		panic(".bprint.yaml not specified")
+		panic(".bprint.toml not specified")
 	}
 
 	err := c.preRun(bconf)
@@ -89,7 +89,7 @@ func (c *CLI) preRun(bfile string) error {
 	}
 
 	bprint := xpackage.Manifest{}
-	err = yaml.Unmarshal(out, &bprint)
+	err = toml.Unmarshal(out, &bprint)
 	if err != nil {
 		return easyerr.Wrap("err unmarsheling .bprint file", err)
 	}

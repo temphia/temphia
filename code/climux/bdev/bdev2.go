@@ -28,7 +28,7 @@ func (c *BdevCLI) Run() error {
 
 	bconf := os.Getenv("TEMPHIA_BDEV_BPRINT_CONFIG")
 	if bconf == "" {
-		panic(".bprint.yaml not specified")
+		panic(".bprint.toml not specified")
 	}
 
 	return nil

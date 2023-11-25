@@ -1,11 +1,11 @@
 package distro
 
 import (
-	"encoding/json"
 	"fmt"
 	"net"
 	"os"
 
+	"github.com/BurntSushi/toml"
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
@@ -14,7 +14,7 @@ import (
 
 const (
 	TemphiaStateFolder = ".temphia-data"
-	TemphiaConfigFile  = "temphia.json"
+	TemphiaConfigFile  = "temphia.toml"
 )
 
 func GetConfig(port, tenantId, root_domain, runner_domain, master_key, statefolder string) []byte {
@@ -60,20 +60,18 @@ func GetConfig(port, tenantId, root_domain, runner_domain, master_key, statefold
 		statefolder = TemphiaStateFolder
 	}
 
-	return []byte(fmt.Sprintf(`{
-		"server_port": "%s",
-		"tenant_id": "%s",
-		"root_domain": "%s",
-		"runner_domain": "%s",
-		"master_key": "%s",
-		"enable_local_door": true,
-		"data_folder": "./%s",
-		"database_config": {
-			"name": "sqlite",
-			"vendor": "sqlite",
-			"provider": "sqlite"
-		}
-	}`, port, tenantId, root_domain, runner_domain, master_key, statefolder))
+	return []byte(fmt.Sprintf(`server_port = "%s"
+tenant_id = "%s"
+root_domain = "%s"
+runner_domain = "%s"
+master_key = "%s"
+enable_local_door = true
+data_folder = "%s"
+
+[database_config]
+name = "sqlite"
+vendor = "sqlite"
+provider = "sqlite"`, port, tenantId, root_domain, runner_domain, master_key, statefolder))
 
 }
 
@@ -89,7 +87,7 @@ func ReadConfig(file string) (*config.Config, error) {
 	}
 
 	conf := &config.Config{}
-	err = json.Unmarshal(out, &conf)
+	err = toml.Unmarshal(out, &conf)
 	if err != nil {
 		pp.Println("@UNMARSHEL ERROR", string(out), err.Error())
 		return nil, easyerr.Wrap("err parsing config JSON", err)

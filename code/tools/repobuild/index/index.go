@@ -85,7 +85,7 @@ func (dbi *Indexer) Save() error {
 }
 
 type DB struct {
-	GroupIndex map[string][]string       `json:"group_index" yaml:"group_index"`
-	TagIndex   map[string][]string       `json:"tag_index" yaml:"tag_index"`
-	Items      map[string]xpacman.BPrint `json:"items" yaml:"items"`
+	GroupIndex map[string][]string       `json:"group_index" toml:"group_index"`
+	TagIndex   map[string][]string       `json:"tag_index" toml:"tag_index"`
+	Items      map[string]xpacman.BPrint `json:"items" toml:"items"`
 }

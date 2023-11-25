@@ -16,36 +16,36 @@ const (
 )
 
 type Manifest struct {
-	Name        string            `yaml:"name,omitempty"`
-	Slug        string            `yaml:"slug,omitempty"`
-	Type        string            `yaml:"type,omitempty"`
-	Description string            `yaml:"description,omitempty"`
-	Icon        string            `yaml:"icon,omitempty"`
-	Screenshots []string          `yaml:"screenshots,omitempty"`
-	Version     string            `yaml:"version,omitempty"`
-	Tags        []string          `yaml:"tags,omitempty"`
-	Files       map[string]string `yaml:"files,omitempty"`
-	ExtraMeta   map[string]any    `yaml:"extra_meta,omitempty"`
-	EnvFile     string            `yaml:"env_file,omitempty"`
+	Name        string            `toml:"name,omitempty"`
+	Slug        string            `toml:"slug,omitempty"`
+	Type        string            `toml:"type,omitempty"`
+	Description string            `toml:"description,omitempty"`
+	Icon        string            `toml:"icon,omitempty"`
+	Screenshots []string          `toml:"screenshots,omitempty"`
+	Version     string            `toml:"version,omitempty"`
+	Tags        []string          `toml:"tags,omitempty"`
+	Files       map[string]string `toml:"files,omitempty"`
+	ExtraMeta   map[string]any    `toml:"extra_meta,omitempty"`
+	EnvFile     string            `toml:"env_file,omitempty"`
 }
 
 type AppSchema struct {
-	Name    string               `yaml:"name,omitempty"`
-	Objects map[string]AppObject `yaml:"objects,omitempty"`
-	Steps   []AppStep            `yaml:"steps,omitempty"`
+	Name    string               `toml:"name,omitempty"`
+	Objects map[string]AppObject `toml:"objects,omitempty"`
+	Steps   []AppStep            `toml:"steps,omitempty"`
 }
 
 type AppStep struct {
-	Name     string `yaml:"name,omitempty"`
-	ObjectId string `yaml:"object_id,omitempty"`
-	Type     string `yaml:"type,omitempty"`
-	File     string `yaml:"file,omitempty"`
-	Data     any    `yaml:"data,omitempty"`
+	Name     string `toml:"name,omitempty"`
+	ObjectId string `toml:"object_id,omitempty"`
+	Type     string `toml:"type,omitempty"`
+	File     string `toml:"file,omitempty"`
+	Data     any    `toml:"data,omitempty"`
 }
 
 type AppObject struct {
-	Name string `yaml:"name,omitempty"`
-	Type string `yaml:"type,omitempty"`
+	Name string `toml:"name,omitempty"`
+	Type string `toml:"type,omitempty"`
 }
 
 func (a *AppStep) DataAs(target any) error {

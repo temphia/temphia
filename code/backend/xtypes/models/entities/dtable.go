@@ -73,22 +73,22 @@ type DCache interface {
 }
 
 type Index struct {
-	Mtype string   `json:"mtype,omitempty" yaml:"mtype,omitempty"`
-	Slug  string   `json:"slug,omitempty" yaml:"slug,omitempty"`
-	Spans []string `json:"spans" yaml:"spans"`
+	Mtype string   `json:"mtype,omitempty" toml:"mtype,omitempty"`
+	Slug  string   `json:"slug,omitempty" toml:"slug,omitempty"`
+	Spans []string `json:"spans" toml:"spans"`
 }
 
 type FTSIndex struct {
-	Type        string         `json:"type,omitempty" yaml:"type,omitempty"`
-	Slug        string         `json:"slug,omitempty" yaml:"slug,omitempty"`
-	ColumnSpans []string       `json:"spans" yaml:"spans"`
-	Options     map[string]any `json:"options" yaml:"options"`
+	Type        string         `json:"type,omitempty" toml:"type,omitempty"`
+	Slug        string         `json:"slug,omitempty" toml:"slug,omitempty"`
+	ColumnSpans []string       `json:"spans" toml:"spans"`
+	Options     map[string]any `json:"options" toml:"options"`
 }
 
 type ColumnFKRef struct {
-	Slug     string   `json:"slug,omitempty" yaml:"slug,omitempty"`
-	Type     string   `json:"type,omitempty" yaml:"type,omitempty"`
-	Target   string   `json:"target,omitempty" yaml:"target,omitempty"`
-	FromCols []string `json:"from_cols,omitempty" yaml:"from_cols,omitempty"`
-	ToCols   []string `json:"to_cols,omitempty" yaml:"to_cols,omitempty"`
+	Slug     string   `json:"slug,omitempty" toml:"slug,omitempty"`
+	Type     string   `json:"type,omitempty" toml:"type,omitempty"`
+	Target   string   `json:"target,omitempty" toml:"target,omitempty"`
+	FromCols []string `json:"from_cols,omitempty" toml:"from_cols,omitempty"`
+	ToCols   []string `json:"to_cols,omitempty" toml:"to_cols,omitempty"`
 }
