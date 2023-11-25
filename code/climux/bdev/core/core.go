@@ -10,6 +10,7 @@ import (
 	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
+	"github.com/temphia/temphia/code/goclient/devc"
 )
 
 type BdevContext struct {
@@ -63,6 +64,17 @@ func (b *BdevContext) readConfig() (*xpackage.Manifest, error) {
 	b.Vars = *cctx
 
 	return bprint, nil
+}
+
+func (b *BdevContext) GetDevClient() (*devc.DevClient, error) {
+
+	_, err := b.readConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	return devc.New(b.Vars.APIURL, b.Vars.Token), nil
+
 }
 
 type EnvVars struct {
