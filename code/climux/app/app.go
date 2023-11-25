@@ -10,6 +10,7 @@ import (
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
 	"github.com/temphia/temphia/code/backend/libx/xutils"
+	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
 	"github.com/temphia/temphia/code/climux"
 	"github.com/temphia/temphia/code/distro"
@@ -148,8 +149,8 @@ func (a *AppCLi) start() error {
 	cmd := exec.Command(selfbinary, "app", fmt.Sprintf("--config-file=%s", a.ConfigFile), "actual-start")
 	cmd.Env = append(cmd.Env, os.Environ()...)
 	cmd.Env = append(cmd.Env,
-		fmt.Sprintf("TEMPHIA_LOGD_SECRET=%s", logdsecret),
-		fmt.Sprintf("TEMPHIA_LOGD_PORT=%s", "5555"), // fixme => real logd
+		fmt.Sprintf("%s=%s", xtypes.EnvLogdSecret, logdsecret),
+		fmt.Sprintf("%s=%s", xtypes.EnvLogdSecret, "5555"), // fixme => real logd
 	)
 
 	cmd.Stdout = os.Stdout
@@ -192,7 +193,7 @@ func (a *AppCLi) readConfig() (*config.Config, error) {
 				a.Init.OrgName,
 				a.Init.RootDomain,
 				a.Init.RunnerDomain,
-				os.Getenv("TEMPHIA_APP_INIT_SECRET"),
+				os.Getenv(xtypes.EnvAppInitSecret),
 				"",
 			), os.FileMode(0666))
 			a.ConfigFile = distro.TemphiaConfigFile

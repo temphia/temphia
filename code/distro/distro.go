@@ -51,8 +51,8 @@ func NewDistroApp(opts Options) (*DistroApp, error) {
 
 	lite := plane.NewLite(sbuilder.CoreHub())
 
-	logdSecret := os.Getenv("TEMPHIA_LOGD_SECRET")
-	logdPort := os.Getenv("TEMPHIA_LOGD_PORT")
+	logdSecret := os.Getenv(xtypes.EnvLogdSecret)
+	logdPort := os.Getenv(xtypes.EnvLogdPort)
 
 	lservice = log.New(log.LogOptions{
 		LogdSecret: logdSecret,

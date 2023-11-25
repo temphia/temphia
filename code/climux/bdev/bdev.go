@@ -10,6 +10,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/k0kubun/pp"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
+	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/service/xpacman/xpackage"
 	"github.com/temphia/temphia/code/climux/bdev/core"
 	"github.com/temphia/temphia/code/tools/repobuild/builder"
@@ -48,7 +49,7 @@ type CLI struct {
 
 func (c *CLI) Run() error {
 
-	bconf := os.Getenv("TEMPHIA_BDEV_BPRINT_CONFIG")
+	bconf := os.Getenv(xtypes.EnvBdevBprintConfig)
 	if bconf == "" {
 		panic(".bprint.toml not specified")
 	}

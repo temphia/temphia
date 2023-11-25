@@ -10,6 +10,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/httpx"
 )
 
@@ -26,7 +27,7 @@ const NoPreBuildFiles = false
 
 func (s *Server) pagesRoutes() gin.HandlerFunc {
 	var proxy *httputil.ReverseProxy
-	pserver := os.Getenv("TEMPHIA_DEV_PAGES_SERVER")
+	pserver := os.Getenv(xtypes.EnvDevPageServer)
 
 	if s.opts.BuildFS == nil {
 		panic("BUILD FS")
