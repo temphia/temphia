@@ -18,17 +18,6 @@ func init() {
 
 }
 
-func RunCLI(cctx climux.Context) error {
-
-	os.Args = cctx.Args
-
-	cli := &CLI{}
-	ctx := kong.Parse(cli)
-	cli.ctx = ctx
-
-	return cli.Run()
-}
-
 func RunCLI2(cctx climux.Context) error {
 
 	os.Args = cctx.Args
