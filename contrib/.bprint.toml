@@ -1,0 +1,32 @@
+name = "test"
+slug = "test"
+type = "app"
+env = ".env"
+
+[objects.maindb]
+type = "dyndb"
+migration_type = "json.v1"
+migration_file = "migration.json"
+
+
+[objects.mainagent]
+type = "agent"
+router_type = "std.v1"
+router_data = {}
+
+
+[files]
+www = "../assets"
+
+
+# Steps below
+
+[[steps]]
+name = "doxyz"
+[steps.data]
+mnop = "pqr"
+
+
+[[steps]]
+
+
