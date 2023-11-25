@@ -1,6 +1,9 @@
 package agent
 
-import "github.com/temphia/temphia/code/climux/bdev/core"
+import (
+	"github.com/k0kubun/pp"
+	"github.com/temphia/temphia/code/climux/bdev/core"
+)
 
 type AgentCLI struct {
 	List struct{} `cmd:"" help:"List agents."`
@@ -22,4 +25,8 @@ type AgentCLI struct {
 	PlugId string
 }
 
-func (a *AgentCLI) Run(ctx core.BdevContext) error { return nil }
+func (a *AgentCLI) Run(ctx core.BdevContext) error {
+	pp.Println("@agent_list", ctx.MustGetConfig())
+
+	return nil
+}

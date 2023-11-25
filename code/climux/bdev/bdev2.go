@@ -1,8 +1,6 @@
 package bdev
 
 import (
-	"os"
-
 	"github.com/temphia/temphia/code/climux/bdev/agent"
 	"github.com/temphia/temphia/code/climux/bdev/cfolder"
 	"github.com/temphia/temphia/code/climux/bdev/dlocal"
@@ -22,14 +20,4 @@ type BdevCLI struct {
 	Socket   *socket.SocketCLI     `cmd:"" help:"Socket actions."`
 
 	BprintFile string
-}
-
-func (c *BdevCLI) Run() error {
-
-	bconf := os.Getenv("TEMPHIA_BDEV_BPRINT_CONFIG")
-	if bconf == "" {
-		panic(".bprint.toml not specified")
-	}
-
-	return nil
 }
