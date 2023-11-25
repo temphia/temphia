@@ -27,6 +27,9 @@ type Manifest struct {
 	Files       map[string]string `toml:"files,omitempty"`
 	ExtraMeta   map[string]any    `toml:"extra_meta,omitempty"`
 	EnvFile     string            `toml:"env_file,omitempty"`
+
+	Objects map[string]AppObject `toml:"objects,omitempty"`
+	Steps   []AppStep            `toml:"steps,omitempty"`
 }
 
 type AppSchema struct {
@@ -44,8 +47,9 @@ type AppStep struct {
 }
 
 type AppObject struct {
-	Name string `toml:"name,omitempty"`
-	Type string `toml:"type,omitempty"`
+	Name string         `toml:"name,omitempty"`
+	Type string         `toml:"type,omitempty"`
+	Data map[string]any `toml:"data,omitempty"`
 }
 
 func (a *AppStep) DataAs(target any) error {
