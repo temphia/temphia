@@ -21,7 +21,7 @@ type BdevContext struct {
 
 func (b *BdevContext) MustGetConfig() *xpackage.Manifest {
 
-	conf, err := b.readConfig()
+	conf, err := b.ReadConfig()
 	if err != nil {
 		panic(err)
 	}
@@ -29,7 +29,7 @@ func (b *BdevContext) MustGetConfig() *xpackage.Manifest {
 	return conf
 }
 
-func (b *BdevContext) readConfig() (*xpackage.Manifest, error) {
+func (b *BdevContext) ReadConfig() (*xpackage.Manifest, error) {
 
 	if b.ConfigFile == "" {
 		b.ConfigFile = os.Getenv(xtypes.EnvBdevBprintConfig)
@@ -68,7 +68,7 @@ func (b *BdevContext) readConfig() (*xpackage.Manifest, error) {
 
 func (b *BdevContext) GetDevClient() (*devc.DevClient, error) {
 
-	_, err := b.readConfig()
+	_, err := b.ReadConfig()
 	if err != nil {
 		return nil, err
 	}

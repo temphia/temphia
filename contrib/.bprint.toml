@@ -11,7 +11,7 @@ data = { migration_type = "json.v1", migration_file = "migration.json" }
 type = "agent"
 data.router_type = "std.v1"
 [data.router_data]
-test = "test.html"
+test = "www/test.html"
 
 [files]
 www = "../assets"

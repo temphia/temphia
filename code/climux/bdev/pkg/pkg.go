@@ -1,9 +1,28 @@
 package pkg
 
-import "github.com/temphia/temphia/code/climux/bdev/core"
+import (
+	"fmt"
+
+	"github.com/temphia/temphia/code/climux/bdev/core"
+	"github.com/temphia/temphia/code/tools/repobuild/builder"
+)
 
 type PkgCLI struct {
-	Zip struct{} `cmd:"" help:"Zip and package bashed on brpint.toml."`
+	Zip struct {
+		OutFile string
+	} `cmd:"" help:"Zip and package bashed on brpint.toml."`
 }
 
-func (c *PkgCLI) Run(ctx core.BdevContext) error { return nil }
+func (c *PkgCLI) Run(ctx core.BdevContext) error {
+
+	mf, err := ctx.ReadConfig()
+	if err != nil {
+		return err
+	}
+
+	if c.Zip.OutFile == "" {
+		c.Zip.OutFile = fmt.Sprintf("build/%s.zip", mf.Slug)
+	}
+
+	return builder.ZipIt(mf, c.Zip.OutFile)
+}
