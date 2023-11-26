@@ -162,8 +162,7 @@
         ]}
         key_names={[
             ["id", "ID"],
-            ["name", "Name"],
-            ["type", "Type"],
+            ["renderer", "Renderer"],
             ["executor", "Executor"],
             ["plug_id", "Plug Id"],
         ]}

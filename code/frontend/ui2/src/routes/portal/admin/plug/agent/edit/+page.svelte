@@ -59,14 +59,9 @@
                     key_name: "id",
                 },
                 {
-                    name: "Name",
+                    name: "Renderer",
                     ftype: "TEXT",
-                    key_name: "name",
-                },
-                {
-                    name: "Type",
-                    ftype: "TEXT",
-                    key_name: "type",
+                    key_name: "renderer",
                 },
                 {
                     name: "Executor",
@@ -75,34 +70,9 @@
                     options: executors,
                 },
                 {
-                    name: "Interface File",
-                    ftype: "TEXT",
-                    key_name: "iface_file",
-                },
-                {
                     name: "Entry File",
                     ftype: "TEXT",
                     key_name: "entry_file",
-                },
-                {
-                    name: "Web Entry",
-                    ftype: "TEXT",
-                    key_name: "web_entry",
-                },
-                {
-                    name: "Web Script",
-                    ftype: "TEXT",
-                    key_name: "web_script",
-                },
-                {
-                    name: "Web Style",
-                    ftype: "TEXT",
-                    key_name: "web_style",
-                },
-                {
-                    name: "Web Loader",
-                    ftype: "TEXT",
-                    key_name: "web_loader",
                 },
                 {
                     name: "Web Files",

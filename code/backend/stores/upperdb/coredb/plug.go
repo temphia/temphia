@@ -118,15 +118,10 @@ func (d *DB) AgentNew(tenantId string, data *entities.Agent) error {
 }
 
 var agentFields = []string{
-	"name",
-	"type",
+	"renderer",
 	"executor",
 	"iface_file",
 	"entry_file",
-	"web_entry",
-	"web_script",
-	"web_style",
-	"web_loader",
 	"web_files",
 	"extra_meta",
 }

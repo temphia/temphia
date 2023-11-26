@@ -54,8 +54,6 @@ type AppObject struct {
 
 func (a *AppStep) DataAs(target any) error {
 
-	a.Data = convert(a.Data.(map[interface{}]interface{}))
-
 	out, err := json.Marshal(a.Data)
 	if err != nil {
 		return err

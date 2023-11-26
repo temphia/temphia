@@ -18,7 +18,7 @@ type Plug struct {
 type Agent struct {
 	Id         string     `json:"id,omitempty" db:"id,omitempty"`
 	Executor   string     `json:"executor,omitempty" db:"executor,omitempty"` // none, javascript1, wasm1
-	Renderer   string     `json:"renderer,omitempty" db:"executor,omitempty"` // none, era spa gossr static
+	Renderer   string     `json:"renderer,omitempty" db:"renderer,omitempty"` // none, era spa gossr static
 	EntryFile  string     `json:"entry_file,omitempty" db:"entry_file,omitempty"`
 	WebFiles   JsonStrMap `json:"web_files,omitempty" db:"web_files,omitempty"`
 	WebOptions JsonStrMap `json:"web_options,omitempty" db:"web_options,omitempty"` // auth_inject, auth_redirrect
