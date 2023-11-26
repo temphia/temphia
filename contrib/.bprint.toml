@@ -9,8 +9,8 @@ data = { migration_type = "json.v1", migration_file = "migration.json" }
 
 [objects.mainagent]
 type = "agent"
-data.router_type = "std.v1"
-[data.router_data]
+
+
 test = "www/test.html"
 
 [files]
