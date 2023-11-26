@@ -19,10 +19,10 @@ import (
 const CacheBudget = 1 << 20
 
 const (
-	NotzRendererDynamicSPA   = "dspa.v1"
-	NotzRendererRawHttp      = "raw_http.v1"
-	NotzRendererServe        = "serve.v1"
-	NotzRendererSimpleRouter = "simple_router.v1"
+	NotzRendererDynamicSPA = "dspa.v1"
+	NotzRendererRawHttp    = "raw_http.v1"
+	NotzRendererServe      = "serve.v1"
+	NotzRendererRouter     = "router.v1"
 )
 
 func (a *Notz) HandleAgent(ctx xnotz.Context) {
@@ -33,11 +33,11 @@ func (a *Notz) HandleAgent(ctx xnotz.Context) {
 	}
 
 	switch as.Renderer {
-	case NotzRendererSimpleRouter, "":
+	case NotzRendererRouter:
 		a.simpleRouterRendererV1(ctx, as)
 	case NotzRendererDynamicSPA:
 		a.dynamicSPARenderV1(ctx, as)
-	case NotzRendererRawHttp:
+	case NotzRendererRawHttp, "":
 		a.engine.WebRawXecute(etypes.WebRawXecuteOptions{
 			TenantId: ctx.TenantId,
 			PlugId:   ctx.PlugId,
