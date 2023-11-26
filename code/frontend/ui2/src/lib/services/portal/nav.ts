@@ -258,7 +258,7 @@ export class PoralNavigator {
 
 
   admin_plug_dev_live_shell = (pid: string, aid: string) => {
-    this.set(`admin/plug/dev/liveshell?pid=${pid}`);
+    this.set(`admin/plug/dev/devshell?pid=${pid}`);
   };
 
 
