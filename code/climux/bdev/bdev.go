@@ -2,12 +2,14 @@ package bdev
 
 import (
 	"github.com/temphia/temphia/code/climux/bdev/agent"
-	"github.com/temphia/temphia/code/climux/bdev/cfolder"
+	"github.com/temphia/temphia/code/climux/bdev/resource/cfolder"
+	"github.com/temphia/temphia/code/climux/bdev/resource/dyndb"
+	"github.com/temphia/temphia/code/climux/bdev/resource/socket"
+
 	"github.com/temphia/temphia/code/climux/bdev/dlocal"
-	"github.com/temphia/temphia/code/climux/bdev/dyndb"
+
 	"github.com/temphia/temphia/code/climux/bdev/pkg"
 	"github.com/temphia/temphia/code/climux/bdev/resource"
-	"github.com/temphia/temphia/code/climux/bdev/socket"
 )
 
 type BdevCLI struct {
