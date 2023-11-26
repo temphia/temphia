@@ -253,7 +253,6 @@ create table data_table_columns (
     ref_type TEXT default '',
     ref_target TEXT default '',
     ref_object TEXT default '',
-    ref_copy TEXT default '',
     extra_meta json not null default '{}',
     tenant_id text not null,
     foreign KEY(group_id, tenant_id) references data_table_groups (slug, tenant_id),
