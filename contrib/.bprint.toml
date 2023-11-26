@@ -5,7 +5,7 @@ env = ".env"
 
 [objects.maindb]
 type = "dyndb"
-data = { migration_type = "json.v1", migration_file = "migration.json" }
+options = { migration_type = "json.v1", migration_file = "migration.json" }
 
 [objects.mainagent]
 type = "agent"

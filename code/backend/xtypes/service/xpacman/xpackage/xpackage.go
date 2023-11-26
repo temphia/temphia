@@ -47,9 +47,9 @@ type AppStep struct {
 }
 
 type AppObject struct {
-	Name string         `toml:"name,omitempty"`
-	Type string         `toml:"type,omitempty"`
-	Data map[string]any `toml:"data,omitempty"`
+	Name    string         `toml:"name,omitempty"`
+	Type    string         `toml:"type,omitempty"`
+	Options map[string]any `toml:"options,omitempty"`
 }
 
 func (a *AppStep) DataAs(target any) error {
