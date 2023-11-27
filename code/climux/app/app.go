@@ -158,7 +158,37 @@ func (a *AppCLi) start() error {
 
 	pp.Println("@starting_actual_process", cmd.String())
 
-	return cmd.Run()
+	/*
+
+		sigchan := make(chan os.Signal, 1)
+		signal.Notify(sigchan,
+			syscall.SIGINT,
+			syscall.SIGTERM,
+			syscall.SIGQUIT)
+		go func() {
+			pp.Println("@WAITING_SIGNAL")
+
+			s := <-sigchan
+			pp.Println("@GOT_SIGNAL", s.String())
+
+			if cmd.Process == nil {
+				return
+			}
+
+			pp.Println("@killing pid:", cmd.Process.Pid)
+
+			cmd.Process.Signal(s)
+			cmd.Process.Kill()
+		}()
+
+	*/
+
+	err = cmd.Start()
+	if err != nil {
+		return err
+	}
+
+	return cmd.Wait()
 
 }
 
