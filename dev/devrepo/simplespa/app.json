@@ -15,7 +15,7 @@
         "executor": "none",
         "renderer": "notz.std.v1",
         "web_options": {
-          "inject_auth": "false"
+          "auth_type": "lazy"
         },
         "web_files": {
           "client.js": "www/client.js",

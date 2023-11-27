@@ -16,7 +16,8 @@
         "executor": "none",
         "renderer": "std.v1",
         "web_options": {
-          "inject_auth": "false"
+          "auth_type": "auto_inject",
+          "start_page": "app.html"
         },
         "web_files": {
           "client.js": "www/client.js",
