@@ -12,6 +12,10 @@ func (e *EngineHub) launchAgent(uclaim *claim.Session, plugId, agentId string) (
 
 	domain := fmt.Sprintf("%s-n-%s.%s", plugId, agentId, e.runnerDomain)
 
+	c := e.engine.GetCache()
+
+	agent := c.GetAgent(uclaim.TenantId, plugId, agentId)
+
 	token, err := e.signer.SignExecutor(uclaim.TenantId, &claim.Executor{
 		TenantId:  uclaim.TenantId,
 		UserId:    uclaim.UserID,
@@ -32,7 +36,8 @@ func (e *EngineHub) launchAgent(uclaim *claim.Session, plugId, agentId string) (
 		PlugId:     plugId,
 		AgentId:    agentId,
 		TenantId:   uclaim.TenantId,
-		StartPage:  "",
+		StartPage:  agent.WebOptions["start_page"],
+		AuthType:   agent.WebOptions["auth_type"],
 	}, nil
 }
 
@@ -48,6 +53,8 @@ func (e *EngineHub) launchTarget(uclaim *claim.Session, targetId int64) (*launch
 	plugId := targets[0].PlugId
 	agentId := targets[0].AgentId
 
+	c := e.engine.GetCache()
+	agent := c.GetAgent(uclaim.TenantId, plugId, agentId)
 	domain := fmt.Sprintf("%s-n-%s.%s", plugId, agentId, e.runnerDomain)
 
 	token, err := e.signer.SignExecutor(uclaim.TenantId, &claim.Executor{
@@ -70,7 +77,8 @@ func (e *EngineHub) launchTarget(uclaim *claim.Session, targetId int64) (*launch
 		PlugId:     plugId,
 		AgentId:    agentId,
 		TenantId:   uclaim.TenantId,
-		StartPage:  "",
+		StartPage:  agent.WebOptions["start_page"],
+		AuthType:   agent.WebOptions["auth_type"],
 	}, nil
 
 }

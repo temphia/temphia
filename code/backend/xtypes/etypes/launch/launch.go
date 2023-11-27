@@ -7,8 +7,8 @@ type Response struct {
 	PlugId     string `json:"plug_id,omitempty"`
 	AgentId    string `json:"agent_id,omitempty"`
 	TenantId   string `json:"tenant_id,omitempty"`
+	AuthType   string `json:"auth_type,omitempty"`
 	StartPage  string `json:"start_page,omitempty"`
-	Options    any    `json:"options,omitempty"`
 }
 
 type EraOptions struct {
