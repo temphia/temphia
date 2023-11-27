@@ -15,7 +15,8 @@
         "executor": "none",
         "renderer": "serve.v1",
         "web_options": {
-          "auth_inject": "false",
+          "auth_type": "none",
+          "start_page": "index.html",
           "serve_folder": "www"
         }
       }

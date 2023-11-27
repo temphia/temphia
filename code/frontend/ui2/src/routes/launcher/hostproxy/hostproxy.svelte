@@ -3,6 +3,7 @@
   import { LoadingSpinner, type PortalService } from "$lib/core";
   import Eframe from "$lib/compo/eframe/eframe.svelte";
   import type { Instance } from "$lib/services/portal/launcher/launcher";
+  import { BuildExecURL } from "$lib/compo/eframe";
 
   export let options: Instance;
 
@@ -22,9 +23,8 @@
       return;
     }
 
-    url = `http://${resp.data["domain"]}:${
-      location.port || 80
-    }/z/pages/agent/inject`;
+    url = BuildExecURL(resp.data);
+
     token = resp.data["token"];
     data = resp.data;
 

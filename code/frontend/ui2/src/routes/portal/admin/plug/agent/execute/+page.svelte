@@ -3,7 +3,7 @@
     import type { PortalService } from "$lib/core";
     import { params } from "$lib/params";
     import Layout from "./_layout.svelte";
-    import { EFrame } from "$lib/compo/eframe";
+    import { BuildExecURL, EFrame } from "$lib/compo/eframe";
 
     let data = $params;
 
@@ -25,9 +25,10 @@
             return;
         }
 
-        url = `http://${resp.data["domain"]}:${
-            location.port || 80
-        }/z/pages/agent/inject`;
+        url = BuildExecURL(resp.data)
+        console.log("@URL", url)
+
+
         token = resp.data["token"];
         before = false;
     };

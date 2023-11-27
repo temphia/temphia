@@ -48,11 +48,7 @@ func (a *Notz) HandleAgent(ctx xnotz.Context) {
 
 	case NotzRendererServe:
 
-		cconf := a.getRouteConfig(ctx.TenantId, ctx.PlugId, ctx.AgentId)
-		if cconf == nil || cconf.config == nil {
-			pp.Println("@conf_not_found", cconf)
-			return
-		}
+		plug := a.ecache.GetPlug(ctx.TenantId, ctx.PlugId)
 
 		path := ctx.Request.URL.Path
 		subfolder := as.WebOptions["serve_folder"]
