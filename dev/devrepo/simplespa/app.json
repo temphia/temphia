@@ -13,7 +13,7 @@
       "data": {
         "id": "default",
         "executor": "none",
-        "renderer": "notz.std.v1",
+        "renderer": "std.v1",
         "web_options": {
           "auth_type": "lazy"
         },

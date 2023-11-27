@@ -1,9 +1,9 @@
 package ebrowser
 
 import (
-	"encoding/json"
 	"os"
 
+	"github.com/BurntSushi/toml"
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/climux"
@@ -25,7 +25,7 @@ func init() {
 
 func RunCLI(cctx climux.Context) error {
 
-	file := "temphia.json"
+	file := distro.TemphiaConfigFile
 
 	ew := eb.New(cctx)
 	defer ew.Close()
@@ -45,7 +45,7 @@ func RunCLI(cctx climux.Context) error {
 	}
 
 	conf := &config.Config{}
-	err = json.Unmarshal(out, conf)
+	err = toml.Unmarshal(out, conf)
 	if err != nil {
 		panic(err)
 	}

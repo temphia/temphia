@@ -7,8 +7,10 @@ import (
 	"os"
 	"time"
 
+	"github.com/BurntSushi/toml"
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/climux"
+	"github.com/temphia/temphia/code/distro"
 	webview "github.com/webview/webview_go"
 
 	"github.com/k0kubun/pp"
@@ -80,7 +82,7 @@ func (e *EbrowserApp) __BindEbrowserRPC(name string, opts map[string]string) {
 				time.Sleep(time.Second * 5)
 			}
 
-			pp.Println(e.NavigateLocal("temphia.json"))
+			pp.Println(e.NavigateLocal(distro.TemphiaConfigFile))
 
 		case "connect_remote":
 
@@ -99,7 +101,7 @@ func (e *EbrowserApp) NavigateLocal(file string) error {
 	}
 
 	conf := config.Config{}
-	err = json.Unmarshal(out, &conf)
+	err = toml.Unmarshal(out, &conf)
 	if err != nil {
 		return err
 	}
