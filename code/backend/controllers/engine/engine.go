@@ -7,7 +7,6 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/etypes/launch"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
-	"github.com/thoas/go-funk"
 )
 
 type Controller struct {
@@ -66,7 +65,7 @@ func (c *Controller) LaunchEditor(uclaim *claim.Session, plugId, agentId string)
 
 func (c *Controller) ExecuteDev(dclaim *claim.PlugDevTkt, plug, agent, action string, body []byte) ([]byte, error) {
 
-	if !dclaim.AllPlugs && !funk.ContainsString(dclaim.PlugIds, plug) {
+	if plug != dclaim.PlugId {
 		return nil, easyerr.NotAuthorized()
 	}
 

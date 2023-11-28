@@ -9,9 +9,7 @@ import (
 )
 
 type DevIssueReq struct {
-	AllPlugs bool     `json:"all_plugs,omitempty"`
-	PlugIds  []string `json:"plug_ids,omitempty"`
-	BprintId string   `json:"bprint_id,omitempty"`
+	PlugId string `json:"plug_id,omitempty"`
 }
 
 func (c *Controller) DevIssueTktEncoded(uclaim *claim.Session, host string, req DevIssueReq) (string, error) {
@@ -44,9 +42,8 @@ func (c *Controller) DevIssueTkt(uclaim *claim.Session, host string, req DevIssu
 	tok, err := c.signer.SignPlugDevTkt(uclaim.TenantId, &claim.PlugDevTkt{
 		UserId:    uclaim.UserID,
 		UserGroup: uclaim.UserGroup,
-		BprintId:  req.BprintId,
-		PlugIds:   req.PlugIds,
-		AllPlugs:  req.AllPlugs,
+		TenantId:  uclaim.TenantId,
+		PlugId:    req.PlugId,
 	})
 
 	if err != nil {

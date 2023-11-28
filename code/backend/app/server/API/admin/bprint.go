@@ -174,7 +174,7 @@ func (r *ApiAdmin) DevIssueTkt(ctx httpx.Request) {
 		return
 	}
 
-	rdata.BprintId = ctx.MustParam("id")
+	// rdata.BprintId = ctx.MustParam("id")
 	tkt, err := r.cAdmin.DevIssueTkt(ctx.Session, ctx.Http.Request.Host, rdata)
 
 	r.rutil.WriteJSON(ctx.Http, tkt, err)
@@ -188,7 +188,7 @@ func (r *ApiAdmin) DevIssueTktEncoded(ctx httpx.Request) {
 		r.rutil.WriteErr(ctx.Http, err.Error())
 		return
 	}
-	rdata.BprintId = ctx.MustParam("id")
+	// rdata.BprintId = ctx.MustParam("id")
 
 	tkt, err := r.cAdmin.DevIssueTktEncoded(ctx.Session, ctx.Http.Request.Host, rdata)
 

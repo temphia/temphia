@@ -16,12 +16,10 @@ type RoomTagTkt struct {
 }
 
 type PlugDevTkt struct {
-	TenantId  string   `json:"-"`
-	UserId    string   `json:"user_id"`
-	UserGroup string   `json:"user_group"`
-	BprintId  string   `json:"bprint_id"`
-	PlugIds   []string `json:"plug_ids"`
-	AllPlugs  bool     `json:"all_plugs"`
+	TenantId  string `json:"-"`
+	UserId    string `json:"user_id"`
+	UserGroup string `json:"user_group"`
+	PlugId    string `json:"plug_id"`
 }
 
 type UserMgmtTkt struct {
