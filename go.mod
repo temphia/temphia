@@ -5,6 +5,7 @@ go 1.20
 replace github.com/coreos/bbolt => go.etcd.io/bbolt v1.3.5
 
 require (
+	github.com/BurntSushi/toml v1.3.2
 	github.com/alecthomas/kong v0.8.1
 	github.com/alecthomas/repr v0.3.0
 	github.com/brianvoe/gofakeit/v6 v6.24.0
@@ -44,12 +45,11 @@ require (
 	golang.org/x/crypto v0.15.0
 	golang.org/x/oauth2 v0.14.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
-	gopkg.in/yaml.v2 v2.4.0
+
 )
 
 require (
 	dario.cat/mergo v1.0.0 // indirect
-	github.com/BurntSushi/toml v1.3.2 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/ProtonMail/go-crypto v0.0.0-20230828082145-3c4c8a2d2371 // indirect
 	github.com/acomagu/bufpipe v1.0.4 // indirect
@@ -60,7 +60,6 @@ require (
 	github.com/dlclark/regexp2 v1.10.0 // indirect
 	github.com/eknkc/basex v1.0.0 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
-	github.com/fatih/color v1.10.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
@@ -112,7 +111,6 @@ require (
 	golang.org/x/sys v0.14.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.13.0 // indirect
-	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
