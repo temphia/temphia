@@ -70,7 +70,7 @@ func (a *Notz) HandleAgent(ctx xnotz.Context) {
 			Mode:   router.RouteItemModeServe,
 			Target: subfolder,
 			File:   file,
-		}, cconf.bprintId)
+		}, plug.BprintId)
 
 	default:
 		panic("not implemented")
