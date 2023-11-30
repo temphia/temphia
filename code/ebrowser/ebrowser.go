@@ -70,7 +70,7 @@ func (e *EbrowserApp) __BindEbrowserRPC(name string, opts map[string]string) {
 				}
 			}
 
-			if opts["start_instance"] == "true" {
+			if opts["start_instance"] == "true" || opts["init_instance"] == "true" {
 				go func() {
 					err := e.clictx.RunCLI("app", []string{"app", "start"})
 					if err != nil {
@@ -78,11 +78,11 @@ func (e *EbrowserApp) __BindEbrowserRPC(name string, opts map[string]string) {
 						return
 					}
 				}()
-
-				time.Sleep(time.Second * 5)
 			}
 
-			pp.Println(e.NavigateLocal(distro.TemphiaConfigFile))
+			time.Sleep(time.Second * 5)
+
+			e.NavigateLocal(distro.TemphiaConfigFile)
 
 		case "connect_remote":
 
@@ -97,16 +97,22 @@ func (e *EbrowserApp) NavigateLocal(file string) error {
 
 	out, err := os.ReadFile(file)
 	if err != nil {
+		pp.Println("@err_read_config", err.Error())
 		return err
 	}
 
 	conf := config.Config{}
 	err = toml.Unmarshal(out, &conf)
 	if err != nil {
+		pp.Println("@err_unmarshel_toml_config", err.Error())
 		return err
 	}
 
-	e.webview.Navigate(fmt.Sprintf("http://localhost%s/z/pages", conf.ServerPort))
+	url := fmt.Sprintf("http://localhost%s/z/pages", conf.ServerPort)
+
+	pp.Println("@opening_url", url)
+	e.webview.Navigate(url)
+	pp.Println("@should_open_newLurl")
 
 	return nil
 
@@ -116,6 +122,7 @@ func (e *EbrowserApp) __sendRPC(name string, data any) error {
 
 	out, err := json.Marshal(data)
 	if err != nil {
+
 		return err
 	}
 
