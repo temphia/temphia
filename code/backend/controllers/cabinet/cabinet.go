@@ -2,6 +2,7 @@ package cabinet
 
 import (
 	"context"
+	"strings"
 
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
@@ -38,7 +39,7 @@ func (c *Controller) ListRoot(uclaim *claim.Session, source string) ([]string, e
 }
 
 func (c *Controller) AddFolder(uclaim *claim.Session, source, folder string) error {
-	return c.hub.NewFolder(context.Background(), uclaim.TenantId, "", folder)
+	return c.hub.NewFolder(context.Background(), uclaim.TenantId, "", strings.TrimPrefix(folder, "/"))
 
 }
 

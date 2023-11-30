@@ -179,5 +179,5 @@ func (f *CabinetHub) CompressFiles(ctx context.Context, tenantId, fpath string, 
 // private
 
 func valid(fpath string) bool {
-	return strings.Contains(fpath, "..")
+	return !strings.Contains(fpath, "..")
 }
