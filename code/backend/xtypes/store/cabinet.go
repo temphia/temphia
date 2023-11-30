@@ -32,7 +32,7 @@ type BlobInfo struct {
 }
 
 type CabinetHub interface {
-	Start(mb xplane.MsgBus) error
+	Start(mb xplane.MsgBus, tenantId string) error
 
 	FileStore
 }

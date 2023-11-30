@@ -26,7 +26,25 @@ func New(impl store.FileStore) *CabinetHub {
 	}
 }
 
-func (f *CabinetHub) Start(mb xplane.MsgBus) error {
+func (f *CabinetHub) Start(mb xplane.MsgBus, tenantId string) error {
+	ctx := context.Background()
+
+	resp, err := f.ListFolder(ctx, tenantId, "")
+	if err != nil {
+		return err
+	}
+
+	if len(resp) > 0 {
+		return nil
+	}
+
+	for _, folder := range store.DefaultFolders {
+		err = f.NewFolder(ctx, tenantId, "", folder)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 

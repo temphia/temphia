@@ -50,7 +50,7 @@ func (d *AppDeps) start() error {
 	}
 
 	err = d.cabinetHub.
-		Start(d.controlPlane.GetMsgBus())
+		Start(d.controlPlane.GetMsgBus(), d.confd.GetConfig().TenantId)
 	if err != nil {
 		return err
 	}
