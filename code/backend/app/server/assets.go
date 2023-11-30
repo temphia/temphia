@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"io/fs"
 	"net/http"
+	"path"
 
 	"github.com/gin-gonic/gin"
 	"github.com/temphia/temphia/code/backend/app/data"
-	"github.com/temphia/temphia/code/backend/xtypes/xserver/xnotz/httpx"
+	"github.com/temphia/temphia/code/backend/xtypes/store/fdatautil"
 )
 
 func (s *Server) assets(rg *gin.RouterGroup) {
@@ -33,24 +34,27 @@ func (s *Server) assets(rg *gin.RouterGroup) {
 // bashed on public folder in tenant's root cabinet source
 func (s *Server) servePublicAssets(c *gin.Context) {
 
-	out, err := s.cabhub.GetBlob(c.Request.Context(), c.Param("tenant_id"), "public", c.Param("file"))
+	file := c.Param("file")
+
+	data, err := s.cabhub.GetFile(c.Request.Context(), c.Param("tenant_id"), path.Join("public", file))
 	if err != nil {
 		c.Writer.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	httpx.WriteBinary(c, out)
-
+	fdatautil.WriteAndClose(c.Writer, file, data)
 }
 
 func (s *Server) serveSystemAssets(c *gin.Context) {
 
-	out, err := s.cabhub.GetBlob(c.Request.Context(), c.Param("tenant_id"), "system", fmt.Sprintf("%s_%s.png", c.Param("otype"), c.Param("name")))
+	file := fmt.Sprintf("%s_%s.png", c.Param("otype"), c.Param("name"))
+
+	data, err := s.cabhub.GetFile(c.Request.Context(), c.Param("tenant_id"), path.Join("system", file))
 	if err != nil {
 		c.Writer.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	httpx.WriteBinary(c, out)
+	fdatautil.WriteAndClose(c.Writer, file, data)
 
 }

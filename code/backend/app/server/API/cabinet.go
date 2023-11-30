@@ -2,7 +2,7 @@ package api_server
 
 import (
 	"net/http"
-	"strings"
+	"path"
 
 	"github.com/gin-gonic/gin"
 	"github.com/k0kubun/pp"
@@ -78,13 +78,11 @@ func (s *Server) listFolder(ctx httpx.Request) {
 
 func (s *Server) getFile(ctx httpx.Request) {
 
-	folder, file := fileFolderFromPath(ctx.MustParam("fpath"))
-
 	bytes, err := s.cCabinet.GetBlob(
 		ctx.Session,
 		ctx.MustParam("source"),
-		folder,
-		file)
+		ctx.MustParam("fpath"),
+	)
 	if err != nil {
 		httpx.WriteErr(ctx.Http, err)
 		return
@@ -107,7 +105,6 @@ func (s *Server) deleteFile(ctx httpx.Request) {
 }
 
 func (s *Server) getFilePreview(ctx *gin.Context) {
-	folder, file := fileFolderFromPath(ctx.Param("fpath"))
 
 	uclaim, err := s.signer.ParseSession(ctx.Param("tenant_id"), ctx.Query("token"))
 	if err != nil {
@@ -118,8 +115,7 @@ func (s *Server) getFilePreview(ctx *gin.Context) {
 	bytes, err := s.cCabinet.GetBlob(
 		uclaim,
 		ctx.Param("source"),
-		folder,
-		file,
+		ctx.Param("fpath"),
 	)
 
 	if err != nil {
@@ -132,7 +128,6 @@ func (s *Server) getFilePreview(ctx *gin.Context) {
 
 // private
 
-func fileFolderFromPath(path string) (string, string) {
-	frags := strings.Split(path, "/")
-	return strings.Join(frags[:len(frags)-1], "/"), frags[len(frags)-1]
+func fileFolderFromPath(p string) (string, string) {
+	return path.Split(p)
 }

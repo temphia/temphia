@@ -14,12 +14,12 @@ import (
 
 	"github.com/temphia/temphia/code/backend/app/config"
 	"github.com/temphia/temphia/code/backend/libx/easyerr"
-	"github.com/temphia/temphia/code/backend/libx/xutils"
 	"github.com/temphia/temphia/code/backend/xtypes"
 	"github.com/temphia/temphia/code/backend/xtypes/etypes"
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/fdatautil"
 )
 
 type Builder struct {
@@ -112,16 +112,12 @@ func (b *Builder) initData(opts etypes.ExecutorOption, conf *Config) error {
 	conf.RunCommand = opts.WebOptions["run_command"]
 	conf.SubFolder = opts.WebOptions["run_sub_folder"]
 
-	zfile, err := b.chub.GetFolderAsZip(context.TODO(), opts.TenantId, path.Join(xtypes.BprintBlobFolder, opts.BprintId, conf.SubFolder))
+	data, err := b.chub.CompressFolder(context.TODO(), opts.TenantId, path.Join(xtypes.BprintBlobFolder, opts.BprintId, conf.SubFolder))
 	if err != nil {
 		return err
 	}
 
-	defer func() {
-		os.Remove(zfile)
-	}()
-
-	return xutils.ExtractZip(zfile, opts.RunFolder)
+	return fdatautil.ExtractZipAndClose(data, opts.RunFolder)
 }
 
 func (b *Builder) ServeFile(file string) (xtypes.BeBytes, error) {

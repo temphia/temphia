@@ -6,6 +6,7 @@ import (
 	"github.com/temphia/temphia/code/backend/xtypes/models/claim"
 	"github.com/temphia/temphia/code/backend/xtypes/service"
 	"github.com/temphia/temphia/code/backend/xtypes/store"
+	"github.com/temphia/temphia/code/backend/xtypes/store/fdatautil"
 )
 
 type Controller struct {
@@ -21,25 +22,47 @@ func New(cabinet store.CabinetHub, signer service.Signer) *Controller {
 }
 
 func (c *Controller) ListRoot(uclaim *claim.Session, source string) ([]string, error) {
-	return c.hub.ListRoot(context.TODO(), uclaim.TenantId)
+
+	resp, err := c.hub.ListFolder(context.Background(), uclaim.TenantId, "")
+	if err != nil {
+		return nil, err
+	}
+
+	rstrs := make([]string, 0, len(resp))
+
+	for _, bi := range resp {
+		rstrs = append(rstrs, bi.Name)
+	}
+
+	return rstrs, nil
 }
 
 func (c *Controller) AddFolder(uclaim *claim.Session, source, folder string) error {
-	return c.hub.AddFolder(context.TODO(), uclaim.TenantId, folder)
+	return c.hub.NewFolder(context.Background(), uclaim.TenantId, "", folder)
+
 }
 
 func (c *Controller) AddBlob(uclaim *claim.Session, source, folder, file string, contents []byte) error {
-	return c.hub.AddBlob(context.TODO(), uclaim.TenantId, folder, file, contents)
+	return c.hub.NewFile(context.Background(), uclaim.TenantId, folder, file, fdatautil.NewFromBytes(contents))
 }
 
 func (c *Controller) ListFolder(uclaim *claim.Session, source, folder string) ([]*store.BlobInfo, error) {
-	return c.hub.ListFolderBlobs(context.TODO(), uclaim.TenantId, folder)
+	return c.hub.ListFolder(context.Background(), uclaim.TenantId, folder)
 }
 
-func (c *Controller) GetBlob(uclaim *claim.Session, source, folder, file string) ([]byte, error) {
-	return c.hub.GetBlob(context.TODO(), uclaim.TenantId, folder, file)
+func (c *Controller) GetBlob(uclaim *claim.Session, source, fpath string) ([]byte, error) {
+
+	data, err := c.hub.GetFile(context.Background(), uclaim.TenantId, fpath)
+	if err != nil {
+		return nil, err
+	}
+
+	defer data.Close()
+
+	out, err := data.AsBytes()
+	return out, err
 }
 
 func (c *Controller) DeleteBlob(uclaim *claim.Session, source, folder, file string) error {
-	return c.hub.DeleteBlob(context.TODO(), uclaim.TenantId, folder, file)
+	return c.hub.DeleteFile(context.Background(), uclaim.TenantId, folder, file)
 }

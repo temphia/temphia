@@ -8,7 +8,7 @@ import (
 )
 
 type LocalFSBuilder struct {
-	impl *NativeBlob
+	impl *LocalFS
 }
 
 func init() {
@@ -18,8 +18,8 @@ func init() {
 func NewLocalFSBuilder(opts store.BuilderOptions) (store.Store, error) {
 
 	return &LocalFSBuilder{
-		impl: &NativeBlob{
-			rootFilePath: opts.Config.Target,
+		impl: &LocalFS{
+			basePath: opts.Config.Target,
 		},
 	}, nil
 }

@@ -154,26 +154,14 @@ func (a *Notz) serveFromBprint1(ctx xnotz.Context, route *router.RouteResponse, 
 
 	// fixme => implement caching with cache budget
 
-	folder := fmt.Sprintf("%s/%s/%s", xtypes.BprintBlobFolder, bprintid, route.Target)
+	fpath := path.Join(xtypes.BprintBlobFolder, bprintid, route.Target, route.File)
 
-	out, err := a.cabinet.GetBlob(ctx.Request.Context(), ctx.TenantId, folder, route.File)
+	data, err := a.cabinet.GetFile(ctx.Request.Context(), ctx.TenantId, fpath)
 	if err != nil {
+		pp.Println("@get_file_err1", err.Error())
 		return
 	}
 
-	ffiles := strings.Split(route.File, ".")
-
-	ctype := ""
-	switch ffiles[1] {
-	case "js":
-		ctype = httpx.CtypeJS
-	case "css":
-		ctype = httpx.CtypeCSS
-	default:
-		ctype = http.DetectContentType(out)
-	}
-
-	ctx.Writer.Header().Set("Context-Type", ctype)
-	ctx.Writer.Write(out)
+	fdatautil.WriteAndClose(ctx.Writer, route.File, data)
 
 }
