@@ -10,14 +10,16 @@ import (
 var _ store.FData = (*FileFdata)(nil)
 
 type FileFdata struct {
-	fpath string
-	file  *os.File
+	fpath         string
+	file          *os.File
+	deleteOnClose bool
 }
 
-func NewFromFile(fpath string) *FileFdata {
+func NewFromFile(fpath string, delonclose bool) *FileFdata {
 	return &FileFdata{
-		fpath: fpath,
-		file:  nil,
+		fpath:         fpath,
+		file:          nil,
+		deleteOnClose: delonclose,
 	}
 }
 
@@ -42,7 +44,11 @@ func (f *FileFdata) Close() error {
 		f.file.Close()
 	}
 
-	return os.Remove(f.fpath)
+	if f.deleteOnClose {
+		return os.Remove(f.fpath)
+	}
+
+	return nil
 
 }
 

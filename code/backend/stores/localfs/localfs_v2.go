@@ -101,7 +101,7 @@ func (l *LocalFS) CompressFolder(ctx context.Context, tenantId, fpath string) (s
 		return nil, err
 	}
 
-	return fdatautil.NewFromFile(path.Join(folderToZip, zfile.Name())), nil
+	return fdatautil.NewFromFile(path.Join(folderToZip, zfile.Name()), true), nil
 
 }
 
@@ -143,7 +143,7 @@ func (l *LocalFS) GetFile(ctx context.Context, tenantId, fpath string) (store.FD
 		return nil, easyerr.NotFound("file")
 	}
 
-	return fdatautil.NewFromFile(ffile), nil
+	return fdatautil.NewFromFile(ffile, false), nil
 }
 
 func (l *LocalFS) RenameFile(ctx context.Context, tenantId, fpath, name, newname string) error {
@@ -269,7 +269,7 @@ func (l *LocalFS) CompressFiles(ctx context.Context, tenantId, fpath string, fil
 
 	cleanExist = true
 
-	return fdatautil.NewFromFile(zfile.Name()), nil
+	return fdatautil.NewFromFile(zfile.Name(), true), nil
 }
 
 // private
