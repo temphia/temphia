@@ -4,8 +4,6 @@ import (
 	"embed"
 	"io/fs"
 
-	"github.com/temphia/temphia/code/backend/app/registry"
-
 	// repo provider
 	rembed "github.com/temphia/temphia/code/backend/services/pacman/provider/embed"
 	_ "github.com/temphia/temphia/code/backend/services/pacman/provider/github"
@@ -21,6 +19,6 @@ func init() {
 		panic(err)
 	}
 
-	registry.SetRepoBuilder("embed", rembed.NewEmbed("embed", dfs))
+	rembed.Register("embed", dfs)
 
 }

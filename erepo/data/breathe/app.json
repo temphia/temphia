@@ -1,0 +1,23 @@
+{
+  "objects": {
+    "mainapp": {
+      "type": "agent"
+    }
+  },
+  "steps": [
+    {
+      "name": "add_main_agent",
+      "type": "new_agent",
+      "data": {
+        "id": "default",
+        "executor": "none",
+        "renderer": "serve.v1",
+        "web_options": {
+          "auth_type": "none",
+          "start_page": "index.html",
+          "serve_folder": "www"
+        }
+      }
+    }
+  ]
+}

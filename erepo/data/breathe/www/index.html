@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Breather</title>
+    <style>
+        body {
+            background: red;
+            background: linear-gradient(360deg, #0d0e3a, #2196f3);
+            background-size: 400% 400%;
+            animation: AnimationName 16s ease infinite;
+        }
+
+        .container {
+            padding-top: 10vh;
+
+            display: flex;
+        }
+
+        .square {
+            box-sizing: border-box;
+            margin: 0 auto;
+            background-color: transparent;
+            border: solid 1vh black;
+            width: 40vh;
+            height: 40vh;
+        }
+
+        .circle {
+            background: White;
+            border-radius: 100%;
+            height: 5vh;
+            width: 5vh;
+            animation: translate 16s infinite;
+            animation-direction: normal;
+            animation-timing-function: linear;
+        }
+
+        #breatheText {
+            padding-top: 8vh;
+            font-size: 7vh;
+            color: White;
+            margin: 0 auto;
+
+            text-align-last: center;
+            vertical-align: middle;
+        }
+
+        @keyframes translate {
+
+            0%,
+            100% {
+                transform: translate(-3vh, 36vh) scale(1);
+            }
+
+            25% {
+                transform: translate(-3vh, -3vh) scale(2);
+            }
+
+            50% {
+                transform: translate(36vh, -3vh) scale(2);
+            }
+
+            75% {
+                transform: translate(36vh, 36vh) scale(1);
+            }
+        }
+
+        @keyframes AnimationName {
+            0% {
+                background-position: 50% 0%;
+            }
+
+            50% {
+                background-position: 50% 65%;
+            }
+
+            100% {
+                background-position: 50% 0%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="square">
+            <div class="circle" id="circle"></div>
+            <div id="breatheText">
+                Breathe In
+            </div>
+        </div>
+    </div>
+    <script>
+        breatheText = document.getElementById("breatheText");
+        start = document
+            .getElementById("circle")
+            .addEventListener("animationstart", listener, false);
+        iteration = document
+            .getElementById("circle")
+            .addEventListener("animationiteration", listener, false);
+
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+
+        async function listener(event) {
+            breatheText.innerHTML = "Breathe In";
+            await delay(4000);
+            breatheText.innerHTML = "Hold";
+            await delay(4000);
+            breatheText.innerHTML = "Breathe Out";
+            await delay(4000);
+            breatheText.innerHTML = "Hold";
+            await delay(4000);
+        }
+
+    </script>
+</body>
+
+</html>
