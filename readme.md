@@ -1,5 +1,12 @@
 # Temphia
 
+
+**THIS PROJECT AGAIN GOING THROUGH REWRITE JOIN DISCORD IF YOU WANT TO BE INVOLVED :D**
+
+[Discord Link](https://discord.gg/HUpaNA35XR)
+
+
+
 <div align="center">
     <img src="contrib/temphia.png" >
     
